@@ -6,17 +6,18 @@ For the same product, how much code does each stack take when AI agents write it
 
 ## The app
 
-The [RealWorld](https://github.com/realworld-apps/realworld) "Conduit" backend API. The spec is pinned in [`spec/`](../spec/), with its public Hurl acceptance suite (13 files, 154 requests), run unmodified. Two features were specified for AgentMVC:
+The [RealWorld](https://github.com/realworld-apps/realworld) "Conduit" backend API. The spec is pinned in [`spec/`](../spec/), with its public Hurl acceptance suite (13 files, 154 requests), run unmodified. Three features were specified for AgentMVC:
 - [drafts](../spec/features/drafts/drafts.md): 2 files, 47 requests;
-- [exports built in a background job](../spec/features/exports/exports.md): 1 file, 17 requests.
+- [exports built in a background job](../spec/features/exports/exports.md): 1 file, 17 requests;
+- [live shared editing](../spec/features/live-editing/live-editing.md): 1 file, 18 requests, a direct socket check, and 3 browser tests.
 
-Before any agent saw them, each feature was validated by a throwaway Rails implementation that passed its tests. The exports tests were also run against a deliberately slowed job, to prove the polling path works.
+Before any agent saw them, drafts and exports were validated by throwaway Rails implementations. The exports tests were also run against a deliberately slowed job, to prove the polling path works. Live editing was validated against a throwaway Node server outside the measured stacks; its [fixture manifest](../spec/features/live-editing/fixture-manifest.json) hashes the prompt, spec, shared client, and checks before the backend runs.
 
 ## The agents
 
 - **One agent per stack per step:** [Codex CLI](https://github.com/openai/codex) 0.157.1, model `gpt-6-sol`, reasoning `xhigh`.
 - **Sandbox:** each agent could write only inside its own directory, plus the stack's package caches. It had network access for packages, and could not spawn subagents.
-- **Prompts:** every step's prompt is byte-identical for every stack; its sha256 is in each `runs.json` record.
+- **Prompts:** every step's prompt is byte-identical for every stack; its SHA-256 is in each `runs.json` record. Step 8 also records the common fixture SHA-256.
 - **Stack facts:** the only stack-specific text is the stack's `ENVIRONMENT.md`. It gives the toolchain, generator command, formatter, linter, port and sandbox limits, and nothing about style.
 - **Blind:** no agent was told that other stacks, other agents or a comparison existed.
 - **The goal text:** every prompt asks for code that reads almost like a description of the domain, reaching Rails-like simplicity through each stack's own idioms. No prompt discloses a size metric. The tuning and hardening steps give the agent its benchmark or scan results, because those are the task.
@@ -35,7 +36,9 @@ Each step starts from a copy of the previous step's code. [`tools/workdir.py`](.
 
 Each agent wrote its own `bin/check`. The check must start a fresh PostgreSQL, prepare the schema from scratch, boot the app, run every Hurl file, and run the formatter and linter. From step 3, `bin/check-production` runs the same files against the production Docker image. From step 5, it also runs the 13 security checks.
 
-After every run, the reviewer reran both checks independently and recorded the result in the step's `verified` field in `runs.json`. A step counts only if that rerun passes. All 21 did.
+After every run, the reviewer reran both checks independently and recorded the result in the step's `verified` field in `runs.json`. A step counts only if that rerun passes.
+
+At step 8, each backend agent also received the same read-only [Lit editor](../frontend/) and its Playwright suite. The app has no stack-specific branches; the demo and check harness select the backend. Shared client source and preparation effort are [reported separately](../results/live-editing/) and never counted as backend source.
 
 ## Code size
 
@@ -75,6 +78,8 @@ Uncached input depends on prompt-cache hits. A missed cache on the fixed instruc
 - **Load:** k6 runs 9 scenarios at 16 virtual users, each with a 3-second warm-up and then 15 seconds of measurement.
 - **Recorded:** requests per second, p50, p95 and p99 latency, SQL statements per request (from `pg_stat_statements`), peak memory, image size, cold start and idle memory. Later runs also record the CPU used by unrelated containers on the host.
 
+Step 8 uses [`tools/live-bench.py`](../tools/live-bench.py) against the production images. A direct JSON/WebSocket client holds 10, 100, and 500 subscriptions, with 500 spread across five articles to respect the per-article cap. It sends revision-checked HTTP saves at five per second and records each save and matching socket delivery latency, missing or duplicate revisions, idle and active CPU/memory, payload size, and unrelated host load. All images are built first; two measurement rounds run in forward and reverse stack order.
+
 ## Security
 
 [`tools/security/scan.py`](../tools/security/scan.py) runs three kinds of checks against a production image:
@@ -97,4 +102,4 @@ The study's working name was also renamed to `agentmvc`. Nothing else was change
 
 ## Who did what
 
-The maintainer set the question and the rules. One reviewer, Claude, wrote the feature specs, prompts, security checks, questions, answer keys and tools. The reviewer also reran every check, and wrote down hypotheses for speed, security, comprehension, polish and the background job before those steps ran. The [research log](research-log.md) records the session in time order, including every fault.
+The maintainer set the question and the rules. Claude prepared the first seven steps, their tools, and the earlier findings. Codex prepared the shared step-8 fixture, demo, reviewer checks, and load harness, then coordinated the three measured backend runs. The reviewer reran every check and kept the shared frontend outside all backend code-size measurements. The [research log](research-log.md) records the earlier sessions; the [step-8 results](../results/live-editing/) record this run.

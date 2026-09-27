@@ -12,6 +12,7 @@ Day one pays for scaffolding. After that, most work adds to and changes an app t
 | 5. Harden | 514 | 531 (1.03×) | 225 (0.44×) |
 | 6. Polish | 175 | 486 (2.78×) | 655 (3.74×) |
 | 7. Add a background job | 526 | 953 (1.81×) | 1,566 (2.98×) |
+| 8. Live shared editing | 1,490 | 3,024 (2.03×) | 3,823 (2.57×) |
 
 Agent effort per step, in uncached input plus output tokens and wall-clock time:
 
@@ -24,15 +25,17 @@ Agent effort per step, in uncached input plus output tokens and wall-clock time:
 | 5. Harden | 73k, 6.9 min | 84k, 9.0 min | 94k, 7.7 min |
 | 6. Polish | 79k, 6.1 min | 89k, 6.8 min | 129k, 8.9 min |
 | 7. Add a background job | 102k, 10.2 min | 56k, 4.7 min | 123k, 9.6 min |
-| **All seven steps** | **648k, 71 min** | **657k (1.01×), 73 min (1.02×)** | **852k (1.31×), 88 min (1.24×)** |
+| 8. Live shared editing | 176k, 25.2 min | 196k, 25.5 min | 180k, 26.7 min |
+| **All eight steps** | **824k, 97 min** | **853k (1.04×), 99 min (1.02×)** | **1,032k (1.25×), 115 min (1.19×)** |
 
 ## Reading
 
-- **Features cost the same multiple as the codebase.** Drafts took 1.88× Rails' code in Phoenix and 2.67× in Loco. The background job took 1.81× and 2.98×. The whole app sits at 1.76–1.93× and 2.51–2.76×.
+- **Feature changes stayed near the whole-app ratios.** Drafts took 1.88× Rails' code in Phoenix and 2.67× in Loco; the background job took 1.81× and 2.98×; live editing took 2.03× and 2.57×. The shared client is excluded from all three stack costs.
 - **Other steps cost whatever the framework doesn't provide.**
   - **Tuning:** mostly one `includes` call in Rails, against explicit batching code in Phoenix and Loco.
   - **Hardening:** cheapest in Loco. Its typed request structs already rejected malformed bodies, and its security headers were one configuration switch.
   - **Packaging:** a Dockerfile, and nearly no application code anywhere.
-- **Agent effort grows less than code does.** Over all seven steps, Phoenix took about the same agent tokens and time as Rails, and Loco about 1.3× the tokens and 1.2× the time. Wall-clock time follows the feedback loop:
+- **Agent effort grows less than code does.** Over all eight steps, Phoenix took about the same agent tokens and time as Rails, and Loco about 1.25× the tokens and 1.19× the time. Wall-clock time includes toolchain and browser setup:
   - Phoenix's toolchain ran only through Docker, so every `mix` command started a container.
   - Loco compiled on every check.
+  - Step 8's sandboxed agents had to move Playwright into a matching Linux container.

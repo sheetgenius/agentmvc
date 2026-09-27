@@ -13,5 +13,6 @@ Built and evolved by Codex CLI 0.157.1, model `gpt-6-sol` at `xhigh` reasoning. 
 | 5. Harden | [`5-harden/`](5-harden/) | 4,297 | 514 | 72,879 | 6.9 min | [report](reports/5-harden.md) | [transcript](transcripts/5-harden.md) |
 | 6. Polish | [`6-polish/`](6-polish/) | 4,319 | 175 | 78,822 | 6.1 min | [report](reports/6-polish.md) | [transcript](transcripts/6-polish.md) |
 | 7. Add a background job | [`7-add-background-job/`](7-add-background-job/) | 4,847 | 526 | 101,641 | 10.2 min | [report](reports/7-add-background-job.md) | [transcript](transcripts/7-add-background-job.md) |
+| 8. Live shared editing | [`8-live-editing/`](8-live-editing/) | 6,259 | 1,490 | 175,988 | 25.2 min | [report](reports/8-live-editing.md) | [transcript](transcripts/8-live-editing.md) |
 
 Comprehension runs (read-only): [after-1-build](transcripts/comprehension-after-1-build.md), [after-6-polish](transcripts/comprehension-after-6-polish.md).

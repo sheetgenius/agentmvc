@@ -17,7 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TOOLS = ROOT / "tools"
-FEATURES = {"drafts": 2, "exports": 7}  # feature -> the step that adds it
+FEATURES = {"drafts": 2, "exports": 7, "live-editing": 8}  # feature -> the step that adds it
 
 
 def number(step):
@@ -56,6 +56,9 @@ def materialize(stack, step, dest, before=False):
         if n >= added_at:
             shutil.copytree(ROOT / "spec" / "features" / feature, spec / "features" / feature,
                             ignore=shutil.ignore_patterns("validation"))
+    if n >= 8:
+        shutil.copytree(ROOT / "frontend", spec / "frontend",
+                        ignore=shutil.ignore_patterns("node_modules", "dist", "test-results", "playwright-report"))
 
     if n >= 4:
         (dest / "perf").mkdir()

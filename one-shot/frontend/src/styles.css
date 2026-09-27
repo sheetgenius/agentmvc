@@ -1,0 +1,18 @@
+:root { font: 16px/1.5 system-ui, sans-serif; color: #20252b; background: #faf9f7; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+header { display: flex; justify-content: space-between; padding: 1rem max(1.5rem, calc((100vw - 52rem) / 2)); border-bottom: 1px solid #dedbd5; }
+.brand { color: inherit; font-weight: 700; text-decoration: none; }
+main { max-width: 52rem; margin: 3rem auto; padding: 0 1.5rem; }
+.meta, .actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.meta { color: #626b73; font-size: .875rem; margin-bottom: 2rem; }
+label { display: block; margin: 1.5rem 0; font-weight: 600; }
+input, textarea { display: block; width: 100%; margin-top: .4rem; padding: .75rem; border: 1px solid #b8bec4; border-radius: .35rem; background: white; color: inherit; font: inherit; }
+input { font-size: 1.5rem; font-weight: 600; }
+textarea { resize: vertical; line-height: 1.6; }
+button { padding: .65rem 1rem; border: 0; border-radius: .35rem; background: #184f45; color: white; font: inherit; cursor: pointer; }
+button:disabled { opacity: .45; cursor: default; }
+a { color: #184f45; }
+button.link { padding: 0; background: none; color: #184f45; text-decoration: underline; }
+.warning { padding: .8rem 1rem; background: #fff2d8; border-left: .2rem solid #af730f; }
+.notice { padding-top: 4rem; text-align: center; }

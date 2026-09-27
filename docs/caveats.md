@@ -2,9 +2,9 @@
 
 - **One run per stack per step.** Agent runs vary. Treat differences under about 20% as noise; the size of a gap is more reliable than its exact value.
 - **One model.** Every run used Codex `gpt-6-sol` at `xhigh` reasoning. The results reflect what that model writes well in each stack, including how familiar it is with each one. A second model would be the most useful check.
-- **One reviewer.** The feature specs, prompts, security checks, comprehension questions and answer keys were all written by the same reviewer, Claude.
-  - Hypotheses were written down before each step ran.
-  - Both features were validated by throwaway implementations before any agent saw them.
+- **Shared fixture authorship.** Claude prepared the earlier steps and Codex prepared step 8; no independent community review of the new protocol preceded the run.
+  - Hypotheses were written down before the earlier benchmark, scan, and reading steps. Step 8 froze its protocol and measurement plan but did not pre-register a framework winner.
+  - All three added features were validated by throwaway implementations before any backend agent saw them.
   - Each answer key was written before any answer it grades was opened.
 
   A second, independent reviewer would still strengthen the results.
@@ -18,4 +18,4 @@
   Unrelated workloads ran on the same machine, and identical images drifted by up to about 1.5× between sessions. The findings compare before and after only within a session, and claim nothing under 1.5×. Absolute numbers will differ on your hardware.
 - **Agent tokens depend on prompt caching.** On short runs, one cache miss can add about 10k tokens, so the comprehension findings also report total input.
 - **Security is a baseline, not a penetration test:** 13 black-box checks, one dependency scanner, and each stack's mainstream analyzer where it has one. Rust and Loco have no mainstream equivalent of Brakeman or Sobelow.
-- **RealWorld is small.** It's a CRUD API with one background job, and no real-time features or media processing. The app grew by about a third over the seven steps, too little to show how the ratios behave in a codebase many times larger.
+- **The app is still small.** It now has one background job and one real-time feature, but no media processing or multi-instance socket coordination. Its backend source spans 6,259–16,653 tokens after eight steps, too little to establish how ratios behave in a codebase many times larger.

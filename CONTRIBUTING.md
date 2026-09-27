@@ -42,6 +42,9 @@ You'll need Docker, Python 3.9+, and your stack's toolchain. Then:
    tools/check.sh <name> 6-polish
    python3 tools/run-step.py <name> 7-add-background-job
    tools/check.sh <name> 7-add-background-job
+   python3 tools/live_fixture.py verify            # confirm the frozen step-8 inputs
+   python3 tools/run-step.py <name> 8-live-editing
+   tools/check.sh <name> 8-live-editing
    ```
    - `run-step.py` builds the agent's working directory and runs the agent: Codex by default, or any other via `AGENT_CMD`. It then copies back only what the agent wrote, the agent's final report, the scrubbed transcript, and a record in `runs.json`.
    - Record each `tools/check.sh` result in the step's `verified` field in `runs.json`.
@@ -55,7 +58,7 @@ You'll need Docker, Python 3.9+, and your stack's toolchain. Then:
    - If you ran benchmarks, say so in the PR. Speed is only comparable within one machine and one session, so benchmark Rails again next to your stack with `tools/bench/run.sh rails 4-tune`, and include both results.
 
 5. **Open a pull request** with `stacks/<name>/`, any `results/` files you produced, and the regenerated `README.md` and charts.
-   - Steps 1 and 2 are enough to join the table; all seven complete the picture.
+   - Steps 1 and 2 are enough to join the table; all eight complete the picture.
    - In the PR description, say which agent and model you used, and anything that went wrong.
 
 ## Other ways to help

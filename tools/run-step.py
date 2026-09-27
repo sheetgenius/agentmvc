@@ -21,6 +21,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import scrub  # noqa: E402
 import workdir  # noqa: E402
+import live_fixture  # noqa: E402
 
 ROOT = workdir.ROOT
 HARNESS_INPUTS = {"realworld_spec", ".scaffold", "perf", "security", "ENVIRONMENT.md"}
@@ -34,7 +35,7 @@ def ignorer(root):
         top = here == Path(root)
         runtime = any(part in RUNTIME for part in here.relative_to(root).parts)
         return [n for n in names if n in NEVER or (top and n in HARNESS_INPUTS) or n.startswith(".env")
-                or (runtime and n != ".keep" and not (here / n).is_dir())]
+                or (runtime and n != ".keep")]
     return ignore
 
 
@@ -65,6 +66,12 @@ def main():
     stack_dir = ROOT / "stacks" / args.stack
     stack = json.loads((stack_dir / "stack.json").read_text())
     prompt = ROOT / "steps" / f"{args.step}.md"
+    fixture_sha256 = None
+    if args.step == "8-live-editing":
+        current = live_fixture.snapshot()
+        if not live_fixture.MANIFEST.exists() or json.loads(live_fixture.MANIFEST.read_text()) != current:
+            raise SystemExit("step-8 fixture changed after freeze")
+        fixture_sha256 = current["sha256"]
     work = ROOT / ".work" / f"{args.stack}-{args.step}"
     logs = ROOT / ".work" / f"{args.stack}-{args.step}.logs"
     workdir.materialize(args.stack, args.step, work, before=True)
@@ -103,6 +110,8 @@ def main():
               "exit": exit_code, "prompt": f"steps/{args.step}.md",
               "prompt_sha256": hashlib.sha256(prompt.read_bytes()).hexdigest(), "tokens": usage(events),
               "verified": None}
+    if fixture_sha256:
+        record["fixture_sha256"] = fixture_sha256
     runs_path = stack_dir / "runs.json"
     runs = json.loads(runs_path.read_text()) if runs_path.exists() else []
     runs = [r for r in runs if not (r["step"] == args.step and r["kind"] == "build")] + [record]

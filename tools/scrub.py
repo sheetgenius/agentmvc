@@ -4,7 +4,8 @@ Usage: python3 tools/scrub.py EVENTS.jsonl WORKDIR OUT_STEM [--deny REGEX ...] [
                               [--map FROM=TO ...] [--header JSON]
 
 - WORKDIR (the agent's directory) becomes /work/app; your home directory becomes ~; your username becomes
-  "user"; your hostname becomes "host"; macOS temp paths become $TMPDIR.
+  "user"; your hostname becomes "host"; other macOS home paths become /Users/user/;
+  macOS temp paths become $TMPDIR.
 - Common secret shapes (API keys, access tokens, private keys) become [redacted].
 - Docker host listings (images, containers, contexts, builders, networks, volumes) keep only lines about this
   project (--keep adds patterns); everything else is replaced by a note with the number of lines removed.
@@ -23,6 +24,8 @@ KEEP = (r"^\s*$|^\s*(?:REPOSITORY|NAME|CONTAINER|IMAGE|NETWORK|DRIVER|VOLUME|TYP
 SECRETS = [r"sk-(?:proj-)?[A-Za-z0-9_-]{20,}", r"gh[pousr]_[A-Za-z0-9]{20,}", r"github_pat_[A-Za-z0-9_]{20,}",
            r"AKIA[0-9A-Z]{16}", r"xox[abprs]-[A-Za-z0-9-]{10,}", r"(?i)bearer\s+[A-Za-z0-9._-]{20,}",
            r"-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----"]
+UNRELATED_WORKTREE = re.compile(r'~/co/(?!agentmvc(?:/|~|$))[^~\s"\\]+', re.I)
+OTHER_MAC_HOME = re.compile(r'/Users/(?!user/)[^/\s"\\]+/')
 
 
 class Scrubber:
@@ -34,13 +37,16 @@ class Scrubber:
         self.rules = [(re.compile(re.escape(str(Path(workdir).resolve()))), "/work/app"),
                       *[(re.compile(re.escape(src)), dst) for src, dst in maps],
                       (re.compile(re.escape(home)), "~"),
+                      (OTHER_MAC_HOME, "/Users/user/"),
+                      (UNRELATED_WORKTREE, "[redacted]"),
                       (re.compile(r"(?:/private)?/var/folders/\w+/\w+/T"), "$TMPDIR"),
                       (re.compile(rf"\b{re.escape(user)}\b"), "user"),
                       (re.compile(rf"\b{re.escape(host)}(?:\.local)?\b", re.I), "host"),
                       *[(re.compile(p), "[redacted]") for p in SECRETS],
                       *[(re.compile(r"[\w./:@-]*(?:" + p.pattern + r")[\w./:@-]*", re.I), "[redacted]") for p in self.deny]]
         self.forbidden = [re.compile(re.escape(home)), re.compile(rf"\b{re.escape(user)}\b"),
-                          re.compile(rf"\b{re.escape(host)}\b", re.I), *self.deny]
+                          re.compile(rf"\b{re.escape(host)}\b", re.I), OTHER_MAC_HOME,
+                          UNRELATED_WORKTREE, *self.deny]
 
     def text(self, value):
         for pattern, replacement in self.rules:

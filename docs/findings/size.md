@@ -15,24 +15,25 @@ After every step, [`tools/measure.py`](../../tools/measure.py) counts each imple
 | 5. Harden | 4,297 | 8,110 (1.89×) | 11,339 (2.64×) | 495 | 910 (1.84×) | 1,715 (3.46×) |
 | 6. Polish | 4,319 | 8,138 (1.88×) | 11,373 (2.63×) | 498 | 917 (1.84×) | 1,704 (3.42×) |
 | 7. Add a background job | 4,847 | 9,062 (1.87×) | 12,884 (2.66×) | 579 | 1,045 (1.80×) | 1,928 (3.33×) |
+| 8. Live shared editing | 6,259 | 12,029 (1.92×) | 16,653 (2.66×) | 770 | 1,367 (1.78×) | 2,481 (3.22×) |
 
-Owned code after step 7 is 4,447 tokens for Rails, 8,551 for Phoenix (1.92×) and 12,222 for Loco (2.75×). Every step's figures are in [`results/sizes.json`](../../results/sizes.json).
+Owned code after step 8 is 5,858 tokens for Rails, 11,518 for Phoenix (1.97×) and 16,003 for Loco (2.73×). The shared Lit client is excluded from every backend count and [reported separately](../../results/live-editing/). Every step's figures are in [`results/sizes.json`](../../results/sizes.json).
 
 ## Reading
 
-**The gap is set at step 1, and it holds.**
-- Phoenix starts at 1.76× Rails and Loco at 2.51×. After six more steps, they're at 1.87× and 2.66×.
+**The gap is set at step 1, and it persists.**
+- Phoenix starts at 1.76× Rails and Loco at 2.51×. After seven more steps, they're at 1.92× and 2.66×.
 - No step closed the gap, not even step 6, where each agent could rework its code however it liked. That pass changed each codebase by less than 1%; see [polish](polish.md).
 
 ![Each stack's size relative to Rails after every step](../../results/charts/ratio.svg)
 
-**Growth looks proportional, not accelerating, over this range.**
-- **Overall growth:** from step 1 to step 7, Rails grew 38%. Phoenix grew 46%, and so did Loco.
-- **Where the ratio moved:** mostly at step 4. There, Rails fixed its slow queries with 143 tokens, while Phoenix needed 756 and Loco 1,318 for the equivalent batching code. At step 5, Loco's hardening was the cheapest of the three, and its ratio fell back by 0.12. Every other step moved it by 0.06 or less.
-- **What this can't show:** the app only grew by about a third. That's too narrow to tell proportional growth from mildly superlinear growth in a codebase many times this size.
+**The ratios have stayed close as the app grew.**
+- **Overall growth:** from step 1 to step 8, Rails grew 78%, Phoenix 94%, and Loco 89%.
+- **Where the ratio moved:** step 4's query batching moved the ratio most; live editing raised Phoenix's ratio from 1.87× to 1.92× and left Loco at 2.66×.
+- **What this can't show:** one step with persistent connections cannot establish whether growth stays proportional in a much larger codebase.
 
 **Lines overstate Rust's reading cost.**
-- Loco has 3.33× Rails' lines of code, but 2.66× its tokens. `rustfmt` puts more on separate lines: Loco averages 6.7 tokens per line, against 8.4 for Rails and 8.7 for Phoenix.
+- Loco has 3.22× Rails' lines of code, but 2.66× its tokens. `rustfmt` puts more on separate lines: Loco averages 6.7 tokens per line, against 8.1 for Rails and 8.8 for Phoenix.
 - For an agent's context window, tokens are the unit that matters.
 
 **Where the extra code goes.** In the code, the same rule tends to take more pieces outside Rails.

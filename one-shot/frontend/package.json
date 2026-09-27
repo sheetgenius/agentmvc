@@ -1,0 +1,18 @@
+{
+  "name": "agentmvc-editor",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "lit": "^3.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.0.0",
+    "vite": "^7.0.0",
+    "ws": "^8.0.0"
+  }
+}

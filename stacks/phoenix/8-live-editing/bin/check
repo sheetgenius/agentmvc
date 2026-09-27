@@ -1,0 +1,23 @@
+#!/bin/sh
+set -eu
+
+cd "$(dirname "$0")/.."
+PROJECT="$(basename "$PWD")-check-$$"
+export HOST_UID="$(id -u)" HOST_GID="$(id -g)"
+compose() { docker compose -p "$PROJECT" "$@"; }
+trap 'compose down -v --remove-orphans >/dev/null 2>&1' EXIT HUP INT TERM
+
+compose up -d --wait db
+compose run --rm app sh -lc 'mix deps.get && mix ecto.create && mix ecto.migrate'
+compose up -d app
+
+ready=0
+for attempt in $(seq 1 60); do
+  if curl -fsS http://127.0.0.1:4102/api/tags >/dev/null 2>&1; then ready=1; break; fi
+  sleep 1
+done
+[ "$ready" -eq 1 ] || { compose logs app; exit 1; }
+
+realworld_spec/bin/run-hurl 4102
+bin/check-live 4102
+compose run --rm app sh -lc 'mix format --check-formatted && mix compile --warnings-as-errors'

@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+export CARGO_HOME="${CARGO_HOME:-${TMPDIR:-/tmp}/conduit-cargo-home}"
+project=loco-fresh-check
+export DATABASE_URL=postgres://loco:loco@localhost:54329/conduit
+export PORT=4103
+app_log=$(mktemp)
+cleanup() {
+  if [[ -n "${app_pid:-}" ]]; then kill "$app_pid" 2>/dev/null || true; wait "$app_pid" 2>/dev/null || true; fi
+  docker compose -p "$project" down -v >/dev/null 2>&1 || true
+  rm "$app_log"
+}
+trap cleanup EXIT
+docker compose -p "$project" down -v >/dev/null 2>&1 || true
+docker compose -p "$project" up -d --wait
+cd conduit
+cargo build
+./target/debug/conduit-cli db migrate
+./target/debug/conduit-cli start --server-and-worker > "$app_log" 2>&1 &
+app_pid=$!
+for _ in {1..60}; do
+  if curl -fsS "http://localhost:$PORT/_health" >/dev/null 2>&1; then break; fi
+  if ! kill -0 "$app_pid" 2>/dev/null; then cat "$app_log"; exit 1; fi
+  sleep 1
+done
+cd ..
+realworld_spec/bin/run-hurl "$PORT"
+bin/check-live "$PORT"
+cd conduit
+cargo fmt --all -- --check
+cargo clippy --all-targets -- -D warnings

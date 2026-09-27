@@ -23,9 +23,11 @@ ROOT = measure.ROOT
 RESULTS = ROOT / "results"
 REFERENCE = "rails"  # ratios are relative to this stack
 STEP_NAMES = {"1-build": "Build", "2-add-drafts": "Add drafts", "3-package": "Package", "4-tune": "Tune",
-              "5-harden": "Harden", "6-polish": "Polish", "7-add-background-job": "Add a background job"}
+              "5-harden": "Harden", "6-polish": "Polish", "7-add-background-job": "Add a background job",
+              "8-live-editing": "Live shared editing"}
 SHORT = {"1-build": "Build", "2-add-drafts": "Add\ndrafts", "3-package": "Package", "4-tune": "Tune",
-         "5-harden": "Harden", "6-polish": "Polish", "7-add-background-job": "Add\njob"}
+         "5-harden": "Harden", "6-polish": "Polish", "7-add-background-job": "Add\njob",
+         "8-live-editing": "Live\nediting"}
 STATS_START, STATS_END = "<!-- stats:start -->", "<!-- stats:end -->"
 
 plt.rcParams.update({"font.family": "sans-serif", "font.size": 11, "axes.spines.top": False,
@@ -116,6 +118,7 @@ def stats_table(all_stacks, sizes):
         ("Lines of code, after the last step", lambda s: cell(final(s, "code_lines"), final(ref, "code_lines") if s != ref else None)),
         ("Code to add drafts, step 2 (tokens)", lambda s: cell(at(s, "2-add-drafts", "step_tokens"), at(ref, "2-add-drafts", "step_tokens") if s != ref else None)),
         ("Code to add a background job, step 7 (tokens)", lambda s: cell(at(s, "7-add-background-job", "step_tokens"), at(ref, "7-add-background-job", "step_tokens") if s != ref else None)),
+        ("Code to add live editing, step 8 (tokens)", lambda s: cell(at(s, "8-live-editing", "step_tokens"), at(ref, "8-live-editing", "step_tokens") if s != ref else None)),
         ("Article list after tuning, median of runs (req/s)", lambda s: cell(speed(s, 4, "list_anonymous"), speed(ref, 4, "list_anonymous") if s != ref else None)),
         ("Peak memory under load, after tuning", lambda s: cell(peak(s), None, " MB")),
         ("Docker image", lambda s: cell((speed_run(s, "4-tune") or {}).get("image_mb"), None, " MB")),
@@ -289,7 +292,9 @@ def throughput_chart(all_stacks, out):
 
 
 def save(fig, out, name):
-    fig.savefig(out / f"{name}.svg", metadata={"Date": None})
+    svg = out / f"{name}.svg"
+    fig.savefig(svg, metadata={"Date": None})
+    svg.write_text("\n".join(line.rstrip() for line in svg.read_text().splitlines()) + "\n")
     fig.savefig(out / f"{name}.png", dpi=160, metadata={"Software": None})
     plt.close(fig)
 

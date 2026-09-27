@@ -1,0 +1,18 @@
+{
+  "stack": "rails",
+  "round": 2,
+  "started": "2026-09-27T09:14:52.385696+00:00",
+  "image": "agentmvc-live-rails:8",
+  "image_sha256": "sha256:a8da1caedba3925cad99581d6f74a054cdb48e9e829ced88be3ac2b58411a13e",
+  "image_mb": 338.2,
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "backend_instances": 1,
+  "database": "postgres:17-alpine",
+  "scenarios": [],
+  "status": "failed",
+  "error": "docker exec agentmvc-live-rails-2-48897-db pg_isready -U postgres -d conduit\n/var/run/postgresql:5432 - rejecting connections\n\n",
+  "finished": "2026-09-27T09:15:01.407130+00:00"
+}
