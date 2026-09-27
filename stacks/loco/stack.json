@@ -1,0 +1,27 @@
+{
+  "name": "Loco",
+  "order": 3,
+  "language": "Rust",
+  "description": "Loco 1.2 (JSON API) with SeaORM 2, Axum and PostgreSQL",
+  "color": "#d27a2c",
+  "port": 4103,
+  "agent": {
+    "tool": "Codex CLI 0.157.1",
+    "model": "gpt-6-sol",
+    "reasoning": "xhigh"
+  },
+  "code": {
+    "extensions": {
+      ".rs": "//"
+    },
+    "skip_files": [
+      "Cargo.lock",
+      "rustfmt.toml"
+    ]
+  },
+  "security": {
+    "lockfile": "conduit/Cargo.lock",
+    "analyzer": null,
+    "analyzer_note": "Rust and Loco have no mainstream security static analyzer; clippy runs in bin/check."
+  }
+}

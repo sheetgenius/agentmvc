@@ -1,0 +1,108 @@
+{
+ "image": "rails 4-tune",
+ "label": "rails 4-tune",
+ "limits": [
+  "--cpus=2",
+  "--memory=1g"
+ ],
+ "extra_env": "",
+ "vus": 16,
+ "duration": "15s",
+ "image_mb": 333.5,
+ "cold_start_seconds": 1.2,
+ "seed_seconds": 23.0,
+ "idle_memory_mb": 143.2,
+ "scenarios": {
+  "list_anonymous": {
+   "requests": 5184,
+   "rps": 344.7,
+   "p50_ms": 45.95,
+   "p95_ms": 54.4,
+   "p99_ms": 60.95,
+   "failed_checks": 0,
+   "sql_statements_per_request": 6.0,
+   "peak_memory_mb": 155.7
+  },
+  "list_signed_in": {
+   "requests": 4333,
+   "rps": 287.5,
+   "p50_ms": 55.11,
+   "p95_ms": 65.65,
+   "p99_ms": 77.13,
+   "failed_checks": 0,
+   "sql_statements_per_request": 8.0,
+   "peak_memory_mb": 119.6
+  },
+  "list_by_tag": {
+   "requests": 5716,
+   "rps": 380.1,
+   "p50_ms": 41.61,
+   "p95_ms": 49.88,
+   "p99_ms": 54.86,
+   "failed_checks": 0,
+   "sql_statements_per_request": 3.0,
+   "peak_memory_mb": 134.6
+  },
+  "feed": {
+   "requests": 4342,
+   "rps": 288.4,
+   "p50_ms": 55.1,
+   "p95_ms": 64.4,
+   "p99_ms": 70.21,
+   "failed_checks": 0,
+   "sql_statements_per_request": 8.0,
+   "peak_memory_mb": 133.5
+  },
+  "article": {
+   "requests": 8297,
+   "rps": 552.0,
+   "p50_ms": 29.08,
+   "p95_ms": 36.24,
+   "p99_ms": 43.09,
+   "failed_checks": 0,
+   "sql_statements_per_request": 6.98,
+   "peak_memory_mb": 134.8
+  },
+  "comments": {
+   "requests": 13112,
+   "rps": 873.4,
+   "p50_ms": 18.05,
+   "p95_ms": 23.46,
+   "p99_ms": 27.89,
+   "failed_checks": 0,
+   "sql_statements_per_request": 3.0,
+   "peak_memory_mb": 123.3
+  },
+  "tags": {
+   "requests": 22135,
+   "rps": 1474.5,
+   "p50_ms": 10.14,
+   "p95_ms": 16.44,
+   "p99_ms": 22.82,
+   "failed_checks": 0,
+   "sql_statements_per_request": 1.0,
+   "peak_memory_mb": 124.3
+  },
+  "favorite_toggle": {
+   "requests": 7252,
+   "rps": 482.1,
+   "p50_ms": 32.04,
+   "p95_ms": 42.28,
+   "p99_ms": 54.4,
+   "failed_checks": 0,
+   "sql_statements_per_request": 9.45,
+   "peak_memory_mb": 128.1
+  },
+  "create_article": {
+   "requests": 5551,
+   "rps": 368.9,
+   "p50_ms": 40.5,
+   "p95_ms": 63.1,
+   "p99_ms": 72.53,
+   "failed_checks": 0,
+   "sql_statements_per_request": 10.0,
+   "peak_memory_mb": 129.7
+  }
+ },
+ "finished_at": "2026-09-27T04:33:54Z"
+}

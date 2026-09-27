@@ -1,0 +1,115 @@
+{
+ "after-1-build": {
+  "rails": {
+   "score": 12.0,
+   "per_question": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1,
+    "10": 1,
+    "11": 1,
+    "12": 1
+   },
+   "notes": ""
+  },
+  "phoenix": {
+   "score": 11.5,
+   "per_question": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 0.5,
+    "10": 1,
+    "11": 1,
+    "12": 1
+   },
+   "notes": "Q9: said expiry comes from Joken's default claims without stating the lifetime (2 hours), which isn't set anywhere in the app."
+  },
+  "loco": {
+   "score": 11.5,
+   "per_question": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1,
+    "10": 1,
+    "11": 1,
+    "12": 0.5
+   },
+   "notes": "Q12: named loco_rs::hash::hash_password but not the algorithm (Argon2), which lives inside the library."
+  }
+ },
+ "after-6-polish": {
+  "rails": {
+   "score": 11.5,
+   "per_question": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 0.5,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1,
+    "10": 1,
+    "11": 1,
+    "12": 1
+   },
+   "notes": "Q4: said favoritesCount is the size of the favorites association, citing only the view. It missed that lists count preloaded favorites in memory (the includes in ArticlesController#list) while a single article runs a COUNT query."
+  },
+  "phoenix": {
+   "score": 12.0,
+   "per_question": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1,
+    "10": 1,
+    "11": 1,
+    "12": 1
+   },
+   "notes": "Q9: stated the 2-hour Joken default this time (its miss after step 1)."
+  },
+  "loco": {
+   "score": 11.5,
+   "per_question": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1,
+    "10": 1,
+    "11": 1,
+    "12": 0.5
+   },
+   "notes": "Q12: named loco_rs::hash::hash_password and said the algorithm isn't specified in this directory; it is Argon2, inside the library (the same miss as after step 1)."
+  }
+ },
+ "_about": "1 point for right behavior and right location; 0.5 for right behavior but an incomplete or unlocated answer; 0 otherwise. Each key was written before any answer it grades was opened."
+}

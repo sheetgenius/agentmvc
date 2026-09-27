@@ -1,0 +1,184 @@
+diff -ru --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check a/app/controllers/api/articles_controller.rb b/app/controllers/api/articles_controller.rb
+--- a/app/controllers/api/articles_controller.rb	2026-09-27 10:04:38
++++ b/app/controllers/api/articles_controller.rb	2026-09-27 10:25:52
+@@ -1,10 +1,10 @@
+ module Api
+   class ArticlesController < BaseController
+-    before_action :authenticate_user!, only: [ :feed, :create, :update, :destroy, :favorite, :unfavorite ]
+-    before_action :set_article, only: [ :show, :update, :destroy, :favorite, :unfavorite ]
++    before_action :authenticate_user!, only: [ :feed, :drafts, :create, :update, :destroy, :favorite, :unfavorite, :publish ]
++    before_action :set_article, only: [ :show, :update, :destroy, :favorite, :unfavorite, :publish ]
+ 
+     def index
+-      articles = Article.all
++      articles = Article.published
+       articles = articles.authored_by(params[:author]) if params[:author]
+       articles = articles.tagged_with(params[:tag]) if params[:tag]
+       articles = articles.favorited_by(params[:favorited]) if params[:favorited]
+@@ -12,9 +12,13 @@
+     end
+ 
+     def feed
+-      render_articles(Article.feed_for(current_user))
++      render_articles(Article.published.feed_for(current_user))
+     end
+ 
++    def drafts
++      render_articles(current_user.articles.draft)
++    end
++
+     def show
+       render_article
+     end
+@@ -26,6 +30,8 @@
+ 
+     def update
+       authorize_owner!(@article, "article")
++      return if stale_revision?
++
+       @article.update!(article_attributes)
+       render_article
+     end
+@@ -36,7 +42,15 @@
+       head :no_content
+     end
+ 
++    def publish
++      authorize_owner!(@article, "article")
++      @article.published! if @article.draft?
++      render_article
++    end
++
+     def favorite
++      return render_error(:article, "is a draft", :unprocessable_entity) if @article.draft?
++
+       current_user.favorites.find_or_create_by!(article: @article)
+       render_article
+     end
+@@ -49,14 +63,24 @@
+     private
+ 
+     def set_article
+-      @article = Article.includes(:user).find_by!(slug: params[:slug])
++      @article = Article.includes(:user).visible_to(current_user).find_by!(slug: params[:slug])
+     end
+ 
+     def article_attributes
+       input = params.require(:article)
+-      attributes = input.permit(:title, :description, :body).to_h
++      attributes = input.permit(:title, :description, :body, :status).to_h
+       attributes[:tags] = input[:tagList] if input.key?(:tagList)
+       attributes
++    end
++
++    def stale_revision?
++      return false unless params[:article].key?(:revision)
++
++      revision = params[:article][:revision]
++      return render_error(:revision, "is invalid", :unprocessable_entity) || true unless revision.is_a?(Integer)
++      return false if revision == @article.revision
++
++      render json: { errors: { revision: [ "is stale" ] }, article: presenter.article(@article) }, status: :conflict
+     end
+ 
+     def render_article(status = :ok)
+diff -ru --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check a/app/controllers/api/comments_controller.rb b/app/controllers/api/comments_controller.rb
+--- a/app/controllers/api/comments_controller.rb	2026-09-27 09:39:23
++++ b/app/controllers/api/comments_controller.rb	2026-09-27 10:25:52
+@@ -9,6 +9,8 @@
+     end
+ 
+     def create
++      return render_error(:article, "is a draft", :unprocessable_entity) if @article.draft?
++
+       comment = @article.comments.create!(user: current_user, body: params.require(:comment)[:body])
+       render json: { comment: presenter.comment(comment) }, status: :created
+     end
+@@ -23,7 +25,7 @@
+     private
+ 
+     def set_article
+-      @article = Article.find_by!(slug: params[:article_slug])
++      @article = Article.visible_to(current_user).find_by!(slug: params[:article_slug])
+     end
+   end
+ end
+diff -ru --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check a/app/controllers/api/tags_controller.rb b/app/controllers/api/tags_controller.rb
+--- a/app/controllers/api/tags_controller.rb	2026-09-27 09:37:41
++++ b/app/controllers/api/tags_controller.rb	2026-09-27 10:25:52
+@@ -1,7 +1,7 @@
+ module Api
+   class TagsController < BaseController
+     def index
+-      render json: { tags: Article.pluck(:tags).flatten.uniq.sort }
++      render json: { tags: Article.published.pluck(:tags).flatten.uniq.sort }
+     end
+   end
+ end
+diff -ru --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check a/app/models/article.rb b/app/models/article.rb
+--- a/app/models/article.rb	2026-09-27 10:04:38
++++ b/app/models/article.rb	2026-09-27 10:25:52
+@@ -3,6 +3,9 @@
+   has_many :comments, dependent: :destroy
+   has_many :favorites, dependent: :destroy
+ 
++  enum :status, { draft: "draft", published: "published" }, validate: { message: "is invalid" }
++
++  scope :visible_to, ->(reader) { reader ? where(status: :published).or(where(user: reader)) : published }
+   scope :authored_by, ->(username) { where(user: User.where(username: username)) }
+   scope :tagged_with, ->(tag) { where("? = ANY(tags)", tag) }
+   scope :favorited_by, ->(username) {
+@@ -15,6 +18,8 @@
+   validates :slug, uniqueness: true
+   validate :tags_are_an_array
+   before_validation :refresh_slug, if: :will_save_change_to_title?
++  before_save { self.published_at ||= Time.current if published? }
++  before_update { self.revision += 1 }
+ 
+   private
+ 
+diff -ru --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check a/app/serializers/conduit_json.rb b/app/serializers/conduit_json.rb
+--- a/app/serializers/conduit_json.rb	2026-09-27 09:37:41
++++ b/app/serializers/conduit_json.rb	2026-09-27 10:25:52
+@@ -16,7 +16,8 @@
+       slug: article.slug, title: article.title, description: article.description,
+       tagList: article.tags, createdAt: article.created_at.iso8601(6), updatedAt: article.updated_at.iso8601(6),
+       favorited: article.favorites.any? { |favorite| favorite.user_id == @viewer&.id },
+-      favoritesCount: article.favorites.size, author: profile(article.user)
++      favoritesCount: article.favorites.size, author: profile(article.user),
++      status: article.status, publishedAt: article.published_at&.iso8601(6), revision: article.revision
+     }
+     data[:body] = article.body if include_body
+     data
+diff -ru --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check a/config/routes.rb b/config/routes.rb
+--- a/config/routes.rb	2026-09-27 09:39:23
++++ b/config/routes.rb	2026-09-27 10:25:52
+@@ -5,6 +5,7 @@
+     post "users/login", to: "users#login"
+     resources :users, only: :create
+     resource :user, only: [ :show, :update ], controller: :user
++    get "user/drafts", to: "articles#drafts"
+     resources :profiles, only: :show, param: :username do
+       post :follow, on: :member
+       delete :follow, on: :member, action: :unfollow
+@@ -13,6 +14,7 @@
+       get :feed, on: :collection
+       resources :comments, only: [ :index, :create, :destroy ]
+       post :favorite, on: :member
++      post :publish, on: :member
+       delete :favorite, on: :member, action: :unfavorite
+     end
+     get "tags", to: "tags#index"
+diff -ru --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check a/db/migrate/20260927000000_create_conduit.rb b/db/migrate/20260927000000_create_conduit.rb
+--- a/db/migrate/20260927000000_create_conduit.rb	2026-09-27 09:39:23
++++ b/db/migrate/20260927000000_create_conduit.rb	2026-09-27 10:25:52
+@@ -21,6 +21,9 @@
+       table.string :slug, :title, null: false
+       table.text :description, :body, null: false
+       table.text :tags, array: true, default: [], null: false
++      table.string :status, null: false, default: "published"
++      table.datetime :published_at
++      table.integer :revision, null: false, default: 1
+       table.timestamps
+     end
+     add_index :articles, :slug, unique: true

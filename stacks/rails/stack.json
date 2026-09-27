@@ -1,0 +1,42 @@
+{
+  "name": "Rails",
+  "order": 1,
+  "language": "Ruby",
+  "description": "Ruby on Rails 8.1 (API-only) with Active Record, Jbuilder and PostgreSQL",
+  "color": "#cc342d",
+  "port": 4101,
+  "agent": {
+    "tool": "Codex CLI 0.157.1",
+    "model": "gpt-6-sol",
+    "reasoning": "xhigh"
+  },
+  "code": {
+    "extensions": {
+      ".rb": "#",
+      ".rake": "#",
+      ".ru": "#",
+      ".jbuilder": "#"
+    },
+    "files": {
+      "Gemfile": "#",
+      "Rakefile": "#"
+    },
+    "skip_files": [
+      "Gemfile.lock",
+      "schema.rb",
+      "queue_schema.rb",
+      "cache_schema.rb",
+      "cable_schema.rb",
+      ".rubocop.yml"
+    ],
+    "generated": [
+      "db/migrate/20260927000003_create_solid_queue_tables.rb"
+    ],
+    "generated_note": "Solid Queue's installer-generated schema, copied into a migration by the step-7 agent; counted as generated schema, like db/schema.rb."
+  },
+  "security": {
+    "lockfile": "Gemfile.lock",
+    "analyzer": "brakeman"
+  },
+  "setup": "bundle install --quiet"
+}

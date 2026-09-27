@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+port=4103
+name="conduit-production-$$"
+db="$name-db"
+app="$name-app"
+network="$name-net"
+image="$name:latest"
+buildx_config=$(mktemp -d "$PWD/.buildx.XXXXXX")
+export BUILDX_CONFIG="$buildx_config"
+
+cleanup() {
+  docker container rm --force --volumes "$app" "$db" >/dev/null 2>&1 || true
+  docker network rm "$network" >/dev/null 2>&1 || true
+  docker image rm "$image" >/dev/null 2>&1 || true
+  rm -r "$buildx_config"
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+docker build -t "$image" .
+docker network create "$network" >/dev/null
+docker run -d --name "$db" --network "$network" \
+  -e POSTGRES_USER=loco -e POSTGRES_PASSWORD=loco -e POSTGRES_DB=conduit \
+  postgres:17-alpine >/dev/null
+
+for _ in {1..60}; do
+  if docker exec "$db" pg_isready -U loco -d conduit >/dev/null 2>&1; then break; fi
+  sleep 1
+done
+docker exec "$db" pg_isready -U loco -d conduit >/dev/null
+
+docker run -d --name "$app" --network "$network" -p "$port:$port" \
+  -e DATABASE_URL=postgres://loco:loco@"$db":5432/conduit \
+  -e SECRET_KEY_BASE="$(printf 'a%.0s' {1..128})" -e PORT="$port" \
+  "$image" >/dev/null
+
+for _ in {1..60}; do
+  if curl -fsS "http://localhost:$port/_health" >/dev/null 2>&1; then break; fi
+  if [[ "$(docker inspect -f '{{.State.Running}}' "$app")" != true ]]; then
+    docker logs "$app"
+    exit 1
+  fi
+  sleep 1
+done
+if ! curl -fsS "http://localhost:$port/_health" >/dev/null; then
+  docker logs "$app"
+  exit 1
+fi
+
+realworld_spec/bin/run-hurl "$port"

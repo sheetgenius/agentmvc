@@ -1,0 +1,97 @@
+diff -ruN --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check --exclude compose.yaml --exclude perf --exclude security --exclude README.md a/app/controllers/api/exports_controller.rb b/app/controllers/api/exports_controller.rb
+--- a/app/controllers/api/exports_controller.rb	1970-01-01 08:00:00
++++ b/app/controllers/api/exports_controller.rb	2026-09-27 13:05:24
+@@ -0,0 +1,24 @@
++module Api
++  class ExportsController < ApplicationController
++    before_action :authenticate_user!
++
++    def create
++      export = current_user.exports.create!
++      ExportJob.perform_later(export)
++      render json: { export: present(export) }, status: :accepted
++    end
++
++    def show
++      export = current_user.exports.find_by(id: params[:id].to_s[/\A\d+\z/])
++      return render_error(:export, "not found", :not_found) unless export
++
++      render json: { export: present(export) }
++    end
++
++    private
++
++    def present(export)
++      { id: export.id, status: export.status, createdAt: export.created_at, completedAt: export.completed_at, articles: export.articles }
++    end
++  end
++end
+diff -ruN --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check --exclude compose.yaml --exclude perf --exclude security --exclude README.md a/app/jobs/export_job.rb b/app/jobs/export_job.rb
+--- a/app/jobs/export_job.rb	1970-01-01 08:00:00
++++ b/app/jobs/export_job.rb	2026-09-27 13:06:12
+@@ -0,0 +1,9 @@
++class ExportJob < ActiveJob::Base
++  def perform(export)
++    articles = export.user.articles.includes(:tags).order(:created_at, :id).map do |article|
++      { slug: article.slug, title: article.title, description: article.description, body: article.body,
++        tagList: article.tags.map(&:name), status: article.status, commentsCount: article.comments.count }
++    end
++    export.update!(articles: articles, status: "done", completed_at: Time.current)
++  end
++end
+diff -ruN --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check --exclude compose.yaml --exclude perf --exclude security --exclude README.md a/app/models/export.rb b/app/models/export.rb
+--- a/app/models/export.rb	1970-01-01 08:00:00
++++ b/app/models/export.rb	2026-09-27 13:05:24
+@@ -0,0 +1,3 @@
++class Export < ApplicationRecord
++  belongs_to :user
++end
+diff -ruN --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check --exclude compose.yaml --exclude perf --exclude security --exclude README.md a/app/models/user.rb b/app/models/user.rb
+--- a/app/models/user.rb	2026-09-27 11:44:50
++++ b/app/models/user.rb	2026-09-27 13:05:24
+@@ -4,6 +4,7 @@
+   has_many :articles, foreign_key: :author_id, dependent: :destroy, inverse_of: :author
+   has_many :comments, foreign_key: :author_id, dependent: :destroy, inverse_of: :author
+   has_many :favorites, dependent: :destroy
++  has_many :exports, dependent: :destroy
+   has_many :favorite_articles, through: :favorites, source: :article
+   has_many :outgoing_follows, class_name: "Follow", foreign_key: :follower_id, dependent: :destroy
+   has_many :followed_users, through: :outgoing_follows, source: :followed
+diff -ruN --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check --exclude compose.yaml --exclude perf --exclude security --exclude README.md a/config/application.rb b/config/application.rb
+--- a/config/application.rb	2026-09-27 10:19:29
++++ b/config/application.rb	2026-09-27 13:05:24
+@@ -4,6 +4,7 @@
+ require "active_record/railtie"
+ require "action_controller/railtie"
+ require "action_view/railtie"
++require "active_job/railtie"
+ Bundler.require(*Rails.groups)
+ 
+ module Conduit
+diff -ruN --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check --exclude compose.yaml --exclude perf --exclude security --exclude README.md a/config/routes.rb b/config/routes.rb
+--- a/config/routes.rb	2026-09-27 10:55:26
++++ b/config/routes.rb	2026-09-27 13:05:24
+@@ -4,6 +4,8 @@
+     resources :users, only: :create
+     resource :user, only: [ :show, :update ]
+     get "user/drafts", to: "articles#drafts"
++    post "user/exports", to: "exports#create"
++    get "user/exports/:id", to: "exports#show"
+     resources :profiles, only: :show, param: :username do
+       post :follow, on: :member
+       delete :follow, on: :member, action: :unfollow
+diff -ruN --exclude vendor --exclude tmp --exclude log --exclude realworld_spec --exclude .scaffold --exclude schema.rb --exclude .bundle --exclude check --exclude compose.yaml --exclude perf --exclude security --exclude README.md a/db/migrate/20260927000002_create_exports.rb b/db/migrate/20260927000002_create_exports.rb
+--- a/db/migrate/20260927000002_create_exports.rb	1970-01-01 08:00:00
++++ b/db/migrate/20260927000002_create_exports.rb	2026-09-27 13:05:24
+@@ -0,0 +1,11 @@
++class CreateExports < ActiveRecord::Migration[8.1]
++  def change
++    create_table :exports do |t|
++      t.references :user, null: false, foreign_key: true
++      t.string :status, null: false, default: "pending"
++      t.jsonb :articles
++      t.datetime :completed_at
++      t.timestamps
++    end
++  end
++end

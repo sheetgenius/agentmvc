@@ -1,0 +1,32 @@
+{
+  "name": "Phoenix",
+  "order": 2,
+  "language": "Elixir",
+  "description": "Phoenix 1.8 (JSON API) with Ecto and PostgreSQL",
+  "color": "#6e4a7e",
+  "port": 4102,
+  "agent": {
+    "tool": "Codex CLI 0.157.1",
+    "model": "gpt-6-sol",
+    "reasoning": "xhigh"
+  },
+  "code": {
+    "extensions": {
+      ".ex": "#",
+      ".exs": "#"
+    },
+    "doc_attributes": [
+      "moduledoc",
+      "doc",
+      "typedoc"
+    ],
+    "skip_files": [
+      "mix.lock",
+      ".formatter.exs"
+    ]
+  },
+  "security": {
+    "lockfile": "mix.lock",
+    "analyzer": "sobelow"
+  }
+}

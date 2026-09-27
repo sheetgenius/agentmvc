@@ -1,0 +1,16 @@
+#!/bin/sh
+# Run the official RealWorld Hurl suite (pinned in ../api) plus every feature suite in ../features/*/hurl
+# against a local backend.
+#   bin/run-hurl PORT [path/to/file.hurl ...]   -> http://host.docker.internal:PORT (files call {{host}}/api/...)
+#   BASE_URL=https://example bin/run-hurl - [files...]   -> any server root
+# Paths are relative to the spec root, e.g. api/hurl/articles.hurl or features/drafts/hurl/drafts.hurl.
+# The backend may bind 127.0.0.1; Docker Desktop routes host.docker.internal to it.
+set -eu
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+PORT="${1:?usage: bin/run-hurl PORT [hurl files...]}"; shift
+BASE_URL="${BASE_URL:-http://host.docker.internal:$PORT}"
+UID_VAL="${UID_VAL:-$(date +%s)$$}"
+cd "$ROOT"
+[ $# -eq 0 ] && set -- api/hurl/*.hurl $(ls features/*/hurl/*.hurl 2>/dev/null)
+exec docker run --rm -v "$ROOT:/spec:ro" -w /spec ghcr.io/orange-opensource/hurl:latest \
+  --test --jobs 1 --variable "host=$BASE_URL" --variable "uid=$UID_VAL" "$@"

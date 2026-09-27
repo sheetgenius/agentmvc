@@ -1,0 +1,107 @@
+{
+ "image": "loco 3-package",
+ "label": "loco 3-package",
+ "limits": [
+  "--cpus=2",
+  "--memory=1g"
+ ],
+ "vus": 16,
+ "duration": "15s",
+ "image_mb": 140.1,
+ "cold_start_seconds": 0.39,
+ "seed_seconds": 10.3,
+ "idle_memory_mb": 104.9,
+ "scenarios": {
+  "list_anonymous": {
+   "requests": 10068,
+   "rps": 670.8,
+   "p50_ms": 22.2,
+   "p95_ms": 37.05,
+   "p99_ms": 42.38,
+   "failed_checks": 0,
+   "sql_statements_per_request": 42.0,
+   "peak_memory_mb": 104.7
+  },
+  "list_signed_in": {
+   "requests": 6322,
+   "rps": 421.0,
+   "p50_ms": 36.49,
+   "p95_ms": 53.94,
+   "p99_ms": 59.35,
+   "failed_checks": 0,
+   "sql_statements_per_request": 83.0,
+   "peak_memory_mb": 79.9
+  },
+  "list_by_tag": {
+   "requests": 7511,
+   "rps": 500.1,
+   "p50_ms": 31.36,
+   "p95_ms": 40.38,
+   "p99_ms": 44.09,
+   "failed_checks": 0,
+   "sql_statements_per_request": 41.0,
+   "peak_memory_mb": 79.9
+  },
+  "feed": {
+   "requests": 4799,
+   "rps": 319.6,
+   "p50_ms": 51.48,
+   "p95_ms": 64.09,
+   "p99_ms": 68.05,
+   "failed_checks": 0,
+   "sql_statements_per_request": 84.0,
+   "peak_memory_mb": 90.6
+  },
+  "article": {
+   "requests": 69518,
+   "rps": 4633.8,
+   "p50_ms": 3.07,
+   "p95_ms": 5.24,
+   "p99_ms": 12.63,
+   "failed_checks": 0,
+   "sql_statements_per_request": 6.0,
+   "peak_memory_mb": 90.3
+  },
+  "comments": {
+   "requests": 102647,
+   "rps": 6842.5,
+   "p50_ms": 1.97,
+   "p95_ms": 3.61,
+   "p99_ms": 11.5,
+   "failed_checks": 0,
+   "sql_statements_per_request": 4.0,
+   "peak_memory_mb": 90.3
+  },
+  "tags": {
+   "requests": 26343,
+   "rps": 1755.3,
+   "p50_ms": 8.24,
+   "p95_ms": 16.77,
+   "p99_ms": 21.02,
+   "failed_checks": 0,
+   "sql_statements_per_request": 1.0,
+   "peak_memory_mb": 80.3
+  },
+  "favorite_toggle": {
+   "requests": 33324,
+   "rps": 2220.6,
+   "p50_ms": 6.87,
+   "p95_ms": 10.57,
+   "p99_ms": 14.86,
+   "failed_checks": 0,
+   "sql_statements_per_request": 7.0,
+   "peak_memory_mb": 84.1
+  },
+  "create_article": {
+   "requests": 42497,
+   "rps": 2832.7,
+   "p50_ms": 5.05,
+   "p95_ms": 8.44,
+   "p99_ms": 11.47,
+   "failed_checks": 0,
+   "sql_statements_per_request": 6.0,
+   "peak_memory_mb": 90.1
+  }
+ },
+ "finished_at": "2026-09-27T04:23:59Z"
+}

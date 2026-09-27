@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      retries: 30
+
+  app:
+    image: elixir:1.18.4-otp-27
+    user: "${HOST_UID}:${HOST_GID}"
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "4102:4102"
+    environment:
+      HOME: /app/.cache
+      MIX_HOME: /app/.mix
+      HEX_HOME: /app/.hex
+      ERL_FLAGS: +S 4
+      DB_HOST: db
+      PORT: "4102"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: mix phx.server
