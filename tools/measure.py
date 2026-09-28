@@ -1,13 +1,13 @@
 """Measure an implementation's code in LLM tokens (o200k) and lines.
 
 Usage:
-  python3 tools/measure.py STACK                 every step of stacks/STACK
-  python3 tools/measure.py STACK STEP            one step, e.g. rails 2-add-drafts
+  python3 tools/measure.py STACK          the stack's reference app, stacks/STACK/reference/
+  python3 tools/measure.py STACK DIR      any app directory for that stack
 
 Two views of the same code:
 - whole app: every non-blank line (comments included) of the application source, which is what an agent reads;
-- owned code: non-blank, non-comment lines added or changed relative to a baseline, the untouched generator
-  output in stacks/STACK/scaffold/ by default, or the previous step to measure what one step cost.
+- owned code: non-blank, non-comment lines added or changed relative to the untouched framework scaffold in
+  stacks/STACK/scaffold/.
 
 Excluded everywhere: tests, lockfiles, dependencies and build output, generated schema, Markdown, the check
 harness (bin/check, compose files, Dockerfiles), and tool dotfiles. The per-stack rules live in stack.json.
@@ -35,11 +35,6 @@ def load_stack(name):
     stack = json.loads((ROOT / "stacks" / name / "stack.json").read_text())
     stack["dir"] = ROOT / "stacks" / name
     return stack
-
-
-def steps(stack):
-    return sorted((p.name for p in stack["dir"].iterdir() if p.is_dir() and re.match(r"\d+-", p.name)),
-                  key=lambda name: int(name.split("-")[0]))
 
 
 def comment_prefix(stack, rel):
@@ -82,10 +77,12 @@ def code_lines(text, prefix, doc_attributes=()):
 def source_files(stack, base):
     code = stack["code"]
     skip_dirs = SKIP_DIRS | set(code.get("skip_dirs", []))
+    skip_paths = set(code.get("skip_paths", []))
     skip_files = SKIP_FILES | set(code.get("skip_files", []))
     generated = set(code.get("generated", []))
     for dirpath, dirnames, filenames in os.walk(base):
-        dirnames[:] = [d for d in dirnames if d not in skip_dirs]
+        dirnames[:] = [d for d in dirnames if d not in skip_dirs
+                       and os.path.relpath(os.path.join(dirpath, d), base) not in skip_paths]
         for name in filenames:
             rel = os.path.relpath(os.path.join(dirpath, name), base)
             if name in skip_files or name.endswith(".md") or rel in generated or HARNESS.search(rel):
@@ -125,25 +122,12 @@ def measure(stack, code_dir, baseline_dir=None):
     return totals
 
 
-def measure_stack(name):
-    """Every step of one stack: its size, and what it added or changed relative to the step before."""
-    stack = load_stack(name)
-    results, previous = {}, None
-    for step in steps(stack):
-        size = measure(stack, stack["dir"] / step)
-        change = measure(stack, stack["dir"] / step, previous) if previous else None
-        results[step] = {"tokens": size["tokens"], "lines": size["lines"], "code_lines": size["code_lines"],
-                         "owned_tokens": size["owned_tokens"],
-                         "step_tokens": change["owned_tokens"] if change else size["owned_tokens"],
-                         "step_files": (f"{change['files_created']} created, {change['files_changed']} changed" if change
-                                        else f"{size['files_created']} created, {size['files_changed']} changed")}
-        previous = stack["dir"] / step
-    return results
-
-
 if __name__ == "__main__":
-    name, only = sys.argv[1], (sys.argv[2] if len(sys.argv) > 2 else None)
-    for step, r in measure_stack(name).items():
-        if only in (None, step):
-            print(f"{name} {step}: whole app {r['tokens']:,} tokens, {r['code_lines']:,} lines of code; "
-                  f"owned {r['owned_tokens']:,} tokens; this step added or changed {r['step_tokens']:,} tokens ({r['step_files']})")
+    if len(sys.argv) not in (2, 3):
+        raise SystemExit(__doc__)
+    stack = load_stack(sys.argv[1])
+    code_dir = Path(sys.argv[2]) if len(sys.argv) == 3 else stack["dir"] / "reference"
+    r = measure(stack, code_dir)
+    print(f"{sys.argv[1]} {code_dir}: whole app {r['tokens']:,} tokens, {r['code_lines']:,} lines of code; "
+          f"owned {r['owned_tokens']:,} tokens, {r['owned_lines']:,} lines "
+          f"({r['files_created']} files created, {r['files_changed']} changed)")
