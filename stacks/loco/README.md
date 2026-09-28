@@ -1,18 +1,28 @@
-# Loco (Rust)
+# Loco
 
 Loco 1.2 (JSON API) with SeaORM 2, Axum and PostgreSQL.
 
-Built and evolved by Codex CLI 0.157.1, model `gpt-6-sol` at `xhigh` reasoning. [`ENVIRONMENT.md`](ENVIRONMENT.md) is everything the agent was told about the stack; [`scaffold/`](scaffold/) is the untouched generator output.
+- `scaffold/` is the untouched, product-free generator output every Loco run starts from.
+- `reference/` is the current reference app: run `2026-09-27-loco-density-1` in the [ledger](../../results/runs.jsonl), built from the baseline prompt. The rule that picks it is in [results/README.md](../../results/README.md).
+- `stack.json` holds the port, the agent settings and the measurement rules.
 
-| Step | Code | Size (tokens) | Added or changed (tokens) | Agent tokens | Time | Report | Transcript |
-| --- | --- | ---: | ---: | ---: | ---: | --- | --- |
-| 1. Build | [`1-build/`](1-build/) | 8,804 | 8,142 | 228,773 | 20.2 min | [report](reports/1-build.md) | [transcript](transcripts/1-build.md) |
-| 2. Add drafts | [`2-add-drafts/`](2-add-drafts/) | 10,202 | 1,689 | 96,555 | 15.8 min | [report](reports/2-add-drafts.md) | [transcript](transcripts/2-add-drafts.md) |
-| 3. Package | [`3-package/`](3-package/) | 10,194 | 46 | 75,165 | 7.3 min | [report](reports/3-package.md) | [transcript](transcripts/3-package.md) |
-| 4. Tune | [`4-tune/`](4-tune/) | 11,112 | 1,318 | 105,128 | 18.7 min | [report](reports/4-tune.md) | [transcript](transcripts/4-tune.md) |
-| 5. Harden | [`5-harden/`](5-harden/) | 11,339 | 225 | 94,115 | 7.7 min | [report](reports/5-harden.md) | [transcript](transcripts/5-harden.md) |
-| 6. Polish | [`6-polish/`](6-polish/) | 11,373 | 655 | 129,109 | 8.9 min | [report](reports/6-polish.md) | [transcript](transcripts/6-polish.md) |
-| 7. Add a background job | [`7-add-background-job/`](7-add-background-job/) | 12,884 | 1,566 | 123,307 | 9.6 min | [report](reports/7-add-background-job.md) | [transcript](transcripts/7-add-background-job.md) |
-| 8. Live shared editing | [`8-live-editing/`](8-live-editing/) | 16,653 | 3,823 | 180,266 | 26.7 min | [report](reports/8-live-editing.md) | [transcript](transcripts/8-live-editing.md) |
+| Reference run | |
+| --- | ---: |
+| Code the agent wrote | 11,437 tokens, 1,240 lines |
+| Whole backend | 21,503 tokens |
+| Agent time | 19.7 min |
+| Agent tokens, uncached input plus output | 243,185 |
+| Development gate | pass after 2 attempts |
+| Production gate | pass |
+| Single article | 7,470 req/s |
+| Article list | 607 req/s at 21 SQL statements per request |
+| Framework use | partial |
 
-Comprehension runs (read-only): [after-1-build](transcripts/comprehension-after-1-build.md), [after-6-polish](transcripts/comprehension-after-6-polish.md).
+Loco runs startup, routes, migrations and the worker; persistence is bound SQL with untyped JSON rather than SeaORM entities.
+
+The agent's own map of where each product rule lives is [reference/conduit/AGENTS.md](reference/conduit/AGENTS.md).
+
+```bash
+.venv/bin/python tools/measure.py loco        # re-measure the reference app
+tools/one_shot_demo.sh loco                  # run it with the shared editor
+```

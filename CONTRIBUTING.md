@@ -1,84 +1,43 @@
 # Contributing to AgentMVC
 
-AgentMVC compares what AI agents produce in each stack. The most valuable contribution is a new stack, built by an agent through the same steps. Reruns and reviews help too.
+AgentMVC tests how a prompt, a stack and a model together shape the app an agent builds. The most useful contributions are better prompts and stack briefs, fixes that make a stack's package fairer, and new stacks. Runs with other models help too.
 
-## The one rule
+## Rules that keep results comparable
 
-**Agents write the code, never people.** Your code in `stacks/<name>/` must be exactly what the agent left after each step. If a step fails, rerun the whole step; don't fix its output by hand. If the harness was at fault, say so in the PR, fix the harness, and rerun.
+- **Agents write the code, never people.** A reference app is exactly what an agent left. If a run fails, record the failure and run again; don't repair the output by hand. If the harness was at fault, fix the harness, say so, and rerun.
+- **Leave the frozen inputs alone, or version them.** `spec/`, `one-shot/`, `stacks/*/scaffold/`, `tools/security/hurl/`, the host checks and the core run tools are hashed into `one-shot/fixture-manifest.json`. If you change any of them, run `python3 tools/one_shot.py freeze`, say so in your pull request, and treat later runs as a new fixture. IHP adds `ihp-candidate/` and its tools, frozen with `python3 tools/ihp_candidate.py freeze`.
+- **Several runs, not one.** Runs from one prompt vary a lot. Submit at least three runs per stack for a prompt or brief, and report every one, failures included.
+- **One model per comparison.** Compare prompts on the same model and reasoning setting. Runs with another model are welcome as their own rows.
+- **Instructions, not solutions.** A prompt or brief can teach framework conventions, point at APIs and warn about pitfalls. It can't contain application code for this product.
+- **No agent sessions in Git.** Transcripts, agent reports, gate logs and raw benchmark data stay out of the repository. The publish tools scrub transcripts; archive the run folder, for example as a GitHub release asset, and record the archive name and checksum in the run's ledger row.
 
-Keep the spec, the prompts and the checks as they are. The spec lives in `spec/`, the prompts in `steps/`, and the checks in `tools/security/hurl/`. Changing them breaks the comparison for every other stack.
+## Submit a stack brief or a prompt
+
+A **stack brief** is framework know-how appended to the baseline prompt for one stack. Put it in `stacks/<stack>/briefs/<name>.md`; [the expert IHP brief](stacks/ihp/briefs/expert.md) shows the level of detail that helped. Today only IHP has a launcher that appends a brief, `tools/ihp_guided.py`. For another stack, open an issue so the launcher can be generalized first.
+
+A **new baseline prompt** replaces `one-shot/PROMPT.md` for every stack, which starts a new fixture. Open an issue first with the prompt and what you expect it to change.
+
+Either way, the pull request should include:
+
+1. The brief or prompt.
+2. One ledger row per run, added with `tools/ledger.py add`.
+3. An archive link for each run's transcript and logs.
+4. A new reference app from `tools/reference.py`, if a run beats the current one under the rule in [results/README.md](results/README.md).
+
+## Improve a stack package
+
+A stack package is `stacks/<stack>/stack.json`, `stacks/<stack>/scaffold/`, `one-shot/environment/<stack>.md` and the build settings the harness uses. Fixes that make a stack's toolchain or production build more representative are welcome: an optimized production build, a faster development loop, a measured worker count. They change the frozen inputs, so re-freeze and rerun the stack before comparing it with older rows.
 
 ## Add a stack
 
-You'll need Docker, Python 3.9+, and your stack's toolchain. Then:
-
-1. **Describe the stack.**
-   - Copy `stacks/rails/stack.json` to `stacks/<name>/stack.json`, and fill it in:
-     - `name`, `language`, `description`, `color`;
-     - `port`, a free port such as 4104;
-     - `agent`, the tool, model and reasoning level you'll use;
-     - `code`: the source extensions and the comment prefix of each, plus any lockfiles, generated files and formatter configs to skip;
-     - `security`: the lockfile, and a static analyzer if your stack has a mainstream one;
-     - `setup`: an optional command that installs dependencies before `bin/check` runs.
-   - Write `stacks/<name>/ENVIRONMENT.md` from an existing one. List the toolchain and versions, the generator command, the formatter and linter commands, the port, and what the sandbox allows. The prompts deliberately say nothing about any stack, so this file is the only stack-specific text the agent sees. Keep it to facts.
-   - A stack's security analyzer needs a small branch in `tools/security/scan.py`, and only if `brakeman` or `sobelow` doesn't fit.
-
-2. **Run the steps in order:**
-   ```bash
-   python3 tools/run-step.py <name> 1-build
-   tools/check.sh <name> 1-build
-   python3 tools/run-step.py <name> 2-add-drafts
-   tools/check.sh <name> 2-add-drafts
-   python3 tools/run-step.py <name> 3-package
-   tools/check.sh <name> 3-package
-   tools/bench/run.sh <name> 3-package           # its results are step 4's input
-   python3 tools/run-step.py <name> 4-tune
-   tools/check.sh <name> 4-tune
-   tools/security/scan.sh <name> 4-tune          # its results are step 5's input
-   python3 tools/run-step.py <name> 5-harden
-   tools/check.sh <name> 5-harden
-   tools/security/scan.sh <name> 5-harden
-   python3 tools/run-step.py <name> 6-polish
-   tools/check.sh <name> 6-polish
-   python3 tools/run-step.py <name> 7-add-background-job
-   tools/check.sh <name> 7-add-background-job
-   python3 tools/live_fixture.py verify            # confirm the frozen step-8 inputs
-   python3 tools/run-step.py <name> 8-live-editing
-   tools/check.sh <name> 8-live-editing
-   ```
-   - `run-step.py` builds the agent's working directory and runs the agent: Codex by default, or any other via `AGENT_CMD`. It then copies back only what the agent wrote, the agent's final report, the scrubbed transcript, and a record in `runs.json`.
-   - Record each `tools/check.sh` result in the step's `verified` field in `runs.json`.
-
-3. **Read your transcripts before you publish them.**
-   - `tools/scrub.py` replaces your home directory, username, hostname and common secret shapes. It also removes unrelated lines from Docker listings, and it refuses to write a file that still contains any of them.
-   - It can't know everything private on your machine. Pass `--deny '<regex>'` to `run-step.py` for anything else, such as project names, hosts or accounts, and read the `.md` transcripts yourself.
-
-4. **Measure and report.**
-   - Run `python3 tools/report.py`. It measures every stack, redraws the charts, and updates the table in `README.md` and your stack's `README.md`.
-   - If you ran benchmarks, say so in the PR. Speed is only comparable within one machine and one session, so benchmark Rails again next to your stack with `tools/bench/run.sh rails 4-tune`, and include both results.
-
-5. **Open a pull request** with `stacks/<name>/`, any `results/` files you produced, and the regenerated `README.md` and charts.
-   - Steps 1 and 2 are enough to join the table; all eight complete the picture.
-   - In the PR description, say which agent and model you used, and anything that went wrong.
+1. Copy `stacks/rails/stack.json` to `stacks/<name>/stack.json`. Fill in the port, the agent settings, and the measurement rules: source extensions with their comment prefixes, plus lockfiles, generated files and formatter configs to skip.
+2. Put the untouched, product-free generator output in `stacks/<name>/scaffold/`.
+3. Write `one-shot/environment/<name>.md`: the toolchain and versions, the port, the formatter and linter commands, and how to run commands in the sandbox. It is the only stack-specific text the agent sees, so keep it to facts.
+4. Add the stack to `STACKS` in `tools/one_shot.py` and teach the broker its toolchain if it needs a container, as Phoenix does. A stack with its own toolchain rules can get its own track instead, the way IHP has `ihp-candidate/`. Either way, re-freeze.
+5. Run it several times, add the ledger rows, and add the reference app.
 
 ## Other ways to help
 
-- **Another model.**
-  - Rerun an existing stack with a different agent or model, in a copy named, for example, `stacks/rails-claude/`.
-  - Results from a different model stay separate from the headline comparison, which uses one model for every stack.
-  - A second model across all three stacks is the most useful check this project could get.
-- **A second reviewer.**
-  - Grade the answers in `comprehension/answers/` against the questions without looking at the keys, and open an issue with your grades.
-  - Or review whether a stack's code is idiomatic, and file what a practitioner of that stack would change.
-- **A new step or lens:**
-  - real-time updates;
-  - a data migration;
-  - an API version change;
-  - a dependency upgrade.
-
-  Open an issue with the prompt and how you would check it. A new step has to run on every stack.
-- **Tools.** Better measurement, cleaner charts, CI that runs `tools/report.py` on pull requests.
-
-## Style
-
-Keep documents short, neutral and specific. Report what happened, including what went wrong. The [research log](docs/research-log.md) is the model.
+- **Another model.** Rerun all four stacks on the baseline prompt with another model. It is the most useful check this project could get.
+- **A second reviewer.** Each ledger row carries a framework-use verdict from one reviewer. Review a reference app the way a practitioner of that stack would, and open an issue with what you'd change.
+- **Handoff experiments.** The [roadmap](docs/roadmap.md) describes fresh agents changing an existing app. That is where typed stacks should show their value, and the tooling doesn't exist yet.

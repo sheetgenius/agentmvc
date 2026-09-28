@@ -1,35 +1,27 @@
-# Proposed one-shot comparison
+# One-shot contract
 
-The eight-step study is the exploratory record. The next comparison asks a simpler question: **given the complete product contract at once, what backend does one agent build in each stack?** It is a new experiment alongside the step history, with no step-7 starting point and no claim about incremental growth.
-
-The shared inputs and prepared browser harness are implemented in [`one-shot/`](../one-shot/README.md). Agent runs and one-shot measurements have not started.
+**Given the complete product contract at once, what backend does one agent build in each stack?** The shared inputs and the prepared browser harness live in [`one-shot/`](../one-shot/README.md).
 
 ## Identical product input
 
-Each Rails, Phoenix, and Loco agent starts with a fresh, pinned framework scaffold containing no Conduit product code. From the start, it can read the complete [`spec/`](../spec/) suite: RealWorld, drafts, exports, live editing, HTTP/WebSocket checks, and browser acceptance tests, plus the existing [security checks](../tools/security/hurl/). It also receives the same frozen Lit editor, prepared as a versioned copy of the [exploratory client](../frontend/), which exercises shared editing. The other APIs are exercised by the spec suite; the editor stays small. The only stack-specific text is a short `ENVIRONMENT.md` describing the pinned toolchain and idiomatic commands.
+Each agent starts with a fresh, pinned framework scaffold containing no Conduit product code. It can read the complete [`spec/`](../spec/) suite from the start: RealWorld, drafts, exports, live editing, HTTP and WebSocket checks, and browser acceptance tests, plus the [security checks](../tools/security/hurl/). It also receives the same frozen Lit editor, a versioned copy of the [original client](../frontend/). The only stack-specific text is a short `ENVIRONMENT.md` describing the pinned toolchain and idiomatic commands.
 
-The editor, tests, one shared prompt, scaffold revisions, and browser-runner image digest are frozen and hashed before any agent launches. Agents may read them but may not change them or see another stack's implementation. Every agent gets one measured coding session and may iterate inside it until the checks pass or a stated budget is reached.
+The editor, tests, prompt, scaffolds and browser image digest are frozen and hashed before any agent launches. Agents may read them but may not change them or see another stack's implementation. Every agent gets one measured coding session and may iterate inside it until the checks pass or its budget runs out.
 
 ## Backend contract
 
-Build the complete JSON API and WebSocket endpoint in that stack's idioms. Run as one production application container with PostgreSQL and the existing `DATABASE_URL`, `SECRET_KEY_BASE`, and `PORT` contract. The shared editor is served by the harness. It has no stack-specific branch and contributes no source tokens to any backend.
+Build the complete JSON API and WebSocket endpoint in the stack's idioms. Run as one production container with PostgreSQL, configured only by `DATABASE_URL`, `SECRET_KEY_BASE` and `PORT`. The harness serves the shared editor, which has no stack-specific code and adds nothing to any backend's size.
 
-The prompt should ask for the smallest **clear, idiomatic, maintainable application source** that satisfies the product rules. Factor repeated rules, use framework conventions, and keep security and concurrency behavior explicit. Token efficiency is a goal, but code golf, generated hand-written substitutes, and moving product rules into uncounted test or harness files are outside the contract.
+The baseline prompt asks agents to imagine the backend inside an agent-maintained codebase of more than three million lines, and to maximize **usable semantic domain density**: domain behavior and invariants per line and token, with little context needed to find and change a rule. The assigned framework must run the production application. Code golf, hand-written substitutes for generated code, and moving product rules into uncounted test or harness files are outside the contract.
 
 ## Harness-owned verification
 
-The harness prepares the toolchains, package caches, PostgreSQL image, and one pinned browser image before timing starts. It preflights the browser runner from the same sandbox and network topology the agents will use, against a known-good backend. The runner has the exact locked npm package and browser versions, and writes test results to disposable scratch space. No agent installs Chromium or invents a Playwright container wrapper.
+The harness prepares toolchains, package caches, the PostgreSQL image and one pinned browser image before timing starts. It preflights the browser runner against a known-good reference backend from the same sandbox and network setup the agents use. No agent installs a browser or writes its own browser wrapper.
 
-The backend exposes a documented build/start interface. The harness runs the same development and production acceptance gates once each: all Hurl files, socket checks, isolated-context Playwright tests, security checks, and the stack's formatter and linter. It independently repeats the final gates after the agent stops. Agent-written check scripts may help development but are not the authority for the published result.
+The development and production gates run the same checks: every Hurl file, the socket checks, the isolated-context Playwright tests, the security checks, and the stack's formatter and linter. The host reruns both gates after the agent stops. Checks the agent writes may help it develop, but they are not the authority for a result.
 
-## Measurements and publication
+## Measurement
 
-The primary comparison is hand-written backend application source in `o200k_base` tokens, measured against the untouched scaffold. Also report whole backend source, nonblank lines, correctness, agent tokens and wall time, failed checks, and a qualitative code review. Pre-register which generated schema, entities, lockfiles, dependencies, tests, and harness files are excluded; count migrations, application configuration, and product logic wherever they live. Report shared editor and harness source and preparation effort separately.
+The [measurement rules](../one-shot/MEASUREMENT.md) count hand-written backend source in nonblank lines and `o200k_base` tokens against the untouched scaffold, plus the whole backend. Each run also records correctness, agent tokens and wall time, and a review of rule locality, framework use in production, and how the language expresses logic outside the framework. After acceptance, the same HTTP and direct WebSocket workloads run against each production image, with the 100-editor room cap respected.
 
-After acceptance, run the same HTTP and direct WebSocket workloads against each production image, with the 100-per-article cap respected. Publish raw samples and background host load, repeat close in time, and avoid narrow speed rankings when the host drifts. Preserve the original agent outputs, scrubbed transcripts, prompt and fixture hashes, independent gate results, and every encountered failure.
-
-The historical eight-step results and fixture remain unchanged. The one-shot run can test whether the staged history itself affected final code size; it cannot measure the marginal cost of each feature or establish a growth curve.
-
-## Preparation status
-
-The versioned client includes the delayed-save regression test, and the exploratory step-8 fixture is unchanged. The pinned browser runner passed its reference preflight; the shared gates passed against the three existing step-8 backends. The prompt, fixture files, and browser image ID are recorded by [`tools/one_shot.py`](../tools/one_shot.py) when it prepares the workspaces. The agent runs, independent gates, and measurements remain to be done.
+Source size is a proxy with comparable functional scope, not a direct measure of maintainability. Generated schema, entities, lockfiles, dependencies, tests and harness files are excluded by rules fixed before the runs; migrations, application configuration and product logic count wherever they live.

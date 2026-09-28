@@ -1,141 +1,72 @@
 # AgentMVC
 
-**One app, built and evolved by AI agents in every stack, and measured the same way.**
+**If agents write and read most of an application, which language and framework help them build and evolve it best?**
 
-AgentMVC gives an AI coding agent one spec and one prompt, and has it build the same backend in each stack: the [RealWorld](https://github.com/realworld-apps/realworld) "Conduit" API. Each implementation then goes through eight steps:
-1. build it;
-2. add a feature;
-3. package it for production;
-4. make it fast;
-5. harden it;
-6. polish it;
-7. add a feature that runs in a background job;
-8. add live shared editing.
+AgentMVC gives a coding agent one product contract and one prompt, and has it build the same backend in each stack. The product is the [RealWorld](https://github.com/realworld-apps/realworld) "Conduit" API plus drafts, article exports built in a durable background job, and live shared editing over WebSockets. A fixed harness checks every build the same way, and one measurement counts the code, the agent's effort and the running app's speed.
 
-Every step is checked against the same acceptance suite. Every step is measured the same way: code size, the cost of each change, speed, security, and how well a fresh agent can read the result.
+[TodoMVC](https://todomvc.com) let developers compare frameworks by reading the same app. AgentMVC compares stacks by what agents build in them, and lets anyone test whether a better prompt builds a better app.
 
-[TodoMVC](https://todomvc.com) let developers compare frameworks by reading the same app. AgentMVC compares stacks by what agents build in them: how much code the same product takes, and what that code buys.
+## The baseline so far
 
-<!-- stats:start -->
-| | [Rails](stacks/rails/) (Ruby) | [Phoenix](stacks/phoenix/) (Elixir) | [Loco](stacks/loco/) (Rust) |
-| --- | ---: | ---: | ---: |
-| Code an agent reads, after the last step (tokens) | 6,259 | 12,029 (1.92×) | 16,653 (2.66×) |
-| Lines of code, after the last step | 770 | 1,367 (1.78×) | 2,481 (3.22×) |
-| Code to add drafts, step 2 (tokens) | 632 | 1,190 (1.88×) | 1,689 (2.67×) |
-| Code to add a background job, step 7 (tokens) | 526 | 953 (1.81×) | 1,566 (2.98×) |
-| Code to add live editing, step 8 (tokens) | 1,490 | 3,024 (2.03×) | 3,823 (2.57×) |
-| Article list after tuning, median of runs (req/s) | 259 | 4,990 (19×) | 5,403 (21×) |
-| Peak memory under load, after tuning | 128 MB | 177 MB | 104 MB |
-| Docker image | 334 MB | 165 MB | 140 MB |
-| Cold start | 1.2 s | 1.2 s | 0.3 s |
-| Security checks passed, before → after hardening (of 13) | 11 → 13 | 10 → 13 | 11 → 13 |
-| Fresh agent's comprehension score, after steps 1 and 6 (of 12) | 12 · 11.5 | 11.5 · 12 | 11.5 · 11.5 |
-| Agent effort, all steps (tokens, wall-clock) | 824k tokens, 97 min | 853k tokens (1.04×), 99 min (1.02×) | 1,032k tokens (1.25×), 115 min (1.19×) |
-<!-- stats:end -->
+One model built the whole product from the [baseline prompt](one-shot/PROMPT.md) in four stacks: Codex CLI 0.157.1 running `gpt-6-sol` at `xhigh` reasoning. Every build passed all acceptance and security checks. The build with the least code in each stack is kept as that stack's reference app.
 
-Code size is counted in LLM tokens (`o200k`) and lines, over the backend application source an agent would read. The shared [Lit editor](frontend/) is measured separately and excluded from every stack. Ratios are relative to Rails. The article-list speed row is the earlier HTTP benchmark, measured on one machine with each app and its database limited to 2 CPUs and 1 GB under 16 concurrent users. Step-8 socket measurements are in [the live-editing results](results/live-editing/). Per-step detail is in [`stacks/`](stacks/) and [the findings](docs/findings/).
+| Stack | Code the agent wrote | Agent time | Single article | Article list |
+| --- | ---: | ---: | ---: | ---: |
+| [Rails](stacks/rails/), Ruby | 5,454 tokens | 12 min | 517 req/s | 134 req/s |
+| [Phoenix](stacks/phoenix/), Elixir | 8,954 tokens, 1.6× | 14 min | 5,439 req/s | 1,044 req/s |
+| [Loco](stacks/loco/), Rust | 11,437 tokens, 2.1× | 20 min | 7,470 req/s | 607 req/s |
+| [IHP](stacks/ihp/), Haskell | 10,197 tokens, 1.9× | 73 min | 3,976 req/s | 372 req/s |
 
-![Code size of each stack after every step](results/charts/growth.svg)
+Code is the backend source the agent added to an untouched framework scaffold, counted in `o200k` tokens. Speed is the mean of two rounds at 16 virtual users, with each app and its database limited to 2 CPUs and 1 GiB. Rails ran one Puma process and IHP an unoptimized single-core build, so both speed figures understate their stacks. IHP ran three times from the same prompt, and its runs varied widely. The [findings](docs/findings.md) explain what the numbers do and don't show, and every run is in the [run ledger](results/runs.jsonl).
 
-![Each stack's size relative to Rails after every step](results/charts/ratio.svg)
+## What's already worked out
 
-## What the numbers show
+- **A frozen product contract.** The [spec](spec/), a shared [Lit client](one-shot/frontend/), 17 API test files, a WebSocket protocol check, four browser tests and 13 security checks. Every input is hashed, so each run records exactly what it was given.
+- **Isolated agents.** Each agent gets its own workspace and a fresh Codex home with memory off. It never gets the Docker socket. A narrow local broker runs only the named checks and a disposable PostgreSQL for it.
+- **Independent gates.** After the agent stops, the host reruns the development gate and a fresh-database production gate.
+- **One measurement.** Owned and whole-app code size against the untouched scaffold, agent time and tokens, and HTTP and WebSocket load on the production image.
+- **A run ledger and reference apps.** One line per scored run in [results/runs.jsonl](results/runs.jsonl), and the current best app for each stack in `stacks/<stack>/reference/`.
+- **Known pitfalls.** [docs/pitfalls.md](docs/pitfalls.md) lists what went wrong in earlier runs and how to avoid it.
 
-- **The same backend took 1.92× the code in Phoenix and 2.66× in Loco.** After eight steps, its source is 6,259 tokens in Rails, 12,029 in Phoenix, and 16,653 in Loco. [Size →](docs/findings/size.md)
-- **The gap stayed in a narrow band as the app grew.** From step 1 to step 8, Rails grew 78%, Phoenix 94%, and Loco 89%. One live-editing step adds a new kind of complexity; it cannot by itself establish a growth trend. [Size →](docs/findings/size.md)
-- **Live editing was the largest feature change so far.** It added 1,490 tokens in Rails, 3,024 in Phoenix, and 3,823 in Loco. The shared client is excluded from those numbers. [Live-editing analysis →](docs/findings/live-editing.md)
-- **Every step passed in every stack.** Over eight steps, Phoenix took about the same agent tokens and time as Rails; Loco took 1.25× the tokens and 1.19× the time. The step-8 agent runs include browser sandbox setup friction.
-- **Phoenix and Loco were about 20× faster on the same 2 CPUs.**
-  - Every first draft had the same N+1 queries. Once each agent fixed them, Phoenix and Loco served 19× and 21× Rails' article-list throughput.
-  - Rails' fix was the smallest.
-  - Rails ran a single Puma process. Two worker processes gain it about 1.7×. [Speed →](docs/findings/speed.md)
-- **Reading was closer than writing.** Fresh agents scored 11.5–12 out of 12 on questions about every codebase, reading only 1.2–1.75× Rails' input. [Comprehension →](docs/findings/comprehension.md)
-- **Security reached parity by different routes:** Rails' built-in features, Loco's types, and a library in Phoenix. [Security →](docs/findings/security.md)
-- **A free polish pass shrank nothing.** Every agent moved rules to where its stack expects them, and every codebase changed size by less than 1%. [Polish →](docs/findings/polish.md)
+## Run an experiment
 
-## The app and the steps
-
-The app is the RealWorld "Conduit" backend: users, profiles, follows, articles, comments, favorites and tags. It's defined by the [pinned spec](spec/) and its public Hurl acceptance suite of 154 requests, run unmodified. AgentMVC added [drafts](spec/features/drafts/drafts.md), [exports built in a background job](spec/features/exports/exports.md), and [live shared editing](spec/features/live-editing/live-editing.md). The live-editing fixture has 18 HTTP requests, a direct socket check, and three browser tests; it was validated against a separate reference implementation before the backend agents started.
-
-| Step | The agent is asked to | Prompt |
-| --- | --- | --- |
-| 1 | Build the app from the spec, clean, terse and idiomatic | [`1-build`](steps/1-build.md) |
-| 2 | Add drafts, publishing and edit conflicts | [`2-add-drafts`](steps/2-add-drafts.md) |
-| 3 | Package it for production, with a check against the production image | [`3-package`](steps/3-package.md) |
-| 4 | Make it fast, given its benchmark results | [`4-tune`](steps/4-tune.md) |
-| 5 | Harden it, given its security scan | [`5-harden`](steps/5-harden.md) |
-| 6 | Polish it, with free rein, in up to three passes | [`6-polish`](steps/6-polish.md) |
-| 7 | Add article exports, built in a durable background job | [`7-add-background-job`](steps/7-add-background-job.md) |
-| 8 | Add revocable editing links, live updates, presence and a 100-person room cap | [`8-live-editing`](steps/8-live-editing.md) |
-
-Run `tools/demo.sh rails|phoenix|loco` to build one step-8 backend, start PostgreSQL and the shared editor, and print a link to paste into more tabs or browsers. Set `DEMO_ORIGIN` to a reachable origin when sharing across devices.
-
-After steps 1 and 6, a fresh, read-only agent answers [12 questions about the domain](comprehension/questions.md) from the code alone.
-
-## How it's run and measured
-
-- **One agent per stack per step, from a byte-identical prompt.** The only stack-specific text is a short [`ENVIRONMENT.md`](stacks/rails/ENVIRONMENT.md). No agent knows about the other stacks.
-- **Every step is verified** by rerunning the agent's own `bin/check`: the acceptance suite, the formatter and the linter. From step 3, `bin/check-production` runs too, against the production image. The results are recorded in each stack's `runs.json`.
-- **Code size** counts the application source only. Tests, lockfiles, dependencies and generated schema are left out. [`tools/measure.py`](tools/measure.py) reads each stack's rules from its `stack.json`.
-- **Speed** is measured with k6 against each production image, with SQL statements counted per request. Step 8 adds direct WebSocket and HTTP save measurements at 10, 100 and 500 subscribers, with the larger load spread across articles.
-- **Security** is 13 black-box checks, plus OSV-Scanner and the stack's own analyzer where one exists.
-- **Every agent session is published,** with its report and scrubbed transcript, next to the code in [`stacks/`](stacks/).
-
-[The methodology](docs/methodology.md) covers the details. [The research log](docs/research-log.md) records what went wrong along the way, and how it was handled.
-
-## Add a stack
-
-Go, Django, Laravel, Spring, .NET, Gleam: any stack can join. An implementation is built by an agent from the shared prompts, never by hand. That's what makes the numbers comparable.
-
-1. Add `stacks/<name>/stack.json` and `ENVIRONMENT.md`, starting from an existing stack.
-2. Run the steps with [`tools/run-step.py`](tools/run-step.py). It records the session and scrubs the transcript.
-3. Verify each step with [`tools/check.sh`](tools/check.sh), then run [`tools/report.py`](tools/report.py) to update the tables and charts.
-4. Open a pull request. Steps 1 and 2 are enough to join the table; all eight complete the picture.
-
-[CONTRIBUTING.md](CONTRIBUTING.md) has the full checklist. It also covers other ways to help: rerunning a stack with another model, grading the comprehension answers as a second reviewer, or proposing a new step.
-
-## Why this exists
-
-AgentMVC started as R&D at [BitterClip](https://bitterclip.com), a Rails product with about 3 million tokens of application code, more than three times a 1-million-token context window. Its founder, [@ruemic](https://x.com/ruemic), kept hearing that everything should move to Rust because agents would do all the reading and writing. When agents do the reading, what matters is how much of a product fits in their context, so the question became measurable: how much more code does the same product take in another stack, and what does it buy?
-
-## Caveats
-
-- **One model, and one run per stack per step.** Small differences are noise; the size of a gap is more reliable than its exact value.
-- **This is still a small product.** Step 8 adds one real-time feature on a single backend instance; it does not test multi-instance coordination or media processing.
-- **Speed numbers come from one shared workstation.** Identical images varied by up to 1.5× between runs, so the table uses the median of several runs.
-- **One reviewer wrote the feature specs, security checks and answer keys.** Hypotheses were recorded before the earlier benchmark, scan, and reading steps; every answer key was written before grading. Step 8 froze its protocol and measurement plan before implementation.
-
-The full list is in [docs/caveats.md](docs/caveats.md).
-
-## Reproduce
+You need Docker, Python 3, Node, the Codex CLI and each stack's toolchain. [docs/running.md](docs/running.md) walks through a run from start to finish. The core of a Rails run looks like this:
 
 ```bash
-pip install -r tools/requirements.txt
-python3 tools/measure.py rails                   # code size at every step
-python3 tools/report.py                          # rebuild results/, the charts and the table above
-tools/check.sh rails 8-live-editing               # rerun a step's checks (needs Docker and the stack's toolchain)
-tools/demo.sh rails                               # print a live editing link; Ctrl-C stops the demo
-python3 tools/live-bench.py                       # repeat direct socket load measurements
-tools/bench/run.sh rails 4-tune                  # benchmark a step's production image
-tools/security/scan.sh rails 5-harden            # scan it
+python3 -m venv .venv && .venv/bin/pip install -r tools/requirements.txt
+(cd frontend && npm ci)
+export ONE_SHOT_RUN=my-first-run
+python3 tools/one_shot.py prepare rails          # frozen inputs, scaffold and browser preflight
+python3 tools/one_shot_setup.py rails            # fresh Codex home and broker token
+python3 tools/one_shot_broker.py .work/$ONE_SHOT_RUN-control/tokens.json &
+python3 tools/one_shot_agent.py rails            # one measured agent session
+python3 tools/one_shot_independent.py rails production
 ```
 
-For a fresh full-product build, [`tools/one_shot.py`](tools/one_shot.py) prepares one self-contained workspace per stack with the shared prompt, spec, Lit client, browser harness, and measurement rules. See the [one-shot setup](one-shot/README.md). No one-shot backend runs have started.
+## Contribute
+
+The most useful contributions are prompts and stack briefs. A stack brief is framework know-how appended to the baseline prompt for one stack, written by someone who knows that stack well. The [expert IHP brief](stacks/ihp/briefs/expert.md) is the first one. It gave IHP typed routes, a separate policy module and database-bound article lists, at the cost of more code and agent time. [CONTRIBUTING.md](CONTRIBUTING.md) explains how to submit a prompt, a brief, a stack fix or a new stack.
 
 ## Repository map
 
 ```
-spec/                 the app: RealWorld's API spec and Hurl suite (MIT), plus the three added features
-frontend/             the frozen shared Lit editor and browser tests, excluded from backend code size
-one-shot/             the separate full-product prompt, client, fixed harness and fixture manifest
-steps/                the eight prompts and the comprehension prompt, identical for every stack
-stacks/<stack>/       stack.json, ENVIRONMENT.md, scaffold/ (generator output), the code after each step,
-                      reports/, transcripts/ and runs.json
-comprehension/        questions, answer keys, grades and every answer
-results/              sizes, benchmarks, security scans and charts
-docs/                 methodology, findings, caveats and the research log
-tools/                run a step, check it, measure, benchmark, scan, scrub a transcript, rebuild the report
+spec/              the product contract: RealWorld API spec, Hurl suite and the three added features
+one-shot/          the frozen experiment inputs: prompt, measurement rules, per-stack environments,
+                   the shared Lit client and the agent-facing check harness
+stacks/<stack>/    stack.json with measurement rules, the untouched scaffold/, and the reference/ app
+ihp-candidate/     IHP's extra frozen inputs: environment and Nix toolchain wrapper
+tools/             prepare, isolate, run, check, publish, measure and benchmark; see tools/README.md
+results/           the run ledger; run output stays local or goes to an archive
+docs/              how to run, pitfalls, findings, the contract and the roadmap
+frontend/          Node dependencies for the reference server, the demo and the socket load tools
 ```
+
+## Caveats
+
+- **One model so far.** The results show what this model writes well in each stack, including how familiar each framework is to it.
+- **Few runs.** Rails, Phoenix and Loco ran once on the baseline prompt. Treat gaps under about 2× in effort or speed as noise.
+- **A small product.** The backend is 10,000 to 22,000 tokens. That is far too small to show how ratios behave in a codebase a hundred times larger.
+- **Later changes are not measured yet.** The claim typed stacks make, safer changes by later agents, needs the handoff experiments in the [roadmap](docs/roadmap.md).
 
 ## License
 
