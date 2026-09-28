@@ -1,0 +1,28 @@
+logger:
+  enable: true
+  level: info
+  format: json
+server:
+  port: <%= get_env(name="PORT", default="4103") %>
+  binding: 0.0.0.0
+  host: http://localhost
+  middlewares:
+    cors:
+      enable: true
+workers:
+  mode: BackgroundQueue
+queue:
+  kind: Postgres
+  uri: <%= get_env(name="DATABASE_URL") %>
+database:
+  uri: <%= get_env(name="DATABASE_URL") %>
+  enable_logging: false
+  min_connections: 1
+  auto_migrate: true
+  max_connections: 20
+  connect_timeout: 500
+  idle_timeout: 500
+auth:
+  jwt:
+    secret: <%= get_env(name="SECRET_KEY_BASE") %>
+    expiration: 604800

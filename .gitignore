@@ -2,7 +2,13 @@
 .venv/
 __pycache__/
 .DS_Store
+.env
+.env.*
+!.env.example
 frontend/node_modules/
 frontend/dist/
 frontend/test-results/
 frontend/playwright-report/
+# Run output (transcripts, logs, raw benchmark streams) stays local or goes to a release archive.
+# Only results/README.md and the run ledger, results/runs.jsonl, are committed.
+results/*/
