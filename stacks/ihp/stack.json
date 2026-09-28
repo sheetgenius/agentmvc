@@ -1,0 +1,53 @@
+{
+  "name": "IHP + LiquidHaskell",
+  "order": 4,
+  "language": "Haskell",
+  "description": "IHP 1.6.0 on GHC 9.10.3 with LiquidHaskell 0.9.10.1.2, Z3 4.16.0 and PostgreSQL",
+  "color": "#6b548c",
+  "port": 4104,
+  "agent": {
+    "tool": "Codex CLI 0.157.1",
+    "model": "gpt-6-sol",
+    "reasoning": "xhigh"
+  },
+  "code": {
+    "extensions": {
+      ".hs": "--",
+      ".sql": "--",
+      ".nix": "#"
+    },
+    "files": {
+      "App.cabal": "--"
+    },
+    "skip_files": [
+      "flake.lock",
+      "Dockerfile",
+      "default.nix",
+      "hie.yaml",
+      ".stylish-haskell.yaml",
+      "Setup.hs",
+      "Makefile"
+    ],
+    "generated": [
+      "build/Generated"
+    ],
+    "skip_dirs": [
+      "build",
+      "security",
+      "harness",
+      ".devenv",
+      ".cache",
+      ".tmp",
+      "Test",
+      ".github"
+    ],
+    "skip_paths": [
+      "Config/nix"
+    ]
+  },
+  "security": {
+    "lockfile": "flake.lock",
+    "analyzer": null
+  },
+  "setup": "harness/ihp.sh build"
+}

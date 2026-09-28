@@ -10,6 +10,7 @@ Usage:
 import hashlib
 import json
 import os
+import re
 import shutil
 import socket
 import subprocess
@@ -23,6 +24,17 @@ SOURCE = ROOT / "one-shot"
 MANIFEST = SOURCE / "fixture-manifest.json"
 IMAGE = "agentmvc-one-shot-browser:1.63.0"
 STACKS = ("rails", "phoenix", "loco")
+RUN_NAME = os.environ.get("ONE_SHOT_RUN", "one-shot")
+if not re.fullmatch(r"[a-z][a-z0-9-]*", RUN_NAME):
+    raise SystemExit("ONE_SHOT_RUN must be a simple lowercase name")
+WORK = ROOT / ".work" / RUN_NAME
+HOMES = ROOT / ".work" / f"{RUN_NAME}-homes"
+LOGS = ROOT / ".work" / f"{RUN_NAME}-agent-logs"
+CONTROL = ROOT / ".work" / f"{RUN_NAME}-control"
+BROKER_LOG = ROOT / ".work" / f"{RUN_NAME}-broker"
+INDEPENDENT = ROOT / ".work" / f"{RUN_NAME}-independent"
+RUNTIME = ROOT / ".work" / f"{RUN_NAME}-runtime"
+RESULTS = ROOT / "results" / RUN_NAME
 OMIT = {
     "spec/bin/run-hurl",
     "spec/features/live-editing/bin/check",
@@ -37,9 +49,10 @@ def digest(path):
 
 def fixture_sources():
     paths = [SOURCE / "PROMPT.md", SOURCE / "README.md", SOURCE / "MEASUREMENT.md",
-             ROOT / "tools/one_shot.py", ROOT / "tools/reference-live/server.mjs"]
+             ROOT / "tools/one_shot.py", ROOT / "tools/one_shot_broker.py",
+             ROOT / "tools/reference-live/server.mjs"]
     for folder in (SOURCE / "frontend", SOURCE / "harness", SOURCE / "environment",
-                   ROOT / "spec", ROOT / "tools/security/hurl",
+                   ROOT / "spec", ROOT / "tools/security/hurl", ROOT / "tools/one_shot_host",
                    *(ROOT / "stacks" / stack / "scaffold" for stack in STACKS)):
         paths.extend(path for path in folder.rglob("*") if path.is_file()
                      and not GENERATED.intersection(path.relative_to(folder).parts)
@@ -102,7 +115,8 @@ def preflight():
                         time.sleep(0.1)
                 else:
                     raise RuntimeError(f"reference server did not listen on port {port}")
-                subprocess.run([str(work / "harness/check-live.sh"), str(port)], check=True)
+                subprocess.run([str(ROOT / "tools/one_shot_host/check-live.sh"), str(port)],
+                               env={**os.environ, "ONE_SHOT_WORKDIR": str(work)}, check=True)
             finally:
                 server.terminate()
                 server.wait(timeout=10)
@@ -117,7 +131,7 @@ def readonly(path):
 
 
 def materialize(stack, fixture, browser):
-    target = ROOT / ".work/one-shot" / stack
+    target = WORK / stack
     if target.exists():
         raise SystemExit(f"workspace already exists: {target}; move it aside before preparing again")
     scaffold = ROOT / "stacks" / stack / "scaffold"
@@ -200,7 +214,7 @@ def main():
         chosen = sys.argv[2:] or STACKS
         if any(stack not in STACKS for stack in chosen):
             raise SystemExit("choose rails, phoenix, or loco")
-        if any((ROOT / ".work/one-shot" / stack).exists() for stack in chosen):
+        if any((WORK / stack).exists() for stack in chosen):
             raise SystemExit("a selected workspace exists; move it aside before preparing again")
         fixture = snapshot()
         if not MANIFEST.exists() or json.loads(MANIFEST.read_text()) != fixture:
