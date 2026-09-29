@@ -49,7 +49,12 @@ Source review also identified two one-shot defects: its login counter has no exp
 
 [Reference-2](../../one-shot-v2-python-expert/pilot-1/reference-2/README.md) now passes independent development and production gates, plus every common, favorites and shared-boundary reviewer probe. It serializes each client's ready, presence, update and revocation sends, reads current membership at presence delivery, and refreshes the joining client too. Deterministic tests reproduced stale counts for delayed joins and overlapping leaves in reference-1; those now pass, alongside ready/update and revocation ordering regressions (16 direct tests total). It contains 9,058 owned backend tokens. Reference-1 and both measured originals are preserved.
 
-The one-shot still holds one global room lock across a database lookup. That can couple unrelated rooms under slow queries; its latency impact is unmeasured. Runtime comparisons remain pending; the short step-4 tuning samples describe an earlier source version.
+The one-shot still holds one global room lock across a database lookup. That can couple unrelated rooms under slow queries; its specific latency impact has not been isolated. Use the [repeated runtime comparison](../README.md#repeated-reference-runtime) for final source measurements; the short step-4 tuning samples describe an earlier source version.
+
+Production packaging also differs. The eight-step image copies only runtime
+dependencies and application files. The one-shot recursively changes ownership
+after copying its virtual environment, creating an additional image layer. Its
+larger image is an implementation choice, not an unavoidable Python footprint.
 
 To try either measured app with the fixed editor, run from the repository root (Docker and Node required):
 

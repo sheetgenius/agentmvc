@@ -22,6 +22,19 @@ Each row selects the latest independently verified reference for that applicatio
 | [Python · eight-step reference 1](python/8-live-editing/reference-1/source) | 8,429 tokens | [21/21 contract · 3/3 quality · favorites 48/48](python/8-live-editing/reference-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](python/8-live-editing/reference-1/reviewer-parity/share-boundary.json) |
 | [Python · one-shot reference 2](../one-shot-v2-python-expert/pilot-1/reference-2/source) | 9,058 tokens | [21/21 contract · 3/3 quality · favorites 48/48](../one-shot-v2-python-expert/pilot-1/reference-2/reviewer-parity/results.json) · [shared 3/3 + 1/1](../one-shot-v2-python-expert/pilot-1/reference-2/reviewer-parity/share-boundary.json) |
 
+### Repeated reference runtime
+
+Two rounds; 16 concurrent users; 3-second warmup and 15-second samples; app and database each limited to 2 CPUs and 1 GiB. The HTTP fixture has 50 users and 500 articles. Ranges show both rounds. Source and image hashes must match the runtime manifest before metrics are shown; all nine HTTP workloads and 10/100/500-subscriber socket results are linked.
+
+| Application | List req/s | Article req/s | SQL / list | Image MB | Cold start seconds | Runtime checks |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| [Go · eight-step reference 1](runtime/reference/go-8-live-editing-reference-1) | 2,798–3,012 | 4,019–4,075 | 5.00 | 16.1 | 0.29–0.30 | pass |
+| [Python · eight-step reference 1](runtime/reference/python-8-live-editing-reference-1) | 525 | 511–513 | 2.00 | 260.6 | 1.50–1.59 | pass |
+| [Go · one-shot reference 1](runtime/reference/go-one-shot-reference-1) | 1,907–1,984 | 5,298–5,454 | 2.00 | 16.6 | 0.31–0.34 | pass |
+| [Python · one-shot reference 2](runtime/reference/python-one-shot-reference-2) | 374–376 | 372–374 | 3.00 | 373.8 | 1.59–1.66 | pass |
+
+[Runtime manifest and all workloads](runtime/reference/summary.json). Each runtime label names the exact reference version measured, which may precede a newer verified reference.
+
 **Python:** Django + Django Ninja, with Django associations, migrations and password services; Channels for raw WebSockets; Procrastinate for PostgreSQL jobs. [Why this stack](../../stacks/python/STACK.md).
 
 **Go:** the sequential implementation uses **chi + Bun** and removed Huma in step 1. The expert one-shot uses Huma for only `/api/tags` and `/health`; most product handlers use chi directly, alongside Bun, Goose and River. These are the observed implementations of the supplied Huma/chi guidance. [Why this toolkit](../../stacks/go/SELECTION.md).
@@ -58,7 +71,7 @@ Each row describes one exact source snapshot. The eight-step effort is the sum o
 
 ### Repeated production runtime
 
-Two rounds; 16 users; 3-second warmup and 15-second samples; app and database each limited to 2 CPUs and 1 GiB. Ranges show both rounds. Source and image hashes must match the runtime manifest before metrics are shown; all nine HTTP workloads and 10/100/500-subscriber socket results are linked.
+Two rounds; 16 concurrent users; 3-second warmup and 15-second samples; app and database each limited to 2 CPUs and 1 GiB. The HTTP fixture has 50 users and 500 articles. Ranges show both rounds. Source and image hashes must match the runtime manifest before metrics are shown; all nine HTTP workloads and 10/100/500-subscriber socket results are linked.
 
 | Application | List req/s | Article req/s | SQL / list | Image MB | Cold start seconds | Runtime checks |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |

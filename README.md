@@ -30,9 +30,22 @@ One agent per stack received the [same frozen prompt](one-shot-v2-expert/PROMPT.
 
 Other recorded paths include [Loco / Rust in the eight-step study](stacks/loco/), [IHP / Haskell](results/one-shot-ihp/README.md), and a [Servant / Haskell pilot](results/one-shot-v2-servant/README.md). Their briefs and measurement sessions differ, so they have their own result pages.
 
-## New Go and Python lanes
+## Go and Python: complete tracks
 
-Go and Python have completed the full eight-step sequence and separate expert one-shots: **18 measured builds, all passing the independent gates required for their phase**. All four final applications passed development and production checks. The [lane comparison](results/lanes/README.md) links every source checkpoint, prompt, code count and reviewer finding. Separately labeled reference repairs address defects found by additional review; repeated production measurements are in progress. These prepared-scaffold runs have their own recorded conditions and preserve the original study below.
+Both completed the original eight-step sequence and separate expert one-shots: **18 measured builds, all passing the independent gates required for their phase**. All four final applications passed development and production checks. Additional review found defects; the separately labeled references below repair them and pass every supplemental probe.
+
+| Reviewed reference | Actual stack | Owned backend | Source |
+| --- | --- | ---: | --- |
+| Go · eight steps | chi, Bun, Goose, River | 14,249 tokens | [Code](results/lanes/go/8-live-editing/reference-1/source/) |
+| Go · one-shot | chi, mostly SQL through Bun, Goose, River | 12,846 tokens | [Code](results/one-shot-v2-go-expert/pilot-1/reference-1/source/) |
+| Python · eight steps | Django, Ninja, Channels, Procrastinate | 8,429 tokens | [Code](results/lanes/python/8-live-editing/reference-1/source/) |
+| Python · one-shot | Same libraries, with a central domain module and custom room registry | 9,058 tokens | [Code](results/one-shot-v2-python-expert/pilot-1/reference-2/source/) |
+
+Python's eight-step reference uses more framework services directly. Its one-shot consolidates author and shared edits into one operation. Go's one-shot is smaller than its sequential counterpart, but uses Huma only for health and tags; these results do not establish what a full typed-Huma implementation could achieve. [Go code guide](results/lanes/go/README.md) · [Python code guide](results/lanes/python/README.md).
+
+The [lane comparison](results/lanes/README.md) includes two repeated production rounds for all four originals and all four reviewed references, every checkpoint, prompt, effort count and reviewer finding. These prepared-scaffold runs have their own recorded conditions; their timing session differs from the three-stack table above. The original study below remains intact.
+
+Try a reviewed app with `tools/lane_demo.sh go one-shot-reference` or `tools/lane_demo.sh python eight-reference` (Docker and Node.js required).
 
 ## Original eight-step study
 

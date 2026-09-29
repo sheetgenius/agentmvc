@@ -110,7 +110,7 @@ def runtime_table(condition, sources, heading):
         return []
     known = {row['session']:row for row in sources}
     lines = ['', f'### {heading}', '',
-             'Two rounds; 16 users; 3-second warmup and 15-second samples; app and database each limited to 2 CPUs and 1 GiB. Ranges show both rounds. Source and image hashes must match the runtime manifest before metrics are shown; all nine HTTP workloads and 10/100/500-subscriber socket results are linked.', '',
+             'Two rounds; 16 concurrent users; 3-second warmup and 15-second samples; app and database each limited to 2 CPUs and 1 GiB. The HTTP fixture has 50 users and 500 articles. Ranges show both rounds. Source and image hashes must match the runtime manifest before metrics are shown; all nine HTTP workloads and 10/100/500-subscriber socket results are linked.', '',
              '| Application | List req/s | Article req/s | SQL / list | Image MB | Cold start seconds | Runtime checks |',
              '| --- | ---: | ---: | ---: | ---: | ---: | --- |']
     for sid, identity in summary.get('applications',{}).items():

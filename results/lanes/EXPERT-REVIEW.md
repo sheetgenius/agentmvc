@@ -4,7 +4,8 @@ Reviewer source inspection: 2026-09-30. Scope: original final sources under
 `stacks/{go,python}/8-live-editing`. Originals and frozen fixtures were not edited.
 No Docker, application HTTP requests, load tests, or measured one-shot workspaces
 were used in this review. Existing live diagnostic outcomes below were supplied
-by the coordinating reviewer; additional findings are explicitly pending probes.
+by the coordinating reviewer. Additional findings below were pending probes at
+the initial review; the closing section records subsequent verification.
 These findings justify small unscored reference changes, not framework rewrites.
 
 ## Existing reproduced failures
@@ -49,7 +50,11 @@ These findings justify small unscored reference changes, not framework rewrites.
 
 Neither reported failure is explained by a confirmed reviewer defect.
 
-## Additional source findings: HTTP reproduction pending
+## Initial additional source findings
+
+The later shared-edit probe reproduced the first two findings on the original
+Go eight-step source; reference-1 corrects them and passes that probe. The
+disjoint-edit concern remains an unprobed hypothesis.
 
 ### Go: shared stale nonpositive integers return 422
 
@@ -182,7 +187,7 @@ use article-scoped room locking and body-free list projections, with concurrency
 tests preserving admission and revision ordering. No load or runtime experiment
 was performed by this reviewer.
 
-### Python one-shot reference-2: pending repair source review
+### Python one-shot reference-2: repair source review
 
 The coordinator expressly authorized reading only the current repair workspace
 for this follow-up. Inspected
