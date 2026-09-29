@@ -1,0 +1,29 @@
+[
+  {
+    "command": "npm run typecheck",
+    "exit": 0,
+    "seconds": 1.5
+  },
+  {
+    "command": "npm run lint",
+    "exit": 0,
+    "seconds": 1.6
+  },
+  {
+    "command": "npm test",
+    "exit": 1,
+    "seconds": 1.0
+  },
+  {
+    "command": "npx prettier --check app config start database bin tests adonisrc.ts",
+    "exit": 0,
+    "seconds": 0.6
+  },
+  {
+    "command": "npm test with required DATABASE_URL and PORT set",
+    "exit": 0,
+    "seconds": 1.2,
+    "tests_passed": 2,
+    "tests_failed": 0
+  }
+]

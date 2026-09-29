@@ -1,0 +1,36 @@
+{
+  "method": "Independent source review of the immutable measured source snapshot, AGENTS.md, and acceptance results",
+  "rule_map": {
+    "accurate_owners": [
+      "Article edits converge in articles.updateArticle and use a database revision compare-and-swap",
+      "Share-key hashing and verification live in shares.ts",
+      "The database migration enforces status, revision, foreign-key, and uniqueness constraints",
+      "Live room admission and the 100-member cap live in live.ts"
+    ],
+    "incomplete_owner_claims": [
+      "AGENTS.md points to articles.ts for draft visibility, but listArticles embeds separate visibility predicates instead of calling the named rule",
+      "The WebSocket attachment is registered in both start/routes.ts and providers/live_provider.ts; attachLive's WeakSet suppresses the duplicate at runtime"
+    ],
+    "missing_rule_owners": [
+      "The eight-character password minimum is repeated in registration and user update"
+    ]
+  },
+  "framework_and_language_use": {
+    "present": [
+      "AdonisJS routes, controllers, Lucid migrations and query builder, hash service, and PostgreSQL queue",
+      "TypeScript status union and explicit ArticleRow interface",
+      "jose JWTs and ws WebSocket protocol extension",
+      "PostgreSQL constraints, set-oriented list queries, and compare-and-swap article writes"
+    ],
+    "opportunities": [
+      "Vine validation and Bouncer are installed but unused; request bodies remain Record<string, unknown> with custom field plumbing",
+      "Lucid model classes and generated schema types are unused for application reads and writes; raw SQL results are asserted as ArticleRow",
+      "Authorization uses current(ctx, required) and non-null assertions instead of a typed caller and separate required/optional entry points",
+      "updateArticle uses an author/share mode flag instead of distinct typed inputs feeding one commit operation",
+      "WebSocket events are inline object literals rather than a discriminated protocol union",
+      "The login limiter is a process-local Map although an Adonis limiter package is installed; live rooms also remain process-local"
+    ]
+  },
+  "comparison_scope": "Same frozen v2 prompt as the Servant pilot, with one run per stack. This run's agent effort is confounded by a broker command that held a global lock; gate and source-size results are independent of that stall.",
+  "changes_to_scored_source_after_agent": 0
+}

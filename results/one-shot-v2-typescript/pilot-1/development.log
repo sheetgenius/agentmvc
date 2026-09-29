@@ -1,0 +1,80 @@
+DATABASE_URL=postgres://agentmvc:agentmvc@127.0.0.1:54106/agentmvc
+
+[ info ] Upgrading migrations version from "1" to "2"
+❯ migrating database/migrations/0000000000000_queue
+[2K[1A[2K[G❯ migrated database/migrations/0000000000000_queue
+❯ migrating database/migrations/0000000000001_conduit
+[2K[1A[2K[G❯ migrated database/migrations/0000000000001_conduit
+
+Migrated in 68 ms
+❯ Scanned "pg" database and found 10 tables
+[2K[1A[2K[G❯ Scanned table article_tags
+[2K[1A[2K[G❯ Scanned table articles
+[2K[1A[2K[G❯ Scanned table comments
+[2K[1A[2K[G❯ Scanned table exports
+[2K[1A[2K[G❯ Scanned table favorites
+[2K[1A[2K[G❯ Scanned table queue_jobs
+[2K[1A[2K[G❯ Scanned table follows
+[2K[1A[2K[G❯ Scanned table users
+[2K[1A[2K[G❯ Scanned table shares
+[2K[1A[2K[G❯ Scanned table queue_schedules
+[2K[1A[2K[G❯ Creating schema classes for scanned tables
+[ success ] Schema classes generated (23 ms)
+
+5d3c16c5f747ff7ecc67909bae9774ba16ec621a1baa7ade49cf16e5ddba2418
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (531ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (375ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (122ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (240ms)
+
+  4 passed (1.6s)
+Success api/hurl/articles.hurl (17 request(s) in 84 ms)
+Success api/hurl/auth.hurl (20 request(s) in 84 ms)
+Success api/hurl/comments.hurl (13 request(s) in 50 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 61 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 114 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 61 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 39 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 27 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 43 ms)
+Success api/hurl/feed.hurl (12 request(s) in 69 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 36 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 55 ms)
+Success api/hurl/tags.hurl (4 request(s) in 29 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 86 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 68 ms)
+Success features/exports/hurl/exports.hurl (19 request(s) in 592 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 64 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 238 (150.3/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          1583 ms (0h:0m:1s:583ms)
+
+Success s01_jwt_alg_none.hurl (1 request(s) in 1 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 29 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 1 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 31 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 30 ms)
+Success s06_injection_filters.hurl (4 request(s) in 7 ms)
+Success s07_malformed_json.hurl (1 request(s) in 0 ms)
+Success s08_wrong_types.hurl (8 request(s) in 33 ms)
+Success s09_oversized_body.hurl (2 request(s) in 30 ms)
+Success s10_unknown_route.hurl (1 request(s) in 0 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 44 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 0 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 436 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (79.6/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          653 ms (0h:0m:0s:653ms)
+
+

@@ -87,6 +87,43 @@ def check_attempts():
     return actions
 
 
+def command_failures(logs):
+    commands = []
+    for line in (logs / "events.jsonl").read_text().splitlines():
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        item = event.get("item") or {}
+        if event.get("type") == "item.completed" and item.get("type") == "command_execution":
+            commands.append(item)
+    data = {"commands": len(commands),
+            "failed_commands": sum(item.get("exit_code") not in (0, None) for item in commands),
+            "exit_codes": {str(code): sum(item.get("exit_code") == code for item in commands)
+                           for code in sorted({item.get("exit_code") for item in commands
+                                               if isinstance(item.get("exit_code"), int)})}}
+    (DEST / "command-failures.json").write_text(json.dumps(data, indent=2) + "\n")
+
+
+def measure_tests(work):
+    totals = {"whole_tokens": 0, "whole_lines": 0, "owned_tokens": 0,
+              "owned_lines": 0, "files": []}
+    for path in sorted((work / "tests").rglob("*")):
+        if not path.is_file() or path.suffix not in (".ts", ".js"):
+            continue
+        rel = path.relative_to(work)
+        old = work / ".scaffold" / rel
+        lines = measure.read_lines(path.read_text(errors="ignore"))
+        previous = measure.read_lines(old.read_text(errors="ignore")) if old.exists() else []
+        added = measure.added(previous, lines)
+        totals["whole_tokens"] += measure.tokens(lines)
+        totals["whole_lines"] += len(lines)
+        totals["owned_tokens"] += measure.tokens(added)
+        totals["owned_lines"] += len(added)
+        totals["files"].append(str(rel))
+    (DEST / "tests.json").write_text(json.dumps(totals, indent=2) + "\n")
+
+
 def main():
     work, logs = typescript_v2.WORK, typescript_v2.LOG
     one_shot.verify(work)
@@ -122,6 +159,8 @@ def main():
     (DEST / "source-files.json").write_text(json.dumps(inventory, indent=2) + "\n")
     (DEST / "docs.json").write_text(json.dumps(measure_docs(work), indent=2) + "\n")
     check_attempts()
+    command_failures(logs)
+    measure_tests(work)
     source_snapshot(work)
     print(json.dumps({"size": size, "source_files": len(inventory)}, indent=2), flush=True)
 

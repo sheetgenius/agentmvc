@@ -20,7 +20,7 @@ The [large-app workshop](docs/semantic-density-workshop.md) extends the question
 
 ## Start here
 
-- **Read the comparison:** start with the [methodology](docs/methodology.md), then the [eight-step findings](docs/README.md). The [one-shot results](results/one-shot/README.md), [fourth-stack IHP study](results/one-shot-ihp/README.md), and [safe-evolution Servant pilot](results/one-shot-v2-servant/README.md) are separate experiments. The [TypeScript track](one-shot-v2-typescript/README.md) uses the same safe-evolution prompt as Servant.
+- **Read the comparison:** start with the [methodology](docs/methodology.md), then the [eight-step findings](docs/README.md). The [one-shot results](results/one-shot/README.md), [fourth-stack IHP study](results/one-shot-ihp/README.md), [safe-evolution Servant pilot](results/one-shot-v2-servant/README.md), and [TypeScript pilot](results/one-shot-v2-typescript/README.md) are separate experiments. The [TypeScript track](one-shot-v2-typescript/README.md) uses the same safe-evolution prompt as Servant.
 - **Try the finished app:** install Docker and Node.js, then run `tools/demo.sh rails` (or `phoenix` or `loco`). It builds the step-8 production image, starts PostgreSQL and the shared Lit editor, and prints a live editing link. Press Ctrl-C to stop it.
 - **Contribute:** [CONTRIBUTING.md](CONTRIBUTING.md) explains how to reproduce a result, review a stack, or add an agent-built implementation. The historical snapshots and frozen inputs are part of the evidence; new experiments live beside them.
 

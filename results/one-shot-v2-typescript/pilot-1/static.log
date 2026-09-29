@@ -1,0 +1,50 @@
+
+COMMAND npm run typecheck
+
+> agentmvc-conduit-typescript@0.0.0 typecheck
+> tsc --noEmit
+
+
+COMMAND npm run lint
+
+> agentmvc-conduit-typescript@0.0.0 lint
+> eslint app config start database bin tests adonisrc.ts --ignore-pattern database/schema.ts
+
+
+COMMAND npm test
+
+> agentmvc-conduit-typescript@0.0.0 test
+> node ace test
+
+c[ info ] loading hooks...
+[ info ] generating indexes...
+[ info ] codegen: created 3 file(s)
+[ info ] booting application to run tests...
+
+[31mℹ EnvValidationException: Validation failed for one or more environment variables[39m
+
+[34m◉[39m [2m[3m- Missing environment variable "DATABASE_URL"[22m[23m
+
+ ⁃ at new EnvValidator [33m(node_modules/@adonisjs/env/build/index.js:127:17)[39m
+ ⁃ at Env.rules [33m(node_modules/@adonisjs/env/build/index.js:221:10)[39m
+ ⁃ at Env.create [33m(node_modules/@adonisjs/env/build/index.js:205:23)[39m
+ ⁃ at async <anonymous> [33m(start/env.ts:3:16)[39m
+
+   [2m1[22m [2m┃[22m  [31mimport[0m { [33mEnv[0m } [31mfrom[0m [32m'@adonisjs/core/env'[0m
+   [2m2[22m [2m┃[22m  
+ [41m❯ 3 ┃  export default await Env.create(new URL('../', import.meta.url), {[49m
+   [2m4[22m [2m┃[22m    NODE_ENV[34m:[0m [33mEnv[0m[34m.[0mschema[34m.[0m[31menum[0m([[32m'development'[0m[34m,[0m [32m'production'[0m[34m,[0m [32m'test'[0m] [31mas[0m [31mconst[0m)[34m,[0m
+   [2m5[22m [2m┃[22m    PORT[34m:[0m [33mEnv[0m[34m.[0mschema[34m.[0m[35mnumber[0m()[34m,[0m
+   [2m6[22m [2m┃[22m    DATABASE_URL[34m:[0m [33mEnv[0m[34m.[0mschema[34m.[0m[35mstring[0m()[34m,[0m
+   [2m7[22m [2m┃[22m    SECRET_KEY_BASE[34m:[0m [33mEnv[0m[34m.[0mschema[34m.[0m[35mstring[0m()[34m,[0m
+   [2m8[22m [2m┃[22m  })
+   [2m9[22m [2m┃[22m  
+
+
+
+COMMAND npx prettier --check app config start database bin tests adonisrc.ts
+Checking formatting...
+All matched files use Prettier code style!
+
+COMMAND npm test with required DATABASE_URL and PORT set
+Tests 2 passed (2)

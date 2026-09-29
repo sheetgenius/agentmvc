@@ -1,0 +1,74 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 396B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:24-bookworm-slim
+#2 DONE 1.9s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 83B done
+#3 DONE 0.0s
+
+#4 [dependencies 1/4] FROM docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 20.69kB done
+#5 DONE 0.0s
+
+#6 [dependencies 2/4] WORKDIR /app
+#6 CACHED
+
+#7 [dependencies 3/4] COPY package.json package-lock.json ./
+#7 CACHED
+
+#8 [dependencies 4/4] RUN npm ci
+#8 CACHED
+
+#9 [build 1/2] COPY . .
+#9 DONE 0.1s
+
+#10 [build 2/2] RUN npm run build
+#10 0.151 
+#10 0.151 > agentmvc-conduit-typescript@0.0.0 build
+#10 0.151 > node ace build
+#10 0.151 
+#10 0.563 [ info ] loading hooks...
+#10 0.564 [ info ] generating indexes...
+#10 0.569 [ info ] codegen: created 3 file(s)
+#10 0.569 [ info ] cleaning up output directory (build)
+#10 0.569 [ info ] compiling typescript source (tsc)
+#10 1.308 [ info ] created ace file (build/ace.js)
+#10 1.308 [ info ] copying meta files to the output directory
+#10 1.308 [ success ] build completed
+#10 1.308 
+#10 1.320 ╭────────────────────────────────────────────────────────────────────────╮
+#10 1.320 │    Run the following commands to start the server in production        │
+#10 1.320 │────────────────────────────────────────────────────────────────────────│
+#10 1.320 │                                                                        │
+#10 1.320 │    ❯ cd build                                                          │
+#10 1.320 │    ❯ npm ci --omit="dev"                                               │
+#10 1.320 │    ❯ node bin/server.js                                                │
+#10 1.320 │                                                                        │
+#10 1.320 ╰────────────────────────────────────────────────────────────────────────╯
+#10 DONE 1.4s
+
+#11 [stage-2 4/5] RUN npm ci --omit=dev && npm cache clean --force
+#11 CACHED
+
+#12 [stage-2 3/5] COPY --from=build /app/build ./
+#12 CACHED
+
+#13 [stage-2 5/5] COPY start.sh ./start.sh
+#13 CACHED
+
+#14 exporting to image
+#14 exporting layers done
+#14 writing image sha256:659c85022fe45695bb6afcf8c319b7d63cf10027ba773f6641be34ce462d873a done
+#14 naming to docker.io/library/agentmvc-one-shot-typescript-62735:latest done
+#14 DONE 0.0s
+docker: Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint agentmvc-one-shot-typescript-62735-app (bb18e65f6cd308ac09ed63c317589579aa33d18b474952276fd6b015f1df89ec): Bind for 127.0.0.1:4106 failed: port is already allocated
+
+Run 'docker run --help' for more information
