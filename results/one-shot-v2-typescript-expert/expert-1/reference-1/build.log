@@ -1,0 +1,88 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 396B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:24-bookworm-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 83B done
+#3 DONE 0.0s
+
+#4 [dependencies 1/4] FROM docker.io/library/node:24-bookworm-slim
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 18.51kB 0.0s done
+#5 DONE 0.0s
+
+#6 [dependencies 3/4] COPY package.json package-lock.json ./
+#6 CACHED
+
+#7 [dependencies 2/4] WORKDIR /app
+#7 CACHED
+
+#8 [dependencies 4/4] RUN npm ci
+#8 CACHED
+
+#9 [build 1/2] COPY . .
+#9 DONE 0.2s
+
+#10 [build 2/2] RUN npm run build
+#10 0.588 
+#10 0.588 > agentmvc-conduit-typescript@0.0.0 build
+#10 0.588 > node ace build
+#10 0.588 
+#10 3.337 [ info ] loading hooks...
+#10 3.340 [ info ] generating indexes...
+#10 3.361 [ info ] codegen: created 3 file(s)
+#10 3.362 [ info ] cleaning up output directory (build)
+#10 3.366 [ info ] compiling typescript source (tsc)
+#10 8.434 [ info ] created ace file (build/ace.js)
+#10 8.434 [ info ] copying meta files to the output directory
+#10 8.440 [ success ] build completed
+#10 8.440 
+#10 8.491 ╭────────────────────────────────────────────────────────────────────────╮
+#10 8.491 │    Run the following commands to start the server in production        │
+#10 8.491 │────────────────────────────────────────────────────────────────────────│
+#10 8.491 │                                                                        │
+#10 8.491 │    ❯ cd build                                                          │
+#10 8.491 │    ❯ npm ci --omit="dev"                                               │
+#10 8.491 │    ❯ node bin/server.js                                                │
+#10 8.491 │                                                                        │
+#10 8.491 ╰────────────────────────────────────────────────────────────────────────╯
+#10 DONE 8.7s
+
+#7 [dependencies 2/4] WORKDIR /app
+#7 CACHED
+
+#11 [stage-2 3/5] COPY --from=build /app/build ./
+#11 DONE 0.1s
+
+#12 [stage-2 4/5] RUN npm ci --omit=dev && npm cache clean --force
+#12 15.88 
+#12 15.88 added 335 packages, and audited 336 packages in 15s
+#12 15.88 
+#12 15.88 104 packages are looking for funding
+#12 15.88   run `npm fund` for details
+#12 15.88 
+#12 15.88 found 0 vulnerabilities
+#12 15.88 npm notice
+#12 15.88 npm notice New major version of npm available! 11.19.0 -> 12.1.0
+#12 15.88 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.1.0
+#12 15.88 npm notice To update run: npm install -g npm@12.1.0
+#12 15.88 npm notice
+#12 16.12 npm warn using --force Recommended protections disabled.
+#12 DONE 17.6s
+
+#13 [stage-2 5/5] COPY start.sh ./start.sh
+#13 DONE 0.2s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 2.3s done
+#14 writing image sha256:5e6cf22e581c57f47a0e7a8ff4743440eeca929f1d9fede546824658a30371cb done
+#14 naming to docker.io/library/agentmvc-v2-ts-reference:final 0.0s done
+#14 DONE 2.4s

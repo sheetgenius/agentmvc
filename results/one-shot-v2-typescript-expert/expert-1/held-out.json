@@ -1,0 +1,138 @@
+{
+  "condition": "post-run-held-out-diagnostic",
+  "finished": "2026-09-29T10:23:51.338236+00:00",
+  "image_sha256": "sha256:f50b766412e4898719f7247798caa5237bddec339212d6b0f0923ed512990bf9",
+  "port": 4117,
+  "probes": {
+    "concurrent_no_revision_updates": {
+      "blocked_updates_before_release": 2,
+      "bodies": [
+        {
+          "article": {
+            "author": {
+              "bio": null,
+              "following": false,
+              "image": null,
+              "username": "heldout_ts"
+            },
+            "body": "Writer 1",
+            "createdAt": "2026-09-29T10:23:50.102Z",
+            "description": "Diagnostic",
+            "favorited": false,
+            "favoritesCount": 0,
+            "publishedAt": "2026-09-29T10:23:50.102Z",
+            "revision": 2,
+            "slug": "no-revision-concurrency-1c65cfc4",
+            "status": "published",
+            "tagList": [],
+            "title": "No revision concurrency",
+            "updatedAt": "2026-09-29T10:23:50.142Z"
+          }
+        },
+        {
+          "article": {
+            "author": {
+              "bio": null,
+              "following": false,
+              "image": null,
+              "username": "heldout_ts"
+            },
+            "body": "Writer 1",
+            "createdAt": "2026-09-29T10:23:50.102Z",
+            "description": "Diagnostic",
+            "favorited": false,
+            "favoritesCount": 0,
+            "publishedAt": "2026-09-29T10:23:50.102Z",
+            "revision": 2,
+            "slug": "no-revision-concurrency-1c65cfc4",
+            "status": "published",
+            "tagList": [],
+            "title": "No revision concurrency",
+            "updatedAt": "2026-09-29T10:23:50.142Z"
+          },
+          "errors": {
+            "revision": [
+              "is stale"
+            ]
+          }
+        }
+      ],
+      "expected": "both omitted-revision updates apply, revision advances twice",
+      "final_body": "Writer 1",
+      "final_revision": 2,
+      "statuses": [
+        200,
+        409
+      ]
+    },
+    "concurrent_share_rotation": {
+      "active_share_count": 1,
+      "blocked_rotations_before_release": 2,
+      "expected": "each rotation completes without leaking a database uniqueness conflict; one active link",
+      "responses": [
+        {
+          "share": {
+            "id": "3ee921d1-42f7-4715-b11a-2141cb1c4ace",
+            "key": "[redacted]"
+          }
+        },
+        {
+          "errors": {
+            "article": [
+              "has already been taken"
+            ]
+          }
+        }
+      ],
+      "statuses": [
+        201,
+        409
+      ]
+    },
+    "integer_revision_mismatch": {
+      "expected": "409 stale for any unequal integer; no mutation",
+      "negative": {
+        "body": {
+          "errors": {
+            "revision": [
+              "is invalid"
+            ]
+          }
+        },
+        "status": 422
+      },
+      "revision_after": 1,
+      "zero": {
+        "body": {
+          "errors": {
+            "revision": [
+              "is invalid"
+            ]
+          }
+        },
+        "status": 422
+      }
+    },
+    "malformed_websocket_frame": {
+      "container_running_after_frame": false,
+      "handshake": "HTTP/1.1 101 Switching Protocols",
+      "health_after_frame": "connection failed",
+      "invalid_utf8_in_log": true,
+      "unhandled_error_in_log": true
+    },
+    "whitespace_preservation": {
+      "created": {
+        "body": "Padded body",
+        "description": "Padded description",
+        "title": "Padded title"
+      },
+      "edited_body": "Edited body",
+      "expected": "nonblank input text preserved verbatim"
+    }
+  },
+  "reviewer_script_sha256": "ccb6357f0ed055eba8af4e363418ea981fae15de5722dc8abd5aef506e0be1a5",
+  "source": "unchanged expert-1 snapshot; measured production image",
+  "source_tree_sha256": "2aa36c01042105a91b36e6038dde270e0bedd696252ce49643600f090f1f75ed",
+  "source_tree_unchanged": true,
+  "started": "2026-09-29T10:23:47.619569+00:00"
+}

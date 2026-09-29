@@ -1,0 +1,173 @@
+{
+  "condition": "reference-1-held-out-diagnostic",
+  "finished": "2026-09-29T11:18:28.684163+00:00",
+  "image_sha256": "sha256:0c8b4d8127f3023376f18cf6ddad0214211203b4cdd6213a3b2803ca32a0242f",
+  "port": 4125,
+  "probes": {
+    "concurrent_no_revision_updates": {
+      "blocked_updates_before_release": 2,
+      "bodies": [
+        {
+          "article": {
+            "author": {
+              "bio": null,
+              "following": false,
+              "image": null,
+              "username": "heldout_ts"
+            },
+            "body": "Writer 1",
+            "createdAt": "2026-09-29T11:18:17.426Z",
+            "description": "Diagnostic",
+            "favorited": false,
+            "favoritesCount": 0,
+            "publishedAt": "2026-09-29T11:18:17.426Z",
+            "revision": 2,
+            "slug": "no-revision-concurrency-eb327e3b",
+            "status": "published",
+            "tagList": [],
+            "title": "No revision concurrency",
+            "updatedAt": "2026-09-29T11:18:17.463Z"
+          }
+        },
+        {
+          "article": {
+            "author": {
+              "bio": null,
+              "following": false,
+              "image": null,
+              "username": "heldout_ts"
+            },
+            "body": "Writer 2",
+            "createdAt": "2026-09-29T11:18:17.426Z",
+            "description": "Diagnostic",
+            "favorited": false,
+            "favoritesCount": 0,
+            "publishedAt": "2026-09-29T11:18:17.426Z",
+            "revision": 3,
+            "slug": "no-revision-concurrency-eb327e3b",
+            "status": "published",
+            "tagList": [],
+            "title": "No revision concurrency",
+            "updatedAt": "2026-09-29T11:18:17.464Z"
+          }
+        }
+      ],
+      "expected": "both omitted-revision updates apply, revision advances twice",
+      "final_body": "Writer 2",
+      "final_revision": 3,
+      "statuses": [
+        200,
+        200
+      ]
+    },
+    "concurrent_share_rotation": {
+      "active_share_count": 1,
+      "blocked_rotations_before_release": 1,
+      "expected": "each rotation completes without leaking a database uniqueness conflict; one active link",
+      "responses": [
+        {
+          "share": {
+            "id": "64d21a16-5813-4ba4-a1a8-2d9743e8fb4c",
+            "key": "[redacted]"
+          }
+        },
+        {
+          "share": {
+            "id": "3b351238-02af-4c0f-b3f3-40eee79ade89",
+            "key": "[redacted]"
+          }
+        }
+      ],
+      "statuses": [
+        201,
+        201
+      ]
+    },
+    "integer_revision_mismatch": {
+      "expected": "409 stale for any unequal integer; no mutation",
+      "negative": {
+        "body": {
+          "article": {
+            "author": {
+              "bio": null,
+              "following": false,
+              "image": null,
+              "username": "heldout_ts"
+            },
+            "body": "Initial",
+            "createdAt": "2026-09-29T11:18:17.407Z",
+            "description": "Diagnostic",
+            "favorited": false,
+            "favoritesCount": 0,
+            "publishedAt": "2026-09-29T11:18:17.407Z",
+            "revision": 1,
+            "slug": "revision-diagnostic-7004f692",
+            "status": "published",
+            "tagList": [],
+            "title": "Revision diagnostic",
+            "updatedAt": "2026-09-29T11:18:17.407Z"
+          },
+          "errors": {
+            "revision": [
+              "is stale"
+            ]
+          }
+        },
+        "status": 409
+      },
+      "revision_after": 1,
+      "zero": {
+        "body": {
+          "article": {
+            "author": {
+              "bio": null,
+              "following": false,
+              "image": null,
+              "username": "heldout_ts"
+            },
+            "body": "Initial",
+            "createdAt": "2026-09-29T11:18:17.407Z",
+            "description": "Diagnostic",
+            "favorited": false,
+            "favoritesCount": 0,
+            "publishedAt": "2026-09-29T11:18:17.407Z",
+            "revision": 1,
+            "slug": "revision-diagnostic-7004f692",
+            "status": "published",
+            "tagList": [],
+            "title": "Revision diagnostic",
+            "updatedAt": "2026-09-29T11:18:17.407Z"
+          },
+          "errors": {
+            "revision": [
+              "is stale"
+            ]
+          }
+        },
+        "status": 409
+      }
+    },
+    "malformed_websocket_frame": {
+      "container_running_after_frame": true,
+      "handshake": "HTTP/1.1 101 Switching Protocols",
+      "health_after_frame": 200,
+      "invalid_utf8_in_log": false,
+      "unhandled_error_in_log": false
+    },
+    "whitespace_preservation": {
+      "created": {
+        "body": "Padded body",
+        "description": "Padded description",
+        "title": "Padded title"
+      },
+      "edited_body": "Edited body",
+      "expected": "nonblank input text preserved verbatim"
+    }
+  },
+  "reviewer_script_sha256": "ccb6357f0ed055eba8af4e363418ea981fae15de5722dc8abd5aef506e0be1a5",
+  "source": "separate reference-1 copy; compiled diagnostic image",
+  "source_tree_sha256": "159f04cd879a7bde92a96b4c0ad5f14db50664f7ef22a831446fa007890ff553",
+  "source_tree_unchanged": true,
+  "started": "2026-09-29T11:18:14.693979+00:00",
+  "wrapper_sha256": "b57500621997cfea0e07febe8077c3a6b05965631e8459727419b30a6a1ad410"
+}

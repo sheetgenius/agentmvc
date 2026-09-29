@@ -1,0 +1,306 @@
+--- a/lib/conduit/articles.ex
++++ b/lib/conduit/articles.ex
+@@ -7,7 +7,13 @@
+   @type caller :: :anonymous | {:user, Accounts.User.t()}
+ 
+   def slug_for(title) do
+-    stem = title |> String.downcase() |> String.replace(~r/[^a-z0-9]+/u, "-") |> String.trim("-")
++    stem =
++      title
++      |> String.downcase()
++      |> String.replace(~r/[^a-z0-9]+/u, "-")
++      |> String.trim("-")
++      |> String.slice(0, 244)
++      |> String.trim_trailing("-")
+ 
+     if(stem == "", do: "article", else: stem) <>
+       "-" <> Base.encode16(:crypto.strong_rand_bytes(5), case: :lower)
+@@ -62,29 +68,42 @@
+   def create(_, _), do: {:error, {:validation, %{"article" => ["is invalid"]}}}
+ 
+   # Both entrances use one locked content commit. A share is checked again under the lock.
+-  def commit({:author, user, slug}, attrs) do
++  def author_edit(user, slug) do
+     with {:ok, article} <- get_visible(slug, {:user, user}),
+          :ok <- owner(article, user) do
+-      locked_commit(article.id, {:author, user}, attrs)
+-    end
++      {:ok, article}
++    end
++  end
++
++  def commit({:author, user, %Article{} = article}, attrs) do
++    locked_commit(article.id, {:author, user}, attrs)
+   end
+ 
+   def commit({:share, share_id, key}, attrs) do
+-    with {:ok, share} <- Conduit.Shares.authorize(share_id, key) do
++    with {:ok, share} <- Conduit.Shares.authorize(share_id, key),
++         :ok <- shared_shape(attrs) do
+       locked_commit(share.article_id, {:share, share_id, key}, attrs)
+     end
+   end
++
++  defp shared_shape(%{"title" => title, "body" => body, "revision" => revision} = attrs)
++       when map_size(attrs) == 3 and is_binary(title) and is_binary(body) and is_integer(revision),
++       do: :ok
++
++  defp shared_shape(_), do: {:error, {:validation, %{"article" => ["is invalid"]}}}
+ 
+   defp locked_commit(id, entrance, attrs) do
+     result =
+       Repo.transaction(fn ->
+-        article = Repo.one!(from a in Article, where: a.id == ^id, lock: "FOR UPDATE")
+-
+-        with :ok <- recheck_entrance(entrance, article),
++        article = Repo.one(from a in Article, where: a.id == ^id, lock: "FOR UPDATE")
++
++        with %Article{} <- article,
++             :ok <- recheck_entrance(entrance, article),
+              :ok <- check_revision(attrs, article),
+              {:ok, edited} <- update_content(article, attrs) do
+           edited
+         else
++          nil -> Repo.rollback({:article, "not found"})
+           {:error, reason} -> Repo.rollback(reason)
+         end
+       end)
+@@ -99,7 +118,9 @@
+     end
+   end
+ 
+-  defp recheck_entrance({:author, user}, article), do: owner(article, user)
++  defp recheck_entrance({:author, user}, article) do
++    if visible?(article, {:user, user}), do: owner(article, user), else: missing()
++  end
+ 
+   defp recheck_entrance({:share, id, key}, article) do
+     case Conduit.Shares.authorize(id, key) do
+@@ -207,8 +228,11 @@
+ 
+     query =
+       case params["tag"] do
+-        tag when is_binary(tag) -> where(query, [a], ^tag in a.tag_list)
+-        _ -> query
++        tag when is_binary(tag) ->
++          where(query, [a], fragment("? @> ?", a.tag_list, type(^[tag], {:array, :string})))
++
++        _ ->
++          query
+       end
+ 
+     query =
+@@ -306,7 +330,7 @@
+   end
+ 
+   def delete_comment(user, article, id) do
+-    with {id, ""} <- Integer.parse(id),
++    with {:ok, id} <- Conduit.Id.parse(id),
+          %Comment{} = comment <- Repo.get_by(Comment, id: id, article_id: article.id),
+          true <- comment.author_id == user.id do
+       Repo.delete(comment)
+--- a/lib/conduit/exports.ex
++++ b/lib/conduit/exports.ex
+@@ -18,8 +18,8 @@
+   end
+ 
+   def get(user, id) when is_binary(id) do
+-    case Integer.parse(id) do
+-      {number, ""} ->
++    case Conduit.Id.parse(id) do
++      {:ok, number} ->
+         case Repo.get_by(Export, id: number, user_id: user.id) do
+           nil -> missing()
+           export -> {:ok, export}
+--- /dev/null
++++ b/lib/conduit/id.ex
+@@ -0,0 +1,13 @@
++defmodule Conduit.Id do
++  @moduledoc false
++  @max 9_223_372_036_854_775_807
++
++  def parse(value) when is_binary(value) do
++    case Integer.parse(value) do
++      {id, ""} when id > 0 and id <= @max -> {:ok, id}
++      _ -> :error
++    end
++  end
++
++  def parse(_), do: :error
++end
+--- a/lib/conduit_web/controllers/article_controller.ex
++++ b/lib/conduit_web/controllers/article_controller.ex
+@@ -39,8 +39,9 @@
+ 
+   def update(conn, %{"slug" => slug} = params) do
+     with {:ok, user} <- API.user(conn),
++         {:ok, authorized} <- Articles.author_edit(user, slug),
+          {:ok, attrs} <- API.object(params, "article"),
+-         {:ok, article} <- Articles.commit({:author, user, slug}, attrs) do
++         {:ok, article} <- Articles.commit({:author, user, authorized}, attrs) do
+       API.reply(conn, 200, %{article: Articles.present_one(article, {:user, user})})
+     else
+       {:error, reason} -> API.error(conn, reason)
+--- a/lib/conduit_web/controllers/share_controller.ex
++++ b/lib/conduit_web/controllers/share_controller.ex
+@@ -33,7 +33,6 @@
+ 
+     with {:ok, _share} <- Shares.authorize(id, key),
+          {:ok, attrs} <- API.object(params, "article"),
+-         :ok <- exact_shape(attrs),
+          {:ok, article} <- Articles.commit({:share, id, key}, attrs) do
+       API.reply(conn, 200, %{article: Articles.shared(article)})
+     else
+@@ -47,13 +46,4 @@
+       conn |> WebSockAdapter.upgrade(Conduit.Live.Socket, id, timeout: 60_000) |> Plug.Conn.halt()
+ 
+   defp key(conn), do: conn |> Plug.Conn.get_req_header("x-share-key") |> List.first()
+-
+-  defp exact_shape(attrs) do
+-    if MapSet.new(Map.keys(attrs)) == MapSet.new(["title", "body", "revision"]) and
+-         is_binary(attrs["title"]) and is_binary(attrs["body"]) and is_integer(attrs["revision"]) do
+-      :ok
+-    else
+-      {:error, {:validation, %{"article" => ["is invalid"]}}}
+-    end
+-  end
+ end
+--- /dev/null
++++ b/priv/repo/migrations/20260929000200_article_title_text.exs
+@@ -0,0 +1,9 @@
++defmodule Conduit.Repo.Migrations.ArticleTitleText do
++  use Ecto.Migration
++
++  def change do
++    alter table(:articles) do
++      modify :title, :text, from: :string, null: false
++    end
++  end
++end
+--- /dev/null
++++ b/priv/repo/migrations/20260929000300_article_page_index.exs
+@@ -0,0 +1,13 @@
++defmodule Conduit.Repo.Migrations.ArticlePageIndex do
++  use Ecto.Migration
++
++  def up do
++    drop index(:articles, [:status, :inserted_at])
++    create index(:articles, [:status, :inserted_at, :id])
++  end
++
++  def down do
++    drop index(:articles, [:status, :inserted_at, :id])
++    create index(:articles, [:status, :inserted_at])
++  end
++end
+--- a/test/conduit/rules_test.exs
++++ b/test/conduit/rules_test.exs
+@@ -38,6 +38,9 @@
+     assert {:error, {:article, "not found"}} = Articles.get_visible(draft.slug, {:user, reader})
+     assert {:error, {:article, "not found"}} = Articles.get_visible(draft.slug, :anonymous)
+ 
++    assert {:error, {:article, "not found"}} =
++             Articles.commit({:author, reader, draft}, %{"body" => "changed"})
++
+     assert {:error, {:article, "is a draft"}} =
+              Articles.get_published(draft.slug, {:user, author})
+ 
+@@ -57,6 +60,9 @@
+     draft = article(author, %{"status" => "draft"})
+     assert {:ok, share} = Shares.create(author, draft.slug)
+     attrs = %{"title" => "New title", "body" => "new body", "revision" => 1}
++
++    assert {:error, {:validation, %{"article" => ["is invalid"]}}} =
++             Articles.commit({:share, share.id, share.key}, Map.put(attrs, "extra", true))
+ 
+     assert {:ok, edited} = Articles.commit({:share, share.id, share.key}, attrs)
+     assert edited.revision == 2
+@@ -87,4 +93,34 @@
+     assert {:ok, snapshot} = Exports.get(author, Integer.to_string(export.id))
+     assert snapshot.articles == done.articles
+   end
++
++  test "the longest accepted title has a storable slug and tag-filter semantics" do
++    author = user("long_title")
++    tag = "rare_#{System.unique_integer([:positive])}"
++    saved = article(author, %{"title" => String.duplicate("a", 255), "tagList" => [tag]})
++
++    assert byte_size(saved.slug) <= 255
++    assert {[listed], 1} = Articles.list(:global, :anonymous, %{"tag" => tag})
++    assert listed.slug == saved.slug
++  end
++
++  test "a decomposed Unicode title within the grapheme limit remains storable" do
++    title = String.duplicate("a\u0301", 255)
++    saved = article(user("unicode_title"), %{"title" => title})
++
++    assert saved.title == title
++    assert byte_size(saved.slug) <= 255
++  end
++
++  test "unrepresentable numeric identifiers are missing resources" do
++    author = user("large_id")
++    saved = article(author)
++    huge = String.duplicate("9", 100)
++
++    assert {:ok, 9_223_372_036_854_775_807} = Conduit.Id.parse("9223372036854775807")
++    assert :error = Conduit.Id.parse("9223372036854775808")
++    assert :error = Conduit.Id.parse(huge)
++    assert {:error, {:export, "not found"}} = Exports.get(author, huge)
++    assert {:error, {:comment, "not found"}} = Articles.delete_comment(author, saved, huge)
++  end
+ end
+--- /dev/null
++++ b/test/conduit_web/controllers/update_precedence_test.exs
+@@ -0,0 +1,51 @@
++defmodule ConduitWeb.UpdatePrecedenceTest do
++  use ConduitWeb.ConnCase
++
++  alias Conduit.{Accounts, Articles}
++
++  test "ownership and visibility precede malformed update envelopes" do
++    owner = user("owner")
++    stranger = user("stranger")
++
++    {:ok, article} =
++      Articles.create(owner, %{"title" => "Precedence", "description" => "d", "body" => "b"})
++
++    {:ok, draft} =
++      Articles.create(owner, %{
++        "title" => "Private precedence",
++        "description" => "d",
++        "body" => "b",
++        "status" => "draft"
++      })
++
++    assert status(owner, article.slug, %{"article" => %{"body" => "updated"}}) == 200
++    assert status(stranger, article.slug, %{"article" => %{"body" => "b"}}) == 403
++    assert status(stranger, article.slug, %{"article" => "invalid"}) == 403
++    assert status(stranger, draft.slug, %{"article" => "invalid"}) == 404
++    assert status(owner, "missing-precedence", %{"article" => %{"body" => "b"}}) == 404
++    assert status(owner, "missing-precedence", %{"article" => "invalid"}) == 404
++  end
++
++  defp user(label) do
++    name = "#{label}_#{System.unique_integer([:positive])}"
++
++    {:ok, user} =
++      Accounts.register(%{
++        "username" => name,
++        "email" => "#{name}@test.com",
++        "password" => "password123"
++      })
++
++    user
++  end
++
++  defp status(user, slug, payload) do
++    conn =
++      build_conn()
++      |> put_req_header("authorization", "Token " <> Accounts.token(user))
++      |> put_req_header("content-type", "application/json")
++      |> put("/api/articles/" <> slug, Jason.encode!(payload))
++
++    conn.status
++  end
++end

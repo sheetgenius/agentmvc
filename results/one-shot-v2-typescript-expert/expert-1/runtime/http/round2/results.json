@@ -1,0 +1,126 @@
+{
+  "image": "agentmvc-v2-expert-typescript:final",
+  "label": "v2-expert-typescript-round2",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "15s",
+  "image_mb": 333.7,
+  "cold_start_seconds": 1.05,
+  "seed_seconds": 9.0,
+  "idle_memory_mb": 261.8,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 53032,
+      "rps": 3534.8,
+      "p50_ms": 3.23,
+      "p95_ms": 7.35,
+      "p99_ms": 34.79,
+      "failed_checks": 0,
+      "sql_statements_per_request": 2.0,
+      "peak_memory_mb": 271.2,
+      "foreign_container_cpu_percent_max": 125.3,
+      "host_load_1m": 5.5
+    },
+    "list_signed_in": {
+      "requests": 50770,
+      "rps": 3382.9,
+      "p50_ms": 4.13,
+      "p95_ms": 7.36,
+      "p99_ms": 19.51,
+      "failed_checks": 0,
+      "sql_statements_per_request": 3.0,
+      "peak_memory_mb": 275.6,
+      "foreign_container_cpu_percent_max": 126.5,
+      "host_load_1m": 5.3
+    },
+    "list_by_tag": {
+      "requests": 50356,
+      "rps": 3356.3,
+      "p50_ms": 3.27,
+      "p95_ms": 7.92,
+      "p99_ms": 39.68,
+      "failed_checks": 0,
+      "sql_statements_per_request": 2.01,
+      "peak_memory_mb": 275.8,
+      "foreign_container_cpu_percent_max": 68.2,
+      "host_load_1m": 5.2
+    },
+    "feed": {
+      "requests": 42481,
+      "rps": 2829.8,
+      "p50_ms": 4.27,
+      "p95_ms": 17.86,
+      "p99_ms": 33.64,
+      "failed_checks": 0,
+      "sql_statements_per_request": 3.01,
+      "peak_memory_mb": 276.3,
+      "foreign_container_cpu_percent_max": 113.4,
+      "host_load_1m": 5.1
+    },
+    "article": {
+      "requests": 116637,
+      "rps": 7769.7,
+      "p50_ms": 1.7,
+      "p95_ms": 3.26,
+      "p99_ms": 10.28,
+      "failed_checks": 0,
+      "sql_statements_per_request": 2.0,
+      "peak_memory_mb": 283.9,
+      "foreign_container_cpu_percent_max": 201.5,
+      "host_load_1m": 6.1
+    },
+    "comments": {
+      "requests": 78428,
+      "rps": 5227.5,
+      "p50_ms": 1.34,
+      "p95_ms": 3.01,
+      "p99_ms": 55.54,
+      "failed_checks": 0,
+      "sql_statements_per_request": 2.0,
+      "peak_memory_mb": 280.3,
+      "foreign_container_cpu_percent_max": 159.9,
+      "host_load_1m": 5.0
+    },
+    "tags": {
+      "requests": 80532,
+      "rps": 5368.4,
+      "p50_ms": 1.0,
+      "p95_ms": 2.42,
+      "p99_ms": 67.2,
+      "failed_checks": 0,
+      "sql_statements_per_request": 1.0,
+      "peak_memory_mb": 288.1,
+      "foreign_container_cpu_percent_max": 154.0,
+      "host_load_1m": 4.8
+    },
+    "favorite_toggle": {
+      "requests": 47478,
+      "rps": 3164.1,
+      "p50_ms": 4.03,
+      "p95_ms": 10.52,
+      "p99_ms": 23.03,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.01,
+      "peak_memory_mb": 297.3,
+      "foreign_container_cpu_percent_max": 146.3,
+      "host_load_1m": 6.1
+    },
+    "create_article": {
+      "requests": 36871,
+      "rps": 2457.6,
+      "p50_ms": 5.4,
+      "p95_ms": 9.34,
+      "p99_ms": 17.38,
+      "failed_checks": 0,
+      "sql_statements_per_request": 3.01,
+      "peak_memory_mb": 299.2,
+      "foreign_container_cpu_percent_max": 170.5,
+      "host_load_1m": 6.7
+    }
+  },
+  "exit": 0
+}

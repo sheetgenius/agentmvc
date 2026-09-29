@@ -2,6 +2,7 @@
 
 - [Methodology](methodology.md): the app, the agents, the steps, and how each thing is measured.
 - [One-shot comparison](one-shot-contract.md): the full-spec backend experiment and its [prepared workspaces](../one-shot/README.md).
+- [Expert-guided tracks](../one-shot-v2-expert/README.md): the shared safe-evolution prompt with separate [TypeScript results](../results/one-shot-v2-typescript-expert/README.md) and [Phoenix results](../results/one-shot-v2-phoenix-expert/pilot-1/README.md). The [Phoenix design notes](phoenix-expert-track.md) record its setup. Guided results are reported separately from the earlier one-shots.
 - **Findings**, with hypotheses recorded before the applicable benchmark, scan, and reading steps:
   - [Size](findings/size.md): how much code the same app takes, step by step;
   - [Change cost](findings/change-cost.md): what each step cost in code and agent effort;

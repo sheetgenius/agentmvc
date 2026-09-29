@@ -1,0 +1,4 @@
+FROM elixir:1.18.4-otp-27@sha256:8f2dc555c30ca656694f6b91a5747a89de412fd69b1c6ca6fd7c63c56b729ef6
+
+RUN mix local.hex --force && mix local.rebar --force
+WORKDIR /work/app

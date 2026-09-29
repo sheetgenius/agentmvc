@@ -1,0 +1,24 @@
+{
+  "all_requests_pending_before_release": true,
+  "blocked_login_selects_before_release": 3,
+  "burst": 25,
+  "burst_statuses": {
+    "401": 25
+  },
+  "condition": "post-run-held-out-login-diagnostic",
+  "expected": "the first 20 failed attempts are counted; later attempts in the window receive 429",
+  "finished": "2026-09-29T11:27:25.041157+00:00",
+  "image_sha256": "sha256:f50b766412e4898719f7247798caa5237bddec339212d6b0f0923ed512990bf9",
+  "next_body": {
+    "errors": {
+      "credentials": [
+        "invalid"
+      ]
+    }
+  },
+  "next_status": 401,
+  "reviewer_script_sha256": "42364b16b6c226f1e9b164aceb51ca79644ad56123ea4f211044a33dcea9ef8f",
+  "source_tree_sha256": "2aa36c01042105a91b36e6038dde270e0bedd696252ce49643600f090f1f75ed",
+  "source_tree_unchanged": true,
+  "started": "2026-09-29T11:27:10.944337+00:00"
+}

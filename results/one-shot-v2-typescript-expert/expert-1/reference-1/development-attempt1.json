@@ -1,0 +1,29 @@
+{
+  "gate": "development",
+  "exit": 0,
+  "seconds": 10.9,
+  "port": 4123,
+  "commands": [
+    {
+      "label": "db-start",
+      "exit": 0,
+      "seconds": 2.3
+    },
+    {
+      "label": "migration",
+      "exit": 0,
+      "seconds": 0.8
+    },
+    {
+      "label": "worker-start",
+      "exit": 0,
+      "seconds": 0.1
+    },
+    {
+      "label": "server-start",
+      "exit": 0,
+      "seconds": 0.1
+    }
+  ],
+  "source": "separate reference-1 copy"
+}

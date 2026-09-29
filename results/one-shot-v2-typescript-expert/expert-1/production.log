@@ -1,0 +1,103 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 396B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:24-bookworm-slim
+#2 DONE 2.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 83B done
+#3 DONE 0.0s
+
+#4 [dependencies 1/4] FROM docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 20.39kB done
+#5 DONE 0.0s
+
+#6 [dependencies 4/4] RUN npm ci
+#6 CACHED
+
+#7 [build 2/2] RUN npm run build
+#7 CACHED
+
+#8 [stage-2 3/5] COPY --from=build /app/build ./
+#8 CACHED
+
+#9 [dependencies 2/4] WORKDIR /app
+#9 CACHED
+
+#10 [build 1/2] COPY . .
+#10 CACHED
+
+#11 [dependencies 3/4] COPY package.json package-lock.json ./
+#11 CACHED
+
+#12 [stage-2 4/5] RUN npm ci --omit=dev && npm cache clean --force
+#12 CACHED
+
+#13 [stage-2 5/5] COPY start.sh ./start.sh
+#13 CACHED
+
+#14 exporting to image
+#14 exporting layers done
+#14 writing image sha256:f50b766412e4898719f7247798caa5237bddec339212d6b0f0923ed512990bf9 done
+#14 naming to docker.io/library/agentmvc-one-shot-typescript-42937:latest done
+#14 DONE 0.0s
+Success api/hurl/articles.hurl (17 request(s) in 92 ms)
+Success api/hurl/auth.hurl (20 request(s) in 86 ms)
+Success api/hurl/comments.hurl (13 request(s) in 60 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 39 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 143 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 62 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 33 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 25 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 41 ms)
+Success api/hurl/feed.hurl (12 request(s) in 70 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 34 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 51 ms)
+Success api/hurl/tags.hurl (4 request(s) in 27 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 78 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 63 ms)
+Success features/exports/hurl/exports.hurl (19 request(s) in 596 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 67 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 238 (150.1/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          1586 ms (0h:0m:1s:586ms)
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (484ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (334ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (99ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (247ms)
+
+  4 passed (1.5s)
+Success s01_jwt_alg_none.hurl (1 request(s) in 1 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 30 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 2 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 27 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 30 ms)
+Success s06_injection_filters.hurl (4 request(s) in 5 ms)
+Success s07_malformed_json.hurl (1 request(s) in 0 ms)
+Success s08_wrong_types.hurl (8 request(s) in 29 ms)
+Success s09_oversized_body.hurl (2 request(s) in 25 ms)
+Success s10_unknown_route.hurl (1 request(s) in 0 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 43 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 0 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 436 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (81.4/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          639 ms (0h:0m:0s:639ms)
+

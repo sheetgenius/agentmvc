@@ -1,0 +1,21 @@
+{
+  "name": "phoenix-expert",
+  "language": "Elixir",
+  "framework": "Phoenix 1.8.15",
+  "database": "PostgreSQL 17",
+  "port": 4108,
+  "agent": {
+    "model": "gpt-6-sol",
+    "reasoning": "xhigh"
+  },
+  "code": {
+    "extensions": {".ex": "#", ".exs": "#", ".sh": "#"},
+    "doc_attributes": ["moduledoc", "doc", "typedoc"],
+    "skip_files": ["mix.lock", ".formatter.exs"],
+    "skip_dirs": ["deps", "_build", ".mix", ".hex", "security", "harness", "realworld_spec"]
+  },
+  "security": {
+    "lockfile": "mix.lock",
+    "analyzer": "sobelow"
+  }
+}

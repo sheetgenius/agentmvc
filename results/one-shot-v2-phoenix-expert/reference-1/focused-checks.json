@@ -1,0 +1,36 @@
+{
+  "condition": "unscored reference-1",
+  "origin_fixture_sha256": "fe4624b0126a9ed83bd69df09f4d8ff5eef40f519db38c1a52efcd7a22e8a36e",
+  "reference_patch_sha256": "725484351282a7e0c149766844c2d8fc971962b5e40e7cd93560768b0a336293",
+  "steps": [
+    {
+      "step": "format",
+      "command": [
+        "mix",
+        "format",
+        "--check-formatted"
+      ],
+      "exit": 0,
+      "seconds": 2.8
+    },
+    {
+      "step": "compile",
+      "command": [
+        "mix",
+        "compile",
+        "--warnings-as-errors"
+      ],
+      "exit": 0,
+      "seconds": 3.5
+    },
+    {
+      "step": "test",
+      "command": [
+        "mix",
+        "test"
+      ],
+      "exit": 0,
+      "seconds": 11.6
+    }
+  ]
+}

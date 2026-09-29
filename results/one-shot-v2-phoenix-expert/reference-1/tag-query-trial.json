@@ -1,0 +1,156 @@
+{
+  "seeded_articles": 10000,
+  "identical_timestamps": true,
+  "plans": {
+    "current_rare": {
+      "ms": 1.692,
+      "nodes": [
+        {
+          "type": "Limit",
+          "index": null,
+          "actual_rows": 20,
+          "filtered": null
+        },
+        {
+          "type": "Sort",
+          "index": null,
+          "actual_rows": 20,
+          "filtered": null
+        },
+        {
+          "type": "Bitmap Heap Scan",
+          "index": null,
+          "actual_rows": 100,
+          "filtered": 0
+        },
+        {
+          "type": "Bitmap Index Scan",
+          "index": "articles_tag_list_index",
+          "actual_rows": 100,
+          "filtered": null
+        }
+      ]
+    },
+    "current_common": {
+      "ms": 4.999,
+      "nodes": [
+        {
+          "type": "Limit",
+          "index": null,
+          "actual_rows": 20,
+          "filtered": null
+        },
+        {
+          "type": "Sort",
+          "index": null,
+          "actual_rows": 20,
+          "filtered": null
+        },
+        {
+          "type": "Seq Scan",
+          "index": null,
+          "actual_rows": 9900,
+          "filtered": 100
+        }
+      ]
+    },
+    "cte_rare": {
+      "ms": 3.374,
+      "nodes": [
+        {
+          "type": "Limit",
+          "index": null,
+          "actual_rows": 20,
+          "filtered": null
+        },
+        {
+          "type": "Bitmap Heap Scan",
+          "index": null,
+          "actual_rows": 100,
+          "filtered": 0
+        },
+        {
+          "type": "Bitmap Index Scan",
+          "index": "articles_tag_list_index",
+          "actual_rows": 100,
+          "filtered": null
+        },
+        {
+          "type": "Sort",
+          "index": null,
+          "actual_rows": 20,
+          "filtered": null
+        },
+        {
+          "type": "CTE Scan",
+          "index": null,
+          "actual_rows": 100,
+          "filtered": null
+        }
+      ]
+    },
+    "cte_common": {
+      "ms": 7.487,
+      "nodes": [
+        {
+          "type": "Limit",
+          "index": null,
+          "actual_rows": 20,
+          "filtered": null
+        },
+        {
+          "type": "Seq Scan",
+          "index": null,
+          "actual_rows": 9900,
+          "filtered": 100
+        },
+        {
+          "type": "Sort",
+          "index": null,
+          "actual_rows": 20,
+          "filtered": null
+        },
+        {
+          "type": "CTE Scan",
+          "index": null,
+          "actual_rows": 9900,
+          "filtered": null
+        }
+      ]
+    },
+    "current_rare_new_index": {
+      "ms": 0.34,
+      "nodes": [
+        {
+          "type": "Limit",
+          "index": null,
+          "actual_rows": 20,
+          "filtered": null
+        },
+        {
+          "type": "Index Scan",
+          "index": "articles_status_inserted_id_trial",
+          "actual_rows": 20,
+          "filtered": 1881
+        }
+      ]
+    },
+    "current_common_new_index": {
+      "ms": 0.05,
+      "nodes": [
+        {
+          "type": "Limit",
+          "index": null,
+          "actual_rows": 20,
+          "filtered": null
+        },
+        {
+          "type": "Index Scan",
+          "index": "articles_status_inserted_id_trial",
+          "actual_rows": 20,
+          "filtered": 1
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,269 @@
+--- a/app/controllers/users_controller.ts
++++ b/app/controllers/users_controller.ts
+@@ -3,6 +3,7 @@
+ import { object, text, password, nullableText } from '#services/inputs'
+ import { requireUser, userResponse, hashPassword, verifyPassword, viewer } from '#services/auth'
+ import { absent, forbidden, ApiError } from '#services/errors'
++import { pruneExpiredFailures, type FailureWindow } from '#services/login_limit'
+ 
+ type User = {
+   id: number
+@@ -12,7 +13,22 @@
+   bio: string | null
+   image: string | null
+ }
+-const failures = new Map<string, { count: number; until: number }>()
++const failures = new Map<string, FailureWindow>()
++setInterval(() => pruneExpiredFailures(failures, Date.now()), 60_000).unref()
++const loginTurns = new Map<string, Promise<void>>()
++async function inLoginTurn<T>(key: string, action: () => Promise<T>): Promise<T> {
++  const previous = loginTurns.get(key)
++  let release!: () => void
++  const turn = new Promise<void>((resolve) => (release = resolve))
++  loginTurns.set(key, turn)
++  if (previous) await previous
++  try {
++    return await action()
++  } finally {
++    if (loginTurns.get(key) === turn) loginTurns.delete(key)
++    release()
++  }
++}
+ export default class UsersController {
+   async register({ request, response }: HttpContext) {
+     const input = object(request.body(), 'user')
+@@ -30,20 +46,22 @@
+     const email = text('email', input.email)!
+     const secret = text('password', input.password)!
+     const key = email.toLowerCase()
+-    const recent = failures.get(key)
+-    if (recent && recent.count >= 20 && recent.until > Date.now())
+-      throw new ApiError(429, 'credentials', 'rate limited')
+-    const user = await one<User>('select * from users where email = ?', [email])
+-    const valid = user && (await verifyPassword(user.password_hash, secret))
+-    if (!valid) {
+-      failures.set(key, {
+-        count: (recent?.until && recent.until > Date.now() ? recent.count : 0) + 1,
+-        until: Date.now() + 60_000,
+-      })
+-      throw new ApiError(401, 'credentials', 'invalid')
+-    }
+-    failures.delete(key)
+-    return response.send(await userResponse(user))
++    return inLoginTurn(key, async () => {
++      const recent = failures.get(key)
++      if (recent && recent.count >= 20 && recent.until > Date.now())
++        throw new ApiError(429, 'credentials', 'rate limited')
++      const user = await one<User>('select * from users where email = ?', [email])
++      const valid = user && (await verifyPassword(user.password_hash, secret))
++      if (!valid) {
++        failures.set(key, {
++          count: (recent?.until && recent.until > Date.now() ? recent.count : 0) + 1,
++          until: Date.now() + 60_000,
++        })
++        throw new ApiError(401, 'credentials', 'invalid')
++      }
++      failures.delete(key)
++      return response.send(await userResponse(user))
++    })
+   }
+   async current(ctx: HttpContext) {
+     return ctx.response.send(await userResponse(await requireUser(ctx)))
+--- a/app/services/articles.ts
++++ b/app/services/articles.ts
+@@ -1,4 +1,5 @@
+ import { randomUUID } from 'node:crypto'
++import db from '@adonisjs/lucid/services/db'
+ import { one, rows } from './store.js'
+ import type { Viewer } from './auth.js'
+ import { assertVisible, assertOwner, publicArticles, type ArticleState } from './article_policy.js'
+@@ -129,22 +130,45 @@
+   shared = false,
+   shareId?: string
+ ) {
+-  const nextSlug = edit.title === undefined ? current.slug : slugFor(edit.title)
+-  const updated = await one<{ id: number }>(
+-    `update articles set title = coalesce(?,title), description = coalesce(?,description), body = coalesce(?,body),
+-    tag_list = coalesce(?::text[],tag_list), slug = ?, revision = revision + 1, updated_at = now()
+-    where id = ? and revision = ? ${shareId ? 'and exists(select 1 from shares s where s.id = ? and s.article_id = articles.id and s.revoked_at is null)' : ''} returning id`,
+-    [
+-      edit.title ?? null,
+-      edit.description ?? null,
+-      edit.body ?? null,
+-      edit.tagList ?? null,
+-      nextSlug,
+-      current.id,
+-      expected ?? current.revision,
+-      ...(shareId ? [shareId] : []),
+-    ]
+-  )
++  const changes: string[] = []
++  const binds: (string | number | string[])[] = []
++  if (edit.title !== undefined) {
++    changes.push('title = ?', 'slug = ?')
++    binds.push(edit.title, slugFor(edit.title))
++  }
++  if (edit.description !== undefined) {
++    changes.push('description = ?')
++    binds.push(edit.description)
++  }
++  if (edit.body !== undefined) {
++    changes.push('body = ?')
++    binds.push(edit.body)
++  }
++  if (edit.tagList !== undefined) {
++    changes.push('tag_list = ?::text[]')
++    binds.push(edit.tagList)
++  }
++  changes.push('revision = revision + 1', 'updated_at = now()')
++  const revisionCondition = expected === undefined ? '' : 'and revision = ?'
++  const query = `update articles set ${changes.join(', ')} where id = ? ${revisionCondition} ${shareId ? 'and exists(select 1 from shares s where s.id = ? and s.article_id = articles.id and s.revoked_at is null)' : ''} returning id`
++  binds.push(current.id)
++  if (expected !== undefined) binds.push(expected)
++  if (shareId) binds.push(shareId)
++  const updated = shareId
++    ? await db.transaction(async (trx) => {
++        const locked = await trx.rawQuery('select id from articles where id = ? for update', [
++          current.id,
++        ])
++        if (!locked.rows.length) throw absent('share')
++        const active = await trx.rawQuery(
++          'select 1 from shares where id = ? and article_id = ? and revoked_at is null',
++          [shareId, current.id]
++        )
++        if (!active.rows.length) throw absent('share')
++        const changed = await trx.rawQuery(query, binds)
++        return changed.rows[0] as { id: number } | undefined
++      })
++    : await one<{ id: number }>(query, binds)
+   if (!updated) {
+     if (
+       shareId &&
+--- a/app/services/inputs.ts
++++ b/app/services/inputs.ts
+@@ -12,7 +12,7 @@
+   if (value === null || value === '') throw invalid(field, "can't be blank")
+   if (typeof value !== 'string') throw invalid(field)
+   if (!value.trim()) throw invalid(field, "can't be blank")
+-  return value.trim()
++  return value
+ }
+ export function password(value: unknown, required = true): string | undefined {
+   const result = text('password', value, required)
+@@ -34,8 +34,7 @@
+ }
+ export function revision(value: unknown, required = false): number | undefined {
+   if (value === undefined && !required) return undefined
+-  if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < 1)
+-    throw invalid('revision')
++  if (typeof value !== 'number' || !Number.isSafeInteger(value)) throw invalid('revision')
+   return value
+ }
+ export function page(input: Fields) {
+--- a/app/services/login_limit.ts
++++ b/app/services/login_limit.ts
+@@ -0,0 +1,5 @@
++export type FailureWindow = { count: number; until: number }
++
++export function pruneExpiredFailures(entries: Map<string, FailureWindow>, now: number) {
++  for (const [email, window] of entries) if (window.until <= now) entries.delete(email)
++}
+--- a/app/services/shares.ts
++++ b/app/services/shares.ts
+@@ -1,5 +1,5 @@
+ import { createHash, randomBytes, randomUUID, timingSafeEqual } from 'node:crypto'
+-import { one, rows } from './store.js'
++import { one } from './store.js'
+ import { absent } from './errors.js'
+ import type { ArticleRow } from './articles.js'
+ import { revokeRoom } from './live.js'
+@@ -24,6 +24,11 @@
+   const id = randomUUID()
+   const key = randomBytes(32).toString('base64url')
+   const old = await db.transaction(async (trx) => {
++    // Serialize every link lifecycle change on the stable article row.
++    const locked = await trx.rawQuery('select id from articles where id = ? for update', [
++      article.id,
++    ])
++    if (!locked.rows.length) throw absent('article')
+     const links = await trx.rawQuery(
+       'update shares set revoked_at = now() where article_id = ? and revoked_at is null returning id',
+       [article.id]
+@@ -39,9 +44,16 @@
+   return { id, key }
+ }
+ export async function revokeShare(article: ArticleRow) {
+-  const old = await rows<{ id: string }>(
+-    'update shares set revoked_at = now() where article_id = ? and revoked_at is null returning id',
+-    [article.id]
+-  )
++  const old = await db.transaction(async (trx) => {
++    const locked = await trx.rawQuery('select id from articles where id = ? for update', [
++      article.id,
++    ])
++    if (!locked.rows.length) throw absent('article')
++    const links = await trx.rawQuery(
++      'update shares set revoked_at = now() where article_id = ? and revoked_at is null returning id',
++      [article.id]
++    )
++    return links.rows as { id: string }[]
++  })
+   for (const link of old) revokeRoom(link.id)
+ }
+--- a/config/bodyparser.ts
++++ b/config/bodyparser.ts
+@@ -47,7 +47,7 @@
+     /**
+      * Automatically trim whitespace from the start and end of string values.
+      */
+-    trimWhitespaces: true,
++    trimWhitespaces: false,
+ 
+     /**
+      * Content types that should be parsed as JSON.
+--- a/start/live.ts
++++ b/start/live.ts
+@@ -19,6 +19,9 @@
+   })
+ })
+ sockets.on('connection', (socket, id: string) => {
++  // A malformed protocol frame raises a WebSocket error before a message arrives.
++  // Close that connection; an unhandled EventEmitter error would exit the server.
++  socket.on('error', () => socket.terminate())
+   const timer = setTimeout(() => socket.close(), 5000)
+   let subscribed = false
+   socket.once('message', async (data) => {
+--- a/tests/unit/rules.spec.ts
++++ b/tests/unit/rules.spec.ts
+@@ -1,7 +1,8 @@
+ import { test } from '@japa/runner'
+ import { canRead, assertOwner, assertPublicInteraction } from '#services/article_policy'
+-import { password, revision } from '#services/inputs'
++import { password, revision, text } from '#services/inputs'
+ import { admit, revokeRoom } from '#services/live'
++import { pruneExpiredFailures } from '#services/login_limit'
+ import type { Viewer } from '#services/auth'
+ import { EventEmitter } from 'node:events'
+ import type { WebSocket } from 'ws'
+@@ -44,6 +45,21 @@
+     assert.equal(password('a'.repeat(64)), 'a'.repeat(64))
+     assert.throws(() => revision('1'))
+     assert.equal(revision(1), 1)
++    assert.equal(revision(0), 0)
++    assert.equal(revision(-1), -1)
++  })
++  test('nonblank input retains its whitespace', ({ assert }) => {
++    assert.equal(text('title', '  Padded title  '), '  Padded title  ')
++    assert.equal(password('  pass12345  '), '  pass12345  ')
++    assert.throws(() => text('title', ' \t '))
++  })
++  test('login failures expire at the window boundary', ({ assert }) => {
++    const failures = new Map([
++      ['expired', { count: 20, until: 100 }],
++      ['active', { count: 1, until: 101 }],
++    ])
++    pruneExpiredFailures(failures, 100)
++    assert.deepEqual([...failures.keys()], ['active'])
+   })
+   test('room admission is capped and closing a socket frees a slot', ({ assert }) => {
+     class FakeSocket extends EventEmitter {

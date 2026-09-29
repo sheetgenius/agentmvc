@@ -1,0 +1,22 @@
+{
+  "status": "validated-unscored-diagnostic",
+  "measured_source_tree_sha256": "2aa36c01042105a91b36e6038dde270e0bedd696252ce49643600f090f1f75ed",
+  "reference_tree_sha256": "71904d3a33f9e8dec09a3924ee0f29659b2bf05fa45a066190833eb7239a9c1e",
+  "published_reference_tree_sha256": "71904d3a33f9e8dec09a3924ee0f29659b2bf05fa45a066190833eb7239a9c1e",
+  "changed_files": [
+    "app/controllers/users_controller.ts",
+    "app/services/articles.ts",
+    "app/services/inputs.ts",
+    "app/services/login_limit.ts",
+    "app/services/shares.ts",
+    "config/bodyparser.ts",
+    "start/live.ts",
+    "tests/unit/rules.spec.ts"
+  ],
+  "patch_sha256": "9c4b618699d3b1f54056228b6849e76fd412efe097d4bc667e901a5f3cffda73",
+  "patch_added_lines": 118,
+  "patch_removed_lines": 41,
+  "image_sha256": "sha256:5e6cf22e581c57f47a0e7a8ff4743440eeca929f1d9fede546824658a30371cb",
+  "development_gate": "reference-1/development.json",
+  "fresh_production_gate": "reference-1/production.json"
+}

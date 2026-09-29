@@ -1,0 +1,22 @@
+{
+  "blocked_content_writes_before_commit": 1,
+  "body_after": "Initial",
+  "condition": "post-run-held-out-share-revocation-diagnostic",
+  "edit_body": {
+    "errors": {
+      "share": [
+        "not found"
+      ]
+    }
+  },
+  "edit_status": 404,
+  "expected": "a keyed edit whose article write waits behind a committed revocation returns 404 and does not change the article",
+  "finished": "2026-09-29T11:44:34.608421+00:00",
+  "image_sha256": "sha256:5e6cf22e581c57f47a0e7a8ff4743440eeca929f1d9fede546824658a30371cb",
+  "request_pending_before_commit": true,
+  "reviewer_script_sha256": "914be83e49cde779d8f841364771310b24c109e525cbd2230bd8c8eb21e3d565",
+  "revision_after": 1,
+  "source_tree_sha256": "71904d3a33f9e8dec09a3924ee0f29659b2bf05fa45a066190833eb7239a9c1e",
+  "source_tree_unchanged": true,
+  "started": "2026-09-29T11:44:21.192200+00:00"
+}

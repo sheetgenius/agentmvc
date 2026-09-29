@@ -20,7 +20,7 @@ The [large-app workshop](docs/semantic-density-workshop.md) extends the question
 
 ## Start here
 
-- **Read the comparison:** start with the [methodology](docs/methodology.md), then the [eight-step findings](docs/README.md). The [one-shot results](results/one-shot/README.md), [fourth-stack IHP study](results/one-shot-ihp/README.md), [safe-evolution Servant pilot](results/one-shot-v2-servant/README.md), and [TypeScript pilot](results/one-shot-v2-typescript/README.md) are separate experiments. The [TypeScript track](one-shot-v2-typescript/README.md) uses the same safe-evolution prompt as Servant.
+- **Read the comparison:** start with the [methodology](docs/methodology.md), then the [eight-step findings](docs/README.md). The [one-shot results](results/one-shot/README.md), [fourth-stack IHP study](results/one-shot-ihp/README.md), [safe-evolution Servant pilot](results/one-shot-v2-servant/README.md), and [TypeScript pilot](results/one-shot-v2-typescript/README.md) are separate experiments. The [TypeScript track](one-shot-v2-typescript/README.md) uses the same safe-evolution prompt as Servant. The [expert-guided tracks](one-shot-v2-expert/README.md) add stack-specific guidance: see the [TypeScript result](results/one-shot-v2-typescript-expert/README.md), [Phoenix result](results/one-shot-v2-phoenix-expert/pilot-1/README.md), and [Phoenix setup](one-shot-v2-phoenix-expert/README.md). Their measurements are reported separately from the earlier one-shots.
 - **Try the finished app:** install Docker and Node.js, then run `tools/demo.sh rails` (or `phoenix` or `loco`). It builds the step-8 production image, starts PostgreSQL and the shared Lit editor, and prints a live editing link. Press Ctrl-C to stop it.
 - **Contribute:** [CONTRIBUTING.md](CONTRIBUTING.md) explains how to reproduce a result, review a stack, or add an agent-built implementation. The historical snapshots and frozen inputs are part of the evidence; new experiments live beside them.
 
@@ -128,7 +128,7 @@ tools/bench/run.sh rails 4-tune                  # benchmark a step's production
 tools/security/scan.sh rails 5-harden            # scan it
 ```
 
-For a fresh full-product build, [`tools/one_shot.py`](tools/one_shot.py) prepares one self-contained workspace per stack with the shared prompt, spec, Lit client, browser harness, and measurement rules. See the [one-shot setup](one-shot/README.md), the [completed first run](results/one-shot/README.md), and the [semantic-density run](results/one-shot-semantic-density/README.md). The newer [Servant safe-evolution pilot](one-shot-v2/README.md) and [TypeScript track](one-shot-v2-typescript/README.md) share a different frozen prompt for changeability at large scale. The [workshop plan](docs/semantic-density-workshop.md) explains that question.
+For a fresh full-product build, [`tools/one_shot.py`](tools/one_shot.py) prepares one self-contained workspace per stack with the shared prompt, spec, Lit client, browser harness, and measurement rules. See the [one-shot setup](one-shot/README.md), the [completed first run](results/one-shot/README.md), and the [semantic-density run](results/one-shot-semantic-density/README.md). The newer [Servant safe-evolution pilot](one-shot-v2/README.md) and [TypeScript track](one-shot-v2-typescript/README.md) share a different frozen prompt for changeability at large scale. The [expert-guided TypeScript and Phoenix tracks](one-shot-v2-expert/README.md) add versioned stack guidance and report their results separately. The [workshop plan](docs/semantic-density-workshop.md) explains that question.
 
 ## Repository map
 
@@ -138,6 +138,7 @@ frontend/             the frozen shared Lit editor and browser tests, excluded f
 one-shot/             the separate full-product prompt, client, fixed harness and fixture manifest
 one-shot-v2/          the safe-evolution prompt and Servant pilot environment
 one-shot-v2-typescript/  the same prompt with an AdonisJS and TypeScript environment
+one-shot-v2-expert/   shared prompt and measurement rules for expert-guided TypeScript and Phoenix tracks
 steps/                the eight prompts and the comprehension prompt, identical for every stack
 stacks/<stack>/       stack.json, ENVIRONMENT.md, scaffold/ (generator output), the code after each step,
                       reports/, transcripts/ and runs.json

@@ -1,0 +1,7 @@
+# Expert-guided backend tracks
+
+The TypeScript and Phoenix expert tracks use the same [safe-evolution prompt](PROMPT.md), [measurement boundary](MEASUREMENT.md), frozen Conduit contract, Lit client, and acceptance harness. `PROMPT.md` is byte-identical to `one-shot-v2/PROMPT.md`. The measurement text is stack-neutral; the older v2 file opened with a Servant-specific sentence. Each track has its own versioned environment and product-free scaffold. Its guidance is part of the experimental condition and must be frozen before the measured agent starts.
+
+These are **guided diagnostics**, not additional samples of the earlier one-shot condition. Publish their results beside, rather than pooled with, the original eight-step, semantic-density, Servant v2, and first TypeScript v2 runs. Preserve the measured source and record the exact prompt and fixture hashes, agent effort, failures, independent gates, source size, and repeated production measurements.
+
+The first result from each track should test how fluently an agent uses the assigned framework and language for rule ownership and safe change. A later fresh-agent handoff can test evolution directly; its [draft brief](HANDOFF-DRAFT.md) proposes private published articles while preserving existing public rows, author and share-link access, and bounded list queries. Freeze that handoff contract and its independent checks before any agent sees the task. Run the 2-CPU performance rounds sequentially and record host load.

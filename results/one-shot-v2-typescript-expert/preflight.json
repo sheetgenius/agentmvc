@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "mode": "full",
+  "fixture_sha256": "31947deee0870e654a96a829b2beaa48275ed0caf0fa341e9e15f589c42cdee7",
+  "prompt_sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+  "toolchain_image_id": "sha256:658eafb6020d341d180dbe8faa1912f88ea746dc8cf5ab3b8c5e254ed5968d70",
+  "browser_image_id": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5",
+  "seconds": 26.1,
+  "checks": {
+    "broker_auth_and_rejection": true,
+    "timed_command_removed": true,
+    "timed_check_descendants_removed": true,
+    "readonly_container_mounts": true,
+    "development_lifecycle": true,
+    "worker_lifecycle": true,
+    "npm_ci": true,
+    "typecheck": true,
+    "lint": true,
+    "tests": true,
+    "compiled_build": true,
+    "fresh_development_migration": true,
+    "development_health": true,
+    "development_worker": true,
+    "watched_edit": true,
+    "production_image_build": true,
+    "fresh_compiled_production_health": true,
+    "compiled_worker": true
+  }
+}

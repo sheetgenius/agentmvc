@@ -1,0 +1,84 @@
+DATABASE_URL=postgres://agentmvc:agentmvc@127.0.0.1:54123/agentmvc
+DB setup confirmed final TCP server ready.
+
+[ info ] Upgrading migrations version from "1" to "2"
+❯ migrating database/migrations/0000000000000_queue
+[2K[1A[2K[G❯ migrated database/migrations/0000000000000_queue
+❯ migrating database/migrations/0000000000001_conduit
+[2K[1A[2K[G❯ migrated database/migrations/0000000000001_conduit
+❯ migrating database/migrations/0000000000002_indexes
+[2K[1A[2K[G❯ migrated database/migrations/0000000000002_indexes
+
+Migrated in 287 ms
+❯ Scanned "pg" database and found 9 tables
+[2K[1A[2K[G❯ Scanned table articles
+[2K[1A[2K[G❯ Scanned table comments
+[2K[1A[2K[G❯ Scanned table exports
+[2K[1A[2K[G❯ Scanned table favorites
+[2K[1A[2K[G❯ Scanned table follows
+[2K[1A[2K[G❯ Scanned table queue_jobs
+[2K[1A[2K[G❯ Scanned table queue_schedules
+[2K[1A[2K[G❯ Scanned table shares
+[2K[1A[2K[G❯ Scanned table users
+[2K[1A[2K[G❯ Creating schema classes for scanned tables
+[ success ] Schema classes generated (212 ms)
+
+72cc37801180ebb3d8e06844580b3f262d8ec8d247d067cdcd776e35e7c963d5
+
+c5d7742377d1453b2634a92d81c0605ec858226af4d8a2a4e1936af3d50c8196
+
+Success api/hurl/articles.hurl (17 request(s) in 1017 ms)
+Success api/hurl/auth.hurl (20 request(s) in 324 ms)
+Success api/hurl/comments.hurl (13 request(s) in 286 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 181 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 429 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 172 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 97 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 86 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 169 ms)
+Success api/hurl/feed.hurl (12 request(s) in 210 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 111 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 159 ms)
+Success api/hurl/tags.hurl (4 request(s) in 93 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 443 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 389 ms)
+Success features/exports/hurl/exports.hurl (21 request(s) in 1377 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 278 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 240 (40.8/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          5876 ms (0h:0m:5s:876ms)
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (2.2s)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (2.2s)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (351ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (867ms)
+
+  4 passed (7.3s)
+Success s01_jwt_alg_none.hurl (1 request(s) in 2 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 129 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 6 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 112 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 113 ms)
+Success s06_injection_filters.hurl (4 request(s) in 30 ms)
+Success s07_malformed_json.hurl (1 request(s) in 4 ms)
+Success s08_wrong_types.hurl (8 request(s) in 122 ms)
+Success s09_oversized_body.hurl (2 request(s) in 85 ms)
+Success s10_unknown_route.hurl (1 request(s) in 3 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 167 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 4 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 1485 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (22.8/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          2285 ms (0h:0m:2s:285ms)
+
+

@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "mode": "broker",
+  "fixture_sha256": "43a490d55397aad267ef38e359c8e79f3c55f1b29f217dd76644c3e26f753581",
+  "prompt_sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+  "toolchain_image_id": "sha256:658eafb6020d341d180dbe8faa1912f88ea746dc8cf5ab3b8c5e254ed5968d70",
+  "browser_image_id": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5",
+  "seconds": 4.0,
+  "checks": {
+    "broker_auth_and_rejection": true,
+    "timed_command_removed": true,
+    "readonly_container_mounts": true,
+    "development_lifecycle": true,
+    "worker_lifecycle": true
+  }
+}

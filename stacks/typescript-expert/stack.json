@@ -1,0 +1,13 @@
+{
+  "name": "AdonisJS + Lucid (expert guided)",
+  "language": "TypeScript",
+  "description": "Node.js 24, AdonisJS 7, Lucid 22, PostgreSQL 17",
+  "port": 4107,
+  "code": {
+    "extensions": {".ts": "//", ".js": "//", ".sql": "--", ".sh": "#"},
+    "files": {"package.json": "//"},
+    "skip_files": ["database/schema.ts", "package-lock.json", "Dockerfile", "eslint.config.js"],
+    "skip_dirs": ["node_modules", "build", ".adonisjs", "security", "harness", "realworld_spec", ".scaffold", "tmp"],
+    "generated": ["database/schema.ts", ".adonisjs", "build"]
+  }
+}
