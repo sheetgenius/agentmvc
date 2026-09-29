@@ -3,7 +3,8 @@
 JSON escape sequences are syntax, not transcript text: ``\\n@api.get`` must
 not be interpreted as the email ``n@api.get``. Validate every decoded string
 and object key, plus the rendered Markdown. All original scrub rules remain.
-This adapter changes no coding prompt, workspace fixture, or measured source.
+Sequential coding inputs remain unchanged. New expert one-shots explicitly
+freeze the separate lane_oneshot TCP-readiness condition before coding.
 Usage is identical to tools/lane_run.py.
 """
 import json
@@ -12,6 +13,7 @@ from pathlib import Path
 import lane_run
 import lane_launch
 import lane_review
+import lane_oneshot
 import scrub
 
 
@@ -60,10 +62,20 @@ def publish(path):
         'reason': 'Avoid interpreting JSON newline escapes followed by decorators as email addresses',
         'original_runner_sha256': lane_run.digest(Path(lane_run.__file__)),
         'coding_inputs_changed': False,
+        'scope': 'Transcript publication only; any runtime condition is recorded separately',
     })
     launch_record = Path(session['logs']) / 'launch-adapter.json'
     if launch_record.exists():
         lane_run.save(Path(session['result']) / 'launch-adapter.json', lane_run.load(launch_record))
+    if session['phase'] == 'one-shot':
+        result = Path(session['result']) / 'run.json'
+        run = lane_run.load(result)
+        run['effective_fixture_sha256'] = lane_oneshot.verify(session)['sha256']
+        run['fixture_identity_note'] = 'fixture_sha256 is the inherited base; effective_fixture_sha256 includes the TCP-readiness condition'
+        lane_run.save(result, run)
+        for name in ('effective-fixture.json', 'readiness-preflight.json'):
+            lane_run.save(Path(session['result']) / name,
+                          lane_run.load(Path(session['control']) / name))
 
 
 def install():
@@ -71,6 +83,7 @@ def install():
     lane_run.publish = publish
     lane_run.independently_check = lane_review.independently_check
     lane_run.launch = lane_launch.launch
+    lane_run.prepare = lane_oneshot.prepare
 
 
 if __name__ == '__main__':

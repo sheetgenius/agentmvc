@@ -16,6 +16,10 @@ Each measured session publishes its prompt hash, fixture hash, model, reasoning 
 
 The coordinator's separate `lane_launch.py` adapter waits for the Docker resource lock before starting the measured clock. This addresses an observed Go step-4 launch timeout: the frozen broker waited for another lane's operation before binding HTTP, exceeding the launcher's ten-second deadline. That attempt started no coding process and remains recorded. The adapter can retry only this specific startup failure while both the transcript and home session directory are absent; it never replays a measured coding session. Queue duration and adapter identity are published separately. Frozen prompts, broker behavior and workspaces remain unchanged.
 
+Before either expert one-shot started, the coordinator introduced the separately frozen **`expert-v2-tcp-readiness` condition**. The [one-shot adapter](../../tools/lane_oneshot.py) requires PostgreSQL TCP readiness in the agent's development and production checks and in the separate short-benchmark process. This corrects the initialization race observed during the sequential runs. The shared prompt, scaffold, client, product contract and acceptance assertions are unchanged. The eight-step sessions retain their original inputs and failed attempts.
+
+Both fresh one-shot workspaces record the inherited lane hash and an effective fixture hash covering this adapter, its launcher/publication dependencies, and the original frozen lane. The workspace's read-only `EXPERIMENT.md` discloses the correction. The broker verifies adapter identity before and after actions. Three fresh database initializations must pass an explicit TCP probe before coding; their proof and effective fixture are published with the result. `run.json.fixture_sha256` remains the inherited base, and `effective_fixture_sha256` identifies the actual one-shot condition. A used coding session cannot acquire this correction retroactively.
+
 ## Acceptance and reviewer parity
 
 The independent development check runs the applicable frozen acceptance checks, lint, and tests. From step 3, the independent production check builds the recorded source and starts a fresh database and production container. At step 8 and in each expert one-shot, the frozen checks include the shared HTTP, security, live WebSocket, and browser suites. No agent-authored `bin/check` determines these independent results.
@@ -58,6 +62,12 @@ A reviewer must write and save an answer key from the source **before launching 
 Run from the repository root after the relevant coding sessions and independent checks have finished. These commands create evidence; the examples are not completion claims.
 
 ```sh
+.venv/bin/python tools/lane_continue.py prepare go one-shot
+.venv/bin/python tools/lane_oneshot.py preflight \
+  --session "$PWD/.work/lanes/go-one-shot-1/control/session.json"
+.venv/bin/python tools/lane_continue.py one-shot go
+# Repeat preparation, readiness preflight and launch for python.
+
 .venv/bin/python tools/lane_evidence.py parity
 .venv/bin/python tools/lane_evidence.py runtime
 .venv/bin/python tools/lane_evidence.py validate
