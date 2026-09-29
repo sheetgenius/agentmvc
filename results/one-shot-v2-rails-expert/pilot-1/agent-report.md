@@ -1,0 +1,7 @@
+Built the Conduit backend and documented its rule owners in [AGENTS.md](/work/app/AGENTS.md). [User](/work/app/app/models/user.rb) owns account and password rules; [Article](/work/app/app/models/article.rb) owns visibility and lifecycle; [ArticleCommit](/work/app/app/services/article_commit.rb) owns revision checked edits; [ArticleShare](/work/app/app/models/article_share.rb) owns link keys; [LiveRooms](/work/app/app/services/live_rooms.rb) owns presence and the room cap; [ArticleExport](/work/app/app/models/article_export.rb) owns pending export recovery. The [migration](/work/app/db/migrate/20260929000001_create_conduit.rb) enforces database invariants.
+
+The app uses Rails controllers, Active Record, Active Job with PostgreSQL backed GoodJob, bcrypt, JWT with HS256, and Faye WebSocket through Puma. During implementation, checks exposed an update parameter error, blank profile normalization, a development 404 trace leak, and socket writes from the wrong thread; each was fixed.
+
+**All required gates pass:** RuboCop, Zeitwerk, 7 project tests, the complete development gate, and the fresh database production gate. Each complete gate passed 17 API files, the live protocol check, four browser tests, and 13 security files.
+
+Owned backend source measures 643 nonblank, noncomment lines and 6,604 `o200k_base` tokens; whole backend source measures 893 lines and 12,401 tokens. Added tests measure 94 lines; project documentation measures 12 lines. Presence and login throttling are process local, so deployment remains limited to one Puma worker.

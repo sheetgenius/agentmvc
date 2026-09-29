@@ -1,0 +1,235 @@
+--- a/app/controllers/comments_controller.rb
++++ b/app/controllers/comments_controller.rb
+@@ -1,9 +1,10 @@
+ class CommentsController < ApplicationController
+   def index
+     article = article!
+-    limit = (Integer(params.fetch(:limit, 100)) rescue 100).clamp(0, 100)
+-    offset = (Integer(params.fetch(:offset, 0)) rescue 0).clamp(0, 1_000_000)
+-    comments = article.comments.order(created_at: :desc, id: :desc).limit(limit).offset(offset).includes(:author).to_a
++    comments = article.comments.order(created_at: :desc, id: :desc).includes(:author)
++    comments = comments.limit((Integer(params[:limit]) rescue 100).clamp(0, 100)) if params.key?(:limit)
++    comments = comments.offset((Integer(params[:offset]) rescue 0).clamp(0, 1_000_000)) if params.key?(:offset)
++    comments = comments.to_a
+     followed = @current_user ? Follow.where(follower_id: @current_user.id, followed_id: comments.map(&:author_id)).pluck(:followed_id).to_set : nil
+     render json: { comments: comments.map { |comment| comment_json(comment, followed) } }
+   end
+--- a/app/controllers/shares_controller.rb
++++ b/app/controllers/shares_controller.rb
+@@ -1,15 +1,16 @@
+ class SharesController < ApplicationController
+   def create
+     article = author_article!
+-    old = article.article_shares.active.pluck(:id)
+-    share, key = ArticleShare.issue!(article)
++    share, key, old = ArticleShare.issue!(article)
+     LiveRooms.revoked(old)
+     render json: { share: { id: share.id, key: key } }, status: :created
+   end
+   def destroy
+     article = author_article!
+-    ids = article.article_shares.active.pluck(:id)
+-    article.with_lock { article.article_shares.active.update_all(revoked_at: Time.current) }
++    ids = article.with_lock do
++      active = article.article_shares.active
++      active.pluck(:id).tap { active.update_all(revoked_at: Time.current) }
++    end
+     LiveRooms.revoked(ids)
+     head :no_content
+   end
+--- a/app/models/article.rb
++++ b/app/models/article.rb
+@@ -18,10 +18,13 @@
+   end
+ 
+   def publish!
++    published = false
+     with_lock do
+       if status == "draft"
+         update!(status: "published", published_at: Time.current, revision: revision + 1)
++        published = true
+       end
+     end
++    LiveRooms.updated(self) if published
+   end
+ end
+--- a/app/models/article_share.rb
++++ b/app/models/article_share.rb
+@@ -6,11 +6,13 @@
+   def self.issue!(article)
+     key = SecureRandom.urlsafe_base64(32)
+     share = nil
++    old = nil
+     article.with_lock do
++      old = active.where(article: article).pluck(:id)
+       active.where(article: article).update_all(revoked_at: Time.current)
+       share = create!(article: article, key_hash: Digest::SHA256.hexdigest(key))
+     end
+-    [ share, key ]
++    [ share, key, old ]
+   end
+ 
+   def valid_key?(key)
+--- a/app/services/article_commit.rb
++++ b/app/services/article_commit.rb
+@@ -2,7 +2,7 @@
+   def self.call(article, input, expected:, representation:, share: nil, key: nil)
+     article.with_lock do
+       raise ApplicationController::Failure.new(404, :share, "not found") if share && !(share.reload.valid_key?(key))
+-      if !expected.nil? && !expected.is_a?(Integer)
++      if (input.key?("revision") || !expected.nil?) && !expected.is_a?(Integer)
+         raise ApplicationController::Failure.new(422, :revision, "is invalid")
+       end
+       if expected && expected != article.revision
+--- a/app/services/live_socket.rb
++++ b/app/services/live_socket.rb
+@@ -10,7 +10,7 @@
+     end
+     socket.on :message do |event|
+       next if room
+-      message = JSON.parse(event.data) rescue {}
++      message = subscription_message(event.data)
+       share = ArticleShare.active.find_by(id: id)
+       if message["type"] != "subscribe" || !share&.valid_key?(message["key"])
+         LiveRooms.send_json(socket, type: "invalid_link")
+@@ -35,4 +35,11 @@
+     end
+     socket.rack_response
+   end
++
++  def self.subscription_message(data)
++    message = JSON.parse(data)
++    message.is_a?(Hash) ? message : {}
++  rescue JSON::ParserError, TypeError
++    {}
++  end
+ end
+--- a/test/controllers/article_contract_test.rb
++++ b/test/controllers/article_contract_test.rb
+@@ -0,0 +1,79 @@
++require "test_helper"
++
++class ArticleContractTest < ActionDispatch::IntegrationTest
++  def user(name)
++    User.create!(username: name, email: "#{name}@test.com", password: "password123")
++  end
++
++  def article(author)
++    Article.create!(author: author, slug: Article.slug_for("Test"), title: "Test", description: "Description",
++      body: "Before", status: "draft")
++  end
++
++  def authorization(user)
++    token = JWT.encode({ sub: user.id, exp: 30.days.from_now.to_i }, Rails.application.secret_key_base, "HS256")
++    { "Authorization" => "Token #{token}" }
++  end
++
++  test "author update rejects explicit null revision and accepts omission" do
++    author = user("author")
++    draft = article(author)
++    put "/api/articles/#{draft.slug}", params: { article: { body: "Rejected", revision: nil } },
++      headers: authorization(author), as: :json
++    assert_response :unprocessable_entity
++    assert_equal [ "is invalid" ], response.parsed_body.dig("errors", "revision")
++    assert_equal [ "Before", 1 ], [ draft.reload.body, draft.revision ]
++
++    put "/api/articles/#{draft.slug}", params: { article: { body: "Accepted" } },
++      headers: authorization(author), as: :json
++    assert_response :ok
++    assert_equal [ "Accepted", 2 ], [ draft.reload.body, draft.revision ]
++  end
++
++  test "shared update rejects explicit null revision without mutation" do
++    draft = article(user("shared_author"))
++    share, key = ArticleShare.issue!(draft)
++    put "/api/shares/#{share.id}/article",
++      params: { article: { title: "Changed", body: "Rejected", revision: nil } },
++      headers: { "X-Share-Key" => key }, as: :json
++    assert_response :unprocessable_entity
++    assert_equal [ "is invalid" ], response.parsed_body.dig("errors", "revision")
++    assert_equal [ "Test", "Before", 1 ], [ draft.reload.title, draft.body, draft.revision ]
++  end
++
++  test "share changes notify the links they revoked" do
++    author = user("link_author")
++    draft = article(author)
++    old, = ArticleShare.issue!(draft)
++    notified = []
++    test = self
++    original = LiveRooms.method(:revoked)
++    LiveRooms.define_singleton_method(:revoked, ->(ids) {
++      notified << ids
++      ids.each { |id| test.assert ArticleShare.find(id).revoked_at }
++    })
++    begin
++      post "/api/articles/#{draft.slug}/share", headers: authorization(author)
++      assert_response :created
++      current_id = response.parsed_body.dig("share", "id")
++      delete "/api/articles/#{draft.slug}/share", headers: authorization(author)
++      assert_response :no_content
++      assert_equal [ [ old.id ], [ current_id ] ], notified
++    ensure
++      LiveRooms.define_singleton_method(:revoked, original)
++    end
++  end
++
++  test "comments list includes every comment by default" do
++    author = user("commenter")
++    published = article(author)
++    published.publish!
++    now = Time.current
++    Comment.insert_all!(Array.new(101) { |index| { article_id: published.id, author_id: author.id,
++      body: "Comment #{index}", created_at: now, updated_at: now } })
++
++    get "/api/articles/#{published.slug}/comments"
++    assert_response :ok
++    assert_equal 101, response.parsed_body.fetch("comments").length
++  end
++end
+--- a/test/models/product_rules_test.rb
++++ b/test/models/product_rules_test.rb
+@@ -36,6 +36,20 @@
+     assert_equal published_at, draft.published_at
+   end
+ 
++  test "publishing sends one live update after the revision changes" do
++    draft = article(user("publisher"))
++    updates = []
++    original = LiveRooms.method(:updated)
++    LiveRooms.define_singleton_method(:updated, ->(current) { updates << [ current.revision, current.reload.status ] })
++    begin
++      draft.publish!
++      draft.publish!
++    ensure
++      LiveRooms.define_singleton_method(:updated, original)
++    end
++    assert_equal [ [ 2, "published" ] ], updates
++  end
++
+   test "owner and shared commits use one revision rule" do
+     draft = article(user("writer"))
+     share, key = ArticleShare.issue!(draft)
+@@ -51,6 +65,23 @@
+     assert_raises(ApplicationController::Failure) do
+       ArticleCommit.call(draft, { "body" => "Revoked" }, expected: 3, representation: shared, share: share, key: key)
+     end
++  end
++
++  test "rotating a share returns the old IDs for revocation" do
++    draft = article(user("share_owner"))
++    old, = ArticleShare.issue!(draft)
++    current, _, revoked_ids = ArticleShare.issue!(draft)
++    assert_equal [ old.id ], revoked_ids
++    assert old.reload.revoked_at
++    assert_nil current.revoked_at
++  end
++
++  test "subscription input must be a JSON object" do
++    [ "null", "42", "[]", '"subscribe"', "{" ].each do |payload|
++      assert_equal({}, LiveSocket.subscription_message(payload))
++    end
++    assert_equal({ "type" => "subscribe", "key" => "secret" },
++      LiveSocket.subscription_message('{"type":"subscribe","key":"secret"}'))
+   end
+ 
+ 

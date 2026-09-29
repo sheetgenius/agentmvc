@@ -1,0 +1,14 @@
+{
+  "stack": "rails",
+  "condition": "v2-expert-guided",
+  "port": 4109,
+  "toolchain_image": "agentmvc-rails-expert-v2-toolchain:preflight",
+  "agent": {"model": "gpt-6-sol", "reasoning": "xhigh"},
+  "code": {
+    "extensions": {".rb": "#", ".rake": "#", ".ru": "#", ".jbuilder": "#", ".sql": "--", ".sh": "#"},
+    "files": {"Gemfile": "#", "Rakefile": "#", "docker-entrypoint": "#", "rails": "#", "rake": "#", "dev": "#", "setup": "#", "ci": "#", "rubocop": "#", "brakeman": "#", "bundler-audit": "#", "thrust": "#"},
+    "skip_files": ["Gemfile.lock", "schema.rb", ".rubocop.yml"],
+    "skip_dirs": ["vendor", "tmp", "log", "security", "harness", "realworld_spec", ".scaffold"]
+  },
+  "security": {"lockfile": "Gemfile.lock", "analyzer": "brakeman"}
+}
