@@ -30,6 +30,10 @@ One agent per stack received the [same frozen prompt](one-shot-v2-expert/PROMPT.
 
 Other recorded paths include [Loco / Rust in the eight-step study](stacks/loco/), [IHP / Haskell](results/one-shot-ihp/README.md), and a [Servant / Haskell pilot](results/one-shot-v2-servant/README.md). Their briefs and measurement sessions differ, so they have their own result pages.
 
+## New Go and Python lanes
+
+Go and Python are now going through the complete eight-step sequence and independent expert one-shots. Their [progress and source checkpoints](results/lanes/README.md) show completed checks, code size and the stack choices; final runtime and reviewer parity will be published there. These prepared-scaffold runs have their own recorded conditions and preserve the original study below.
+
 ## Original eight-step study
 
 The earlier Rails, Phoenix, and Loco implementations followed eight prompts: build the app; add drafts; package; tune; harden; polish; add a background export; add live shared editing. Each step has the same acceptance suite, size measure, security checks, and production benchmarks. This history is separate from the expert-guided one-shot table above. [Methodology](docs/methodology.md) · [Findings](docs/README.md) · [Try the step-8 app](tools/demo.sh) (`tools/demo.sh rails|phoenix|loco`, Docker and Node.js required).

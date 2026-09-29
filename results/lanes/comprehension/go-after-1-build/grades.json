@@ -1,0 +1,90 @@
+{
+  "session": "go-1-build-1",
+  "graded_at": "2026-09-29T18:40:58.464931+00:00",
+  "method": "Qualitative source-supported review against a key saved before reader launch; original 1/0.5/0 rubric.",
+  "source_sha256": "ae1eb48dee777acd34d455c203bf06fb61c1343000f57d6e57a5d1d5ded43078",
+  "answer_sha256": "f4577518272d964aebb8477f06a6e21a581be810f39b688ba423b76f017fe96a",
+  "answer_key_sha256": "44faf54756330459ae52f7774f8b0d43233569ae4a92b28047edd0e53451ec2c",
+  "answer_key_saved_at": "2026-09-29T18:38:16.688743+00:00",
+  "reader_started_at": "2026-09-29T18:38:32.928729+00:00",
+  "score": 12,
+  "maximum": 12,
+  "items": [
+    {
+      "question": 1,
+      "score": 1,
+      "reason": "Normalized title, random suffix, regenerated on changed title: correct behavior and location.",
+      "source": "internal/conduit/articles.go: slug, updateArticle"
+    },
+    {
+      "question": 2,
+      "score": 1,
+      "reason": "Unique constraint produces 409 identity error: correct behavior and location.",
+      "source": "internal/conduit/users.go: register, userConflict; internal/conduit/http.go: route"
+    },
+    {
+      "question": 3,
+      "score": 1,
+      "reason": "Followed-author feed, creation and ID descending: correct behavior and location.",
+      "source": "internal/conduit/articles.go: feed, articleList"
+    },
+    {
+      "question": 4,
+      "score": 1,
+      "reason": "Favorite rows counted for article: correct behavior and location.",
+      "source": "internal/conduit/models.go: articleView"
+    },
+    {
+      "question": 5,
+      "score": 1,
+      "reason": "Non-author comment deletion returns 403: correct behavior and location.",
+      "source": "internal/conduit/comments.go: deleteComment; internal/conduit/http.go: forbidden, route"
+    },
+    {
+      "question": 6,
+      "score": 1,
+      "reason": "Empty bio becomes database and JSON null: correct behavior and location.",
+      "source": "internal/conduit/users.go: updateUser; internal/conduit/http.go: nullableString"
+    },
+    {
+      "question": 7,
+      "score": 1,
+      "reason": "article_tags rows, per-article deduplication, global distinct sorting: correct behavior and location.",
+      "source": "internal/conduit/articles.go: tagField, replaceTags, tags; internal/platform/migrations/00001_conduit.sql: article_tags"
+    },
+    {
+      "question": 8,
+      "score": 1,
+      "reason": "Default 20, no upper clamp: correct behavior and location.",
+      "source": "internal/conduit/articles.go: pagination"
+    },
+    {
+      "question": 9,
+      "score": 1,
+      "reason": "HS256 token, user ID subject, 30-day expiration: correct behavior and location.",
+      "source": "internal/conduit/http.go: token"
+    },
+    {
+      "question": 10,
+      "score": 1,
+      "reason": "Shared article author check on update/delete: correct behavior and location.",
+      "source": "internal/conduit/articles.go: ownedArticle, updateArticle, deleteArticle"
+    },
+    {
+      "question": 11,
+      "score": 1,
+      "reason": "Omitted tags unchanged; null returns 422 blank error: correct behavior and location.",
+      "source": "internal/conduit/articles.go: tagField, updateArticle; internal/conduit/http.go: invalid, route"
+    },
+    {
+      "question": 12,
+      "score": 1,
+      "reason": "SHA-256 hex digest then x/crypto bcrypt at DefaultCost: correct behavior and location.",
+      "source": "internal/conduit/users.go: passwordDigest, passwordHash"
+    }
+  ],
+  "limitations": [
+    "Single reader per snapshot; these small-app questions are near their scoring ceiling.",
+    "Grading confirms source comprehension, not runtime correctness or implementation quality."
+  ]
+}

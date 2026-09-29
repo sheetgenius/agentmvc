@@ -1,0 +1,90 @@
+{
+  "session": "python-1-build-1",
+  "graded_at": "2026-09-29T18:40:12.446258+00:00",
+  "method": "Qualitative source-supported review against a key saved before reader launch; original 1/0.5/0 rubric.",
+  "source_sha256": "1de10bffe6d7ad94a3fae19b21a00ee45e0fca0650a8eb35f51427f8f5ec24ea",
+  "answer_sha256": "cef462fc2e61e2ad6193f9dc345e988cb96a99f56bade152a2d54dbb442e4e34",
+  "answer_key_sha256": "cdfced8f953c3e3619e988c33e2897bf19b5565a29f0fad83d3d9c0666b73494",
+  "answer_key_saved_at": "2026-09-29T18:34:55.470901+00:00",
+  "reader_started_at": "2026-09-29T18:37:17.953884+00:00",
+  "score": 12,
+  "maximum": 12,
+  "items": [
+    {
+      "question": 1,
+      "score": 1,
+      "reason": "Slug construction and regeneration: correct behavior and location.",
+      "source": "conduit/models.py: Article.set_title; conduit/api.py: create_article, update_article"
+    },
+    {
+      "question": 2,
+      "score": 1,
+      "reason": "Duplicate identity status and body: correct behavior and location.",
+      "source": "conduit/api.py: register, unique_user, api_error"
+    },
+    {
+      "question": 3,
+      "score": 1,
+      "reason": "Followed-author feed and descending order: correct behavior and location.",
+      "source": "conduit/api.py: feed; conduit/models.py: Article.Meta"
+    },
+    {
+      "question": 4,
+      "score": 1,
+      "reason": "Favorite relation count: correct behavior and location.",
+      "source": "conduit/api.py: article_data; conduit/models.py: Article.favorites"
+    },
+    {
+      "question": 5,
+      "score": 1,
+      "reason": "Comment ownership error: correct behavior and location.",
+      "source": "conduit/api.py: delete_comment, owned, api_error"
+    },
+    {
+      "question": 6,
+      "score": 1,
+      "reason": "Empty bio becomes null: correct behavior and location.",
+      "source": "conduit/api.py: update_user, user_data"
+    },
+    {
+      "question": 7,
+      "score": 1,
+      "reason": "PostgreSQL array; sorted distinct global tags: correct behavior and location.",
+      "source": "conduit/models.py: Article.tags; conduit/api.py: list_tags"
+    },
+    {
+      "question": 8,
+      "score": 1,
+      "reason": "Default 20, no maximum, negative clamped to zero: correct behavior and location.",
+      "source": "conduit/api.py: list_articles, feed, article_page"
+    },
+    {
+      "question": 9,
+      "score": 1,
+      "reason": "HS256, user subject and 30-day expiry: correct behavior and location.",
+      "source": "conduit/api.py: token_for; config/settings.py: SECRET_KEY"
+    },
+    {
+      "question": 10,
+      "score": 1,
+      "reason": "Article author check on update/delete: correct behavior and location.",
+      "source": "conduit/api.py: owned, update_article, delete_article"
+    },
+    {
+      "question": 11,
+      "score": 1,
+      "reason": "Omitted tags preserved; null returns 422: correct behavior and location.",
+      "source": "conduit/api.py: update_article, api_error"
+    },
+    {
+      "question": 12,
+      "score": 1,
+      "reason": "Django Argon2 via argon2-cffi; PBKDF2 also configured: correct behavior and location.",
+      "source": "conduit/api.py: register, update_user; config/settings.py: PASSWORD_HASHERS; pyproject.toml: dependencies"
+    }
+  ],
+  "limitations": [
+    "Single reader per snapshot; these small-app questions are near their scoring ceiling.",
+    "Grading confirms source comprehension, not runtime correctness or implementation quality."
+  ]
+}
