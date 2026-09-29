@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+# The fixed harness runs acceptance, live client checks, and security against one production container.
+report=$(./harness/check-production.sh 2>&1) || { printf '%s\n' "$report"; exit 1; }
+printf '%s\n' "$report"
+printf '%s\n' "$report" | grep -q 'Succeeded files:   17 (100.0%)'
+printf '%s\n' "$report" | grep -q 'Succeeded files:   13 (100.0%)'
+printf '%s\n' "$report" | grep -q 'PASS live protocol:'
+printf '%s\n' "$report" | grep -q '4 passed'

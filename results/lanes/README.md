@@ -2,13 +2,13 @@
 
 Two new paths through the same Conduit product: build it in eight successive sessions, then build it again in one fresh expert session. The goal is readable, domain-rich code that uses each stack well, with correctness and production performance measured alongside size.
 
-**Progress: 15/18 coding sessions independently verified.** The full runs are still in progress; intermediate sizes below are not final-product comparisons.
+**Progress: 16/18 coding sessions independently verified.** The full runs are still in progress; intermediate sizes below are not final-product comparisons.
 
 ## Start with the code
 
 | Lane | Latest verified sequential source | Owned backend | Expert one-shot |
 | --- | --- | ---: | --- |
-| Go | [7-add-background-job](../../stacks/go/7-add-background-job) | 11,259 tokens · 1,373 lines | Pending |
+| Go | [8-live-editing](../../stacks/go/8-live-editing) | 14,203 tokens · 1,773 lines | Pending |
 | Python | [8-live-editing](../../stacks/python/8-live-editing) | 8,308 tokens · 1,118 lines | Pending |
 
 **Python:** Django + Django Ninja, with Django associations, migrations and password services; Channels for raw WebSockets; Procrastinate for PostgreSQL jobs. [Why this stack](../../stacks/python/STACK.md).
@@ -30,7 +30,7 @@ Every source link is an immutable checkpoint. “Pass” means the coordinator r
 | [5 · Security](../../steps/5-harden.md) | [9,537](../../stacks/go/5-harden) tokens · [pass](go/5-harden/verification.json) | [5,334](../../stacks/python/5-harden) tokens · [pass](python/5-harden/verification.json) |
 | [6 · Polish](../../steps/6-polish.md) | [9,659](../../stacks/go/6-polish) tokens · [pass](go/6-polish/verification.json) | [5,493](../../stacks/python/6-polish) tokens · [pass](python/6-polish/verification.json) |
 | [7 · Exports](../../steps/7-add-background-job.md) | [11,259](../../stacks/go/7-add-background-job) tokens · [pass](go/7-add-background-job/verification.json) | [6,193](../../stacks/python/7-add-background-job) tokens · [pass](python/7-add-background-job/verification.json) |
-| [8 · Live editing](../../steps/8-live-editing.md) | Pending | [8,308](../../stacks/python/8-live-editing) tokens · [pass](python/8-live-editing/verification.json) |
+| [8 · Live editing](../../steps/8-live-editing.md) | [14,203](../../stacks/go/8-live-editing) tokens · [pass](go/8-live-editing/verification.json) | [8,308](../../stacks/python/8-live-editing) tokens · [pass](python/8-live-editing/verification.json) |
 
 Backend size excludes tests, docs, dependencies, lockfiles and the fixed client. Owned size is the change from the supplied scaffold. Each checkpoint also records whole-app size and tests/docs separately.
 
@@ -40,11 +40,12 @@ Each row describes one exact source snapshot. The eight-step effort is the sum o
 
 | Application | Owned / whole backend tokens | Coding minutes | Uncached + output tokens | Reviewer HTTP parity |
 | --- | ---: | ---: | ---: | --- |
-| [Python · eight steps](../../stacks/python/8-live-editing) | 8,308 / 9,014 | 70.2 | 842,429 | Pending |
+| [Go · eight steps](../../stacks/go/8-live-editing) | 14,203 / 15,746 | 71.0 | 722,152 | Pending |
+| [Python · eight steps](../../stacks/python/8-live-editing) | 8,308 / 9,014 | 70.2 | 842,429 | [20/21 contract · 3/3 quality](python/8-live-editing/reviewer-parity/results.json) · favorites 38/48 · **not full parity** |
 
 ## Try a completed app
 
-With Docker, Node.js and npm installed, these commands build a published step-8 source, create a fresh database, and open the fixed Lit editor. They become available when the corresponding step-8 checkpoint is published. Ctrl-C removes their containers.
+From the repository root, use Docker, Node.js 22.12+ (or 20.19+ on the 20.x line), npm, curl and OpenSSL. These commands work from a fresh clone once the corresponding source checkpoint is published. The script installs client dependencies, builds the backend, creates a fresh database, and prints an editor link to open in several tabs. Ctrl-C cleans up the demo.
 
 ```sh
 tools/lane_demo.sh go
@@ -52,6 +53,8 @@ tools/lane_demo.sh python
 # Or use the independently built expert app:
 tools/lane_demo.sh python one-shot
 ```
+
+Set `DEMO_BACKEND_PORT` and `DEMO_FRONTEND_PORT` to override the localhost ports.
 
 ## Evidence and limits
 
