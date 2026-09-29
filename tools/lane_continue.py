@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 
 import lane_run
+import lane_launch
 import lane_review
 import scrub
 
@@ -60,12 +61,16 @@ def publish(path):
         'original_runner_sha256': lane_run.digest(Path(lane_run.__file__)),
         'coding_inputs_changed': False,
     })
+    launch_record = Path(session['logs']) / 'launch-adapter.json'
+    if launch_record.exists():
+        lane_run.save(Path(session['result']) / 'launch-adapter.json', lane_run.load(launch_record))
 
 
 def install():
     scrub.scrub_file = scrub_events
     lane_run.publish = publish
     lane_run.independently_check = lane_review.independently_check
+    lane_run.launch = lane_launch.launch
 
 
 if __name__ == '__main__':

@@ -14,6 +14,8 @@ The agent receives its application workspace and applicable specification, clien
 
 Each measured session publishes its prompt hash, fixture hash, model, reasoning setting, token usage, elapsed time, check attempts, source manifest, application-size inventory, and independent verification record. Application size uses the supplied scaffold as its baseline. Tests and Markdown are reported separately; the historical line measurer may count Go block comments and Python docstrings as owned code. Token costs depend on prompt caching, and elapsed coding time includes waits for shared coordinator resources.
 
+The coordinator's separate `lane_launch.py` adapter waits for the Docker resource lock before starting the measured clock. This addresses an observed Go step-4 launch timeout: the frozen broker waited for another lane's operation before binding HTTP, exceeding the launcher's ten-second deadline. That attempt started no coding process and remains recorded. The adapter can retry only this specific startup failure while both the transcript and home session directory are absent; it never replays a measured coding session. Queue duration and adapter identity are published separately. Frozen prompts, broker behavior and workspaces remain unchanged.
+
 ## Acceptance and reviewer parity
 
 The independent development check runs the applicable frozen acceptance checks, lint, and tests. From step 3, the independent production check builds the recorded source and starts a fresh database and production container. At step 8 and in each expert one-shot, the frozen checks include the shared HTTP, security, live WebSocket, and browser suites. No agent-authored `bin/check` determines these independent results.
@@ -22,7 +24,9 @@ The independent development check runs the applicable frozen acceptance checks, 
 
 Full reviewer parity requires all **21 contract cases and 3 additional quality cases** to be observed and pass, plus the frozen production gates. The quality cases remain supplemental diagnostics rather than retrospectively added requirements in the measured prompt. A shortened probe caused by an earlier failure is incomplete. Socket contract parity comes from the shared frozen live suites; there is no new stack-specific socket probe. Additional source-driven diagnostics, if needed, must be separately labeled.
 
-Parity output is stored under each session's `reviewer-parity/` directory, with scrubbed logs, probe assertions, source/image hashes, and reviewer-tool hashes. Existing evidence is preserved. A failure is not repaired inside the measured source or silently replaced.
+Parity output is stored under each session's `reviewer-parity/` directory, with scrubbed logs, probe assertions, source/image hashes, and reviewer-tool hashes.
+
+Reviewer startup uses the separately hashed `lane_review.py` adapter to require PostgreSQL TCP readiness. The original Unix-socket check could accept PostgreSQL’s temporary initialization server before application TCP connections were possible; that caused an observed independent Go step-3 startup failure. The final HTTP runner applies the same TCP-only readiness correction around the unchanged benchmark script, whose one-second delay otherwise only masks the race. Workloads, timing windows, measured application source, and frozen agent inputs are unchanged. Socket rounds use the corrected independent production lifecycle. Existing evidence is preserved. A failure is not repaired inside the measured source or silently replaced.
 
 ## Repeated final runtime
 

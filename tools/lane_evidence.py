@@ -24,6 +24,7 @@ from pathlib import Path
 import lane_broker as broker
 import lane_check
 import lane_continue as publication
+import lane_review as reviewer
 import lane_run
 import scrub
 import v2_expert_symmetry_validate as raw_validation
@@ -33,7 +34,7 @@ OUT = ROOT / "results/lanes"
 ENTRIES = (("go", "8"), ("python", "8"), ("go", "one-shot"), ("python", "one-shot"))
 SCENARIOS = set(lane_check.SCENARIOS)
 SOCKET_COUNTS = (10, 100, 500)
-TOOLS = ("lane_evidence.py", "lane_check.py", "lane_broker.py", "lane_continue.py",
+TOOLS = ("lane_evidence.py", "lane_check.py", "lane_broker.py", "lane_continue.py", "lane_review.py",
          "reviewer_common_http_probe.py", "bench/bench.py", "bench/load.js", "bench/seed.py",
          "one_shot_live_bench.py", "live-load.mjs", "v2_expert_symmetry_validate.py", "scrub.py")
 
@@ -110,6 +111,7 @@ def parity_path(session):
 
 
 def parity(session):
+    reviewer.install()
     if session.number != 8:
         raise RuntimeError("Final parity applies to step 8 and expert one-shot sessions")
     dest = parity_path(session)
@@ -199,8 +201,9 @@ def http_round(session, identity, round_number, dest):
     record = {**identity, "round": round_number, "started": broker.stamp(), "exit": 1,
               "tools_sha256": tool_hashes(), "raw_stream_sha256": {}, "warmup": "3s"}
     try:
-        code, text = broker.command([sys.executable, str(ROOT / "tools/bench/bench.py"),
-                                      session.production_image, label, str(scratch)], env=env, timeout=3600)
+        code, text = broker.command([sys.executable, str(Path(__file__).resolve()), "_http",
+                                      "--image", session.production_image, "--label", label,
+                                      "--output", str(scratch)], env=env, timeout=3600)
         (scratch / "runner.log").write_text(text)
         write_text(dest / "runner.log", text, session)
         data = load(scratch / "results.json")
@@ -231,6 +234,25 @@ def http_round(session, identity, round_number, dest):
     if record["passed"]:
         shutil.rmtree(scratch)  # synthetic seed credentials are never exported
     return record
+
+
+def benchmark_worker(image, label, output):
+    """Run the frozen benchmark, correcting only its observed PG startup race."""
+    import runpy
+    original = subprocess.run
+
+    def tcp_ready(args, *positional, **kwargs):
+        if isinstance(args, (list, tuple)) and "pg_isready" in args and "-h" not in args and "--host" not in args:
+            args = [*args, "-h", "127.0.0.1"]
+        return original(args, *positional, **kwargs)
+
+    subprocess.run = tcp_ready
+    try:
+        path = ROOT / "tools/bench/bench.py"
+        sys.argv = [str(path), image, label, str(output)]
+        runpy.run_path(str(path), run_name="__main__")
+    finally:
+        subprocess.run = original
 
 
 def socket_worker(port, app):
@@ -276,6 +298,7 @@ def socket_round(session, identity, round_number, dest):
 
 
 def runtime(sessions, condition="measured"):
+    reviewer.install()
     dest = OUT / "runtime" / condition
     if dest.exists():
         raise RuntimeError(f"Preserving existing runtime evidence: {dest}")
@@ -546,15 +569,21 @@ def comprehension_run(session, answer_key):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("parity", "runtime", "validate", "comprehension-prepare", "comprehension-run", "_socket"))
+    parser.add_argument("action", choices=("parity", "runtime", "validate", "comprehension-prepare", "comprehension-run", "_socket", "_http"))
     parser.add_argument("--session", type=Path, action="append")
     parser.add_argument("--answer-key", type=Path)
     parser.add_argument("--condition", choices=("measured", "reference"), default="measured")
     parser.add_argument("--port", type=int)
     parser.add_argument("--app")
+    parser.add_argument("--image")
+    parser.add_argument("--label")
+    parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     if args.action == "_socket":
         socket_worker(args.port, args.app)
+        return 0
+    if args.action == "_http":
+        benchmark_worker(args.image, args.label, args.output)
         return 0
     if args.action == "validate":
         validate(args.condition)
