@@ -1,0 +1,198 @@
+package conduit
+
+import (
+	"context"
+	"database/sql"
+	"encoding/json"
+	"errors"
+	"io"
+	"log/slog"
+	"net/http"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/uptrace/bun"
+)
+
+type App struct {
+	db     *bun.DB
+	secret []byte
+}
+
+type viewerKey struct{}
+
+type endpoint func(http.ResponseWriter, *http.Request) error
+
+type apiError struct {
+	status int
+	field  string
+	text   string
+}
+
+func (e apiError) Error() string { return e.field + ": " + e.text }
+
+func invalid(field string) error {
+	return apiError{http.StatusUnprocessableEntity, field, "can't be blank"}
+}
+func missing(field string) error   { return apiError{http.StatusNotFound, field, "not found"} }
+func forbidden(field string) error { return apiError{http.StatusForbidden, field, "forbidden"} }
+
+func New(db *bun.DB, secret string) http.Handler {
+	a := &App{db: db, secret: []byte(secret)}
+	r := chi.NewRouter()
+	r.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Headers", "Authorization, Content-Type")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			if r.Method == http.MethodOptions {
+				w.WriteHeader(http.StatusNoContent)
+				return
+			}
+			next.ServeHTTP(w, r)
+		})
+	})
+	r.Route("/api", func(r chi.Router) {
+		a.route(r, "POST", "/users", false, a.register)
+		a.route(r, "POST", "/users/login", false, a.login)
+		a.route(r, "GET", "/user", true, a.currentUser)
+		a.route(r, "PUT", "/user", true, a.updateUser)
+		a.route(r, "GET", "/profiles/{username}", false, a.getProfile)
+		a.route(r, "POST", "/profiles/{username}/follow", true, a.setFollow)
+		a.route(r, "DELETE", "/profiles/{username}/follow", true, a.setFollow)
+		a.route(r, "GET", "/articles", false, a.listArticles)
+		a.route(r, "GET", "/articles/feed", true, a.feed)
+		a.route(r, "POST", "/articles", true, a.createArticle)
+		a.route(r, "GET", "/articles/{slug}", false, a.getArticle)
+		a.route(r, "PUT", "/articles/{slug}", true, a.updateArticle)
+		a.route(r, "DELETE", "/articles/{slug}", true, a.deleteArticle)
+		a.route(r, "POST", "/articles/{slug}/favorite", true, a.setFavorite)
+		a.route(r, "DELETE", "/articles/{slug}/favorite", true, a.setFavorite)
+		a.route(r, "GET", "/articles/{slug}/comments", false, a.listComments)
+		a.route(r, "POST", "/articles/{slug}/comments", true, a.createComment)
+		a.route(r, "DELETE", "/articles/{slug}/comments/{id}", true, a.deleteComment)
+		a.route(r, "GET", "/tags", false, a.tags)
+	})
+	return r
+}
+
+func (a *App) route(r chi.Router, method, path string, required bool, fn endpoint) {
+	r.MethodFunc(method, path, func(w http.ResponseWriter, r *http.Request) {
+		viewer, err := a.authenticate(r)
+		if err == nil && required && viewer == nil {
+			err = apiError{http.StatusUnauthorized, "token", "is missing"}
+		}
+		if err == nil {
+			err = fn(w, r.WithContext(context.WithValue(r.Context(), viewerKey{}, viewer)))
+		}
+		if err != nil {
+			var api apiError
+			if !errors.As(err, &api) {
+				slog.Error("request failed", "method", r.Method, "path", r.URL.Path, "error", err)
+				api = apiError{http.StatusInternalServerError, "body", "internal error"}
+			}
+			write(w, api.status, map[string]any{"errors": map[string][]string{api.field: {api.text}}})
+		}
+	})
+}
+
+func (a *App) authenticate(r *http.Request) (*User, error) {
+	header := r.Header.Get("Authorization")
+	if header == "" {
+		return nil, nil
+	}
+	if !strings.HasPrefix(header, "Token ") {
+		return nil, apiError{http.StatusUnauthorized, "token", "is invalid"}
+	}
+	claims := new(jwt.RegisteredClaims)
+	_, err := jwt.ParseWithClaims(strings.TrimPrefix(header, "Token "), claims, func(t *jwt.Token) (any, error) {
+		if t.Method.Alg() != jwt.SigningMethodHS256.Alg() {
+			return nil, errors.New("unexpected signing method")
+		}
+		return a.secret, nil
+	})
+	if err != nil {
+		return nil, apiError{http.StatusUnauthorized, "token", "is invalid"}
+	}
+	id, err := strconv.ParseInt(claims.Subject, 10, 64)
+	if err != nil {
+		return nil, apiError{http.StatusUnauthorized, "token", "is invalid"}
+	}
+	user, err := a.userByID(r.Context(), id)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, apiError{http.StatusUnauthorized, "token", "is invalid"}
+	}
+	return user, err
+}
+
+func viewer(r *http.Request) *User {
+	user, _ := r.Context().Value(viewerKey{}).(*User)
+	return user
+}
+
+func (a *App) token(user *User) (string, error) {
+	claims := jwt.RegisteredClaims{Subject: strconv.FormatInt(user.ID, 10), ExpiresAt: jwt.NewNumericDate(time.Now().Add(30 * 24 * time.Hour))}
+	return jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString(a.secret)
+}
+
+func write(w http.ResponseWriter, status int, body any) {
+	if body != nil {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	}
+	w.WriteHeader(status)
+	if body != nil {
+		_ = json.NewEncoder(w).Encode(body)
+	}
+}
+
+func decodeObject(r *http.Request, name string) (map[string]json.RawMessage, error) {
+	var envelope map[string]json.RawMessage
+	if err := json.NewDecoder(io.LimitReader(r.Body, 1<<20)).Decode(&envelope); err != nil {
+		return nil, apiError{http.StatusUnprocessableEntity, "body", "can't be empty"}
+	}
+	var fields map[string]json.RawMessage
+	if err := json.Unmarshal(envelope[name], &fields); err != nil || fields == nil {
+		return nil, apiError{http.StatusUnprocessableEntity, "body", "can't be empty"}
+	}
+	return fields, nil
+}
+
+func stringField(fields map[string]json.RawMessage, name string) (string, bool, error) {
+	raw, present := fields[name]
+	if !present {
+		return "", false, nil
+	}
+	var value string
+	if err := json.Unmarshal(raw, &value); err != nil || strings.TrimSpace(value) == "" {
+		return "", true, invalid(name)
+	}
+	return value, true, nil
+}
+
+func requiredString(fields map[string]json.RawMessage, name string) (string, error) {
+	value, _, err := stringField(fields, name)
+	if err != nil || value == "" {
+		return "", invalid(name)
+	}
+	return value, nil
+}
+
+func nullableString(fields map[string]json.RawMessage, name string, value **string) error {
+	raw, ok := fields[name]
+	if !ok {
+		return nil
+	}
+	var s *string
+	if err := json.Unmarshal(raw, &s); err != nil {
+		return invalid(name)
+	}
+	if s != nil && *s == "" {
+		*value = nil
+	} else {
+		*value = s
+	}
+	return nil
+}
