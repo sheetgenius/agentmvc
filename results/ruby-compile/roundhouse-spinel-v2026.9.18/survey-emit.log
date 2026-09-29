@@ -1,0 +1,26 @@
+roundhouse: treeshake (spinel): dropped 28 runtime defs + 153 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/articles_controller.rb:28:14: error[send_dispatch_failed]: no known method `fetch` on String?
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/articles_controller.rb:30:12: error[send_dispatch_failed]: no known method `fetch` on String?
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/articles_controller.rb:32:27: error[send_dispatch_failed]: no known method `permit` on String?
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/articles_controller.rb:42:33: error[send_dispatch_failed]: no known method `to_unsafe_h` on String?
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/comments_controller.rb:7:32: error[send_dispatch_failed]: no known method `to_set` on Array[Integer]
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/exports_controller.rb:17:63: error[send_dispatch_failed]: no known method `articles` on ArticleExport?
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/shares_controller.rb:12:5: error[send_dispatch_failed]: no known method `with_lock` on Article?
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/shares_controller.rb:24:59: error[send_dispatch_failed]: no known method `keys` on String?
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/shares_controller.rb:25:39: error[send_dispatch_failed]: no known method `to_unsafe_h` on String?
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/users_controller.rb:4:21: error[send_dispatch_failed]: no known method `permit` on String?
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/users_controller.rb:7:11: error[send_dispatch_failed]: no known method `of_kind?` on ActiveModel::Errors
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/users_controller.rb:7:54: error[send_dispatch_failed]: no known method `of_kind?` on ActiveModel::Errors
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/users_controller.rb:8:30: error[send_dispatch_failed]: no known method `to_hash` on ActiveModel::Errors
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/users_controller.rb:10:30: error[send_dispatch_failed]: no known method `to_hash` on ActiveModel::Errors
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/users_controller.rb:38:27: error[send_dispatch_failed]: no known method `permit` on String?
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/users_controller.rb:45:13: error[send_dispatch_failed]: no known method `encode` on JWT
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/models/article_share.rb:9:5: error[send_dispatch_failed]: no known method `with_lock` on Article?
+roundhouse: results/one-shot-v2-rails-expert/pilot-1/source/app/models/article_share.rb:19:5: error[send_dispatch_failed]: no known method `secure_compare` on ActiveSupport::SecurityUtils
+roundhouse: 139 analyze warning(s) not shown — rerun with --allow-unsupported to list them
+
+── Survey: 1 ingest gap(s), 1 distinct kind(s) ──
+  [1×] unsupported expression node: ClassNode
+        results/one-shot-v2-rails-expert/pilot-1/source/app/controllers/application_controller.rb
+roundhouse: 1 ingest gap(s) recorded; 17 diagnostic(s) attributed to them
+roundhouse: 0 unsupported/syntax error(s), 18 type error(s) — rerun with --allow-unsupported to write the output anyway
