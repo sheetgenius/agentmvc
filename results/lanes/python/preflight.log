@@ -1,0 +1,600 @@
+$ docker build -f <repo>/stacks/python/Dockerfile.toolchain -t agentmvc-python-toolchain:preflight <repo>/stacks/python
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.toolchain
+#1 transferring dockerfile: 605B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.14.7-slim-bookworm@sha256:82bc3c539b8813ada9d68c63b40158fa002f7f33de9bf3312a3dfdc0620dff56
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 96B done
+#3 DONE 0.0s
+
+#4 [1/6] FROM docker.io/library/python:3.14.7-slim-bookworm@sha256:82bc3c539b8813ada9d68c63b40158fa002f7f33de9bf3312a3dfdc0620dff56
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 969B done
+#5 DONE 0.0s
+
+#6 [3/6] RUN pip install --no-cache-dir uv==0.12.20
+#6 CACHED
+
+#7 [2/6] RUN apt-get update && apt-get install -y --no-install-recommends     build-essential libpq-dev git ca-certificates curl ripgrep     && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [4/6] WORKDIR /work/app
+#8 CACHED
+
+#9 [5/6] COPY scaffold/pyproject.toml scaffold/uv.lock ./
+#9 DONE 0.1s
+
+#10 [6/6] RUN uv sync --frozen
+#10 0.163 Using CPython 3.14.7 interpreter at: /usr/local/bin/python3
+#10 0.163 Creating virtual environment at: /opt/venv
+#10 1.601 Downloading pydantic-core (1.9MiB)
+#10 1.601 Downloading ruff (9.6MiB)
+#10 1.846 Downloading django (8.0MiB)
+#10 1.847 Downloading pip (1.7MiB)
+#10 1.847 Downloading django-ninja (2.3MiB)
+#10 1.847 Downloading pygments (1.2MiB)
+#10 1.847 Downloading uvloop (4.1MiB)
+#10 1.848 Downloading psycopg-binary (6.5MiB)
+#10 4.562  Downloaded pygments
+#10 5.009  Downloaded pip
+#10 5.119  Downloaded pydantic-core
+#10 5.275  Downloaded django-ninja
+#10 6.893  Downloaded uvloop
+#10 7.940  Downloaded psycopg-binary
+#10 8.234  Downloaded django
+#10 8.473  Downloaded ruff
+#10 8.473 Prepared 71 packages in 8.30s
+#10 8.928 Installed 71 packages in 454ms
+#10 8.928  + annotated-types==0.8.0
+#10 8.928  + anyio==4.15.1
+#10 8.928  + argon2-cffi==25.1.0
+#10 8.928  + argon2-cffi-bindings==26.1.0
+#10 8.928  + asgiref==3.12.1
+#10 8.928  + attrs==26.1.0
+#10 8.928  + bandit==1.9.4
+#10 8.928  + boolean-py==5.0
+#10 8.928  + cachecontrol==0.14.4
+#10 8.928  + certifi==2026.7.22
+#10 8.928  + cffi==2.1.1
+#10 8.928  + channels==4.3.2
+#10 8.928  + charset-normalizer==3.5.1
+#10 8.928  + click==8.5.0
+#10 8.928  + croniter==6.2.4
+#10 8.928  + cyclonedx-python-lib==11.12.0
+#10 8.928  + defusedxml==0.7.1
+#10 8.928  + dj-database-url==3.1.2
+#10 8.928  + django==6.1.1
+#10 8.928  + django-ninja==1.7.1
+#10 8.928  + filelock==4.0.6
+#10 8.928  + h11==0.16.0
+#10 8.928  + httpcore==1.0.9
+#10 8.928  + httptools==0.8.0
+#10 8.928  + httpx==0.28.1
+#10 8.928  + idna==3.20
+#10 8.928  + iniconfig==2.3.0
+#10 8.928  + license-expression==30.4.4
+#10 8.928  + markdown-it-py==4.2.0
+#10 8.928  + mdurl==0.1.2
+#10 8.928  + msgpack==1.2.3
+#10 8.928  + packageurl-python==0.17.6
+#10 8.928  + packaging==26.3
+#10 8.928  + pip==26.2.1
+#10 8.928  + pip-api==0.0.35
+#10 8.928  + pip-audit==2.10.1
+#10 8.928  + pip-requirements-parser==32.0.1
+#10 8.928  + platformdirs==4.12.1
+#10 8.928  + pluggy==1.6.0
+#10 8.928  + procrastinate==3.10.0
+#10 8.928  + psycopg==3.3.6
+#10 8.928  + psycopg-binary==3.3.6
+#10 8.928  + psycopg-pool==3.3.3
+#10 8.928  + py-serializable==2.1.0
+#10 8.928  + pycparser==3.0
+#10 8.928  + pydantic==2.13.5
+#10 8.928  + pydantic-core==2.46.5
+#10 8.928  + pygments==2.21.0
+#10 8.928  + pyjwt==2.15.1
+#10 8.928  + pyparsing==3.3.3
+#10 8.928  + pytest==9.1.1
+#10 8.928  + pytest-django==4.14.0
+#10 8.928  + python-dateutil==2.9.0.post0
+#10 8.928  + python-dotenv==1.2.3
+#10 8.928  + pyyaml==6.0.3
+#10 8.928  + requests==2.34.2
+#10 8.928  + rich==15.0.0
+#10 8.928  + ruff==0.16.9
+#10 8.928  + six==1.17.0
+#10 8.928  + sortedcontainers==2.4.0
+#10 8.928  + sqlparse==0.6.0
+#10 8.928  + stevedore==5.9.1
+#10 8.928  + tomli==2.4.1
+#10 8.928  + tomli-w==1.2.0
+#10 8.928  + typing-extensions==4.16.0
+#10 8.928  + typing-inspection==0.4.4
+#10 8.928  + urllib3==2.8.0
+#10 8.928  + uvicorn==0.54.0
+#10 8.928  + uvloop==0.22.1
+#10 8.928  + watchfiles==1.3.0
+#10 8.928  + websockets==17.1
+#10 DONE 9.6s
+
+#11 exporting to image
+#11 exporting layers
+#11 exporting layers 0.9s done
+#11 writing image sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3 done
+#11 naming to docker.io/library/agentmvc-python-toolchain:preflight done
+#11 DONE 0.9s
+
+$ docker image inspect agentmvc-python-toolchain:preflight --format {{.Id}}
+sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3
+
+$ docker network create agentmvc-python-preflight-1790705851-net
+af7dbd7ebed66684a27ad0543b0cee44b04d9ae52c7fe14a2a8781a8b6ab6d5d
+
+$ docker run -d --name agentmvc-python-preflight-1790705851-db --network agentmvc-python-preflight-1790705851-net -e POSTGRES_USER=agentmvc -e POSTGRES_PASSWORD=agentmvc -e POSTGRES_DB=preflight postgres:17
+17a6c2817dbef2c6c99e241096993684b83444b1ec6cef6f8b2c332eba7d4b3e
+
+$ docker exec agentmvc-python-preflight-1790705851-db pg_isready -U agentmvc
+/var/run/postgresql:5432 - no response
+
+$ docker exec agentmvc-python-preflight-1790705851-db pg_isready -U agentmvc
+/var/run/postgresql:5432 - no response
+
+$ docker exec agentmvc-python-preflight-1790705851-db pg_isready -U agentmvc
+/var/run/postgresql:5432 - no response
+
+$ docker exec agentmvc-python-preflight-1790705851-db pg_isready -U agentmvc
+/var/run/postgresql:5432 - no response
+
+$ docker exec agentmvc-python-preflight-1790705851-db pg_isready -U agentmvc
+/var/run/postgresql:5432 - no response
+
+$ docker exec agentmvc-python-preflight-1790705851-db pg_isready -U agentmvc
+/var/run/postgresql:5432 - no response
+
+$ docker exec agentmvc-python-preflight-1790705851-db pg_isready -U agentmvc
+/var/run/postgresql:5432 - accepting connections
+
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python -c import json,sys,importlib.metadata as m; print(json.dumps({'python':sys.version.split()[0], **{n:m.version(n) for n in ['Django','django-ninja','channels','procrastinate','psycopg','uvicorn','PyJWT']}}))
+{"python": "3.14.7", "Django": "6.1.1", "django-ninja": "1.7.1", "channels": "4.3.2", "procrastinate": "3.10.0", "psycopg": "3.3.6", "uvicorn": "0.54.0", "PyJWT": "2.15.1"}
+
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight uv --version
+uv 0.12.20 (aarch64-unknown-linux-gnu)
+
+$ docker inspect agentmvc-python-preflight-1790705851-db --format {{.Image}}
+sha256:48d29282d2b43c402465c28f8572021b59aaf43574056faaad2fd7bb85ffdd4e
+
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python manage.py check
+System check identified no issues (0 silenced).
+
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight ruff check .
+All checks passed!
+
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight ruff format --check .
+7 files already formatted
+
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python manage.py makemigrations probe
+Migrations for 'probe':
+  probe/migrations/0001_initial.py
+    + Create model Probe
+
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python manage.py migrate --noinput
+Operations to perform:
+  Apply all migrations: auth, contenttypes, probe, procrastinate
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying probe.0001_initial... OK
+  Applying procrastinate.0001_initial... OK
+  Applying procrastinate.0002_drop_started_at_column... OK
+  Applying procrastinate.0003_drop_started_at_column... OK
+  Applying procrastinate.0004_drop_procrastinate_version_table... OK
+  Applying procrastinate.0005_fix_procrastinate_fetch_job... OK
+  Applying procrastinate.0006_fix_trigger_status_events_insert... OK
+  Applying procrastinate.0007_add_queueing_lock_column... OK
+  Applying procrastinate.0008_close_fetch_job_race_condition... OK
+  Applying procrastinate.0009_add_defer_job_function... OK
+  Applying procrastinate.0010_add_procrastinate_periodic_defers... OK
+  Applying procrastinate.0011_add_foreign_key_index... OK
+  Applying procrastinate.0012_add_locks_to_periodic_defer... OK
+  Applying procrastinate.0013_fix_procrastinate_defer_periodic_job... OK
+  Applying procrastinate.0014_add_finish_job_and_retry_job_functions... OK
+  Applying procrastinate.0015_add_trigger_on_job_deletion... OK
+  Applying procrastinate.0016_delete_finished_jobs... OK
+  Applying procrastinate.0017_add_checks_to_finish_job... OK
+  Applying procrastinate.0018_add_checks_to_retry_job... OK
+  Applying procrastinate.0019_fix_finish_job_compat_issue... OK
+  Applying procrastinate.0020_add_index_on_procrastinate_jobs... OK
+  Applying procrastinate.0021_add_kwargs_to_defer_periodic_job... OK
+  Applying procrastinate.0022_null_locks_excluded... OK
+  Applying procrastinate.0023_remove_old_finish_job_function... OK
+  Applying procrastinate.0024_job_id_bigint... OK
+  Applying procrastinate.0025_add_models... OK
+  Applying procrastinate.0026_add_job_priority... OK
+  Applying procrastinate.0027_add_periodic_job_priority... OK
+  Applying procrastinate.0028_add_cancel_states... OK
+  Applying procrastinate.0029_add_additional_params_to_retry_job... OK
+  Applying procrastinate.0030_alter_procrastinateevent_options... OK
+  Applying procrastinate.0031_add_indexes_for_fetch_job... OK
+  Applying procrastinate.0032_pre_cancel_notification... OK
+  Applying procrastinate.0033_post_cancel_notification... OK
+  Applying procrastinate.0034_pre_add_heartbeat... OK
+  Applying procrastinate.0035_post_add_heartbeat... OK
+  Applying procrastinate.0036_add_worker_model... OK
+  Applying procrastinate.0037_pre_batch_defer_jobs... OK
+  Applying procrastinate.0038_post_batch_defer_jobs... OK
+  Applying procrastinate.0039_pre_priority_lock_fetch_job... OK
+  Applying procrastinate.0040_pre_retry_failed_job... OK
+  Applying procrastinate.0041_post_retry_failed_job... OK
+
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python manage.py shell -c from django.db import transaction; from probe.models import Probe; from probe.tasks import mark; from procrastinate.contrib.django.models import ProcrastinateJob; before=ProcrastinateJob.objects.count(); exec('try:\n with transaction.atomic():\n  p=Probe.objects.create()\n  mark.defer(pk=p.pk)\n  raise ValueError()\nexcept ValueError: pass'); assert Probe.objects.count()==0; assert ProcrastinateJob.objects.count()==before
+15 objects imported automatically (use -v 2 for details).
+
+
+$ docker run -d --name agentmvc-python-preflight-1790705851-dev --cpus 2 --memory 1g --network agentmvc-python-preflight-1790705851-net -p 127.0.0.1:4111:4111 -v <repo>/.work/python-preflight-1790705851/app:/work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret -e PORT=4111 agentmvc-python-toolchain:preflight bash bin/dev
+13b7871fcf0df8ac7e23793faa741456f6d5889a917118a9cc2715082f10b787
+
+$ docker exec agentmvc-python-preflight-1790705851-dev python -c from websockets.sync.client import connect; import json; s=connect('ws://127.0.0.1:4111/_preflight/echo'); s.send(json.dumps({'text':'東京 café'})); assert json.loads(s.recv()) == {'text':'東京 café'}; s.close()
+<string>:1: DeprecationWarning: connect() must be used as a context manager: with connect(...) as websocket: ...; alternatively, use websocket = connect(..., legacy=True) to connect directly
+
+$ docker exec agentmvc-python-preflight-1790705851-dev python manage.py shell -c from django.db import transaction; from probe.models import Probe; from probe.tasks import mark; exec('with transaction.atomic():\n p=Probe.objects.create()\n mark.defer(pk=p.pk)'); print('PROBE_ID='+str(p.pk))
+15 objects imported automatically (use -v 2 for details).
+
+PROBE_ID=2
+
+$ docker exec agentmvc-python-preflight-1790705851-dev python manage.py shell -c from probe.models import Probe; print('DONE='+str(Probe.objects.get(pk=2).done))
+15 objects imported automatically (use -v 2 for details).
+
+DONE=True
+
+$ docker rm -f agentmvc-python-preflight-1790705851-dev
+agentmvc-python-preflight-1790705851-dev
+
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python manage.py shell -c from probe.models import Probe; from probe.tasks import mark; p=Probe.objects.create(); mark.defer(pk=p.pk); print(p.pk)
+15 objects imported automatically (use -v 2 for details).
+
+3
+
+$ docker run -d --name agentmvc-python-preflight-1790705851-dev --cpus 2 --memory 1g --network agentmvc-python-preflight-1790705851-net -p 127.0.0.1:4111:4111 -v <repo>/.work/python-preflight-1790705851/app:/work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret -e PORT=4111 agentmvc-python-toolchain:preflight bash bin/dev
+89a1dfd1d27f85e8d338f2e08b0af03c497b522a05fc87b6edf24c51d13421ab
+
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python manage.py shell -c import time; from probe.models import Probe; exec('for _ in range(50):\n if not Probe.objects.filter(done=False).exists(): break\n time.sleep(.1)'); assert not Probe.objects.filter(done=False).exists()
+15 objects imported automatically (use -v 2 for details).
+
+
+$ docker rm -f agentmvc-python-preflight-1790705851-dev
+agentmvc-python-preflight-1790705851-dev
+
+$ docker build -t agentmvc-python-preflight-1790705851:production <repo>/.work/python-preflight-1790705851/app
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 675B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.14.7-slim-bookworm@sha256:82bc3c539b8813ada9d68c63b40158fa002f7f33de9bf3312a3dfdc0620dff56
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 137B done
+#3 DONE 0.0s
+
+#4 [builder 1/5] FROM docker.io/library/python:3.14.7-slim-bookworm@sha256:82bc3c539b8813ada9d68c63b40158fa002f7f33de9bf3312a3dfdc0620dff56
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 4.25kB done
+#5 DONE 0.0s
+
+#6 [builder 2/5] RUN pip install --no-cache-dir uv==0.12.20
+#6 CACHED
+
+#7 [builder 3/5] WORKDIR /app
+#7 CACHED
+
+#8 [builder 4/5] COPY pyproject.toml uv.lock ./
+#8 DONE 0.1s
+
+#9 [builder 5/5] RUN uv sync --frozen --no-dev --no-cache --compile-bytecode
+#9 0.151 Using CPython 3.14.7 interpreter at: /usr/local/bin/python3
+#9 0.151 Creating virtual environment at: .venv
+#9 1.536 Downloading django (8.0MiB)
+#9 1.536 Downloading uvloop (4.1MiB)
+#9 1.732 Downloading pydantic-core (1.9MiB)
+#9 1.763 Downloading psycopg-binary (6.5MiB)
+#9 1.974 Downloading django-ninja (2.3MiB)
+#9 3.023  Downloaded pydantic-core
+#9 3.202  Downloaded django-ninja
+#9 3.602  Downloaded uvloop
+#9 3.834  Downloaded psycopg-binary
+#9 4.117  Downloaded django
+#9 4.117 Prepared 36 packages in 3.96s
+#9 4.525 Installed 36 packages in 407ms
+#9 4.834 Bytecode compiled 1664 files in 308ms
+#9 4.834  + annotated-types==0.8.0
+#9 4.834  + anyio==4.15.1
+#9 4.834  + argon2-cffi==25.1.0
+#9 4.834  + argon2-cffi-bindings==26.1.0
+#9 4.834  + asgiref==3.12.1
+#9 4.834  + attrs==26.1.0
+#9 4.834  + cffi==2.1.1
+#9 4.834  + channels==4.3.2
+#9 4.834  + click==8.5.0
+#9 4.834  + croniter==6.2.4
+#9 4.834  + dj-database-url==3.1.2
+#9 4.834  + django==6.1.1
+#9 4.834  + django-ninja==1.7.1
+#9 4.834  + h11==0.16.0
+#9 4.834  + httptools==0.8.0
+#9 4.834  + idna==3.20
+#9 4.834  + packaging==26.3
+#9 4.834  + procrastinate==3.10.0
+#9 4.834  + psycopg==3.3.6
+#9 4.834  + psycopg-binary==3.3.6
+#9 4.834  + psycopg-pool==3.3.3
+#9 4.834  + pycparser==3.0
+#9 4.834  + pydantic==2.13.5
+#9 4.834  + pydantic-core==2.46.5
+#9 4.834  + pyjwt==2.15.1
+#9 4.834  + python-dateutil==2.9.0.post0
+#9 4.834  + python-dotenv==1.2.3
+#9 4.834  + pyyaml==6.0.3
+#9 4.834  + six==1.17.0
+#9 4.834  + sqlparse==0.6.0
+#9 4.834  + typing-extensions==4.16.0
+#9 4.834  + typing-inspection==0.4.4
+#9 4.834  + uvicorn==0.54.0
+#9 4.834  + uvloop==0.22.1
+#9 4.834  + watchfiles==1.3.0
+#9 4.834  + websockets==17.1
+#9 DONE 5.3s
+
+#10 [stage-1 2/5] WORKDIR /app
+#10 CACHED
+
+#11 [stage-1 3/5] COPY --from=builder /app/.venv /app/.venv
+#11 DONE 0.4s
+
+#12 [stage-1 4/5] COPY . .
+#12 DONE 0.1s
+
+#13 [stage-1 5/5] RUN python -m compileall -q /app && useradd --create-home --uid 10001 app && chown -R app:app /app
+#13 DONE 0.6s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 0.5s done
+#14 writing image sha256:6dcc4739ce11905b378cced474ce9813a6b99598ac2c446e872026e9e92c38e8 done
+#14 naming to docker.io/library/agentmvc-python-preflight-1790705851:production done
+#14 DONE 0.5s
+
+$ docker exec agentmvc-python-preflight-1790705851-db createdb -U agentmvc production
+
+$ docker run -d --name agentmvc-python-preflight-1790705851-prod --cpus 2 --memory 1g --network agentmvc-python-preflight-1790705851-net -p 127.0.0.1:4111:4111 -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/production -e SECRET_KEY_BASE=preflight-production-secret -e PORT=4111 agentmvc-python-preflight-1790705851:production
+bb8d201ae419c810b55a13066e47968cc4aa011faf823021cad0069f498c0317
+
+$ docker exec agentmvc-python-preflight-1790705851-prod python -c from websockets.sync.client import connect; import json; s=connect('ws://127.0.0.1:4111/_preflight/echo'); s.send(json.dumps({'text':'東京 café'})); assert json.loads(s.recv()) == {'text':'東京 café'}; s.close()
+<string>:1: DeprecationWarning: connect() must be used as a context manager: with connect(...) as websocket: ...; alternatively, use websocket = connect(..., legacy=True) to connect directly
+
+$ docker exec agentmvc-python-preflight-1790705851-prod python manage.py shell -c from django.db import transaction; from probe.models import Probe; from probe.tasks import mark; exec('with transaction.atomic():\n p=Probe.objects.create()\n mark.defer(pk=p.pk)'); print('PROBE_ID='+str(p.pk))
+15 objects imported automatically (use -v 2 for details).
+
+PROBE_ID=1
+
+$ docker exec agentmvc-python-preflight-1790705851-prod python manage.py shell -c from probe.models import Probe; print('DONE='+str(Probe.objects.get(pk=1).done))
+15 objects imported automatically (use -v 2 for details).
+
+DONE=True
+
+$ docker exec agentmvc-python-preflight-1790705851-prod python -c import os,importlib.util; assert os.getuid()!=0; assert importlib.util.find_spec('ruff') is None; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings'); from django.contrib.auth.hashers import make_password,check_password; import django; django.setup(); assert check_password('東京 café',make_password('東京 café'))
+
+$ docker image inspect agentmvc-python-preflight-1790705851:production
+[
+    {
+        "Id": "sha256:6dcc4739ce11905b378cced474ce9813a6b99598ac2c446e872026e9e92c38e8",
+        "RepoTags": [
+            "agentmvc-python-preflight-1790705851:production"
+        ],
+        "RepoDigests": [],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-09-30T02:18:05.383342159+08:00",
+        "Config": {
+            "User": "app",
+            "Env": [
+                "PATH=/app/.venv/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "PYTHON_VERSION=3.14.7",
+                "PYTHON_SHA256=3b48dac8fb59f62eaa67ac83c1eb12bda1b7a08406dd286e252c11a66be27f81",
+                "PYTHONUNBUFFERED=1",
+                "PYTHONDONTWRITEBYTECODE=1"
+            ],
+            "Cmd": [
+                "./bin/serve"
+            ],
+            "WorkingDir": "/app",
+            "ArgsEscaped": true
+        },
+        "Architecture": "arm64",
+        "Os": "linux",
+        "Size": 373410759,
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/lj93i5iyhnyatiguqqe2q7jyd/diff:/var/lib/docker/overlay2/uc7whf5rcysf9kmjk27cxwglf/diff:/var/lib/docker/overlay2/o66xxwtbqopaf0g74gqbu70gm/diff:/var/lib/docker/overlay2/1300f69c12a367b21d83b5a992e91fae1a5e8799d5ce8f46f6b1c55b894f2427/diff:/var/lib/docker/overlay2/9c0f6e0221b9a8fea6c55e2d5f3ed29fd442f66eafd11b3ae5a0fda1f2cfbade/diff:/var/lib/docker/overlay2/5cafe450d78a9073fa37236d1073b5f365b9399ac7629c99833a64ad24b53205/diff:/var/lib/docker/overlay2/b2f0dd819c09a623d37efc31913f6ecaaf25e168fc3f04a9d57e24ae5c98cc74/diff",
+                "MergedDir": "/var/lib/docker/overlay2/jb388inv90s0101vwz7tskke6/merged",
+                "UpperDir": "/var/lib/docker/overlay2/jb388inv90s0101vwz7tskke6/diff",
+                "WorkDir": "/var/lib/docker/overlay2/jb388inv90s0101vwz7tskke6/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:055ab12bd547e17a0630037f06a186cf405e3f61bb03a614562ca8f5ab52a8be",
+                "sha256:753e476ed7f12ee33c3133a60e1e8dbb43d4cc28159abd3f97defc4092025e77",
+                "sha256:092e7c3a12ec4da5f81a42cfbec9abba39d501faebb61baea4b8e9e6b8c4895e",
+                "sha256:ef2a4cea11ecc7d69fabf109d73edffce7c5139ada3c4a2da7e7ec3726e76885",
+                "sha256:6c0e97f22119989993adb34faf14552b283a09b77efade13524f4060146e49e5",
+                "sha256:e3ee8f2e3dbc631f8af58802549133cc60af79d3659de5d6be1f3edfc5c058d2",
+                "sha256:39b623c6a5a3f60316f6a54b83daf2036e1541bba102cd46290455b6c949814c",
+                "sha256:e6dd4db31514096f9840cf460e28e29d008c3caa27e624911831907a5cfc6015"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-09-30T02:18:05.882868991+08:00"
+        }
+    }
+]
+
+$ docker logs agentmvc-python-preflight-1790705851-prod
+Operations to perform:
+  Apply all migrations: auth, contenttypes, probe, procrastinate
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying probe.0001_initial... OK
+  Applying procrastinate.0001_initial... OK
+  Applying procrastinate.0002_drop_started_at_column... OK
+  Applying procrastinate.0003_drop_started_at_column... OK
+  Applying procrastinate.0004_drop_procrastinate_version_table... OK
+  Applying procrastinate.0005_fix_procrastinate_fetch_job... OK
+  Applying procrastinate.0006_fix_trigger_status_events_insert... OK
+  Applying procrastinate.0007_add_queueing_lock_column... OK
+  Applying procrastinate.0008_close_fetch_job_race_condition... OK
+  Applying procrastinate.0009_add_defer_job_function... OK
+  Applying procrastinate.0010_add_procrastinate_periodic_defers... OK
+  Applying procrastinate.0011_add_foreign_key_index... OK
+  Applying procrastinate.0012_add_locks_to_periodic_defer... OK
+  Applying procrastinate.0013_fix_procrastinate_defer_periodic_job... OK
+  Applying procrastinate.0014_add_finish_job_and_retry_job_functions... OK
+  Applying procrastinate.0015_add_trigger_on_job_deletion... OK
+  Applying procrastinate.0016_delete_finished_jobs... OK
+  Applying procrastinate.0017_add_checks_to_finish_job... OK
+  Applying procrastinate.0018_add_checks_to_retry_job... OK
+  Applying procrastinate.0019_fix_finish_job_compat_issue... OK
+  Applying procrastinate.0020_add_index_on_procrastinate_jobs... OK
+  Applying procrastinate.0021_add_kwargs_to_defer_periodic_job... OK
+  Applying procrastinate.0022_null_locks_excluded... OK
+  Applying procrastinate.0023_remove_old_finish_job_function... OK
+  Applying procrastinate.0024_job_id_bigint... OK
+  Applying procrastinate.0025_add_models... OK
+  Applying procrastinate.0026_add_job_priority... OK
+  Applying procrastinate.0027_add_periodic_job_priority... OK
+  Applying procrastinate.0028_add_cancel_states... OK
+  Applying procrastinate.0029_add_additional_params_to_retry_job... OK
+  Applying procrastinate.0030_alter_procrastinateevent_options... OK
+  Applying procrastinate.0031_add_indexes_for_fetch_job... OK
+  Applying procrastinate.0032_pre_cancel_notification... OK
+  Applying procrastinate.0033_post_cancel_notification... OK
+  Applying procrastinate.0034_pre_add_heartbeat... OK
+  Applying procrastinate.0035_post_add_heartbeat... OK
+  Applying procrastinate.0036_add_worker_model... OK
+  Applying procrastinate.0037_pre_batch_defer_jobs... OK
+  Applying procrastinate.0038_post_batch_defer_jobs... OK
+  Applying procrastinate.0039_pre_priority_lock_fetch_job... OK
+  Applying procrastinate.0040_pre_retry_failed_job... OK
+  Applying procrastinate.0041_post_retry_failed_job... OK
+INFO:     Started server process [15]
+INFO:     Uvicorn running on http://0.0.0.0:4111 (Press CTRL+C to quit)
+Launching a worker on all queues
+INFO:     172.29.51.1:51668 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48008 - "WebSocket /_preflight/echo" [accepted]
+INFO:     connection open
+
+$ docker rm -f agentmvc-python-preflight-1790705851-prod
+agentmvc-python-preflight-1790705851-prod
+
+$ docker logs agentmvc-python-preflight-1790705851-db
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.utf8".
+The default database encoding has accordingly been set to "UTF8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /var/lib/postgresql/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default "max_connections" ... 100
+selecting default "shared_buffers" ... 128MB
+selecting default time zone ... Etc/UTC
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /var/lib/postgresql/data -l logfile start
+
+initdb: warning: enabling "trust" authentication for local connections
+initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+waiting for server to start....2026-09-29 18:17:43.699 UTC [84] LOG:  starting PostgreSQL 17.10 (Debian 17.10-1.pgdg13+1) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-29 18:17:43.701 UTC [84] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-09-29 18:17:43.704 UTC [87] LOG:  database system was shut down at 2026-09-29 18:17:42 UTC
+2026-09-29 18:17:43.706 UTC [84] LOG:  database system is ready to accept connections
+ done
+server started
+2026-09-29 18:17:43.803 UTC [100] FATAL:  database "agentmvc" does not exist
+CREATE DATABASE
+
+
+/usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+
+waiting for server to shut down....2026-09-29 18:17:43.841 UTC [84] LOG:  received fast shutdown request
+2026-09-29 18:17:43.842 UTC [84] LOG:  aborting any active transactions
+2026-09-29 18:17:43.842 UTC [84] LOG:  background worker "logical replication launcher" (PID 90) exited with exit code 1
+2026-09-29 18:17:43.842 UTC [85] LOG:  shutting down
+2026-09-29 18:17:43.844 UTC [85] LOG:  checkpoint starting: shutdown immediate
+2026-09-29 18:17:43.987 UTC [85] LOG:  checkpoint complete: wrote 925 buffers (5.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.036 s, sync=0.099 s, total=0.145 s; sync files=301, longest=0.033 s, average=0.001 s; distance=4256 kB, estimate=4256 kB; lsn=0/1915960, redo lsn=0/1915960
+2026-09-29 18:17:43.990 UTC [84] LOG:  database system is shut down
+ done
+server stopped
+
+PostgreSQL init process complete; ready for start up.
+
+2026-09-29 18:17:44.050 UTC [1] LOG:  starting PostgreSQL 17.10 (Debian 17.10-1.pgdg13+1) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-29 18:17:44.051 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-09-29 18:17:44.051 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-09-29 18:17:44.053 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-09-29 18:17:44.057 UTC [107] LOG:  database system was shut down at 2026-09-29 18:17:43 UTC
+2026-09-29 18:17:44.062 UTC [1] LOG:  database system is ready to accept connections
+
+$ docker rm -f agentmvc-python-preflight-1790705851-db
+agentmvc-python-preflight-1790705851-db
+
+$ docker network rm agentmvc-python-preflight-1790705851-net
+agentmvc-python-preflight-1790705851-net
+

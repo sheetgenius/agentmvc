@@ -1,0 +1,17 @@
+{
+  "name": "Go · Huma",
+  "order": 7,
+  "language": "Go",
+  "description": "Huma and chi, Bun relations, Goose migrations, River jobs, raw WebSocket, PostgreSQL",
+  "color": "#007d9c",
+  "port": 4110,
+  "agent": {"tool": "Codex CLI", "model": "gpt-6-sol", "reasoning": "xhigh"},
+  "code": {
+    "extensions": {".go": "//", ".sql": "--", ".sh": "#"},
+    "files": {"go.mod": "//", "dev": "#", "serve": "#", "lint": "#", "check": "#", "check-production": "#"},
+    "skip_files": ["go.sum"],
+    "skip_dirs": ["tmp", "vendor", "coverage", "security", "harness", "realworld_spec", ".scaffold", ".checks", "perf", ".air", ".cache"]
+  },
+  "security": {"lockfile": "go.sum", "analyzer": "govulncheck"},
+  "setup": "go mod download"
+}

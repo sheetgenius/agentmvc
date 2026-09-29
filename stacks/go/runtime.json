@@ -1,0 +1,17 @@
+{
+  "image": "agentmvc-go-toolchain:preflight",
+  "port": 4110,
+  "volumes": [
+    {"name": "agentmvc-go-mod", "target": "/go/pkg/mod"},
+    {"name": "agentmvc-go-build", "target": "/root/.cache/go-build"}
+  ],
+  "env": {"GOFLAGS": "-p=2", "GOMAXPROCS": "2"},
+  "commands": {
+    "start": ["sh", "bin/dev"],
+    "prepare": [],
+    "test": ["go", "test", "./..."],
+    "lint": ["sh", "bin/lint"],
+    "security": ["gosec", "-fmt=json", "./..."],
+    "dependencies": ["govulncheck", "-json", "./..."]
+  }
+}

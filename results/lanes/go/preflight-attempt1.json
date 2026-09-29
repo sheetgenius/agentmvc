@@ -1,0 +1,11 @@
+{
+  "passed": false,
+  "condition": "product-free Go infrastructure preflight",
+  "production_image": "agentmvc-go-preflight:production",
+  "checks": {
+    "migrations_idempotent_queue_commit_rollback_socket_crypto_race": true
+  },
+  "toolchain_image_id": "sha256:a454ce146ab287b2d076bd0805ae1190aec260b2be5c3f41b9569d5528b6c4ed",
+  "error": "command failed (4): node -e const w=new WebSocket('ws://127.0.0.1:4110/__preflight/socket'); const p=JSON.stringify({probe:'\u4f60\u597d'}); const t=setTimeout(()=>process.exit(2),3000); w.onopen=()=>w.send(p); w.onmessage=e=>{if(e.data!==p)process.exit(3);clearTimeout(t);w.close();};w.onerror=()=>process.exit(4);; see None\n",
+  "wall_seconds": 112.77
+}

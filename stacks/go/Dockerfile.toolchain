@@ -1,0 +1,14 @@
+FROM golang:1.27.1-bookworm@sha256:69a7b9788769bec032d238959b61854e9ae87f57be9029ec04e9885fabf99195
+WORKDIR /work/app
+ENV GOFLAGS=-p=2 GOMAXPROCS=2
+RUN apt-get update -qq && apt-get install --no-install-recommends -y \
+    ca-certificates curl git postgresql-client python3 && \
+    rm -rf /var/lib/apt/lists/*
+RUN go install github.com/air-verse/air@v1.67.4
+RUN go install golang.org/x/vuln/cmd/govulncheck@v1.8.0 && \
+    go install github.com/securego/gosec/v2/cmd/gosec@v2.29.0
+COPY scaffold/go.mod scaffold/go.sum ./
+RUN go mod download
+COPY scaffold/ ./
+RUN go build ./... && go vet ./...
+CMD ["sh"]

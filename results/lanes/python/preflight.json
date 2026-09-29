@@ -1,0 +1,54 @@
+{
+  "status": "passed",
+  "started_at": "2026-09-29T18:17:31Z",
+  "checks": {
+    "clean_scaffold": true,
+    "migration_and_atomic_queue_rollback": true,
+    "development_health_queue_socket": true,
+    "hot_reload": true,
+    "job_survives_worker_absence": true,
+    "fresh_production_health_queue_socket_crypto_nonroot": true
+  },
+  "toolchain": "agentmvc-python-toolchain:preflight",
+  "application_limits": {
+    "cpus": 2,
+    "memory": "1g"
+  },
+  "toolchain_image_id": "sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3",
+  "versions": {
+    "python": "3.14.7",
+    "Django": "6.1.1",
+    "django-ninja": "1.7.1",
+    "channels": "4.3.2",
+    "procrastinate": "3.10.0",
+    "psycopg": "3.3.6",
+    "uvicorn": "0.54.0",
+    "PyJWT": "2.15.1",
+    "uv": "uv 0.12.20 (aarch64-unknown-linux-gnu)"
+  },
+  "postgres_image_id": "sha256:48d29282d2b43c402465c28f8572021b59aaf43574056faaad2fd7bb85ffdd4e",
+  "reload_seconds": 0.952,
+  "production_start_seconds": 1.358,
+  "production_image": "sha256:6dcc4739ce11905b378cced474ce9813a6b99598ac2c446e872026e9e92c38e8",
+  "production_image_bytes": 373410759,
+  "passed": true,
+  "finished_at": "2026-09-29T18:18:09Z",
+  "scaffold_files": {
+    ".dockerignore": "ebe0f45e64f88701823092315cc2f9918e69956515aee92b13115bcb9dabd6ca",
+    ".python-version": "922fe0c3de073b01988e23348ea184456161678c5e329e6f34be89be24383f93",
+    "AGENTS.md": "059ed745448e1c0e3c30a0e4a488424ddb7e3b152de99b1ce5e602f41dc779dd",
+    "Dockerfile": "2689cb0a3002c5e1ab4a95061787009e0ed8883621d531d671057448fb4d018e",
+    "README.md": "8744d150a2b84446a2cb7db488ab2c0d3e2e9061e05cfde65a0c095d9604eb45",
+    "bin/dev": "454ea581e294e29a0238ba68f0e4c6ff460c1bb410c57dfc5e88be45b2d3b82b",
+    "bin/serve": "6c3bfe70f32b5ca7e392761c3f7ffc59677c39f1802d8ffec240e583c53ea835",
+    "config/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "config/asgi.py": "aff7f4bef368df54e4bbbad68637bac88c051438a7b1a2d1008875d6d2773e52",
+    "config/settings.py": "d88bd206794ac41907636428adb14e76bdbb25fbd11e503c3f953a99c38ad476",
+    "config/urls.py": "5a0c8c7a07c1cce93a18b92ca8873c2f4843503701b196fe22624777cd74130b",
+    "manage.py": "cfc1b3594bb61c3bf81caf47402ce9e5b7c697edb9242341a9778b59b694c829",
+    "pyproject.toml": "2f5eb5de2fecc77f5be5de6574e815d3daa391c71f94b571ed96a543207dff03",
+    "uv.lock": "363cc6b7bd61f266e5252c60cc7ea984c89d58d3cce614656845a43bd5d389a5"
+  },
+  "scaffold_sha256": "9ac31ed1ab5a24e725df0820700c8a8df6b9e2df10dca79ff06f08b0386dfeb4",
+  "command_log": "results/lanes/python/preflight.log"
+}

@@ -1,0 +1,24 @@
+
+  __    _   ___  
+ / /\  | | | |_) 
+/_/--\ |_| |_| \_ 
+v1.67.4, built with Go go1.27.1
+
+[18:20:53] mkdir /work/app/tmp
+[18:20:53] watching .
+[18:20:53] watching bin
+[18:20:53] watching cmd
+[18:20:53] watching cmd/server
+[18:20:53] watching internal
+[18:20:53] watching internal/platform
+[18:20:53] watching internal/platform/migrations
+[18:20:53] watching internal/tooling
+[18:20:53] !exclude tmp
+[18:20:53] building...
+[18:20:54] running...
+2026/09/29 18:20:54 INFO listening address=:4110
+[18:20:54] cmd/server/main.go has changed
+[18:20:54] building...
+time=2026-09-29T18:20:55.352Z level=ERROR msg="leadership.Elector: Error attempting to resign" attempt=1 client_id=4a2b1b9335e1_2026_09_29T18_20_54_451803 err="sql: database is closed" sleep_duration=985.297546ms
+[18:20:55] running...
+2026/09/29 18:20:55 INFO listening address=:4110

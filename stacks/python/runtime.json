@@ -1,0 +1,50 @@
+{
+  "image": "agentmvc-python-toolchain:preflight",
+  "port": 4111,
+  "volumes": [
+    {
+      "name": "venv",
+      "target": "/opt/venv"
+    },
+    {
+      "name": "uv-cache",
+      "target": "/opt/uv-cache"
+    }
+  ],
+  "env": {},
+  "commands": {
+    "start": [
+      "bash",
+      "bin/dev"
+    ],
+    "prepare": [
+      "uv",
+      "sync",
+      "--frozen"
+    ],
+    "test": [
+      "python",
+      "manage.py",
+      "test"
+    ],
+    "lint": [
+      "sh",
+      "-c",
+      "ruff check . && ruff format --check . && python manage.py check"
+    ],
+    "security": [
+      "bandit",
+      "-r",
+      ".",
+      "-ll",
+      "-ii",
+      "-x",
+      ".venv,.scaffold,harness,security,realworld_spec,.checks,perf"
+    ],
+    "dependencies": [
+      "sh",
+      "-c",
+      "uv export --frozen --no-dev --format requirements-txt --output-file /tmp/agentmvc-audit-requirements.txt && pip-audit --no-deps --disable-pip -r /tmp/agentmvc-audit-requirements.txt"
+    ]
+  }
+}

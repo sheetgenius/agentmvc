@@ -1,0 +1,16 @@
+{
+  "name": "Django + Django Ninja",
+  "stack": "python",
+  "language": "Python",
+  "description": "CPython 3.14.7, Django 6.1.1, Django Ninja 1.7.1, PostgreSQL 17, Channels, Procrastinate",
+  "port": 4111,
+  "toolchain_image": "agentmvc-python-toolchain:preflight",
+  "code": {
+    "extensions": {".py": "#", ".sql": "--", ".sh": "#"},
+    "files": {"pyproject.toml": "#", "dev": "#", "serve": "#"},
+    "skip_files": ["uv.lock", "Dockerfile"],
+    "skip_dirs": [".venv", "__pycache__", ".pytest_cache", ".ruff_cache", ".checks", "perf", "harness", "security", "realworld_spec", ".scaffold"],
+    "generated": []
+  },
+  "security": {"lockfile": "uv.lock", "analyzer": "bandit", "dependencies": "pip-audit"}
+}
