@@ -2,14 +2,14 @@
 
 Two new paths through the same Conduit product: build it in eight successive sessions, then build it again in one fresh expert session. The goal is readable, domain-rich code that uses each stack well, with correctness and production performance measured alongside size.
 
-**Progress: 6/18 coding sessions independently verified.** The full runs are still in progress; intermediate sizes below are not final-product comparisons.
+**Progress: 7/18 coding sessions independently verified.** The full runs are still in progress; intermediate sizes below are not final-product comparisons.
 
 ## Start with the code
 
 | Lane | Latest verified sequential source | Owned backend | Expert one-shot |
 | --- | --- | ---: | --- |
 | Go | [3-package](../../stacks/go/3-package) | 8,225 tokens · 1,015 lines | Pending |
-| Python | [3-package](../../stacks/python/3-package) | 4,767 tokens · 665 lines | Pending |
+| Python | [4-tune](../../stacks/python/4-tune) | 4,990 tokens · 692 lines | Pending |
 
 **Python:** Django + Django Ninja, with Django associations, migrations and password services; Channels for raw WebSockets; Procrastinate for PostgreSQL jobs. [Why this stack](../../stacks/python/STACK.md).
 
@@ -26,7 +26,7 @@ Every source link is an immutable checkpoint. “Pass” means the coordinator r
 | [1 · Base API](../../steps/1-build.md) | [7,236](../../stacks/go/1-build) tokens · [pass](go/1-build/verification.json) | [4,003](../../stacks/python/1-build) tokens · [pass](python/1-build/verification.json) |
 | [2 · Drafts](../../steps/2-add-drafts.md) | [8,214](../../stacks/go/2-add-drafts) tokens · [pass](go/2-add-drafts/verification.json) | [4,767](../../stacks/python/2-add-drafts) tokens · [pass](python/2-add-drafts/verification.json) |
 | [3 · Production](../../steps/3-package.md) | [8,225](../../stacks/go/3-package) tokens · [pass](go/3-package/verification.json) | [4,767](../../stacks/python/3-package) tokens · [pass](python/3-package/verification.json) |
-| [4 · Performance](../../steps/4-tune.md) | Pending | Pending |
+| [4 · Performance](../../steps/4-tune.md) | Pending | [4,990](../../stacks/python/4-tune) tokens · [pass](python/4-tune/verification.json) |
 | [5 · Security](../../steps/5-harden.md) | Pending | Pending |
 | [6 · Polish](../../steps/6-polish.md) | Pending | Pending |
 | [7 · Exports](../../steps/7-add-background-job.md) | Pending | Pending |

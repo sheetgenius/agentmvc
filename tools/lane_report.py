@@ -35,6 +35,60 @@ def cell(row):
     return f'{link(source,format(size["owned_tokens"],","))} tokens · {link(row["folder"]/"verification.json",status)}'
 
 
+def span(values, decimals=0):
+    if not values or any(value is None for value in values):
+        return 'Pending'
+    low, high = min(values), max(values)
+    fmt = f',.{decimals}f'
+    return format(low, fmt) if low == high else f'{format(low, fmt)}–{format(high, fmt)}'
+
+
+def final_tables(data):
+    finals = [(stack, phase, data[stack][phase]) for stack in ('go','python')
+              for phase in ('8-live-editing','one-shot') if data[stack][phase]]
+    if not finals:
+        return []
+    lines = ['', '## Full-product builds', '',
+             'Each row describes one exact source snapshot. The eight-step effort is the sum of its eight coding sessions; the one-shot starts from a fresh scaffold. Setup, independent checks and later reviewer work are outside these coding totals.', '',
+             '| Application | Owned / whole backend tokens | Coding minutes | Uncached + output tokens | Reviewer HTTP parity |',
+             '| --- | ---: | ---: | ---: | --- |']
+    for stack, phase, row in finals:
+        label = f'{stack.title()} · '+('eight steps' if phase!='one-shot' else 'expert one-shot')
+        source = link(ROOT/row['snapshot']['path'], label)
+        sessions = [data[stack][p] for p in PHASES] if phase!='one-shot' else [row]
+        runs = [item['run'] for item in sessions if item and item['run']]
+        minutes = f'{sum(run["seconds"] for run in runs)/60:.1f}' if len(runs)==len(sessions) else 'Pending'
+        effort = f'{sum(run["tokens"]["uncached_plus_output"] for run in runs):,}' if len(runs)==len(sessions) else 'Pending'
+        proof = read(row['folder']/'reviewer-parity/results.json')
+        parity = 'Pending'
+        if proof:
+            summary = proof.get('http_probe',{}).get('summary',{})
+            parity = link(row['folder']/'reviewer-parity/results.json',
+                          f'{summary.get("contract_passed",0)}/21 contract · {summary.get("quality_passed",0)}/3 quality')
+            if not proof.get('passed'): parity += ' · **not full parity**'
+        size = row['size']
+        lines.append(f'| {source} | {size["owned_tokens"]:,} / {size["tokens"]:,} | {minutes} | {effort} | {parity} |')
+    runtime = OUT/'runtime/measured'
+    if not (runtime/'summary.json').exists():
+        return lines
+    lines += ['', '### Repeated production runtime', '',
+              'Two rounds; 16 users; 3-second warmup and 15-second samples; app and database each limited to 2 CPUs and 1 GiB. Ranges show both rounds, not a selected peak. The linked evidence includes all nine HTTP workloads and the 10/100/500-subscriber socket measurements.', '',
+              '| Application | List req/s | Article req/s | SQL / list | Image MB | Cold start seconds | Runtime checks |',
+              '| --- | ---: | ---: | ---: | ---: | ---: | --- |']
+    for stack, phase, row in finals:
+        sid = row['run']['id']
+        folder = runtime/sid
+        samples = [read(folder/f'round{n}/http/results.json') for n in (1,2)]
+        if not all(samples): continue
+        sockets = [read(folder/f'round{n}/socket/results.json') for n in (1,2)]
+        checks = 'pass' if all(sample.get('passed') for sample in samples+sockets if sample) and all(sockets) else '**failed or incomplete**'
+        label = f'{stack.title()} · '+('eight steps' if phase!='one-shot' else 'expert one-shot')
+        metric = lambda scenario, key: [sample.get('scenarios',{}).get(scenario,{}).get(key) for sample in samples]
+        lines.append(f'| {link(folder,label)} | {span(metric("list_anonymous","rps"))} | {span(metric("article","rps"))} | {span(metric("list_anonymous","sql_statements_per_request"),2)} | {span([s.get("image_mb") for s in samples],1)} | {span([s.get("cold_start_seconds") for s in samples],2)} | {checks} |')
+    lines += ['', '[Runtime manifest and all workloads](runtime/measured/summary.json). Runtime success does not imply that every supplemental reviewer check passed; see the parity column above.']
+    return lines
+
+
 def main():
     data={stack:{phase:result(stack,phase) for phase in [*PHASES,'one-shot']} for stack in ('go','python')}
     total=sum(bool(row and row['verification']['passed']) for rows in data.values() for row in rows.values())
@@ -62,7 +116,9 @@ def main():
     for phase,name in zip(PHASES,NAMES):
         lines.append(f'| {link(ROOT/"steps"/(phase+".md"),phase.split("-")[0]+" · "+name)} | {cell(data["go"][phase])} | {cell(data["python"][phase])} |')
     lines += ['',
-              'Backend size excludes tests, docs, dependencies, lockfiles and the fixed client. Owned size is the change from the supplied scaffold. Each checkpoint also records whole-app size and tests/docs separately.','',
+              'Backend size excludes tests, docs, dependencies, lockfiles and the fixed client. Owned size is the change from the supplied scaffold. Each checkpoint also records whole-app size and tests/docs separately.']
+    lines += final_tables(data)
+    lines += ['',
               '## Try a completed app','',
               'With Docker, Node.js and npm installed, these commands build a published step-8 source, create a fresh database, and open the fixed Lit editor. They become available when the corresponding step-8 checkpoint is published. Ctrl-C removes their containers.','',
               '```sh','tools/lane_demo.sh go','tools/lane_demo.sh python',
