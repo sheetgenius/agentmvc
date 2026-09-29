@@ -43,7 +43,7 @@ class Scrubber:
                       (re.compile(rf"\b{re.escape(user)}\b"), "user"),
                       (re.compile(rf"\b{re.escape(host)}(?:\.local)?\b", re.I), "host"),
                       *[(re.compile(p), "[redacted]") for p in SECRETS],
-                      *[(re.compile(r"[\w./:@-]*(?:" + p.pattern + r")[\w./:@-]*", re.I), "[redacted]") for p in self.deny]]
+                      *[(p, "[redacted]") for p in self.deny]]
         self.forbidden = [re.compile(re.escape(home)), re.compile(rf"\b{re.escape(user)}\b"),
                           re.compile(rf"\b{re.escape(host)}\b", re.I), OTHER_MAC_HOME,
                           UNRELATED_WORKTREE, *self.deny]

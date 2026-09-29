@@ -1,0 +1,30 @@
+{
+  "condition": "held-out diagnostic, not frozen acceptance",
+  "image_sha256": "sha256:1355db367f9450a4113c2ec9b4346ea191f55b7eaa64af1684f7b45632edc021",
+  "started": "2026-09-28T16:16:11.355899+00:00",
+  "checks": {
+    "short_password_registration": {
+      "status": 201,
+      "accepted": true,
+      "compared_with_update_minimum": 8
+    },
+    "short_password_login": {
+      "status": 200,
+      "succeeded": true
+    },
+    "email_update": {
+      "status": 200,
+      "new_email_returned": true
+    },
+    "updated_email_login": {
+      "status": 200,
+      "succeeded": true
+    },
+    "punctuated_title_roundtrip": {
+      "status": 200,
+      "title_matches": true,
+      "url_safe_slug": true
+    }
+  },
+  "finished": "2026-09-28T16:16:14.777966+00:00"
+}

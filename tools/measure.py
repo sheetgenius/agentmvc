@@ -82,10 +82,12 @@ def code_lines(text, prefix, doc_attributes=()):
 def source_files(stack, base):
     code = stack["code"]
     skip_dirs = SKIP_DIRS | set(code.get("skip_dirs", []))
+    skip_paths = set(code.get("skip_paths", []))
     skip_files = SKIP_FILES | set(code.get("skip_files", []))
     generated = set(code.get("generated", []))
     for dirpath, dirnames, filenames in os.walk(base):
-        dirnames[:] = [d for d in dirnames if d not in skip_dirs]
+        dirnames[:] = [d for d in dirnames if d not in skip_dirs
+                       and os.path.relpath(os.path.join(dirpath, d), base) not in skip_paths]
         for name in filenames:
             rel = os.path.relpath(os.path.join(dirpath, name), base)
             if name in skip_files or name.endswith(".md") or rel in generated or HARNESS.search(rel):

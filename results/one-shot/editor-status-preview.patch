@@ -1,0 +1,26 @@
+--- one-shot/frontend/src/styles.css
++++ preview/src/styles.css
+@@ -5,7 +5,11 @@
+ .brand { color: inherit; font-weight: 700; text-decoration: none; }
+ main { max-width: 52rem; margin: 3rem auto; padding: 0 1.5rem; }
+ .meta, .actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+-.meta { color: #626b73; font-size: .875rem; margin-bottom: 2rem; }
++.meta { width: fit-content; max-width: 100%; padding: .55rem .8rem; border: 1px solid #dfe7e0; border-radius: 999px; background: #f1f5f1; color: #56635a; font-size: .875rem; font-variant-numeric: tabular-nums; margin-bottom: 2rem; }
++.meta span:first-child { color: #245c45; font-weight: 600; }
++.meta span:first-child::before { content: ""; display: inline-block; width: .5rem; height: .5rem; margin-right: .45rem; border-radius: 50%; background: #42a273; box-shadow: 0 0 0 .18rem #dceee2; vertical-align: .06rem; }
++.meta:not(.connected) span:first-child::before { background: #c99442; box-shadow: 0 0 0 .18rem #f5e9d1; }
++.meta span + span { border-left: 1px solid #d3ded5; padding-left: .75rem; }
+ label { display: block; margin: 1.5rem 0; font-weight: 600; }
+ input, textarea { display: block; width: 100%; margin-top: .4rem; padding: .75rem; border: 1px solid #b8bec4; border-radius: .35rem; background: white; color: inherit; font: inherit; }
+ input { font-size: 1.5rem; font-weight: 600; }
+--- one-shot/frontend/src/editor.js
++++ preview/src/editor.js
+@@ -132,7 +132,7 @@
+     return html`
+       <header><a class="brand" href="/">Conduit</a><span>Shared editor</span></header>
+       <main>
+-        <div class="meta"><span>${this.connection}</span><span>${this.presence} here</span><span>Revision ${this.serverArticle.revision}</span></div>
++        <div class=${`meta ${this.connection}`}><span>${this.connection}</span><span>${this.presence} here</span><span>Revision ${this.serverArticle.revision}</span></div>
+         <label>Title <input name="title" .value=${this.draft.title} @input=${event => this.change('title', event)} /></label>
+         <label>Body <textarea name="body" rows="16" .value=${this.draft.body} @input=${event => this.change('body', event)}></textarea></label>
+         ${this.dirty && this.serverArticle.revision > this.baseRevision ? html`<p class="warning">A newer version is available. Your text is still here.</p>` : nothing}

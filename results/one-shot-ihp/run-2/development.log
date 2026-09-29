@@ -1,0 +1,59 @@
+DATABASE_URL=postgres://agentmvc:agentmvc@127.0.0.1:54204/agentmvc
+
+b99809770033b19bb9ebd7886c7d63a89fd88491b189b5e73f493881bc296bab
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (563ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (425ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (172ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (317ms)
+
+  4 passed (1.9s)
+Success api/hurl/articles.hurl (17 request(s) in 135 ms)
+Success api/hurl/auth.hurl (20 request(s) in 166 ms)
+Success api/hurl/comments.hurl (13 request(s) in 93 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 81 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 289 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 147 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 78 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 69 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 90 ms)
+Success api/hurl/feed.hurl (12 request(s) in 162 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 87 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 140 ms)
+Success api/hurl/tags.hurl (4 request(s) in 69 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 173 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 156 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 410 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 153 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (94.1/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          2518 ms (0h:0m:2s:518ms)
+
+Success s01_jwt_alg_none.hurl (1 request(s) in 0 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 81 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 0 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 92 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 77 ms)
+Success s06_injection_filters.hurl (4 request(s) in 4 ms)
+Success s07_malformed_json.hurl (1 request(s) in 0 ms)
+Success s08_wrong_types.hurl (8 request(s) in 81 ms)
+Success s09_oversized_body.hurl (2 request(s) in 95 ms)
+Success s10_unknown_route.hurl (1 request(s) in 0 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 142 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 11 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 1554 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (24.2/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          2146 ms (0h:0m:2s:146ms)
+
+

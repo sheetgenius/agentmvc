@@ -1,0 +1,109 @@
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (548ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (254ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (91ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (267ms)
+
+  4 passed (1.6s)
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 487B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/rust:1.95-bookworm
+#2 ...
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 DONE 2.0s
+
+#2 [internal] load metadata for docker.io/library/rust:1.95-bookworm
+#2 DONE 4.5s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 100B done
+#4 DONE 0.0s
+
+#5 [build 1/4] FROM docker.io/library/rust:1.95-bookworm@sha256:6258907abe69656e41cd992e0b705cdcfabcbbe3db374f92ed2d47121282d4a1
+#5 DONE 0.0s
+
+#6 [stage-1 1/5] FROM docker.io/library/debian:bookworm-slim@sha256:3783cc01769c7b2b1b83a5c5ad96c815348e28ed7da68e2e3687004faa906251
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 7.17kB done
+#7 DONE 0.0s
+
+#8 [stage-1 4/5] COPY --from=build /app/target/release/conduit-cli /app/conduit-cli
+#8 CACHED
+
+#9 [stage-1 2/5] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [stage-1 3/5] WORKDIR /app
+#10 CACHED
+
+#11 [build 3/4] COPY conduit/ .
+#11 CACHED
+
+#12 [build 4/4] RUN cargo build --release --bin conduit-cli
+#12 CACHED
+
+#13 [build 2/4] WORKDIR /app
+#13 CACHED
+
+#14 [stage-1 5/5] COPY --from=build /app/config /app/config
+#14 CACHED
+
+#15 exporting to image
+#15 exporting layers done
+#15 writing image sha256:dc1b3cd6f60d1e1fa574473f2b1d0aa8b16b0ecd59637f2b375b9a164f855b21 done
+#15 naming to docker.io/library/agentmvc-one-shot-loco-57125:latest done
+#15 DONE 0.0s
+Success api/hurl/articles.hurl (17 request(s) in 69 ms)
+Success api/hurl/auth.hurl (20 request(s) in 51 ms)
+Success api/hurl/comments.hurl (13 request(s) in 35 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 26 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 58 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 39 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 17 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 14 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 27 ms)
+Success api/hurl/feed.hurl (12 request(s) in 51 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 20 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 31 ms)
+Success api/hurl/tags.hurl (4 request(s) in 20 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 47 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 33 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 305 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 38 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (262.2/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          904 ms (0h:0m:0s:904ms)
+
+Success s01_jwt_alg_none.hurl (1 request(s) in 2 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 27 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 1 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 19 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 21 ms)
+Success s06_injection_filters.hurl (4 request(s) in 7 ms)
+Success s07_malformed_json.hurl (1 request(s) in 1 ms)
+Success s08_wrong_types.hurl (8 request(s) in 36 ms)
+Success s09_oversized_body.hurl (2 request(s) in 25 ms)
+Success s10_unknown_route.hurl (1 request(s) in 1 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 30 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 1 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 290 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (110.4/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          471 ms (0h:0m:0s:471ms)
+

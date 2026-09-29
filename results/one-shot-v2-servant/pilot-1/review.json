@@ -1,0 +1,31 @@
+{
+  "method": "Independent source review of the immutable measured workdir, AGENTS.md, acceptance results, and held-out diagnostics",
+  "rule_map": {
+    "claims_reviewed": 9,
+    "accurate_or_substantially_accurate": 8,
+    "incomplete_owner_claims": 1,
+    "missing_rule_owners": 1,
+    "incomplete_claim": "AGENTS.md says draft visibility is shared through Articles.visibleArticle, but list, feed, and drafts visibility is separately encoded in the SQL predicate in Articles.listArticles.",
+    "missing_rule": "Password length is enforced during updateUser but not during register; the held-out diagnostic confirms a seven-character registration and login succeed."
+  },
+  "framework_and_language_use": {
+    "present": [
+      "Servant type-level routes and handler coverage",
+      "Warp/WAI and wai-websockets",
+      "STM admission and per-client send queues",
+      "Hasql with PostgreSQL constraints and set-oriented list queries",
+      "jose-signed JWT and bcrypt password hashing",
+      "durable PostgreSQL export queue with SKIP LOCKED worker"
+    ],
+    "opportunities": [
+      "HTTP request and domain state are dynamic Aeson Value/Text/Maybe Int; no typed input records, Viewer, or status sum type",
+      "Db.runSql sends one JSONB parameter and receives one JSONB result for dynamic SQL; hasql-th and typed parameter/result codecs are unused",
+      "one MVar-protected Hasql connection serializes database access; no pool",
+      "migration files are applied by custom Db.openDb code; pg-migrate is unused",
+      "updateChecked takes a Bool shared flag and the shared path passes uid 0",
+      "focused rule tests exercise HTTP transitions, not pure domain functions"
+    ]
+  },
+  "comparison_scope": "This is one v2-prompt Servant pilot, not a same-prompt comparator to the earlier Rails, Phoenix, Loco, or IHP runs.",
+  "changes_to_scored_source_after_agent": 0
+}

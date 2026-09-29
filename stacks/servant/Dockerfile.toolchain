@@ -1,0 +1,11 @@
+FROM haskell:9.12.4-slim-bookworm@sha256:758a98014d31948067acaa3dd4d8cc598349272133994751b917aef0c8c3aefe
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq-dev pkg-config && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/bootstrap
+COPY conduit.cabal cabal.project ./
+RUN cabal update && cabal build all --only-dependencies
+RUN cabal install --installdir=/usr/local/bin --install-method=copy ghcid hlint fourmolu
+
+WORKDIR /work/app

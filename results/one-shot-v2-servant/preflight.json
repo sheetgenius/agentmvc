@@ -1,0 +1,30 @@
+{
+  "condition": "v2 Servant pilot, before measured agent",
+  "base_fixture_sha256": "3c80961922dadb5f7a41ce27e081e787a5d0cabfc3ae0094588aaeb79c5faa25",
+  "v2_fixture_sha256": "c4dda93c55799387d4617caccc7fa405966f5c8a5fecd51950bfd39e16a2052b",
+  "toolchain_image_sha256": "sha256:1cae06d0a90e60a5c0cc3eafaed6b524e234b9bd9040d29978c787c72e0666bd",
+  "toolchain_builder_bytes": 7148561302,
+  "browser_image_sha256": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5",
+  "scaffold_compiled": true,
+  "scaffold_production_health_passed": true,
+  "browser_tests_passed": 4,
+  "browser_seconds": 1.4,
+  "scaffold_edit_to_response_seconds": 2.22,
+  "isolation": {
+    "own_read_visible": true,
+    "own_write_succeeded": true,
+    "sibling_read_blocked": true,
+    "parent_read_blocked": true,
+    "host_docker_socket_unavailable": true,
+    "localhost_check_broker_reachable": true
+  },
+  "setup_failures_resolved_before_agent": [
+    "hasql-migration 0.3.1 did not compile against Hasql 1.10; switched the prepared toolchain to pg-migrate",
+    "pg-migrate 1.1 requires MultilineStrings; switched GHC 9.10 to 9.12.4",
+    "the scaffold base upper bound excluded GHC 9.12; widened it to base <4.22",
+    "the first private Cabal volume used the wrong state directory; corrected the mount",
+    "a too-strict temp-file policy blocked normal shell heredocs; restored temporary files",
+    "the first isolation probe found the host Docker socket reachable; enabled the network proxy and explicitly denied both socket paths"
+  ],
+  "notes": "All listed setup changes preceded the frozen measured agent session. Failed isolation probes and superseded workdirs remain under .work, not in the scored fixture."
+}

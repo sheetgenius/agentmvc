@@ -1,0 +1,37 @@
+DATABASE_URL=postgres://agentmvc:agentmvc@127.0.0.1:54203/agentmvc
+
+Success api/hurl/articles.hurl (17 request(s) in 270 ms)
+Success api/hurl/auth.hurl (20 request(s) in 465 ms)
+Success api/hurl/comments.hurl (13 request(s) in 247 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 229 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 832 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 430 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 220 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 220 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 228 ms)
+Success api/hurl/feed.hurl (12 request(s) in 446 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 232 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 437 ms)
+Success api/hurl/tags.hurl (4 request(s) in 217 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 465 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 437 ms)
+error: Assert failure
+   --> features/exports/hurl/exports.hurl:111:0
+    |
+    | GET {{host}}/api/user/exports/{{export_id}}
+    | ...
+111 | jsonpath "$.export.status" == "done"
+    |   actual:   string <pending>
+    |   expected: string <done>
+    |
+
+Failure features/exports/hurl/exports.hurl (130 request(s) in 30955 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 472 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 349 (9.5/s)
+Succeeded files:   16 (94.1%)
+Failed files:      1 (5.9%)
+Duration:          36828 ms (0h:0m:36s:828ms)
+
+

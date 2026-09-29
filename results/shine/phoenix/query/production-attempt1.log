@@ -1,0 +1,229 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 659B 1.5s done
+#1 DONE 29.4s
+
+#2 [internal] load metadata for docker.io/library/elixir:1.18.4-otp-27
+#2 DONE 0.3s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 DONE 29.6s
+
+#4 [internal] load .dockerignore
+#4 DONE 0.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 112B 0.3s done
+#4 DONE 8.5s
+
+#5 [stage-1 1/4] FROM docker.io/library/debian:bookworm-slim@sha256:3783cc01769c7b2b1b83a5c5ad96c815348e28ed7da68e2e3687004faa906251
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [build 1/9] FROM docker.io/library/elixir:1.18.4-otp-27
+#7 DONE 0.7s
+
+#6 [internal] load build context
+#6 transferring context:
+#6 transferring context: 67.85kB 4.2s done
+#6 DONE 21.3s
+
+#8 [build 3/9] RUN mix local.hex --force && mix local.rebar --force
+#8 CACHED
+
+#9 [build 4/9] COPY mix.exs mix.lock ./
+#9 CACHED
+
+#10 [build 5/9] RUN mix deps.get --only prod
+#10 CACHED
+
+#11 [build 2/9] WORKDIR /app
+#11 CACHED
+
+#12 [build 6/9] COPY config config
+#12 CACHED
+
+#13 [build 7/9] COPY lib lib
+#13 DONE 84.5s
+
+#14 [build 8/9] COPY priv priv
+#14 DONE 41.2s
+
+#15 [build 9/9] RUN mix compile && mix release
+#15 565.9 ==> decimal
+#15 565.9 Compiling 4 files (.ex)
+#15 592.2 Compiling lib/decimal/error.ex (it's taking more than 10s)
+#15 594.2 Compiling lib/decimal.ex (it's taking more than 10s)
+#15 597.8 Compiling lib/decimal/macros.ex (it's taking more than 10s)
+#15 605.8 Compiling lib/decimal/context.ex (it's taking more than 10s)
+#15 773.0 Generated decimal app
+#15 774.0 ==> mime
+#15 774.0 Compiling 1 file (.ex)
+#15 784.9 Compiling lib/mime.ex (it's taking more than 10s)
+#15 788.3 Generated mime app
+#15 790.7 ==> phoenix_template
+#15 790.7 Compiling 4 files (.ex)
+#15 803.2 Generated phoenix_template app
+#15 828.4 ==> conduit
+#15 828.4 ===> Analyzing applications...
+#15 829.9 ===> Compiling telemetry
+#15 830.3 ==> telemetry_metrics
+#15 830.3 Compiling 7 files (.ex)
+#15 830.5 Generated telemetry_metrics app
+#15 831.1 ==> conduit
+#15 831.1 ===> Analyzing applications...
+#15 831.2 ===> Compiling telemetry_poller
+#15 831.4 ==> thousand_island
+#15 831.4 Compiling 18 files (.ex)
+#15 831.8 Generated thousand_island app
+#15 831.8 ==> jason
+#15 831.8 Compiling 10 files (.ex)
+#15 833.3 Generated jason app
+#15 833.3 ==> db_connection
+#15 833.3 Compiling 18 files (.ex)
+#15 834.0 Generated db_connection app
+#15 834.0 ==> phoenix_pubsub
+#15 834.0 Compiling 12 files (.ex)
+#15 834.3 Generated phoenix_pubsub app
+#15 834.3 ==> plug_crypto
+#15 834.3 Compiling 5 files (.ex)
+#15 834.3 Generated plug_crypto app
+#15 834.3 ==> hpax
+#15 834.3 Compiling 4 files (.ex)
+#15 834.5 Generated hpax app
+#15 834.5 ==> dns_cluster
+#15 834.5 Compiling 1 file (.ex)
+#15 834.6 Generated dns_cluster app
+#15 834.6 ==> ecto
+#15 834.6 Compiling 56 files (.ex)
+#15 836.2 Generated ecto app
+#15 836.2 ==> plug
+#15 836.2 Compiling 1 file (.erl)
+#15 836.3 Compiling 42 files (.ex)
+#15 837.4 Generated plug app
+#15 837.4 ==> postgrex
+#15 837.4 Compiling 70 files (.ex)
+#15 839.9 Generated postgrex app
+#15 839.9 ==> ecto_sql
+#15 839.9 Compiling 25 files (.ex)
+#15 840.6 Generated ecto_sql app
+#15 840.6 ==> oban
+#15 840.6 Compiling 70 files (.ex)
+#15 841.3 Generated oban app
+#15 841.4 ==> websock
+#15 841.4 Compiling 1 file (.ex)
+#15 841.4 Generated websock app
+#15 841.4 ==> bandit
+#15 841.4 Compiling 54 files (.ex)
+#15 842.2 Generated bandit app
+#15 842.2 ==> websock_adapter
+#15 842.2 Compiling 4 files (.ex)
+#15 842.3 Generated websock_adapter app
+#15 842.3 ==> phoenix
+#15 842.3 Compiling 75 files (.ex)
+#15 843.3 Generated phoenix app
+#15 843.3 ==> phoenix_ecto
+#15 843.3 Compiling 7 files (.ex)
+#15 843.5 Generated phoenix_ecto app
+#15 843.5 ==> conduit
+#15 843.5 Compiling 23 files (.ex)
+#15 843.7 Generated conduit app
+#15 844.2 * assembling conduit-0.1.0 on MIX_ENV=prod
+#15 844.2 * using config/runtime.exs to configure the release at runtime
+#15 844.3 * skipping elixir.bat for windows (bin/elixir.bat not found in the Elixir installation)
+#15 844.3 * skipping iex.bat for windows (bin/iex.bat not found in the Elixir installation)
+#15 844.4 
+#15 844.4 Release created at _build/prod/rel/conduit
+#15 844.4 
+#15 844.4     # To start your system
+#15 844.4     _build/prod/rel/conduit/bin/conduit start
+#15 844.4 
+#15 844.4 Once the release is running:
+#15 844.4 
+#15 844.4     # To connect to it remotely
+#15 844.4     _build/prod/rel/conduit/bin/conduit remote
+#15 844.4 
+#15 844.4     # To stop it gracefully (you may also send SIGINT/SIGTERM)
+#15 844.4     _build/prod/rel/conduit/bin/conduit stop
+#15 844.4 
+#15 844.4 To list all commands:
+#15 844.4 
+#15 844.4     _build/prod/rel/conduit/bin/conduit
+#15 844.4 
+#15 DONE 846.6s
+
+#16 [stage-1 2/4] RUN apt-get update && apt-get install -y --no-install-recommends     ca-certificates libssl3 libstdc++6 libncurses6 &&     rm -rf /var/lib/apt/lists/*
+#16 CACHED
+
+#17 [stage-1 3/4] WORKDIR /app
+#17 CACHED
+
+#18 [stage-1 4/4] COPY --from=build /app/_build/prod/rel/conduit /app
+#18 DONE 0.4s
+
+#19 exporting to image
+#19 exporting layers
+#19 exporting layers 0.5s done
+#19 writing image sha256:96fc0aaefd4e6dac3e4ffa2e196ed0e424ce47fc813ca21817ae20ab704ed08b
+#19 writing image sha256:96fc0aaefd4e6dac3e4ffa2e196ed0e424ce47fc813ca21817ae20ab704ed08b 0.0s done
+#19 naming to docker.io/library/agentmvc-one-shot-shine-phoenix-query-20132:latest 0.0s done
+#19 DONE 0.6s
+Success api/hurl/articles.hurl (17 request(s) in 111 ms)
+Success api/hurl/auth.hurl (20 request(s) in 57 ms)
+Success api/hurl/comments.hurl (13 request(s) in 47 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 32 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 129 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 93 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 27 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 19 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 42 ms)
+Success api/hurl/feed.hurl (12 request(s) in 64 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 51 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 44 ms)
+Success api/hurl/tags.hurl (4 request(s) in 25 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 72 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 55 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 324 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 54 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (186.0/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          1274 ms (0h:0m:1s:274ms)
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (526ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (357ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (133ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (240ms)
+
+  4 passed (1.7s)
+Success s01_jwt_alg_none.hurl (1 request(s) in 5 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 21 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 3 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 25 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 28 ms)
+Success s06_injection_filters.hurl (4 request(s) in 8 ms)
+Success s07_malformed_json.hurl (1 request(s) in 1 ms)
+Success s08_wrong_types.hurl (8 request(s) in 28 ms)
+Success s09_oversized_body.hurl (2 request(s) in 47 ms)
+Success s10_unknown_route.hurl (1 request(s) in 0 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 33 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 3 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 341 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (93.4/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          557 ms (0h:0m:0s:557ms)
+

@@ -1,0 +1,77 @@
+Loaded image: agentmvc-ihp-nix-build:latest
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (535ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (556ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (225ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (370ms)
+
+  4 passed (2.1s)
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 156B done
+#1 DONE 0.2s
+
+#2 [internal] load metadata for docker.io/library/agentmvc-ihp-nix-build:latest
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 43B done
+#3 DONE 0.0s
+
+#4 [1/1] FROM docker.io/library/agentmvc-ihp-nix-build:latest
+#4 CACHED
+
+#5 exporting to image
+#5 exporting layers done
+#5 writing image sha256:913fa7d0a5affae9060e97b80cfe859234513fa37fc94634b9ed989a3f420d09 done
+#5 naming to docker.io/library/agentmvc-one-shot-ihp-87673:latest done
+#5 DONE 0.0s
+Success api/hurl/articles.hurl (17 request(s) in 112 ms)
+Success api/hurl/auth.hurl (20 request(s) in 157 ms)
+Success api/hurl/comments.hurl (13 request(s) in 82 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 73 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 271 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 147 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 74 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 65 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 81 ms)
+Success api/hurl/feed.hurl (12 request(s) in 143 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 76 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 133 ms)
+Success api/hurl/tags.hurl (4 request(s) in 68 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 153 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 138 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 412 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 147 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (100.3/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          2364 ms (0h:0m:2s:364ms)
+
+Success s01_jwt_alg_none.hurl (1 request(s) in 3 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 92 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 2 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 81 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 74 ms)
+Success s06_injection_filters.hurl (4 request(s) in 2 ms)
+Success s07_malformed_json.hurl (1 request(s) in 0 ms)
+Success s08_wrong_types.hurl (8 request(s) in 78 ms)
+Success s09_oversized_body.hurl (2 request(s) in 76 ms)
+Success s10_unknown_route.hurl (1 request(s) in 0 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 140 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 0 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 1521 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (24.9/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          2085 ms (0h:0m:2s:85ms)
+

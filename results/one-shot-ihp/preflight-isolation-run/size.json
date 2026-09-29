@@ -1,0 +1,36 @@
+{
+  "tokens": 2124,
+  "lines": 246,
+  "code_lines": 185,
+  "owned_tokens": 0,
+  "owned_lines": 0,
+  "files_created": 0,
+  "files_changed": 0,
+  "encoding": "o200k_base",
+  "baseline": "untouched IHP scaffold in .scaffold/",
+  "rule": "tools/measure.py with fixed IHP review exclusions; generated output, fixtures, tests, deployment scaffolding, formatter config and lockfiles excluded",
+  "review_exclusions": {
+    "skip_dirs": [
+      "build",
+      "security",
+      "harness",
+      ".devenv",
+      ".cache",
+      ".tmp",
+      "Test",
+      ".github"
+    ],
+    "skip_paths": [
+      "Config/nix"
+    ],
+    "skip_files": [
+      "flake.lock",
+      "Dockerfile",
+      "default.nix",
+      "hie.yaml",
+      ".stylish-haskell.yaml",
+      "Setup.hs",
+      "Makefile"
+    ]
+  }
+}

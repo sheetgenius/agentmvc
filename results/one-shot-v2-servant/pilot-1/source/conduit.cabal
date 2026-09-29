@@ -1,0 +1,47 @@
+cabal-version: 3.0
+name: conduit
+version: 0.1.0.0
+build-type: Simple
+
+executable conduit
+  main-is: Main.hs
+  other-modules: Articles, Auth, Db, Domain, Exports, Shares, Users
+  hs-source-dirs: app
+  default-language: GHC2021
+  default-extensions:
+    DataKinds
+    DeriveGeneric
+    OverloadedStrings
+    TypeOperators
+  ghc-options: -Wall -Wincomplete-patterns -Werror=missing-fields -threaded -rtsopts -with-rtsopts=-N2
+  build-depends:
+    base >=4.20 && <4.22,
+    aeson,
+    bytestring,
+    base64-bytestring,
+    containers,
+    crypton,
+    directory,
+    filepath,
+    hasql >=1.10 && <2,
+    hasql-pool >=1.4 && <1.5,
+    hasql-th,
+    hasql-transaction,
+    http-types,
+    jose,
+    lens,
+    mtl,
+    password,
+    password-types,
+    pg-migrate,
+    servant,
+    servant-server,
+    scientific,
+    stm,
+    text,
+    time,
+    uuid,
+    wai,
+    wai-websockets,
+    warp,
+    websockets

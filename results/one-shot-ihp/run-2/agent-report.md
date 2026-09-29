@@ -1,0 +1,7 @@
+Implemented the Conduit backend in IHP, including the API, drafts, exports, editing links, live updates, presence, conflicts, and the 100-editor room cap. The production container migrates a fresh PostgreSQL database and runs the IHP web server and job worker.
+
+**Final checks passed:** `harness/check-production.sh 4104` completed 237 HTTP requests, the live protocol check, four browser tests, and 52 security requests. Ormolu and HLint are clean. The full Nix flake check passed with a `devenv-root` input override; the unmodified command hit the scaffold’s `/dev/null` input error.
+
+The main rules live in [Api.hs](/work/app/Application/Controller/Api.hs), [Share.hs](/work/app/Application/Share.hs), [Live.hs](/work/app/Application/Live.hs), and [BuildExport.hs](/work/app/Application/Job/BuildExport.hs). IHP owns routing, persistence, migrations, and durable jobs. Typed SQL handles revision-safe saves; a LiquidHaskell-checked helper owns room admission.
+
+During verification, I fixed fresh-database schema and job-status issues, adapted JSON handling to IHP’s parsed request body, secured JWT validation, and made startup wait for PostgreSQL. One known limit remains: article lists filter in memory and perform per-article lookups, so large catalogs will need query optimization.

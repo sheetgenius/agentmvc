@@ -1,8 +1,8 @@
 # AgentMVC
 
-**One app, built and evolved by AI agents in every stack, and measured the same way.**
+**If agents write and read most of an application, which language and framework help them build and evolve it best?**
 
-AgentMVC gives an AI coding agent one spec and one prompt, and has it build the same backend in each stack: the [RealWorld](https://github.com/realworld-apps/realworld) "Conduit" API. Each implementation then goes through eight steps:
+AgentMVC gives AI coding agents the same familiar web-app contract in each stack: the [RealWorld](https://github.com/realworld-apps/realworld) "Conduit" API. It measures the working code, the agent effort, and how safely fresh agents can extend what earlier agents built. The exploratory implementations went through eight steps:
 1. build it;
 2. add a feature;
 3. package it for production;
@@ -15,6 +15,14 @@ AgentMVC gives an AI coding agent one spec and one prompt, and has it build the 
 Every step is checked against the same acceptance suite. Every step is measured the same way: code size, the cost of each change, speed, security, and how well a fresh agent can read the result.
 
 [TodoMVC](https://todomvc.com) let developers compare frameworks by reading the same app. AgentMVC compares stacks by what agents build in them: how much code the same product takes, and what that code buys.
+
+The [large-app workshop](docs/semantic-density-workshop.md) extends the question to fresh-agent handoffs: how much domain behavior a stack expresses per line, and how efficiently another agent can find and safely change it as the system grows. Its [semantic-density one-shot results](results/one-shot-semantic-density/README.md) are published separately. The existing numbers below describe the completed eight-step study.
+
+## Start here
+
+- **Read the comparison:** start with the [methodology](docs/methodology.md), then the [eight-step findings](docs/README.md). The [one-shot results](results/one-shot/README.md) and [fourth-stack IHP study](results/one-shot-ihp/README.md) are separate experiments with their own prompts and measurements.
+- **Try the finished app:** install Docker and Node.js, then run `tools/demo.sh rails` (or `phoenix` or `loco`). It builds the step-8 production image, starts PostgreSQL and the shared Lit editor, and prints a live editing link. Press Ctrl-C to stop it.
+- **Contribute:** [CONTRIBUTING.md](CONTRIBUTING.md) explains how to reproduce a result, review a stack, or add an agent-built implementation. The historical snapshots and frozen inputs are part of the evidence; new experiments live beside them.
 
 <!-- stats:start -->
 | | [Rails](stacks/rails/) (Ruby) | [Phoenix](stacks/phoenix/) (Elixir) | [Loco](stacks/loco/) (Rust) |
@@ -120,7 +128,7 @@ tools/bench/run.sh rails 4-tune                  # benchmark a step's production
 tools/security/scan.sh rails 5-harden            # scan it
 ```
 
-For a fresh full-product build, [`tools/one_shot.py`](tools/one_shot.py) prepares one self-contained workspace per stack with the shared prompt, spec, Lit client, browser harness, and measurement rules. See the [one-shot setup](one-shot/README.md). No one-shot backend runs have started.
+For a fresh full-product build, [`tools/one_shot.py`](tools/one_shot.py) prepares one self-contained workspace per stack with the shared prompt, spec, Lit client, browser harness, and measurement rules. See the [one-shot setup](one-shot/README.md), the [completed first run](results/one-shot/README.md), and the [semantic-density run](results/one-shot-semantic-density/README.md). The [workshop plan](docs/semantic-density-workshop.md) lays out the next question: which stack helps fresh agents evolve a large application safely and efficiently?
 
 ## Repository map
 

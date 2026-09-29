@@ -1,0 +1,103 @@
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (457ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (323ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (97ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (275ms)
+
+  4 passed (1.5s)
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 332B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/elixir:1.18.4-otp-27
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 112B done
+#3 DONE 0.0s
+
+#4 [1/9] FROM docker.io/library/elixir:1.18.4-otp-27
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 1.83kB done
+#5 DONE 0.0s
+
+#6 [8/9] COPY priv priv
+#6 CACHED
+
+#7 [3/9] RUN mix local.hex --force && mix local.rebar --force
+#7 CACHED
+
+#8 [7/9] COPY lib lib
+#8 CACHED
+
+#9 [2/9] WORKDIR /app
+#9 CACHED
+
+#10 [4/9] COPY mix.exs mix.lock ./
+#10 CACHED
+
+#11 [5/9] RUN mix deps.get --only prod
+#11 CACHED
+
+#12 [6/9] COPY config config
+#12 CACHED
+
+#13 [9/9] RUN mix compile
+#13 CACHED
+
+#14 exporting to image
+#14 exporting layers done
+#14 writing image sha256:98a9bbdbca282171854cbc0ad0f1b5973e138106fd6d5e75adb88ce8384bd909 done
+#14 naming to docker.io/library/agentmvc-one-shot-phoenix-31759:latest done
+#14 DONE 0.0s
+Success api/hurl/articles.hurl (17 request(s) in 111 ms)
+Success api/hurl/auth.hurl (20 request(s) in 60 ms)
+Success api/hurl/comments.hurl (13 request(s) in 41 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 36 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 135 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 48 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 25 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 19 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 39 ms)
+Success api/hurl/feed.hurl (12 request(s) in 57 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 30 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 45 ms)
+Success api/hurl/tags.hurl (4 request(s) in 23 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 77 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 50 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 322 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 67 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (197.0/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          1203 ms (0h:0m:1s:203ms)
+
+Success s01_jwt_alg_none.hurl (1 request(s) in 0 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 22 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 1 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 24 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 21 ms)
+Success s06_injection_filters.hurl (4 request(s) in 7 ms)
+Success s07_malformed_json.hurl (1 request(s) in 7 ms)
+Success s08_wrong_types.hurl (8 request(s) in 35 ms)
+Success s09_oversized_body.hurl (2 request(s) in 45 ms)
+Success s10_unknown_route.hurl (1 request(s) in 0 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 31 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 1 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 326 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (97.9/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          531 ms (0h:0m:0s:531ms)
+

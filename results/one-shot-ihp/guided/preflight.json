@@ -1,0 +1,36 @@
+{
+  "track": "guided fourth IHP run",
+  "checked_at": "2026-09-28T07:53:15.059618+00:00",
+  "guided_fixture_sha256": "98dec77242bbae3403c40e952292fcdce6ac82f2dc68fe07bb588574b80793e8",
+  "base_three_run_fixture_sha256": "26fb7e622524b0d540a564134c674ea64adc9e4817633dbbee9f84bfd5ccdecc",
+  "shared_prompt_sha256": "7a992cd7f4a4e0be917bdefc93a6090d00c5ee2bb3483b06e58d114ea65a76e6",
+  "guided_prompt_sha256": "917ce8c2db7b90de148ff0aed65f18505bf11f2fc2d085328b64445bce2bd85a",
+  "prepared_workspace": ".work/one-shot-ihp-4/ihp",
+  "fresh_codex_home": true,
+  "memory_off": true,
+  "interactive_approvals": "never",
+  "private_nix_volume": "agentmvc-ihp-nix-run4",
+  "private_volume_cloned_from_product_free_base": true,
+  "private_volume_scanned_without_agent_api_or_probe_module": true,
+  "broker_positive_own_write": true,
+  "broker_negative_readonly_spec_write": true,
+  "broker_host_docker_socket_absent": true,
+  "broker_sibling_mount_absent": true,
+  "schema_probe": {
+    "enum_generated": "Draft | Published",
+    "separate_foreign_key_and_check_compiled": true,
+    "inline_check_rejected": true
+  },
+  "migration_probe": {
+    "new_migration_present": true,
+    "requires_database_url_inside_devshell": true,
+    "generated_migration_applied": true,
+    "serial_id_default_lost": true
+  },
+  "typed_sql_probe": {
+    "maybe_text_coalesce_compiled": false,
+    "failure": "typedSql inferred Text and attempted to coerce Maybe Text"
+  },
+  "frozen_inputs_verified_after_broker_probe": true,
+  "original_three_run_fixture_unchanged": true
+}

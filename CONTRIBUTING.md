@@ -1,12 +1,21 @@
 # Contributing to AgentMVC
 
-AgentMVC compares what AI agents produce in each stack. The most valuable contribution is a new stack, built by an agent through the same steps. Reruns and reviews help too.
+AgentMVC compares what AI agents produce in each stack. New stacks, reruns, framework reviews, and reproducibility fixes all help. Start with the [methodology](docs/methodology.md) and [repository map](README.md#repository-map); the [one-shot setup](one-shot/README.md) describes the separate full-product experiment.
 
 ## The one rule
 
-**Agents write the code, never people.** Your code in `stacks/<name>/` must be exactly what the agent left after each step. If a step fails, rerun the whole step; don't fix its output by hand. If the harness was at fault, say so in the PR, fix the harness, and rerun.
+**Agents write scored implementations; people preserve the evidence.** Code in a scored `stacks/<name>/<step>/` snapshot must be exactly what the agent left after that step. If a step fails, rerun the whole step; don't fix its output by hand. If the harness was at fault, say so in the PR, fix the harness, and rerun. Human-written reference versions and tuning experiments are welcome when clearly labeled as separate diagnostics.
 
-Keep the spec, the prompts and the checks as they are. The spec lives in `spec/`, the prompts in `steps/`, and the checks in `tools/security/hurl/`. Changing them breaks the comparison for every other stack.
+Keep the frozen spec, prompts, and checks unchanged for an existing comparison. The eight-step spec lives in `spec/`, its prompts in `steps/`, and its checks in `tools/security/hurl/`. A new question may need a new fixture and prompt; give it its own manifest and result label so its numbers cannot be mistaken for an earlier run.
+
+## Before opening a PR
+
+1. State the question your change answers and which experiment it belongs to: eight-step, one-shot, or a labeled diagnostic.
+2. Link the exact prompt and fixture manifest, agent/model/effort, and source revision. Record independent development and production checks, including failures you resolved.
+3. Keep generated dependencies, local workdirs, and secrets out of Git. Compressed per-request runtime streams are distributed separately; [results/](results/README.md) holds the browsable summaries.
+4. Read every transcript before publication. The scrubber catches common secrets and machine paths, but it cannot know every private value.
+
+For a first contribution, a focused issue or PR about an incorrect measurement, a broken reproduction command, or a framework-specific code review is useful. Include the file, result, or command that shows the problem.
 
 ## Add a stack
 

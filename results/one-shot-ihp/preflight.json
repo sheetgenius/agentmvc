@@ -1,0 +1,83 @@
+{
+  "track": "IHP + LiquidHaskell + Z3 candidate, final preflight",
+  "original_fixture_sha256": "3c80961922dadb5f7a41ce27e081e787a5d0cabfc3ae0094588aaeb79c5faa25",
+  "candidate_fixture_sha256": "26fb7e622524b0d540a564134c674ea64adc9e4817633dbbee9f84bfd5ccdecc",
+  "prompt_sha256": "7a992cd7f4a4e0be917bdefc93a6090d00c5ee2bb3483b06e58d114ea65a76e6",
+  "upstream_ihp_revision": "71b7bb685d2a60b20cd19c8a810c8931369e5efb",
+  "upstream_boilerplate_revision": "21e1227afdae4f21b838dd247af07b38cf7bdc0c",
+  "toolchain": {
+    "IHP": "1.6.0",
+    "GHC": "9.10.3",
+    "LiquidHaskell": "0.9.10.1.2",
+    "Z3": "4.16.0",
+    "Nix Docker image": "nixos/nix:2.31.2@sha256:29fc5fe207f159ceb0143c25c19c774062fee02ce5eda118f3067547b3054894"
+  },
+  "proof_preflight": {
+    "valid_refinement_compiled": true,
+    "invalid_refinement_rejected": true,
+    "rejection": "-1 is not a subtype of an Int constrained to >= 0"
+  },
+  "runtime_preflight": {
+    "nix_image_built_and_docker_loaded": true,
+    "dockerfile_built_from_nix_image": true,
+    "product_free_ihp_server_responded": true,
+    "expected_root_http_status": 404,
+    "fresh_database_migration_table_created": true,
+    "runtime_inputs": [
+      "DATABASE_URL",
+      "SECRET_KEY_BASE",
+      "PORT"
+    ],
+    "product_free_dev_migration_applied": true,
+    "product_free_dev_server_responded_after_migration": true,
+    "product_free_dev_migration_probe": "results/one-shot-ihp/migration-preflight.json"
+  },
+  "isolation_preflight": {
+    "workspace_write_allowed": true,
+    "parent_repo_read_denied": true,
+    "sibling_workdir_read_denied": true,
+    "frozen_spec_container_write_denied": true,
+    "nix_container_parent_and_sibling_unmounted": true,
+    "host_docker_socket_not_mounted": true,
+    "run_private_nix_volumes": true,
+    "run1_store_marker_absent_from_run2_and_run3": true,
+    "all_three_stores_scanned_without_prior_app_source": true,
+    "product_free_brokered_build_passed_all_three": true,
+    "private_store_size_each": "22.4 GiB before measured builds"
+  },
+  "browser_preflight": {
+    "live_protocol": "passed",
+    "playwright_tests_passed": 4,
+    "browser_image_id": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+  },
+  "resolved_setup_failures": [
+    "Z3 was absent from IHP app-lib compiler PATH until added to the Haskell dependency list",
+    "Proof module needed an explicit Prelude import under IHP compiler extensions",
+    "IHP app-lib source scanner encountered the frozen .scaffold copy until fixture directories were ignored",
+    "Product-free boilerplate emits no RunJobs binary, so startup now runs it conditionally",
+    "Development bridge omitted the trailing slash required by IHP_MIGRATION_DIR; an interrupted partial agent run revealed it and was archived before refreezing"
+  ],
+  "measured_agent_started_after_preflight": true,
+  "earlier_rails_phoenix_loco_fixture_changed": false,
+  "prior_candidate_fixture_sha256": "7306f5428ea4cd6669fa9ba4d82d3af9992570f0074f64c975f37dedad09b86f",
+  "aborted_preflight_attempt": {
+    "seconds": 2359.4,
+    "fixture_sha256": "7306f5428ea4cd6669fa9ba4d82d3af9992570f0074f64c975f37dedad09b86f",
+    "reason": "development bridge migration path failed before the app could start",
+    "published": "results/one-shot-ihp/preflight-aborted-run",
+    "counted_as_full_build": false
+  },
+  "prior_candidate_fixture_sha256_v2": "49dad1427a12385ddebdcb184445a6da4d4f7816966297ff9aff375d926114b5",
+  "isolation_audit": {
+    "finding": "shared Nix store could expose prior compiled agent source despite separate workdirs",
+    "fix": "numbered read-write Nix volumes seeded from a clean product-free base",
+    "second_aborted_probe": {
+      "seconds": 306.0,
+      "fixture_sha256": "49dad1427a12385ddebdcb184445a6da4d4f7816966297ff9aff375d926114b5",
+      "owned_backend_lines": 0,
+      "published": "results/one-shot-ihp/preflight-isolation-run",
+      "counted_as_full_build": false
+    },
+    "prior_source_copy_found_in_shared_store": true
+  }
+}

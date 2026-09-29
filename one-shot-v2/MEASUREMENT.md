@@ -1,0 +1,9 @@
+# Measurement boundary
+
+This pilot asks whether a Haskell backend built with Servant can make product rules easy for future agents to find and safely evolve inside a very large application. A single pilot cannot establish a cross-stack ranking. Record framework use, rule ownership, compiler and database enforcement, bounded list queries, and whether `AGENTS.md` accurately maps the application. Source size is a secondary measure of incidental plumbing and domain signal.
+
+Report owned backend nonblank, noncomment lines and `o200k_base` tokens added or changed against `.scaffold/`, plus whole-backend lines and tokens. Include application code, migrations, dependency manifests, and application configuration. Exclude the fixed client, spec, security tests, harness, test source, generated code, dependency caches, lockfiles, Dockerfiles, formatter configuration, and Markdown from executable backend size. Report tests and agent-written project docs separately; document any generated-file classification and any product logic placed in an excluded file. Never count the unchanged scaffold as owned code.
+
+Measure agent effort from prompt delivery to final response: elapsed wall time, uncached input plus output tokens, tool calls, failed commands, compile attempts, check attempts, and fixes. Independently repeat the complete development and fresh-production acceptance gates. Record image size, cold start, SQL statement counts per list request, and repeated runtime measurements under a recorded host-load condition. Label incomplete or load-contaminated measurements as such; do not fill gaps with estimates.
+
+The prompt and environment are frozen before the agent starts. Any edit to a frozen input requires a new hash and fresh workspace, never a silent change to an in-progress measured session. Keep raw results and a scrubbed transcript, with the final source snapshot needed to reproduce measurements.

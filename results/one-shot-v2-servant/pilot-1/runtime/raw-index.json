@@ -1,0 +1,189 @@
+{
+  "format": "k6 JSON streams compressed with zstd",
+  "streams": 36,
+  "total_compressed_bytes": 65445809,
+  "compression_test": "all streams passed zstd -t when measured",
+  "common_secret_pattern_lines": 0,
+  "files": [
+    {
+      "path": "http/round1/raw-article.json.zst",
+      "bytes": 7594063,
+      "sha256": "49ffe58ed9dcadc8cad12eb45966abd6805ae687d407e160fb3a254c68459493"
+    },
+    {
+      "path": "http/round1/raw-comments.json.zst",
+      "bytes": 6955309,
+      "sha256": "461e413296db1d1302d87421a7848412224d648529c5143f88bb4a14b7f628f4"
+    },
+    {
+      "path": "http/round1/raw-create_article.json.zst",
+      "bytes": 1036840,
+      "sha256": "93359f855e5c7110ce14a2c11ee74d82ff5e6a5e755b836e3120704d930e6ef5"
+    },
+    {
+      "path": "http/round1/raw-favorite_toggle.json.zst",
+      "bytes": 1311161,
+      "sha256": "3826df6872e31fa686cfbf728c3c5f429bbec9e6db358f97f43e7df0d9128180"
+    },
+    {
+      "path": "http/round1/raw-feed.json.zst",
+      "bytes": 881791,
+      "sha256": "936b3bbdec348484539e875f5e6dbae8e7a6064f9aa1f2b9f6b2c5c7d32e7bf4"
+    },
+    {
+      "path": "http/round1/raw-list_anonymous.json.zst",
+      "bytes": 1161121,
+      "sha256": "f8193930e9fc95df85d9f8d46112931f2e22cc8cf8043bbfaebc1612cbee7d2d"
+    },
+    {
+      "path": "http/round1/raw-list_by_tag.json.zst",
+      "bytes": 1229502,
+      "sha256": "c51d20e45e636dc81aa5c58e294ce904ed3b7326a76d2ade489028922ed7773c"
+    },
+    {
+      "path": "http/round1/raw-list_signed_in.json.zst",
+      "bytes": 870973,
+      "sha256": "8db07dc28a9ede6830406fb21ae60d827bff415431e49e318443ef0f2dae4639"
+    },
+    {
+      "path": "http/round1/raw-tags.json.zst",
+      "bytes": 6311226,
+      "sha256": "136531c5270eb6a2bebaf907cef37a797b4fd5f30e827404d08c4068990dae70"
+    },
+    {
+      "path": "http/round1/raw-warmup-article.json.zst",
+      "bytes": 1520104,
+      "sha256": "24412c75bf0968392615c03762ec9e39e66f1c4874c11d66699775c5914c80bf"
+    },
+    {
+      "path": "http/round1/raw-warmup-comments.json.zst",
+      "bytes": 1385514,
+      "sha256": "00c97749a3005e8f41b2b3d4c10c99db60e2e9c4888e9e370ddc1974f17ae960"
+    },
+    {
+      "path": "http/round1/raw-warmup-create_article.json.zst",
+      "bytes": 214745,
+      "sha256": "12de36d944134de6c87c476506c2ded958537f35a73b7024eb85eca856b73fd7"
+    },
+    {
+      "path": "http/round1/raw-warmup-favorite_toggle.json.zst",
+      "bytes": 272244,
+      "sha256": "fd5e3cc3d1d4cd8fe59cc47e1b5bdd29b80e6d2f59102a0837433e352d2ebc80"
+    },
+    {
+      "path": "http/round1/raw-warmup-feed.json.zst",
+      "bytes": 179984,
+      "sha256": "9c1a24e57e01dc1279f5869ab320972d937cecdd439bccd893cf6ceab5cf5fb7"
+    },
+    {
+      "path": "http/round1/raw-warmup-list_anonymous.json.zst",
+      "bytes": 232976,
+      "sha256": "041c081f1d8d1095eb9794384bd88504c40b35c796013f41905419d72fb34281"
+    },
+    {
+      "path": "http/round1/raw-warmup-list_by_tag.json.zst",
+      "bytes": 233609,
+      "sha256": "75ef868714ae4fca1d62d33d71f4e0515345d95286d548010eecf6db5c6391aa"
+    },
+    {
+      "path": "http/round1/raw-warmup-list_signed_in.json.zst",
+      "bytes": 177589,
+      "sha256": "5cb65390901cd0fcffa450a6ab3789781a621056feeaa56a1dcddda0b2a2ced0"
+    },
+    {
+      "path": "http/round1/raw-warmup-tags.json.zst",
+      "bytes": 1263187,
+      "sha256": "be5c9511b9b9b70578ab09921eace8250e38fe70bd5586fb3b1f25fb9c2b0bd7"
+    },
+    {
+      "path": "http/round2/raw-article.json.zst",
+      "bytes": 7507047,
+      "sha256": "b67e0619fb738fd43925c66a38f3bbefb16d3b3f17974b665c4765bd30f48ee8"
+    },
+    {
+      "path": "http/round2/raw-comments.json.zst",
+      "bytes": 6928671,
+      "sha256": "e7e982a07991410faa0bd222b18fcc72cfc7614d96d917b6acf9dd81499eebe3"
+    },
+    {
+      "path": "http/round2/raw-create_article.json.zst",
+      "bytes": 1044554,
+      "sha256": "4dac8598626480d40762ef252f3480fc1fe384d13f9547f181782db9f7058884"
+    },
+    {
+      "path": "http/round2/raw-favorite_toggle.json.zst",
+      "bytes": 1237602,
+      "sha256": "e3ef0fe8e48280ff2e3d3c8c1e57611f91e20846bd53a5885ea3f975d21e1079"
+    },
+    {
+      "path": "http/round2/raw-feed.json.zst",
+      "bytes": 877400,
+      "sha256": "446ff31ea2e003e8abc148913c5d4f71ba2b8e8fba2f25255bc25dd1580b15c0"
+    },
+    {
+      "path": "http/round2/raw-list_anonymous.json.zst",
+      "bytes": 1179486,
+      "sha256": "e7ceffa84d59c8479286f8d7bd9318ec2a7166e94cdb91edc8bb0f8b9e677309"
+    },
+    {
+      "path": "http/round2/raw-list_by_tag.json.zst",
+      "bytes": 1229215,
+      "sha256": "9c38dfc32f90054ae334a165d932420a22238a46245a548fe9d6c9aac0400196"
+    },
+    {
+      "path": "http/round2/raw-list_signed_in.json.zst",
+      "bytes": 881190,
+      "sha256": "cb7df4dd6e89f3fe5202eeff80b3b334287d2ad996e86b7e1b9cec3a44d33775"
+    },
+    {
+      "path": "http/round2/raw-tags.json.zst",
+      "bytes": 6313121,
+      "sha256": "b3f1d50ff78bcf935ec0e555ece098d904530cbdf31c499fef42f33e924041a4"
+    },
+    {
+      "path": "http/round2/raw-warmup-article.json.zst",
+      "bytes": 1487291,
+      "sha256": "ec1d8b064c492622f7ccf8118924f868235dcd9cd45f973f2c4a5be06cdbc3cb"
+    },
+    {
+      "path": "http/round2/raw-warmup-comments.json.zst",
+      "bytes": 1381312,
+      "sha256": "ded6dbf6adb43993121f917440cf27cfbd72ec75ca485c37db161481c04f75c3"
+    },
+    {
+      "path": "http/round2/raw-warmup-create_article.json.zst",
+      "bytes": 218095,
+      "sha256": "c2327cfec8a939a4031c727b444447b8256d19638e8360518404172bd5ccb7b6"
+    },
+    {
+      "path": "http/round2/raw-warmup-favorite_toggle.json.zst",
+      "bytes": 232263,
+      "sha256": "192b8e57556e20e35475bf71291384d0677e7dff0e964034f3b3960a58b611c5"
+    },
+    {
+      "path": "http/round2/raw-warmup-feed.json.zst",
+      "bytes": 173821,
+      "sha256": "6d35493210c5afcf0d689bfa4c52b2c5ea54b172267dca1d611763faca4bba25"
+    },
+    {
+      "path": "http/round2/raw-warmup-list_anonymous.json.zst",
+      "bytes": 234277,
+      "sha256": "c4c99d322e872c20290c8e9ea17caab7a877615630a7bdf203aa52adde794dbf"
+    },
+    {
+      "path": "http/round2/raw-warmup-list_by_tag.json.zst",
+      "bytes": 236856,
+      "sha256": "dc4454ae510c7190d7074fa41367e33738d0361150000488461e2158ffd51705"
+    },
+    {
+      "path": "http/round2/raw-warmup-list_signed_in.json.zst",
+      "bytes": 180159,
+      "sha256": "ea146fccee998801bed2be4bdff4220689b7b7b728d2614cf541be88ba5f7c1b"
+    },
+    {
+      "path": "http/round2/raw-warmup-tags.json.zst",
+      "bytes": 1271511,
+      "sha256": "35d7353687da004957adf3c142a480c06a55fa7dfbb81e46df9ee52b0f1a13a2"
+    }
+  ]
+}

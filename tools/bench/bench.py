@@ -59,6 +59,9 @@ def k6(scenario, duration, export=None):
             "-e", f"DURATION={duration}"]
     if export:
         args += ["--summary-export", f"/work/{export}"]
+    if os.environ.get("BENCH_RAW_OUTPUT"):
+        suffix = export.removeprefix("k6-").removesuffix(".json") if export else f"warmup-{scenario}"
+        args += ["--out", f"json=/work/raw-{suffix}.json"]
     sh(*(args + ["/work/load.js"]), check=False)
 
 

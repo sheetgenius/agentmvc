@@ -1,0 +1,993 @@
+Starting worker 751382db-545b-427f-bd3b-907597705a92
+Job worker: Failed to fetch next job: HasqlError (SessionUsageError (StatementSessionError 1 0 "UPDATE build_article_export_jobs SET status = 'job_status_running', locked_at = NOW(), locked_by = $1, attempts_count = attempts_count + 1 WHERE id IN (SELECT id FROM build_article_export_jobs WHERE (status = 'job_status_not_started' OR status = 'job_status_retry') AND locked_by IS NULL AND run_at <= NOW() ORDER BY created_at LIMIT 1 FOR UPDATE SKIP LOCKED) RETURNING id, export_id, created_at, updated_at, status, last_error, attempts_count, locked_at, locked_by, run_at" ["751382db-545b-427f-bd3b-907597705a92"] False (ServerStatementError (ServerError "42P01" "relation \"build_article_export_jobs\" does not exist" Nothing Nothing (Just 8)))))
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+An exception was raised: HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasCallStack backtrace:
+  collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+  toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/IO.hs:260:11 in ghc-internal:GHC.Internal.IO
+  throwIO, called at ./IHP/Hasql/Pool.hs:34:36 in ihp-1.6.0-KmerG64wamZIOmRxRr7595:IHP.Hasql.Pool
+
+
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 162B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/agentmvc-ihp-optimized-build:latest
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 43B done
+#3 DONE 0.0s
+
+#4 [1/1] FROM docker.io/library/agentmvc-ihp-optimized-build:latest
+#4 DONE 0.0s
+
+#5 exporting to image
+#5 exporting layers done
+#5 writing image sha256:55ddb5b2e9e90288b6fdc11ecefc0ee527ba091ee3c1facb1f0814d9b7d8114f done
+#5 naming to docker.io/library/agentmvc-one-shot-ihp-99795:latest done
+#5 DONE 0.0s
+curl: (22) The requested URL returned error: 500
+migrate: Most RTS options are disabled. Link with -rtsopts to enable them.
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))
+HasqlError (SessionUsageError (StatementSessionError 1 0 "\n      SELECT DISTINCT t.tag FROM article_tags t JOIN articles a ON a.id = t.article_id\n      WHERE a.status = 'published' ORDER BY t.tag\n    " [] False (ServerStatementError (ServerError "42P01" "relation \"article_tags\" does not exist" Nothing Nothing (Just 35)))))

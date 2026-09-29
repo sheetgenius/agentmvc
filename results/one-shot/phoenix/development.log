@@ -1,0 +1,204 @@
+DATABASE_URL=postgres://agentmvc:agentmvc@127.0.0.1:54202/agentmvc
+
+
+14:12:33.265 [info] == Running 20260927135429 Conduit.Repo.Migrations.CreateConduit.change/0 forward
+
+14:12:33.278 [info] create table users
+
+14:12:33.280 [info] create index users_username_index
+
+14:12:33.282 [info] create index users_email_index
+
+14:12:33.282 [info] create table articles
+
+14:12:33.284 [info] create index articles_slug_index
+
+14:12:33.285 [info] create index articles_share_id_index
+
+14:12:33.286 [info] create index articles_author_id_index
+
+14:12:33.287 [info] create table comments
+
+14:12:33.289 [info] create index comments_article_id_index
+
+14:12:33.290 [info] create table follows
+
+14:12:33.290 [info] create index follows_follower_id_followed_id_index
+
+14:12:33.291 [info] create table favorites
+
+14:12:33.292 [info] create index favorites_user_id_article_id_index
+
+14:12:33.293 [info] create table exports
+
+14:12:33.294 [info] execute "DO $$\nBEGIN\nIF NOT EXISTS (SELECT 1 FROM pg_type\n               WHERE typname = 'oban_job_state'\n                 AND typnamespace = 'public'::regnamespace::oid) THEN\n    CREATE TYPE \"public\".oban_job_state AS ENUM (\n      'available',\n      'suspended',\n      'scheduled',\n      'executing',\n      'retryable',\n      'completed',\n      'discarded',\n      'cancelled'\n    );\n  END IF;\nEND$$;\n"
+
+14:12:33.295 [info] create table if not exists public.oban_jobs
+
+14:12:33.298 [info] create index if not exists public.oban_jobs_queue_index
+
+14:12:33.299 [info] create index if not exists public.oban_jobs_state_index
+
+14:12:33.300 [info] create index if not exists public.oban_jobs_scheduled_at_index
+
+14:12:33.301 [info] execute "CREATE OR REPLACE FUNCTION \"public\".oban_jobs_notify() RETURNS trigger AS $$\nDECLARE\n  channel text;\n  notice json;\nBEGIN\n  IF (TG_OP = 'INSERT') THEN\n    channel = 'public.oban_insert';\n    notice = json_build_object('queue', NEW.queue, 'state', NEW.state);\n\n    -- No point triggering for a job that isn't scheduled to run now\n    IF NEW.scheduled_at IS NOT NULL AND NEW.scheduled_at > now() AT TIME ZONE 'utc' THEN\n      RETURN null;\n    END IF;\n  ELSE\n    channel = 'public.oban_update';\n    notice = json_build_object('queue', NEW.queue, 'new_state', NEW.state, 'old_state', OLD.state);\n  END IF;\n\n  PERFORM pg_notify(channel, notice::text);\n\n  RETURN NULL;\nEND;\n$$ LANGUAGE plpgsql;\n"
+
+14:12:33.302 [info] execute "DROP TRIGGER IF EXISTS oban_notify ON \"public\".oban_jobs"
+
+14:12:33.302 [info] trigger "oban_notify" for relation "public.oban_jobs" does not exist, skipping
+
+14:12:33.302 [info] execute "CREATE TRIGGER oban_notify\nAFTER INSERT OR UPDATE OF state ON \"public\".oban_jobs\nFOR EACH ROW EXECUTE PROCEDURE \"public\".oban_jobs_notify();\n"
+
+14:12:33.303 [info] drop index if exists public.oban_jobs_scheduled_at_index
+
+14:12:33.304 [info] create index public.oban_jobs_scheduled_at_index
+
+14:12:33.305 [info] create check constraint worker_length on table public.oban_jobs
+
+14:12:33.306 [info] create check constraint queue_length on table public.oban_jobs
+
+14:12:33.307 [info] execute "CREATE OR REPLACE FUNCTION \"public\".oban_wrap_id(value bigint) RETURNS int AS $$\nBEGIN\n  RETURN (CASE WHEN value > 2147483647 THEN mod(value, 2147483647) ELSE value END)::int;\nEND;\n$$ LANGUAGE plpgsql IMMUTABLE;\n"
+
+14:12:33.308 [info] alter table public.oban_jobs
+
+14:12:33.309 [info] execute "DROP FUNCTION IF EXISTS \"public\".oban_wrap_id(value bigint)"
+
+14:12:33.310 [info] drop index if exists public.oban_jobs_scheduled_at_index
+
+14:12:33.311 [info] drop index if exists public.oban_jobs_queue_index
+
+14:12:33.311 [info] drop index if exists public.oban_jobs_state_index
+
+14:12:33.312 [info] create index if not exists public.oban_jobs_queue_state_scheduled_at_id_index
+
+14:12:33.313 [info] create index if not exists public.oban_jobs_attempted_at_id_index
+
+14:12:33.314 [info] alter table public.oban_jobs
+
+14:12:33.315 [info] alter table public.oban_jobs
+
+14:12:33.316 [info] drop index if exists public.oban_jobs_queue_state_scheduled_at_id_index
+
+14:12:33.316 [info] create index if not exists public.oban_jobs_state_queue_priority_scheduled_at_id_index
+
+14:12:33.317 [info] execute "CREATE OR REPLACE FUNCTION \"public\".oban_jobs_notify() RETURNS trigger AS $$\nDECLARE\n  channel text;\n  notice json;\nBEGIN\n  IF NEW.state = 'available' THEN\n    channel = 'public.oban_insert';\n    notice = json_build_object('queue', NEW.queue);\n\n    PERFORM pg_notify(channel, notice::text);\n  END IF;\n\n  RETURN NULL;\nEND;\n$$ LANGUAGE plpgsql;\n"
+
+14:12:33.318 [info] execute "DROP TRIGGER IF EXISTS oban_notify ON \"public\".oban_jobs"
+
+14:12:33.319 [info] execute "CREATE TRIGGER oban_notify\nAFTER INSERT ON \"public\".oban_jobs\nFOR EACH ROW EXECUTE PROCEDURE \"public\".oban_jobs_notify();\n"
+
+14:12:33.320 [info] alter table public.oban_jobs
+
+14:12:33.323 [info] execute "ALTER TYPE \"public\".oban_job_state ADD VALUE IF NOT EXISTS 'cancelled'"
+
+14:12:33.324 [info] enum label "cancelled" already exists, skipping
+
+14:12:33.324 [info] create index if not exists public.oban_jobs_state_queue_priority_scheduled_at_id_index
+
+14:12:33.325 [info] relation "oban_jobs_state_queue_priority_scheduled_at_id_index" already exists, skipping
+
+14:12:33.325 [info] alter table public.oban_jobs
+
+14:12:33.327 [info] create check constraint priority_range on table public.oban_jobs
+
+14:12:33.328 [info] create check constraint positive_max_attempts on table public.oban_jobs
+
+14:12:33.328 [info] create check constraint attempt_range on table public.oban_jobs
+
+14:12:33.329 [info] drop index if exists public.oban_jobs_args_vector
+
+14:12:33.330 [info] index "oban_jobs_args_vector" does not exist, skipping
+
+14:12:33.330 [info] drop index if exists public.oban_jobs_worker_gist
+
+14:12:33.330 [info] index "oban_jobs_worker_gist" does not exist, skipping
+
+14:12:33.330 [info] drop index if exists public.oban_jobs_attempted_at_id_index
+
+14:12:33.331 [info] create index if not exists public.oban_jobs_args_index
+
+14:12:33.332 [info] create index if not exists public.oban_jobs_meta_index
+
+14:12:33.332 [info] create table if not exists public.oban_peers
+
+14:12:33.333 [info] execute "ALTER TABLE \"public\".oban_peers SET UNLOGGED"
+
+14:12:33.335 [info] drop constraint priority_range from table public.oban_jobs
+
+14:12:33.335 [info] create check constraint non_negative_priority on table public.oban_jobs
+
+14:12:33.335 [info] execute "DROP TRIGGER IF EXISTS oban_notify ON \"public\".oban_jobs"
+
+14:12:33.336 [info] execute "DROP FUNCTION IF EXISTS \"public\".oban_jobs_notify()"
+
+14:12:33.336 [info] create index if not exists public.oban_jobs_state_cancelled_at_index
+
+14:12:33.337 [info] create index if not exists public.oban_jobs_state_discarded_at_index
+
+14:12:33.337 [info] execute "ALTER TYPE \"public\".oban_job_state ADD VALUE IF NOT EXISTS 'suspended' BEFORE 'scheduled'\n"
+
+14:12:33.337 [info] enum label "suspended" already exists, skipping
+
+14:12:33.337 [info] execute "COMMENT ON TABLE \"public\".oban_jobs IS '14'"
+
+14:12:33.339 [info] == Migrated 20260927135429 in 0.0s
+
+dbb6655797333a31049b7909c8291b6f3dcc6cbbdb3e48c7f34118e97f9f3abc
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (1.7s)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (6.5s)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (514ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (841ms)
+
+  4 passed (10.0s)
+Success api/hurl/articles.hurl (17 request(s) in 881 ms)
+Success api/hurl/auth.hurl (20 request(s) in 1063 ms)
+Success api/hurl/comments.hurl (13 request(s) in 693 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 929 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 2322 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 828 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 660 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 428 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 627 ms)
+Success api/hurl/feed.hurl (12 request(s) in 904 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 572 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 628 ms)
+Success api/hurl/tags.hurl (4 request(s) in 362 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 1394 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 1486 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 1345 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 1377 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (14.3/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          16522 ms (0h:0m:16s:522ms)
+
+Success s01_jwt_alg_none.hurl (1 request(s) in 60 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 299 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 78 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 251 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 245 ms)
+Success s06_injection_filters.hurl (4 request(s) in 138 ms)
+Success s07_malformed_json.hurl (1 request(s) in 30 ms)
+Success s08_wrong_types.hurl (8 request(s) in 449 ms)
+Success s09_oversized_body.hurl (2 request(s) in 269 ms)
+Success s10_unknown_route.hurl (1 request(s) in 37 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 621 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 41 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 4539 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (7.4/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          7070 ms (0h:0m:7s:70ms)
+
+
+
+

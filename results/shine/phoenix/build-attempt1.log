@@ -1,0 +1,227 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 659B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/elixir:1.18.4-otp-27
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 DONE 2.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 112B done
+#4 DONE 0.0s
+
+#5 [build 1/9] FROM docker.io/library/elixir:1.18.4-otp-27
+#5 DONE 0.0s
+
+#6 [stage-1 1/4] FROM docker.io/library/debian:bookworm-slim@sha256:3783cc01769c7b2b1b83a5c5ad96c815348e28ed7da68e2e3687004faa906251
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 2.15kB done
+#7 DONE 0.0s
+
+#8 [build 2/9] WORKDIR /app
+#8 CACHED
+
+#9 [build 3/9] RUN mix local.hex --force && mix local.rebar --force
+#9 CACHED
+
+#10 [build 4/9] COPY mix.exs mix.lock ./
+#10 CACHED
+
+#11 [build 5/9] RUN mix deps.get --only prod
+#11 CACHED
+
+#12 [build 6/9] COPY config config
+#12 CACHED
+
+#13 [build 7/9] COPY lib lib
+#13 DONE 0.2s
+
+#14 [stage-1 2/4] RUN apt-get update && apt-get install -y --no-install-recommends     ca-certificates libssl3 libstdc++6 libncurses6 &&     rm -rf /var/lib/apt/lists/*
+#14 ...
+
+#15 [build 8/9] COPY priv priv
+#15 DONE 0.1s
+
+#16 [build 9/9] RUN mix compile && mix release
+#16 0.525 ==> decimal
+#16 0.525 Compiling 4 files (.ex)
+#16 0.834 Generated decimal app
+#16 0.840 ==> mime
+#16 0.840 Compiling 1 file (.ex)
+#16 0.882 Generated mime app
+#16 0.889 ==> phoenix_template
+#16 0.889 Compiling 4 files (.ex)
+#16 0.932 Generated phoenix_template app
+#16 1.091 ==> conduit
+#16 1.091 ===> Analyzing applications...
+#16 1.106 ===> Compiling telemetry
+#16 1.188 ==> telemetry_metrics
+#16 1.188 Compiling 7 files (.ex)
+#16 1.236 Generated telemetry_metrics app
+#16 1.415 ==> conduit
+#16 1.415 ===> Analyzing applications...
+#16 1.427 ===> Compiling telemetry_poller
+#16 1.507 ==> thousand_island
+#16 1.507 Compiling 18 files (.ex)
+#16 1.592 Generated thousand_island app
+#16 1.616 ==> jason
+#16 1.616 Compiling 10 files (.ex)
+#16 2.169 Generated jason app
+#16 2.214 ==> db_connection
+#16 2.214 Compiling 18 files (.ex)
+#16 2.479 Generated db_connection app
+#16 2.521 ==> phoenix_pubsub
+#16 2.521 Compiling 12 files (.ex)
+#16 2.674 Generated phoenix_pubsub app
+#16 2.687 ==> plug_crypto
+#16 2.687 Compiling 5 files (.ex)
+#16 2.733 Generated plug_crypto app
+#16 2.739 ==> hpax
+#16 2.739 Compiling 4 files (.ex)
+#16 2.884 Generated hpax app
+#16 2.891 ==> dns_cluster
+#16 2.891 Compiling 1 file (.ex)
+#16 2.930 Generated dns_cluster app
+#16 2.940 ==> ecto
+#16 2.940 Compiling 56 files (.ex)
+#16 4.004 Generated ecto app
+#16 4.055 ==> plug
+#16 4.055 Compiling 1 file (.erl)
+#16 4.153 Compiling 42 files (.ex)
+#16 4.959 Generated plug app
+#16 5.002 ==> postgrex
+#16 5.003 Compiling 70 files (.ex)
+#16 6.913 Generated postgrex app
+#16 6.974 ==> ecto_sql
+#16 6.974 Compiling 25 files (.ex)
+#16 7.447 Generated ecto_sql app
+#16 7.475 ==> oban
+#16 7.475 Compiling 70 files (.ex)
+#16 7.880 Generated oban app
+#16 7.930 ==> websock
+#16 7.930 Compiling 1 file (.ex)
+#16 7.947 Generated websock app
+#16 7.975 ==> bandit
+#16 7.975 Compiling 54 files (.ex)
+#16 8.460 Generated bandit app
+#16 8.495 ==> websock_adapter
+#16 8.495 Compiling 4 files (.ex)
+#16 8.535 Generated websock_adapter app
+#16 8.600 ==> phoenix
+#16 8.600 Compiling 75 files (.ex)
+#16 9.216 Generated phoenix app
+#16 ...
+
+#14 [stage-1 2/4] RUN apt-get update && apt-get install -y --no-install-recommends     ca-certificates libssl3 libstdc++6 libncurses6 &&     rm -rf /var/lib/apt/lists/*
+#14 1.113 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#14 1.935 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#14 2.468 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#14 2.980 Get:4 http://deb.debian.org/debian bookworm/main arm64 Packages [8689 kB]
+#14 4.851 Get:5 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6936 B]
+#14 5.062 Get:6 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [343 kB]
+#14 5.386 Fetched 9280 kB in 5s (1828 kB/s)
+#14 5.386 Reading package lists...
+#14 5.652 Reading package lists...
+#14 5.909 Building dependency tree...
+#14 5.990 Reading state information...
+#14 6.082 libstdc++6 is already the newest version (12.2.0-14+deb12u1).
+#14 6.082 libstdc++6 set to manually installed.
+#14 6.082 Recommended packages:
+#14 6.082   libgpm2
+#14 6.099 The following NEW packages will be installed:
+#14 6.099   ca-certificates libncurses6 libssl3 openssl
+#14 6.662 0 upgraded, 4 newly installed, 0 to remove and 1 not upgraded.
+#14 6.662 Need to get 3494 kB of archives.
+#14 6.662 After this operation, 9453 kB of additional disk space will be used.
+#14 6.662 Get:1 http://deb.debian.org/debian-security bookworm-security/main arm64 libssl3 arm64 3.0.22-1~deb12u1 [1828 kB]
+#14 8.114 Get:2 http://deb.debian.org/debian-security bookworm-security/main arm64 openssl arm64 3.0.22-1~deb12u1 [1410 kB]
+#14 8.281 Get:3 http://deb.debian.org/debian-security bookworm-security/main arm64 ca-certificates all 20250419~deb12u1 [162 kB]
+#14 8.288 Get:4 http://deb.debian.org/debian bookworm/main arm64 libncurses6 arm64 6.4-4 [93.9 kB]
+#14 8.376 debconf: delaying package configuration, since apt-utils is not installed
+#14 8.394 Fetched 3494 kB in 2s (1587 kB/s)
+#14 8.422 Selecting previously unselected package libssl3:arm64.
+#14 8.422 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6090 files and directories currently installed.)
+#14 8.448 Preparing to unpack .../libssl3_3.0.22-1~deb12u1_arm64.deb ...
+#14 8.468 Unpacking libssl3:arm64 (3.0.22-1~deb12u1) ...
+#14 8.556 Selecting previously unselected package openssl.
+#14 8.556 Preparing to unpack .../openssl_3.0.22-1~deb12u1_arm64.deb ...
+#14 8.559 Unpacking openssl (3.0.22-1~deb12u1) ...
+#14 8.637 Selecting previously unselected package ca-certificates.
+#14 8.637 Preparing to unpack .../ca-certificates_20250419~deb12u1_all.deb ...
+#14 8.640 Unpacking ca-certificates (20250419~deb12u1) ...
+#14 8.674 Selecting previously unselected package libncurses6:arm64.
+#14 8.674 Preparing to unpack .../libncurses6_6.4-4_arm64.deb ...
+#14 8.677 Unpacking libncurses6:arm64 (6.4-4) ...
+#14 8.703 Setting up libssl3:arm64 (3.0.22-1~deb12u1) ...
+#14 8.712 Setting up libncurses6:arm64 (6.4-4) ...
+#14 8.718 Setting up openssl (3.0.22-1~deb12u1) ...
+#14 8.727 Setting up ca-certificates (20250419~deb12u1) ...
+#14 8.765 debconf: unable to initialize frontend: Dialog
+#14 8.765 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#14 8.765 debconf: falling back to frontend: Readline
+#14 8.766 debconf: unable to initialize frontend: Readline
+#14 8.766 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/aarch64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/aarch64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/aarch64-linux-gnu/perl-base /usr/lib/aarch64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#14 8.766 debconf: falling back to frontend: Teletype
+#14 8.929 Updating certificates in /etc/ssl/certs...
+#14 9.265 150 added, 0 removed; done.
+#14 9.288 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#14 9.330 Processing triggers for ca-certificates (20250419~deb12u1) ...
+#14 9.336 Updating certificates in /etc/ssl/certs...
+#14 9.559 0 added, 0 removed; done.
+#14 9.559 Running hooks in /etc/ca-certificates/update.d...
+#14 9.560 done.
+#14 DONE 9.6s
+
+#16 [build 9/9] RUN mix compile && mix release
+#16 9.267 ==> phoenix_ecto
+#16 9.267 Compiling 7 files (.ex)
+#16 ...
+
+#17 [stage-1 3/4] WORKDIR /app
+#17 DONE 0.1s
+
+#16 [build 9/9] RUN mix compile && mix release
+#16 9.395 Generated phoenix_ecto app
+#16 9.416 ==> conduit
+#16 9.416 Compiling 23 files (.ex)
+#16 9.574 Generated conduit app
+#16 9.957 * assembling conduit-0.1.0 on MIX_ENV=prod
+#16 9.957 * using config/runtime.exs to configure the release at runtime
+#16 10.09 * skipping elixir.bat for windows (bin/elixir.bat not found in the Elixir installation)
+#16 10.09 * skipping iex.bat for windows (bin/iex.bat not found in the Elixir installation)
+#16 10.25 
+#16 10.25 Release created at _build/prod/rel/conduit
+#16 10.25 
+#16 10.25     # To start your system
+#16 10.25     _build/prod/rel/conduit/bin/conduit start
+#16 10.25 
+#16 10.25 Once the release is running:
+#16 10.25 
+#16 10.25     # To connect to it remotely
+#16 10.25     _build/prod/rel/conduit/bin/conduit remote
+#16 10.25 
+#16 10.25     # To stop it gracefully (you may also send SIGINT/SIGTERM)
+#16 10.25     _build/prod/rel/conduit/bin/conduit stop
+#16 10.25 
+#16 10.25 To list all commands:
+#16 10.25 
+#16 10.25     _build/prod/rel/conduit/bin/conduit
+#16 10.25 
+#16 DONE 10.3s
+
+#18 [stage-1 4/4] COPY --from=build /app/_build/prod/rel/conduit /app
+#18 DONE 0.1s
+
+#19 exporting to image
+#19 exporting layers
+#19 exporting layers 0.2s done
+#19 writing image sha256:8e65c0fa3d688b20093034eced7b26cdc3d1547a024930e906478335adcd4466
+#19 writing image sha256:8e65c0fa3d688b20093034eced7b26cdc3d1547a024930e906478335adcd4466 done
+#19 naming to docker.io/library/agentmvc-shine-phoenix:release done
+#19 DONE 0.2s

@@ -1,0 +1,63 @@
+DATABASE_URL=postgres://agentmvc:agentmvc@127.0.0.1:54203/agentmvc
+
+   Compiling conduit v0.1.0 (/work/app/conduit)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.95s
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (714ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (762ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (240ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (391ms)
+
+  4 passed (2.6s)
+Success api/hurl/articles.hurl (17 request(s) in 217 ms)
+Success api/hurl/auth.hurl (20 request(s) in 354 ms)
+Success api/hurl/comments.hurl (13 request(s) in 204 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 183 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 1022 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 339 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 173 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 166 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 197 ms)
+Success api/hurl/feed.hurl (12 request(s) in 359 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 183 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 340 ms)
+Success api/hurl/tags.hurl (4 request(s) in 175 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 395 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 369 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 623 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 352 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (41.8/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          5674 ms (0h:0m:5s:674ms)
+
+Success s01_jwt_alg_none.hurl (1 request(s) in 0 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 171 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 0 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 166 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 170 ms)
+Success s06_injection_filters.hurl (4 request(s) in 2 ms)
+Success s07_malformed_json.hurl (1 request(s) in 0 ms)
+Success s08_wrong_types.hurl (8 request(s) in 186 ms)
+Success s09_oversized_body.hurl (2 request(s) in 227 ms)
+Success s10_unknown_route.hurl (1 request(s) in 0 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 331 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 5 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 3518 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (10.8/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          4793 ms (0h:0m:4s:793ms)
+
+
+
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.55s
+

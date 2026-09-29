@@ -1,0 +1,78 @@
+DATABASE_URL=postgres://agentmvc:agentmvc@127.0.0.1:54416/agentmvc
+
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (737ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (835ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (303ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (445ms)
+
+  4 passed (2.7s)
+Success api/hurl/articles.hurl (17 request(s) in 320 ms)
+Success api/hurl/auth.hurl (20 request(s) in 475 ms)
+Success api/hurl/comments.hurl (13 request(s) in 261 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 254 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 1518 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 406 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 219 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 200 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 243 ms)
+Success api/hurl/feed.hurl (12 request(s) in 433 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 223 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 402 ms)
+Success api/hurl/tags.hurl (4 request(s) in 206 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 489 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 452 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 770 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 449 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (32.3/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          7347 ms (0h:0m:7s:347ms)
+
+Success s01_jwt_alg_none.hurl (1 request(s) in 2 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 195 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 2 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 192 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 221 ms)
+Success s06_injection_filters.hurl (4 request(s) in 15 ms)
+Success s07_malformed_json.hurl (1 request(s) in 2 ms)
+Success s08_wrong_types.hurl (8 request(s) in 219 ms)
+Success s09_oversized_body.hurl (2 request(s) in 239 ms)
+Success s10_unknown_route.hurl (1 request(s) in 2 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 372 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 6 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 3840 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (9.8/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          5325 ms (0h:0m:5s:325ms)
+
+
+Inspecting 41 files
+........................C................
+
+Offenses:
+
+app/serializers/conduit_json.rb:20:99: C: [Correctable] Layout/SpaceInsideArrayLiteralBrackets: Use space inside array brackets.
+    favorites = @viewer ? @viewer.favorites.where(article_id: ids).pluck(:article_id).to_h { |id| [id, true] } : {}
+                                                                                                  ^
+app/serializers/conduit_json.rb:20:108: C: Layout/SpaceInsideArrayLiteralBrackets: Use space inside array brackets.
+    favorites = @viewer ? @viewer.favorites.where(article_id: ids).pluck(:article_id).to_h { |id| [id, true] } : {}
+                                                                                                           ^
+app/serializers/conduit_json.rb:22:110: C: [Correctable] Layout/SpaceInsideArrayLiteralBrackets: Use space inside array brackets.
+    follows = @viewer ? @viewer.outgoing_follows.where(followed_id: authors).pluck(:followed_id).to_h { |id| [id, true] } : {}
+                                                                                                             ^
+app/serializers/conduit_json.rb:22:119: C: Layout/SpaceInsideArrayLiteralBrackets: Use space inside array brackets.
+    follows = @viewer ? @viewer.outgoing_follows.where(followed_id: authors).pluck(:followed_id).to_h { |id| [id, true] } : {}
+                                                                                                                      ^
+
+41 files inspected, 4 offenses detected, 2 offenses autocorrectable
+

@@ -1,0 +1,126 @@
+{
+  "image": "agentmvc-one-shot-semantic-density-rails:final",
+  "label": "one-shot-semantic-density-rails-round1",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "15s",
+  "image_mb": 449.8,
+  "cold_start_seconds": 1.52,
+  "seed_seconds": 22.8,
+  "idle_memory_mb": 154.6,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 1935,
+      "rps": 128.2,
+      "p50_ms": 119.96,
+      "p95_ms": 166.07,
+      "p99_ms": 200.71,
+      "failed_checks": 0,
+      "sql_statements_per_request": 24.95,
+      "peak_memory_mb": 128.9,
+      "foreign_container_cpu_percent_max": 237.8,
+      "host_load_1m": 7.4
+    },
+    "list_signed_in": {
+      "requests": 1058,
+      "rps": 69.5,
+      "p50_ms": 220.64,
+      "p95_ms": 301.94,
+      "p99_ms": 331.51,
+      "failed_checks": 0,
+      "sql_statements_per_request": 47.08,
+      "peak_memory_mb": 128.0,
+      "foreign_container_cpu_percent_max": 350.7,
+      "host_load_1m": 7.0
+    },
+    "list_by_tag": {
+      "requests": 1778,
+      "rps": 117.9,
+      "p50_ms": 122.83,
+      "p95_ms": 241.26,
+      "p99_ms": 279.0,
+      "failed_checks": 0,
+      "sql_statements_per_request": 33.35,
+      "peak_memory_mb": 140.0,
+      "foreign_container_cpu_percent_max": 237.1,
+      "host_load_1m": 7.3
+    },
+    "feed": {
+      "requests": 1276,
+      "rps": 84.5,
+      "p50_ms": 189.78,
+      "p95_ms": 222.13,
+      "p99_ms": 258.2,
+      "failed_checks": 0,
+      "sql_statements_per_request": 47.09,
+      "peak_memory_mb": 141.1,
+      "foreign_container_cpu_percent_max": 45.9,
+      "host_load_1m": 7.0
+    },
+    "article": {
+      "requests": 8120,
+      "rps": 540.5,
+      "p50_ms": 27.88,
+      "p95_ms": 42.87,
+      "p99_ms": 52.39,
+      "failed_checks": 0,
+      "sql_statements_per_request": 5.99,
+      "peak_memory_mb": 142.4,
+      "foreign_container_cpu_percent_max": 63.8,
+      "host_load_1m": 7.0
+    },
+    "comments": {
+      "requests": 9968,
+      "rps": 663.2,
+      "p50_ms": 21.65,
+      "p95_ms": 42.42,
+      "p99_ms": 53.74,
+      "failed_checks": 0,
+      "sql_statements_per_request": 3.98,
+      "peak_memory_mb": 131.6,
+      "foreign_container_cpu_percent_max": 1036.0,
+      "host_load_1m": 8.2
+    },
+    "tags": {
+      "requests": 9276,
+      "rps": 617.9,
+      "p50_ms": 22.73,
+      "p95_ms": 44.91,
+      "p99_ms": 55.63,
+      "failed_checks": 0,
+      "sql_statements_per_request": 1.01,
+      "peak_memory_mb": 139.5,
+      "foreign_container_cpu_percent_max": 817.7,
+      "host_load_1m": 9.0
+    },
+    "favorite_toggle": {
+      "requests": 6202,
+      "rps": 412.0,
+      "p50_ms": 37.13,
+      "p95_ms": 55.35,
+      "p99_ms": 68.51,
+      "failed_checks": 0,
+      "sql_statements_per_request": 8.47,
+      "peak_memory_mb": 138.0,
+      "foreign_container_cpu_percent_max": 62.9,
+      "host_load_1m": 8.0
+    },
+    "create_article": {
+      "requests": 6300,
+      "rps": 419.0,
+      "p50_ms": 36.55,
+      "p95_ms": 54.25,
+      "p99_ms": 67.18,
+      "failed_checks": 0,
+      "sql_statements_per_request": 8.02,
+      "peak_memory_mb": 137.5,
+      "foreign_container_cpu_percent_max": 88.9,
+      "host_load_1m": 8.5
+    }
+  },
+  "exit": 0
+}

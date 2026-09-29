@@ -1,0 +1,14 @@
+{
+  "name": "Servant + Hasql",
+  "language": "Haskell",
+  "description": "GHC 9.12.4, Servant, Hasql and PostgreSQL 17",
+  "port": 4105,
+  "agent": {"tool": "Codex CLI", "model": "gpt-6-sol", "reasoning": "xhigh"},
+  "code": {
+    "extensions": {".hs": "--", ".sql": "--"},
+    "files": {"conduit.cabal": "--", "cabal.project": "--"},
+    "skip_files": ["Dockerfile", "Dockerfile.toolchain", "cabal.project.freeze"],
+    "skip_dirs": ["dist-newstyle", ".cabal", "security", "harness", ".cache"],
+    "generated": ["dist-newstyle"]
+  }
+}

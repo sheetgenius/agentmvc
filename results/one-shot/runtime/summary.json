@@ -1,0 +1,1352 @@
+{
+  "order": [
+    "rails",
+    "phoenix",
+    "loco",
+    "loco",
+    "phoenix",
+    "rails"
+  ],
+  "http": {
+    "rails": {
+      "image_mb": [
+        449.9,
+        449.9
+      ],
+      "cold_start_seconds": [
+        1.38,
+        1.54
+      ],
+      "idle_memory_mb": [
+        143.4,
+        109.7
+      ],
+      "scenarios": {
+        "list_anonymous": [
+          {
+            "requests": 2297,
+            "rps": 152.0,
+            "p50_ms": 103.69,
+            "p95_ms": 133.93,
+            "p99_ms": 157.17,
+            "sql_statements_per_request": 25.04,
+            "peak_memory_mb": 147.7,
+            "host_load_1m": 9.4,
+            "foreign_container_cpu_percent_max": 40.7,
+            "failed_checks": 0
+          },
+          {
+            "requests": 1473,
+            "rps": 97.4,
+            "p50_ms": 174.0,
+            "p95_ms": 232.35,
+            "p99_ms": 254.08,
+            "sql_statements_per_request": 25.11,
+            "peak_memory_mb": 114.1,
+            "host_load_1m": 7.2,
+            "foreign_container_cpu_percent_max": 473.0,
+            "failed_checks": 0
+          }
+        ],
+        "list_signed_in": [
+          {
+            "requests": 1321,
+            "rps": 87.1,
+            "p50_ms": 182.63,
+            "p95_ms": 218.72,
+            "p99_ms": 230.29,
+            "sql_statements_per_request": 47.21,
+            "peak_memory_mb": 113.9,
+            "host_load_1m": 9.3,
+            "foreign_container_cpu_percent_max": 63.9,
+            "failed_checks": 0
+          },
+          {
+            "requests": 1321,
+            "rps": 87.0,
+            "p50_ms": 181.88,
+            "p95_ms": 219.37,
+            "p99_ms": 236.24,
+            "sql_statements_per_request": 47.21,
+            "peak_memory_mb": 122.8,
+            "host_load_1m": 7.5,
+            "foreign_container_cpu_percent_max": 32.4,
+            "failed_checks": 0
+          }
+        ],
+        "list_by_tag": [
+          {
+            "requests": 1923,
+            "rps": 127.3,
+            "p50_ms": 123.65,
+            "p95_ms": 163.62,
+            "p99_ms": 193.65,
+            "sql_statements_per_request": 33.48,
+            "peak_memory_mb": 121.6,
+            "host_load_1m": 8.6,
+            "foreign_container_cpu_percent_max": 87.6,
+            "failed_checks": 0
+          },
+          {
+            "requests": 2073,
+            "rps": 137.3,
+            "p50_ms": 114.66,
+            "p95_ms": 146.46,
+            "p99_ms": 157.31,
+            "sql_statements_per_request": 33.42,
+            "peak_memory_mb": 126.2,
+            "host_load_1m": 7.1,
+            "foreign_container_cpu_percent_max": 54.2,
+            "failed_checks": 0
+          }
+        ],
+        "feed": [
+          {
+            "requests": 997,
+            "rps": 64.8,
+            "p50_ms": 225.92,
+            "p95_ms": 370.2,
+            "p99_ms": 450.56,
+            "sql_statements_per_request": 47.32,
+            "peak_memory_mb": 122.3,
+            "host_load_1m": 8.2,
+            "foreign_container_cpu_percent_max": 459.2,
+            "failed_checks": 0
+          },
+          {
+            "requests": 1296,
+            "rps": 85.4,
+            "p50_ms": 185.71,
+            "p95_ms": 230.71,
+            "p99_ms": 251.52,
+            "sql_statements_per_request": 47.28,
+            "peak_memory_mb": 125.0,
+            "host_load_1m": 7.4,
+            "foreign_container_cpu_percent_max": 154.1,
+            "failed_checks": 0
+          }
+        ],
+        "article": [
+          {
+            "requests": 5919,
+            "rps": 393.6,
+            "p50_ms": 40.57,
+            "p95_ms": 63.53,
+            "p99_ms": 73.14,
+            "sql_statements_per_request": 6.04,
+            "peak_memory_mb": 123.5,
+            "host_load_1m": 9.1,
+            "foreign_container_cpu_percent_max": 506.1,
+            "failed_checks": 0
+          },
+          {
+            "requests": 8285,
+            "rps": 551.2,
+            "p50_ms": 26.86,
+            "p95_ms": 46.74,
+            "p99_ms": 65.97,
+            "sql_statements_per_request": 6.02,
+            "peak_memory_mb": 112.5,
+            "host_load_1m": 8.3,
+            "foreign_container_cpu_percent_max": 364.3,
+            "failed_checks": 0
+          }
+        ],
+        "comments": [
+          {
+            "requests": 11702,
+            "rps": 779.4,
+            "p50_ms": 19.45,
+            "p95_ms": 30.37,
+            "p99_ms": 36.56,
+            "sql_statements_per_request": 4.0,
+            "peak_memory_mb": 115.3,
+            "host_load_1m": 8.8,
+            "foreign_container_cpu_percent_max": 77.7,
+            "failed_checks": 0
+          },
+          {
+            "requests": 10761,
+            "rps": 716.5,
+            "p50_ms": 20.89,
+            "p95_ms": 34.05,
+            "p99_ms": 44.27,
+            "sql_statements_per_request": 4.01,
+            "peak_memory_mb": 113.4,
+            "host_load_1m": 8.6,
+            "foreign_container_cpu_percent_max": 154.3,
+            "failed_checks": 0
+          }
+        ],
+        "tags": [
+          {
+            "requests": 12398,
+            "rps": 825.6,
+            "p50_ms": 17.84,
+            "p95_ms": 30.14,
+            "p99_ms": 38.58,
+            "sql_statements_per_request": 1.03,
+            "peak_memory_mb": 117.4,
+            "host_load_1m": 9.0,
+            "foreign_container_cpu_percent_max": 174.1,
+            "failed_checks": 0
+          },
+          {
+            "requests": 12961,
+            "rps": 863.4,
+            "p50_ms": 17.24,
+            "p95_ms": 27.53,
+            "p99_ms": 37.65,
+            "sql_statements_per_request": 1.02,
+            "peak_memory_mb": 119.3,
+            "host_load_1m": 9.2,
+            "foreign_container_cpu_percent_max": 187.4,
+            "failed_checks": 0
+          }
+        ],
+        "favorite_toggle": [
+          {
+            "requests": 6818,
+            "rps": 453.1,
+            "p50_ms": 32.68,
+            "p95_ms": 55.66,
+            "p99_ms": 74.07,
+            "sql_statements_per_request": 8.5,
+            "peak_memory_mb": 126.8,
+            "host_load_1m": 8.7,
+            "foreign_container_cpu_percent_max": 213.3,
+            "failed_checks": 0
+          },
+          {
+            "requests": 6762,
+            "rps": 448.6,
+            "p50_ms": 32.33,
+            "p95_ms": 58.54,
+            "p99_ms": 72.78,
+            "sql_statements_per_request": 8.49,
+            "peak_memory_mb": 119.9,
+            "host_load_1m": 9.5,
+            "foreign_container_cpu_percent_max": 57.4,
+            "failed_checks": 0
+          }
+        ],
+        "create_article": [
+          {
+            "requests": 7682,
+            "rps": 511.2,
+            "p50_ms": 29.44,
+            "p95_ms": 44.38,
+            "p99_ms": 54.8,
+            "sql_statements_per_request": 7.04,
+            "peak_memory_mb": 127.6,
+            "host_load_1m": 8.5,
+            "foreign_container_cpu_percent_max": 66.0,
+            "failed_checks": 0
+          },
+          {
+            "requests": 6843,
+            "rps": 455.4,
+            "p50_ms": 32.69,
+            "p95_ms": 52.1,
+            "p99_ms": 66.57,
+            "sql_statements_per_request": 7.05,
+            "peak_memory_mb": 119.5,
+            "host_load_1m": 9.4,
+            "foreign_container_cpu_percent_max": 164.4,
+            "failed_checks": 0
+          }
+        ]
+      }
+    },
+    "phoenix": {
+      "image_mb": [
+        1673.9,
+        1673.9
+      ],
+      "cold_start_seconds": [
+        1.13,
+        1.16
+      ],
+      "idle_memory_mb": [
+        90.0,
+        107.8
+      ],
+      "scenarios": {
+        "list_anonymous": [
+          {
+            "requests": 16308,
+            "rps": 1086.7,
+            "p50_ms": 14.14,
+            "p95_ms": 20.35,
+            "p99_ms": 24.62,
+            "sql_statements_per_request": 42.01,
+            "peak_memory_mb": 107.0,
+            "host_load_1m": 7.5,
+            "foreign_container_cpu_percent_max": 79.6,
+            "failed_checks": 0
+          },
+          {
+            "requests": 15927,
+            "rps": 1060.8,
+            "p50_ms": 14.2,
+            "p95_ms": 21.53,
+            "p99_ms": 33.05,
+            "sql_statements_per_request": 42.01,
+            "peak_memory_mb": 127.7,
+            "host_load_1m": 8.5,
+            "foreign_container_cpu_percent_max": 67.8,
+            "failed_checks": 0
+          }
+        ],
+        "list_signed_in": [
+          {
+            "requests": 9199,
+            "rps": 612.5,
+            "p50_ms": 25.49,
+            "p95_ms": 34.72,
+            "p99_ms": 39.13,
+            "sql_statements_per_request": 83.01,
+            "peak_memory_mb": 113.6,
+            "host_load_1m": 8.1,
+            "foreign_container_cpu_percent_max": 72.5,
+            "failed_checks": 0
+          },
+          {
+            "requests": 9364,
+            "rps": 623.3,
+            "p50_ms": 24.75,
+            "p95_ms": 34.68,
+            "p99_ms": 41.01,
+            "sql_statements_per_request": 83.01,
+            "peak_memory_mb": 110.3,
+            "host_load_1m": 9.1,
+            "foreign_container_cpu_percent_max": 71.3,
+            "failed_checks": 0
+          }
+        ],
+        "list_by_tag": [
+          {
+            "requests": 15053,
+            "rps": 1002.8,
+            "p50_ms": 15.12,
+            "p95_ms": 23.26,
+            "p99_ms": 28.55,
+            "sql_statements_per_request": 42.01,
+            "peak_memory_mb": 113.6,
+            "host_load_1m": 8.5,
+            "foreign_container_cpu_percent_max": 77.7,
+            "failed_checks": 0
+          },
+          {
+            "requests": 15313,
+            "rps": 1020.3,
+            "p50_ms": 14.98,
+            "p95_ms": 22.23,
+            "p99_ms": 27.45,
+            "sql_statements_per_request": 42.01,
+            "peak_memory_mb": 110.1,
+            "host_load_1m": 9.3,
+            "foreign_container_cpu_percent_max": 84.6,
+            "failed_checks": 0
+          }
+        ],
+        "feed": [
+          {
+            "requests": 8733,
+            "rps": 581.3,
+            "p50_ms": 26.59,
+            "p95_ms": 37.22,
+            "p99_ms": 42.35,
+            "sql_statements_per_request": 83.01,
+            "peak_memory_mb": 113.7,
+            "host_load_1m": 9.0,
+            "foreign_container_cpu_percent_max": 78.8,
+            "failed_checks": 0
+          },
+          {
+            "requests": 9032,
+            "rps": 601.3,
+            "p50_ms": 25.91,
+            "p95_ms": 35.2,
+            "p99_ms": 40.97,
+            "sql_statements_per_request": 83.01,
+            "peak_memory_mb": 116.0,
+            "host_load_1m": 9.8,
+            "foreign_container_cpu_percent_max": 56.4,
+            "failed_checks": 0
+          }
+        ],
+        "article": [
+          {
+            "requests": 82103,
+            "rps": 5473.0,
+            "p50_ms": 2.61,
+            "p95_ms": 4.88,
+            "p99_ms": 6.88,
+            "sql_statements_per_request": 7.0,
+            "peak_memory_mb": 107.1,
+            "host_load_1m": 9.5,
+            "foreign_container_cpu_percent_max": 168.9,
+            "failed_checks": 0
+          },
+          {
+            "requests": 79074,
+            "rps": 5270.9,
+            "p50_ms": 2.71,
+            "p95_ms": 5.07,
+            "p99_ms": 6.91,
+            "sql_statements_per_request": 7.0,
+            "peak_memory_mb": 116.1,
+            "host_load_1m": 10.4,
+            "foreign_container_cpu_percent_max": 166.3,
+            "failed_checks": 0
+          }
+        ],
+        "comments": [
+          {
+            "requests": 123527,
+            "rps": 8234.1,
+            "p50_ms": 1.65,
+            "p95_ms": 3.47,
+            "p99_ms": 5.27,
+            "sql_statements_per_request": 4.0,
+            "peak_memory_mb": 107.1,
+            "host_load_1m": 9.9,
+            "foreign_container_cpu_percent_max": 236.2,
+            "failed_checks": 0
+          },
+          {
+            "requests": 135133,
+            "rps": 9005.1,
+            "p50_ms": 1.53,
+            "p95_ms": 3.09,
+            "p99_ms": 4.43,
+            "sql_statements_per_request": 4.0,
+            "peak_memory_mb": 116.1,
+            "host_load_1m": 10.1,
+            "foreign_container_cpu_percent_max": 219.2,
+            "failed_checks": 0
+          }
+        ],
+        "tags": [
+          {
+            "requests": 90254,
+            "rps": 6014.5,
+            "p50_ms": 2.48,
+            "p95_ms": 4.18,
+            "p99_ms": 5.61,
+            "sql_statements_per_request": 1.0,
+            "peak_memory_mb": 113.9,
+            "host_load_1m": 9.8,
+            "foreign_container_cpu_percent_max": 160.5,
+            "failed_checks": 0
+          },
+          {
+            "requests": 91856,
+            "rps": 6123.0,
+            "p50_ms": 2.44,
+            "p95_ms": 4.03,
+            "p99_ms": 5.52,
+            "sql_statements_per_request": 1.0,
+            "peak_memory_mb": 117.6,
+            "host_load_1m": 9.5,
+            "foreign_container_cpu_percent_max": 162.7,
+            "failed_checks": 0
+          }
+        ],
+        "favorite_toggle": [
+          {
+            "requests": 37312,
+            "rps": 2486.2,
+            "p50_ms": 5.78,
+            "p95_ms": 10.61,
+            "p99_ms": 17.25,
+            "sql_statements_per_request": 7.0,
+            "peak_memory_mb": 111.3,
+            "host_load_1m": 9.7,
+            "foreign_container_cpu_percent_max": 213.5,
+            "failed_checks": 0
+          },
+          {
+            "requests": 41762,
+            "rps": 2782.7,
+            "p50_ms": 5.18,
+            "p95_ms": 9.37,
+            "p99_ms": 13.78,
+            "sql_statements_per_request": 7.0,
+            "peak_memory_mb": 118.4,
+            "host_load_1m": 9.1,
+            "foreign_container_cpu_percent_max": 128.2,
+            "failed_checks": 0
+          }
+        ],
+        "create_article": [
+          {
+            "requests": 36258,
+            "rps": 2415.6,
+            "p50_ms": 5.94,
+            "p95_ms": 11.09,
+            "p99_ms": 15.87,
+            "sql_statements_per_request": 6.0,
+            "peak_memory_mb": 114.3,
+            "host_load_1m": 10.5,
+            "foreign_container_cpu_percent_max": 137.8,
+            "failed_checks": 0
+          },
+          {
+            "requests": 44706,
+            "rps": 2979.9,
+            "p50_ms": 4.66,
+            "p95_ms": 8.67,
+            "p99_ms": 11.23,
+            "sql_statements_per_request": 6.0,
+            "peak_memory_mb": 122.6,
+            "host_load_1m": 9.3,
+            "foreign_container_cpu_percent_max": 123.9,
+            "failed_checks": 0
+          }
+        ]
+      }
+    },
+    "loco": {
+      "image_mb": [
+        113.4,
+        113.4
+      ],
+      "cold_start_seconds": [
+        0.28,
+        0.17
+      ],
+      "idle_memory_mb": [
+        10.6,
+        1.6
+      ],
+      "scenarios": {
+        "list_anonymous": [
+          {
+            "requests": 4599,
+            "rps": 305.8,
+            "p50_ms": 59.61,
+            "p95_ms": 76.3,
+            "p99_ms": 79.92,
+            "sql_statements_per_request": 81.02,
+            "peak_memory_mb": 29.1,
+            "host_load_1m": 10.4,
+            "foreign_container_cpu_percent_max": 312.3,
+            "failed_checks": 0
+          },
+          {
+            "requests": 4940,
+            "rps": 328.9,
+            "p50_ms": 40.22,
+            "p95_ms": 74.4,
+            "p99_ms": 78.08,
+            "sql_statements_per_request": 81.02,
+            "peak_memory_mb": 19.8,
+            "host_load_1m": 7.6,
+            "foreign_container_cpu_percent_max": 78.9,
+            "failed_checks": 0
+          }
+        ],
+        "list_signed_in": [
+          {
+            "requests": 4884,
+            "rps": 325.2,
+            "p50_ms": 45.41,
+            "p95_ms": 75.52,
+            "p99_ms": 81.27,
+            "sql_statements_per_request": 81.02,
+            "peak_memory_mb": 20.2,
+            "host_load_1m": 10.8,
+            "foreign_container_cpu_percent_max": 23.2,
+            "failed_checks": 0
+          },
+          {
+            "requests": 4999,
+            "rps": 332.7,
+            "p50_ms": 39.6,
+            "p95_ms": 73.43,
+            "p99_ms": 77.26,
+            "sql_statements_per_request": 81.02,
+            "peak_memory_mb": 20.9,
+            "host_load_1m": 6.8,
+            "foreign_container_cpu_percent_max": 54.3,
+            "failed_checks": 0
+          }
+        ],
+        "list_by_tag": [
+          {
+            "requests": 5286,
+            "rps": 352.1,
+            "p50_ms": 30.28,
+            "p95_ms": 76.78,
+            "p99_ms": 80.92,
+            "sql_statements_per_request": 81.02,
+            "peak_memory_mb": 19.4,
+            "host_load_1m": 10.2,
+            "foreign_container_cpu_percent_max": 58.7,
+            "failed_checks": 0
+          },
+          {
+            "requests": 5181,
+            "rps": 345.1,
+            "p50_ms": 35.25,
+            "p95_ms": 76.0,
+            "p99_ms": 80.27,
+            "sql_statements_per_request": 81.02,
+            "peak_memory_mb": 19.4,
+            "host_load_1m": 6.6,
+            "foreign_container_cpu_percent_max": 90.3,
+            "failed_checks": 0
+          }
+        ],
+        "feed": [
+          {
+            "requests": 5203,
+            "rps": 346.3,
+            "p50_ms": 31.87,
+            "p95_ms": 76.45,
+            "p99_ms": 80.45,
+            "sql_statements_per_request": 81.02,
+            "peak_memory_mb": 22.6,
+            "host_load_1m": 10.4,
+            "foreign_container_cpu_percent_max": 57.2,
+            "failed_checks": 0
+          },
+          {
+            "requests": 5265,
+            "rps": 349.8,
+            "p50_ms": 31.65,
+            "p95_ms": 76.19,
+            "p99_ms": 80.11,
+            "sql_statements_per_request": 81.02,
+            "peak_memory_mb": 19.2,
+            "host_load_1m": 8.0,
+            "foreign_container_cpu_percent_max": 81.1,
+            "failed_checks": 0
+          }
+        ],
+        "article": [
+          {
+            "requests": 84890,
+            "rps": 5658.6,
+            "p50_ms": 1.49,
+            "p95_ms": 2.78,
+            "p99_ms": 46.91,
+            "sql_statements_per_request": 5.0,
+            "peak_memory_mb": 22.6,
+            "host_load_1m": 11.3,
+            "foreign_container_cpu_percent_max": 173.9,
+            "failed_checks": 0
+          },
+          {
+            "requests": 85282,
+            "rps": 5669.7,
+            "p50_ms": 1.49,
+            "p95_ms": 2.72,
+            "p99_ms": 46.27,
+            "sql_statements_per_request": 5.0,
+            "peak_memory_mb": 24.4,
+            "host_load_1m": 9.4,
+            "foreign_container_cpu_percent_max": 164.1,
+            "failed_checks": 0
+          }
+        ],
+        "comments": [
+          {
+            "requests": 70298,
+            "rps": 4680.8,
+            "p50_ms": 1.82,
+            "p95_ms": 3.58,
+            "p99_ms": 48.41,
+            "sql_statements_per_request": 6.0,
+            "peak_memory_mb": 19.8,
+            "host_load_1m": 13.3,
+            "foreign_container_cpu_percent_max": 146.0,
+            "failed_checks": 0
+          },
+          {
+            "requests": 72171,
+            "rps": 4810.8,
+            "p50_ms": 1.73,
+            "p95_ms": 3.24,
+            "p99_ms": 48.6,
+            "sql_statements_per_request": 6.0,
+            "peak_memory_mb": 24.2,
+            "host_load_1m": 10.4,
+            "foreign_container_cpu_percent_max": 139.7,
+            "failed_checks": 0
+          }
+        ],
+        "tags": [
+          {
+            "requests": 81535,
+            "rps": 5423.3,
+            "p50_ms": 0.94,
+            "p95_ms": 2.37,
+            "p99_ms": 66.91,
+            "sql_statements_per_request": 1.0,
+            "peak_memory_mb": 19.5,
+            "host_load_1m": 13.4,
+            "foreign_container_cpu_percent_max": 242.1,
+            "failed_checks": 0
+          },
+          {
+            "requests": 86450,
+            "rps": 5750.5,
+            "p50_ms": 0.88,
+            "p95_ms": 1.87,
+            "p99_ms": 67.26,
+            "sql_statements_per_request": 1.0,
+            "peak_memory_mb": 24.2,
+            "host_load_1m": 11.2,
+            "foreign_container_cpu_percent_max": 119.0,
+            "failed_checks": 0
+          }
+        ],
+        "favorite_toggle": [
+          {
+            "requests": 53142,
+            "rps": 3541.7,
+            "p50_ms": 3.77,
+            "p95_ms": 8.48,
+            "p99_ms": 21.4,
+            "sql_statements_per_request": 6.0,
+            "peak_memory_mb": 20.2,
+            "host_load_1m": 13.4,
+            "foreign_container_cpu_percent_max": 168.5,
+            "failed_checks": 0
+          },
+          {
+            "requests": 55312,
+            "rps": 3685.9,
+            "p50_ms": 3.6,
+            "p95_ms": 6.85,
+            "p99_ms": 22.67,
+            "sql_statements_per_request": 6.0,
+            "peak_memory_mb": 19.3,
+            "host_load_1m": 10.2,
+            "foreign_container_cpu_percent_max": 160.1,
+            "failed_checks": 0
+          }
+        ],
+        "create_article": [
+          {
+            "requests": 53443,
+            "rps": 3562.4,
+            "p50_ms": 3.56,
+            "p95_ms": 8.61,
+            "p99_ms": 24.0,
+            "sql_statements_per_request": 6.0,
+            "peak_memory_mb": 20.3,
+            "host_load_1m": 13.1,
+            "foreign_container_cpu_percent_max": 144.3,
+            "failed_checks": 0
+          },
+          {
+            "requests": 51492,
+            "rps": 3432.1,
+            "p50_ms": 3.68,
+            "p95_ms": 7.75,
+            "p99_ms": 24.81,
+            "sql_statements_per_request": 6.0,
+            "peak_memory_mb": 19.3,
+            "host_load_1m": 9.6,
+            "foreign_container_cpu_percent_max": 168.6,
+            "failed_checks": 0
+          }
+        ]
+      }
+    }
+  },
+  "live": {
+    "rails": {
+      "image_mb": [
+        449.9,
+        449.9
+      ],
+      "baseline": [
+        {
+          "cpu_percent": 0.48,
+          "memory_mb": 129.8,
+          "foreign_container_cpu_percent": 2.48,
+          "host_load_1m": 10.18
+        },
+        {
+          "cpu_percent": 0.54,
+          "memory_mb": 121.4,
+          "foreign_container_cpu_percent": 20.48,
+          "host_load_1m": 9.2
+        }
+      ],
+      "scenarios": {
+        "10": [
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 10.24,
+              "p95_ms": 15.28,
+              "p99_ms": 22.83
+            },
+            "delivery_latency": {
+              "count": 200,
+              "p50_ms": 10.25,
+              "p95_ms": 15.64,
+              "p99_ms": 23.02
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 1.07,
+              "memory_mb_peak": 139.0
+            },
+            "active": {
+              "cpu_percent_peak": 4.1,
+              "memory_mb_peak": 102.8
+            },
+            "foreign_container_cpu_percent_peak": 55.31,
+            "host_load_1m_peak": 10.25
+          },
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 10.39,
+              "p95_ms": 15.06,
+              "p99_ms": 27.22
+            },
+            "delivery_latency": {
+              "count": 200,
+              "p50_ms": 10.59,
+              "p95_ms": 16.08,
+              "p99_ms": 26.82
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 1.43,
+              "memory_mb_peak": 132.0
+            },
+            "active": {
+              "cpu_percent_peak": 4.49,
+              "memory_mb_peak": 134.4
+            },
+            "foreign_container_cpu_percent_peak": 48.81,
+            "host_load_1m_peak": 8.73
+          }
+        ],
+        "100": [
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 7.17,
+              "p95_ms": 17.67,
+              "p99_ms": 22.05
+            },
+            "delivery_latency": {
+              "count": 2000,
+              "p50_ms": 7.88,
+              "p95_ms": 20.8,
+              "p99_ms": 22.71
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 2.71,
+              "memory_mb_peak": 119.5
+            },
+            "active": {
+              "cpu_percent_peak": 2.31,
+              "memory_mb_peak": 119.8
+            },
+            "foreign_container_cpu_percent_peak": 53.04,
+            "host_load_1m_peak": 9.21
+          },
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 6.83,
+              "p95_ms": 17.53,
+              "p99_ms": 23.8
+            },
+            "delivery_latency": {
+              "count": 2000,
+              "p50_ms": 8.41,
+              "p95_ms": 18.55,
+              "p99_ms": 24.73
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 1.0,
+              "memory_mb_peak": 150.9
+            },
+            "active": {
+              "cpu_percent_peak": 2.8,
+              "memory_mb_peak": 151.2
+            },
+            "foreign_container_cpu_percent_peak": 202.66,
+            "host_load_1m_peak": 8.44
+          }
+        ],
+        "500": [
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 6.1,
+              "p95_ms": 18.54,
+              "p99_ms": 24.51
+            },
+            "delivery_latency": {
+              "count": 2000,
+              "p50_ms": 7.55,
+              "p95_ms": 19.92,
+              "p99_ms": 25.46
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 1.92,
+              "memory_mb_peak": 167.9
+            },
+            "active": {
+              "cpu_percent_peak": 2.48,
+              "memory_mb_peak": 155.7
+            },
+            "foreign_container_cpu_percent_peak": 48.79,
+            "host_load_1m_peak": 8.52
+          },
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 6.27,
+              "p95_ms": 9.96,
+              "p99_ms": 15.77
+            },
+            "delivery_latency": {
+              "count": 2000,
+              "p50_ms": 7.75,
+              "p95_ms": 11.89,
+              "p99_ms": 17.58
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 2.11,
+              "memory_mb_peak": 175.1
+            },
+            "active": {
+              "cpu_percent_peak": 2.78,
+              "memory_mb_peak": 153.4
+            },
+            "foreign_container_cpu_percent_peak": 119.62,
+            "host_load_1m_peak": 8.05
+          }
+        ]
+      }
+    },
+    "phoenix": {
+      "image_mb": [
+        1673.9,
+        1673.9
+      ],
+      "baseline": [
+        {
+          "cpu_percent": 0.14,
+          "memory_mb": 94.95,
+          "foreign_container_cpu_percent": 2.55,
+          "host_load_1m": 10.09
+        },
+        {
+          "cpu_percent": 0.1,
+          "memory_mb": 95.09,
+          "foreign_container_cpu_percent": 18.43,
+          "host_load_1m": 8.73
+        }
+      ],
+      "scenarios": {
+        "10": [
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 5.23,
+              "p95_ms": 9.06,
+              "p99_ms": 12
+            },
+            "delivery_latency": {
+              "count": 200,
+              "p50_ms": 4.79,
+              "p95_ms": 8.97,
+              "p99_ms": 11.82
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 0.22,
+              "memory_mb_peak": 95.83
+            },
+            "active": {
+              "cpu_percent_peak": 0.87,
+              "memory_mb_peak": 95.95
+            },
+            "foreign_container_cpu_percent_peak": 47.22,
+            "host_load_1m_peak": 10.09
+          },
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 6.1,
+              "p95_ms": 10.81,
+              "p99_ms": 11.37
+            },
+            "delivery_latency": {
+              "count": 200,
+              "p50_ms": 5.65,
+              "p95_ms": 10.62,
+              "p99_ms": 10.8
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 0.17,
+              "memory_mb_peak": 96.09
+            },
+            "active": {
+              "cpu_percent_peak": 1.13,
+              "memory_mb_peak": 95.21
+            },
+            "foreign_container_cpu_percent_peak": 47.98,
+            "host_load_1m_peak": 8.73
+          }
+        ],
+        "100": [
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 6.65,
+              "p95_ms": 10.78,
+              "p99_ms": 11.27
+            },
+            "delivery_latency": {
+              "count": 2000,
+              "p50_ms": 6.01,
+              "p95_ms": 10.29,
+              "p99_ms": 10.56
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 0.33,
+              "memory_mb_peak": 100.1
+            },
+            "active": {
+              "cpu_percent_peak": 1.17,
+              "memory_mb_peak": 101.3
+            },
+            "foreign_container_cpu_percent_peak": 37.3,
+            "host_load_1m_peak": 9.2
+          },
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 5.42,
+              "p95_ms": 9.26,
+              "p99_ms": 10.65
+            },
+            "delivery_latency": {
+              "count": 2000,
+              "p50_ms": 5.39,
+              "p95_ms": 9.92,
+              "p99_ms": 10.42
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 0.3,
+              "memory_mb_peak": 93.47
+            },
+            "active": {
+              "cpu_percent_peak": 1.22,
+              "memory_mb_peak": 94.66
+            },
+            "foreign_container_cpu_percent_peak": 47.99,
+            "host_load_1m_peak": 7.75
+          }
+        ],
+        "500": [
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 5.27,
+              "p95_ms": 14.29,
+              "p99_ms": 39.27
+            },
+            "delivery_latency": {
+              "count": 2000,
+              "p50_ms": 5.52,
+              "p95_ms": 14.22,
+              "p99_ms": 41.11
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 0.39,
+              "memory_mb_peak": 107.6
+            },
+            "active": {
+              "cpu_percent_peak": 1.35,
+              "memory_mb_peak": 113.8
+            },
+            "foreign_container_cpu_percent_peak": 136.16,
+            "host_load_1m_peak": 8.78
+          },
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 5.44,
+              "p95_ms": 9.4,
+              "p99_ms": 10.43
+            },
+            "delivery_latency": {
+              "count": 2000,
+              "p50_ms": 5.27,
+              "p95_ms": 9.29,
+              "p99_ms": 9.93
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 0.7,
+              "memory_mb_peak": 115.0
+            },
+            "active": {
+              "cpu_percent_peak": 3.48,
+              "memory_mb_peak": 117.3
+            },
+            "foreign_container_cpu_percent_peak": 54.9,
+            "host_load_1m_peak": 7.79
+          }
+        ]
+      }
+    },
+    "loco": {
+      "image_mb": [
+        113.4,
+        113.4
+      ],
+      "baseline": [
+        {
+          "cpu_percent": 0.08,
+          "memory_mb": 4.22,
+          "foreign_container_cpu_percent": 14.68,
+          "host_load_1m": 12.41
+        },
+        {
+          "cpu_percent": 0.1,
+          "memory_mb": 4.52,
+          "foreign_container_cpu_percent": 50.59,
+          "host_load_1m": 9.12
+        }
+      ],
+      "scenarios": {
+        "10": [
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 4.78,
+              "p95_ms": 8.24,
+              "p99_ms": 37.1
+            },
+            "delivery_latency": {
+              "count": 200,
+              "p50_ms": 4.87,
+              "p95_ms": 8.28,
+              "p99_ms": 37.27
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 0.12,
+              "memory_mb_peak": 6.2
+            },
+            "active": {
+              "cpu_percent_peak": 0.3,
+              "memory_mb_peak": 3.22
+            },
+            "foreign_container_cpu_percent_peak": 46.21,
+            "host_load_1m_peak": 12.05
+          },
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 4.49,
+              "p95_ms": 7.81,
+              "p99_ms": 8.52
+            },
+            "delivery_latency": {
+              "count": 200,
+              "p50_ms": 4.33,
+              "p95_ms": 7.98,
+              "p99_ms": 8.62
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 0.11,
+              "memory_mb_peak": 7.05
+            },
+            "active": {
+              "cpu_percent_peak": 0.33,
+              "memory_mb_peak": 7.83
+            },
+            "foreign_container_cpu_percent_peak": 62.42,
+            "host_load_1m_peak": 8.47
+          }
+        ],
+        "100": [
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 4.46,
+              "p95_ms": 9.4,
+              "p99_ms": 12.11
+            },
+            "delivery_latency": {
+              "count": 2000,
+              "p50_ms": 4.67,
+              "p95_ms": 9.46,
+              "p99_ms": 12.67
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 0.14,
+              "memory_mb_peak": 15.31
+            },
+            "active": {
+              "cpu_percent_peak": 0.66,
+              "memory_mb_peak": 16.08
+            },
+            "foreign_container_cpu_percent_peak": 60.89,
+            "host_load_1m_peak": 11.49
+          },
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 4.87,
+              "p95_ms": 18.35,
+              "p99_ms": 18.45
+            },
+            "delivery_latency": {
+              "count": 2000,
+              "p50_ms": 5.02,
+              "p95_ms": 18.55,
+              "p99_ms": 19.09
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 0.17,
+              "memory_mb_peak": 19.17
+            },
+            "active": {
+              "cpu_percent_peak": 0.79,
+              "memory_mb_peak": 20.01
+            },
+            "foreign_container_cpu_percent_peak": 50.58,
+            "host_load_1m_peak": 7.7
+          }
+        ],
+        "500": [
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 4.43,
+              "p95_ms": 9.95,
+              "p99_ms": 10.08
+            },
+            "delivery_latency": {
+              "count": 2000,
+              "p50_ms": 4.54,
+              "p95_ms": 10.21,
+              "p99_ms": 10.61
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 0.15,
+              "memory_mb_peak": 67.89
+            },
+            "active": {
+              "cpu_percent_peak": 4.19,
+              "memory_mb_peak": 67.89
+            },
+            "foreign_container_cpu_percent_peak": 49.44,
+            "host_load_1m_peak": 10.48
+          },
+          {
+            "save_latency": {
+              "count": 20,
+              "p50_ms": 3.98,
+              "p95_ms": 7.79,
+              "p99_ms": 14.35
+            },
+            "delivery_latency": {
+              "count": 2000,
+              "p50_ms": 4.42,
+              "p95_ms": 8.31,
+              "p99_ms": 14.7
+            },
+            "missing": 0,
+            "duplicate_revisions": 0,
+            "regressed_revisions": 0,
+            "actual_saves_per_second": 5,
+            "idle": {
+              "cpu_percent_median": 0.17,
+              "memory_mb_peak": 71.55
+            },
+            "active": {
+              "cpu_percent_peak": 3.03,
+              "memory_mb_peak": 72.05
+            },
+            "foreign_container_cpu_percent_peak": 53.44,
+            "host_load_1m_peak": 7.33
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "tokens": 16904,
+  "lines": 1445,
+  "code_lines": 1379,
+  "owned_tokens": 14797,
+  "owned_lines": 1207,
+  "files_created": 12,
+  "files_changed": 5,
+  "encoding": "o200k_base",
+  "baseline": "untouched IHP scaffold in .scaffold/",
+  "rule": "same IHP measurement exclusions as runs 1\u20133",
+  "review_exclusions": {
+    "skip_dirs": [
+      "build",
+      "security",
+      "harness",
+      ".devenv",
+      ".cache",
+      ".tmp",
+      "Test",
+      ".github"
+    ],
+    "skip_paths": [
+      "Config/nix"
+    ],
+    "skip_files": [
+      "flake.lock",
+      "Dockerfile",
+      "default.nix",
+      "hie.yaml",
+      ".stylish-haskell.yaml",
+      "Setup.hs",
+      "Makefile"
+    ]
+  }
+}
