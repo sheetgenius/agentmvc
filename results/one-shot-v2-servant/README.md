@@ -41,7 +41,7 @@ Each HTTP round used 16 virtual users, 3 seconds of warmup, then 15 seconds of m
 
 WebSocket broadcasts to 10, 100, and 500 subscribers delivered without missing, duplicate, or regressed revisions in both rounds. Their p95 delivery latencies were **8.58 / 8.14 ms**, **9.75 / 9.80 ms**, and **12.58 / 10.03 ms**, respectively. Room admission is held in one process; these results do not establish multi-instance presence or revocation behavior.
 
-The host was not isolated: recorded one-minute load was 5.1–6.5 during HTTP scenarios, and unrelated containers reached 47–118% of one CPU. Treat absolute speed and cross-session comparisons as load-qualified. The two same-image rounds show the variation under this session's conditions. The [runtime summary](pilot-1/runtime/summary.json) includes all measurements and host-load fields. All 36 compressed raw k6 streams passed decompression checks and are indexed with SHA-256 hashes in [raw-index.json](pilot-1/runtime/raw-index.json); they currently occupy 65.4 MB locally. A scan found no common credential patterns in those streams. A [checksummed release archive](pilot-1/runtime/raw-archive.json) is prepared under `.work/` for review and has not been uploaded.
+The host was not isolated: recorded one-minute load was 5.1–6.5 during HTTP scenarios, and unrelated containers reached 47–118% of one CPU. Treat absolute speed and cross-session comparisons as load-qualified. The two same-image rounds show the variation under this session's conditions. The [runtime summary](pilot-1/runtime/summary.json) includes all measurements and host-load fields. All 36 compressed raw k6 streams passed decompression checks and are indexed with SHA-256 hashes in [raw-index.json](pilot-1/runtime/raw-index.json); they currently occupy 65.4 MB locally. A scan found no common credential patterns in those streams. The [checksummed archive](pilot-1/runtime/raw-archive.json) is on the [raw-data-v1 release](https://github.com/sheetgenius/agentmvc/releases/tag/raw-data-v1).
 
 ## What the implementation shows
 
@@ -59,4 +59,4 @@ A held-out diagnostic found a second ownership gap: registration accepted a seve
 - [Independent development gate](pilot-1/development.json) and [log](pilot-1/development.log); [independent production gate](pilot-1/production.json) and [log](pilot-1/production.log)
 - [Runtime summary](pilot-1/runtime/summary.json), [raw stream index](pilot-1/runtime/raw-index.json), [prepared raw archive checksum](pilot-1/runtime/raw-archive.json), and the per-round HTTP and WebSocket JSON files under `pilot-1/runtime/`
 
-No scored application source was edited after the measured agent exited. The raw archive is prepared locally and has not been uploaded to GitHub.
+No scored application source was edited after the measured agent exited.

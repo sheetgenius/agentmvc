@@ -11,3 +11,17 @@ Two fixed protocol details require explicit extensions. The client expects JWTs,
 The TypeScript environment encourages inferred validator outputs, discriminated unions, exhaustive switches, `satisfies`, and small generics. Those features should remove repeated transport and encoding code while keeping each product rule in one named place. It explicitly discourages `any`, cast-heavy designs, boolean mode flags, and clever compression. Source tokens and lines will be measured, but the main v2 question is whether a fresh agent can safely find and change each rule.
 
 The [TypeScript pilot environment](../one-shot-v2-typescript/ENVIRONMENT.md) and [frozen manifest](../one-shot-v2-typescript/fixture-manifest.json) are separate from the Servant condition. Both use the same [shared prompt](../one-shot-v2/PROMPT.md), measurement boundary, spec, client, and acceptance harness. Results must stay labeled by condition; neither pilot is an eight-step result.
+
+## What the first build taught us
+
+The [first pilot](../results/one-shot-v2-typescript/README.md) passed both independent gates and produced compact backend source, but its type boundaries were weaker than the environment invited. The agent used Adonis routes, controllers, Lucid migrations and queries, hashing, and the PostgreSQL queue. It did not use Vine, Bouncer, or Lucid model classes for product code. Much of its request handling remains `Record<string, unknown>`, and raw SQL rows are asserted as a manually written interface. The result is a useful baseline for Adonis under this prompt, not the strongest expression of TypeScript.
+
+An expert-guided diagnostic should keep the same contract and source-count rules while asking for a few concrete boundaries:
+
+1. Decode each external request once with a Vine schema; infer the input type from that schema. Give author edits and share edits separate inputs, then feed them to one typed content commit.
+2. Use a `Viewer` union with explicit anonymous and signed-in cases. Put article visibility, ownership, publication, stale revision, and the password policy in named domain functions that every relevant entrance calls. Keep durable invariants in PostgreSQL constraints.
+3. Use Lucid models and generated schema types for ordinary records and writes. Keep parameterized, set-oriented SQL for list projections and compare-and-swap where it expresses the query more directly. Make the boundary between those projections and TypeScript explicit instead of scattering assertions.
+4. Make socket events a discriminated union with an exhaustive sender. Keep room admission separate from delivery. Preserve the measured version's successful fixed-work list queries, revision compare-and-swap, and per-room cap.
+5. Require small direct tests for rules that can change independently, especially password policy and both edit entrances. Measure the resulting code and effort as a **guided** condition rather than pooling it with this pilot or the Servant run.
+
+The broker also needs a versioned fix before another measured run. A persistent `queue:work` command sent through its synchronous `ts-run` action held the global lock. A new broker should bound ad hoc commands, clean up timed-out containers, and expose a separate worker lifecycle action. The first pilot's fixture and result remain immutable; a new fixture hash would identify the guided condition.
