@@ -1,0 +1,615 @@
+{
+  "stack": "rails",
+  "image": "agentmvc-v2-expert-rails:final",
+  "image_sha256": "sha256:e125826b969a21780ed7029a6b957af743cd7ae2a2ed6cfe640e5abb7b4b7273",
+  "started": "2026-09-29T16:12:53.255563+00:00",
+  "database": "postgres:17-alpine",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "app_environment_keys": [
+    "DATABASE_URL",
+    "SECRET_KEY_BASE",
+    "PORT"
+  ],
+  "exit": 1,
+  "probe": {
+    "base_url": "http://127.0.0.1:18450",
+    "condition": "reviewer-only common HTTP diagnostic; never a frozen gate",
+    "results": [
+      {
+        "expected": {
+          "errors.revision[0]": "is stale",
+          "status": 409,
+          "unchanged": true
+        },
+        "kind": "contract",
+        "name": "revision_zero",
+        "observed": {
+          "edit": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "revision_zero-bb6c0a368c71-fbfdfd0e7e",
+              "title": "revision_zero bb6c0a368c71"
+            },
+            "errors": {
+              "revision": [
+                "is stale"
+              ]
+            },
+            "status": 409
+          },
+          "read": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "revision_zero-bb6c0a368c71-fbfdfd0e7e",
+              "title": "revision_zero bb6c0a368c71"
+            },
+            "status": 200
+          }
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:65-81"
+      },
+      {
+        "expected": {
+          "errors.revision[0]": "is stale",
+          "status": 409,
+          "unchanged": true
+        },
+        "kind": "contract",
+        "name": "revision_negative",
+        "observed": {
+          "edit": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "revision_negative-bb6c0a368c71-ad2fbf2d0b",
+              "title": "revision_negative bb6c0a368c71"
+            },
+            "errors": {
+              "revision": [
+                "is stale"
+              ]
+            },
+            "status": 409
+          },
+          "read": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "revision_negative-bb6c0a368c71-ad2fbf2d0b",
+              "title": "revision_negative bb6c0a368c71"
+            },
+            "status": 200
+          }
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:65-81"
+      },
+      {
+        "expected": {
+          "errors.revision[0]": "is invalid",
+          "status": 422,
+          "unchanged": true
+        },
+        "kind": "contract",
+        "name": "revision_noninteger",
+        "observed": {
+          "edit": {
+            "errors": {
+              "revision": [
+                "is invalid"
+              ]
+            },
+            "status": 422
+          },
+          "read": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "revision_noninteger-bb6c0a368c71-707038b7fe",
+              "title": "revision_noninteger bb6c0a368c71"
+            },
+            "status": 200
+          }
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:65-81"
+      },
+      {
+        "expected": {
+          "errors.revision[0]": "is invalid",
+          "status": 422,
+          "unchanged": true
+        },
+        "kind": "contract",
+        "name": "revision_null",
+        "observed": {
+          "edit": {
+            "article": {
+              "body": "revision_null",
+              "description": "Diagnostic",
+              "revision": 2,
+              "slug": "revision_null-bb6c0a368c71-bd752af925",
+              "title": "revision_null bb6c0a368c71"
+            },
+            "status": 200
+          },
+          "read": {
+            "article": {
+              "body": "revision_null",
+              "description": "Diagnostic",
+              "revision": 2,
+              "slug": "revision_null-bb6c0a368c71-bd752af925",
+              "title": "revision_null bb6c0a368c71"
+            },
+            "status": 200
+          }
+        },
+        "passed": false,
+        "source": "spec/features/drafts/drafts.md:65-81"
+      },
+      {
+        "expected": {
+          "revision": 2,
+          "status": 200
+        },
+        "kind": "contract",
+        "name": "matching_revision",
+        "observed": {
+          "article": {
+            "body": "Explicit revision",
+            "description": "Diagnostic",
+            "revision": 2,
+            "slug": "parity-article-bb6c0a368c71-d5fb0f964b",
+            "title": "Parity article bb6c0a368c71"
+          },
+          "status": 200
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:65-68"
+      },
+      {
+        "expected": {
+          "revision": 3,
+          "status": 200
+        },
+        "kind": "contract",
+        "name": "omitted_revision",
+        "observed": {
+          "article": {
+            "body": "Omitted revision",
+            "description": "Diagnostic",
+            "revision": 3,
+            "slug": "parity-article-bb6c0a368c71-d5fb0f964b",
+            "title": "Parity article bb6c0a368c71"
+          },
+          "status": 200
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:65-68; spec/features/drafts/hurl/drafts.hurl:158-169"
+      },
+      {
+        "expected": {
+          "current_revision": 3,
+          "status": 409
+        },
+        "kind": "contract",
+        "name": "stale_revision_returns_current",
+        "observed": {
+          "article": {
+            "body": "Omitted revision",
+            "description": "Diagnostic",
+            "revision": 3,
+            "slug": "parity-article-bb6c0a368c71-d5fb0f964b",
+            "title": "Parity article bb6c0a368c71"
+          },
+          "errors": {
+            "revision": [
+              "is stale"
+            ]
+          },
+          "status": 409
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:69-73"
+      },
+      {
+        "expected": {
+          "errors.token[0]": "is missing",
+          "status": 401
+        },
+        "kind": "contract",
+        "name": "malformed_unauthenticated",
+        "observed": {
+          "errors": {
+            "token": "[redacted]"
+          },
+          "status": 401
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:77-81"
+      },
+      {
+        "expected": {
+          "errors.article[0]": "forbidden",
+          "status": 403
+        },
+        "kind": "contract",
+        "name": "malformed_stranger",
+        "observed": {
+          "errors": {
+            "article": [
+              "forbidden"
+            ]
+          },
+          "status": 403
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:77-81"
+      },
+      {
+        "expected": {
+          "errors.article[0]": "not found",
+          "status": 404
+        },
+        "kind": "contract",
+        "name": "malformed_missing_article",
+        "observed": {
+          "errors": {
+            "article": [
+              "not found"
+            ]
+          },
+          "status": 404
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:77-81"
+      },
+      {
+        "expected": {
+          "status": 422
+        },
+        "kind": "contract",
+        "name": "malformed_owner",
+        "observed": {
+          "errors": {
+            "article": [
+              "is invalid"
+            ]
+          },
+          "status": 422
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:77-81"
+      },
+      {
+        "expected": "clean 201 with readable slug, or clean 422; no server error",
+        "kind": "quality_diagnostic",
+        "name": "long_title_boundary",
+        "observed": {
+          "create": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabb6c0a368c71-e812a8f608",
+              "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabb6c0a368c71"
+            },
+            "status": 201
+          },
+          "read_status": 200
+        },
+        "passed": true,
+        "source": "spec/docs/endpoints.md:145-185"
+      },
+      {
+        "expected": "second accepted title gets a distinct, readable slug",
+        "kind": "contract",
+        "name": "duplicate_long_title_slug",
+        "observed": {
+          "create": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabb6c0a368c71-35b6b995fc",
+              "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabb6c0a368c71"
+            },
+            "status": 201
+          },
+          "first_slug": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabb6c0a368c71-e812a8f608",
+          "second_read_status": 200
+        },
+        "passed": true,
+        "source": "spec/docs/endpoints.md:183-185"
+      },
+      {
+        "expected": {
+          "errors.export[0]": "not found",
+          "status": 404
+        },
+        "kind": "contract",
+        "name": "huge_export_id",
+        "observed": {
+          "errors": {
+            "export": [
+              "not found"
+            ]
+          },
+          "status": 404
+        },
+        "passed": true,
+        "source": "spec/features/exports/exports.md:24-44"
+      },
+      {
+        "expected": {
+          "errors.comment[0]": "not found",
+          "status": 404
+        },
+        "kind": "contract",
+        "name": "huge_comment_id",
+        "observed": {
+          "errors": {
+            "comment": [
+              "not found"
+            ]
+          },
+          "status": 404
+        },
+        "passed": true,
+        "source": "spec/docs/error-handling.md:25; spec/api/hurl/errors_comments.hurl:81-86"
+      },
+      {
+        "expected": "accepted nonblank text round-trips unchanged",
+        "kind": "quality_diagnostic",
+        "name": "padded_text_preservation",
+        "observed": {
+          "create": {
+            "article": {
+              "body": "  Padded body  ",
+              "description": "  Padded description  ",
+              "revision": 1,
+              "slug": "padded-bb6c0a368c71-f221469ba7",
+              "title": "  Padded bb6c0a368c71  "
+            },
+            "status": 201
+          },
+          "edit": {
+            "article": {
+              "body": "  Edited body  ",
+              "description": "  Padded description  ",
+              "revision": 2,
+              "slug": "padded-bb6c0a368c71-f221469ba7",
+              "title": "  Padded bb6c0a368c71  "
+            },
+            "status": 200
+          },
+          "read": {
+            "article": {
+              "body": "  Padded body  ",
+              "description": "  Padded description  ",
+              "revision": 1,
+              "slug": "padded-bb6c0a368c71-f221469ba7",
+              "title": "  Padded bb6c0a368c71  "
+            },
+            "status": 200
+          }
+        },
+        "passed": true,
+        "source": "spec/docs/endpoints.md:145-185 (exact whitespace is not asserted by frozen checks)"
+      },
+      {
+        "expected": "valid 200 exact shared shape; wrong key 404",
+        "kind": "contract",
+        "name": "share_key_access",
+        "observed": {
+          "valid": {
+            "article": {
+              "body": "Omitted revision",
+              "revision": 3,
+              "slug": "parity-article-bb6c0a368c71-d5fb0f964b",
+              "title": "Parity article bb6c0a368c71"
+            },
+            "status": 200
+          },
+          "wrong": {
+            "errors": {
+              "share": [
+                "not found"
+              ]
+            },
+            "status": 404
+          }
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:9-19"
+      },
+      {
+        "expected": "200, revision +1, same share ID reads new slug",
+        "kind": "contract",
+        "name": "share_edit_stable_identity",
+        "observed": {
+          "edit": {
+            "article": {
+              "body": "Shared body",
+              "revision": 4,
+              "slug": "share-edit-bb6c0a368c71-74c7aaf88b",
+              "title": "Share edit bb6c0a368c71"
+            },
+            "status": 200
+          },
+          "read": {
+            "article": {
+              "body": "Shared body",
+              "revision": 4,
+              "slug": "share-edit-bb6c0a368c71-74c7aaf88b",
+              "title": "Share edit bb6c0a368c71"
+            },
+            "status": 200
+          }
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:21-23"
+      },
+      {
+        "expected": "409 with current shared article",
+        "kind": "contract",
+        "name": "share_stale_revision",
+        "observed": {
+          "article": {
+            "body": "Shared body",
+            "revision": 4,
+            "slug": "share-edit-bb6c0a368c71-74c7aaf88b",
+            "title": "Share edit bb6c0a368c71"
+          },
+          "errors": {
+            "revision": [
+              "is stale"
+            ]
+          },
+          "status": 409
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:21-23"
+      },
+      {
+        "expected": "422 without mutation",
+        "kind": "contract",
+        "name": "share_exact_input_shape",
+        "observed": {
+          "after": {
+            "article": {
+              "body": "Shared body",
+              "revision": 4,
+              "slug": "share-edit-bb6c0a368c71-74c7aaf88b",
+              "title": "Share edit bb6c0a368c71"
+            },
+            "status": 200
+          },
+          "invalid": {
+            "errors": {
+              "article": [
+                "is invalid"
+              ]
+            },
+            "status": 422
+          }
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:21-23"
+      },
+      {
+        "expected": "201; old link 404; new link 200",
+        "kind": "contract",
+        "name": "share_rotation",
+        "observed": {
+          "new": {
+            "article": {
+              "body": "Shared body",
+              "revision": 4,
+              "slug": "share-edit-bb6c0a368c71-74c7aaf88b",
+              "title": "Share edit bb6c0a368c71"
+            },
+            "status": 200
+          },
+          "old": {
+            "errors": {
+              "share": [
+                "not found"
+              ]
+            },
+            "status": 404
+          },
+          "rotate": {
+            "share": {
+              "id": "c1d6b990-3e52-44a1-a100-6f44a62101b4",
+              "key": "[redacted]"
+            },
+            "status": 201
+          }
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-9"
+      },
+      {
+        "expected": "204; revoked link 404",
+        "kind": "contract",
+        "name": "share_revocation",
+        "observed": {
+          "after": {
+            "errors": {
+              "share": [
+                "not found"
+              ]
+            },
+            "status": 404
+          },
+          "revoke": {
+            "body_kind": "NoneType",
+            "status": 204
+          }
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-11"
+      },
+      {
+        "expected": "after 20 failed logins, next attempt is 429",
+        "kind": "contract",
+        "name": "login_rate_limit_sequential",
+        "observed": {
+          "first_twenty_status_counts": {
+            "401": 20
+          },
+          "next": {
+            "errors": {
+              "credentials": [
+                "rate limited"
+              ]
+            },
+            "status": 429
+          }
+        },
+        "passed": true,
+        "source": "security/hurl/s13_login_rate_limit.hurl:15-27 (frozen fixture path in each workdir)"
+      },
+      {
+        "expected": "25 concurrent bad logins admit at most 20; later attempts are 429",
+        "kind": "quality_diagnostic",
+        "name": "login_rate_limit_burst",
+        "observed": {
+          "burst_status_counts": {
+            "401": 20,
+            "429": 5
+          },
+          "next": {
+            "errors": {
+              "credentials": [
+                "rate limited"
+              ]
+            },
+            "status": 429
+          }
+        },
+        "passed": true,
+        "source": "security/hurl/s13_login_rate_limit.hurl:15-27 (concurrency is outside frozen S13)"
+      }
+    ],
+    "summary": {
+      "contract_passed": 20,
+      "contract_total": 21,
+      "quality_passed": 3,
+      "quality_total": 3
+    }
+  },
+  "finished": "2026-09-29T16:13:05.271959+00:00"
+}

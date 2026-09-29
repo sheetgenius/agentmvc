@@ -1,0 +1,70 @@
+{
+  "condition": "v2-expert-reference-short-paired-http-diagnostic",
+  "scored": false,
+  "started": "2026-09-29T17:20:11.679951+00:00",
+  "finished": "2026-09-29T17:25:29.051249+00:00",
+  "images": {
+    "rails": "agentmvc-v2-expert-rails-reference-1:review",
+    "typescript": "agentmvc-v2-expert-typescript:reference-1",
+    "phoenix": "agentmvc-v2-expert-phoenix-reference-2:review"
+  },
+  "image_sha256": {
+    "rails": "sha256:00999c21b297988fbe7044f727a7628d2a083fb0211ed3fbf6666b5d5af834a3",
+    "typescript": "sha256:5e6cf22e581c57f47a0e7a8ff4743440eeca929f1d9fede546824658a30371cb",
+    "phoenix": "sha256:0286614bd4745143170af6fc413b5bb011ba3210ff2f2667ddddb367889449b6"
+  },
+  "benchmark_sha256": "d9eb2fbceb835f5798f5a193588c61ef2d5b1a36a3af7a393196f23d3b9aa2ab",
+  "load_sha256": "9057777b106e10fada6fc0fbfe85168258643f04a537ea5313277c0e86b37481",
+  "scenarios": [
+    "list_anonymous",
+    "article"
+  ],
+  "order": [
+    "rails",
+    "typescript",
+    "phoenix",
+    "phoenix",
+    "typescript",
+    "rails"
+  ],
+  "vus": 16,
+  "warmup": "2s",
+  "duration": "10s",
+  "rounds": 2,
+  "limits": {
+    "app": "2 CPU, 1 GiB",
+    "database": "2 CPU, 1 GiB"
+  },
+  "records": [
+    {
+      "stack": "rails",
+      "round": 1,
+      "image_sha256": "sha256:00999c21b297988fbe7044f727a7628d2a083fb0211ed3fbf6666b5d5af834a3"
+    },
+    {
+      "stack": "typescript",
+      "round": 1,
+      "image_sha256": "sha256:5e6cf22e581c57f47a0e7a8ff4743440eeca929f1d9fede546824658a30371cb"
+    },
+    {
+      "stack": "phoenix",
+      "round": 1,
+      "image_sha256": "sha256:0286614bd4745143170af6fc413b5bb011ba3210ff2f2667ddddb367889449b6"
+    },
+    {
+      "stack": "phoenix",
+      "round": 2,
+      "image_sha256": "sha256:0286614bd4745143170af6fc413b5bb011ba3210ff2f2667ddddb367889449b6"
+    },
+    {
+      "stack": "typescript",
+      "round": 2,
+      "image_sha256": "sha256:5e6cf22e581c57f47a0e7a8ff4743440eeca929f1d9fede546824658a30371cb"
+    },
+    {
+      "stack": "rails",
+      "round": 2,
+      "image_sha256": "sha256:00999c21b297988fbe7044f727a7628d2a083fb0211ed3fbf6666b5d5af834a3"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "image": "agentmvc-v2-expert-phoenix-reference-2:review",
+  "label": "v2-reference-phoenix-2",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "10s",
+  "image_mb": 165.7,
+  "cold_start_seconds": 1.03,
+  "seed_seconds": 17.7,
+  "idle_memory_mb": 148.2,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 51835,
+      "rps": 5182.5,
+      "p50_ms": 2.83,
+      "p95_ms": 4.81,
+      "p99_ms": 7.0,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.0,
+      "peak_memory_mb": 171.0,
+      "foreign_container_cpu_percent_max": 123.3,
+      "host_load_1m": 5.7
+    },
+    "article": {
+      "requests": 74246,
+      "rps": 7421.4,
+      "p50_ms": 1.89,
+      "p95_ms": 3.58,
+      "p99_ms": 5.41,
+      "failed_checks": 0,
+      "sql_statements_per_request": 6.0,
+      "peak_memory_mb": 167.2,
+      "foreign_container_cpu_percent_max": 156.1,
+      "host_load_1m": 5.5
+    }
+  },
+  "stack": "phoenix",
+  "round": 2,
+  "exit": 0,
+  "image_sha256": "sha256:0286614bd4745143170af6fc413b5bb011ba3210ff2f2667ddddb367889449b6",
+  "raw_stream_sha256": {
+    "raw-list_anonymous.json.zst": "44b48980119b1ef304d65f0fafd085e9332b2b3e86ddab5746771463539ca254",
+    "raw-warmup-list_anonymous.json.zst": "064547e00ee7dd90a8b531775b3eacd10e7ab2559f67e407e2823e2f0b27fc3c",
+    "raw-article.json.zst": "94ae59b347bdd8c37b5caa8eca77b676b28ea04b52fcfb8f503c7be5dbd94fa9",
+    "raw-warmup-article.json.zst": "47e0395ad36dc7de006c822e3563a2288a9e6243ecf3d5d53e27953cb2567c60"
+  }
+}

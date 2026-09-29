@@ -1,0 +1,671 @@
+--- a/lib/conduit/accounts.ex
++++ b/lib/conduit/accounts.ex
+@@ -12,16 +12,16 @@
+   def login(attrs) when is_map(attrs) do
+     missing = Enum.find(["email", "password"], &(not is_binary(attrs[&1]) or attrs[&1] == ""))
+ 
+-    cond do
+-      missing -> {:error, {:validation, %{missing => ["can't be blank"]}}}
+-      not LoginLimiter.allowed?(attrs["email"]) -> {:error, :rate_limited}
+-      true -> check_login(attrs)
++    if missing do
++      {:error, {:validation, %{missing => ["can't be blank"]}}}
++    else
++      LoginLimiter.with_reservation(attrs["email"], &check_login(attrs, &1))
+     end
+   end
+ 
+   def login(_), do: {:error, {:validation, %{"user" => ["is invalid"]}}}
+ 
+-  defp check_login(attrs) do
++  defp check_login(attrs, reservation) do
+     user = Repo.get_by(User, email: attrs["email"])
+ 
+     valid =
+@@ -30,12 +30,12 @@
+         (user && user.password_hash) || LoginLimiter.dummy_hash()
+       )
+ 
+-    if user && valid do
+-      LoginLimiter.clear(attrs["email"])
+-      {:ok, user}
+-    else
+-      LoginLimiter.failed(attrs["email"])
+-      {:error, :credentials}
++    result = if user && valid, do: {:ok, user}, else: {:error, :credentials}
++    outcome = if user && valid, do: :success, else: :failed
++
++    case LoginLimiter.finish(reservation, outcome) do
++      :ok -> result
++      :expired -> {:error, :rate_limited}
+     end
+   end
+ 
+--- a/lib/conduit/accounts/login_limiter.ex
++++ b/lib/conduit/accounts/login_limiter.ex
+@@ -5,44 +5,105 @@
+   @max_failures 20
+ 
+   def start_link(_), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
+-  def allowed?(email), do: GenServer.call(__MODULE__, {:allowed?, email})
+-  def failed(email), do: GenServer.call(__MODULE__, {:failed, email})
+-  def clear(email), do: GenServer.call(__MODULE__, {:clear, email})
++  def reserve(email), do: GenServer.call(__MODULE__, {:reserve, email})
++
++  def finish(reservation, outcome),
++    do: GenServer.call(__MODULE__, {:finish, reservation, outcome})
++
++  def cancel(reservation), do: GenServer.call(__MODULE__, {:cancel, reservation})
+   def dummy_hash, do: GenServer.call(__MODULE__, :dummy_hash)
++
++  def with_reservation(email, fun) do
++    case reserve(email) do
++      {:ok, reservation} ->
++        try do
++          fun.(reservation)
++        after
++          cancel(reservation)
++        end
++
++      :rate_limited ->
++        {:error, :rate_limited}
++    end
++  end
+ 
+   @impl GenServer
+   def init(:ok) do
+     Process.send_after(self(), :purge, @window_ms)
+-    {:ok, %{failures: %{}, dummy_hash: Bcrypt.hash_pwd_salt("unmatched-password")}}
++
++    {:ok,
++     %{
++       failures: %{},
++       pending: %{},
++       reservations: %{},
++       dummy_hash: Bcrypt.hash_pwd_salt("unmatched-password")
++     }}
+   end
+ 
+   @impl GenServer
+-  def handle_call({:allowed?, email}, _from, state) do
++  def handle_call({:reserve, email}, {caller, _}, state) do
+     now = System.monotonic_time(:millisecond)
+     failures = forget_expired(state.failures, email, now)
++    {failed, _started} = Map.get(failures, email, {0, now})
+ 
+-    allowed =
+-      case Map.get(failures, email) do
+-        {count, _started} when count >= @max_failures -> false
+-        _ -> true
++    if failed + Map.get(state.pending, email, 0) >= @max_failures do
++      {:reply, :rate_limited, %{state | failures: failures}}
++    else
++      reservation = Process.monitor(caller)
++
++      {:reply, {:ok, reservation},
++       %{
++         state
++         | failures: failures,
++           pending: Map.update(state.pending, email, 1, &(&1 + 1)),
++           reservations: Map.put(state.reservations, reservation, email)
++       }}
++    end
++  end
++
++  def handle_call({:finish, reservation, outcome}, _from, state)
++      when outcome in [:failed, :success] do
++    case release(state, reservation) do
++      {:ok, email, state} ->
++        failures =
++          case outcome do
++            :success ->
++              Map.delete(state.failures, email)
++
++            :failed ->
++              now = System.monotonic_time(:millisecond)
++              failures = forget_expired(state.failures, email, now)
++              {count, started} = Map.get(failures, email, {0, now})
++              Map.put(failures, email, {count + 1, started})
++          end
++
++        {:reply, :ok, %{state | failures: failures}}
++
++      :missing ->
++        {:reply, :expired, state}
++    end
++  end
++
++  def handle_call({:cancel, reservation}, _from, state) do
++    state =
++      case release(state, reservation) do
++        {:ok, _email, state} -> state
++        :missing -> state
+       end
+ 
+-    {:reply, allowed, %{state | failures: failures}}
++    {:reply, :ok, state}
+   end
+-
+-  def handle_call({:failed, email}, _from, state) do
+-    now = System.monotonic_time(:millisecond)
+-    failures = forget_expired(state.failures, email, now)
+-    {count, started} = Map.get(failures, email, {0, now})
+-    {:reply, :ok, %{state | failures: Map.put(failures, email, {count + 1, started})}}
+-  end
+-
+-  def handle_call({:clear, email}, _from, state),
+-    do: {:reply, :ok, %{state | failures: Map.delete(state.failures, email)}}
+ 
+   def handle_call(:dummy_hash, _from, state), do: {:reply, state.dummy_hash, state}
+ 
+   @impl GenServer
++  def handle_info({:DOWN, reservation, :process, _caller, _reason}, state) do
++    case release(state, reservation) do
++      {:ok, _email, state} -> {:noreply, state}
++      :missing -> {:noreply, state}
++    end
++  end
++
+   def handle_info(:purge, state) do
+     now = System.monotonic_time(:millisecond)
+ 
+@@ -53,6 +114,24 @@
+     {:noreply, %{state | failures: failures}}
+   end
+ 
++  defp release(state, reservation) do
++    case Map.pop(state.reservations, reservation) do
++      {nil, _reservations} ->
++        :missing
++
++      {email, reservations} ->
++        Process.demonitor(reservation, [:flush])
++
++        pending =
++          case Map.fetch!(state.pending, email) do
++            1 -> Map.delete(state.pending, email)
++            count -> Map.put(state.pending, email, count - 1)
++          end
++
++        {:ok, email, %{state | pending: pending, reservations: reservations}}
++    end
++  end
++
+   defp forget_expired(failures, email, now) do
+     case Map.get(failures, email) do
+       {_count, started} when now - started >= @window_ms -> Map.delete(failures, email)
+--- a/lib/conduit/articles.ex
++++ b/lib/conduit/articles.ex
+@@ -7,7 +7,13 @@
+   @type caller :: :anonymous | {:user, Accounts.User.t()}
+ 
+   def slug_for(title) do
+-    stem = title |> String.downcase() |> String.replace(~r/[^a-z0-9]+/u, "-") |> String.trim("-")
++    stem =
++      title
++      |> String.downcase()
++      |> String.replace(~r/[^a-z0-9]+/u, "-")
++      |> String.trim("-")
++      |> String.slice(0, 244)
++      |> String.trim_trailing("-")
+ 
+     if(stem == "", do: "article", else: stem) <>
+       "-" <> Base.encode16(:crypto.strong_rand_bytes(5), case: :lower)
+@@ -62,29 +68,42 @@
+   def create(_, _), do: {:error, {:validation, %{"article" => ["is invalid"]}}}
+ 
+   # Both entrances use one locked content commit. A share is checked again under the lock.
+-  def commit({:author, user, slug}, attrs) do
++  def author_edit(user, slug) do
+     with {:ok, article} <- get_visible(slug, {:user, user}),
+          :ok <- owner(article, user) do
+-      locked_commit(article.id, {:author, user}, attrs)
+-    end
++      {:ok, article}
++    end
++  end
++
++  def commit({:author, user, %Article{} = article}, attrs) do
++    locked_commit(article.id, {:author, user}, attrs)
+   end
+ 
+   def commit({:share, share_id, key}, attrs) do
+-    with {:ok, share} <- Conduit.Shares.authorize(share_id, key) do
++    with {:ok, share} <- Conduit.Shares.authorize(share_id, key),
++         :ok <- shared_shape(attrs) do
+       locked_commit(share.article_id, {:share, share_id, key}, attrs)
+     end
+   end
++
++  defp shared_shape(%{"title" => title, "body" => body, "revision" => revision} = attrs)
++       when map_size(attrs) == 3 and is_binary(title) and is_binary(body) and is_integer(revision),
++       do: :ok
++
++  defp shared_shape(_), do: {:error, {:validation, %{"article" => ["is invalid"]}}}
+ 
+   defp locked_commit(id, entrance, attrs) do
+     result =
+       Repo.transaction(fn ->
+-        article = Repo.one!(from a in Article, where: a.id == ^id, lock: "FOR UPDATE")
+-
+-        with :ok <- recheck_entrance(entrance, article),
++        article = Repo.one(from a in Article, where: a.id == ^id, lock: "FOR UPDATE")
++
++        with %Article{} <- article,
++             :ok <- recheck_entrance(entrance, article),
+              :ok <- check_revision(attrs, article),
+              {:ok, edited} <- update_content(article, attrs) do
+           edited
+         else
++          nil -> Repo.rollback({:article, "not found"})
+           {:error, reason} -> Repo.rollback(reason)
+         end
+       end)
+@@ -99,7 +118,9 @@
+     end
+   end
+ 
+-  defp recheck_entrance({:author, user}, article), do: owner(article, user)
++  defp recheck_entrance({:author, user}, article) do
++    if visible?(article, {:user, user}), do: owner(article, user), else: missing()
++  end
+ 
+   defp recheck_entrance({:share, id, key}, article) do
+     case Conduit.Shares.authorize(id, key) do
+@@ -207,8 +228,11 @@
+ 
+     query =
+       case params["tag"] do
+-        tag when is_binary(tag) -> where(query, [a], ^tag in a.tag_list)
+-        _ -> query
++        tag when is_binary(tag) ->
++          where(query, [a], fragment("? @> ?", a.tag_list, type(^[tag], {:array, :string})))
++
++        _ ->
++          query
+       end
+ 
+     query =
+@@ -306,7 +330,7 @@
+   end
+ 
+   def delete_comment(user, article, id) do
+-    with {id, ""} <- Integer.parse(id),
++    with {:ok, id} <- Conduit.Id.parse(id),
+          %Comment{} = comment <- Repo.get_by(Comment, id: id, article_id: article.id),
+          true <- comment.author_id == user.id do
+       Repo.delete(comment)
+--- a/lib/conduit/exports.ex
++++ b/lib/conduit/exports.ex
+@@ -18,8 +18,8 @@
+   end
+ 
+   def get(user, id) when is_binary(id) do
+-    case Integer.parse(id) do
+-      {number, ""} ->
++    case Conduit.Id.parse(id) do
++      {:ok, number} ->
+         case Repo.get_by(Export, id: number, user_id: user.id) do
+           nil -> missing()
+           export -> {:ok, export}
+--- a/lib/conduit/id.ex
++++ b/lib/conduit/id.ex
+@@ -0,0 +1,13 @@
++defmodule Conduit.Id do
++  @moduledoc false
++  @max 9_223_372_036_854_775_807
++
++  def parse(value) when is_binary(value) do
++    case Integer.parse(value) do
++      {id, ""} when id > 0 and id <= @max -> {:ok, id}
++      _ -> :error
++    end
++  end
++
++  def parse(_), do: :error
++end
+--- a/lib/conduit_web/controllers/article_controller.ex
++++ b/lib/conduit_web/controllers/article_controller.ex
+@@ -39,8 +39,9 @@
+ 
+   def update(conn, %{"slug" => slug} = params) do
+     with {:ok, user} <- API.user(conn),
++         {:ok, authorized} <- Articles.author_edit(user, slug),
+          {:ok, attrs} <- API.object(params, "article"),
+-         {:ok, article} <- Articles.commit({:author, user, slug}, attrs) do
++         {:ok, article} <- Articles.commit({:author, user, authorized}, attrs) do
+       API.reply(conn, 200, %{article: Articles.present_one(article, {:user, user})})
+     else
+       {:error, reason} -> API.error(conn, reason)
+--- a/lib/conduit_web/controllers/share_controller.ex
++++ b/lib/conduit_web/controllers/share_controller.ex
+@@ -33,7 +33,6 @@
+ 
+     with {:ok, _share} <- Shares.authorize(id, key),
+          {:ok, attrs} <- API.object(params, "article"),
+-         :ok <- exact_shape(attrs),
+          {:ok, article} <- Articles.commit({:share, id, key}, attrs) do
+       API.reply(conn, 200, %{article: Articles.shared(article)})
+     else
+@@ -47,13 +46,4 @@
+       conn |> WebSockAdapter.upgrade(Conduit.Live.Socket, id, timeout: 60_000) |> Plug.Conn.halt()
+ 
+   defp key(conn), do: conn |> Plug.Conn.get_req_header("x-share-key") |> List.first()
+-
+-  defp exact_shape(attrs) do
+-    if MapSet.new(Map.keys(attrs)) == MapSet.new(["title", "body", "revision"]) and
+-         is_binary(attrs["title"]) and is_binary(attrs["body"]) and is_integer(attrs["revision"]) do
+-      :ok
+-    else
+-      {:error, {:validation, %{"article" => ["is invalid"]}}}
+-    end
+-  end
+ end
+--- a/priv/repo/migrations/20260929000200_article_title_text.exs
++++ b/priv/repo/migrations/20260929000200_article_title_text.exs
+@@ -0,0 +1,9 @@
++defmodule Conduit.Repo.Migrations.ArticleTitleText do
++  use Ecto.Migration
++
++  def change do
++    alter table(:articles) do
++      modify :title, :text, from: :string, null: false
++    end
++  end
++end
+--- a/priv/repo/migrations/20260929000300_article_page_index.exs
++++ b/priv/repo/migrations/20260929000300_article_page_index.exs
+@@ -0,0 +1,13 @@
++defmodule Conduit.Repo.Migrations.ArticlePageIndex do
++  use Ecto.Migration
++
++  def up do
++    drop index(:articles, [:status, :inserted_at])
++    create index(:articles, [:status, :inserted_at, :id])
++  end
++
++  def down do
++    drop index(:articles, [:status, :inserted_at, :id])
++    create index(:articles, [:status, :inserted_at])
++  end
++end
+--- a/test/conduit/accounts/login_limiter_test.exs
++++ b/test/conduit/accounts/login_limiter_test.exs
+@@ -0,0 +1,166 @@
++defmodule Conduit.Accounts.LoginLimiterTest do
++  use ExUnit.Case, async: false
++
++  alias Conduit.Accounts.LoginLimiter
++
++  test "a concurrent burst admits only 20 attempts, including reservations in flight" do
++    email = "burst-#{System.unique_integer([:positive])}@test.com"
++    parent = self()
++
++    tasks =
++      for _ <- 1..25 do
++        Task.async(fn ->
++          result = LoginLimiter.reserve(email)
++          send(parent, {:reserved, self(), result})
++
++          receive do
++            :finish ->
++              case result do
++                {:ok, reservation} -> LoginLimiter.finish(reservation, :failed)
++                :rate_limited -> :ok
++              end
++          end
++        end)
++      end
++
++    replies =
++      for _ <- 1..25 do
++        assert_receive {:reserved, pid, result}, 5_000
++        {pid, result}
++      end
++
++    assert Enum.count(replies, fn {_pid, result} -> match?({:ok, _}, result) end) == 20
++    assert Enum.count(replies, fn {_pid, result} -> result == :rate_limited end) == 5
++
++    {:ok, other_reservation} = LoginLimiter.reserve("other-#{email}")
++    assert LoginLimiter.finish(other_reservation, :failed) == :ok
++
++    Enum.each(replies, fn {pid, _result} -> send(pid, :finish) end)
++    Enum.each(tasks, &Task.await(&1, 5_000))
++
++    assert LoginLimiter.reserve(email) == :rate_limited
++  end
++
++  test "a successful login clears prior failures" do
++    email = "cleared-#{System.unique_integer([:positive])}@test.com"
++
++    for _ <- 1..19 do
++      {:ok, reservation} = LoginLimiter.reserve(email)
++      assert LoginLimiter.finish(reservation, :failed) == :ok
++    end
++
++    {:ok, reservation} = LoginLimiter.reserve(email)
++    assert LoginLimiter.finish(reservation, :success) == :ok
++
++    for _ <- 1..20 do
++      {:ok, reservation} = LoginLimiter.reserve(email)
++      assert LoginLimiter.finish(reservation, :failed) == :ok
++    end
++
++    assert LoginLimiter.reserve(email) == :rate_limited
++  end
++
++  test "a rescued verification error releases the reservation while its caller stays alive" do
++    email = "rescued-#{System.unique_integer([:positive])}@test.com"
++    parent = self()
++
++    task =
++      Task.async(fn ->
++        rescued? =
++          try do
++            LoginLimiter.with_reservation(email, fn _reservation ->
++              raise "verification failed"
++            end)
++
++            false
++          rescue
++            RuntimeError -> true
++          end
++
++        send(parent, {:rescued, self(), rescued?})
++
++        receive do
++          :stop -> :ok
++        end
++      end)
++
++    assert_receive {:rescued, caller, true}, 5_000
++    assert Process.alive?(caller)
++
++    reservations =
++      for _ <- 1..20 do
++        {:ok, reservation} = LoginLimiter.reserve(email)
++        reservation
++      end
++
++    assert LoginLimiter.reserve(email) == :rate_limited
++    Enum.each(reservations, &LoginLimiter.cancel/1)
++    send(caller, :stop)
++    assert Task.await(task, 5_000) == :ok
++  end
++
++  test "a dead caller releases an unfinished reservation" do
++    email = "dead-#{System.unique_integer([:positive])}@test.com"
++
++    reservations =
++      for _ <- 1..19 do
++        {:ok, reservation} = LoginLimiter.reserve(email)
++        reservation
++      end
++
++    parent = self()
++
++    caller =
++      spawn(fn ->
++        {:ok, _reservation} = LoginLimiter.reserve(email)
++        send(parent, :reserved)
++
++        receive do
++          :stop -> :ok
++        end
++      end)
++
++    assert_receive :reserved, 5_000
++    assert LoginLimiter.reserve(email) == :rate_limited
++
++    monitor = Process.monitor(caller)
++    Process.exit(caller, :kill)
++    assert_receive {:DOWN, ^monitor, :process, ^caller, :killed}, 5_000
++
++    released = await_reservation(email)
++    assert LoginLimiter.cancel(released) == :ok
++    Enum.each(reservations, &LoginLimiter.cancel/1)
++  end
++
++  test "finishing twice does not count a failed attempt twice" do
++    email = "duplicate-#{System.unique_integer([:positive])}@test.com"
++    {:ok, reservation} = LoginLimiter.reserve(email)
++
++    assert LoginLimiter.finish(reservation, :failed) == :ok
++    assert LoginLimiter.finish(reservation, :failed) == :expired
++    assert LoginLimiter.cancel(reservation) == :ok
++    assert LoginLimiter.cancel(reservation) == :ok
++
++    for _ <- 1..19 do
++      {:ok, reservation} = LoginLimiter.reserve(email)
++      assert LoginLimiter.finish(reservation, :failed) == :ok
++    end
++
++    assert LoginLimiter.reserve(email) == :rate_limited
++  end
++
++  defp await_reservation(email, retries \\ 50)
++
++  defp await_reservation(_email, 0), do: flunk("abandoned reservation was not released")
++
++  defp await_reservation(email, retries) do
++    case LoginLimiter.reserve(email) do
++      {:ok, reservation} ->
++        reservation
++
++      :rate_limited ->
++        Process.sleep(10)
++        await_reservation(email, retries - 1)
++    end
++  end
++end
+--- a/test/conduit/rules_test.exs
++++ b/test/conduit/rules_test.exs
+@@ -38,6 +38,9 @@
+     assert {:error, {:article, "not found"}} = Articles.get_visible(draft.slug, {:user, reader})
+     assert {:error, {:article, "not found"}} = Articles.get_visible(draft.slug, :anonymous)
+ 
++    assert {:error, {:article, "not found"}} =
++             Articles.commit({:author, reader, draft}, %{"body" => "changed"})
++
+     assert {:error, {:article, "is a draft"}} =
+              Articles.get_published(draft.slug, {:user, author})
+ 
+@@ -57,6 +60,9 @@
+     draft = article(author, %{"status" => "draft"})
+     assert {:ok, share} = Shares.create(author, draft.slug)
+     attrs = %{"title" => "New title", "body" => "new body", "revision" => 1}
++
++    assert {:error, {:validation, %{"article" => ["is invalid"]}}} =
++             Articles.commit({:share, share.id, share.key}, Map.put(attrs, "extra", true))
+ 
+     assert {:ok, edited} = Articles.commit({:share, share.id, share.key}, attrs)
+     assert edited.revision == 2
+@@ -87,4 +93,34 @@
+     assert {:ok, snapshot} = Exports.get(author, Integer.to_string(export.id))
+     assert snapshot.articles == done.articles
+   end
++
++  test "the longest accepted title has a storable slug and tag-filter semantics" do
++    author = user("long_title")
++    tag = "rare_#{System.unique_integer([:positive])}"
++    saved = article(author, %{"title" => String.duplicate("a", 255), "tagList" => [tag]})
++
++    assert byte_size(saved.slug) <= 255
++    assert {[listed], 1} = Articles.list(:global, :anonymous, %{"tag" => tag})
++    assert listed.slug == saved.slug
++  end
++
++  test "a decomposed Unicode title within the grapheme limit remains storable" do
++    title = String.duplicate("a\u0301", 255)
++    saved = article(user("unicode_title"), %{"title" => title})
++
++    assert saved.title == title
++    assert byte_size(saved.slug) <= 255
++  end
++
++  test "unrepresentable numeric identifiers are missing resources" do
++    author = user("large_id")
++    saved = article(author)
++    huge = String.duplicate("9", 100)
++
++    assert {:ok, 9_223_372_036_854_775_807} = Conduit.Id.parse("9223372036854775807")
++    assert :error = Conduit.Id.parse("9223372036854775808")
++    assert :error = Conduit.Id.parse(huge)
++    assert {:error, {:export, "not found"}} = Exports.get(author, huge)
++    assert {:error, {:comment, "not found"}} = Articles.delete_comment(author, saved, huge)
++  end
+ end
+--- a/test/conduit_web/controllers/update_precedence_test.exs
++++ b/test/conduit_web/controllers/update_precedence_test.exs
+@@ -0,0 +1,51 @@
++defmodule ConduitWeb.UpdatePrecedenceTest do
++  use ConduitWeb.ConnCase
++
++  alias Conduit.{Accounts, Articles}
++
++  test "ownership and visibility precede malformed update envelopes" do
++    owner = user("owner")
++    stranger = user("stranger")
++
++    {:ok, article} =
++      Articles.create(owner, %{"title" => "Precedence", "description" => "d", "body" => "b"})
++
++    {:ok, draft} =
++      Articles.create(owner, %{
++        "title" => "Private precedence",
++        "description" => "d",
++        "body" => "b",
++        "status" => "draft"
++      })
++
++    assert status(owner, article.slug, %{"article" => %{"body" => "updated"}}) == 200
++    assert status(stranger, article.slug, %{"article" => %{"body" => "b"}}) == 403
++    assert status(stranger, article.slug, %{"article" => "invalid"}) == 403
++    assert status(stranger, draft.slug, %{"article" => "invalid"}) == 404
++    assert status(owner, "missing-precedence", %{"article" => %{"body" => "b"}}) == 404
++    assert status(owner, "missing-precedence", %{"article" => "invalid"}) == 404
++  end
++
++  defp user(label) do
++    name = "#{label}_#{System.unique_integer([:positive])}"
++
++    {:ok, user} =
++      Accounts.register(%{
++        "username" => name,
++        "email" => "#{name}@test.com",
++        "password" => "password123"
++      })
++
++    user
++  end
++
++  defp status(user, slug, payload) do
++    conn =
++      build_conn()
++      |> put_req_header("authorization", "Token " <> Accounts.token(user))
++      |> put_req_header("content-type", "application/json")
++      |> put("/api/articles/" <> slug, Jason.encode!(payload))
++
++    conn.status
++  end
++end

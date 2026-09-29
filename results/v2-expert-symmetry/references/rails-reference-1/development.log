@@ -1,0 +1,80 @@
+
+DATABASE_URL=[redacted]
+
+
+d1000a47d5b61e1d7bf978de22e649e94fb33946239accd6820bab36f325e179
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (866ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (1.0s)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (336ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (435ms)
+
+  4 passed (3.1s)
+Success api/hurl/articles.hurl (17 request(s) in 345 ms)
+Success api/hurl/auth.hurl (20 request(s) in 460 ms)
+Success api/hurl/comments.hurl (13 request(s) in 263 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 289 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 1658 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 404 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 218 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 192 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 245 ms)
+Success api/hurl/feed.hurl (12 request(s) in 456 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 226 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 387 ms)
+Success api/hurl/tags.hurl (4 request(s) in 201 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 506 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 515 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 736 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 454 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (31.3/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          7577 ms (0h:0m:7s:577ms)
+
+Success s01_jwt_alg_none.hurl (1 request(s) in 2 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 231 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 4 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 194 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 192 ms)
+Success s06_injection_filters.hurl (4 request(s) in 14 ms)
+Success s07_malformed_json.hurl (1 request(s) in 1 ms)
+Success s08_wrong_types.hurl (8 request(s) in 206 ms)
+Success s09_oversized_body.hurl (2 request(s) in 263 ms)
+Success s10_unknown_route.hurl (1 request(s) in 2 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 361 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 4 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 3882 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (9.7/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          5367 ms (0h:0m:5s:367ms)
+
+
+Hold on, I am eager loading the application.
+All is good!
+
+Inspecting 46 files
+..............................................
+
+46 files inspected, no offenses detected
+
+Created database 'agentmvc_test'
+
+Run options: --seed 43518
+
+# Running:
+
+..............
+
+Finished in 0.447636s, 31.2754 runs/s, 120.6337 assertions/s.
+14 runs, 54 assertions, 0 failures, 0 errors, 0 skips
+

@@ -1,0 +1,365 @@
+--- a/lib/conduit/accounts.ex
++++ b/lib/conduit/accounts.ex
+@@ -12,16 +12,16 @@
+   def login(attrs) when is_map(attrs) do
+     missing = Enum.find(["email", "password"], &(not is_binary(attrs[&1]) or attrs[&1] == ""))
+ 
+-    cond do
+-      missing -> {:error, {:validation, %{missing => ["can't be blank"]}}}
+-      not LoginLimiter.allowed?(attrs["email"]) -> {:error, :rate_limited}
+-      true -> check_login(attrs)
++    if missing do
++      {:error, {:validation, %{missing => ["can't be blank"]}}}
++    else
++      LoginLimiter.with_reservation(attrs["email"], &check_login(attrs, &1))
+     end
+   end
+ 
+   def login(_), do: {:error, {:validation, %{"user" => ["is invalid"]}}}
+ 
+-  defp check_login(attrs) do
++  defp check_login(attrs, reservation) do
+     user = Repo.get_by(User, email: attrs["email"])
+ 
+     valid =
+@@ -30,12 +30,12 @@
+         (user && user.password_hash) || LoginLimiter.dummy_hash()
+       )
+ 
+-    if user && valid do
+-      LoginLimiter.clear(attrs["email"])
+-      {:ok, user}
+-    else
+-      LoginLimiter.failed(attrs["email"])
+-      {:error, :credentials}
++    result = if user && valid, do: {:ok, user}, else: {:error, :credentials}
++    outcome = if user && valid, do: :success, else: :failed
++
++    case LoginLimiter.finish(reservation, outcome) do
++      :ok -> result
++      :expired -> {:error, :rate_limited}
+     end
+   end
+ 
+--- a/lib/conduit/accounts/login_limiter.ex
++++ b/lib/conduit/accounts/login_limiter.ex
+@@ -5,44 +5,105 @@
+   @max_failures 20
+ 
+   def start_link(_), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
+-  def allowed?(email), do: GenServer.call(__MODULE__, {:allowed?, email})
+-  def failed(email), do: GenServer.call(__MODULE__, {:failed, email})
+-  def clear(email), do: GenServer.call(__MODULE__, {:clear, email})
++  def reserve(email), do: GenServer.call(__MODULE__, {:reserve, email})
++
++  def finish(reservation, outcome),
++    do: GenServer.call(__MODULE__, {:finish, reservation, outcome})
++
++  def cancel(reservation), do: GenServer.call(__MODULE__, {:cancel, reservation})
+   def dummy_hash, do: GenServer.call(__MODULE__, :dummy_hash)
++
++  def with_reservation(email, fun) do
++    case reserve(email) do
++      {:ok, reservation} ->
++        try do
++          fun.(reservation)
++        after
++          cancel(reservation)
++        end
++
++      :rate_limited ->
++        {:error, :rate_limited}
++    end
++  end
+ 
+   @impl GenServer
+   def init(:ok) do
+     Process.send_after(self(), :purge, @window_ms)
+-    {:ok, %{failures: %{}, dummy_hash: Bcrypt.hash_pwd_salt("unmatched-password")}}
++
++    {:ok,
++     %{
++       failures: %{},
++       pending: %{},
++       reservations: %{},
++       dummy_hash: Bcrypt.hash_pwd_salt("unmatched-password")
++     }}
+   end
+ 
+   @impl GenServer
+-  def handle_call({:allowed?, email}, _from, state) do
++  def handle_call({:reserve, email}, {caller, _}, state) do
+     now = System.monotonic_time(:millisecond)
+     failures = forget_expired(state.failures, email, now)
++    {failed, _started} = Map.get(failures, email, {0, now})
+ 
+-    allowed =
+-      case Map.get(failures, email) do
+-        {count, _started} when count >= @max_failures -> false
+-        _ -> true
++    if failed + Map.get(state.pending, email, 0) >= @max_failures do
++      {:reply, :rate_limited, %{state | failures: failures}}
++    else
++      reservation = Process.monitor(caller)
++
++      {:reply, {:ok, reservation},
++       %{
++         state
++         | failures: failures,
++           pending: Map.update(state.pending, email, 1, &(&1 + 1)),
++           reservations: Map.put(state.reservations, reservation, email)
++       }}
++    end
++  end
++
++  def handle_call({:finish, reservation, outcome}, _from, state)
++      when outcome in [:failed, :success] do
++    case release(state, reservation) do
++      {:ok, email, state} ->
++        failures =
++          case outcome do
++            :success ->
++              Map.delete(state.failures, email)
++
++            :failed ->
++              now = System.monotonic_time(:millisecond)
++              failures = forget_expired(state.failures, email, now)
++              {count, started} = Map.get(failures, email, {0, now})
++              Map.put(failures, email, {count + 1, started})
++          end
++
++        {:reply, :ok, %{state | failures: failures}}
++
++      :missing ->
++        {:reply, :expired, state}
++    end
++  end
++
++  def handle_call({:cancel, reservation}, _from, state) do
++    state =
++      case release(state, reservation) do
++        {:ok, _email, state} -> state
++        :missing -> state
+       end
+ 
+-    {:reply, allowed, %{state | failures: failures}}
++    {:reply, :ok, state}
+   end
+-
+-  def handle_call({:failed, email}, _from, state) do
+-    now = System.monotonic_time(:millisecond)
+-    failures = forget_expired(state.failures, email, now)
+-    {count, started} = Map.get(failures, email, {0, now})
+-    {:reply, :ok, %{state | failures: Map.put(failures, email, {count + 1, started})}}
+-  end
+-
+-  def handle_call({:clear, email}, _from, state),
+-    do: {:reply, :ok, %{state | failures: Map.delete(state.failures, email)}}
+ 
+   def handle_call(:dummy_hash, _from, state), do: {:reply, state.dummy_hash, state}
+ 
+   @impl GenServer
++  def handle_info({:DOWN, reservation, :process, _caller, _reason}, state) do
++    case release(state, reservation) do
++      {:ok, _email, state} -> {:noreply, state}
++      :missing -> {:noreply, state}
++    end
++  end
++
+   def handle_info(:purge, state) do
+     now = System.monotonic_time(:millisecond)
+ 
+@@ -53,6 +114,24 @@
+     {:noreply, %{state | failures: failures}}
+   end
+ 
++  defp release(state, reservation) do
++    case Map.pop(state.reservations, reservation) do
++      {nil, _reservations} ->
++        :missing
++
++      {email, reservations} ->
++        Process.demonitor(reservation, [:flush])
++
++        pending =
++          case Map.fetch!(state.pending, email) do
++            1 -> Map.delete(state.pending, email)
++            count -> Map.put(state.pending, email, count - 1)
++          end
++
++        {:ok, email, %{state | pending: pending, reservations: reservations}}
++    end
++  end
++
+   defp forget_expired(failures, email, now) do
+     case Map.get(failures, email) do
+       {_count, started} when now - started >= @window_ms -> Map.delete(failures, email)
+--- a/test/conduit/accounts/login_limiter_test.exs
++++ b/test/conduit/accounts/login_limiter_test.exs
+@@ -0,0 +1,166 @@
++defmodule Conduit.Accounts.LoginLimiterTest do
++  use ExUnit.Case, async: false
++
++  alias Conduit.Accounts.LoginLimiter
++
++  test "a concurrent burst admits only 20 attempts, including reservations in flight" do
++    email = "burst-#{System.unique_integer([:positive])}@test.com"
++    parent = self()
++
++    tasks =
++      for _ <- 1..25 do
++        Task.async(fn ->
++          result = LoginLimiter.reserve(email)
++          send(parent, {:reserved, self(), result})
++
++          receive do
++            :finish ->
++              case result do
++                {:ok, reservation} -> LoginLimiter.finish(reservation, :failed)
++                :rate_limited -> :ok
++              end
++          end
++        end)
++      end
++
++    replies =
++      for _ <- 1..25 do
++        assert_receive {:reserved, pid, result}, 5_000
++        {pid, result}
++      end
++
++    assert Enum.count(replies, fn {_pid, result} -> match?({:ok, _}, result) end) == 20
++    assert Enum.count(replies, fn {_pid, result} -> result == :rate_limited end) == 5
++
++    {:ok, other_reservation} = LoginLimiter.reserve("other-#{email}")
++    assert LoginLimiter.finish(other_reservation, :failed) == :ok
++
++    Enum.each(replies, fn {pid, _result} -> send(pid, :finish) end)
++    Enum.each(tasks, &Task.await(&1, 5_000))
++
++    assert LoginLimiter.reserve(email) == :rate_limited
++  end
++
++  test "a successful login clears prior failures" do
++    email = "cleared-#{System.unique_integer([:positive])}@test.com"
++
++    for _ <- 1..19 do
++      {:ok, reservation} = LoginLimiter.reserve(email)
++      assert LoginLimiter.finish(reservation, :failed) == :ok
++    end
++
++    {:ok, reservation} = LoginLimiter.reserve(email)
++    assert LoginLimiter.finish(reservation, :success) == :ok
++
++    for _ <- 1..20 do
++      {:ok, reservation} = LoginLimiter.reserve(email)
++      assert LoginLimiter.finish(reservation, :failed) == :ok
++    end
++
++    assert LoginLimiter.reserve(email) == :rate_limited
++  end
++
++  test "a rescued verification error releases the reservation while its caller stays alive" do
++    email = "rescued-#{System.unique_integer([:positive])}@test.com"
++    parent = self()
++
++    task =
++      Task.async(fn ->
++        rescued? =
++          try do
++            LoginLimiter.with_reservation(email, fn _reservation ->
++              raise "verification failed"
++            end)
++
++            false
++          rescue
++            RuntimeError -> true
++          end
++
++        send(parent, {:rescued, self(), rescued?})
++
++        receive do
++          :stop -> :ok
++        end
++      end)
++
++    assert_receive {:rescued, caller, true}, 5_000
++    assert Process.alive?(caller)
++
++    reservations =
++      for _ <- 1..20 do
++        {:ok, reservation} = LoginLimiter.reserve(email)
++        reservation
++      end
++
++    assert LoginLimiter.reserve(email) == :rate_limited
++    Enum.each(reservations, &LoginLimiter.cancel/1)
++    send(caller, :stop)
++    assert Task.await(task, 5_000) == :ok
++  end
++
++  test "a dead caller releases an unfinished reservation" do
++    email = "dead-#{System.unique_integer([:positive])}@test.com"
++
++    reservations =
++      for _ <- 1..19 do
++        {:ok, reservation} = LoginLimiter.reserve(email)
++        reservation
++      end
++
++    parent = self()
++
++    caller =
++      spawn(fn ->
++        {:ok, _reservation} = LoginLimiter.reserve(email)
++        send(parent, :reserved)
++
++        receive do
++          :stop -> :ok
++        end
++      end)
++
++    assert_receive :reserved, 5_000
++    assert LoginLimiter.reserve(email) == :rate_limited
++
++    monitor = Process.monitor(caller)
++    Process.exit(caller, :kill)
++    assert_receive {:DOWN, ^monitor, :process, ^caller, :killed}, 5_000
++
++    released = await_reservation(email)
++    assert LoginLimiter.cancel(released) == :ok
++    Enum.each(reservations, &LoginLimiter.cancel/1)
++  end
++
++  test "finishing twice does not count a failed attempt twice" do
++    email = "duplicate-#{System.unique_integer([:positive])}@test.com"
++    {:ok, reservation} = LoginLimiter.reserve(email)
++
++    assert LoginLimiter.finish(reservation, :failed) == :ok
++    assert LoginLimiter.finish(reservation, :failed) == :expired
++    assert LoginLimiter.cancel(reservation) == :ok
++    assert LoginLimiter.cancel(reservation) == :ok
++
++    for _ <- 1..19 do
++      {:ok, reservation} = LoginLimiter.reserve(email)
++      assert LoginLimiter.finish(reservation, :failed) == :ok
++    end
++
++    assert LoginLimiter.reserve(email) == :rate_limited
++  end
++
++  defp await_reservation(email, retries \\ 50)
++
++  defp await_reservation(_email, 0), do: flunk("abandoned reservation was not released")
++
++  defp await_reservation(email, retries) do
++    case LoginLimiter.reserve(email) do
++      {:ok, reservation} ->
++        reservation
++
++      :rate_limited ->
++        Process.sleep(10)
++        await_reservation(email, retries - 1)
++    end
++  end
++end

@@ -1,0 +1,30 @@
+[db-start] exit=0
+DATABASE_URL=[redacted]
+
+[db-prepare] exit=0
+Created database 'agentmvc_test'
+
+[focused-tests] exit=1
+Run options: --seed 29766
+
+# Running:
+
+.E
+
+Error:
+ArticleContractTest#test_share_changes_notify_the_links_they_revoked:
+NoMethodError: undefined method `assert' for class LiveRooms
+    test/controllers/article_contract_test.rb:52:in `block (3 levels) in <class:ArticleContractTest>'
+    test/controllers/article_contract_test.rb:52:in `each'
+    test/controllers/article_contract_test.rb:52:in `block (2 levels) in <class:ArticleContractTest>'
+    app/controllers/shares_controller.rb:5:in `create'
+    test/controllers/article_contract_test.rb:55:in `block in <class:ArticleContractTest>'
+
+bin/rails test test/controllers/article_contract_test.rb:44
+
+...........
+
+Finished in 0.395488s, 32.8708 runs/s, 118.8406 assertions/s.
+13 runs, 47 assertions, 0 failures, 1 errors, 0 skips
+
+[db-stop] exit=0

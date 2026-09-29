@@ -1,0 +1,40 @@
+[db-start] exit=0
+DATABASE_URL=[redacted]
+
+[db-prepare] exit=0
+Created database 'agentmvc_test'
+
+[focused-tests] exit=1
+/usr/local/lib/ruby/3.3.0/bundled_gems.rb:74:in `require': cannot load such file -- minitest/mock (LoadError)
+	from /usr/local/lib/ruby/3.3.0/bundled_gems.rb:74:in `block (2 levels) in replace_require'
+	from /usr/local/bundle/ruby/3.3.0/gems/bootsnap-1.24.5/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:30:in `require'
+	from /usr/local/bundle/ruby/3.3.0/gems/zeitwerk-2.8.3/lib/zeitwerk/core_ext/kernel.rb:34:in `require'
+	from /work/app/test/test_helper.rb:4:in `<main>'
+	from /usr/local/lib/ruby/3.3.0/bundled_gems.rb:74:in `require'
+	from /usr/local/lib/ruby/3.3.0/bundled_gems.rb:74:in `block (2 levels) in replace_require'
+	from /usr/local/bundle/ruby/3.3.0/gems/bootsnap-1.24.5/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:33:in `require'
+	from /work/app/test/controllers/article_contract_test.rb:1:in `<main>'
+	from /usr/local/lib/ruby/3.3.0/bundled_gems.rb:74:in `require'
+	from /usr/local/lib/ruby/3.3.0/bundled_gems.rb:74:in `block (2 levels) in replace_require'
+	from /usr/local/bundle/ruby/3.3.0/gems/bootsnap-1.24.5/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:33:in `require'
+	from /usr/local/bundle/ruby/3.3.0/gems/railties-8.1.3.1/lib/rails/test_unit/runner.rb:71:in `block in load_tests'
+	from /usr/local/bundle/ruby/3.3.0/gems/railties-8.1.3.1/lib/rails/test_unit/runner.rb:69:in `each'
+	from /usr/local/bundle/ruby/3.3.0/gems/railties-8.1.3.1/lib/rails/test_unit/runner.rb:69:in `load_tests'
+	from /usr/local/bundle/ruby/3.3.0/gems/railties-8.1.3.1/lib/minitest/rails_plugin.rb:147:in `block in plugin_rails_options'
+	from /usr/local/lib/ruby/3.3.0/optparse.rb:1715:in `block in parse_in_order'
+	from /usr/local/lib/ruby/3.3.0/optparse.rb:913:in `search'
+	from /usr/local/lib/ruby/3.3.0/optparse.rb:1832:in `block in visit'
+	from /usr/local/lib/ruby/3.3.0/optparse.rb:1831:in `reverse_each'
+	from /usr/local/lib/ruby/3.3.0/optparse.rb:1831:in `visit'
+	from /usr/local/lib/ruby/3.3.0/optparse.rb:1715:in `parse_in_order'
+	from /usr/local/lib/ruby/3.3.0/optparse.rb:1630:in `order!'
+	from /usr/local/lib/ruby/3.3.0/optparse.rb:1739:in `permute!'
+	from /usr/local/lib/ruby/3.3.0/optparse.rb:1764:in `parse!'
+	from /usr/local/bundle/ruby/3.3.0/gems/minitest-6.0.6/lib/minitest.rb:254:in `block in process_args'
+	from /usr/local/lib/ruby/3.3.0/optparse.rb:1153:in `initialize'
+	from /usr/local/bundle/ruby/3.3.0/gems/minitest-6.0.6/lib/minitest.rb:160:in `new'
+	from /usr/local/bundle/ruby/3.3.0/gems/minitest-6.0.6/lib/minitest.rb:160:in `process_args'
+	from /usr/local/bundle/ruby/3.3.0/gems/minitest-6.0.6/lib/minitest.rb:300:in `run'
+	from /usr/local/bundle/ruby/3.3.0/gems/minitest-6.0.6/lib/minitest.rb:84:in `block in autorun'
+
+[db-stop] exit=0

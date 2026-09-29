@@ -1,0 +1,51 @@
+{
+  "image": "agentmvc-v2-expert-rails-reference-1:review",
+  "label": "v2-reference-rails-2",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "10s",
+  "image_mb": 324.0,
+  "cold_start_seconds": 2.11,
+  "seed_seconds": 20.5,
+  "idle_memory_mb": 123.6,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 6191,
+      "rps": 617.5,
+      "p50_ms": 25.73,
+      "p95_ms": 31.87,
+      "p99_ms": 36.93,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.0,
+      "peak_memory_mb": 129.1,
+      "foreign_container_cpu_percent_max": 39.2,
+      "host_load_1m": 5.3
+    },
+    "article": {
+      "requests": 7317,
+      "rps": 730.1,
+      "p50_ms": 21.95,
+      "p95_ms": 28.37,
+      "p99_ms": 32.27,
+      "failed_checks": 0,
+      "sql_statements_per_request": 5.98,
+      "peak_memory_mb": 128.6,
+      "foreign_container_cpu_percent_max": 50.4,
+      "host_load_1m": 5.0
+    }
+  },
+  "stack": "rails",
+  "round": 2,
+  "exit": 0,
+  "image_sha256": "sha256:00999c21b297988fbe7044f727a7628d2a083fb0211ed3fbf6666b5d5af834a3",
+  "raw_stream_sha256": {
+    "raw-list_anonymous.json.zst": "a2ea672a2202f3276090656adfd106f7e9cef75414e7bdefb76b67906eac769f",
+    "raw-warmup-list_anonymous.json.zst": "b10db7e272f5eb00f8feb63c8862278223461caa4e31cb58106ddf4ea2fc0cb2",
+    "raw-article.json.zst": "3c9f55aded4b2c877d6fa216115012952705243863bb0285e8061eb5e1590ec1",
+    "raw-warmup-article.json.zst": "caef99d26c3048fd384c91e8b09f311cd4a9630d0bf1605cc246c162a0345178"
+  }
+}

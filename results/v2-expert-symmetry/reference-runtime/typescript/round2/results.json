@@ -1,0 +1,51 @@
+{
+  "image": "agentmvc-v2-expert-typescript:reference-1",
+  "label": "v2-reference-typescript-2",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "10s",
+  "image_mb": 333.7,
+  "cold_start_seconds": 1.15,
+  "seed_seconds": 10.5,
+  "idle_memory_mb": 356.4,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 35179,
+      "rps": 3516.9,
+      "p50_ms": 3.22,
+      "p95_ms": 7.48,
+      "p99_ms": 34.34,
+      "failed_checks": 0,
+      "sql_statements_per_request": 2.01,
+      "peak_memory_mb": 270.8,
+      "foreign_container_cpu_percent_max": 108.9,
+      "host_load_1m": 5.0
+    },
+    "article": {
+      "requests": 77877,
+      "rps": 7786.7,
+      "p50_ms": 1.71,
+      "p95_ms": 3.24,
+      "p99_ms": 10.44,
+      "failed_checks": 0,
+      "sql_statements_per_request": 2.0,
+      "peak_memory_mb": 276.9,
+      "foreign_container_cpu_percent_max": 153.1,
+      "host_load_1m": 5.7
+    }
+  },
+  "stack": "typescript",
+  "round": 2,
+  "exit": 0,
+  "image_sha256": "sha256:5e6cf22e581c57f47a0e7a8ff4743440eeca929f1d9fede546824658a30371cb",
+  "raw_stream_sha256": {
+    "raw-list_anonymous.json.zst": "a7b4886fc554bbaab5fbb1dc6420e6525486dc712a0d88071ee05211d6fe2112",
+    "raw-warmup-list_anonymous.json.zst": "7977b64aa50dc92b65eefd142ded173d30e0f316a0cc0fd9b049d1c1b8be0929",
+    "raw-article.json.zst": "764bb1d30589e2a22cd0f592a9e924279bbf89c20be651d82f7ee8af04f4de3e",
+    "raw-warmup-article.json.zst": "a1df361e3fc4f30b98b9ebcc992cafb44bc84ebc5d023c2682fc89b13f3e9027"
+  }
+}

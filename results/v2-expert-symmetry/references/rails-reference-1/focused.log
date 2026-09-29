@@ -1,0 +1,37 @@
+[db-stop] exit=0
+
+[db-start] exit=0
+DATABASE_URL=[redacted]
+
+[db-prepare] exit=0
+Created database 'agentmvc_test'
+
+[focused-tests] exit=1
+Run options: --seed 20612
+
+# Running:
+
+.......E
+
+Error:
+ProductRulesTest#test_publishing_sends_one_live_update_after_the_revision_changes:
+NoMethodError: undefined method `stub' for class LiveRooms
+    test/models/product_rules_test.rb:42:in `block in <class:ProductRulesTest>'
+
+bin/rails test test/models/product_rules_test.rb:39
+
+...E
+
+Error:
+ArticleContractTest#test_share_changes_notify_the_links_they_revoked:
+NoMethodError: undefined method `stub' for class LiveRooms
+    test/controllers/article_contract_test.rb:49:in `block in <class:ArticleContractTest>'
+
+bin/rails test test/controllers/article_contract_test.rb:44
+
+.
+
+Finished in 0.477627s, 27.2179 runs/s, 96.3095 assertions/s.
+13 runs, 46 assertions, 0 failures, 2 errors, 0 skips
+
+[db-stop-final] exit=0
