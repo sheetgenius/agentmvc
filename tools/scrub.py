@@ -2,6 +2,7 @@
 
 Usage: python3 tools/scrub.py EVENTS.jsonl WORKDIR OUT_STEM [--deny REGEX ...] [--keep REGEX ...]
                               [--map FROM=TO ...] [--header JSON]
+       python3 tools/scrub.py TRANSCRIPT.txt WORKDIR OUT_STEM --plain [--deny REGEX ...]
 
 - WORKDIR (the agent's directory) becomes /work/app; your home directory becomes ~; your username becomes
   "user"; your hostname becomes "host"; other macOS home paths become /Users/user/;
@@ -11,7 +12,8 @@ Usage: python3 tools/scrub.py EVENTS.jsonl WORKDIR OUT_STEM [--deny REGEX ...] [
   project (--keep adds patterns); everything else is replaced by a note with the number of lines removed.
 - Every --deny pattern is replaced by [redacted] wherever it appears, and removes Docker listing lines.
 - Every --map FROM=TO replaces a literal path or string before the rules above (for example a parent directory).
-Writes OUT_STEM.jsonl and OUT_STEM.md. Exits non-zero if a home path, username, hostname or --deny pattern survives.
+Writes OUT_STEM.jsonl and OUT_STEM.md, or OUT_STEM.txt with --plain. Exits non-zero if a
+recognized secret, email, home path, username, hostname or --deny pattern survives.
 Read the output before you publish it: scrubbing is a safety net, not a guarantee.
 """
 import argparse, getpass, json, os, re, socket
@@ -23,9 +25,23 @@ KEEP = (r"^\s*$|^\s*(?:REPOSITORY|NAME|CONTAINER|IMAGE|NETWORK|DRIVER|VOLUME|TYP
         r"postgres|hurl|grafana/k6|osv-scanner|brakeman|sobelow|\bdefault\b|orbstack|desktop-linux")
 SECRETS = [r"sk-(?:proj-)?[A-Za-z0-9_-]{20,}", r"gh[pousr]_[A-Za-z0-9]{20,}", r"github_pat_[A-Za-z0-9_]{20,}",
            r"AKIA[0-9A-Z]{16}", r"xox[abprs]-[A-Za-z0-9-]{10,}", r"(?i)bearer\s+[A-Za-z0-9._-]{20,}",
-           r"-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----"]
+           r"-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----",
+           r"(?i)(?:postgres(?:ql)?|redis)://[^\s@]+:[^\s@]+@"]
+EMAIL = re.compile(r"(?<![\w.+-])[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}(?![\w.-])")
+SENSITIVE_ASSIGNMENT = re.compile(
+    r"(?P<prefix>\b(?:[A-Z0-9_]*(?:SECRET|PASSWORD|API_KEY|PRIVATE_KEY)[A-Z0-9_]*|"
+    r"[A-Z0-9_]*TOKEN|"
+    r"DATABASE_URL|REDIS_URL)\b[\"']?\s*(?:=|:)\s*)"
+    r"(?P<value>\"(?:[^\"\\]|\\.)*\"|'(?:[^'\\]|\\.)*'|[^\s,;}\\\"]+)", re.I)
 UNRELATED_WORKTREE = re.compile(r'~/co/(?!agentmvc(?:/|~|$))[^~\s"\\]+', re.I)
 OTHER_MAC_HOME = re.compile(r'/Users/(?!user/)[^/\s"\\]+/')
+OTHER_UNIX_HOME = re.compile(r'/home/(?!user/)[^/\s"\\]+/')
+
+
+def redact_assignment(match):
+    value = match.group("value")
+    quote = value[0] if value[0] in "\"'" else ""
+    return match.group("prefix") + (quote + "[redacted]" + quote if quote else "[redacted]")
 
 
 class Scrubber:
@@ -38,15 +54,22 @@ class Scrubber:
                       *[(re.compile(re.escape(src)), dst) for src, dst in maps],
                       (re.compile(re.escape(home)), "~"),
                       (OTHER_MAC_HOME, "/Users/user/"),
+                      (OTHER_UNIX_HOME, "/home/user/"),
                       (UNRELATED_WORKTREE, "[redacted]"),
                       (re.compile(r"(?:/private)?/var/folders/\w+/\w+/T"), "$TMPDIR"),
                       (re.compile(rf"\b{re.escape(user)}\b"), "user"),
                       (re.compile(rf"\b{re.escape(host)}(?:\.local)?\b", re.I), "host"),
                       *[(re.compile(p), "[redacted]") for p in SECRETS],
+                      (EMAIL, "[redacted-email]"),
+                      (SENSITIVE_ASSIGNMENT, redact_assignment),
                       *[(p, "[redacted]") for p in self.deny]]
-        self.forbidden = [re.compile(re.escape(home)), re.compile(rf"\b{re.escape(user)}\b"),
-                          re.compile(rf"\b{re.escape(host)}\b", re.I), OTHER_MAC_HOME,
-                          UNRELATED_WORKTREE, *self.deny]
+        self.forbidden = [("home path", re.compile(re.escape(home))),
+                          ("username", re.compile(rf"\b{re.escape(user)}\b")),
+                          ("hostname", re.compile(rf"\b{re.escape(host)}\b", re.I)),
+                          ("other home path", OTHER_MAC_HOME), ("other home path", OTHER_UNIX_HOME),
+                          ("other worktree", UNRELATED_WORKTREE), ("email", EMAIL),
+                          *[("secret", re.compile(p)) for p in SECRETS],
+                          *[("custom deny pattern", p) for p in self.deny]]
 
     def text(self, value):
         for pattern, replacement in self.rules:
@@ -81,7 +104,11 @@ class Scrubber:
         return self.value(event)
 
     def leaks(self, text):
-        return sorted({m.group(0) for p in self.forbidden for m in p.finditer(text)})
+        found = {label for label, pattern in self.forbidden if pattern.search(text)}
+        if any(match.group("value").strip("\"'") != "[redacted]"
+               for match in SENSITIVE_ASSIGNMENT.finditer(text)):
+            found.add("sensitive assignment")
+        return sorted(found)
 
 
 def fence(text, lang=""):
@@ -123,17 +150,30 @@ def render(events, header, max_lines=40):
 
 def scrub_file(events_path, workdir, out_stem, deny=(), keep=(), header=None, maps=()):
     scrubber = Scrubber(workdir, deny, keep, maps)
-    events = [scrubber.event(json.loads(line)) for line in open(events_path) if line.strip()]
+    with open(events_path) as source:
+        events = [scrubber.event(json.loads(line)) for line in source if line.strip()]
     raw = "".join(json.dumps(e, ensure_ascii=False) + "\n" for e in events)
-    readable = render(events, header or {})
+    readable = render(events, scrubber.value(header or {}))
     leaks = scrubber.leaks(raw + readable)
     if leaks:
-        raise SystemExit(f"{events_path}: scrubbing left {len(leaks)} forbidden strings, e.g. {leaks[:5]}")
+        raise SystemExit(f"{events_path}: scrubbing left sensitive material: {', '.join(leaks)}")
     out_stem = Path(out_stem)
     out_stem.parent.mkdir(parents=True, exist_ok=True)
     out_stem.with_suffix(".jsonl").write_text(raw)
     out_stem.with_suffix(".md").write_text(readable)
     return events
+
+
+def scrub_plain_file(input_path, workdir, out_stem, deny=(), maps=()):
+    scrubber = Scrubber(workdir, deny, maps=maps)
+    readable = scrubber.text(Path(input_path).read_text())
+    leaks = scrubber.leaks(readable)
+    if leaks:
+        raise SystemExit(f"{input_path}: scrubbing left sensitive material: {', '.join(leaks)}")
+    output = Path(out_stem).with_suffix(".txt")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(readable)
+    return output
 
 
 if __name__ == "__main__":
@@ -143,7 +183,12 @@ if __name__ == "__main__":
     parser.add_argument("--keep", action="append", default=[])
     parser.add_argument("--map", action="append", default=[])
     parser.add_argument("--header", default="{}")
+    parser.add_argument("--plain", action="store_true", help="scrub a plain-text transcript to OUT_STEM.txt")
     args = parser.parse_args()
     maps = [tuple(m.split("=", 1)) for m in args.map]
-    scrub_file(args.events, args.workdir, args.out_stem, args.deny, args.keep, json.loads(args.header), maps)
-    print(f"wrote {args.out_stem}.jsonl and {args.out_stem}.md")
+    if args.plain:
+        output = scrub_plain_file(args.events, args.workdir, args.out_stem, args.deny, maps)
+        print(f"wrote {output}")
+    else:
+        scrub_file(args.events, args.workdir, args.out_stem, args.deny, args.keep, json.loads(args.header), maps)
+        print(f"wrote {args.out_stem}.jsonl and {args.out_stem}.md")

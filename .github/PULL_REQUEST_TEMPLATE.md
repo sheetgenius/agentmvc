@@ -1,17 +1,15 @@
-## What changed
+## What improved
 
-<!-- Summarize the question and the files changed. -->
+<!-- Name the language lane and problem, link the previous source or result, and explain the change. Say whether this is a frozen one-shot condition or an iterative reference improvement. -->
 
-## Experiment and evidence
+## Source and provenance
 
-<!-- Eight-step, one-shot, or a separately labeled diagnostic? Link the prompt, fixture manifest, source revision, and relevant results. -->
+<!-- Link the exact source revision and say whether an agent, a person, or both wrote it. For a one-shot, link its prompt and fixture hash plus model/tool version. For a reference improvement, link guidance that materially shaped the result if available. An external scrubbed session link is optional; do not add a full transcript to Git. -->
 
-## Verification
+## Checks and measurements
 
-<!-- List the commands you ran and their results. Include failed attempts when they explain the outcome. -->
+<!-- Give development and production gate commands and outcomes, including relevant failures. If claiming a performance or size improvement, show before/after with the same workload, seed, machine, and limits; link raw measurements. Agent token usage and code counts are welcome when available, not required. -->
 
-## Publication check
+## Limits
 
-- [ ] Frozen inputs and historical agent snapshots are unchanged, or the change is explicitly labeled and refrozen.
-- [ ] Transcripts and results were reviewed for secrets and personal paths.
-- [ ] Large raw measurement streams and local build outputs are excluded from Git.
+<!-- What remains uncertain or needs another run? Confirm no new full transcripts, credentials, account details, or local workdirs were added to Git. -->

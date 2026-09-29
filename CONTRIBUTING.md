@@ -1,93 +1,40 @@
 # Contributing to AgentMVC
 
-AgentMVC compares what AI agents produce in each stack. New stacks, reruns, framework reviews, and reproducibility fixes all help. Start with the [methodology](docs/methodology.md) and [repository map](README.md#repository-map); the [one-shot setup](one-shot/README.md) describes the separate full-product experiment.
+AgentMVC is an evergreen comparison and a set of reference implementations. The question is how well an agent can build and keep improving a large application in each language and framework. Make a lane better, show what changed, and leave enough evidence for the next contributor to climb from there. Small, useful improvements are welcome; you do not need to rerun the entire study for each one.
 
-## The one rule
+Start with the [repository map](README.md#repository-map), the [current results](results/README.md), and the prompt for the lane you want to improve. The one-shot prompts are also reusable starting points for your own projects.
 
-**Agents write scored implementations; people preserve the evidence.** Code in a scored `stacks/<name>/<step>/` snapshot must be exactly what the agent left after that step. If a step fails, rerun the whole step; don't fix its output by hand. If the harness was at fault, say so in the PR, fix the harness, and rerun. Human-written reference versions and tuning experiments are welcome when clearly labeled as separate diagnostics.
+## Two kinds of work
 
-Keep the frozen spec, prompts, and checks unchanged for an existing comparison. The eight-step spec lives in `spec/`, its prompts in `steps/`, and its checks in `tools/security/hurl/`. A new question may need a new fixture and prompt; give it its own manifest and result label so its numbers cannot be mistaken for an earlier run.
+- **One-shot study:** An agent gets a frozen prompt, fixture, and checks, then builds in one measured session. Preserve its exact output. A new prompt, model, environment, or human edit creates a newly labeled condition. Never quietly change an earlier result.
+- **Reference lane:** Improve the best current implementation through as many agent or human iterations as useful. You may change the code, prompt guidance, dependencies, and tooling. Record what helped. The goal is excellent, readable, domain-rich code and a production-ready app, not a one-session score.
 
-## Before opening a PR
+Keep these labels visible in PRs and result pages. A reference improvement can teach us more than another one-shot, but its effort and runtime numbers cannot be pooled with a frozen run.
 
-1. State the question your change answers and which experiment it belongs to: eight-step, one-shot, or a labeled diagnostic.
-2. Link the exact prompt and fixture manifest, agent/model/effort, and source revision. Record independent development and production checks, including failures you resolved.
-3. Keep generated dependencies, local workdirs, and secrets out of Git. Compressed per-request runtime streams are distributed separately; [results/](results/README.md) holds the browsable summaries.
-4. Read every transcript before publication. The scrubber catches common secrets and machine paths, but it cannot know every private value.
+## Propose a lane improvement
 
-For a first contribution, a focused issue or PR about an incorrect measurement, a broken reproduction command, or a framework-specific code review is useful. Include the file, result, or command that shows the problem.
+Open a focused PR with:
 
-## Add a stack
+1. **Question and change.** Name the lane and the problem you found. Link the prior source revision or result, and explain the design choice in plain language. A short series of commits that shows the diagnosis, implementation, and measurement is better than a polished final diff with no trail.
+2. **Source and provenance.** Link the exact code revision. Say whether an agent, a person, or both wrote it. For a one-shot, link the frozen prompt and fixture hash, plus model and tool version. For an iterative reference, link the prompt or guidance that materially shaped the change when available.
+3. **Checks.** Run the lane’s relevant development and production gates. Include commands and outcomes, including a failure that explains a fix. Add a focused test when it protects a rule or regression; a one-line refactor does not need a new test.
+4. **Measurements, when claiming an improvement.** Compare before and after with the same workload, seed, machine, resource limits, and repeated rounds. Give raw measurements or a link to them, not just the best number. For code size, say what files the count includes. For performance, report correctness and SQL work too; a faster endpoint that skips work is not a win.
 
-You'll need Docker, Python 3.9+, and your stack's toolchain. Then:
+Agent token usage, wall time, source tokens, and line counts are useful context **when readily available**. Record the counting method and scope. They are not a contribution requirement or a universal quality score. In a long-running reference lane, cumulative inference is especially hard to compare across people and tools.
 
-1. **Describe the stack.**
-   - Copy `stacks/rails/stack.json` to `stacks/<name>/stack.json`, and fill it in:
-     - `name`, `language`, `description`, `color`;
-     - `port`, a free port such as 4104;
-     - `agent`, the tool, model and reasoning level you'll use;
-     - `code`: the source extensions and the comment prefix of each, plus any lockfiles, generated files and formatter configs to skip;
-     - `security`: the lockfile, and a static analyzer if your stack has a mainstream one;
-     - `setup`: an optional command that installs dependencies before `bin/check` runs.
-   - Write `stacks/<name>/ENVIRONMENT.md` from an existing one. List the toolchain and versions, the generator command, the formatter and linter commands, the port, and what the sandbox allows. The prompts deliberately say nothing about any stack, so this file is the only stack-specific text the agent sees. Keep it to facts.
-   - A stack's security analyzer needs a small branch in `tools/security/scan.py`, and only if `brakeman` or `sobelow` doesn't fit.
+For a new language lane, first make its environment and gates reproducible. Disclose any scaffold or framework guidance supplied to the agent. A working, honest pilot is more useful than a broad but unverified claim.
 
-2. **Run the steps in order:**
-   ```bash
-   python3 tools/run-step.py <name> 1-build
-   tools/check.sh <name> 1-build
-   python3 tools/run-step.py <name> 2-add-drafts
-   tools/check.sh <name> 2-add-drafts
-   python3 tools/run-step.py <name> 3-package
-   tools/check.sh <name> 3-package
-   tools/bench/run.sh <name> 3-package           # its results are step 4's input
-   python3 tools/run-step.py <name> 4-tune
-   tools/check.sh <name> 4-tune
-   tools/security/scan.sh <name> 4-tune          # its results are step 5's input
-   python3 tools/run-step.py <name> 5-harden
-   tools/check.sh <name> 5-harden
-   tools/security/scan.sh <name> 5-harden
-   python3 tools/run-step.py <name> 6-polish
-   tools/check.sh <name> 6-polish
-   python3 tools/run-step.py <name> 7-add-background-job
-   tools/check.sh <name> 7-add-background-job
-   python3 tools/live_fixture.py verify            # confirm the frozen step-8 inputs
-   python3 tools/run-step.py <name> 8-live-editing
-   tools/check.sh <name> 8-live-editing
-   ```
-   - `run-step.py` builds the agent's working directory and runs the agent: Codex by default, or any other via `AGENT_CMD`. It then copies back only what the agent wrote, the agent's final report, the scrubbed transcript, and a record in `runs.json`.
-   - Record each `tools/check.sh` result in the step's `verified` field in `runs.json`.
+## Transcripts and private data
 
-3. **Read your transcripts before you publish them.**
-   - `tools/scrub.py` replaces your home directory, username, hostname and common secret shapes. It also removes unrelated lines from Docker listings, and it refuses to write a file that still contains any of them.
-   - It can't know everything private on your machine. Pass `--deny '<regex>'` to `run-step.py` for anything else, such as project names, hosts or accounts, and read the `.md` transcripts yourself.
+Do not add new full agent transcripts, chat exports, raw credentials, local workdirs, or account details to Git. Existing historical transcripts are preserved as study artifacts; this policy applies to new contributions. A short decision note and links to the code, prompt, checks, and measurements are usually enough.
 
-4. **Measure and report.**
-   - Run `python3 tools/report.py`. It measures every stack, redraws the charts, and updates the table in `README.md` and your stack's `README.md`.
-   - If you ran benchmarks, say so in the PR. Speed is only comparable within one machine and one session, so benchmark Rails again next to your stack with `tools/bench/run.sh rails 4-tune`, and include both results.
+If a transcript helps reviewers, publish it separately as a private or public gist or release attachment after scrubbing **and reading the output yourself**. `tools/scrub.py` handles Codex JSONL and plain-text transcripts:
 
-5. **Open a pull request** with `stacks/<name>/`, any `results/` files you produced, and the regenerated `README.md` and charts.
-   - Steps 1 and 2 are enough to join the table; all eight complete the picture.
-   - In the PR description, say which agent and model you used, and anything that went wrong.
+```bash
+python3 tools/scrub.py events.jsonl /path/to/agent-work /tmp/agentmvc-session --deny 'private-host|account-name'
+python3 tools/scrub.py notes.txt /path/to/agent-work /tmp/agentmvc-notes --plain --deny 'private-host|account-name'
+```
 
-## Other ways to help
+The first command writes `.jsonl` and `.md`; the second writes `.txt`. The scrubber replaces common keys, tokens, emails, usernames, hostnames, and local paths, then refuses to write if recognized sensitive material remains. It cannot identify every private value. Use `--deny` for your own account, organization, host, or project names, inspect the final files, and then link the external copy in the PR. Keep the original transcript local.
 
-- **Another model.**
-  - Rerun an existing stack with a different agent or model, in a copy named, for example, `stacks/rails-claude/`.
-  - Results from a different model stay separate from the headline comparison, which uses one model for every stack.
-  - A second model across all three stacks is the most useful check this project could get.
-- **A second reviewer.**
-  - Grade the answers in `comprehension/answers/` against the questions without looking at the keys, and open an issue with your grades.
-  - Or review whether a stack's code is idiomatic, and file what a practitioner of that stack would change.
-- **A new step or lens:**
-  - real-time updates;
-  - a data migration;
-  - an API version change;
-  - a dependency upgrade.
-
-  Open an issue with the prompt and how you would check it. A new step has to run on every stack.
-- **Tools.** Better measurement, cleaner charts, CI that runs `tools/report.py` on pull requests.
-
-## Style
-
-Keep documents short, neutral and specific. Report what happened, including what went wrong. The [research log](docs/research-log.md) is the model.
+Please keep the PR description short: **what improved, what passed, what was measured, and what remains uncertain.** The [methodology](docs/methodology.md) explains the older scored study; it is a record of that experiment, not a mandatory process for every reference improvement.

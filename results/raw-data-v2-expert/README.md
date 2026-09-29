@@ -19,4 +19,4 @@ zstd -dc .work/raw-download/agentmvc-v2-typescript-expert-runtime.tar.zst | tar 
 zstd -dc .work/raw-download/agentmvc-v2-phoenix-expert-runtime.tar.zst | tar -xf - -C results
 ```
 
-Compare each printed checksum with `archives.json` before extracting. The TypeScript archive contains paths beginning with `results/`; the Phoenix archive contains paths beginning with `one-shot-v2-phoenix-expert/`, so its extraction target is `results/`. The release and repository remain private until the owner changes visibility.
+Compare each printed checksum with `archives.json` before extracting. The TypeScript archive contains paths beginning with `results/`; the Phoenix archive contains paths beginning with `one-shot-v2-phoenix-expert/`, so its extraction target is `results/`.

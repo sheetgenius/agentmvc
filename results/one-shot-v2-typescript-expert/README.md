@@ -22,7 +22,7 @@ The [independent size count](expert-1/size.json) is **10,027 owned backend token
 
 The reviewer ran [two complete HTTP and WebSocket rounds](expert-1/runtime/summary.json), sequentially, with 16 HTTP virtual users, 3-second warmup and 15-second samples, and 2 CPU / 1 GiB limits on both app and database. The image was **333.7 MB**, and cold starts were **0.91 / 1.05 s**. Anonymous article lists returned **3,532 / 3,535 requests per second** with **two SQL statements per request**; single article reads returned **7,837 / 7,770 requests per second**. At 500 subscribers, delivery p95 was **10.7 / 9.58 ms**, with no missing, duplicate, or regressed revisions in the measured socket rounds. Host load and all other scenarios are in the JSON. The frozen benchmark's `foreign_container_cpu_percent_max` may count its own unnamed k6 load-generator container, so that field does **not** establish unrelated host CPU use. These are measurements under their recorded load, not causal speed rankings across stacks.
 
-All **36 lossless raw HTTP streams** are in a verified local archive, recorded by [raw-data manifest](expert-1/raw-data.json). The archive will be attached with the Phoenix expert data under a new `raw-data-v2-expert` release; `raw-data-v1` remains unchanged.
+All **36 lossless raw HTTP streams** are recorded by the [raw-data manifest](expert-1/raw-data.json) and distributed with the Phoenix expert data in the [`raw-data-v2-expert` release](../raw-data-v2-expert/README.md); `raw-data-v1` remains unchanged.
 
 ## Source review and limits
 
