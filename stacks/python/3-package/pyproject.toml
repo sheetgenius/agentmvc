@@ -1,0 +1,41 @@
+[project]
+name = "agentmvc-python"
+version = "0.1.0"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+  "django==6.1.1",
+  "django-ninja==1.7.1",
+  "channels==4.3.2",
+  "procrastinate[django]==3.10.0",
+  "psycopg[binary,pool]==3.3.6",
+  "dj-database-url==3.1.2",
+  "uvicorn[standard]==0.54.0",
+  "PyJWT==2.15.1",
+  "argon2-cffi==25.1.0",
+  "django-cors-headers>=4.9.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff==0.16.9",
+    "pytest==9.1.1",
+    "pytest-django==4.14.0",
+    "httpx==0.28.1",
+    "bandit==1.9.4",
+    "pip-audit==2.10.1",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+extend-exclude = [".scaffold", "realworld_spec", "harness", "security", "perf", ".checks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py", "tests.py"]

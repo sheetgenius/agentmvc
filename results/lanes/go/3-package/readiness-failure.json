@@ -1,0 +1,15 @@
+{
+  "classification": "reviewer infrastructure readiness race",
+  "source_sha256": "01c08c987a01acfba0c11abb76241e51b245d27b1eb7e719bd57a6d3bc46c104",
+  "failed_before_acceptance": true,
+  "observation": "Native application exited with db:5432 connection refused after Unix-socket pg_isready returned ready.",
+  "cause": "postgres:17-alpine entrypoint starts temporary setup server with listen_addresses empty, then stops it before normal TCP server startup.",
+  "affected_paths": [
+    "tools/lane_check.py:production_app",
+    "tools/lane_broker.py:Session.database"
+  ],
+  "proposed_reviewer_change": "Use pg_isready -h 127.0.0.1 so readiness proves TCP availability.",
+  "coding_session_replayed": false,
+  "application_changed": false,
+  "frozen_inputs_changed": false
+}

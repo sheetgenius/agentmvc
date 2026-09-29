@@ -38,10 +38,10 @@ docker network create "$network" >/dev/null
 docker run -d --name "$db" --network "$network" --network-alias db \
   -e POSTGRES_USER=agentmvc -e POSTGRES_PASSWORD=agentmvc -e POSTGRES_DB=agentmvc "$postgres" >/dev/null
 for attempt in {1..60}; do
-  if docker exec "$db" pg_isready -U agentmvc -d agentmvc >/dev/null 2>&1; then break; fi
+  if docker exec "$db" pg_isready -h 127.0.0.1 -U agentmvc -d agentmvc >/dev/null 2>&1; then break; fi
   sleep 1
 done
-docker exec "$db" pg_isready -U agentmvc -d agentmvc >/dev/null
+docker exec "$db" pg_isready -h 127.0.0.1 -U agentmvc -d agentmvc >/dev/null
 docker run -d --name "$app" --network "$network" -p "127.0.0.1:$port:$port" \
   -e DATABASE_URL=postgres://agentmvc:agentmvc@db:5432/agentmvc \
   -e SECRET_KEY_BASE="$(openssl rand -hex 64)" -e PORT="$port" "$image" >/dev/null

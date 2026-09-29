@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 
 import lane_run
+import lane_review
 import scrub
 
 
@@ -64,6 +65,7 @@ def publish(path):
 def install():
     scrub.scrub_file = scrub_events
     lane_run.publish = publish
+    lane_run.independently_check = lane_review.independently_check
 
 
 if __name__ == '__main__':
