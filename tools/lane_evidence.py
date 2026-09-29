@@ -11,6 +11,7 @@ Run parity/runtime only after measured coding has stopped. Existing evidence is
 preserved. Failed runs require a separately named condition, not an overwrite.
 """
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -205,6 +206,13 @@ def http_round(session, identity, round_number, dest):
     scratch.mkdir(parents=True, exist_ok=False)
     dest.mkdir(parents=True, exist_ok=False)
     label = f"lane-evidence-{session.id}-r{round_number}"
+    if session.data["phase"] == "reference":
+        # Docker accepts longer container names than a DNS label. The original
+        # verbose reference ID produced a 64-character database hostname.
+        short_id = hashlib.sha256(session.id.encode()).hexdigest()[:12]
+        label = f"lane-{session.data['stack']}-{short_id}-r{round_number}"
+    if len(f"agentmvc-bench-db-{label}") > 63:
+        raise ValueError("Benchmark database hostname exceeds the DNS label limit")
     env = {key: value for key, value in os.environ.items() if not key.startswith("BENCH_")}
     env.update(BENCH_WARMUP="3s", BENCH_DURATION="15s", BENCH_RAW_OUTPUT="1",
                BENCH_HOST_PORT=str(session.port + 14000))

@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "~/co/agentmvc/tools/lane_evidence.py", line 630, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "~/co/agentmvc/tools/lane_evidence.py", line 604, in main
+    benchmark_worker(args.image, args.label, args.output)
+  File "~/co/agentmvc/tools/lane_evidence.py", line 263, in benchmark_worker
+    runpy.run_path(str(path), run_name="__main__")
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "~/co/agentmvc/tools/bench/bench.py", line 161, in <module>
+    main()
+  File "~/co/agentmvc/tools/bench/bench.py", line 108, in main
+    raise RuntimeError(f"app did not answer /api/tags within 180s (last: {last}):\n"
+RuntimeError: app did not answer /api/tags within 180s (last: URLError(ConnectionRefusedError(61, 'Connection refused'))):
+2026/09/29 20:56:01 ERROR server stopped error="failed to connect to `user=postgres database=conduit`:\n\thostname resolving error: lookup agentmvc-bench-db-lane-evidence-go-8-live-editing-reference-1-r1: no such host\n\tlookup agentmvc-bench-db-lane-evidence-go-8-live-editing-reference-1-r1: no such host"
+

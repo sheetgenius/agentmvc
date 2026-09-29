@@ -38,6 +38,14 @@ Reviewer startup uses the separately hashed `lane_review.py` adapter to require 
 
 ## Repeated final runtime
 
+The first reference runtime attempt is preserved in
+[`runtime/reference-attempt1`](runtime/reference-attempt1/). A verbose reference
+session ID produced a 64-character Docker database hostname; DNS resolution
+failed before timed HTTP samples. The coordinator stopped that attempt and
+changed only reference benchmark container labels to deterministic short hashes.
+Full identities remain in the records. Workloads, resources, images and frozen
+coding inputs did not change; the original measured runtime is unaffected.
+
 Final runtime is separate from implementation feedback. The tuning feedback benchmark uses **1-second warmup and 3-second measurement**. The final repeated HTTP benchmark uses the unchanged [benchmark](../../tools/bench/bench.py) with **16 virtual users, 3-second warmup, and 15-second measurement** for all nine existing scenarios: anonymous list, signed-in list, tag-filtered list, feed, article, comments, tags, favorite toggle, and article creation. Both app and database receive 2 CPU / 1 GiB; no extra application environment is supplied.
 
 After measured coding stops, `lane_artifacts.py export-feedback` preserves every available baseline and tuning measurement directory under `runtime/feedback/`, including failed or incomplete attempts. It retains scrubbed summaries, k6 summaries, runner logs, and compressed raw streams; seed credentials remain private and originals remain intact. Each export records original-file hashes and its source session, preserving an image SHA only when the original result recorded one. These are intermediate candidates: the subsequently published checkpoint does not establish the source measured by a feedback attempt. Missing summaries or empty streams remain explicit. Feedback streams are additional release evidence and do not count toward the 144 final runtime streams. The exporter refuses to run while any measured `logs/active.json` exists and starts no workloads.
