@@ -1,6 +1,7 @@
 """Package published lane evidence for external release; never uploads anything.
 
   .venv/bin/python tools/lane_artifacts.py inspect
+  .venv/bin/python tools/lane_artifacts.py export-feedback
   .venv/bin/python tools/lane_artifacts.py package VERSION
   .venv/bin/python tools/lane_artifacts.py verify VERSION
 
@@ -15,6 +16,7 @@ import json
 import re
 import subprocess
 import tarfile
+import tempfile
 from pathlib import Path, PurePosixPath
 
 import lane_broker
@@ -52,19 +54,19 @@ def validate_value(value, cleaner):
         raise RuntimeError(f"Sensitive decoded JSON string/key: {sorted(hits)}")
 
 
-def validate_lines(stream, cleaner):
+def validate_lines(stream, cleaner, allow_empty=False):
     count = 0
     for line in stream:
         if line.strip():
             value = json.loads(line)
             validate_value(value, cleaner)
             count += 1
-    if not count:
+    if not count and not allow_empty:
         raise RuntimeError("Empty JSONL evidence")
     return count
 
 
-def validate_file(path, cleaner):
+def validate_file(path, cleaner, allow_empty=False):
     relative(path)
     if path.name.endswith(".json.zst"):
         size, hits = raw_validation.inspect(path)
@@ -72,7 +74,7 @@ def validate_file(path, cleaner):
             raise RuntimeError(f"Sensitive raw-stream markers: {hits}")
         proc = subprocess.Popen(["zstd", "-dc", str(path)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         try:
-            count = validate_lines(proc.stdout, cleaner)
+            count = validate_lines(proc.stdout, cleaner, allow_empty)
         except BaseException:
             proc.kill()
             proc.wait()
@@ -116,6 +118,108 @@ def provenance(path, records, cleaner):
     return name
 
 
+def require_coding_stopped():
+    if any((ROOT / ".work/lanes").glob("*/logs/active.json")):
+        raise RuntimeError("Feedback export requires all measured coding sessions to stop (active.json exists)")
+
+
+def save_scrubbed_json(path, value, cleaner):
+    value = cleaner.value(value)
+    validate_value(value, cleaner)
+    text = json.dumps(value, indent=2) + "\n"
+    if json.loads(text) != value:
+        raise RuntimeError("JSON round-trip changed feedback evidence")
+    path.write_text(text)
+    validate_file(path, cleaner)
+
+
+def export_feedback_attempt(attempt, cleaner):
+    require_coding_stopped()
+    relative(attempt)
+    lane = attempt.parents[2]
+    descriptor = lane / "control/session.json"
+    relative(descriptor)
+    session = json.loads(descriptor.read_text())
+    if session["id"] != lane.name:
+        raise RuntimeError("Feedback directory and source session disagree")
+    selected = sorted({path for pattern in ("results.json", "runner.log", "k6-*.json", "raw-*.json")
+                       for path in attempt.glob(pattern) if path.is_file()})
+    originals = {relative(path): raw_validation.digest(path) for path in [descriptor, *selected]}
+    dest = OUT / "runtime/feedback" / lane.name / attempt.name
+    if dest.exists():
+        record = json.loads((dest / "results.json").read_text())
+        validate_value(record, cleaner)
+        if record.get("original_file_sha256") != originals:
+            raise RuntimeError(f"Preserving prior feedback export; originals differ: {relative(dest)}")
+        for name, sha in record["export_file_sha256"].items():
+            path = dest / name
+            if raw_validation.digest(path) != sha:
+                raise RuntimeError(f"Feedback export checksum changed: {relative(path)}")
+            validate_file(path, cleaner, allow_empty=True)
+        return {"path": relative(dest), "status": "existing export verified"}
+    WORK.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="feedback-", dir=WORK) as temporary:
+        staging = Path(temporary) / "published"
+        staging.mkdir()
+        raw_hashes, raw_validation_records = {}, {}
+        for path in selected:
+            if path.name == "results.json":
+                continue
+            if path.name.startswith("raw-"):
+                plain = Path(temporary) / path.name
+                with path.open() as source, plain.open("w") as target:
+                    for line in source:
+                        if line.strip():
+                            value = cleaner.value(json.loads(line))
+                            validate_value(value, cleaner)
+                            target.write(json.dumps(value, ensure_ascii=False) + "\n")
+                compressed = staging / (path.name + ".zst")
+                subprocess.run(["zstd", "-q", "-T2", "-o", str(compressed), str(plain)], check=True)
+                raw_validation_records[compressed.name] = validate_file(compressed, cleaner, allow_empty=True)
+                raw_hashes[compressed.name] = raw_validation.digest(compressed)
+            elif path.suffix == ".json":
+                save_scrubbed_json(staging / path.name, json.loads(path.read_text()), cleaner)
+            else:
+                (staging / path.name).write_text(cleaner.text(path.read_text()))
+                validate_file(staging / path.name, cleaner)
+        summary = attempt / "results.json"
+        record = json.loads(summary.read_text()) if summary.is_file() else {}
+        record.pop("app_log_tail", None)
+        record.update(schema_version=1, session=session["id"], stack=session["stack"], phase=session["phase"],
+                      label=attempt.name, condition="short feedback benchmark", warmup="1s", duration="3s",
+                      timing_basis="tools/lane_check.py benchmark configuration; an interrupted attempt may not finish",
+                      source_identity="Intermediate candidate; no claim that the published checkpoint matches this measurement",
+                      image_identity="recorded image SHA" if record.get("image_sha256") else "image SHA not recorded",
+                      summary_present=summary.is_file(), runner_log_present=(attempt / "runner.log").is_file(),
+                      source_session=relative(descriptor),
+                      session_result=relative(Path(session["result"])),
+                      fixture_sha256=session.get("fixture_sha256"),
+                      original_file_sha256=originals, raw_stream_sha256=raw_hashes,
+                      raw_validation=raw_validation_records,
+                      export_file_sha256={path.name: raw_validation.digest(path) for path in sorted(staging.iterdir())},
+                      exported_at=lane_broker.stamp(),
+                      export_tools_sha256={f"tools/{name}": raw_validation.digest(ROOT / "tools" / name)
+                                           for name in ("lane_artifacts.py", "lane_continue.py", "scrub.py",
+                                                        "v2_expert_symmetry_validate.py")})
+        save_scrubbed_json(staging / "results.json", record, cleaner)
+        # Only validated exports become public. Originals, including seed.json,
+        # stay in place; only the explicit evidence allowlist is copied.
+        require_coding_stopped()
+        if any(raw_validation.digest(ROOT / name) != sha for name, sha in originals.items()):
+            raise RuntimeError("Feedback originals changed during export")
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        staging.rename(dest)
+    return {"path": relative(dest), "status": "exported", "raw_streams": len(raw_hashes)}
+
+
+def export_feedback():
+    require_coding_stopped()
+    cleaner = checker()
+    attempts = sorted(path for path in (ROOT / ".work/lanes").glob("*/logs/measurements/*") if path.is_dir())
+    return {"feedback_attempts": [export_feedback_attempt(path, cleaner) for path in attempts],
+            "publication_status": "scrubbed feedback exported locally; no uploads or workload runs"}
+
+
 def collect():
     groups = {"transcripts": [], "runtime": []}
     for base in SOURCES:
@@ -138,7 +242,7 @@ def collect():
         entries[kind] = []
         for path in paths:
             name = relative(path)
-            validation = validate_file(path, cleaner)
+            validation = validate_file(path, cleaner, allow_empty=path.is_relative_to(OUT / "runtime/feedback"))
             sha = raw_validation.digest(path)
             source_record = provenance(path, records, cleaner)
             if kind == "runtime":
@@ -262,11 +366,14 @@ def verify(version):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("inspect", "package", "verify"))
+    parser.add_argument("action", choices=("inspect", "export-feedback", "package", "verify"))
     parser.add_argument("version", nargs="?")
     args = parser.parse_args()
-    if args.action != "inspect" and (not args.version or not re.fullmatch(r"[a-z0-9][a-z0-9._-]{0,55}", args.version)):
+    if args.action in ("package", "verify") and (not args.version or not re.fullmatch(r"[a-z0-9][a-z0-9._-]{0,55}", args.version)):
         parser.error("Provide a short lowercase artifact version, for example v1")
+    if args.action == "export-feedback":
+        print(json.dumps(export_feedback(), indent=2))
+        return
     result = collect() if args.action == "inspect" else package(args.version) if args.action == "package" else verify(args.version)
     print(json.dumps({"coverage": result["coverage"], "assets": result.get("assets", {}),
                       "publication_status": result.get("publication_status", "validation only; no archives written")}, indent=2))

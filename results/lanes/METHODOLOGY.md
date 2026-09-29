@@ -22,7 +22,7 @@ The independent development check runs the applicable frozen acceptance checks, 
 
 [`tools/lane_evidence.py`](../../tools/lane_evidence.py) adds a reviewer parity record against the **unchanged, already published and independently gated source**. It reuses `lane_check.production_app`, with the fixed three-variable application environment (`DATABASE_URL`, `SECRET_KEY_BASE`, `PORT`), fresh PostgreSQL, and 2 CPU / 1 GiB limits on both app and database. It reruns the frozen production gates and the exact [common HTTP reviewer probe](../../tools/reviewer_common_http_probe.py), including its concurrent-login diagnostic.
 
-Full reviewer parity requires all **21 contract cases and 3 additional quality cases** to be observed and pass, plus the frozen production gates. The quality cases remain supplemental diagnostics rather than retrospectively added requirements in the measured prompt. A shortened probe caused by an earlier failure is incomplete. Socket contract parity comes from the shared frozen live suites; there is no new stack-specific socket probe. Additional source-driven diagnostics, if needed, must be separately labeled.
+The unchanged common reviewer probe requires all **21 contract cases and 3 additional quality cases** to be observed and pass, plus the frozen production gates; this subset is recorded as `common_parity_passed`. A separate [48-case favorite-filter probe](../../tools/lane_favorites_probe.py) tests a hypothesis raised by Python step-4 source review and applies equally to all four final applications. [Review notes](REVIEW-NOTES.md) document its origin. Overall parity requires both subsets. The quality and source-driven cases remain supplemental diagnostics rather than retrospectively added requirements in the measured prompt. A shortened probe caused by an earlier failure is incomplete. Socket contract parity comes from the shared frozen live suites; there is no new stack-specific socket probe.
 
 Parity output is stored under each session's `reviewer-parity/` directory, with scrubbed logs, probe assertions, source/image hashes, and reviewer-tool hashes.
 
@@ -31,6 +31,8 @@ Reviewer startup uses the separately hashed `lane_review.py` adapter to require 
 ## Repeated final runtime
 
 Final runtime is separate from implementation feedback. The tuning feedback benchmark uses **1-second warmup and 3-second measurement**. The final repeated HTTP benchmark uses the unchanged [benchmark](../../tools/bench/bench.py) with **16 virtual users, 3-second warmup, and 15-second measurement** for all nine existing scenarios: anonymous list, signed-in list, tag-filtered list, feed, article, comments, tags, favorite toggle, and article creation. Both app and database receive 2 CPU / 1 GiB; no extra application environment is supplied.
+
+After measured coding stops, `lane_artifacts.py export-feedback` preserves every available baseline and tuning measurement directory under `runtime/feedback/`, including failed or incomplete attempts. It retains scrubbed summaries, k6 summaries, runner logs, and compressed raw streams; seed credentials remain private and originals remain intact. Each export records original-file hashes and its source session, preserving an image SHA only when the original result recorded one. These are intermediate candidates: the subsequently published checkpoint does not establish the source measured by a feedback attempt. Missing summaries or empty streams remain explicit. Feedback streams are additional release evidence and do not count toward the 144 final runtime streams. The exporter refuses to run while any measured `logs/active.json` exists and starts no workloads.
 
 After all four original final applications pass independent and frozen production gates, the coordinator records their supplemental reviewer probes and runs two serialized measured rounds in this order. Supplemental probe failures remain visible and do not exclude an otherwise gated original application:
 
@@ -59,6 +61,7 @@ Run from the repository root after the relevant coding sessions and independent 
 .venv/bin/python tools/lane_evidence.py parity
 .venv/bin/python tools/lane_evidence.py runtime
 .venv/bin/python tools/lane_evidence.py validate
+.venv/bin/python tools/lane_artifacts.py export-feedback
 
 .venv/bin/python tools/lane_evidence.py comprehension-prepare \
   --session "$PWD/.work/lanes/go-1-build-1/control/session.json"
