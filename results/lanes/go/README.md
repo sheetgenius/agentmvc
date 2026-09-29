@@ -65,8 +65,9 @@ Raw counts: [eight-step size](8-live-editing/size.json),
 | [7. Background exports](7-add-background-job/) | 11,259 | 11.1 | Development + production passed |
 | [8. Live editing](8-live-editing/) | 14,203 | 11.3 | Development + production passed |
 
-Each step directory contains the frozen prompt, scrubbed transcript, effort,
-source identity, size, and independent verification. The one-shot is the
+Each step directory contains the frozen prompt, effort, source identity, size,
+and independent verification. The [release archives](https://github.com/sheetgenius/agentmvc/releases/tag/go-python-lanes-v1)
+restore the full scrubbed transcripts beside those records. The one-shot is the
 separate `expert-v2-tcp-readiness` condition, not a ninth incremental step.
 
 ## Where the rules landed

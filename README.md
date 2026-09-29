@@ -43,7 +43,7 @@ Both completed the original eight-step sequence and separate expert one-shots: *
 
 Python's eight-step reference uses more framework services directly. Its one-shot consolidates author and shared edits into one operation. Go's one-shot is smaller than its sequential counterpart, but uses Huma only for health and tags; these results do not establish what a full typed-Huma implementation could achieve. [Go code guide](results/lanes/go/README.md) · [Python code guide](results/lanes/python/README.md).
 
-The [lane comparison](results/lanes/README.md) includes two repeated production rounds for all four originals and all four reviewed references, every checkpoint, prompt, effort count and reviewer finding. These prepared-scaffold runs have their own recorded conditions; their timing session differs from the three-stack table above. The original study below remains intact.
+The [lane comparison](results/lanes/README.md) includes two repeated production rounds for all four originals and all four reviewed references, every checkpoint, prompt, effort count and reviewer finding. [Scrubbed transcripts and raw measurements](https://github.com/sheetgenius/agentmvc/releases/tag/go-python-lanes-v1) are available separately as release downloads. These prepared-scaffold runs have their own recorded conditions; their timing session differs from the three-stack table above. The original study below remains intact.
 
 Try a reviewed app with `tools/lane_demo.sh go one-shot-reference` or `tools/lane_demo.sh python eight-reference` (Docker and Node.js required).
 

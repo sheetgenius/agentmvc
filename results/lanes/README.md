@@ -107,6 +107,6 @@ Set `DEMO_BACKEND_PORT` and `DEMO_FRONTEND_PORT` to override the localhost ports
 - A [source review](REVIEW-NOTES.md) prompted a separate 48-case favorite-count diagnostic, applied equally to every final Go/Python app. It does not change the frozen coding requirements.
 - The later [expert review](EXPERT-REVIEW.md) adds three shared-edit contract cases and one envelope-quality case, recorded separately for each final app. References must also pass these checks.
 - Tuning feedback uses short 3-second samples. Final HTTP measurements use all nine workloads, 16 users and two 15-second rounds, with app and database each limited to 2 CPUs and 1 GiB. Socket measurements cover 10, 100 and 500 subscribers.
-- Full transcripts and compressed raw streams belong in external release assets, with checked hashes and links recorded here when published. They are not committed to Git.
+- [Scrubbed transcripts and raw measurements](https://github.com/sheetgenius/agentmvc/releases/tag/go-python-lanes-v1) are published as external release assets. The [artifact manifest](artifacts-v1.json) records per-file hashes, source provenance and download checksums. Full transcripts and raw streams are not committed to Git.
 
 [Detailed method and reproduction commands](METHODOLOGY.md) · [Main comparison](../../README.md) · [Contributing](../../CONTRIBUTING.md)
