@@ -1,0 +1,304 @@
+{
+  "image": "agentmvc-lane-go-4-tune-1:current",
+  "label": "go-4-tune-1-34bc2f83",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "3s",
+  "image_mb": 14.2,
+  "cold_start_seconds": 0.29,
+  "seed_seconds": 9.1,
+  "idle_memory_mb": 11.5,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 7838,
+      "rps": 2608.7,
+      "p50_ms": 2.28,
+      "p95_ms": 57.22,
+      "p99_ms": 66.73,
+      "failed_checks": 0,
+      "sql_statements_per_request": 5.0,
+      "peak_memory_mb": 37.8,
+      "foreign_container_cpu_percent_max": 13.1,
+      "host_load_1m": 5.5
+    },
+    "list_signed_in": {
+      "requests": 9469,
+      "rps": 3130.2,
+      "p50_ms": 2.27,
+      "p95_ms": 24.97,
+      "p99_ms": 59.61,
+      "failed_checks": 0,
+      "sql_statements_per_request": 7.0,
+      "peak_memory_mb": 31.3,
+      "foreign_container_cpu_percent_max": 94.7,
+      "host_load_1m": 6.1
+    },
+    "list_by_tag": {
+      "requests": 8479,
+      "rps": 2818.2,
+      "p50_ms": 2.2,
+      "p95_ms": 48.89,
+      "p99_ms": 63.52,
+      "failed_checks": 0,
+      "sql_statements_per_request": 5.0,
+      "peak_memory_mb": 24.5,
+      "foreign_container_cpu_percent_max": 64.9,
+      "host_load_1m": 6.1
+    },
+    "feed": {
+      "requests": 7847,
+      "rps": 2599.1,
+      "p50_ms": 2.48,
+      "p95_ms": 49.95,
+      "p99_ms": 63.81,
+      "failed_checks": 0,
+      "sql_statements_per_request": 7.0,
+      "peak_memory_mb": 41.8,
+      "foreign_container_cpu_percent_max": 53.0,
+      "host_load_1m": 6.0
+    },
+    "article": {
+      "requests": 12403,
+      "rps": 4130.2,
+      "p50_ms": 1.91,
+      "p95_ms": 5.35,
+      "p99_ms": 53.12,
+      "failed_checks": 0,
+      "sql_statements_per_request": 6.0,
+      "peak_memory_mb": 79.8,
+      "foreign_container_cpu_percent_max": 40.7,
+      "host_load_1m": 6.1
+    },
+    "comments": {
+      "requests": 18899,
+      "rps": 6186.6,
+      "p50_ms": 1.02,
+      "p95_ms": 3.27,
+      "p99_ms": 55.06,
+      "failed_checks": 0,
+      "sql_statements_per_request": 3.0,
+      "peak_memory_mb": 43.8,
+      "foreign_container_cpu_percent_max": 98.3,
+      "host_load_1m": 6.3
+    },
+    "tags": {
+      "requests": 10502,
+      "rps": 3448.1,
+      "p50_ms": 0.95,
+      "p95_ms": 9.57,
+      "p99_ms": 79.91,
+      "failed_checks": 0,
+      "sql_statements_per_request": 1.0,
+      "peak_memory_mb": 16.9,
+      "foreign_container_cpu_percent_max": 96.2,
+      "host_load_1m": 6.1
+    },
+    "favorite_toggle": {
+      "requests": 11186,
+      "rps": 3687.4,
+      "p50_ms": 3.17,
+      "p95_ms": 7.88,
+      "p99_ms": 32.78,
+      "failed_checks": 0,
+      "sql_statements_per_request": 7.0,
+      "peak_memory_mb": 85.1,
+      "foreign_container_cpu_percent_max": 130.1,
+      "host_load_1m": 6.2
+    },
+    "create_article": {
+      "requests": 9604,
+      "rps": 3196.6,
+      "p50_ms": 3.81,
+      "p95_ms": 10.43,
+      "p99_ms": 31.05,
+      "failed_checks": 0,
+      "sql_statements_per_request": 10.0,
+      "peak_memory_mb": 92.0,
+      "foreign_container_cpu_percent_max": 154.7,
+      "host_load_1m": 7.0
+    }
+  },
+  "session": "go-4-tune-1",
+  "condition": "short feedback benchmark",
+  "warmup": "1s",
+  "image_sha256": "sha256:7bbc8d81fb3fd13063fb8b760e5c1e8a544d4584714b89476998eb143b065621",
+  "exit": 0,
+  "schema_version": 1,
+  "stack": "go",
+  "phase": "4-tune",
+  "timing_basis": "tools/lane_check.py benchmark configuration; an interrupted attempt may not finish",
+  "source_identity": "Intermediate candidate; no claim that the published checkpoint matches this measurement",
+  "image_identity": "recorded image SHA",
+  "summary_present": true,
+  "runner_log_present": true,
+  "source_session": ".work/lanes/go-4-tune-1/control/session.json",
+  "session_result": "results/lanes/go/4-tune",
+  "fixture_sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+  "original_file_sha256": {
+    ".work/lanes/go-4-tune-1/control/session.json": "88a97ad99a7af0bbf4a71e2b6dba30ddd5403e34465d5882abd897d74d2d62e8",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/k6-article.json": "41bdc469911009fe1174a69be594613d2bd331396766a13808a869ba4d9a9c77",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/k6-comments.json": "56427ccda9991129b39158485e1bc60b883cf8e11bf8c944e436f1e462e050c5",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/k6-create_article.json": "bd652cdff2297d9a79a6f0c34124b41c23cf81ff8218400246632298cc73bb49",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/k6-favorite_toggle.json": "aaf04b407bcde3aad447aa6c5e701e17f5cb214d361e3ad7858f681b4d50e432",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/k6-feed.json": "8288aa42d83a9decb2f286455632cee3a70a4dfea5bee2f682e58971679f708e",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/k6-list_anonymous.json": "f33fda3f32884bf2bfd405f47a188ca559871cf3b89afa378c420d274284ab9a",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/k6-list_by_tag.json": "63172b16683451e4bc1761fe3f0a8e8f1ecebedb90bcd64e2129c49d4cfdae58",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/k6-list_signed_in.json": "cc2cd2ea4f25ed4d9d1ab85eec43e06a639b00e91c4dfe0597529a473e8db960",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/k6-tags.json": "2e5ad414e4178ae3148537fc66f7d8e1ff8e371120113174de884ab28671dbd2",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-article.json": "5a6bad14f69de99723ce5071eaffd164e944742bd5d07821b3e85264fb8ef53e",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-comments.json": "bddba8a3debd0c786b448d348bcd5e8a6ae8a773bfd1f6daf539ddc73ba56a36",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-create_article.json": "8f3ae8705534b1c625b836033f7f0df893f8b9202774ee9d5b7b22ccead39695",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-favorite_toggle.json": "5bfb5f18a7894bba3d9aa5c92a2ca7b8f532bf25df6907b0fa8304c198e23007",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-feed.json": "a84d6f7ef2fe7f3c7297408d1f1338435041cdfc7fc789c50cae35565f93472c",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-list_anonymous.json": "6b939a45cfa7e719b0416055940b24fc9d4b48a94504cb0181080f5bb317a8bf",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-list_by_tag.json": "4efe313a79bd84c45a18f1bbe96a2db5b3b0b155992beca7b425508a5f15b398",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-list_signed_in.json": "bf0e0cb29a014a66be58ead49136c4968e38e03aeca191ae1ecf974b4088e3ec",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-tags.json": "1bed40dd27f1461502574644321bede25a83cb9bda0fdfedb92f167f900bbdbc",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-warmup-article.json": "4f03c8e488560be396c8f4ec039852898e553198bbf16586297dcabeb73d04bd",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-warmup-comments.json": "d42cf9411edb70b42f20d1058574d3fde0f51aa39f4722b94cda05169514cb9a",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-warmup-create_article.json": "3631c28526c36813483d7345fead3e34916814429a7dc2c83195196134eb3b42",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-warmup-favorite_toggle.json": "6733ee2e7f05fe0ae8aadfebbae818c535abc054f1b90593fc5eb76b682e3414",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-warmup-feed.json": "0630c9a70269035a033ced51a0c81e24726812be13a511e918be497d9be73333",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-warmup-list_anonymous.json": "36f45d3f95d3d56c718b99ec3b8a316ade68ad2a867a17a2ab1624fc5949ae14",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-warmup-list_by_tag.json": "1e8977fdfbdd0c6b96f1c34b34fbb22226ba7ad549ce4dc79612beb1ad26ffd2",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-warmup-list_signed_in.json": "82bc913e9d2d1119032cff7c9b7a0f15f56fb29b197447430d4d1d8921847576",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/raw-warmup-tags.json": "53d283c2b5a3212b016797ba926289cd581998434236a2a82db6544b91c82350",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/results.json": "d8d4442aba74d437972772f17728cd311a11231fb297d59033d33464bb370120",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-34bc2f83/runner.log": "01833536ca5e9f11bb5b8db497df69219f903b7ad21675b5740bfee40314e3db"
+  },
+  "raw_stream_sha256": {
+    "raw-article.json.zst": "08d930f0acceafd3b87c0cc1f3d4a27ea099d0f1b86fcece60525acb82e127a1",
+    "raw-comments.json.zst": "0f2d5ef28590940f77c6490ecd184c539d118abec32b9715ab30703c7867fba3",
+    "raw-create_article.json.zst": "be5520678cd42f227fb5f7054f9cdadba745d26d0f45d5507112d12342054ab0",
+    "raw-favorite_toggle.json.zst": "f776f5d745ad292719a08d2452c2658e15a58880ca7ba7ee1fedb3829b3ed37f",
+    "raw-feed.json.zst": "09b810197df04145a39815ced18634e4356d7624991994c6cd00ae08505f20ea",
+    "raw-list_anonymous.json.zst": "c0aba072f71554d27597e5befc9a76bf0ac891dcbfd2f5f281fa477fcd3638e5",
+    "raw-list_by_tag.json.zst": "371deef79632d11e7945416f4dfb06c4a05613789c8893f42247356a3b78bf24",
+    "raw-list_signed_in.json.zst": "5165cc2dfe94cc3cbfe87bb1eaed5979d6ee280d82910bd24f0930120b2be3b7",
+    "raw-tags.json.zst": "da03f3c0faf706193f39ca1e321bb512b000b71d8abcc3092267be768f810353",
+    "raw-warmup-article.json.zst": "deec1d7431c0f667fecb8fb93d1e2c568563e76f37f84ebe5148de755be7137c",
+    "raw-warmup-comments.json.zst": "c18264125872eaeb6af10cb186b7f075f44f7910f571a0c52d404634c3f893ad",
+    "raw-warmup-create_article.json.zst": "0dd104f2087132cb57ba3efebf8cabd2eb6f27f54693b4d831d15304577b8dc0",
+    "raw-warmup-favorite_toggle.json.zst": "a7449f10b81a1dae233c67128af66bcd1e628c6195caaaabbda2dde960cddac2",
+    "raw-warmup-feed.json.zst": "fabeef56a4e43a878991b0e600dfda479bc0c82b9064eb0b0ae7df20d3eb3b57",
+    "raw-warmup-list_anonymous.json.zst": "7fc6a7867b626add52e04c5c0be2c177c7bff43dc7be7ea13bf459865402fc54",
+    "raw-warmup-list_by_tag.json.zst": "c6bd15fcf4c470af96efa6daf471112af1d5502de2ede9e34e9b6487d23ee8bc",
+    "raw-warmup-list_signed_in.json.zst": "5d3f7ae887a9355099044fa66e1beb89f9ac538f4a6c2f9092e98926d08b1870",
+    "raw-warmup-tags.json.zst": "abe8eb4451b57745f8aaa786958f15820206df90e48c4683f08e7746590cf222"
+  },
+  "raw_validation": {
+    "raw-article.json.zst": {
+      "decompressed_bytes": 65000214,
+      "jsonl_records": 173664
+    },
+    "raw-comments.json.zst": {
+      "decompressed_bytes": 102084242,
+      "jsonl_records": 264608
+    },
+    "raw-create_article.json.zst": {
+      "decompressed_bytes": 42111665,
+      "jsonl_records": 134478
+    },
+    "raw-favorite_toggle.json.zst": {
+      "decompressed_bytes": 56160945,
+      "jsonl_records": 128661
+    },
+    "raw-feed.json.zst": {
+      "decompressed_bytes": 36323440,
+      "jsonl_records": 109880
+    },
+    "raw-list_anonymous.json.zst": {
+      "decompressed_bytes": 36972525,
+      "jsonl_records": 109754
+    },
+    "raw-list_by_tag.json.zst": {
+      "decompressed_bytes": 40011772,
+      "jsonl_records": 118728
+    },
+    "raw-list_signed_in.json.zst": {
+      "decompressed_bytes": 42978617,
+      "jsonl_records": 132588
+    },
+    "raw-tags.json.zst": {
+      "decompressed_bytes": 45198190,
+      "jsonl_records": 147050
+    },
+    "raw-warmup-article.json.zst": {
+      "decompressed_bytes": 22494593,
+      "jsonl_records": 60106
+    },
+    "raw-warmup-comments.json.zst": {
+      "decompressed_bytes": 33107620,
+      "jsonl_records": 85824
+    },
+    "raw-warmup-create_article.json.zst": {
+      "decompressed_bytes": 13024893,
+      "jsonl_records": 41598
+    },
+    "raw-warmup-favorite_toggle.json.zst": {
+      "decompressed_bytes": 17293477,
+      "jsonl_records": 39624
+    },
+    "raw-warmup-feed.json.zst": {
+      "decompressed_bytes": 12291787,
+      "jsonl_records": 37188
+    },
+    "raw-warmup-list_anonymous.json.zst": {
+      "decompressed_bytes": 13399028,
+      "jsonl_records": 39778
+    },
+    "raw-warmup-list_by_tag.json.zst": {
+      "decompressed_bytes": 12506946,
+      "jsonl_records": 37118
+    },
+    "raw-warmup-list_signed_in.json.zst": {
+      "decompressed_bytes": 14721631,
+      "jsonl_records": 45420
+    },
+    "raw-warmup-tags.json.zst": {
+      "decompressed_bytes": 16179647,
+      "jsonl_records": 52644
+    }
+  },
+  "export_file_sha256": {
+    "k6-article.json": "f9d1237e3024c7ceae8d7d5c420ec3a8a897a30248796f06bca33b7f4de0201e",
+    "k6-comments.json": "efd54ed55a74bdcfbc4d1c710e692f8a0e899649ee2a940338a44098d6765f9b",
+    "k6-create_article.json": "97d195326a4322ea88aedc9f38c9a95bfb1832a11e76300077015ace4fa1feef",
+    "k6-favorite_toggle.json": "ab540d46773a302256a9eaa6089271238a5464a33baff007ef26672eaacc7b00",
+    "k6-feed.json": "80f985c624026dac27dff99f4f6814febae9b77bdb09d54eb137530b1f6b12b5",
+    "k6-list_anonymous.json": "f45b3f8b01741b1340ee52979360d9b5a7da354bb160580d587e74076a8288fe",
+    "k6-list_by_tag.json": "d7e1c01572daf418c650be3bada307766cfc389322696322c1d43539b1dc5148",
+    "k6-list_signed_in.json": "ff20eeadd39a72206857c90966c9c9546e6ebe20e0e1ae7d8bc913b27a7ce8f4",
+    "k6-tags.json": "e7fbd3678ac825ff8273c53220dad260fb4bf01d28bba3234dede5e9cdceedfe",
+    "raw-article.json.zst": "08d930f0acceafd3b87c0cc1f3d4a27ea099d0f1b86fcece60525acb82e127a1",
+    "raw-comments.json.zst": "0f2d5ef28590940f77c6490ecd184c539d118abec32b9715ab30703c7867fba3",
+    "raw-create_article.json.zst": "be5520678cd42f227fb5f7054f9cdadba745d26d0f45d5507112d12342054ab0",
+    "raw-favorite_toggle.json.zst": "f776f5d745ad292719a08d2452c2658e15a58880ca7ba7ee1fedb3829b3ed37f",
+    "raw-feed.json.zst": "09b810197df04145a39815ced18634e4356d7624991994c6cd00ae08505f20ea",
+    "raw-list_anonymous.json.zst": "c0aba072f71554d27597e5befc9a76bf0ac891dcbfd2f5f281fa477fcd3638e5",
+    "raw-list_by_tag.json.zst": "371deef79632d11e7945416f4dfb06c4a05613789c8893f42247356a3b78bf24",
+    "raw-list_signed_in.json.zst": "5165cc2dfe94cc3cbfe87bb1eaed5979d6ee280d82910bd24f0930120b2be3b7",
+    "raw-tags.json.zst": "da03f3c0faf706193f39ca1e321bb512b000b71d8abcc3092267be768f810353",
+    "raw-warmup-article.json.zst": "deec1d7431c0f667fecb8fb93d1e2c568563e76f37f84ebe5148de755be7137c",
+    "raw-warmup-comments.json.zst": "c18264125872eaeb6af10cb186b7f075f44f7910f571a0c52d404634c3f893ad",
+    "raw-warmup-create_article.json.zst": "0dd104f2087132cb57ba3efebf8cabd2eb6f27f54693b4d831d15304577b8dc0",
+    "raw-warmup-favorite_toggle.json.zst": "a7449f10b81a1dae233c67128af66bcd1e628c6195caaaabbda2dde960cddac2",
+    "raw-warmup-feed.json.zst": "fabeef56a4e43a878991b0e600dfda479bc0c82b9064eb0b0ae7df20d3eb3b57",
+    "raw-warmup-list_anonymous.json.zst": "7fc6a7867b626add52e04c5c0be2c177c7bff43dc7be7ea13bf459865402fc54",
+    "raw-warmup-list_by_tag.json.zst": "c6bd15fcf4c470af96efa6daf471112af1d5502de2ede9e34e9b6487d23ee8bc",
+    "raw-warmup-list_signed_in.json.zst": "5d3f7ae887a9355099044fa66e1beb89f9ac538f4a6c2f9092e98926d08b1870",
+    "raw-warmup-tags.json.zst": "abe8eb4451b57745f8aaa786958f15820206df90e48c4683f08e7746590cf222",
+    "runner.log": "01833536ca5e9f11bb5b8db497df69219f903b7ad21675b5740bfee40314e3db"
+  },
+  "exported_at": "2026-09-29T20:12:49.402064+00:00",
+  "export_tools_sha256": {
+    "tools/lane_artifacts.py": "da9f15eceae9614e038ba0e7420b9b959af4fc6294ca835f807c8ebabeb45d2b",
+    "tools/lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "tools/scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+    "tools/v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79"
+  }
+}

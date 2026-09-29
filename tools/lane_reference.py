@@ -5,6 +5,7 @@ Then run lane_review.py development/production and lane_evidence.py parity.
 Never changes an original source or invents a measured coding transcript.
 """
 import argparse
+import re
 import secrets
 import shutil
 from pathlib import Path
@@ -20,9 +21,11 @@ def prepare(parent_path, port):
     parent = lane.load(parent_path)
     proof = lane.load(Path(parent["result"]) / "verification.json")
     snapshot = lane.load(Path(parent["result"]) / "source-snapshot.json")
-    if not proof.get("passed") or proof["source_sha256"] != snapshot["sha256"]:
+    if (not proof.get("passed") and parent["phase"] != "reference") or proof["source_sha256"] != snapshot["sha256"]:
         raise RuntimeError("Reference must start from an independently verified source")
-    sid = parent["id"].removesuffix("-1") + "-reference-1"
+    previous = re.fullmatch(r"(.+)-reference-(\d+)", parent["id"])
+    revision = int(previous[2]) + 1 if previous else 1
+    sid = (previous[1] if previous else parent["id"].removesuffix("-1")) + f"-reference-{revision}"
     base = lane.LANES / sid
     if base.exists():
         raise RuntimeError("Reference already exists; preserve its work")
@@ -46,7 +49,8 @@ def prepare(parent_path, port):
         folder.mkdir(mode=0o700)
     (control / "token").write_text(secrets.token_hex(32) + "\n")
     (control / "token").chmod(0o600)
-    result = Path(parent["result"]) / "reference-1"
+    result_root = Path(parent["result"]).parent if previous else Path(parent["result"])
+    result = result_root / f"reference-{revision}"
     session = dict(parent, id=sid, phase="reference", port=port, work=str(work), control=str(control),
                    logs=str(logs), home=str(home), result=str(result), publish_source=str(result / "source"),
                    fixture_file_sha256=lane.digest(work / "FIXTURE.json"),
@@ -57,6 +61,8 @@ def prepare(parent_path, port):
     lane.save(result / "reference.json", {
         "condition": "unscored-reference-repair", "session": sid,
         "parent_session": parent["id"], "parent_source_sha256": snapshot["sha256"],
+        "parent_independent_checks_passed": proof.get("passed", False),
+        "revision": revision,
         "created_at": lane.stamp(), "coding_effort": "Not a comparable measured coding session",
         "check_port": port, "originals_modified": False,
         "checks": "Use coordinator lane_review.py and lane_evidence.py; inherited agent wrappers retain their historical ports",

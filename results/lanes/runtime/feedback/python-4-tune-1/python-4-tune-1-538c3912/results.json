@@ -1,0 +1,304 @@
+{
+  "image": "agentmvc-lane-python-4-tune-1:current",
+  "label": "python-4-tune-1-538c3912",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "3s",
+  "image_mb": 260.6,
+  "cold_start_seconds": 1.43,
+  "seed_seconds": 17.0,
+  "idle_memory_mb": 130.9,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 1546,
+      "rps": 512.5,
+      "p50_ms": 30.52,
+      "p95_ms": 44.6,
+      "p99_ms": 55.67,
+      "failed_checks": 0,
+      "sql_statements_per_request": 2.0,
+      "peak_memory_mb": 137.0,
+      "foreign_container_cpu_percent_max": 46.5,
+      "host_load_1m": 4.6
+    },
+    "list_signed_in": {
+      "requests": 1166,
+      "rps": 386.4,
+      "p50_ms": 40.88,
+      "p95_ms": 53.59,
+      "p99_ms": 64.02,
+      "failed_checks": 0,
+      "sql_statements_per_request": 3.0,
+      "peak_memory_mb": 138.1,
+      "foreign_container_cpu_percent_max": 65.7,
+      "host_load_1m": 4.5
+    },
+    "list_by_tag": {
+      "requests": 1569,
+      "rps": 520.2,
+      "p50_ms": 29.99,
+      "p95_ms": 41.12,
+      "p99_ms": 61.7,
+      "failed_checks": 0,
+      "sql_statements_per_request": 2.0,
+      "peak_memory_mb": 139.4,
+      "foreign_container_cpu_percent_max": 20.1,
+      "host_load_1m": 4.5
+    },
+    "feed": {
+      "requests": 1172,
+      "rps": 388.4,
+      "p50_ms": 40.83,
+      "p95_ms": 56.28,
+      "p99_ms": 63.34,
+      "failed_checks": 0,
+      "sql_statements_per_request": 3.01,
+      "peak_memory_mb": 139.5,
+      "foreign_container_cpu_percent_max": 66.4,
+      "host_load_1m": 4.7
+    },
+    "article": {
+      "requests": 1352,
+      "rps": 448.5,
+      "p50_ms": 34.74,
+      "p95_ms": 51.57,
+      "p99_ms": 64.64,
+      "failed_checks": 0,
+      "sql_statements_per_request": 5.0,
+      "peak_memory_mb": 140.2,
+      "foreign_container_cpu_percent_max": 31.7,
+      "host_load_1m": 4.6
+    },
+    "comments": {
+      "requests": 1948,
+      "rps": 646.1,
+      "p50_ms": 24.11,
+      "p95_ms": 37.21,
+      "p99_ms": 45.91,
+      "failed_checks": 0,
+      "sql_statements_per_request": 2.0,
+      "peak_memory_mb": 140.3,
+      "foreign_container_cpu_percent_max": 18.9,
+      "host_load_1m": 4.6
+    },
+    "tags": {
+      "requests": 2805,
+      "rps": 931.9,
+      "p50_ms": 16.51,
+      "p95_ms": 24.84,
+      "p99_ms": 33.13,
+      "failed_checks": 0,
+      "sql_statements_per_request": 1.0,
+      "peak_memory_mb": 142.8,
+      "foreign_container_cpu_percent_max": 16.6,
+      "host_load_1m": 4.5
+    },
+    "favorite_toggle": {
+      "requests": 1136,
+      "rps": 373.8,
+      "p50_ms": 41.62,
+      "p95_ms": 56.33,
+      "p99_ms": 68.32,
+      "failed_checks": 0,
+      "sql_statements_per_request": 8.96,
+      "peak_memory_mb": 143.6,
+      "foreign_container_cpu_percent_max": 33.5,
+      "host_load_1m": 4.5
+    },
+    "create_article": {
+      "requests": 1380,
+      "rps": 457.5,
+      "p50_ms": 34.4,
+      "p95_ms": 47.77,
+      "p99_ms": 61.23,
+      "failed_checks": 0,
+      "sql_statements_per_request": 6.0,
+      "peak_memory_mb": 144.5,
+      "foreign_container_cpu_percent_max": 48.8,
+      "host_load_1m": 4.8
+    }
+  },
+  "session": "python-4-tune-1",
+  "condition": "short feedback benchmark",
+  "warmup": "1s",
+  "image_sha256": "sha256:5e936a058b98eb8ba8c4cbe63a91be0d5b95fdb044ec1d23b87f1f304b513194",
+  "exit": 0,
+  "schema_version": 1,
+  "stack": "python",
+  "phase": "4-tune",
+  "timing_basis": "tools/lane_check.py benchmark configuration; an interrupted attempt may not finish",
+  "source_identity": "Intermediate candidate; no claim that the published checkpoint matches this measurement",
+  "image_identity": "recorded image SHA",
+  "summary_present": true,
+  "runner_log_present": true,
+  "source_session": ".work/lanes/python-4-tune-1/control/session.json",
+  "session_result": "results/lanes/python/4-tune",
+  "fixture_sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+  "original_file_sha256": {
+    ".work/lanes/python-4-tune-1/control/session.json": "6a7ec31aacb444ec37308e0ec4271d70096a1a97d6acd38150862195caf074c2",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/k6-article.json": "fe14e1df7e23fce7075db8fc1cad8a2407a8e0aded287f2014dba4dc826ef532",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/k6-comments.json": "f720ff19cd3ab5715f9c8004cb95945649a515442df65980cce0edff7f8282ac",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/k6-create_article.json": "691b7055a12c4139d113972d437509eb95dbb92c420406ea603d3169709c63f9",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/k6-favorite_toggle.json": "31d07791468f222d6075734038c0c8180b33e5645453d80e6ca7d2577ca690ec",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/k6-feed.json": "deafa178eb46709f23e77512b986d07bcb44d18d7232f57a990a29aa0290f0b2",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/k6-list_anonymous.json": "44fbfb69cdf7b582bbc476152d0c7b28a1a7e034efd5f41690c64de57d5c7bbd",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/k6-list_by_tag.json": "54ae5c464e220dcbeb639d0deff08b25e59576277c1d01f0ce56a7691e6beca9",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/k6-list_signed_in.json": "c4572ae42a9d4b0c24ec8c8a8038e50620a16dd190da3d5db796be7ac4039224",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/k6-tags.json": "6505706203e3224478baddca41ab3cbf109bd07072c6f9122150df6eeddd9141",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-article.json": "1f9e8e90696689bfef8e97af43e378ae5c23ca728ec311db9922f69e34cb7aeb",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-comments.json": "e3d2a9041f753bc7953c8666aa0b580981259547d28cde6eb2280d3e20976833",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-create_article.json": "a27d763191af7184f77ccdd1a4dbf1c3728d4cac002bbe15247f41bbba46cf0f",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-favorite_toggle.json": "bd0dd9b5a6f34210227b2f075fdc39364ced1b7a27875a6a981f550efa45965a",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-feed.json": "8adb6f33d8dbf93a4618987ccb348935bb01e0bf0c3b1d8998d141fee94d383e",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-list_anonymous.json": "7ec64a802e29a0a34452eb67e0c1e41b58e48beba996e3b67048001fe0e8b9b3",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-list_by_tag.json": "c9a49119827624a61e771130c8dd3b35d99c12faed240a903d8a805712de103d",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-list_signed_in.json": "15eb400ec0bd08cc3ea36c5cef07c0615286684f91a90ee44ea4640a24ed4832",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-tags.json": "f81039136e7becbbd61ff73adddc98ac2e7cba74b8863e563944f2eebf1368fb",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-warmup-article.json": "2bc1a466cd7b34855ae6921c807b22d1aef268dee5dfa040fb3296c35da7cd63",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-warmup-comments.json": "4eb6de6f4e1f370a725d4045af1efbceac9f32f30976cb3f89ce75f881ac0b17",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-warmup-create_article.json": "c9575046e065f2bb1823fdeae57729dcafda21648560511673fada63c29577bc",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-warmup-favorite_toggle.json": "eade96fef974744683e85c140edf31642bd11196605035036216298e3a28aede",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-warmup-feed.json": "29f52b075d88005b30fbc1e9f8d4c771b1d7a0b6c6de96b879e21282d3140256",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-warmup-list_anonymous.json": "b6ec3b33b1b481a3c31c431352d7df042eaa4e61654a1b302f4fd512b4a1e782",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-warmup-list_by_tag.json": "d063920470030c84863ece64a80ba42b5134acacf728404ae96e7eb59cab2183",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-warmup-list_signed_in.json": "8e714e620fbe54ddf8055e21ef38fb4af8b7eac097509b09646a23c81b01966a",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/raw-warmup-tags.json": "4f20e7a17b2dee5703280407f8f15ff25c797dcfea7cdde4cb731f865e359378",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/results.json": "8aafb6e7e49a2e28a000581e04b560b9a92f1f52616019789ef4a4dbf25a2bab",
+    ".work/lanes/python-4-tune-1/logs/measurements/python-4-tune-1-538c3912/runner.log": "fa09f4034ee38a17ea5c39d97836037df93f63c60e90485c567d194b555a19f9"
+  },
+  "raw_stream_sha256": {
+    "raw-article.json.zst": "6b7d8819276fb290bbc083dfb9c16ccd538af1110cc011497214d54c23ca938c",
+    "raw-comments.json.zst": "65e0dcde6099eb8ded2693f650ac41d652fd31012263ba3f4a14c1bf91d001bb",
+    "raw-create_article.json.zst": "3b8b3153c218b13c2a118a58a733a1277e0541d1db4d8a4aa5d3a3af8cec4f6f",
+    "raw-favorite_toggle.json.zst": "b6a296ec43f86793675629b93ea20709a232c62bd1f2de16e25fd94d9d11b52c",
+    "raw-feed.json.zst": "7426865e87f100c65136fcb01d213a1595fc756ffc6866ba2bb60181dc6a400d",
+    "raw-list_anonymous.json.zst": "a9fbbfdc4f002132a1321624288d2b952b395d363428403e13058c562f615edc",
+    "raw-list_by_tag.json.zst": "596a1985d4e531e4f262ee2f330e7253c5ba5cfa4f4cb20fbcb863efcb5e360b",
+    "raw-list_signed_in.json.zst": "dd4c6a604f8612f59bd892afb22f6b365235d927457973b5b5a898047b740e14",
+    "raw-tags.json.zst": "4e8867b6921ee0c68316e08946f87b4ff803259424538f42d247808b395f2e1d",
+    "raw-warmup-article.json.zst": "d61d2ec7cb665c7ea489a6dd9b0c9ff0249511dd20d30ee7fb5706383f612247",
+    "raw-warmup-comments.json.zst": "cafaf43d7c6129b04d176bad460adebfd2f9cd0846a0f31dfa3acf30bc6e3929",
+    "raw-warmup-create_article.json.zst": "05930a62d3aedd03fd1a546820f261080a11f3efdd7a241956a105667dfa3264",
+    "raw-warmup-favorite_toggle.json.zst": "2d2bab2ad5e205bbfebc481d53de6b8a8d6ea7f6b669c45acaea3f1ef9794762",
+    "raw-warmup-feed.json.zst": "0697d441eeb9aa7520c49e851a84bfcbed768d61409b584aa0ecd11cde63c465",
+    "raw-warmup-list_anonymous.json.zst": "4c76baff2c3d9d219007183ed9e7a15b598e31753b840415319a2e0414a04b91",
+    "raw-warmup-list_by_tag.json.zst": "96d4ff689104e4191b277321118dca1ad0e0c89537674d8585ecf7784e603507",
+    "raw-warmup-list_signed_in.json.zst": "0c8a8f7f0f94a459d33b23c55d4be0f50e35b4ddd3e46a186cd4a641c27ce21c",
+    "raw-warmup-tags.json.zst": "9fcc90f633acf9a9fd4e43f016242d78eb9203acc86ee149ebf91b9da810136f"
+  },
+  "raw_validation": {
+    "raw-article.json.zst": {
+      "decompressed_bytes": 7092618,
+      "jsonl_records": 18950
+    },
+    "raw-comments.json.zst": {
+      "decompressed_bytes": 10531479,
+      "jsonl_records": 27294
+    },
+    "raw-create_article.json.zst": {
+      "decompressed_bytes": 6157096,
+      "jsonl_records": 19342
+    },
+    "raw-favorite_toggle.json.zst": {
+      "decompressed_bytes": 5709193,
+      "jsonl_records": 13086
+    },
+    "raw-feed.json.zst": {
+      "decompressed_bytes": 5515608,
+      "jsonl_records": 16430
+    },
+    "raw-list_anonymous.json.zst": {
+      "decompressed_bytes": 7411759,
+      "jsonl_records": 21666
+    },
+    "raw-list_by_tag.json.zst": {
+      "decompressed_bytes": 7524145,
+      "jsonl_records": 21988
+    },
+    "raw-list_signed_in.json.zst": {
+      "decompressed_bytes": 5382374,
+      "jsonl_records": 16346
+    },
+    "raw-tags.json.zst": {
+      "decompressed_bytes": 12284284,
+      "jsonl_records": 39292
+    },
+    "raw-warmup-article.json.zst": {
+      "decompressed_bytes": 2430676,
+      "jsonl_records": 6500
+    },
+    "raw-warmup-comments.json.zst": {
+      "decompressed_bytes": 3580549,
+      "jsonl_records": 9286
+    },
+    "raw-warmup-create_article.json.zst": {
+      "decompressed_bytes": 1924965,
+      "jsonl_records": 6052
+    },
+    "raw-warmup-favorite_toggle.json.zst": {
+      "decompressed_bytes": 1861368,
+      "jsonl_records": 4273
+    },
+    "raw-warmup-feed.json.zst": {
+      "decompressed_bytes": 1832549,
+      "jsonl_records": 5464
+    },
+    "raw-warmup-list_anonymous.json.zst": {
+      "decompressed_bytes": 2321922,
+      "jsonl_records": 6794
+    },
+    "raw-warmup-list_by_tag.json.zst": {
+      "decompressed_bytes": 2514482,
+      "jsonl_records": 7354
+    },
+    "raw-warmup-list_signed_in.json.zst": {
+      "decompressed_bytes": 1742319,
+      "jsonl_records": 5296
+    },
+    "raw-warmup-tags.json.zst": {
+      "decompressed_bytes": 4227982,
+      "jsonl_records": 13528
+    }
+  },
+  "export_file_sha256": {
+    "k6-article.json": "d7ad2cb34399f772a4d16f2f37018df9f004d9a19c9e1ad83e66d1a29c72dac7",
+    "k6-comments.json": "89fd650b47d2e3530430a9b0584ad41263a3f0fe97739046690f60a6d209147f",
+    "k6-create_article.json": "59cb4810daeae746b1b969230f895a26e056312a39b2043f7cb622108d705d79",
+    "k6-favorite_toggle.json": "9694222c4f4c1be2b8ff90ab7b3d43adf08fb0c2714cfd80b803321839b8f99f",
+    "k6-feed.json": "b39b1994cfaecbfce67d94c56170911e1d8a6f0be91664c0db2924fd1d33b827",
+    "k6-list_anonymous.json": "b593d12f755ed8b4337aa2e4f3ee9452d9fa754e61ffa09ad92602481bc91175",
+    "k6-list_by_tag.json": "3122b8a58dbc2ed7516b91ba22e6173e26d4cef13020268119d491928ac55596",
+    "k6-list_signed_in.json": "97de6ebb81a1062a205a3526c42f6343d13886915f8f1ddb4f570d9319bf9071",
+    "k6-tags.json": "c2a5980fd9f8618373fd8fe30e838c144a3c68dadb4118ca0fecd53ef04e5899",
+    "raw-article.json.zst": "6b7d8819276fb290bbc083dfb9c16ccd538af1110cc011497214d54c23ca938c",
+    "raw-comments.json.zst": "65e0dcde6099eb8ded2693f650ac41d652fd31012263ba3f4a14c1bf91d001bb",
+    "raw-create_article.json.zst": "3b8b3153c218b13c2a118a58a733a1277e0541d1db4d8a4aa5d3a3af8cec4f6f",
+    "raw-favorite_toggle.json.zst": "b6a296ec43f86793675629b93ea20709a232c62bd1f2de16e25fd94d9d11b52c",
+    "raw-feed.json.zst": "7426865e87f100c65136fcb01d213a1595fc756ffc6866ba2bb60181dc6a400d",
+    "raw-list_anonymous.json.zst": "a9fbbfdc4f002132a1321624288d2b952b395d363428403e13058c562f615edc",
+    "raw-list_by_tag.json.zst": "596a1985d4e531e4f262ee2f330e7253c5ba5cfa4f4cb20fbcb863efcb5e360b",
+    "raw-list_signed_in.json.zst": "dd4c6a604f8612f59bd892afb22f6b365235d927457973b5b5a898047b740e14",
+    "raw-tags.json.zst": "4e8867b6921ee0c68316e08946f87b4ff803259424538f42d247808b395f2e1d",
+    "raw-warmup-article.json.zst": "d61d2ec7cb665c7ea489a6dd9b0c9ff0249511dd20d30ee7fb5706383f612247",
+    "raw-warmup-comments.json.zst": "cafaf43d7c6129b04d176bad460adebfd2f9cd0846a0f31dfa3acf30bc6e3929",
+    "raw-warmup-create_article.json.zst": "05930a62d3aedd03fd1a546820f261080a11f3efdd7a241956a105667dfa3264",
+    "raw-warmup-favorite_toggle.json.zst": "2d2bab2ad5e205bbfebc481d53de6b8a8d6ea7f6b669c45acaea3f1ef9794762",
+    "raw-warmup-feed.json.zst": "0697d441eeb9aa7520c49e851a84bfcbed768d61409b584aa0ecd11cde63c465",
+    "raw-warmup-list_anonymous.json.zst": "4c76baff2c3d9d219007183ed9e7a15b598e31753b840415319a2e0414a04b91",
+    "raw-warmup-list_by_tag.json.zst": "96d4ff689104e4191b277321118dca1ad0e0c89537674d8585ecf7784e603507",
+    "raw-warmup-list_signed_in.json.zst": "0c8a8f7f0f94a459d33b23c55d4be0f50e35b4ddd3e46a186cd4a641c27ce21c",
+    "raw-warmup-tags.json.zst": "9fcc90f633acf9a9fd4e43f016242d78eb9203acc86ee149ebf91b9da810136f",
+    "runner.log": "fa09f4034ee38a17ea5c39d97836037df93f63c60e90485c567d194b555a19f9"
+  },
+  "exported_at": "2026-09-29T20:12:56.955846+00:00",
+  "export_tools_sha256": {
+    "tools/lane_artifacts.py": "da9f15eceae9614e038ba0e7420b9b959af4fc6294ca835f807c8ebabeb45d2b",
+    "tools/lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "tools/scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+    "tools/v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79"
+  }
+}

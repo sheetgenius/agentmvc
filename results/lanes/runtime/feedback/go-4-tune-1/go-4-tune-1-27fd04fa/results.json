@@ -1,0 +1,304 @@
+{
+  "image": "agentmvc-lane-go-4-tune-1:current",
+  "label": "go-4-tune-1-27fd04fa",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "3s",
+  "image_mb": 14.2,
+  "cold_start_seconds": 0.35,
+  "seed_seconds": 9.8,
+  "idle_memory_mb": 23.2,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 7406,
+      "rps": 2464.1,
+      "p50_ms": 2.38,
+      "p95_ms": 58.09,
+      "p99_ms": 70.12,
+      "failed_checks": 0,
+      "sql_statements_per_request": 5.0,
+      "peak_memory_mb": 49.8,
+      "foreign_container_cpu_percent_max": 52.2,
+      "host_load_1m": 4.5
+    },
+    "list_signed_in": {
+      "requests": 9595,
+      "rps": 3151.2,
+      "p50_ms": 2.34,
+      "p95_ms": 20.19,
+      "p99_ms": 54.99,
+      "failed_checks": 0,
+      "sql_statements_per_request": 7.0,
+      "peak_memory_mb": 45.9,
+      "foreign_container_cpu_percent_max": 101.2,
+      "host_load_1m": 4.4
+    },
+    "list_by_tag": {
+      "requests": 9076,
+      "rps": 2968.4,
+      "p50_ms": 2.14,
+      "p95_ms": 45.5,
+      "p99_ms": 62.44,
+      "failed_checks": 0,
+      "sql_statements_per_request": 5.0,
+      "peak_memory_mb": 37.0,
+      "foreign_container_cpu_percent_max": 121.7,
+      "host_load_1m": 4.2
+    },
+    "feed": {
+      "requests": 7909,
+      "rps": 2609.6,
+      "p50_ms": 2.46,
+      "p95_ms": 47.09,
+      "p99_ms": 64.97,
+      "failed_checks": 0,
+      "sql_statements_per_request": 7.0,
+      "peak_memory_mb": 56.0,
+      "foreign_container_cpu_percent_max": 74.9,
+      "host_load_1m": 4.0
+    },
+    "article": {
+      "requests": 11950,
+      "rps": 3976.6,
+      "p50_ms": 1.93,
+      "p95_ms": 7.52,
+      "p99_ms": 53.32,
+      "failed_checks": 0,
+      "sql_statements_per_request": 6.0,
+      "peak_memory_mb": 103.0,
+      "foreign_container_cpu_percent_max": 79.0,
+      "host_load_1m": 4.1
+    },
+    "comments": {
+      "requests": 16423,
+      "rps": 5468.1,
+      "p50_ms": 1.1,
+      "p95_ms": 4.15,
+      "p99_ms": 56.71,
+      "failed_checks": 0,
+      "sql_statements_per_request": 3.0,
+      "peak_memory_mb": 55.5,
+      "foreign_container_cpu_percent_max": 101.6,
+      "host_load_1m": 4.2
+    },
+    "tags": {
+      "requests": 9942,
+      "rps": 3299.0,
+      "p50_ms": 1.02,
+      "p95_ms": 11.24,
+      "p99_ms": 79.4,
+      "failed_checks": 0,
+      "sql_statements_per_request": 1.0,
+      "peak_memory_mb": 15.5,
+      "foreign_container_cpu_percent_max": 55.8,
+      "host_load_1m": 4.9
+    },
+    "favorite_toggle": {
+      "requests": 10900,
+      "rps": 3621.6,
+      "p50_ms": 3.46,
+      "p95_ms": 9.05,
+      "p99_ms": 25.17,
+      "failed_checks": 0,
+      "sql_statements_per_request": 7.0,
+      "peak_memory_mb": 83.2,
+      "foreign_container_cpu_percent_max": 131.5,
+      "host_load_1m": 4.9
+    },
+    "create_article": {
+      "requests": 13108,
+      "rps": 4362.0,
+      "p50_ms": 2.84,
+      "p95_ms": 7.62,
+      "p99_ms": 25.07,
+      "failed_checks": 0,
+      "sql_statements_per_request": 6.0,
+      "peak_memory_mb": 39.6,
+      "foreign_container_cpu_percent_max": 187.1,
+      "host_load_1m": 4.9
+    }
+  },
+  "session": "go-4-tune-1",
+  "condition": "short feedback benchmark",
+  "warmup": "1s",
+  "image_sha256": "sha256:49a6a0a477b3c925b3b366c6561bdea0a0e0fca80b06467494fdc424e4691b9f",
+  "exit": 0,
+  "schema_version": 1,
+  "stack": "go",
+  "phase": "4-tune",
+  "timing_basis": "tools/lane_check.py benchmark configuration; an interrupted attempt may not finish",
+  "source_identity": "Intermediate candidate; no claim that the published checkpoint matches this measurement",
+  "image_identity": "recorded image SHA",
+  "summary_present": true,
+  "runner_log_present": true,
+  "source_session": ".work/lanes/go-4-tune-1/control/session.json",
+  "session_result": "results/lanes/go/4-tune",
+  "fixture_sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+  "original_file_sha256": {
+    ".work/lanes/go-4-tune-1/control/session.json": "88a97ad99a7af0bbf4a71e2b6dba30ddd5403e34465d5882abd897d74d2d62e8",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/k6-article.json": "7303c5404e6d1f389d02638eace07bafd9d932c6740b5ad5670078e00d2457a9",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/k6-comments.json": "c565a69e186e2ffad45da26458a3212a982eadb49ceb3feae66156e73b87bb43",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/k6-create_article.json": "da67d2520cc10695c7d605cee857b1b8f385e4dac4618a6a07a9d9d30082012a",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/k6-favorite_toggle.json": "46d73521d8b5a723ad2061058622d110076a3e28ac056ce294e1fb12c35be8df",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/k6-feed.json": "3df4ed9fffb5e580b7d881e5a5909baa1f17fe22fec85b7102d225a10ee32ceb",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/k6-list_anonymous.json": "7927b08662b07a1475b73a13584db8c84d716f01228e5a59dcf2fe24b82bb404",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/k6-list_by_tag.json": "198cf29186e900a8caf018e504d7c68a81eff14b02626f0e2f991451e11e7616",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/k6-list_signed_in.json": "ab43e528859d485b03d4678156f1a7e2a36a2e703019bb2a6c2aa85f4a8d83a5",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/k6-tags.json": "415d80c6b598e160fb365a71a7ef671223caf529e242c062474fabd31dc642b3",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-article.json": "1490ce4b8145ba5ebfafedd4372b63b9898050c27fa81ee284f177128c56226f",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-comments.json": "26369d064cf8b445c1cd5e8f8d0245f7d3e293e2c981d03fb478b9053c614a13",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-create_article.json": "e0c97ce489dd0552ed6a2a4d7fed54df42c19537f7923b4b6197edadc054db72",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-favorite_toggle.json": "89548d94ec576bcc61914ea42ed918bd7c8895aa53a5be567b2d43b4e604b130",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-feed.json": "9b538b60f0d8ab2572ae6b93ed3544d3eff4359aa186f347d3f048da6db8b0eb",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-list_anonymous.json": "f2bf772e8632cf7ff98e424ae55f3b3c6ecb1ee6c3b64f94c1146f3b47508ca0",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-list_by_tag.json": "5f234f7ef155052066d7ada498109418801e6d66e1719cbb6ff25ecdf7e03a2f",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-list_signed_in.json": "f979c6dede942f1234c84ba28886442bf9b7e99cf88eef0d2d8a7de5d40a0d8a",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-tags.json": "cf92f88b66dacd4feaf4a11100c8377d81400167d89aff55bb5e9b4c838d4496",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-warmup-article.json": "c2757426120561aaf1b2def0594d4d6da29a1945ae24d9b7e37c21cdb4fc37ce",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-warmup-comments.json": "a69900b6a8d0290858ba7b04ec7968d491a74793196178ae3dfbbf4e9fc2754c",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-warmup-create_article.json": "41e91351ca3d701422deed9fefc9493daedf049d8572d7c9355364aa3e66e59f",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-warmup-favorite_toggle.json": "acf9c81ce8e66b05adaad418e7e2fd673f071128ea41b1c1e9f965c43943623f",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-warmup-feed.json": "4efac810e3763aefe2d52e84a5343df8a093749444338408823b0a48917fc3c4",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-warmup-list_anonymous.json": "7add639ac120445af479663d4def1818a2196c1a3990b42982d60539d00f7e69",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-warmup-list_by_tag.json": "5bda43077924ae58521eb49ff183aa5aae0146f2eb835435fc2a598c33ed72f0",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-warmup-list_signed_in.json": "6f8bb7ec90705499787013e13ba1861134afd1140da64dd9b1acc440a067ce9b",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/raw-warmup-tags.json": "ff3cfb3ed7df4d5a850a964b8dad772af2bc8e3be24ca7d04bf9f208ca14d051",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/results.json": "aa60a8c6b178b1323f9063ed6eac867bb1af63e1c9390c02091327308f525482",
+    ".work/lanes/go-4-tune-1/logs/measurements/go-4-tune-1-27fd04fa/runner.log": "9194ebbfc3f37c1137635b523de3857e882159f4412bad80e7a473d5cd9204e2"
+  },
+  "raw_stream_sha256": {
+    "raw-article.json.zst": "8bf69738aeca61ce6cf9ba04750634d1baeceadd459c1d785e4cefd8c78bedd2",
+    "raw-comments.json.zst": "43f15b47d8eefd6a1ca7dfe4dfedf1081af9de08e5656c2d13deb9d80cccfd44",
+    "raw-create_article.json.zst": "68d7b26a87da8df647254d8212ef0395959645dfac380ceb33a33854c7c227a5",
+    "raw-favorite_toggle.json.zst": "b59a823870e15da5cc1c79f795870aab51eefdf9119158d94084b02928a03a9c",
+    "raw-feed.json.zst": "225b915a9b9a3e301c47499368c5c3b63f0a5da6c2ae7117576940d702d1abda",
+    "raw-list_anonymous.json.zst": "72732a67452cee10b6ef0974ccc0e876e17a0bdde1814ff1b1d57c74c6d3fde6",
+    "raw-list_by_tag.json.zst": "454cc14855044e8442e1d7a58f7d7b57b3b98d022cef941810e34dc54e29da8f",
+    "raw-list_signed_in.json.zst": "beb90a8e9690baa074abe226def5a135b281ba9621d599f2863010962dbde4cf",
+    "raw-tags.json.zst": "ecdd2833a7c8a1aca35521286cc8326c27c1b653066bafa9972b22db47e9774e",
+    "raw-warmup-article.json.zst": "c5b4a100acc9ef145d75e333f484fdabfa596a3ed00af8f24fedc0a5236e2f84",
+    "raw-warmup-comments.json.zst": "aa92384bf09d3d3f6b270fdbf8c0f6398644548ad0be0be6285bc550e5fc898c",
+    "raw-warmup-create_article.json.zst": "ac8304a88213f2020bb78996fc37ae9c9bbf77cf1535c4ac955cd1297ef9b7ff",
+    "raw-warmup-favorite_toggle.json.zst": "cfe99c535c23bddaf2b164feed29aeafce01f60a1d62055c1f691df6cbef1d7d",
+    "raw-warmup-feed.json.zst": "e7e52dd102262e44da254c02498b7e32da1b08c51d5133d10cb4424c17a53b01",
+    "raw-warmup-list_anonymous.json.zst": "2d155a6302b8e93275d4e81ac9250bcf26febab5bb9fe41c7a5f65add788932f",
+    "raw-warmup-list_by_tag.json.zst": "46bcdcd3f7bac6561e813d2b6a50ef2cadbc1febcd9e3cce936e1fbd8e50523d",
+    "raw-warmup-list_signed_in.json.zst": "37f4005d8bc2ff999039014f06d39cd3528415d334732d0b5097d9cf3f74f4b0",
+    "raw-warmup-tags.json.zst": "a2db9c886b251efd432ccaadec559255996c841cb38587a28eee48327315a695"
+  },
+  "raw_validation": {
+    "raw-article.json.zst": {
+      "decompressed_bytes": 62626648,
+      "jsonl_records": 167322
+    },
+    "raw-comments.json.zst": {
+      "decompressed_bytes": 88710530,
+      "jsonl_records": 229944
+    },
+    "raw-create_article.json.zst": {
+      "decompressed_bytes": 57473928,
+      "jsonl_records": 183534
+    },
+    "raw-favorite_toggle.json.zst": {
+      "decompressed_bytes": 54724620,
+      "jsonl_records": 125372
+    },
+    "raw-feed.json.zst": {
+      "decompressed_bytes": 36611149,
+      "jsonl_records": 110748
+    },
+    "raw-list_anonymous.json.zst": {
+      "decompressed_bytes": 34935679,
+      "jsonl_records": 103706
+    },
+    "raw-list_by_tag.json.zst": {
+      "decompressed_bytes": 42828601,
+      "jsonl_records": 127086
+    },
+    "raw-list_signed_in.json.zst": {
+      "decompressed_bytes": 43550326,
+      "jsonl_records": 134352
+    },
+    "raw-tags.json.zst": {
+      "decompressed_bytes": 42788127,
+      "jsonl_records": 139210
+    },
+    "raw-warmup-article.json.zst": {
+      "decompressed_bytes": 21892543,
+      "jsonl_records": 58496
+    },
+    "raw-warmup-comments.json.zst": {
+      "decompressed_bytes": 37931508,
+      "jsonl_records": 98326
+    },
+    "raw-warmup-create_article.json.zst": {
+      "decompressed_bytes": 19509214,
+      "jsonl_records": 62304
+    },
+    "raw-warmup-favorite_toggle.json.zst": {
+      "decompressed_bytes": 18768852,
+      "jsonl_records": 43005
+    },
+    "raw-warmup-feed.json.zst": {
+      "decompressed_bytes": 11638873,
+      "jsonl_records": 35214
+    },
+    "raw-warmup-list_anonymous.json.zst": {
+      "decompressed_bytes": 12351326,
+      "jsonl_records": 36670
+    },
+    "raw-warmup-list_by_tag.json.zst": {
+      "decompressed_bytes": 13927458,
+      "jsonl_records": 41332
+    },
+    "raw-warmup-list_signed_in.json.zst": {
+      "decompressed_bytes": 14171779,
+      "jsonl_records": 43726
+    },
+    "raw-warmup-tags.json.zst": {
+      "decompressed_bytes": 15817886,
+      "jsonl_records": 51468
+    }
+  },
+  "export_file_sha256": {
+    "k6-article.json": "eb9b566ba347dd6abac72d7e5ea11e65468f52b8a3cd2ff3925a0ab89802c38c",
+    "k6-comments.json": "9f8cca63f24258977c5fe1cace46a7e31c44fc273babbf031226628d0282f2da",
+    "k6-create_article.json": "724c59295a55bdc82859c99be760c97eccc4ff6ad713af5b9fcf4c8e5cf1b367",
+    "k6-favorite_toggle.json": "5db58b5b615029ceef6bbdeb890dc373406e984ec32cd4b0c9d3c5ebf2493304",
+    "k6-feed.json": "15415a4ecc39cc3ebcb3876b638062ce08e587d710313d1034b8a90b5cf7caa2",
+    "k6-list_anonymous.json": "2e70e8ad3be79c1b37fc8173769c83f07f8fdd1b0138c4a78395bf0e04632b3b",
+    "k6-list_by_tag.json": "fc6e56c7b433d5aaa6fd637514c35631ebfd8989f5bf153a8b6a9ecdf700ae27",
+    "k6-list_signed_in.json": "c1c4fd25c014f94424cd3d82fb08077e53b9821c62b4388729a383688538f81b",
+    "k6-tags.json": "b00cc0623043791f7963bdc4b43eb4464fbe7c3c72ad9a16f435a951e159ccb7",
+    "raw-article.json.zst": "8bf69738aeca61ce6cf9ba04750634d1baeceadd459c1d785e4cefd8c78bedd2",
+    "raw-comments.json.zst": "43f15b47d8eefd6a1ca7dfe4dfedf1081af9de08e5656c2d13deb9d80cccfd44",
+    "raw-create_article.json.zst": "68d7b26a87da8df647254d8212ef0395959645dfac380ceb33a33854c7c227a5",
+    "raw-favorite_toggle.json.zst": "b59a823870e15da5cc1c79f795870aab51eefdf9119158d94084b02928a03a9c",
+    "raw-feed.json.zst": "225b915a9b9a3e301c47499368c5c3b63f0a5da6c2ae7117576940d702d1abda",
+    "raw-list_anonymous.json.zst": "72732a67452cee10b6ef0974ccc0e876e17a0bdde1814ff1b1d57c74c6d3fde6",
+    "raw-list_by_tag.json.zst": "454cc14855044e8442e1d7a58f7d7b57b3b98d022cef941810e34dc54e29da8f",
+    "raw-list_signed_in.json.zst": "beb90a8e9690baa074abe226def5a135b281ba9621d599f2863010962dbde4cf",
+    "raw-tags.json.zst": "ecdd2833a7c8a1aca35521286cc8326c27c1b653066bafa9972b22db47e9774e",
+    "raw-warmup-article.json.zst": "c5b4a100acc9ef145d75e333f484fdabfa596a3ed00af8f24fedc0a5236e2f84",
+    "raw-warmup-comments.json.zst": "aa92384bf09d3d3f6b270fdbf8c0f6398644548ad0be0be6285bc550e5fc898c",
+    "raw-warmup-create_article.json.zst": "ac8304a88213f2020bb78996fc37ae9c9bbf77cf1535c4ac955cd1297ef9b7ff",
+    "raw-warmup-favorite_toggle.json.zst": "cfe99c535c23bddaf2b164feed29aeafce01f60a1d62055c1f691df6cbef1d7d",
+    "raw-warmup-feed.json.zst": "e7e52dd102262e44da254c02498b7e32da1b08c51d5133d10cb4424c17a53b01",
+    "raw-warmup-list_anonymous.json.zst": "2d155a6302b8e93275d4e81ac9250bcf26febab5bb9fe41c7a5f65add788932f",
+    "raw-warmup-list_by_tag.json.zst": "46bcdcd3f7bac6561e813d2b6a50ef2cadbc1febcd9e3cce936e1fbd8e50523d",
+    "raw-warmup-list_signed_in.json.zst": "37f4005d8bc2ff999039014f06d39cd3528415d334732d0b5097d9cf3f74f4b0",
+    "raw-warmup-tags.json.zst": "a2db9c886b251efd432ccaadec559255996c841cb38587a28eee48327315a695",
+    "runner.log": "9194ebbfc3f37c1137635b523de3857e882159f4412bad80e7a473d5cd9204e2"
+  },
+  "exported_at": "2026-09-29T20:12:20.905597+00:00",
+  "export_tools_sha256": {
+    "tools/lane_artifacts.py": "da9f15eceae9614e038ba0e7420b9b959af4fc6294ca835f807c8ebabeb45d2b",
+    "tools/lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "tools/scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+    "tools/v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79"
+  }
+}

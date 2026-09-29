@@ -32,7 +32,7 @@ Other recorded paths include [Loco / Rust in the eight-step study](stacks/loco/)
 
 ## New Go and Python lanes
 
-Go and Python are now going through the complete eight-step sequence and independent expert one-shots. Their [progress and source checkpoints](results/lanes/README.md) show completed checks, code size and the stack choices; final runtime and reviewer parity will be published there. These prepared-scaffold runs have their own recorded conditions and preserve the original study below.
+Go and Python have completed the full eight-step sequence and separate expert one-shots: **18 measured builds, all passing the independent gates required for their phase**. All four final applications passed development and production checks. The [lane comparison](results/lanes/README.md) links every source checkpoint, prompt, code count and reviewer finding. Separately labeled reference repairs address defects found by additional review; repeated production measurements are in progress. These prepared-scaffold runs have their own recorded conditions and preserve the original study below.
 
 ## Original eight-step study
 

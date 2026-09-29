@@ -1,0 +1,16 @@
+{
+  "passed": false,
+  "checks": {
+    "development": 0,
+    "production": 1
+  },
+  "checked_at": "2026-09-29T20:11:29.571627+00:00",
+  "source_sha256": "71109c872b7fe3ebb9246df4d648cbf2085d5ac66088c69a39aa975311170868",
+  "reviewer_adapter": {
+    "path": "tools/lane_review.py",
+    "sha256": "0131bb4fc4e9aab709eede4020f60bd8a962b9f6b9d0da816aa509516af7e348",
+    "reason": "Wait for PostgreSQL TCP server, not its temporary Unix-socket initialization server",
+    "coding_inputs_changed": false,
+    "source_changed": false
+  }
+}
