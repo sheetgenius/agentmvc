@@ -1,5 +1,6 @@
 """Render the Go/Python overview from published evidence only."""
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -63,25 +64,78 @@ def review_cell(folder):
     return status
 
 
-def reference_tables(data):
+def references(data, *, latest=False):
     rows = []
     for stack in ('go', 'python'):
         for phase in ('8-live-editing', 'one-shot'):
             parent = data[stack][phase]
             if not parent:
                 continue
-            folder = parent['folder']/'reference-1'
-            size, verification, snapshot = (read(folder/name) for name in
-                                            ('size.json', 'verification.json', 'source-snapshot.json'))
-            if size and verification and verification.get('passed'):
-                label = f'{stack.title()} · '+('eight-step reference' if phase!='one-shot' else 'one-shot reference')
-                rows.append(f'| {link(ROOT/snapshot["path"],label)} | {size["owned_tokens"]:,} tokens | {review_cell(folder)} |')
+            candidates = []
+            for folder in parent['folder'].glob('reference-*'):
+                match = re.fullmatch(r'reference-(\d+)', folder.name)
+                if not match:
+                    continue
+                size, verification, snapshot, reference = (read(folder/name) for name in
+                    ('size.json', 'verification.json', 'source-snapshot.json', 'reference.json'))
+                if (size and verification and verification.get('passed') and snapshot and reference
+                        and verification.get('source_sha256') == snapshot['sha256']):
+                    label = f'{stack.title()} · '+('eight-step' if phase!='one-shot' else 'one-shot')
+                    candidates.append({'folder':folder, 'size':size, 'snapshot':snapshot,
+                                       'session':reference['session'], 'revision':int(match[1]),
+                                       'label':f'{label} reference {int(match[1])}'})
+            candidates.sort(key=lambda row: row['revision'])
+            rows.extend(candidates[-1:] if latest else candidates)
+    return rows
+
+
+def reference_tables(data):
+    references_now = references(data, latest=True)
+    rows = [f'| {link(ROOT/row["snapshot"]["path"],row["label"])} | {row["size"]["owned_tokens"]:,} tokens | {review_cell(row["folder"])} |'
+            for row in references_now]
     if not rows:
         return []
     return ['', '## Reviewed references', '',
-            'These separately labeled repairs preserve the measured originals. Their added tests, source size and independent checks are recorded; their editing effort is not pooled with one-shot effort.', '',
+            'Each row selects the latest independently verified reference for that application. These repairs preserve earlier attempts and measured originals; their editing effort is not pooled with coding effort. Reviewer checks remain separately visible.', '',
             '| Reference source | Owned backend | Reviewer checks |',
-            '| --- | ---: | --- |', *rows]
+            '| --- | ---: | --- |', *rows,
+            *runtime_table('reference', references(data), 'Repeated reference runtime')]
+
+
+def runtime_table(condition, sources, heading):
+    base = OUT/'runtime'/condition
+    summary = read(base/'summary.json')
+    if not summary:
+        return []
+    known = {row['session']:row for row in sources}
+    lines = ['', f'### {heading}', '',
+             'Two rounds; 16 users; 3-second warmup and 15-second samples; app and database each limited to 2 CPUs and 1 GiB. Ranges show both rounds. Source and image hashes must match the runtime manifest before metrics are shown; all nine HTTP workloads and 10/100/500-subscriber socket results are linked.', '',
+             '| Application | List req/s | Article req/s | SQL / list | Image MB | Cold start seconds | Runtime checks |',
+             '| --- | ---: | ---: | ---: | ---: | ---: | --- |']
+    for sid, identity in summary.get('applications',{}).items():
+        row = known.get(sid)
+        folder = base/sid
+        samples = [read(folder/f'round{n}/http/results.json') for n in (1,2)]
+        sockets = [read(folder/f'round{n}/socket/results.json') for n in (1,2)]
+        records = {(entry.get('round'),entry.get('kind')) for entry in summary.get('records',[])
+                   if entry.get('session') == sid}
+        mismatch = (not row or identity.get('source_sha256') != row['snapshot']['sha256'] or
+                    any(sample and any(sample.get(key) != identity.get(key)
+                        for key in ('source_sha256','image_sha256')) for sample in samples+sockets))
+        complete = all(samples+sockets) and records == {(n,kind) for n in (1,2) for kind in ('http','socket')}
+        checks = ('**identity mismatch**' if mismatch else 'pass' if complete and
+                  all(sample.get('passed') for sample in samples+sockets) else '**failed or incomplete**')
+        label = row['label'] if row else sid
+        metric = lambda scenario,key: [sample.get('scenarios',{}).get(scenario,{}).get(key) if sample else None for sample in samples]
+        values = ['—']*5 if mismatch else [span(metric('list_anonymous','rps')),span(metric('article','rps')),
+            span(metric('list_anonymous','sql_statements_per_request'),2),
+            span([s.get('image_mb') if s else None for s in samples],1),
+            span([s.get('cold_start_seconds') if s else None for s in samples],2)]
+        lines.append(f'| {link(folder,label)} | '+ ' | '.join(values)+f' | {checks} |')
+    lines += ['', link(base/'summary.json','Runtime manifest and all workloads')+'. '+
+              ('Runtime success does not imply supplemental reviewer parity; see the parity column above.'
+               if condition=='measured' else 'Each runtime label names the exact reference version measured, which may precede a newer verified reference.')]
+    return lines
 
 
 def final_tables(data):
@@ -103,24 +157,10 @@ def final_tables(data):
         parity = review_cell(row['folder'])
         size = row['size']
         lines.append(f'| {source} | {size["owned_tokens"]:,} / {size["tokens"]:,} | {minutes} | {effort} | {parity} |')
-    runtime = OUT/'runtime/measured'
-    if not (runtime/'summary.json').exists():
-        return lines
-    lines += ['', '### Repeated production runtime', '',
-              'Two rounds; 16 users; 3-second warmup and 15-second samples; app and database each limited to 2 CPUs and 1 GiB. Ranges show both rounds, not a selected peak. The linked evidence includes all nine HTTP workloads and the 10/100/500-subscriber socket measurements.', '',
-              '| Application | List req/s | Article req/s | SQL / list | Image MB | Cold start seconds | Runtime checks |',
-              '| --- | ---: | ---: | ---: | ---: | ---: | --- |']
-    for stack, phase, row in finals:
-        sid = row['run']['id']
-        folder = runtime/sid
-        samples = [read(folder/f'round{n}/http/results.json') for n in (1,2)]
-        if not all(samples): continue
-        sockets = [read(folder/f'round{n}/socket/results.json') for n in (1,2)]
-        checks = 'pass' if all(sample.get('passed') for sample in samples+sockets if sample) and all(sockets) else '**failed or incomplete**'
-        label = f'{stack.title()} · '+('eight steps' if phase!='one-shot' else 'expert one-shot')
-        metric = lambda scenario, key: [sample.get('scenarios',{}).get(scenario,{}).get(key) for sample in samples]
-        lines.append(f'| {link(folder,label)} | {span(metric("list_anonymous","rps"))} | {span(metric("article","rps"))} | {span(metric("list_anonymous","sql_statements_per_request"),2)} | {span([s.get("image_mb") for s in samples],1)} | {span([s.get("cold_start_seconds") for s in samples],2)} | {checks} |')
-    lines += ['', '[Runtime manifest and all workloads](runtime/measured/summary.json). Runtime success does not imply that every supplemental reviewer check passed; see the parity column above.']
+    sources = [{**row,'session':row['run']['id'],
+                'label':f'{stack.title()} · '+('eight steps' if phase!='one-shot' else 'expert one-shot')}
+               for stack,phase,row in finals if row['run']]
+    lines += runtime_table('measured', sources, 'Repeated production runtime')
     return lines
 
 
@@ -144,7 +184,7 @@ def main():
     lines += reference_tables(data)
     lines += ['',
               '**Python:** Django + Django Ninja, with Django associations, migrations and password services; Channels for raw WebSockets; Procrastinate for PostgreSQL jobs. [Why this stack](../../stacks/python/STACK.md).','',
-              '**Go:** the prepared expert toolkit is Huma + chi, Bun, Goose and River. The sequential agent chose **chi + Bun** and removed Huma in step 1; that is a recorded implementation choice. The independent expert one-shot explicitly asks for Huma typed operations. [Why this toolkit](../../stacks/go/SELECTION.md).','',
+              '**Go:** the sequential implementation uses **chi + Bun** and removed Huma in step 1. The expert one-shot uses Huma for only `/api/tags` and `/health`; most product handlers use chi directly, alongside Bun, Goose and River. These are the observed implementations of the supplied Huma/chi guidance. [Why this toolkit](../../stacks/go/SELECTION.md).','',
               'The one-shots start from product-free scaffolds and use the [same expert-v2 prompt](../../one-shot-v2-expert/PROMPT.md) as the recent Rails, Phoenix and TypeScript builds. The sequential lanes use the original eight prompt files. Stack guidance and preparation are disclosed separately; these are distinct conditions, not pooled trials.','',
               '## The eight steps','',
               'Every source link is an immutable checkpoint. “Pass” means the coordinator reran the applicable frozen checks; production verification begins at step 3.','',
@@ -158,7 +198,9 @@ def main():
               '## Try a completed app','',
               'From the repository root, use Docker, Node.js 22.12+ (or 20.19+ on the 20.x line), npm, curl and OpenSSL. These commands work from a fresh clone once the corresponding source checkpoint is published. The script installs client dependencies, builds the backend, creates a fresh database, and prints an editor link to open in several tabs. Ctrl-C cleans up the demo.','',
               '```sh','tools/lane_demo.sh go','tools/lane_demo.sh python',
-              '# Or use the independently built expert app:','tools/lane_demo.sh python one-shot','```','',
+              '# Or use the independently built expert app:','tools/lane_demo.sh python one-shot',
+              '# Reviewed repairs require passed independent and reviewer checks:',
+              'tools/lane_demo.sh python eight-reference','tools/lane_demo.sh python one-shot-reference','```','',
               'Set `DEMO_BACKEND_PORT` and `DEMO_FRONTEND_PORT` to override the localhost ports.','',
               '## Evidence and limits','',
               '- [Go preflight](go/preflight.json) and [Python preflight](python/preflight.json): migrations, durable jobs, sockets, reload, production packaging and image identities.',

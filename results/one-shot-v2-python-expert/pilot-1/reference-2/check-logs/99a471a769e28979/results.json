@@ -1,0 +1,56 @@
+{
+  "session": "python-one-shot-reference-2",
+  "condition": "reference check-log publication",
+  "source_sha256": "9a6808e9b9f82318eb7ebeba2a711ad7632c0be5e9dc7df0968596790ed48e1e",
+  "verification": {
+    "path": "results/one-shot-v2-python-expert/pilot-1/reference-2/verification.json",
+    "record": {
+      "passed": true,
+      "checks": {
+        "development": 0,
+        "production": 0
+      },
+      "checked_at": "2026-09-29T20:21:16.978502+00:00",
+      "source_sha256": "9a6808e9b9f82318eb7ebeba2a711ad7632c0be5e9dc7df0968596790ed48e1e",
+      "reviewer_adapter": {
+        "path": "tools/lane_review.py",
+        "sha256": "0131bb4fc4e9aab709eede4020f60bd8a962b9f6b9d0da816aa509516af7e348",
+        "reason": "Wait for PostgreSQL TCP server, not its temporary Unix-socket initialization server",
+        "coding_inputs_changed": false,
+        "source_changed": false
+      }
+    }
+  },
+  "original_file_sha256": {
+    "results/one-shot-v2-python-expert/pilot-1/reference-2/verification.json": "48400cddf541466594345544d6616848cc6ebaea6a5ef10d62cf91796ac1f55c",
+    "results/one-shot-v2-python-expert/pilot-1/reference-2/source-snapshot.json": "0f200b31e2a03fec14fa4c4d9edd86674386586dfbcc858dd0741595f560329d",
+    ".work/lanes/python-one-shot-reference-2/control/independent-development-2026-09-29T20-20-43.961889+00-00.log": "c3b168e2bc315d4272a0e87a5d987bb836aa1d05f0a8c6d3a1a1ecbae3132d98",
+    ".work/lanes/python-one-shot-reference-2/control/independent-production-2026-09-29T20-20-43.961889+00-00.log": "2dff936deb9b25c08a8bb57bed14f9d2df7e6f86685393e88b3c534b12fd55e7",
+    ".work/lanes/python-one-shot-reference-2/control/presence-regression-before.log": "f7f33750dff5790551f7591830f7b2bf24bc91f22de02d72a93d489f260013d9",
+    ".work/lanes/python-one-shot-reference-2/control/reference-focused-tests-final.log": "cc6957f4c1784e75d20aaeed1b9978988b820be6f7ee426cabc55d6c216bd575",
+    ".work/lanes/python-one-shot-reference-2/control/reference-focused-tests.log": "41d1078d922531a7e2d9be473f674f7bf423bda1c53cfcc28872e90878ba19fe",
+    ".work/lanes/python-one-shot-reference-2/logs/independent/development-2026-09-29T20-20-44.006328+00-00-a3ef2019.json": "49d34fd56495f12274bb9497172eaacf74ecb274269c1c487f88c34a42465b51",
+    ".work/lanes/python-one-shot-reference-2/logs/independent/development-2026-09-29T20-20-44.006328+00-00-a3ef2019.log": "1b30df942899c267d1e0befb1ad6ece7001c14f9ca7f2a09991142e84cade4fa",
+    ".work/lanes/python-one-shot-reference-2/logs/independent/production-2026-09-29T20-20-59.919740+00-00-95aaa918.json": "dff246a2fcddf3e3da955971a83290af5036bfa2044a2fac2d39f71abc82e4e1",
+    ".work/lanes/python-one-shot-reference-2/logs/independent/production-2026-09-29T20-20-59.919740+00-00-95aaa918.log": "9c173646bb07cf0d3f390268d4fae1f0c6b74422fa621cbc282d3a96d8dc9df1"
+  },
+  "export_file_sha256": {
+    "control-independent-development-2026-09-29T20-20-43.961889+00-00.log.zst": "5b4b6d3e562041b60bda871b5301f3635485cdcf5a729448ffe77344fabd686c",
+    "control-reference-focused-tests-final.log.zst": "a49659f2376755c688bfc131f286272c4a036607a99ee18cf06a3c50f9a412e3",
+    "control-reference-focused-tests.log.zst": "c52ab92284a6ab39ef449d7677f1803c286788b88f9342c262398b4f646007af",
+    "independent-development-2026-09-29T20-20-44.006328+00-00-a3ef2019.json": "49d34fd56495f12274bb9497172eaacf74ecb274269c1c487f88c34a42465b51",
+    "control-presence-regression-before.log.zst": "310672aac7c0c0e73590de0b7a919bc8a6fb89e81958010362f80f0c2c42b7eb",
+    "independent-production-2026-09-29T20-20-59.919740+00-00-95aaa918.log.zst": "5e928a5122d6b13a0ae3ae2712f099347e4650ad6e40f213b916ef54be947bd2",
+    "independent-development-2026-09-29T20-20-44.006328+00-00-a3ef2019.log.zst": "83c4db1a78b6fd7a9b400539d8eca8ce9fc8d16bda3c7fbc3fd645ba7e07a36d",
+    "independent-production-2026-09-29T20-20-59.919740+00-00-95aaa918.json": "dff246a2fcddf3e3da955971a83290af5036bfa2044a2fac2d39f71abc82e4e1",
+    "control-independent-production-2026-09-29T20-20-43.961889+00-00.log.zst": "07a80062b9c848e22fc20fdae9c83b1128d3b9ed57c7493e0b75c041dd79586f"
+  },
+  "exported_at": "2026-09-29T20:34:20.944868+00:00",
+  "scope": "Reference control and independent check evidence present after verification; originals preserved",
+  "export_tools_sha256": {
+    "lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+    "v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79"
+  },
+  "exporter_sha256": "4d08f8cb7270c2e7041e0b000e892d211ee12f384b1a26b0153fc4a22e58e79d"
+}

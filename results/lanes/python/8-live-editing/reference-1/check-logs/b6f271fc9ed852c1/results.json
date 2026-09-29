@@ -1,0 +1,52 @@
+{
+  "session": "python-8-live-editing-reference-1",
+  "condition": "reference check-log publication",
+  "source_sha256": "be978eed3af3bcf3b72c63c5f6e7352be2d60cf008d9691de5ce8e87a03f7f89",
+  "verification": {
+    "path": "results/lanes/python/8-live-editing/reference-1/verification.json",
+    "record": {
+      "passed": true,
+      "checks": {
+        "development": 0,
+        "production": 0
+      },
+      "checked_at": "2026-09-29T19:57:48.408611+00:00",
+      "source_sha256": "be978eed3af3bcf3b72c63c5f6e7352be2d60cf008d9691de5ce8e87a03f7f89",
+      "reviewer_adapter": {
+        "path": "tools/lane_review.py",
+        "sha256": "0131bb4fc4e9aab709eede4020f60bd8a962b9f6b9d0da816aa509516af7e348",
+        "reason": "Wait for PostgreSQL TCP server, not its temporary Unix-socket initialization server",
+        "coding_inputs_changed": false,
+        "source_changed": false
+      }
+    }
+  },
+  "original_file_sha256": {
+    "results/lanes/python/8-live-editing/reference-1/verification.json": "caf9b568cb7454be837206597c85cbfeed1dea7708ff8ba582e8ce3b399f08c9",
+    "results/lanes/python/8-live-editing/reference-1/source-snapshot.json": "49a74d82852116a46cf668561a059b7514424251b69f7bddbb8aea83293aebda",
+    ".work/lanes/python-8-live-editing-reference-1/control/dependency-prewarm.log": "698c382efe3c748b839f96f00937fb4afd53a24c3a101fdceda848f687f18e8e",
+    ".work/lanes/python-8-live-editing-reference-1/control/independent-development-2026-09-29T19-57-15.616660+00-00.log": "184ae2326ef02055b3b15ebccd84dd05f31af9c9ec82a96ab6ce25ff2d0666bb",
+    ".work/lanes/python-8-live-editing-reference-1/control/independent-production-2026-09-29T19-57-15.616660+00-00.log": "4b583619f2952f21dfb3cb3503c11a8231dafee7c7e043b167c277982bca806e",
+    ".work/lanes/python-8-live-editing-reference-1/logs/independent/development-2026-09-29T19-57-15.654821+00-00-b2530a8d.json": "84040f212e1f9d63133a3923c29e12a97f786aea56bf2de403ef526be200492d",
+    ".work/lanes/python-8-live-editing-reference-1/logs/independent/development-2026-09-29T19-57-15.654821+00-00-b2530a8d.log": "7ae354f4092b9caafc0e67e1fe2f39383e3522ec276b7f335e09f19eab164dca",
+    ".work/lanes/python-8-live-editing-reference-1/logs/independent/production-2026-09-29T19-57-31.511086+00-00-735053f2.json": "4d785f16d715028b199f6b887fa8a074be0254fe390a8b8474eeecea97f43d6f",
+    ".work/lanes/python-8-live-editing-reference-1/logs/independent/production-2026-09-29T19-57-31.511086+00-00-735053f2.log": "c81752e9370c5ee68bde02df183f0ef61d6cfad74585cdfc332fd9127af5663d"
+  },
+  "export_file_sha256": {
+    "independent-production-2026-09-29T19-57-31.511086+00-00-735053f2.log.zst": "fc321d76d9589420055a52009acae289f0296d92d1095a9f01b387b6b5499504",
+    "independent-production-2026-09-29T19-57-31.511086+00-00-735053f2.json": "4d785f16d715028b199f6b887fa8a074be0254fe390a8b8474eeecea97f43d6f",
+    "control-independent-production-2026-09-29T19-57-15.616660+00-00.log.zst": "f23887bcbe856dcbd76d0696762768e61161bc9022c36b4f57f846b54539cfde",
+    "control-dependency-prewarm.log.zst": "4753c5c3c2dddcefbd603792dc425bc162f973bbeacf8f36dcc30ee393a3bd76",
+    "control-independent-development-2026-09-29T19-57-15.616660+00-00.log.zst": "04f9ae51a6e80d7329e85209ade58a49e888ebc25f5383f3b08cf41b0cf6db5d",
+    "independent-development-2026-09-29T19-57-15.654821+00-00-b2530a8d.log.zst": "018dc18942a1d3ae26fb0f783369f0ad411173d18764dd68f06a2cddd0a3e2a4",
+    "independent-development-2026-09-29T19-57-15.654821+00-00-b2530a8d.json": "84040f212e1f9d63133a3923c29e12a97f786aea56bf2de403ef526be200492d"
+  },
+  "exported_at": "2026-09-29T20:34:20.819166+00:00",
+  "scope": "Reference control and independent check evidence present after verification; originals preserved",
+  "export_tools_sha256": {
+    "lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+    "v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79"
+  },
+  "exporter_sha256": "4d08f8cb7270c2e7041e0b000e892d211ee12f384b1a26b0153fc4a22e58e79d"
+}

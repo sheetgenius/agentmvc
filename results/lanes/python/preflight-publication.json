@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "path": "results/lanes/python/preflight.log",
+  "corrected_at": "2026-09-29T20:34:20.601445+00:00",
+  "original_sha256": "4d4de4f117d0f93c32d8b3f56c37d56e843976a2d84e0b2f2a5f660dcf89078b",
+  "published_sha256": "bdda1c2d16b92c13f12e6c31a33862fc2df66db3a9f87da0204b04277a2b3e09",
+  "classification": "disposable synthetic Docker preflight credentials",
+  "matched_settings": {
+    "POSTGRES_PASSWORD": 1,
+    "DATABASE_URL": 13,
+    "SECRET_KEY_BASE": 13
+  },
+  "basis": "All matched values originate in tools/python_track_preflight.py fixture literals for temporary preflight Docker database and app containers. No external-account or broker credential markers were found.",
+  "rotation_needed": false,
+  "correction": "Existing public preflight log scrubbed using unchanged publication patterns; original retained privately with restrictive permissions. Git history was not rewritten.",
+  "scrubber_sha256": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+  "fixture_generator_sha256": "28d816024f63acb89caeaf179aeb4985257022062adbebf948416cef8ff5adb7"
+}

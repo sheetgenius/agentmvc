@@ -1,0 +1,52 @@
+{
+  "session": "go-8-live-editing-reference-1",
+  "condition": "reference check-log publication",
+  "source_sha256": "b2659e1b97b48a91e381d867bfc0aacb9912f9d19196ba846ba1cd8b13aa681c",
+  "verification": {
+    "path": "results/lanes/go/8-live-editing/reference-1/verification.json",
+    "record": {
+      "passed": true,
+      "checks": {
+        "development": 0,
+        "production": 0
+      },
+      "checked_at": "2026-09-29T20:01:34.619942+00:00",
+      "source_sha256": "b2659e1b97b48a91e381d867bfc0aacb9912f9d19196ba846ba1cd8b13aa681c",
+      "reviewer_adapter": {
+        "path": "tools/lane_review.py",
+        "sha256": "0131bb4fc4e9aab709eede4020f60bd8a962b9f6b9d0da816aa509516af7e348",
+        "reason": "Wait for PostgreSQL TCP server, not its temporary Unix-socket initialization server",
+        "coding_inputs_changed": false,
+        "source_changed": false
+      }
+    }
+  },
+  "original_file_sha256": {
+    "results/lanes/go/8-live-editing/reference-1/verification.json": "25220e28fa8410d9fad9365a96cfffe9c80c4756186cdefd4890a6496e938eea",
+    "results/lanes/go/8-live-editing/reference-1/source-snapshot.json": "4e04a26544d0eac6e6c9811027f7bb212d36645cf8437a6b6fbc3cb235f82e22",
+    ".work/lanes/go-8-live-editing-reference-1/control/dependency-prewarm.log": "f18c14f66a488e7896c839da062e6dcbc754b9e7d5b8a8f83353023092017dd3",
+    ".work/lanes/go-8-live-editing-reference-1/control/independent-development-2026-09-29T20-01-01.251602+00-00.log": "e5b620188a8b981ef5d5c3fe093b461300ca33103e0679a6beef14f962cad5d1",
+    ".work/lanes/go-8-live-editing-reference-1/control/independent-production-2026-09-29T20-01-01.251602+00-00.log": "cfa748177a48f1772515b67f73c5bbafa8a9f52a46a1f332c6732c45d6332b56",
+    ".work/lanes/go-8-live-editing-reference-1/logs/independent/development-2026-09-29T20-01-01.290520+00-00-0057d740.json": "2426837a3b6f1c70de7f3d8b0757727aed324af6a3c743d25215295f2bfd384d",
+    ".work/lanes/go-8-live-editing-reference-1/logs/independent/development-2026-09-29T20-01-01.290520+00-00-0057d740.log": "1156e0d59b19121cb6a287762d83cb87b7b201442e731bed97337c1cd923d6dc",
+    ".work/lanes/go-8-live-editing-reference-1/logs/independent/production-2026-09-29T20-01-16.032152+00-00-8c539cea.json": "9d57b228751f0c3a6621545f6c95e1117e9e31ec1ff1d9877ba1d87f902bdbdd",
+    ".work/lanes/go-8-live-editing-reference-1/logs/independent/production-2026-09-29T20-01-16.032152+00-00-8c539cea.log": "a122fd45e0df6f40270f15ac7816a38349414878bd3448aaeaa7a4161c854aed"
+  },
+  "export_file_sha256": {
+    "independent-development-2026-09-29T20-01-01.290520+00-00-0057d740.log.zst": "5dcf5110e8ecb4544f17a76f5971146d295588c00ceb91a1515d94ba4a3251a5",
+    "independent-production-2026-09-29T20-01-16.032152+00-00-8c539cea.json": "9d57b228751f0c3a6621545f6c95e1117e9e31ec1ff1d9877ba1d87f902bdbdd",
+    "independent-production-2026-09-29T20-01-16.032152+00-00-8c539cea.log.zst": "42440402dc6082000019eed4684b6118a712a2910e6b32430ae579c68086bd54",
+    "control-independent-development-2026-09-29T20-01-01.251602+00-00.log.zst": "db9db499da090e518dae76a83733980017f00c9c36129fcb999ac065cdf3bb91",
+    "control-dependency-prewarm.log.zst": "d3c48746f878efa2936576ccc2505da215a89416f71d94a8ac340d8c46cf8411",
+    "control-independent-production-2026-09-29T20-01-01.251602+00-00.log.zst": "ff1c94454b7adf881e283b044581eb11315c830fe8397fdddae5683261b16089",
+    "independent-development-2026-09-29T20-01-01.290520+00-00-0057d740.json": "2426837a3b6f1c70de7f3d8b0757727aed324af6a3c743d25215295f2bfd384d"
+  },
+  "exported_at": "2026-09-29T20:34:20.712980+00:00",
+  "scope": "Reference control and independent check evidence present after verification; originals preserved",
+  "export_tools_sha256": {
+    "lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+    "v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79"
+  },
+  "exporter_sha256": "4d08f8cb7270c2e7041e0b000e892d211ee12f384b1a26b0153fc4a22e58e79d"
+}

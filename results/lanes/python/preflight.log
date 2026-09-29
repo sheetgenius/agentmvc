@@ -138,7 +138,7 @@ sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3
 $ docker network create agentmvc-python-preflight-1790705851-net
 af7dbd7ebed66684a27ad0543b0cee44b04d9ae52c7fe14a2a8781a8b6ab6d5d
 
-$ docker run -d --name agentmvc-python-preflight-1790705851-db --network agentmvc-python-preflight-1790705851-net -e POSTGRES_USER=agentmvc -e POSTGRES_PASSWORD=agentmvc -e POSTGRES_DB=preflight postgres:17
+$ docker run -d --name agentmvc-python-preflight-1790705851-db --network agentmvc-python-preflight-1790705851-net -e POSTGRES_USER=agentmvc -e POSTGRES_PASSWORD=[redacted] -e POSTGRES_DB=preflight postgres:17
 17a6c2817dbef2c6c99e241096993684b83444b1ec6cef6f8b2c332eba7d4b3e
 
 $ docker exec agentmvc-python-preflight-1790705851-db pg_isready -U agentmvc
@@ -162,30 +162,30 @@ $ docker exec agentmvc-python-preflight-1790705851-db pg_isready -U agentmvc
 $ docker exec agentmvc-python-preflight-1790705851-db pg_isready -U agentmvc
 /var/run/postgresql:5432 - accepting connections
 
-$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python -c import json,sys,importlib.metadata as m; print(json.dumps({'python':sys.version.split()[0], **{n:m.version(n) for n in ['Django','django-ninja','channels','procrastinate','psycopg','uvicorn','PyJWT']}}))
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] agentmvc-python-toolchain:preflight python -c import json,sys,importlib.metadata as m; print(json.dumps({'python':sys.version.split()[0], **{n:m.version(n) for n in ['Django','django-ninja','channels','procrastinate','psycopg','uvicorn','PyJWT']}}))
 {"python": "3.14.7", "Django": "6.1.1", "django-ninja": "1.7.1", "channels": "4.3.2", "procrastinate": "3.10.0", "psycopg": "3.3.6", "uvicorn": "0.54.0", "PyJWT": "2.15.1"}
 
-$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight uv --version
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] agentmvc-python-toolchain:preflight uv --version
 uv 0.12.20 (aarch64-unknown-linux-gnu)
 
 $ docker inspect agentmvc-python-preflight-1790705851-db --format {{.Image}}
 sha256:48d29282d2b43c402465c28f8572021b59aaf43574056faaad2fd7bb85ffdd4e
 
-$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python manage.py check
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] agentmvc-python-toolchain:preflight python manage.py check
 System check identified no issues (0 silenced).
 
-$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight ruff check .
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] agentmvc-python-toolchain:preflight ruff check .
 All checks passed!
 
-$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight ruff format --check .
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] agentmvc-python-toolchain:preflight ruff format --check .
 7 files already formatted
 
-$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python manage.py makemigrations probe
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] agentmvc-python-toolchain:preflight python manage.py makemigrations probe
 Migrations for 'probe':
   probe/migrations/0001_initial.py
     + Create model Probe
 
-$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python manage.py migrate --noinput
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] agentmvc-python-toolchain:preflight python manage.py migrate --noinput
 Operations to perform:
   Apply all migrations: auth, contenttypes, probe, procrastinate
 Running migrations:
@@ -246,11 +246,11 @@ Running migrations:
   Applying procrastinate.0040_pre_retry_failed_job... OK
   Applying procrastinate.0041_post_retry_failed_job... OK
 
-$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python manage.py shell -c from django.db import transaction; from probe.models import Probe; from probe.tasks import mark; from procrastinate.contrib.django.models import ProcrastinateJob; before=ProcrastinateJob.objects.count(); exec('try:\n with transaction.atomic():\n  p=Probe.objects.create()\n  mark.defer(pk=p.pk)\n  raise ValueError()\nexcept ValueError: pass'); assert Probe.objects.count()==0; assert ProcrastinateJob.objects.count()==before
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] agentmvc-python-toolchain:preflight python manage.py shell -c from django.db import transaction; from probe.models import Probe; from probe.tasks import mark; from procrastinate.contrib.django.models import ProcrastinateJob; before=ProcrastinateJob.objects.count(); exec('try:\n with transaction.atomic():\n  p=Probe.objects.create()\n  mark.defer(pk=p.pk)\n  raise ValueError()\nexcept ValueError: pass'); assert Probe.objects.count()==0; assert ProcrastinateJob.objects.count()==before
 15 objects imported automatically (use -v 2 for details).
 
 
-$ docker run -d --name agentmvc-python-preflight-1790705851-dev --cpus 2 --memory 1g --network agentmvc-python-preflight-1790705851-net -p 127.0.0.1:4111:4111 -v <repo>/.work/python-preflight-1790705851/app:/work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret -e PORT=4111 agentmvc-python-toolchain:preflight bash bin/dev
+$ docker run -d --name agentmvc-python-preflight-1790705851-dev --cpus 2 --memory 1g --network agentmvc-python-preflight-1790705851-net -p 127.0.0.1:4111:4111 -v <repo>/.work/python-preflight-1790705851/app:/work/app -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] -e PORT=4111 agentmvc-python-toolchain:preflight bash bin/dev
 13b7871fcf0df8ac7e23793faa741456f6d5889a917118a9cc2715082f10b787
 
 $ docker exec agentmvc-python-preflight-1790705851-dev python -c from websockets.sync.client import connect; import json; s=connect('ws://127.0.0.1:4111/_preflight/echo'); s.send(json.dumps({'text':'東京 café'})); assert json.loads(s.recv()) == {'text':'東京 café'}; s.close()
@@ -269,15 +269,15 @@ DONE=True
 $ docker rm -f agentmvc-python-preflight-1790705851-dev
 agentmvc-python-preflight-1790705851-dev
 
-$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python manage.py shell -c from probe.models import Probe; from probe.tasks import mark; p=Probe.objects.create(); mark.defer(pk=p.pk); print(p.pk)
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] agentmvc-python-toolchain:preflight python manage.py shell -c from probe.models import Probe; from probe.tasks import mark; p=Probe.objects.create(); mark.defer(pk=p.pk); print(p.pk)
 15 objects imported automatically (use -v 2 for details).
 
 3
 
-$ docker run -d --name agentmvc-python-preflight-1790705851-dev --cpus 2 --memory 1g --network agentmvc-python-preflight-1790705851-net -p 127.0.0.1:4111:4111 -v <repo>/.work/python-preflight-1790705851/app:/work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret -e PORT=4111 agentmvc-python-toolchain:preflight bash bin/dev
+$ docker run -d --name agentmvc-python-preflight-1790705851-dev --cpus 2 --memory 1g --network agentmvc-python-preflight-1790705851-net -p 127.0.0.1:4111:4111 -v <repo>/.work/python-preflight-1790705851/app:/work/app -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] -e PORT=4111 agentmvc-python-toolchain:preflight bash bin/dev
 89a1dfd1d27f85e8d338f2e08b0af03c497b522a05fc87b6edf24c51d13421ab
 
-$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/preflight -e SECRET_KEY_BASE=preflight-disposable-secret agentmvc-python-toolchain:preflight python manage.py shell -c import time; from probe.models import Probe; exec('for _ in range(50):\n if not Probe.objects.filter(done=False).exists(): break\n time.sleep(.1)'); assert not Probe.objects.filter(done=False).exists()
+$ docker run --rm --network agentmvc-python-preflight-1790705851-net -v <repo>/.work/python-preflight-1790705851/app:/work/app -w /work/app -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] agentmvc-python-toolchain:preflight python manage.py shell -c import time; from probe.models import Probe; exec('for _ in range(50):\n if not Probe.objects.filter(done=False).exists(): break\n time.sleep(.1)'); assert not Probe.objects.filter(done=False).exists()
 15 objects imported automatically (use -v 2 for details).
 
 
@@ -389,7 +389,7 @@ $ docker build -t agentmvc-python-preflight-1790705851:production <repo>/.work/p
 
 $ docker exec agentmvc-python-preflight-1790705851-db createdb -U agentmvc production
 
-$ docker run -d --name agentmvc-python-preflight-1790705851-prod --cpus 2 --memory 1g --network agentmvc-python-preflight-1790705851-net -p 127.0.0.1:4111:4111 -e DATABASE_URL=postgres://agentmvc:agentmvc@agentmvc-python-preflight-1790705851-db:5432/production -e SECRET_KEY_BASE=preflight-production-secret -e PORT=4111 agentmvc-python-preflight-1790705851:production
+$ docker run -d --name agentmvc-python-preflight-1790705851-prod --cpus 2 --memory 1g --network agentmvc-python-preflight-1790705851-net -p 127.0.0.1:4111:4111 -e DATABASE_URL=[redacted] -e SECRET_KEY_BASE=[redacted] -e PORT=4111 agentmvc-python-preflight-1790705851:production
 bb8d201ae419c810b55a13066e47968cc4aa011faf823021cad0069f498c0317
 
 $ docker exec agentmvc-python-preflight-1790705851-prod python -c from websockets.sync.client import connect; import json; s=connect('ws://127.0.0.1:4111/_preflight/echo'); s.send(json.dumps({'text':'東京 café'})); assert json.loads(s.recv()) == {'text':'東京 café'}; s.close()

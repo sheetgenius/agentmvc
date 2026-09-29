@@ -2,13 +2,15 @@
 
   .venv/bin/python tools/lane_artifacts.py inspect
   .venv/bin/python tools/lane_artifacts.py export-feedback
+  .venv/bin/python tools/lane_artifacts.py export-checks
   .venv/bin/python tools/lane_artifacts.py package VERSION
   .venv/bin/python tools/lane_artifacts.py verify VERSION
 
 Like archive_raw.py, keep assets in .work and only checksums/provenance in Git.
 Archives restore repository-relative paths. Packaging requires the 18 original
-coding transcripts, four readers, and 144 final raw streams. Existing versions
-survive; additional reference/diagnostic transcripts are listed separately.
+coding transcripts, four readers, and finished measured/reference runtimes
+with 144 raw streams each. Existing versions survive; reference diagnostics
+and all short feedback streams are retained separately from original counts.
 """
 import argparse
 import hashlib
@@ -17,6 +19,7 @@ import re
 import subprocess
 import tarfile
 import tempfile
+from functools import lru_cache
 from pathlib import Path, PurePosixPath
 
 import lane_broker
@@ -45,7 +48,12 @@ def checker():
     # tokens; never copy coordinator descriptors or credentials into a bundle.
     tokens = [re.escape(path.read_text().strip()) for path in
               (ROOT / ".work/lanes").glob("*/control/token") if path.read_text().strip()]
-    return scrub.Scrubber(ROOT, tokens)
+    cleaner = scrub.Scrubber(ROOT, tokens)
+    # Metric keys, route labels and units repeat millions of times. Cache only
+    # this immutable cleaner's exact string results; no rule or check is skipped.
+    cleaner.text = lru_cache(maxsize=16384)(cleaner.text)
+    cleaner.leaks = lru_cache(maxsize=16384)(cleaner.leaks)
+    return cleaner
 
 
 def validate_value(value, cleaner):
@@ -85,6 +93,11 @@ def validate_file(path, cleaner, allow_empty=False):
         if proc.wait():
             raise RuntimeError(f"Invalid zstd stream: {error[-200:]!r}")
         return {"decompressed_bytes": size, "jsonl_records": count}
+    if path.name.endswith(".log.zst"):
+        text = subprocess.check_output(["zstd", "-dc", str(path)]).decode()
+        if cleaner.leaks(text):
+            raise RuntimeError(f"Sensitive compressed log: {relative(path)}")
+        return {"decompressed_bytes": len(text.encode())}
     if path.suffix == ".jsonl":
         with path.open() as stream:
             return {"jsonl_records": validate_lines(stream, cleaner)}
@@ -97,9 +110,13 @@ def validate_file(path, cleaner, allow_empty=False):
 
 
 def provenance(path, records, cleaner):
-    candidates = [path.parent / name for name in ("run.json", "results.json", "prepared.json")]
+    candidates = ([path] if path.suffix == ".json" else [])
+    candidates += [path.with_suffix(".json")]
+    candidates += [path.parent / name for name in ("run.json", "results.json", "prepared.json", "reference.json", "verification.json")]
     record = next((item for item in candidates if item.is_file()), None)
     if record is None:
+        if path.suffix in (".md", ".log"):
+            return None  # General documentation has a content hash, not a run identity.
         raise RuntimeError(f"No published provenance for {relative(path)}")
     name = relative(record)
     if name not in records:
@@ -109,7 +126,7 @@ def provenance(path, records, cleaner):
                          **{key: data[key] for key in PROVENANCE_KEYS if key in data}}
         companions = {}
         for filename in ("verification.json", "isolation.json", "grades.json", "source-snapshot.json",
-                         "publication-adapter.json"):
+                         "publication-adapter.json", "reference.json", "share-boundary.json"):
             item = record.parent / filename
             if item.is_file():
                 validate_file(item, cleaner)
@@ -220,8 +237,89 @@ def export_feedback():
             "publication_status": "scrubbed feedback exported locally; no uploads or workload runs"}
 
 
-def collect():
-    groups = {"transcripts": [], "runtime": []}
+def export_checks():
+    """Preserve completed reference check attempts, including failed gates."""
+    require_coding_stopped()
+    cleaner, exported, pending = checker(), [], []
+    for descriptor in sorted((ROOT / ".work/lanes").glob("*/control/session.json")):
+        session = json.loads(descriptor.read_text())
+        if session["phase"] != "reference":
+            continue
+        result = Path(session["result"])
+        verification, snapshot = result / "verification.json", result / "source-snapshot.json"
+        if not verification.is_file() or not snapshot.is_file():
+            pending.append(session["id"])
+            continue
+        proof, snapshot_record = json.loads(verification.read_text()), json.loads(snapshot.read_text())
+        if proof.get("source_sha256") != snapshot_record["sha256"]:
+            raise RuntimeError("Reference verification does not identify its published source")
+        sources = sorted({path for directory, patterns in (
+            (Path(session["control"]), ("*.log", "*focused*.json")),
+            (Path(session["logs"]) / "independent", ("*.log", "*.json")))
+            for pattern in patterns for path in directory.glob(pattern) if path.is_file()})
+        originals = {relative(path): raw_validation.digest(path) for path in [verification, snapshot, *sources]}
+        dest = result / "check-logs" / lane_continue.lane_run.fingerprint(originals)[:16]
+        if dest.exists():
+            record = json.loads((dest / "results.json").read_text())
+            if record.get("original_file_sha256") != originals:
+                raise RuntimeError("Preserving prior check-log export with a different inventory")
+            for name, sha in record["export_file_sha256"].items():
+                if raw_validation.digest(dest / name) != sha:
+                    raise RuntimeError("Check-log export checksum changed")
+                validate_file(dest / name, cleaner)
+            exported.append(relative(dest))
+            continue
+        WORK.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix="checks-", dir=WORK) as temporary:
+            staging = Path(temporary) / "published"
+            staging.mkdir()
+            for source_path in sources:
+                name = ("control-" if source_path.parent == Path(session["control"]) else "independent-") + source_path.name
+                if source_path.suffix == ".json":
+                    save_scrubbed_json(staging / name, json.loads(source_path.read_text()), cleaner)
+                else:
+                    plain = Path(temporary) / name
+                    plain.write_text(cleaner.text(source_path.read_text()))
+                    validate_file(plain, cleaner)
+                    compressed = staging / (name + ".zst")
+                    subprocess.run(["zstd", "-q", "-T2", "-o", str(compressed), str(plain)], check=True)
+                    validate_file(compressed, cleaner)
+            record = {"session": session["id"], "condition": "reference check-log publication",
+                      "source_sha256": snapshot_record["sha256"],
+                      "verification": {"path": relative(verification), "record": proof},
+                      "original_file_sha256": originals,
+                      "export_file_sha256": {path.name: raw_validation.digest(path) for path in staging.iterdir()},
+                      "exported_at": lane_broker.stamp(),
+                      "scope": "Reference control and independent check evidence present after verification; originals preserved",
+                      "export_tools_sha256": {Path(module.__file__).name: raw_validation.digest(Path(module.__file__))
+                                              for module in (lane_continue, scrub, raw_validation)},
+                      "exporter_sha256": raw_validation.digest(Path(__file__))}
+            save_scrubbed_json(staging / "results.json", record, cleaner)
+            if any(raw_validation.digest(ROOT / name) != sha for name, sha in originals.items()):
+                raise RuntimeError("Reference check evidence changed during export")
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            staging.rename(dest)
+        exported.append(relative(dest))
+    return {"exported": exported, "pending_verification": pending,
+            "publication_status": "scrubbed reference check logs exported locally; not uploaded"}
+
+
+def runtime_finished(condition):
+    base = OUT / "runtime" / condition
+    path = base / "summary.json"
+    if not path.is_file():
+        return False
+    summary = json.loads(path.read_text())
+    applications, records = summary.get("applications", {}), summary.get("records", [])
+    expected = {(sid, number, kind) for sid in applications for number in (1, 2) for kind in ("http", "socket")}
+    actual = {(row.get("session"), row.get("round"), row.get("kind")) for row in records}
+    return bool(summary.get("finished") and summary.get("condition") == condition and len(applications) == 4
+                and len(records) == 16 and actual == expected
+                and all((base / row["path"] / "results.json").is_file() for row in records))
+
+
+def artifact_paths():
+    groups = {"transcripts": [], "runtime": [], "evidence": []}
     for base in SOURCES:
         for path in sorted(base.rglob("*transcript*.jsonl")):
             if "source" in path.relative_to(base).parts:
@@ -230,11 +328,23 @@ def collect():
             if not markdown.is_file():
                 raise RuntimeError(f"Missing readable transcript: {relative(path)}")
             groups["transcripts"].extend((path, markdown))
+        for path in sorted(base.rglob("*")):
+            parts = path.relative_to(base).parts
+            if (not path.is_file() or "source" in parts or "transcript" in path.name or
+                    re.fullmatch(r"artifacts-.+\.json", path.name)):
+                continue
+            if path.suffix in (".json", ".md", ".log") or path.name.endswith(".log.zst"):
+                groups["evidence"].append(path)
     groups["runtime"] = sorted((OUT / "runtime").rglob("raw-*.json.zst"))
+    return groups
+
+
+def collect():
+    groups = artifact_paths()
     tracked = set(subprocess.check_output(["git", "ls-files", "-z", "--", *[relative(p) for p in SOURCES]],
                                           cwd=ROOT).decode().split("\0"))
-    selected = [path for paths in groups.values() for path in paths]
-    if any(relative(path) in tracked for path in selected):
+    if any(relative(path) in tracked for path in groups["transcripts"]+groups["runtime"]
+           +[path for path in groups["evidence"] if path.name.endswith(".log.zst")]):
         raise RuntimeError("Full lane transcripts/raw streams must remain outside Git")
     cleaner, records = checker(), {}
     entries = {}
@@ -249,6 +359,10 @@ def collect():
                 data = json.loads((path.parent / "results.json").read_text())
                 if data.get("raw_stream_sha256", {}).get(path.name) != sha:
                     raise RuntimeError(f"Raw stream does not match its runtime record: {name}")
+            elif path.name.endswith(".log.zst"):
+                data = json.loads((path.parent / "results.json").read_text())
+                if data.get("export_file_sha256", {}).get(path.name) != sha:
+                    raise RuntimeError(f"Check log does not match its publication record: {name}")
             entries[kind].append({"path": name, "bytes": path.stat().st_size, "sha256": sha,
                                   "provenance": source_record, **validation})
     step_name = lane_continue.lane_run.workdir.step_name
@@ -266,11 +380,21 @@ def collect():
                             f"raw-{prefix}{scenario}.json.zst") for sid in final_ids for number in (1, 2)
                     for prefix in ("", "warmup-") for scenario in lane_check.SCENARIOS}
     original_streams = len(raw_paths & original_raw)
+    reference_summary = OUT / "runtime/reference/summary.json"
+    reference_ids = json.loads(reference_summary.read_text()).get("applications", {}) if reference_summary.is_file() else {}
+    reference_raw = {relative(OUT / "runtime/reference" / sid / f"round{number}/http" /
+                             f"raw-{prefix}{scenario}.json.zst") for sid in reference_ids for number in (1, 2)
+                     for prefix in ("", "warmup-") for scenario in lane_check.SCENARIOS}
+    reference_streams = len(raw_paths & reference_raw)
     return {"files": entries, "provenance": records,
             "coverage": {"coding_transcripts": coding, "reader_transcripts": readers,
                          "measured_raw_streams": original_streams,
                          "additional_transcripts": sorted(transcripts - coding_paths - reader_paths),
                          "additional_runtime_streams": len(raw_paths - original_raw),
+                         "reference_raw_streams": reference_streams,
+                         "reference_inventory_complete": len(reference_ids) == 4 and reference_streams == 144,
+                         "runtime_finished": {condition: runtime_finished(condition) for condition in ("measured", "reference")},
+                         "reference_check_logs": sum(row['path'].endswith('.log.zst') for row in entries['evidence']),
                          "expected_originals": {"coding_transcripts": 18, "reader_transcripts": 4, "measured_raw_streams": 144},
                          "original_inventory_complete": coding == 18 and readers == 4 and original_streams == 144}}
 
@@ -334,9 +458,14 @@ def package(version):
     work = WORK / version
     if manifest_path.exists() or work.exists():
         raise RuntimeError("Preserving existing artifact version; select a new version")
+    if not all(runtime_finished(condition) for condition in ("measured", "reference")):
+        raise RuntimeError("Finish both measured and reference runtime before release packaging")
+    checks = export_checks()
+    if checks["pending_verification"]:
+        raise RuntimeError("Reference check publication is still incomplete")
     data = collect()
-    if not data["coverage"]["original_inventory_complete"]:
-        raise RuntimeError("Final original inventory is incomplete; inspect reports what is available")
+    if not all(data["coverage"][name] for name in ("original_inventory_complete", "reference_inventory_complete")):
+        raise RuntimeError("Final original/reference inventory is incomplete; inspect reports what is available")
     work.mkdir(parents=True)
     assets = {kind: create_archive(work / f"agentmvc-lanes-{version}-{kind}.tar.zst", rows)
               for kind, rows in data["files"].items() if rows}
@@ -366,13 +495,16 @@ def verify(version):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("inspect", "export-feedback", "package", "verify"))
+    parser.add_argument("action", choices=("inspect", "export-feedback", "export-checks", "package", "verify"))
     parser.add_argument("version", nargs="?")
     args = parser.parse_args()
     if args.action in ("package", "verify") and (not args.version or not re.fullmatch(r"[a-z0-9][a-z0-9._-]{0,55}", args.version)):
         parser.error("Provide a short lowercase artifact version, for example v1")
     if args.action == "export-feedback":
         print(json.dumps(export_feedback(), indent=2))
+        return
+    if args.action == "export-checks":
+        print(json.dumps(export_checks(), indent=2))
         return
     result = collect() if args.action == "inspect" else package(args.version) if args.action == "package" else verify(args.version)
     print(json.dumps({"coverage": result["coverage"], "assets": result.get("assets", {}),

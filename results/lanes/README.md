@@ -13,16 +13,18 @@ Two new paths through the same Conduit product: build it in eight successive ses
 
 ## Reviewed references
 
-These separately labeled repairs preserve the measured originals. Their added tests, source size and independent checks are recorded; their editing effort is not pooled with one-shot effort.
+Each row selects the latest independently verified reference for that application. These repairs preserve earlier attempts and measured originals; their editing effort is not pooled with coding effort. Reviewer checks remain separately visible.
 
 | Reference source | Owned backend | Reviewer checks |
 | --- | ---: | --- |
-| [Go · eight-step reference](go/8-live-editing/reference-1/source) | 14,249 tokens | [21/21 contract · 3/3 quality · favorites 48/48](go/8-live-editing/reference-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](go/8-live-editing/reference-1/reviewer-parity/share-boundary.json) |
-| [Python · eight-step reference](python/8-live-editing/reference-1/source) | 8,429 tokens | [21/21 contract · 3/3 quality · favorites 48/48](python/8-live-editing/reference-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](python/8-live-editing/reference-1/reviewer-parity/share-boundary.json) |
+| [Go · eight-step reference 1](go/8-live-editing/reference-1/source) | 14,249 tokens | [21/21 contract · 3/3 quality · favorites 48/48](go/8-live-editing/reference-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](go/8-live-editing/reference-1/reviewer-parity/share-boundary.json) |
+| [Go · one-shot reference 1](../one-shot-v2-go-expert/pilot-1/reference-1/source) | 12,846 tokens | [21/21 contract · 3/3 quality · favorites 48/48](../one-shot-v2-go-expert/pilot-1/reference-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](../one-shot-v2-go-expert/pilot-1/reference-1/reviewer-parity/share-boundary.json) |
+| [Python · eight-step reference 1](python/8-live-editing/reference-1/source) | 8,429 tokens | [21/21 contract · 3/3 quality · favorites 48/48](python/8-live-editing/reference-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](python/8-live-editing/reference-1/reviewer-parity/share-boundary.json) |
+| [Python · one-shot reference 2](../one-shot-v2-python-expert/pilot-1/reference-2/source) | 9,058 tokens | [21/21 contract · 3/3 quality · favorites 48/48](../one-shot-v2-python-expert/pilot-1/reference-2/reviewer-parity/results.json) · [shared 3/3 + 1/1](../one-shot-v2-python-expert/pilot-1/reference-2/reviewer-parity/share-boundary.json) |
 
 **Python:** Django + Django Ninja, with Django associations, migrations and password services; Channels for raw WebSockets; Procrastinate for PostgreSQL jobs. [Why this stack](../../stacks/python/STACK.md).
 
-**Go:** the prepared expert toolkit is Huma + chi, Bun, Goose and River. The sequential agent chose **chi + Bun** and removed Huma in step 1; that is a recorded implementation choice. The independent expert one-shot explicitly asks for Huma typed operations. [Why this toolkit](../../stacks/go/SELECTION.md).
+**Go:** the sequential implementation uses **chi + Bun** and removed Huma in step 1. The expert one-shot uses Huma for only `/api/tags` and `/health`; most product handlers use chi directly, alongside Bun, Goose and River. These are the observed implementations of the supplied Huma/chi guidance. [Why this toolkit](../../stacks/go/SELECTION.md).
 
 The one-shots start from product-free scaffolds and use the [same expert-v2 prompt](../../one-shot-v2-expert/PROMPT.md) as the recent Rails, Phoenix and TypeScript builds. The sequential lanes use the original eight prompt files. Stack guidance and preparation are disclosed separately; these are distinct conditions, not pooled trials.
 
@@ -50,7 +52,7 @@ Each row describes one exact source snapshot. The eight-step effort is the sum o
 | Application | Owned / whole backend tokens | Coding minutes | Uncached + output tokens | Reviewer HTTP parity |
 | --- | ---: | ---: | ---: | --- |
 | [Go · eight steps](../../stacks/go/8-live-editing) | 14,203 / 15,746 | 71.0 | 722,152 | [21/21 contract · 3/3 quality · favorites 48/48](go/8-live-editing/reviewer-parity/results.json) · [shared 1/3 + 0/1](go/8-live-editing/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
-| [Go · expert one-shot](../one-shot-v2-go-expert/pilot-1/source) | 12,530 / 14,501 | 16.1 | 169,516 | Pending |
+| [Go · expert one-shot](../one-shot-v2-go-expert/pilot-1/source) | 12,530 / 14,501 | 16.1 | 169,516 | [20/21 contract · 2/3 quality · favorites 48/48](../one-shot-v2-go-expert/pilot-1/reviewer-parity/results.json) · [shared 3/3 + 0/1](../one-shot-v2-go-expert/pilot-1/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
 | [Python · eight steps](../../stacks/python/8-live-editing) | 8,308 / 9,014 | 70.2 | 842,429 | [20/21 contract · 3/3 quality · favorites 38/48](python/8-live-editing/reviewer-parity/results.json) · [shared 3/3 + 1/1](python/8-live-editing/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
 | [Python · expert one-shot](../one-shot-v2-python-expert/pilot-1/source) | 8,718 / 9,684 | 12.2 | 133,594 | [21/21 contract · 3/3 quality · favorites 38/48](../one-shot-v2-python-expert/pilot-1/reviewer-parity/results.json) · [shared 3/3 + 0/1](../one-shot-v2-python-expert/pilot-1/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
 
@@ -63,6 +65,9 @@ tools/lane_demo.sh go
 tools/lane_demo.sh python
 # Or use the independently built expert app:
 tools/lane_demo.sh python one-shot
+# Reviewed repairs require passed independent and reviewer checks:
+tools/lane_demo.sh python eight-reference
+tools/lane_demo.sh python one-shot-reference
 ```
 
 Set `DEMO_BACKEND_PORT` and `DEMO_FRONTEND_PORT` to override the localhost ports.

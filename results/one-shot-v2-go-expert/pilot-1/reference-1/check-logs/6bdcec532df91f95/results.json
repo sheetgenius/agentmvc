@@ -1,0 +1,56 @@
+{
+  "session": "go-one-shot-reference-1",
+  "condition": "reference check-log publication",
+  "source_sha256": "632acb4f0dc55af31dcede3b8170b592a4cc2dbc15ac97c1e3627e3c6384fa92",
+  "verification": {
+    "path": "results/one-shot-v2-go-expert/pilot-1/reference-1/verification.json",
+    "record": {
+      "passed": true,
+      "checks": {
+        "development": 0,
+        "production": 0
+      },
+      "checked_at": "2026-09-29T20:17:33.111475+00:00",
+      "source_sha256": "632acb4f0dc55af31dcede3b8170b592a4cc2dbc15ac97c1e3627e3c6384fa92",
+      "reviewer_adapter": {
+        "path": "tools/lane_review.py",
+        "sha256": "0131bb4fc4e9aab709eede4020f60bd8a962b9f6b9d0da816aa509516af7e348",
+        "reason": "Wait for PostgreSQL TCP server, not its temporary Unix-socket initialization server",
+        "coding_inputs_changed": false,
+        "source_changed": false
+      }
+    }
+  },
+  "original_file_sha256": {
+    "results/one-shot-v2-go-expert/pilot-1/reference-1/verification.json": "2c2eb4027e471dbe84fbf5413e4112c8b359196b3c34688ae4185b6a6fa6544e",
+    "results/one-shot-v2-go-expert/pilot-1/reference-1/source-snapshot.json": "9ff181c313eaf40787f38cdb76abf2f5417ae2b98b01c3ae2609933920c7bdbd",
+    ".work/lanes/go-one-shot-reference-1/control/dependency-prewarm.log": "f18c14f66a488e7896c839da062e6dcbc754b9e7d5b8a8f83353023092017dd3",
+    ".work/lanes/go-one-shot-reference-1/control/independent-development-2026-09-29T20-16-57.524270+00-00.log": "08b4651fa86cc504c5f8e9e44e1566a31b0a2eda2799b1733cf3514ccbf239ef",
+    ".work/lanes/go-one-shot-reference-1/control/independent-production-2026-09-29T20-16-57.524270+00-00.log": "e96bcbfae8f787107c7d9c83b78fa625d97de2f2071dd2fc7a826ae0fc77e378",
+    ".work/lanes/go-one-shot-reference-1/control/reference-focused.json": "044341750a67dd22d60c494e04e66bd6cdf867dad75e65e0a73fa38f7914cad0",
+    ".work/lanes/go-one-shot-reference-1/control/reference-focused.log": "26958367115a454e84aa5e3e8122a229989ae1e58e5f6ca0fe1b94a1c2afe81c",
+    ".work/lanes/go-one-shot-reference-1/logs/independent/development-2026-09-29T20-16-57.564404+00-00-f020ef64.json": "c4deb4e9005da295bfb212276ae6da0292842dd12668ad88f02f6d4a87e63d1a",
+    ".work/lanes/go-one-shot-reference-1/logs/independent/development-2026-09-29T20-16-57.564404+00-00-f020ef64.log": "961236b1f2618d18bed17f5a7568ac315be080fb8a10a7f88393a5e5412b4ad2",
+    ".work/lanes/go-one-shot-reference-1/logs/independent/production-2026-09-29T20-17-12.241601+00-00-d4ce0770.json": "f564539b6b38696429a9f3bfafb63a4e33c8e1adb6218c0120fbba41de336020",
+    ".work/lanes/go-one-shot-reference-1/logs/independent/production-2026-09-29T20-17-12.241601+00-00-d4ce0770.log": "bebbcdda5db54b6fff5874f7bc3f3f5dd5873ad51bfb89287a789ed138a82aa5"
+  },
+  "export_file_sha256": {
+    "independent-development-2026-09-29T20-16-57.564404+00-00-f020ef64.log.zst": "1d523764f1850feb4a252fe0f4db9890e79e8cdd4cf5f4a0e96b77520329390e",
+    "control-independent-production-2026-09-29T20-16-57.524270+00-00.log.zst": "9b5a1f390e8644e62b0fdb4f23410af5d191d1b8868f580b8994fc9e5d22ec3e",
+    "control-dependency-prewarm.log.zst": "d3c48746f878efa2936576ccc2505da215a89416f71d94a8ac340d8c46cf8411",
+    "independent-production-2026-09-29T20-17-12.241601+00-00-d4ce0770.json": "f564539b6b38696429a9f3bfafb63a4e33c8e1adb6218c0120fbba41de336020",
+    "control-independent-development-2026-09-29T20-16-57.524270+00-00.log.zst": "bcdee171c9f97fc9bad64d7be345574fbd87205eb25b7479bfb3c10912a59bfa",
+    "control-reference-focused.log.zst": "c4f8eb4add5e7dd708a560900b927f24a1712a5ff6edf2a6a796e2693c73b1c4",
+    "independent-production-2026-09-29T20-17-12.241601+00-00-d4ce0770.log.zst": "b53443ba388a2757109ab6f4463ce138a99d1fa4bf29139bbf14e958397750c4",
+    "independent-development-2026-09-29T20-16-57.564404+00-00-f020ef64.json": "c4deb4e9005da295bfb212276ae6da0292842dd12668ad88f02f6d4a87e63d1a",
+    "control-reference-focused.json": "3e798172dcef48b0379327b80c9543c968085977a9b495ea57ab283abff6e83b"
+  },
+  "exported_at": "2026-09-29T20:34:20.761716+00:00",
+  "scope": "Reference control and independent check evidence present after verification; originals preserved",
+  "export_tools_sha256": {
+    "lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+    "v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79"
+  },
+  "exporter_sha256": "4d08f8cb7270c2e7041e0b000e892d211ee12f384b1a26b0153fc4a22e58e79d"
+}
