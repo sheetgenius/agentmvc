@@ -35,7 +35,7 @@ ENTRIES = (("go", "8"), ("python", "8"), ("go", "one-shot"), ("python", "one-sho
 SCENARIOS = set(lane_check.SCENARIOS)
 SOCKET_COUNTS = (10, 100, 500)
 TOOLS = ("lane_evidence.py", "lane_check.py", "lane_broker.py", "lane_continue.py", "lane_review.py",
-         "reviewer_common_http_probe.py", "lane_favorites_probe.py", "bench/bench.py", "bench/load.js", "bench/seed.py",
+         "reviewer_common_http_probe.py", "lane_favorites_probe.py", "lane_share_probe.py", "lane_share_review.py", "bench/bench.py", "bench/load.js", "bench/seed.py",
          "one_shot_live_bench.py", "live-load.mjs", "v2_expert_symmetry_validate.py", "scrub.py")
 
 
@@ -321,6 +321,11 @@ def runtime(sessions, condition="measured"):
             raise RuntimeError(f"Frozen production gates must pass on this snapshot: {session.id}")
         if condition == "reference" and not proof.get("passed"):
             raise RuntimeError(f"Reference runtime requires full reviewer parity: {session.id}")
+        share_proof = load(parity_path(session) / "share-boundary.json")
+        if share_proof.get("source_sha256") != identity["source_sha256"]:
+            raise RuntimeError(f"Shared-edit review is missing or for a different source: {session.id}")
+        if condition == "reference" and not share_proof.get("passed"):
+            raise RuntimeError(f"Reference runtime requires shared-edit reviewer parity: {session.id}")
         identities[session.id] = {**identity, "image_sha256": proof["image_sha256"]}
     if len(identities) != len(sessions):
         raise RuntimeError("Runtime session list contains duplicates")
@@ -334,6 +339,8 @@ def runtime(sessions, condition="measured"):
                               "source_driven_favorites_passed", "common_parity_passed")}
                   for session in sessions},
               "interpretation": "Runtime success does not imply supplemental reviewer parity; see reviewer_parity."}
+    record["shared_edit_review"] = {session.id: load(parity_path(session) / "share-boundary.json").get("passed")
+                                    for session in sessions}
     dest.mkdir(parents=True)
     try:
         with broker.resources():

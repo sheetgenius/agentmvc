@@ -1,4 +1,6 @@
-# Supplemental source review — pending live confirmation
+# Supplemental source review
+
+**Later confirmation:** the final Python eight-step source reproduced the favorite-count issue in [38/48 passing cases](python/8-live-editing/reviewer-parity/results.json). Its separate [reference repair](python/8-live-editing/reference-1/) passes all 48. The observations below preserve the original step-4 review and its uncertainty at the time; no feedback was supplied to either measured coding agent.
 
 This review inspected the published Python `4-tune` checkpoint. It did not
 change measured sources, frozen inputs, or the common reviewer probe, and was

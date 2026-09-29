@@ -1,0 +1,66 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 564B done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 2.0s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/golang:1.27.1-bookworm@sha256:69a7b9788769bec032d238959b61854e9ae87f57be9029ec04e9885fabf99195
+#4 DONE 0.0s
+
+#5 [internal] load metadata for gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+#5 DONE 0.8s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 113B done
+#6 DONE 0.0s
+
+#7 [stage-1 1/2] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+#7 DONE 0.0s
+
+#8 [build 1/7] FROM docker.io/library/golang:1.27.1-bookworm@sha256:69a7b9788769bec032d238959b61854e9ae87f57be9029ec04e9885fabf99195
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 71.08kB done
+#9 DONE 0.0s
+
+#10 [build 6/7] COPY internal ./internal
+#10 CACHED
+
+#11 [build 7/7] RUN go build -trimpath -ldflags="-s -w" -o /out/server ./cmd/server
+#11 CACHED
+
+#12 [build 3/7] COPY go.mod go.sum ./
+#12 CACHED
+
+#13 [build 4/7] RUN go mod download
+#13 CACHED
+
+#14 [build 5/7] COPY cmd ./cmd
+#14 CACHED
+
+#15 [build 2/7] WORKDIR /src
+#15 CACHED
+
+#16 [stage-1 2/2] COPY --from=build /out/server /server
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 writing image sha256:8fd76a3d64147c22232f189e1cad5134fa6fba76b212bad7d3fe2120d2e5209e done
+#17 naming to docker.io/library/agentmvc-lane-go-8-live-editing-1:current done
+#17 DONE 0.0s
+
+8dff81b95415982463e5186a4979a13149b3bec01f4969d658b509d245eaface
+
+c385822db6ad15f08e396fdf9c5598f61f23bd07b4de42d1eed53d37276bad52
+
+6259960ab64d6dc4f5adf08d6fbfebc6e567adbc8f28f6ddb9a2f4b915b2d7cb
+
+2026/09/29 19:57:56 INFO listening address=:4170

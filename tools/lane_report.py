@@ -43,6 +43,47 @@ def span(values, decimals=0):
     return format(low, fmt) if low == high else f'{format(low, fmt)}–{format(high, fmt)}'
 
 
+def review_cell(folder):
+    proof = read(folder/'reviewer-parity/results.json')
+    share = read(folder/'reviewer-parity/share-boundary.json')
+    if not proof:
+        return 'Pending'
+    common = proof.get('http_probe', {}).get('summary', {})
+    favorite = proof.get('source_driven_favorites', {}).get('summary', {})
+    status = link(folder/'reviewer-parity/results.json',
+                  f'{common.get("contract_passed",0)}/21 contract · {common.get("quality_passed",0)}/3 quality · favorites {favorite.get("passed",0)}/48')
+    if share:
+        summary = share.get('probe', {}).get('summary', {})
+        status += ' · '+link(folder/'reviewer-parity/share-boundary.json',
+                             f'shared {summary.get("contract_passed",0)}/3 + {summary.get("quality_diagnostic_passed",0)}/1')
+    else:
+        status += ' · shared pending'
+    if not proof.get('passed') or not share or not share.get('passed'):
+        status += ' · **not full reviewer parity**'
+    return status
+
+
+def reference_tables(data):
+    rows = []
+    for stack in ('go', 'python'):
+        for phase in ('8-live-editing', 'one-shot'):
+            parent = data[stack][phase]
+            if not parent:
+                continue
+            folder = parent['folder']/'reference-1'
+            size, verification, snapshot = (read(folder/name) for name in
+                                            ('size.json', 'verification.json', 'source-snapshot.json'))
+            if size and verification and verification.get('passed'):
+                label = f'{stack.title()} · '+('eight-step reference' if phase!='one-shot' else 'one-shot reference')
+                rows.append(f'| {link(ROOT/snapshot["path"],label)} | {size["owned_tokens"]:,} tokens | {review_cell(folder)} |')
+    if not rows:
+        return []
+    return ['', '## Reviewed references', '',
+            'These separately labeled repairs preserve the measured originals. Their added tests, source size and independent checks are recorded; their editing effort is not pooled with one-shot effort.', '',
+            '| Reference source | Owned backend | Reviewer checks |',
+            '| --- | ---: | --- |', *rows]
+
+
 def final_tables(data):
     finals = [(stack, phase, data[stack][phase]) for stack in ('go','python')
               for phase in ('8-live-editing','one-shot') if data[stack][phase]]
@@ -59,15 +100,7 @@ def final_tables(data):
         runs = [item['run'] for item in sessions if item and item['run']]
         minutes = f'{sum(run["seconds"] for run in runs)/60:.1f}' if len(runs)==len(sessions) else 'Pending'
         effort = f'{sum(run["tokens"]["uncached_plus_output"] for run in runs):,}' if len(runs)==len(sessions) else 'Pending'
-        proof = read(row['folder']/'reviewer-parity/results.json')
-        parity = 'Pending'
-        if proof:
-            summary = proof.get('http_probe',{}).get('summary',{})
-            parity = link(row['folder']/'reviewer-parity/results.json',
-                          f'{summary.get("contract_passed",0)}/21 contract · {summary.get("quality_passed",0)}/3 quality')
-            favorite = proof.get('source_driven_favorites',{}).get('summary',{})
-            parity += f' · favorites {favorite.get("passed",0)}/48'
-            if not proof.get('passed'): parity += ' · **not full parity**'
+        parity = review_cell(row['folder'])
         size = row['size']
         lines.append(f'| {source} | {size["owned_tokens"]:,} / {size["tokens"]:,} | {minutes} | {effort} | {parity} |')
     runtime = OUT/'runtime/measured'
@@ -108,6 +141,7 @@ def main():
             count=f'{size["owned_tokens"]:,} tokens · {size["owned_lines"]:,} lines'
         else: source=count='Pending'
         lines.append(f'| {label} | {source} | {count} | {cell(data[stack]["one-shot"])} |')
+    lines += reference_tables(data)
     lines += ['',
               '**Python:** Django + Django Ninja, with Django associations, migrations and password services; Channels for raw WebSockets; Procrastinate for PostgreSQL jobs. [Why this stack](../../stacks/python/STACK.md).','',
               '**Go:** the prepared expert toolkit is Huma + chi, Bun, Goose and River. The sequential agent chose **chi + Bun** and removed Huma in step 1; that is a recorded implementation choice. The independent expert one-shot explicitly asks for Huma typed operations. [Why this toolkit](../../stacks/go/SELECTION.md).','',
@@ -122,15 +156,17 @@ def main():
     lines += final_tables(data)
     lines += ['',
               '## Try a completed app','',
-              'With Docker, Node.js and npm installed, these commands build a published step-8 source, create a fresh database, and open the fixed Lit editor. They become available when the corresponding step-8 checkpoint is published. Ctrl-C removes their containers.','',
+              'From the repository root, use Docker, Node.js 22.12+ (or 20.19+ on the 20.x line), npm, curl and OpenSSL. These commands work from a fresh clone once the corresponding source checkpoint is published. The script installs client dependencies, builds the backend, creates a fresh database, and prints an editor link to open in several tabs. Ctrl-C cleans up the demo.','',
               '```sh','tools/lane_demo.sh go','tools/lane_demo.sh python',
               '# Or use the independently built expert app:','tools/lane_demo.sh python one-shot','```','',
+              'Set `DEMO_BACKEND_PORT` and `DEMO_FRONTEND_PORT` to override the localhost ports.','',
               '## Evidence and limits','',
               '- [Go preflight](go/preflight.json) and [Python preflight](python/preflight.json): migrations, durable jobs, sockets, reload, production packaging and image identities.',
               '- Each checkpoint directory contains its measured agent report, effort/failure counts, source inventory, actual isolation probe and independent verification.',
               '- [Comprehension](comprehension/): fresh read-only agents answer the original twelve questions after steps 1 and 6. Scores require source-supported grading.',
               '- Reviewer parity adds the same 21 contract and 3 quality HTTP probes used for the current references. Original failures remain visible; later repairs must be separate snapshots.',
               '- A [source review](REVIEW-NOTES.md) prompted a separate 48-case favorite-count diagnostic, applied equally to every final Go/Python app. It does not change the frozen coding requirements.',
+              '- The later [expert review](EXPERT-REVIEW.md) adds three shared-edit contract cases and one envelope-quality case, recorded separately for each final app. References must also pass these checks.',
               '- Tuning feedback uses short 3-second samples. Final HTTP measurements use all nine workloads, 16 users and two 15-second rounds, with app and database each limited to 2 CPUs and 1 GiB. Socket measurements cover 10, 100 and 500 subscribers.',
               '- Full transcripts and compressed raw streams belong in external release assets, with checked hashes and links recorded here when published. They are not committed to Git.','',
               '[Detailed method and reproduction commands](METHODOLOGY.md) · [Main comparison](../../README.md) · [Contributing](../../CONTRIBUTING.md)','']

@@ -1,0 +1,211 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 675B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.14.7-slim-bookworm@sha256:82bc3c539b8813ada9d68c63b40158fa002f7f33de9bf3312a3dfdc0620dff56
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 137B done
+#3 DONE 0.0s
+
+#4 [builder 1/5] FROM docker.io/library/python:3.14.7-slim-bookworm@sha256:82bc3c539b8813ada9d68c63b40158fa002f7f33de9bf3312a3dfdc0620dff56
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 252.44kB done
+#5 DONE 0.0s
+
+#6 [stage-1 2/5] WORKDIR /app
+#6 CACHED
+
+#7 [stage-1 3/5] COPY --from=builder /app/.venv /app/.venv
+#7 CACHED
+
+#8 [stage-1 4/5] COPY . .
+#8 CACHED
+
+#9 [builder 3/5] WORKDIR /app
+#9 CACHED
+
+#10 [builder 4/5] COPY pyproject.toml uv.lock ./
+#10 CACHED
+
+#11 [builder 5/5] RUN uv sync --frozen --no-dev --no-cache --compile-bytecode
+#11 CACHED
+
+#12 [builder 2/5] RUN pip install --no-cache-dir uv==0.12.20
+#12 CACHED
+
+#13 [stage-1 5/5] RUN python -m compileall -q /app && useradd --create-home --uid 10001 app && chown -R app:app /app
+#13 CACHED
+
+#14 exporting to image
+#14 exporting layers done
+#14 writing image sha256:636869c7d27f178169373a06c4a5a1d1e9535429116093e8ab9045adb8ff1111 done
+#14 naming to docker.io/library/agentmvc-lane-python-one-shot-1:current done
+#14 DONE 0.0s
+
+bf268d13278b28a6e1e2985c41a10f6909b48b3a5431b67c8a697aa719c33155
+
+8f94985dd952a1a5aaf0c28485143b945b2abff47840bfceb346afeb9d472d1d
+
+a2c4145c37579f4d12bdfbd287bb197e14abc3ac48085df7dae472cf8f968e35
+
+Success api/hurl/articles.hurl (17 request(s) in 125 ms)
+Success api/hurl/auth.hurl (20 request(s) in 89 ms)
+Success api/hurl/comments.hurl (13 request(s) in 84 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 56 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 209 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 131 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 68 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 31 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 97 ms)
+Success api/hurl/feed.hurl (12 request(s) in 105 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 41 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 129 ms)
+Success api/hurl/tags.hurl (4 request(s) in 31 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 142 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 157 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 357 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 126 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (118.3/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          2003 ms (0h:0m:2s:3ms)
+
+Success s01_jwt_alg_none.hurl (1 request(s) in 2 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 34 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 4 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 74 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 40 ms)
+Success s06_injection_filters.hurl (4 request(s) in 50 ms)
+Success s07_malformed_json.hurl (1 request(s) in 0 ms)
+Success s08_wrong_types.hurl (8 request(s) in 31 ms)
+Success s09_oversized_body.hurl (2 request(s) in 128 ms)
+Success s10_unknown_route.hurl (1 request(s) in 1 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 131 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 2 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 1201 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (30.4/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          1710 ms (0h:0m:1s:710ms)
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (525ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (518ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (136ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (237ms)
+
+  4 passed (1.7s)
+
+INFO:     172.29.51.1:49464 - "GET /api/shares/VPDHvlkFI_z9vvcox_ZCqmyQ/article HTTP/1.1" 200 OK
+INFO:     172.29.51.1:49478 - "DELETE /api/articles/share-edit-cc86d21859ea-5cb0ac278a/share HTTP/1.1" 204 No Content
+INFO:     172.29.51.1:49484 - "GET /api/shares/VPDHvlkFI_z9vvcox_ZCqmyQ/article HTTP/1.1" 404 Not Found
+INFO:     172.29.51.1:49498 - "POST /api/users HTTP/1.1" 201 Created
+INFO:     172.29.51.1:49502 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49506 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49520 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49524 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49538 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49540 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49552 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49556 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49558 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49572 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49576 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49584 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49596 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49608 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49612 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49616 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49624 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49626 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49634 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49638 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49642 - "POST /api/users/login HTTP/1.1" 429 Too Many Requests
+INFO:     172.29.51.1:49648 - "POST /api/users HTTP/1.1" 201 Created
+INFO:     172.29.51.1:49698 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49666 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49712 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49668 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49674 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49654 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49676 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49686 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49704 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49732 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49720 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49684 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49744 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49764 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49758 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49816 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49780 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49808 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49790 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49850 - "POST /api/users/login HTTP/1.1" 429 Too Many Requests
+INFO:     172.29.51.1:49806 - "POST /api/users/login HTTP/1.1" 401 Unauthorized
+INFO:     172.29.51.1:49832 - "POST /api/users/login HTTP/1.1" 429 Too Many Requests
+INFO:     172.29.51.1:49814 - "POST /api/users/login HTTP/1.1" 429 Too Many Requests
+INFO:     172.29.51.1:49846 - "POST /api/users/login HTTP/1.1" 429 Too Many Requests
+INFO:     172.29.51.1:49854 - "POST /api/users/login HTTP/1.1" 429 Too Many Requests
+INFO:     172.29.51.1:49856 - "POST /api/users/login HTTP/1.1" 429 Too Many Requests
+INFO:     172.29.51.1:49868 - "POST /api/users HTTP/1.1" 201 Created
+INFO:     172.29.51.1:49876 - "POST /api/users HTTP/1.1" 201 Created
+INFO:     172.29.51.1:49892 - "POST /api/users HTTP/1.1" 201 Created
+INFO:     172.29.51.1:49908 - "POST /api/users HTTP/1.1" 201 Created
+INFO:     172.29.51.1:49910 - "POST /api/articles HTTP/1.1" 201 Created
+INFO:     172.29.51.1:49920 - "POST /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499/favorite HTTP/1.1" 200 OK
+INFO:     172.29.51.1:49922 - "POST /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499/favorite HTTP/1.1" 200 OK
+INFO:     172.29.51.1:49936 - "GET /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:49950 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:49960 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_a_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:49976 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_b_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:49984 - "GET /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:49988 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:49996 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_a_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50008 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_b_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50018 - "GET /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50034 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50048 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_a_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50062 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_b_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50064 - "GET /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50072 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50088 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_a_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50090 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_b_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50100 - "GET /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50104 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50112 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_a_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50128 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_b_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50136 - "DELETE /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499/favorite HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50152 - "GET /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50156 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50172 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_a_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50176 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_b_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50190 - "GET /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50206 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50218 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_a_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50224 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_b_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50234 - "GET /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50240 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50256 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_a_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50260 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_b_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50272 - "GET /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50280 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50290 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_a_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50298 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_b_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50310 - "GET /api/articles/favorite-probe-5cc2097a7f204b3b-740b910499 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50326 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50338 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_a_5cc2097a7f204b3b HTTP/1.1" 200 OK
+INFO:     172.29.51.1:50342 - "GET /api/articles?tag=favoriteprobe5cc2097a7f204b3b&limit=20&offset=0&favorited=favorite_b_5cc2097a7f204b3b HTTP/1.1" 200 OK

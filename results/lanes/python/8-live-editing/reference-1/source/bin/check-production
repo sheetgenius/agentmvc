@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+harness/check-production.sh 4111 | awk '
+  { print }
+  /^Success (api\/hurl|features\/)/ { acceptance++ }
+  /^Success s[0-9][0-9]_/ { security++ }
+  END { exit acceptance != 17 || security != 13 }
+'
+harness/python.sh run ruff check .
+harness/python.sh run ruff format --check .

@@ -1,0 +1,124 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 564B done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 1.1s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/golang:1.27.1-bookworm@sha256:69a7b9788769bec032d238959b61854e9ae87f57be9029ec04e9885fabf99195
+#4 DONE 0.0s
+
+#5 [internal] load metadata for gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 113B done
+#6 DONE 0.0s
+
+#7 [build 1/7] FROM docker.io/library/golang:1.27.1-bookworm@sha256:69a7b9788769bec032d238959b61854e9ae87f57be9029ec04e9885fabf99195
+#7 DONE 0.0s
+
+#8 [internal] load build context
+#8 DONE 0.0s
+
+#9 [stage-1 1/2] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+#9 DONE 0.0s
+
+#8 [internal] load build context
+#8 transferring context: 1.31kB done
+#8 DONE 0.0s
+
+#10 [build 4/7] RUN go mod download
+#10 CACHED
+
+#11 [build 5/7] COPY cmd ./cmd
+#11 CACHED
+
+#12 [build 3/7] COPY go.mod go.sum ./
+#12 CACHED
+
+#13 [build 6/7] COPY internal ./internal
+#13 CACHED
+
+#14 [build 7/7] RUN go build -trimpath -ldflags="-s -w" -o /out/server ./cmd/server
+#14 CACHED
+
+#15 [build 2/7] WORKDIR /src
+#15 CACHED
+
+#16 [stage-1 2/2] COPY --from=build /out/server /server
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 writing image sha256:8fd76a3d64147c22232f189e1cad5134fa6fba76b212bad7d3fe2120d2e5209e done
+#17 naming to docker.io/library/agentmvc-lane-go-8-live-editing-1:current done
+#17 DONE 0.0s
+
+07529dbd993c54726988eabf95816e4ccfeada4d6e03aca99b645c09b3b1f700
+
+3a75aad0caba67ca8451bc7babde32256ec7fd205a80f9cdd4ecc2179eade16e
+
+16517e7f5038ea8dc6098e527d36c92dc579ca3c2d190e820e30e71237e89662
+
+Success api/hurl/articles.hurl (17 request(s) in 80 ms)
+Success api/hurl/auth.hurl (20 request(s) in 117 ms)
+Success api/hurl/comments.hurl (13 request(s) in 63 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 62 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 293 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 105 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 54 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 53 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 63 ms)
+Success api/hurl/feed.hurl (12 request(s) in 113 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 57 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 102 ms)
+Success api/hurl/tags.hurl (4 request(s) in 53 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 120 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 108 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 368 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 108 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (122.3/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          1938 ms (0h:0m:1s:938ms)
+
+Success s01_jwt_alg_none.hurl (1 request(s) in 0 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 52 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 1 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 52 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 52 ms)
+Success s06_injection_filters.hurl (4 request(s) in 1 ms)
+Success s07_malformed_json.hurl (1 request(s) in 0 ms)
+Success s08_wrong_types.hurl (8 request(s) in 52 ms)
+Success s09_oversized_body.hurl (2 request(s) in 59 ms)
+Success s10_unknown_route.hurl (1 request(s) in 0 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 110 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 0 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 562 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (54.6/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          953 ms (0h:0m:0s:953ms)
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (527ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (317ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (136ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (266ms)
+
+  4 passed (1.6s)
+
+2026/09/29 19:48:42 INFO listening address=:4110

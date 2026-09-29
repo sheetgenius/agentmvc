@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "attempt": 2,
+  "session": "python-8-live-editing-1",
+  "condition": "published Python step-8 demo smoke",
+  "scope": "Normal demo script, edit link, frontend HTTP/module and keyed shared-article proxy, cleanup; no browser interaction or performance test",
+  "previous_attempt": {
+    "path": "results/lanes/demo-smoke-attempt1.json",
+    "sha256": "215e94634d1bc65a6170f65285b5624c954c5f401d168d7e79aa2f7965a05344",
+    "passed": false,
+    "error": "KeyError: 'status'",
+    "diagnosis": "Reviewer incorrectly expected status in the shared-article response; source serializer returns slug, title, body and revision"
+  },
+  "started": "2026-09-29T19:49:29.918760+00:00",
+  "source_sha256": "ac70ce9dbcc12d7254f426e8fb60b595e68d6d4787cabb07d9eaecf83d0b57b4",
+  "script_sha256": "ffebca8a81f9f6391e362aab3703b8becc6da3f1b9d6ee605f10bba6e6277fba",
+  "client_files_sha256": {
+    "index.html": "00d0dfb9d2d6bd7875749d4d305d80a62ba728a356c2ad1fc5ad1614a65641dd",
+    "package-lock.json": "9a64227163442df5f6598a3114b2b399f18138d9bc4bad92c4a6b48a0ad290ac",
+    "package.json": "d610229e38fa1340a12159c945fc860bab59f1a37f22eb83ea5e68cb855d0d10",
+    "playwright.config.js": "1299d308932a5ab313bb52f64b32ebeb49bed2627961291f5a73975ec04c44dd",
+    "vite.config.js": "ac1ee5a9398457ef6b1101547a8c137d61b61dce35ef8668bba0299fe8d1d384",
+    "src/api.js": "6aa4aa8d3db4b88c7812dbeebff2c8bc077de89023d650bc638246e44af360c0",
+    "src/editor.js": "8bfc53c69401527eb15cfc3acf8a085c76a6f7f52ede1d1793a62c32e4dee67d",
+    "src/live.js": "717c5d5629859dd7014b0126f35276c4eee2011c9dce076e341494cad96cc513",
+    "src/styles.css": "c75f0a152f23fee2e93746c3d80af56778081951ee2258c1af1806d3b8f71f7e",
+    "tests/editor.spec.js": "03ca3b595bf93b7328359ee7ff63fa4056b47ac4b0b0dfee50e1f96ef95e0b08",
+    "tests/helpers.js": "b70fe92f8a22af04836ec3f6d18b6047eaaf3e3e11eb2e0f4f3b3f2afd423523",
+    "tests/protocol.js": "88cd3a01ebf36900460736aaed245caf172270c44f99a4a19bc8190b83dc76ae"
+  },
+  "backend_port": 63213,
+  "frontend_port": 63214,
+  "checks": {
+    "edit_link_shape_valid": true,
+    "frontend_root": {
+      "http_status": 200,
+      "bytes": 481,
+      "sha256": "57c23169dd101a76740ca09df8f4fe1b47cbd7b08f704cf03c63ba30dd94dd50"
+    },
+    "frontend_edit_route": {
+      "http_status": 200,
+      "bytes": 481,
+      "sha256": "57c23169dd101a76740ca09df8f4fe1b47cbd7b08f704cf03c63ba30dd94dd50"
+    },
+    "frontend_editor_module": {
+      "http_status": 200,
+      "bytes": 32229,
+      "sha256": "025b5de02ca112f31f6482f55ef89ed442705e70fba10e7a646343e5dc94cce0"
+    },
+    "proxied_shared_article": {
+      "http_status": 200,
+      "fields": [
+        "body",
+        "revision",
+        "slug",
+        "title"
+      ],
+      "expected_fields_present": true,
+      "positive_revision": true,
+      "seeded_body_matches": true
+    },
+    "published_source_unchanged": true
+  },
+  "passed": true,
+  "queue_seconds": 0.0,
+  "script_exit_after_stop": 143,
+  "cleanup": {
+    "agentmvc-lane-demo-python-66212-app": true,
+    "agentmvc-lane-demo-python-66212-db": true,
+    "agentmvc-lane-demo-python-66212-net": true,
+    "agentmvc-lane-demo-python-66212:local": true,
+    "backend_port_closed": true,
+    "frontend_port_closed": true,
+    "temporary_client_removed": true
+  },
+  "source_sha256_after": "ac70ce9dbcc12d7254f426e8fb60b595e68d6d4787cabb07d9eaecf83d0b57b4",
+  "finished": "2026-09-29T19:49:38.190200+00:00"
+}

@@ -30,6 +30,10 @@ The unchanged common reviewer probe requires all **21 contract cases and 3 addit
 
 Parity output is stored under each session's `reviewer-parity/` directory, with scrubbed logs, probe assertions, source/image hashes, and reviewer-tool hashes.
 
+A subsequent [Astra source review](EXPERT-REVIEW.md) identified shared-edit boundary cases. The separate `lane_share_review.py` procedure runs three contract cases (a valid edit and stale integer revisions zero/negative) and one quality case (an extra outer-envelope field), through [`lane_share_probe.py`](../../tools/lane_share_probe.py). Each case has a fresh article and link; rejected edits must leave both shared and full article reads unchanged. Outer-envelope strictness is labeled quality because the exact-envelope wording is less explicit about outer keys. These observations are stored separately as `reviewer-parity/share-boundary.json`; prior common/favorites records are preserved. All four final applications receive the same probe. Reference runtime requires both reviewer procedures to pass; original runtime retains failures as observations.
+
+Unscored repairs start from an independently verified source in a separate workspace via `lane_reference.py`. Their original checkpoint stays intact. References publish their own source manifest, size, regression tests, independent development/production checks and both reviewer procedures. They have no invented coding transcript or comparable one-shot effort total. Inherited agent harness wrappers retain historical ports; reference checks use the coordinator commands and separately recorded application port. The repair descriptions identify every application change and its evidence.
+
 Reviewer startup uses the separately hashed `lane_review.py` adapter to require PostgreSQL TCP readiness. The original Unix-socket check could accept PostgreSQL’s temporary initialization server before application TCP connections were possible; that caused an observed independent Go step-3 startup failure. The final HTTP runner applies the same TCP-only readiness correction around the unchanged benchmark script, whose one-second delay otherwise only masks the race. Workloads, timing windows, measured application source, and frozen agent inputs are unchanged. Socket rounds use the corrected independent production lifecycle. Existing evidence is preserved. A failure is not repaired inside the measured source or silently replaced.
 
 ## Repeated final runtime
@@ -69,6 +73,9 @@ Run from the repository root after the relevant coding sessions and independent 
 # Repeat preparation, readiness preflight and launch for python.
 
 .venv/bin/python tools/lane_evidence.py parity
+.venv/bin/python tools/lane_share_review.py \
+  --session "$PWD/.work/lanes/go-one-shot-1/control/session.json"
+# Apply the same shared-edit probe to each final app before runtime.
 .venv/bin/python tools/lane_evidence.py runtime
 .venv/bin/python tools/lane_evidence.py validate
 .venv/bin/python tools/lane_artifacts.py export-feedback

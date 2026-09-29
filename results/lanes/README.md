@@ -2,14 +2,23 @@
 
 Two new paths through the same Conduit product: build it in eight successive sessions, then build it again in one fresh expert session. The goal is readable, domain-rich code that uses each stack well, with correctness and production performance measured alongside size.
 
-**Progress: 16/18 coding sessions independently verified.** The full runs are still in progress; intermediate sizes below are not final-product comparisons.
+**Progress: 18/18 coding sessions independently verified.** Final snapshots, checks and effort records are linked below.
 
 ## Start with the code
 
 | Lane | Latest verified sequential source | Owned backend | Expert one-shot |
 | --- | --- | ---: | --- |
-| Go | [8-live-editing](../../stacks/go/8-live-editing) | 14,203 tokens · 1,773 lines | Pending |
-| Python | [8-live-editing](../../stacks/python/8-live-editing) | 8,308 tokens · 1,118 lines | Pending |
+| Go | [8-live-editing](../../stacks/go/8-live-editing) | 14,203 tokens · 1,773 lines | [12,530](../one-shot-v2-go-expert/pilot-1/source) tokens · [pass](../one-shot-v2-go-expert/pilot-1/verification.json) |
+| Python | [8-live-editing](../../stacks/python/8-live-editing) | 8,308 tokens · 1,118 lines | [8,718](../one-shot-v2-python-expert/pilot-1/source) tokens · [pass](../one-shot-v2-python-expert/pilot-1/verification.json) |
+
+## Reviewed references
+
+These separately labeled repairs preserve the measured originals. Their added tests, source size and independent checks are recorded; their editing effort is not pooled with one-shot effort.
+
+| Reference source | Owned backend | Reviewer checks |
+| --- | ---: | --- |
+| [Go · eight-step reference](go/8-live-editing/reference-1/source) | 14,249 tokens | [21/21 contract · 3/3 quality · favorites 48/48](go/8-live-editing/reference-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](go/8-live-editing/reference-1/reviewer-parity/share-boundary.json) |
+| [Python · eight-step reference](python/8-live-editing/reference-1/source) | 8,429 tokens | [21/21 contract · 3/3 quality · favorites 48/48](python/8-live-editing/reference-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](python/8-live-editing/reference-1/reviewer-parity/share-boundary.json) |
 
 **Python:** Django + Django Ninja, with Django associations, migrations and password services; Channels for raw WebSockets; Procrastinate for PostgreSQL jobs. [Why this stack](../../stacks/python/STACK.md).
 
@@ -40,8 +49,10 @@ Each row describes one exact source snapshot. The eight-step effort is the sum o
 
 | Application | Owned / whole backend tokens | Coding minutes | Uncached + output tokens | Reviewer HTTP parity |
 | --- | ---: | ---: | ---: | --- |
-| [Go · eight steps](../../stacks/go/8-live-editing) | 14,203 / 15,746 | 71.0 | 722,152 | Pending |
-| [Python · eight steps](../../stacks/python/8-live-editing) | 8,308 / 9,014 | 70.2 | 842,429 | [20/21 contract · 3/3 quality](python/8-live-editing/reviewer-parity/results.json) · favorites 38/48 · **not full parity** |
+| [Go · eight steps](../../stacks/go/8-live-editing) | 14,203 / 15,746 | 71.0 | 722,152 | [21/21 contract · 3/3 quality · favorites 48/48](go/8-live-editing/reviewer-parity/results.json) · [shared 1/3 + 0/1](go/8-live-editing/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
+| [Go · expert one-shot](../one-shot-v2-go-expert/pilot-1/source) | 12,530 / 14,501 | 16.1 | 169,516 | Pending |
+| [Python · eight steps](../../stacks/python/8-live-editing) | 8,308 / 9,014 | 70.2 | 842,429 | [20/21 contract · 3/3 quality · favorites 38/48](python/8-live-editing/reviewer-parity/results.json) · [shared 3/3 + 1/1](python/8-live-editing/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
+| [Python · expert one-shot](../one-shot-v2-python-expert/pilot-1/source) | 8,718 / 9,684 | 12.2 | 133,594 | [21/21 contract · 3/3 quality · favorites 38/48](../one-shot-v2-python-expert/pilot-1/reviewer-parity/results.json) · [shared 3/3 + 0/1](../one-shot-v2-python-expert/pilot-1/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
 
 ## Try a completed app
 
@@ -63,6 +74,7 @@ Set `DEMO_BACKEND_PORT` and `DEMO_FRONTEND_PORT` to override the localhost ports
 - [Comprehension](comprehension/): fresh read-only agents answer the original twelve questions after steps 1 and 6. Scores require source-supported grading.
 - Reviewer parity adds the same 21 contract and 3 quality HTTP probes used for the current references. Original failures remain visible; later repairs must be separate snapshots.
 - A [source review](REVIEW-NOTES.md) prompted a separate 48-case favorite-count diagnostic, applied equally to every final Go/Python app. It does not change the frozen coding requirements.
+- The later [expert review](EXPERT-REVIEW.md) adds three shared-edit contract cases and one envelope-quality case, recorded separately for each final app. References must also pass these checks.
 - Tuning feedback uses short 3-second samples. Final HTTP measurements use all nine workloads, 16 users and two 15-second rounds, with app and database each limited to 2 CPUs and 1 GiB. Socket measurements cover 10, 100 and 500 subscribers.
 - Full transcripts and compressed raw streams belong in external release assets, with checked hashes and links recorded here when published. They are not committed to Git.
 

@@ -1,0 +1,9 @@
+Implemented the Conduit backend, including the RealWorld API, drafts, exports, shared editing, live presence, revision conflicts, link revocation, and the 100 socket room cap.
+
+The main rule owners are [domain.py](/work/app/conduit/domain.py) for visibility, permissions, validation, and atomic edits; [models.py](/work/app/conduit/models.py) for database constraints; [api.py](/work/app/conduit/api.py) for Ninja routes; [live.py](/work/app/conduit/live.py) for Channels delivery; and [tasks.py](/work/app/conduit/tasks.py) for durable Procrastinate exports. [AGENTS.md](/work/app/AGENTS.md) maps those owners and the local commands. The app uses Django models, QuerySets, migrations, and transactions; strict Pydantic input types; PyJWT; Django’s Argon2 password hashing; and PostgreSQL through Psycopg.
+
+**Checks passed:** five focused tests, Ruff lint and format, Django system checks, the complete development gate, and the fresh database production image gate. Each complete gate passed 17 API files, 13 security files, the live protocol check, and four browser tests.
+
+The failed checks during development exposed an export job argument error, a login counter rollback, and a token behavior mismatch with the frozen contract; those were fixed before both complete gates passed. Live room state remains process local, so production runs one Uvicorn worker. The frozen contract also keeps an existing token usable after a password change.
+
+Measured executable backend size: **1,214 owned nonblank, noncomment lines / 9,776 `o200k_base` tokens**; **1,301 whole-backend lines / 10,569 tokens**. Tests add 98 lines / 1,025 tokens, and project documentation adds 23 lines / 444 tokens. Generated Django migrations are counted as executable backend code.
