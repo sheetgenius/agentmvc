@@ -2,14 +2,14 @@
 
 Two new paths through the same Conduit product: build it in eight successive sessions, then build it again in one fresh expert session. The goal is readable, domain-rich code that uses each stack well, with correctness and production performance measured alongside size.
 
-**Progress: 10/18 coding sessions independently verified.** The full runs are still in progress; intermediate sizes below are not final-product comparisons.
+**Progress: 11/18 coding sessions independently verified.** The full runs are still in progress; intermediate sizes below are not final-product comparisons.
 
 ## Start with the code
 
 | Lane | Latest verified sequential source | Owned backend | Expert one-shot |
 | --- | --- | ---: | --- |
 | Go | [5-harden](../../stacks/go/5-harden) | 9,537 tokens · 1,157 lines | Pending |
-| Python | [5-harden](../../stacks/python/5-harden) | 5,334 tokens · 741 lines | Pending |
+| Python | [6-polish](../../stacks/python/6-polish) | 5,493 tokens · 756 lines | Pending |
 
 **Python:** Django + Django Ninja, with Django associations, migrations and password services; Channels for raw WebSockets; Procrastinate for PostgreSQL jobs. [Why this stack](../../stacks/python/STACK.md).
 
@@ -28,7 +28,7 @@ Every source link is an immutable checkpoint. “Pass” means the coordinator r
 | [3 · Production](../../steps/3-package.md) | [8,225](../../stacks/go/3-package) tokens · [pass](go/3-package/verification.json) | [4,767](../../stacks/python/3-package) tokens · [pass](python/3-package/verification.json) |
 | [4 · Performance](../../steps/4-tune.md) | [9,086](../../stacks/go/4-tune) tokens · [pass](go/4-tune/verification.json) | [4,990](../../stacks/python/4-tune) tokens · [pass](python/4-tune/verification.json) |
 | [5 · Security](../../steps/5-harden.md) | [9,537](../../stacks/go/5-harden) tokens · [pass](go/5-harden/verification.json) | [5,334](../../stacks/python/5-harden) tokens · [pass](python/5-harden/verification.json) |
-| [6 · Polish](../../steps/6-polish.md) | Pending | Pending |
+| [6 · Polish](../../steps/6-polish.md) | Pending | [5,493](../../stacks/python/6-polish) tokens · [pass](python/6-polish/verification.json) |
 | [7 · Exports](../../steps/7-add-background-job.md) | Pending | Pending |
 | [8 · Live editing](../../steps/8-live-editing.md) | Pending | Pending |
 
