@@ -20,7 +20,7 @@ The [large-app workshop](docs/semantic-density-workshop.md) extends the question
 
 ## Start here
 
-- **Read the comparison:** start with the [methodology](docs/methodology.md), then the [eight-step findings](docs/README.md). The [one-shot results](results/one-shot/README.md) and [fourth-stack IHP study](results/one-shot-ihp/README.md) are separate experiments with their own prompts and measurements.
+- **Read the comparison:** start with the [methodology](docs/methodology.md), then the [eight-step findings](docs/README.md). The [one-shot results](results/one-shot/README.md), [fourth-stack IHP study](results/one-shot-ihp/README.md), and [safe-evolution Servant pilot](results/one-shot-v2-servant/README.md) are separate experiments. The [TypeScript track](one-shot-v2-typescript/README.md) uses the same safe-evolution prompt as Servant.
 - **Try the finished app:** install Docker and Node.js, then run `tools/demo.sh rails` (or `phoenix` or `loco`). It builds the step-8 production image, starts PostgreSQL and the shared Lit editor, and prints a live editing link. Press Ctrl-C to stop it.
 - **Contribute:** [CONTRIBUTING.md](CONTRIBUTING.md) explains how to reproduce a result, review a stack, or add an agent-built implementation. The historical snapshots and frozen inputs are part of the evidence; new experiments live beside them.
 
@@ -128,7 +128,7 @@ tools/bench/run.sh rails 4-tune                  # benchmark a step's production
 tools/security/scan.sh rails 5-harden            # scan it
 ```
 
-For a fresh full-product build, [`tools/one_shot.py`](tools/one_shot.py) prepares one self-contained workspace per stack with the shared prompt, spec, Lit client, browser harness, and measurement rules. See the [one-shot setup](one-shot/README.md), the [completed first run](results/one-shot/README.md), and the [semantic-density run](results/one-shot-semantic-density/README.md). The [workshop plan](docs/semantic-density-workshop.md) lays out the next question: which stack helps fresh agents evolve a large application safely and efficiently?
+For a fresh full-product build, [`tools/one_shot.py`](tools/one_shot.py) prepares one self-contained workspace per stack with the shared prompt, spec, Lit client, browser harness, and measurement rules. See the [one-shot setup](one-shot/README.md), the [completed first run](results/one-shot/README.md), and the [semantic-density run](results/one-shot-semantic-density/README.md). The newer [Servant safe-evolution pilot](one-shot-v2/README.md) and [TypeScript track](one-shot-v2-typescript/README.md) share a different frozen prompt for changeability at large scale. The [workshop plan](docs/semantic-density-workshop.md) explains that question.
 
 ## Repository map
 
@@ -136,6 +136,8 @@ For a fresh full-product build, [`tools/one_shot.py`](tools/one_shot.py) prepare
 spec/                 the app: RealWorld's API spec and Hurl suite (MIT), plus the three added features
 frontend/             the frozen shared Lit editor and browser tests, excluded from backend code size
 one-shot/             the separate full-product prompt, client, fixed harness and fixture manifest
+one-shot-v2/          the safe-evolution prompt and Servant pilot environment
+one-shot-v2-typescript/  the same prompt with an AdonisJS and TypeScript environment
 steps/                the eight prompts and the comprehension prompt, identical for every stack
 stacks/<stack>/       stack.json, ENVIRONMENT.md, scaffold/ (generator output), the code after each step,
                       reports/, transcripts/ and runs.json

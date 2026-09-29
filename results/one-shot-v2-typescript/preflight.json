@@ -1,0 +1,31 @@
+{
+  "stack": "typescript",
+  "condition": "v2-pilot",
+  "fixture_sha256": "d7e4579bb7205a7e475aab382547f005626f34bf9dcf775626477852c7cebcc9",
+  "base_fixture_sha256": "3c80961922dadb5f7a41ce27e081e787a5d0cabfc3ae0094588aaeb79c5faa25",
+  "prompt_sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+  "toolchain_image_id": "sha256:658eafb6020d341d180dbe8faa1912f88ea746dc8cf5ab3b8c5e254ed5968d70",
+  "browser_image_id": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5",
+  "checks": {
+    "linux_node24_npm_ci": "passed",
+    "typescript_typecheck": "passed",
+    "eslint": "passed",
+    "compiled_adonis_build": "passed",
+    "fresh_postgres_migration": "passed",
+    "database_queue_worker_start": "passed",
+    "compiled_three_variable_container_health": "passed",
+    "fixed_browser_harness": "passed",
+    "coordinator_node24_database_migration_and_watch_server": "passed"
+  },
+  "host_watch_edit_to_response_seconds": 0.56,
+  "host_watch_runtime": "Node.js 26; container watch started and served health on Node.js 24",
+  "isolation": {
+    "exit": 0,
+    "command_executed": true,
+    "own_read_visible": true,
+    "own_write_succeeded": true,
+    "sibling_read_blocked": true,
+    "parent_read_blocked": true,
+    "docker_daemon_unavailable": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "AdonisJS + Lucid",
+  "language": "TypeScript",
+  "description": "Node.js 24, AdonisJS 7, Lucid 22, PostgreSQL 17",
+  "port": 4106,
+  "agent": {"tool": "Codex CLI", "model": "gpt-6-sol", "reasoning": "xhigh"},
+  "code": {
+    "extensions": {".ts": "//", ".js": "//", ".sql": "--"},
+    "files": {"package.json": "//"},
+    "skip_files": ["database/schema.ts", "package-lock.json", "Dockerfile", "Dockerfile.toolchain"],
+    "skip_dirs": ["node_modules", "build", ".adonisjs", "security", "harness", "realworld_spec", ".scaffold", "tmp"],
+    "generated": ["database/schema.ts", ".adonisjs", "build"]
+  }
+}
