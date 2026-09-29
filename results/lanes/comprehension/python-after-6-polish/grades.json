@@ -1,0 +1,95 @@
+{
+  "session": "python-6-polish-1",
+  "graded_at": "2026-09-29T19:24:26.033040+00:00",
+  "method": "Qualitative source-supported review against a key saved before reader launch; original 1/0.5/0 rubric.",
+  "source_sha256": "3925c29c4b236bd4c23ff0aee54551fef8851d26c77d651a197b15930f6d1723",
+  "source_sha256_after_review": "3925c29c4b236bd4c23ff0aee54551fef8851d26c77d651a197b15930f6d1723",
+  "readable_source_sha256_before": "3e49ad31d3df52c8b8e894741377323855e268414346d3ff72672402a590e607",
+  "readable_source_sha256_after": "3e49ad31d3df52c8b8e894741377323855e268414346d3ff72672402a590e607",
+  "answer_sha256": "8e5de3af3c1d8727c7115aafd411309cad580f2a116f4b7ad981db3139a2b589",
+  "answer_key_sha256": "18ab197929db03436a435ce20c810f53d84574e3e5ee7b62195798d79530cb8b",
+  "answer_key_saved_at": "2026-09-29T19:21:54.308921+00:00",
+  "reader_started_at": "2026-09-29T19:22:16.208853+00:00",
+  "score": 12,
+  "maximum": 12,
+  "isolation_passed": true,
+  "source_unchanged": true,
+  "items": [
+    {
+      "question": 1,
+      "score": 1,
+      "reason": "Correct truncation, fallback, UUID suffix, and regeneration whenever title is supplied.",
+      "source": "conduit/models.py: Article.set_title; conduit/articles.py: update_article"
+    },
+    {
+      "question": 2,
+      "score": 1,
+      "reason": "Correct 409 status, field-specific errors body, precheck and handler locations.",
+      "source": "conduit/accounts.py: unique_user, register; conduit/http.py: api_error"
+    },
+    {
+      "question": 3,
+      "score": 1,
+      "reason": "Correct publication filter, followed-author selection, and descending creation-time/ID order.",
+      "source": "conduit/articles.py: feed; conduit/models.py: ArticleQuerySet.published, Article.Meta"
+    },
+    {
+      "question": 4,
+      "score": 1,
+      "reason": "Identifies the Count favorites annotation and fallback relation count, with both implementation locations. This does not establish correctness of every filtered aggregate.",
+      "source": "conduit/models.py: ArticleQuerySet.with_viewer; conduit/articles.py: article_data"
+    },
+    {
+      "question": 5,
+      "score": 1,
+      "reason": "Correct published-article precondition, 403 status and comment forbidden body.",
+      "source": "conduit/articles.py: delete_comment, owned; conduit/http.py: api_error"
+    },
+    {
+      "question": 6,
+      "score": 1,
+      "reason": "Correct normalization, persistence and returned value.",
+      "source": "conduit/accounts.py: update_user"
+    },
+    {
+      "question": 7,
+      "score": 1,
+      "reason": "Correct PostgreSQL array storage and sorted distinct tags from published articles only.",
+      "source": "conduit/models.py: Article.tags; conduit/articles.py: list_tags"
+    },
+    {
+      "question": 8,
+      "score": 1,
+      "reason": "Correct current default 20 and maximum 1000, citing the shared type and routes.",
+      "source": "conduit/articles.py: list_articles, feed, user_drafts; conduit/http.py: PageSize"
+    },
+    {
+      "question": 9,
+      "score": 1,
+      "reason": "Correct HS256 signing, user ID string subject and 30-day expiry.",
+      "source": "conduit/accounts.py: token_for"
+    },
+    {
+      "question": 10,
+      "score": 1,
+      "reason": "Correct author-ID comparison called by both update and delete.",
+      "source": "conduit/articles.py: owned, update_article, delete_article"
+    },
+    {
+      "question": 11,
+      "score": 1,
+      "reason": "Correct unchanged tags when omitted, and 422 tagList is invalid error when explicitly null.",
+      "source": "conduit/articles.py: update_article; conduit/http.py: api_error"
+    },
+    {
+      "question": 12,
+      "score": 1,
+      "reason": "Correct Django hashing entry points, preferred Argon2 through argon2-cffi and configured PBKDF2 fallback.",
+      "source": "conduit/accounts.py: register, update_user; conduit/models.py: User; config/settings.py: PASSWORD_HASHERS; pyproject.toml: dependencies"
+    }
+  ],
+  "limitations": [
+    "Single reader per snapshot; these small-app questions are near their scoring ceiling.",
+    "Grading confirms source comprehension, not runtime correctness or implementation quality."
+  ]
+}
