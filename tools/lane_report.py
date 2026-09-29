@@ -65,6 +65,8 @@ def final_tables(data):
             summary = proof.get('http_probe',{}).get('summary',{})
             parity = link(row['folder']/'reviewer-parity/results.json',
                           f'{summary.get("contract_passed",0)}/21 contract · {summary.get("quality_passed",0)}/3 quality')
+            favorite = proof.get('source_driven_favorites',{}).get('summary',{})
+            parity += f' · favorites {favorite.get("passed",0)}/48'
             if not proof.get('passed'): parity += ' · **not full parity**'
         size = row['size']
         lines.append(f'| {source} | {size["owned_tokens"]:,} / {size["tokens"]:,} | {minutes} | {effort} | {parity} |')
@@ -128,6 +130,7 @@ def main():
               '- Each checkpoint directory contains its measured agent report, effort/failure counts, source inventory, actual isolation probe and independent verification.',
               '- [Comprehension](comprehension/): fresh read-only agents answer the original twelve questions after steps 1 and 6. Scores require source-supported grading.',
               '- Reviewer parity adds the same 21 contract and 3 quality HTTP probes used for the current references. Original failures remain visible; later repairs must be separate snapshots.',
+              '- A [source review](REVIEW-NOTES.md) prompted a separate 48-case favorite-count diagnostic, applied equally to every final Go/Python app. It does not change the frozen coding requirements.',
               '- Tuning feedback uses short 3-second samples. Final HTTP measurements use all nine workloads, 16 users and two 15-second rounds, with app and database each limited to 2 CPUs and 1 GiB. Socket measurements cover 10, 100 and 500 subscribers.',
               '- Full transcripts and compressed raw streams belong in external release assets, with checked hashes and links recorded here when published. They are not committed to Git.','',
               '[Detailed method and reproduction commands](METHODOLOGY.md) · [Main comparison](../../README.md) · [Contributing](../../CONTRIBUTING.md)','']

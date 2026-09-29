@@ -35,7 +35,7 @@ ENTRIES = (("go", "8"), ("python", "8"), ("go", "one-shot"), ("python", "one-sho
 SCENARIOS = set(lane_check.SCENARIOS)
 SOCKET_COUNTS = (10, 100, 500)
 TOOLS = ("lane_evidence.py", "lane_check.py", "lane_broker.py", "lane_continue.py", "lane_review.py",
-         "reviewer_common_http_probe.py", "bench/bench.py", "bench/load.js", "bench/seed.py",
+         "reviewer_common_http_probe.py", "lane_favorites_probe.py", "bench/bench.py", "bench/load.js", "bench/seed.py",
          "one_shot_live_bench.py", "live-load.mjs", "v2_expert_symmetry_validate.py", "scrub.py")
 
 
@@ -122,7 +122,7 @@ def parity(session):
               "started": broker.stamp(), "tools_sha256": tool_hashes(),
               "limits": lane_check.LIMITS, "database": broker.POSTGRES,
               "app_environment_keys": ["DATABASE_URL", "SECRET_KEY_BASE", "PORT"],
-              "passed": False, "exit": 1}
+              "passed": False, "common_parity_passed": False, "exit": 1}
     output = []
     try:
         identity = source_identity(session)
@@ -146,7 +146,16 @@ def parity(session):
                 summary = record["http_probe"].get("summary", {})
                 record["http_probe_complete"] = (summary.get("contract_total") == 21 and
                                                   summary.get("quality_total") == 3)
-                record["passed"] = (code == probe_code == 0 and record["http_probe_complete"])
+                record["common_parity_passed"] = (code == probe_code == 0 and record["http_probe_complete"])
+                favorite_code, favorite_text = broker.command([
+                    sys.executable, str(ROOT / "tools/lane_favorites_probe.py"),
+                    "--base-url", f"http://127.0.0.1:{session.port}"], timeout=600)
+                record["source_driven_favorites_exit"] = favorite_code
+                record["source_driven_favorites"] = json.loads(favorite_text)
+                favorite_summary = record["source_driven_favorites"].get("summary", {})
+                record["source_driven_favorites_passed"] = (favorite_code == 0 and
+                    favorite_summary.get("passed") == favorite_summary.get("total") == 48)
+                record["passed"] = record["common_parity_passed"] and record["source_driven_favorites_passed"]
                 record["exit"] = 0 if record["passed"] else 1
             session.verify()
             if source_identity(session) != identity:
@@ -157,7 +166,8 @@ def parity(session):
         record["finished"] = broker.stamp()
         write_text(dest / "runner.log", "\n".join(output), session)
         save(dest / "results.json", record, session)
-    print(f"{session.id}: parity {'passed' if record['passed'] else 'failed'}", flush=True)
+    print(f"{session.id}: common parity {'passed' if record['common_parity_passed'] else 'failed'}; "
+          f"favorites {'passed' if record.get('source_driven_favorites_passed') else 'failed or incomplete'}", flush=True)
     return record
 
 
@@ -320,7 +330,8 @@ def runtime(sessions, condition="measured"):
               "limits": {"app": "2 CPU, 1 GiB", "database": "2 CPU, 1 GiB"},
               "tools_sha256": tool_hashes(), "applications": identities, "order": [], "records": [], "passed": False,
               "reviewer_parity": {session.id: {key: load(parity_path(session) / "results.json").get(key)
-                  for key in ("passed", "http_probe_complete", "http_probe_exit", "frozen_production_gate_exit")}
+                  for key in ("passed", "http_probe_complete", "http_probe_exit", "frozen_production_gate_exit",
+                              "source_driven_favorites_passed", "common_parity_passed")}
                   for session in sessions},
               "interpretation": "Runtime success does not imply supplemental reviewer parity; see reviewer_parity."}
     dest.mkdir(parents=True)
