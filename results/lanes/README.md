@@ -56,6 +56,19 @@ Each row describes one exact source snapshot. The eight-step effort is the sum o
 | [Python · eight steps](../../stacks/python/8-live-editing) | 8,308 / 9,014 | 70.2 | 842,429 | [20/21 contract · 3/3 quality · favorites 38/48](python/8-live-editing/reviewer-parity/results.json) · [shared 3/3 + 1/1](python/8-live-editing/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
 | [Python · expert one-shot](../one-shot-v2-python-expert/pilot-1/source) | 8,718 / 9,684 | 12.2 | 133,594 | [21/21 contract · 3/3 quality · favorites 38/48](../one-shot-v2-python-expert/pilot-1/reviewer-parity/results.json) · [shared 3/3 + 0/1](../one-shot-v2-python-expert/pilot-1/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
 
+### Repeated production runtime
+
+Two rounds; 16 users; 3-second warmup and 15-second samples; app and database each limited to 2 CPUs and 1 GiB. Ranges show both rounds. Source and image hashes must match the runtime manifest before metrics are shown; all nine HTTP workloads and 10/100/500-subscriber socket results are linked.
+
+| Application | List req/s | Article req/s | SQL / list | Image MB | Cold start seconds | Runtime checks |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| [Go · eight steps](runtime/measured/go-8-live-editing-1) | 2,626–2,877 | 3,975 | 5.00 | 16.1 | 0.30–0.36 | pass |
+| [Python · eight steps](runtime/measured/python-8-live-editing-1) | 523–524 | 506–510 | 2.00 | 260.6 | 1.61–1.62 | pass |
+| [Go · expert one-shot](runtime/measured/go-one-shot-1) | 1,897–1,908 | 5,361–5,464 | 2.00 | 16.6 | 0.28–0.30 | pass |
+| [Python · expert one-shot](runtime/measured/python-one-shot-1) | 371–374 | 367–373 | 3.00 | 373.7 | 1.61–1.69 | pass |
+
+[Runtime manifest and all workloads](runtime/measured/summary.json). Runtime success does not imply supplemental reviewer parity; see the parity column above.
+
 ## Try a completed app
 
 From the repository root, use Docker, Node.js 22.12+ (or 20.19+ on the 20.x line), npm, curl and OpenSSL. These commands work from a fresh clone once the corresponding source checkpoint is published. The script installs client dependencies, builds the backend, creates a fresh database, and prints an editor link to open in several tabs. Ctrl-C cleans up the demo.

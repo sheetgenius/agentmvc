@@ -41,7 +41,8 @@ def span(values, decimals=0):
         return 'Pending'
     low, high = min(values), max(values)
     fmt = f',.{decimals}f'
-    return format(low, fmt) if low == high else f'{format(low, fmt)}–{format(high, fmt)}'
+    low_text, high_text = format(low, fmt), format(high, fmt)
+    return low_text if low_text == high_text else f'{low_text}–{high_text}'
 
 
 def review_cell(folder):

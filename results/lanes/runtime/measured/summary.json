@@ -1,0 +1,288 @@
+{
+  "condition": "measured",
+  "description": "prepared-scaffold final production runtime",
+  "started": "2026-09-29T20:22:02.305484+00:00",
+  "rounds": 2,
+  "http_vus": 16,
+  "http_warmup": "3s",
+  "http_duration": "15s",
+  "http_scenarios": [
+    "list_anonymous",
+    "list_signed_in",
+    "list_by_tag",
+    "feed",
+    "article",
+    "comments",
+    "tags",
+    "favorite_toggle",
+    "create_article"
+  ],
+  "socket_subscribers": [
+    10,
+    100,
+    500
+  ],
+  "socket_saves": 20,
+  "limits": {
+    "app": "2 CPU, 1 GiB",
+    "database": "2 CPU, 1 GiB"
+  },
+  "tools_sha256": {
+    "lane_evidence.py": "7492595b1eaf0711af38f1a8ce1cfee9bbd196d507fec211411ea77a6a7c210e",
+    "lane_check.py": "145a6f3bbee6c55cd616732a9663389903c0a41fb2682b5bd12e84b147fe7e61",
+    "lane_broker.py": "ac58c5d1ad9972c7907014781dd267ae5c288dbf9a8ce3376503e06b8a58d628",
+    "lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "lane_review.py": "0131bb4fc4e9aab709eede4020f60bd8a962b9f6b9d0da816aa509516af7e348",
+    "reviewer_common_http_probe.py": "d40c80b7cda2295cf9367b6b4435a04f5d180532de0390e7c95d73ff4fcd3499",
+    "lane_favorites_probe.py": "e8391c242479bcdf5c94e6ec862dcf1de32dd0cd574a0ff6cec7ee1fd84e99a2",
+    "lane_share_probe.py": "207274444bdbc261955bd73112b9442cd7bf80f9ef111a9c372b1f48e83f300e",
+    "lane_share_review.py": "4d645daad98d4194d6d8f16d182a6e5b72116965daf5eed9f68f80c5b31915c2",
+    "bench/bench.py": "d9eb2fbceb835f5798f5a193588c61ef2d5b1a36a3af7a393196f23d3b9aa2ab",
+    "bench/load.js": "9057777b106e10fada6fc0fbfe85168258643f04a537ea5313277c0e86b37481",
+    "bench/seed.py": "ae62d6f3c25f4f77873ad828855c662a895c2dc75517a957f83b9d7ad6448c93",
+    "one_shot_live_bench.py": "c1f86e7359ce27ea14746bd36a768c2c5f4e0fdb43cdea87bf2ee3c5a2ef5528",
+    "live-load.mjs": "2ca75930e55074274db5d9a49bf9b55e7107c534d5048ce23801fc6fb28b0ce2",
+    "v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79",
+    "scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295"
+  },
+  "applications": {
+    "go-8-live-editing-1": {
+      "session": "go-8-live-editing-1",
+      "stack": "go",
+      "phase": "8-live-editing",
+      "condition": "eight-step-prepared-scaffold",
+      "source_sha256": "c8a93f91761329389be2527feb51b940e639ef0b787ba548c13a58d4d928138c",
+      "fixture_sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+      "fixture_record_sha256": "0f7dc844b8d3fc0df96457bd1efcf7111e42e1dcc6b6bceff3152a945a8655f4",
+      "prompt_sha256": "f44ffb88bcf65bfe59f9841d1c8c81f32220c4b06a25fefdc5119e74b42c85d9",
+      "image_sha256": "sha256:8fd76a3d64147c22232f189e1cad5134fa6fba76b212bad7d3fe2120d2e5209e"
+    },
+    "python-8-live-editing-1": {
+      "session": "python-8-live-editing-1",
+      "stack": "python",
+      "phase": "8-live-editing",
+      "condition": "eight-step-prepared-scaffold",
+      "source_sha256": "ac70ce9dbcc12d7254f426e8fb60b595e68d6d4787cabb07d9eaecf83d0b57b4",
+      "fixture_sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+      "fixture_record_sha256": "3e0d49a7922cfaff416e2a4237cd142fa40abaa6bbc472e44781bcf235c938e5",
+      "prompt_sha256": "f44ffb88bcf65bfe59f9841d1c8c81f32220c4b06a25fefdc5119e74b42c85d9",
+      "image_sha256": "sha256:5bc0537480a7ded545eb8f2df3434219646baae8e132bf81176ecf13e84a8cdf"
+    },
+    "go-one-shot-1": {
+      "session": "go-one-shot-1",
+      "stack": "go",
+      "phase": "one-shot",
+      "condition": "expert-v2-tcp-readiness",
+      "source_sha256": "b9530e5dc410b91a5105a707e55386ee5e182e1cacbe4b6630474a65dea90a1c",
+      "fixture_sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+      "fixture_record_sha256": "47ca5592c342f9a628d7015b10176a84240227e7b3170a3f5cddebbd7ec26cc7",
+      "prompt_sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+      "image_sha256": "sha256:5aff113b8423a9a5bf1c444f72f497e1fb0886a197806b64ed5962434663851e"
+    },
+    "python-one-shot-1": {
+      "session": "python-one-shot-1",
+      "stack": "python",
+      "phase": "one-shot",
+      "condition": "expert-v2-tcp-readiness",
+      "source_sha256": "e34cf3c29a7ffa1d1373927cc7c97af193ba5d1b6941204314c1326c883209c3",
+      "fixture_sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+      "fixture_record_sha256": "d023ad49825a0c2c35ea805845e4477a22d0bf08f9c748871ec30f9447ae6570",
+      "prompt_sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+      "image_sha256": "sha256:636869c7d27f178169373a06c4a5a1d1e9535429116093e8ab9045adb8ff1111"
+    }
+  },
+  "order": [
+    {
+      "round": 1,
+      "session": "go-8-live-editing-1"
+    },
+    {
+      "round": 1,
+      "session": "python-8-live-editing-1"
+    },
+    {
+      "round": 1,
+      "session": "go-one-shot-1"
+    },
+    {
+      "round": 1,
+      "session": "python-one-shot-1"
+    },
+    {
+      "round": 2,
+      "session": "python-one-shot-1"
+    },
+    {
+      "round": 2,
+      "session": "go-one-shot-1"
+    },
+    {
+      "round": 2,
+      "session": "python-8-live-editing-1"
+    },
+    {
+      "round": 2,
+      "session": "go-8-live-editing-1"
+    }
+  ],
+  "records": [
+    {
+      "session": "go-8-live-editing-1",
+      "round": 1,
+      "kind": "http",
+      "passed": true,
+      "path": "go-8-live-editing-1/round1/http"
+    },
+    {
+      "session": "go-8-live-editing-1",
+      "round": 1,
+      "kind": "socket",
+      "passed": true,
+      "path": "go-8-live-editing-1/round1/socket"
+    },
+    {
+      "session": "python-8-live-editing-1",
+      "round": 1,
+      "kind": "http",
+      "passed": true,
+      "path": "python-8-live-editing-1/round1/http"
+    },
+    {
+      "session": "python-8-live-editing-1",
+      "round": 1,
+      "kind": "socket",
+      "passed": true,
+      "path": "python-8-live-editing-1/round1/socket"
+    },
+    {
+      "session": "go-one-shot-1",
+      "round": 1,
+      "kind": "http",
+      "passed": true,
+      "path": "go-one-shot-1/round1/http"
+    },
+    {
+      "session": "go-one-shot-1",
+      "round": 1,
+      "kind": "socket",
+      "passed": true,
+      "path": "go-one-shot-1/round1/socket"
+    },
+    {
+      "session": "python-one-shot-1",
+      "round": 1,
+      "kind": "http",
+      "passed": true,
+      "path": "python-one-shot-1/round1/http"
+    },
+    {
+      "session": "python-one-shot-1",
+      "round": 1,
+      "kind": "socket",
+      "passed": true,
+      "path": "python-one-shot-1/round1/socket"
+    },
+    {
+      "session": "python-one-shot-1",
+      "round": 2,
+      "kind": "socket",
+      "passed": true,
+      "path": "python-one-shot-1/round2/socket"
+    },
+    {
+      "session": "python-one-shot-1",
+      "round": 2,
+      "kind": "http",
+      "passed": true,
+      "path": "python-one-shot-1/round2/http"
+    },
+    {
+      "session": "go-one-shot-1",
+      "round": 2,
+      "kind": "socket",
+      "passed": true,
+      "path": "go-one-shot-1/round2/socket"
+    },
+    {
+      "session": "go-one-shot-1",
+      "round": 2,
+      "kind": "http",
+      "passed": true,
+      "path": "go-one-shot-1/round2/http"
+    },
+    {
+      "session": "python-8-live-editing-1",
+      "round": 2,
+      "kind": "socket",
+      "passed": true,
+      "path": "python-8-live-editing-1/round2/socket"
+    },
+    {
+      "session": "python-8-live-editing-1",
+      "round": 2,
+      "kind": "http",
+      "passed": true,
+      "path": "python-8-live-editing-1/round2/http"
+    },
+    {
+      "session": "go-8-live-editing-1",
+      "round": 2,
+      "kind": "socket",
+      "passed": true,
+      "path": "go-8-live-editing-1/round2/socket"
+    },
+    {
+      "session": "go-8-live-editing-1",
+      "round": 2,
+      "kind": "http",
+      "passed": true,
+      "path": "go-8-live-editing-1/round2/http"
+    }
+  ],
+  "passed": true,
+  "reviewer_parity": {
+    "go-8-live-editing-1": {
+      "passed": true,
+      "http_probe_complete": true,
+      "http_probe_exit": 0,
+      "frozen_production_gate_exit": 0,
+      "source_driven_favorites_passed": true,
+      "common_parity_passed": true
+    },
+    "python-8-live-editing-1": {
+      "passed": false,
+      "http_probe_complete": true,
+      "http_probe_exit": 1,
+      "frozen_production_gate_exit": 0,
+      "source_driven_favorites_passed": false,
+      "common_parity_passed": false
+    },
+    "go-one-shot-1": {
+      "passed": false,
+      "http_probe_complete": true,
+      "http_probe_exit": 1,
+      "frozen_production_gate_exit": 0,
+      "source_driven_favorites_passed": true,
+      "common_parity_passed": false
+    },
+    "python-one-shot-1": {
+      "passed": false,
+      "http_probe_complete": true,
+      "http_probe_exit": 0,
+      "frozen_production_gate_exit": 0,
+      "source_driven_favorites_passed": false,
+      "common_parity_passed": true
+    }
+  },
+  "interpretation": "Runtime success does not imply supplemental reviewer parity; see reviewer_parity.",
+  "shared_edit_review": {
+    "go-8-live-editing-1": false,
+    "python-8-live-editing-1": true,
+    "go-one-shot-1": false,
+    "python-one-shot-1": false
+  },
+  "http_database_image_sha256": "sha256:8ee7c900f4de054e8f0a3b42b8f5da38b8fba57c3ccd7c1a02be28cb0b06494f",
+  "load_generator_image_sha256": "sha256:4d79f9384ce43a49b40f135a2c57fd3562ebc704ecb0e81e3cc4a624bac12646",
+  "socket_database_image": "postgres:17-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193",
+  "finished": "2026-09-29T20:55:27.170969+00:00"
+}
