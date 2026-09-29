@@ -125,3 +125,101 @@ Python syntax parsed; a conforming fake client passed every case; a fake client
 with the three suspected Go deviations failed exactly those three cases.
 The fake-client checks also verified four independent articles and absence of
 sentinel credentials, slugs, article text and origins in serialized results.
+
+## Closing review: published reference outcomes
+
+The initial findings above describe preserved originals. They do not override
+later reference evidence. The following statuses were read directly from each
+published reference's `verification.json`, `size.json`, and, where present,
+`reviewer-parity/{results,share-boundary}.json`:
+
+| Reference | Owned tokens | Independent development / production | Supplemental review |
+| --- | ---: | --- | --- |
+| `results/lanes/go/8-live-editing/reference-1` | 14,249 | pass / pass | parity and shared boundary pass |
+| `results/lanes/python/8-live-editing/reference-1` | 8,429 | pass / pass | parity and shared boundary pass |
+| `results/one-shot-v2-go-expert/pilot-1/reference-1` | 12,846 | pass / pass | common 21/21 contract + 3/3 quality; favorites 48/48; shared boundary pass |
+| `results/one-shot-v2-python-expert/pilot-1/reference-1` | 9,015 | pass / fail | production failure preserved; replacement pending at review time |
+
+These are unscored repaired references. Token counts describe owned source size,
+not measured coding effort or proof of broad performance superiority. The Python
+one-shot reference-1 production failure must not be presented as a passing final
+candidate. Reference-2 had only its metadata published during this review.
+
+### Go one-shot reference-1: repair and framework verdict
+
+Read source root:
+`results/one-shot-v2-go-expert/pilot-1/reference-1/source`.
+
+- `internal/conduit/app.go:decodeShared/decodeBody` validates the exact outer
+  envelope and trailing JSON; `integer` uses `*int`, preserving stale zero and
+  negative integers while rejecting null. Focused input tests cover the repair.
+- `internal/conduit/articles.go:saveArticle` is one author/share update rule,
+  reads the current row with `FOR UPDATE`, applies changes, commits, then
+  broadcasts. This removes the earlier original-lane disjoint-update concern
+  from this independently designed implementation.
+- `internal/conduit/login_limits.go` reserves in-flight attempts before password
+  verification; deterministic concurrency/expiry tests exercise its limit. It
+  is process local, consistent with the one-instance deployment, and resets
+  across restarts.
+- `internal/conduit/exports.go` inserts export and River job in one transaction;
+  snapshot content uses one SQL statement and completion is conditional on
+  pending status. These are compact, direct uses of database/queue guarantees.
+
+No additional acceptance blocker was established by this source review.
+The implementation is idiomatic **Chi + database/sql + River**, with parameterized
+SQL making relationships, aggregates and locking explicit. Its use of Huma is
+limited to health and tags; Bun mainly supplies database/transaction wrappers
+and the tags query. It should not be characterized as a full test of typed Huma
+operations or a Bun ORM-centered product. A future typed-Huma comparison would
+be a separate experiment, not a necessary correctness repair.
+
+Two performance limitations are visible in source but their workload impact is
+**unmeasured**: the single `rooms.mu` spans database work for edits, publishing,
+link management and subscription, serializing unrelated articles; `viewSelect`
+still fetches body on list routes before `scanView(..., false)` removes it.
+Neither is a measured throughput failure. A focused future reference could
+use article-scoped room locking and body-free list projections, with concurrency
+tests preserving admission and revision ordering. No load or runtime experiment
+was performed by this reviewer.
+
+### Python one-shot reference-2: pending repair source review
+
+The coordinator expressly authorized reading only the current repair workspace
+for this follow-up. Inspected
+`.work/lanes/python-one-shot-reference-2/app/conduit/live.py` and
+`tests/test_live_ordering.py`; no source was edited and no test was run here.
+
+The presence repair addresses the reported scheduling race concretely:
+`ready`, presence, updates and revocation use a per-client send lock; presence
+reads current membership after obtaining that lock; the newly ready client is
+also refreshed. Room membership locks are released before transport awaits.
+Pending updates retain the greatest revision, and the admitted guard prevents
+an update following revocation. Four deterministic tests control delayed ready,
+overlapping leaves, pending-update ordering and revocation during ready. These
+tests target observable scheduling failures rather than duplicating helpers.
+No additional fix was identified. Publication and independent production/browser
+verification remain required evidence; source inspection alone is not a pass.
+
+**Coordinator follow-up:** reference-2 was subsequently published at
+`results/one-shot-v2-python-expert/pilot-1/reference-2/source` (9,058 owned tokens).
+Its independent development and production gates pass, as do the common,
+favorites and shared-boundary probes recorded beside that source. This confirms
+the checks on the published repair; reference-1's failure remains preserved.
+
+### Selection and reading entry points
+
+For a compact, framework-led current reference, Python final-8 reference-1 is
+the strongest already-verified choice in these artifacts: 8,429 owned tokens,
+Django model/query/transaction machinery, Ninja routing, Channels sockets and
+Procrastinate jobs. Begin with its `conduit/models.py`, `articles.py`, `sharing.py`,
+`live.py` and `tasks.py`. Its density is observed for this product and these
+checks, not a universal language result.
+
+For explicit SQL, typed Go response structures, and River integration, Go
+one-shot reference-1 is a useful verified reference. Begin with
+`internal/conduit/articles.go:saveArticle`, `shares.go`, `login_limits.go`,
+`exports.go`, then `cmd/server/main.go` for actual framework boundaries.
+Do not infer a Huma productivity result from this candidate's size.
+After Python one-shot reference-2 independently passes, its `domain.py`,
+`api.py`, `live.py` and `tests/test_live_ordering.py` are the natural entry points
+for comparing its consolidated rule ownership with final-8 Python.

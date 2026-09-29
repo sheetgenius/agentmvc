@@ -1,0 +1,150 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 675B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.14.7-slim-bookworm@sha256:82bc3c539b8813ada9d68c63b40158fa002f7f33de9bf3312a3dfdc0620dff56
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 137B done
+#3 DONE 0.0s
+
+#4 [builder 1/5] FROM docker.io/library/python:3.14.7-slim-bookworm@sha256:82bc3c539b8813ada9d68c63b40158fa002f7f33de9bf3312a3dfdc0620dff56
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 1.63kB done
+#5 DONE 0.0s
+
+#6 [stage-1 3/5] COPY --from=builder /app/.venv /app/.venv
+#6 CACHED
+
+#7 [stage-1 2/5] WORKDIR /app
+#7 CACHED
+
+#8 [builder 4/5] COPY pyproject.toml uv.lock ./
+#8 CACHED
+
+#9 [builder 5/5] RUN uv sync --frozen --no-dev --no-cache --compile-bytecode
+#9 CACHED
+
+#10 [builder 2/5] RUN pip install --no-cache-dir uv==0.12.20
+#10 CACHED
+
+#11 [builder 3/5] WORKDIR /app
+#11 CACHED
+
+#12 [stage-1 4/5] COPY . .
+#12 CACHED
+
+#13 [stage-1 5/5] RUN python -m compileall -q /app && useradd --create-home --uid 10001 app && chown -R app:app /app
+#13 CACHED
+
+#14 exporting to image
+#14 exporting layers done
+#14 writing image sha256:63deeb3ee761cef0bc51337e3b9db13bf8d48992ad990a976fcd2d4d973de1b3 done
+#14 naming to docker.io/library/agentmvc-lane-python-one-shot-reference-2:current done
+#14 DONE 0.0s
+
+0e0e02d9ca80f1f155e0c58a6009d1cb42b2a5616d0dd33502112d50f4638019
+
+49130393ec16002b97513a1badc43a9541929718ce3efaa0109c2b041f2ede7a
+
+caff4add44bef6c1348610317bdde179f430bbb0c306f4f3aaf84e35ab86556f
+
+Operations to perform:
+  Apply all migrations: auth, conduit, contenttypes, procrastinate
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying conduit.0001_initial... OK
+  Applying conduit.0002_loginattempt... OK
+  Applying conduit.0003_article_title_not_empty_and_more... OK
+  Applying conduit.0004_loginattempt_expires_at... OK
+  Applying procrastinate.0001_initial... OK
+  Applying procrastinate.0002_drop_started_at_column... OK
+  Applying procrastinate.0003_drop_started_at_column... OK
+  Applying procrastinate.0004_drop_procrastinate_version_table... OK
+  Applying procrastinate.0005_fix_procrastinate_fetch_job... OK
+  Applying procrastinate.0006_fix_trigger_status_events_insert... OK
+  Applying procrastinate.0007_add_queueing_lock_column... OK
+  Applying procrastinate.0008_close_fetch_job_race_condition... OK
+  Applying procrastinate.0009_add_defer_job_function... OK
+  Applying procrastinate.0010_add_procrastinate_periodic_defers... OK
+  Applying procrastinate.0011_add_foreign_key_index... OK
+  Applying procrastinate.0012_add_locks_to_periodic_defer... OK
+  Applying procrastinate.0013_fix_procrastinate_defer_periodic_job... OK
+  Applying procrastinate.0014_add_finish_job_and_retry_job_functions... OK
+  Applying procrastinate.0015_add_trigger_on_job_deletion... OK
+  Applying procrastinate.0016_delete_finished_jobs... OK
+  Applying procrastinate.0017_add_checks_to_finish_job... OK
+  Applying procrastinate.0018_add_checks_to_retry_job... OK
+  Applying procrastinate.0019_fix_finish_job_compat_issue... OK
+  Applying procrastinate.0020_add_index_on_procrastinate_jobs... OK
+  Applying procrastinate.0021_add_kwargs_to_defer_periodic_job... OK
+  Applying procrastinate.0022_null_locks_excluded... OK
+  Applying procrastinate.0023_remove_old_finish_job_function... OK
+  Applying procrastinate.0024_job_id_bigint... OK
+  Applying procrastinate.0025_add_models... OK
+  Applying procrastinate.0026_add_job_priority... OK
+  Applying procrastinate.0027_add_periodic_job_priority... OK
+  Applying procrastinate.0028_add_cancel_states... OK
+  Applying procrastinate.0029_add_additional_params_to_retry_job... OK
+  Applying procrastinate.0030_alter_procrastinateevent_options... OK
+  Applying procrastinate.0031_add_indexes_for_fetch_job... OK
+  Applying procrastinate.0032_pre_cancel_notification... OK
+  Applying procrastinate.0033_post_cancel_notification... OK
+  Applying procrastinate.0034_pre_add_heartbeat... OK
+  Applying procrastinate.0035_post_add_heartbeat... OK
+  Applying procrastinate.0036_add_worker_model... OK
+  Applying procrastinate.0037_pre_batch_defer_jobs... OK
+  Applying procrastinate.0038_post_batch_defer_jobs... OK
+  Applying procrastinate.0039_pre_priority_lock_fetch_job... OK
+  Applying procrastinate.0040_pre_retry_failed_job... OK
+  Applying procrastinate.0041_post_retry_failed_job... OK
+INFO:     Started server process [79]
+INFO:     Uvicorn running on http://0.0.0.0:4154 (Press CTRL+C to quit)
+Launching a worker on all queues
+INFO:     172.29.51.1:40432 - "GET /api/tags HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40438 - "POST /api/users HTTP/1.1" 201 Created
+INFO:     172.29.51.1:40452 - "POST /api/articles HTTP/1.1" 201 Created
+INFO:     172.29.51.1:40456 - "GET /api/articles/share-probe-valid_revision-6b6b9e9643964f65-dfb240c068 HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40470 - "POST /api/articles/share-probe-valid_revision-6b6b9e9643964f65-dfb240c068/share HTTP/1.1" 201 Created
+INFO:     172.29.51.1:40486 - "GET /api/shares/mN7qDT0zq1IhG5CuRaxvYGyJ/article HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40500 - "PUT /api/shares/mN7qDT0zq1IhG5CuRaxvYGyJ/article HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40506 - "GET /api/shares/mN7qDT0zq1IhG5CuRaxvYGyJ/article HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40510 - "POST /api/articles HTTP/1.1" 201 Created
+INFO:     172.29.51.1:40518 - "GET /api/articles/share-probe-revision_zero-6b6b9e9643964f65-707c9210cc HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40528 - "POST /api/articles/share-probe-revision_zero-6b6b9e9643964f65-707c9210cc/share HTTP/1.1" 201 Created
+INFO:     172.29.51.1:40540 - "GET /api/shares/DoBcosoZ25XVIzlbw3HeS4-a/article HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40544 - "PUT /api/shares/DoBcosoZ25XVIzlbw3HeS4-a/article HTTP/1.1" 409 Conflict
+INFO:     172.29.51.1:40556 - "GET /api/shares/DoBcosoZ25XVIzlbw3HeS4-a/article HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40564 - "GET /api/articles/share-probe-revision_zero-6b6b9e9643964f65-707c9210cc HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40574 - "POST /api/articles HTTP/1.1" 201 Created
+INFO:     172.29.51.1:40582 - "GET /api/articles/share-probe-revision_negative-6b6b9e9643964f65-82ed7beabe HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40588 - "POST /api/articles/share-probe-revision_negative-6b6b9e9643964f65-82ed7beabe/share HTTP/1.1" 201 Created
+INFO:     172.29.51.1:40590 - "GET /api/shares/-xGP30Pg9jGTbKnv3eyG3iU1/article HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40598 - "PUT /api/shares/-xGP30Pg9jGTbKnv3eyG3iU1/article HTTP/1.1" 409 Conflict
+INFO:     172.29.51.1:40600 - "GET /api/shares/-xGP30Pg9jGTbKnv3eyG3iU1/article HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40604 - "GET /api/articles/share-probe-revision_negative-6b6b9e9643964f65-82ed7beabe HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40612 - "POST /api/articles HTTP/1.1" 201 Created
+INFO:     172.29.51.1:40626 - "GET /api/articles/share-probe-extra_envelope_key-6b6b9e9643964f65-e0478e462e HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40630 - "POST /api/articles/share-probe-extra_envelope_key-6b6b9e9643964f65-e0478e462e/share HTTP/1.1" 201 Created
+INFO:     172.29.51.1:40644 - "GET /api/shares/ruMTptXX9S-Zz3tY9M2lepws/article HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40660 - "PUT /api/shares/ruMTptXX9S-Zz3tY9M2lepws/article HTTP/1.1" 422 Unprocessable Content
+INFO:     172.29.51.1:40676 - "GET /api/shares/ruMTptXX9S-Zz3tY9M2lepws/article HTTP/1.1" 200 OK
+INFO:     172.29.51.1:40682 - "GET /api/articles/share-probe-extra_envelope_key-6b6b9e9643964f65-e0478e462e HTTP/1.1" 200 OK

@@ -105,6 +105,23 @@ remain unchanged.
 
 ## Conditions and caveats
 
+### Reviewed reference repairs
+
+The [eight-step reference](8-live-editing/reference-1/README.md) has 14,249 owned
+tokens. It corrects shared stale-revision and envelope handling, and omits
+article bodies from list queries. The [one-shot reference](../../one-shot-v2-go-expert/pilot-1/reference-1/README.md)
+has 12,846 owned tokens. It repairs null revisions, shared envelopes and atomic,
+expiring login admission. Both pass independent development/production gates
+and all supplemental common, favorites and shared-boundary probes.
+
+These are unscored revisions with explicit parent sources. The one-shot's
+limited Huma/Bun adoption remains visible. Its global room lock also spans
+database work for unrelated articles; the effect on throughput is not isolated
+by the current workload. For a live editor, use `tools/lane_demo.sh go eight-reference`
+or `tools/lane_demo.sh go one-shot-reference` from the repository root.
+
+### Preparation and measurement
+
 The scaffold supplied the native release Dockerfile, fast Air loop, and
 infrastructure helpers. Step 1 therefore used the disclosed prepared-scaffold
 condition, and step 3 reviewed existing packaging. Frozen inputs, fresh Codex

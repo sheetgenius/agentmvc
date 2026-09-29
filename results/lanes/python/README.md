@@ -1,14 +1,15 @@
 # Python: Django, Ninja, Channels and Procrastinate
 
-Three completed implementations show different tradeoffs within the same stack. Start with the source map below; the measured originals remain unchanged. The reference is a separately labeled maintainer repair.
+Two independent builds and their repaired references show different tradeoffs within the same stack. Start with the source map below; the measured originals remain unchanged. References are separately labeled maintainer work.
 
 | Implementation | Source | Owned / whole backend tokens | Test tokens | Measured agent effort |
 |---|---|---:|---:|---|
 | Eight-step final | [Application](../../../stacks/python/8-live-editing/), [rule map](../../../stacks/python/8-live-editing/README.md) | 8,308 / 9,014 | 236 | 70.2 min across all eight steps; 842,429 uncached + output tokens |
 | Expert one-shot | [Application](../../one-shot-v2-python-expert/pilot-1/source/), [rule map](../../one-shot-v2-python-expert/pilot-1/source/AGENTS.md) | 8,718 / 9,684 | 944 | 12.2 min; 133,594 uncached + output tokens |
 | Eight-step reference-1 | [Repaired application](8-live-editing/reference-1/source/) | 8,429 / 9,135 | 853 | Unscored maintainer work; no comparable effort figure |
+| One-shot reference-2 | [Repaired application](../../one-shot-v2-python-expert/pilot-1/reference-2/source/) | 9,058 / 10,047 | 3,148 | Unscored maintainer work; failed reference-1 retained |
 
-Sizes use `o200k_base` against the frozen product-free scaffold; tests and docs are separate. [Eight-step size](8-live-editing/size.json), [one-shot size and effort](../../one-shot-v2-python-expert/pilot-1/run.json), [reference provenance](8-live-editing/reference-1/reference.json). Eight-step effort sums the eight `run.json` files here and includes repeated phase gates. The one-shot had all features in its initial prompt and a versioned PostgreSQL TCP-readiness adapter; its effort is a different condition, not an eight-step speedup estimate.
+Sizes use `o200k_base` against the frozen product-free scaffold; tests and docs are separate. [Eight-step size](8-live-editing/size.json), [one-shot size](../../one-shot-v2-python-expert/pilot-1/size.json) and [effort](../../one-shot-v2-python-expert/pilot-1/run.json), [reference provenance](8-live-editing/reference-1/reference.json). Eight-step effort sums the eight `run.json` files here and includes repeated phase gates. The one-shot had all features in its initial prompt and a versioned PostgreSQL TCP-readiness adapter; its effort is a different condition, not an eight-step speedup estimate.
 
 ## Where to look in the code
 
@@ -20,7 +21,7 @@ Sizes use `o200k_base` against the frozen product-free scaffold; tests and docs 
 | Live delivery | Channels consumers **and group delivery**; current room counts are read when presence events are delivered | Channels JSON consumer plus a custom `Rooms` registry, lock, fanout and revision ordering |
 | Durable work | Procrastinate task calls `Export.complete` under a row lock | Procrastinate task builds the snapshot under a row lock |
 
-All three use Django migrations, ORM transactions and password hashing, PyJWT, Uvicorn ASGI, and a PostgreSQL-backed Procrastinate worker beside the web process in one container. Queue insertion shares the export row's transaction. The fixed Lit client is unchanged.
+All versions use Django migrations, ORM transactions and password hashing, PyJWT, Uvicorn ASGI, and a PostgreSQL-backed Procrastinate worker beside the web process in one container. Queue insertion shares the export row's transaction. The fixed Lit client is unchanged.
 
 ## What the expert prompt changed
 
@@ -32,7 +33,7 @@ Both implementations bound article-list query counts, but the one-shot prefetche
 
 ## What verification actually established
 
-All three passed independent development and fresh production gates: 17 HTTP acceptance files, 13 security files, the raw socket protocol, and four browser tests. [Eight-step](8-live-editing/verification.json), [one-shot](../../one-shot-v2-python-expert/pilot-1/verification.json), [reference](8-live-editing/reference-1/verification.json).
+The four entries above passed independent development and fresh production gates: 17 HTTP acceptance files, 13 security files, the raw socket protocol, and four browser tests. [Eight-step](8-live-editing/verification.json), [one-shot](../../one-shot-v2-python-expert/pilot-1/verification.json), [eight-step reference](8-live-editing/reference-1/verification.json), [one-shot reference-2](../../one-shot-v2-python-expert/pilot-1/reference-2/verification.json).
 
 Supplemental reviewer probes found gaps beyond those frozen gates:
 
@@ -44,15 +45,20 @@ Supplemental reviewer probes found gaps beyond those frozen gates:
 
 All versions keep room presence and delivery in one process. Multiple Uvicorn workers or replicas require shared admission/presence and cross-process delivery. Development reloads the web process; job changes require a worker restart.
 
-Source review also identified two unprobed one-shot defects: its login counter has no expiry and never resets after reaching 20 failures, even with a valid password; article deletion removes the share row without notifying admitted sockets. A separate one-shot maintainer repair is in progress; no repaired result is claimed here.
+Source review also identified two one-shot defects: its login counter has no expiry and never resets after reaching 20 failures, even with a valid password; article deletion removes the share row without notifying admitted sockets. The separate [one-shot reference-1](../../one-shot-v2-python-expert/pilot-1/reference-1/source/) repairs those, favorite filtering, the shared envelope, and read-query costs. Its focused tests and independent development gate passed, but **production failed** a browser presence check after simultaneous joins. [Preserved verdict](../../one-shot-v2-python-expert/pilot-1/reference-1/verification.json). It is not a fully verified replacement.
 
-The one-shot holds one global room lock across a database lookup. That can couple unrelated rooms under slow queries. Captured presence counts sent after releasing the lock also warrant a concurrency test. These are source-based performance/race concerns, not measured failures. Runtime comparisons remain pending; the short step-4 tuning samples describe an earlier source version.
+[Reference-2](../../one-shot-v2-python-expert/pilot-1/reference-2/README.md) now passes independent development and production gates, plus every common, favorites and shared-boundary reviewer probe. It serializes each client's ready, presence, update and revocation sends, reads current membership at presence delivery, and refreshes the joining client too. Deterministic tests reproduced stale counts for delayed joins and overlapping leaves in reference-1; those now pass, alongside ready/update and revocation ordering regressions (16 direct tests total). It contains 9,058 owned backend tokens. Reference-1 and both measured originals are preserved.
+
+The one-shot still holds one global room lock across a database lookup. That can couple unrelated rooms under slow queries; its latency impact is unmeasured. Runtime comparisons remain pending; the short step-4 tuning samples describe an earlier source version.
 
 To try either measured app with the fixed editor, run from the repository root (Docker and Node required):
 
 ```sh
 tools/lane_demo.sh python eight
 # or: tools/lane_demo.sh python one-shot
+# Reviewed references:
+tools/lane_demo.sh python eight-reference
+# or: tools/lane_demo.sh python one-shot-reference
 ```
 
 The script prints an editing link; Ctrl-C removes the demo containers and temporary client. For the preserved progression, browse [all eight source snapshots](../../../stacks/python/) and their adjacent result directories here.

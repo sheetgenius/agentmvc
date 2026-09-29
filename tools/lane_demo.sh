@@ -2,15 +2,23 @@
 # Try a published Go/Python application with the fixed Lit client.
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
-stack="${1:?usage: tools/lane_demo.sh go|python [eight|one-shot]}"
+stack="${1:?usage: tools/lane_demo.sh go|python [eight|one-shot|eight-reference|one-shot-reference]}"
 condition="${2:-eight}"
 case "$stack" in go) default_port=4410;; python) default_port=4411;; *) exit 2;; esac
 case "$condition" in
   eight) source_dir="$root/stacks/$stack/8-live-editing";;
   one-shot) source_dir="$root/results/one-shot-v2-$stack-expert/pilot-1/source";;
-  *) echo 'condition must be eight or one-shot' >&2; exit 2;;
+  eight-reference) source_dir="$root/results/lanes/$stack/8-live-editing/reference-1/source";;
+  one-shot-reference)
+    revision=1
+    [[ "$stack" != python ]] || revision=2
+    source_dir="$root/results/one-shot-v2-$stack-expert/pilot-1/reference-$revision/source";;
+  *) echo 'condition must be eight, one-shot, eight-reference or one-shot-reference' >&2; exit 2;;
 esac
 [[ -f "$source_dir/Dockerfile" ]] || { echo "Published application is not available: $source_dir" >&2; exit 1; }
+if [[ "$condition" == *-reference ]]; then
+  node -e 'const fs = require("node:fs"); for (const name of ["verification.json", "reviewer-parity/results.json", "reviewer-parity/share-boundary.json"]) { if (!JSON.parse(fs.readFileSync(process.argv[1] + "/" + name)).passed) throw new Error("Reference checks have not passed: " + name); }' "$(dirname "$source_dir")"
+fi
 port="${DEMO_BACKEND_PORT:-$default_port}"
 frontend_port="${DEMO_FRONTEND_PORT:-5178}"
 name="agentmvc-lane-demo-$stack-$$"
