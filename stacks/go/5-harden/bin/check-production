@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+# The fixed harness runs acceptance, then security Hurl, in one production container.
+report=$(./harness/check-production.sh 2>&1) || { printf '%s\n' "$report"; exit 1; }
+printf '%s\n' "$report"
+printf '%s\n' "$report" | grep -q 'Succeeded files:   15 (100.0%)'
+printf '%s\n' "$report" | grep -q 'Succeeded files:   13 (100.0%)'
