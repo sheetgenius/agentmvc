@@ -1,0 +1,393 @@
+{
+  "session": "go-one-shot-1",
+  "stack": "go",
+  "phase": "one-shot",
+  "condition": "supplemental shared-edit review; not a frozen gate",
+  "source_sha256": "b9530e5dc410b91a5105a707e55386ee5e182e1cacbe4b6630474a65dea90a1c",
+  "fixture_sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+  "fixture_record_sha256": "47ca5592c342f9a628d7015b10176a84240227e7b3170a3f5cddebbd7ec26cc7",
+  "prompt_sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+  "started": "2026-09-29T20:07:01.566601+00:00",
+  "passed": false,
+  "app_port": 4110,
+  "app_environment_keys": [
+    "DATABASE_URL",
+    "SECRET_KEY_BASE",
+    "PORT"
+  ],
+  "tools_sha256": {
+    "lane_share_review.py": "4d645daad98d4194d6d8f16d182a6e5b72116965daf5eed9f68f80c5b31915c2",
+    "lane_share_probe.py": "207274444bdbc261955bd73112b9442cd7bf80f9ef111a9c372b1f48e83f300e",
+    "reviewer_common_http_probe.py": "d40c80b7cda2295cf9367b6b4435a04f5d180532de0390e7c95d73ff4fcd3499",
+    "lane_check.py": "145a6f3bbee6c55cd616732a9663389903c0a41fb2682b5bd12e84b147fe7e61",
+    "lane_review.py": "0131bb4fc4e9aab709eede4020f60bd8a962b9f6b9d0da816aa509516af7e348",
+    "lane_evidence.py": "7492595b1eaf0711af38f1a8ce1cfee9bbd196d507fec211411ea77a6a7c210e"
+  },
+  "image_sha256": "sha256:5aff113b8423a9a5bf1c444f72f497e1fb0886a197806b64ed5962434663851e",
+  "probe": {
+    "condition": "supplemental shared-edit diagnostic; not a frozen gate",
+    "results": [
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "setup/register",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "valid_revision/create",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 200,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "valid_revision/owner_read",
+        "observed": {
+          "body_kind": "dict",
+          "status": 200,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "valid_revision/share",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 200,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "valid_revision/shared_read",
+        "observed": {
+          "body_kind": "dict",
+          "status": 200,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "exact_shared_shape": true,
+          "persisted_response": true,
+          "read_status": 200,
+          "revision_incremented_once": true,
+          "status": 200,
+          "submitted_fields_saved": true
+        },
+        "kind": "contract",
+        "name": "valid_revision",
+        "observed": {
+          "body_kind": "dict",
+          "exact_shared_shape": true,
+          "persisted_response": true,
+          "read_status": 200,
+          "revision_incremented_once": true,
+          "status": 200,
+          "submitted_fields_saved": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:21-23; spec/features/drafts/drafts.md:65-74"
+      },
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "revision_zero/create",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 200,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "revision_zero/owner_read",
+        "observed": {
+          "body_kind": "dict",
+          "status": 200,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "revision_zero/share",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 200,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "revision_zero/shared_read",
+        "observed": {
+          "body_kind": "dict",
+          "status": 200,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "article_unchanged": true,
+          "current_article_returned": true,
+          "full_article_unchanged": true,
+          "owner_read_status": 200,
+          "read_status": 200,
+          "stale_error": true,
+          "status": 409
+        },
+        "kind": "contract",
+        "name": "revision_zero",
+        "observed": {
+          "article_unchanged": true,
+          "body_kind": "dict",
+          "current_article_returned": true,
+          "full_article_unchanged": true,
+          "owner_read_status": 200,
+          "read_status": 200,
+          "stale_error": true,
+          "status": 409
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:21-23; spec/features/drafts/drafts.md:65-74"
+      },
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "revision_negative/create",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 200,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "revision_negative/owner_read",
+        "observed": {
+          "body_kind": "dict",
+          "status": 200,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "revision_negative/share",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 200,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "revision_negative/shared_read",
+        "observed": {
+          "body_kind": "dict",
+          "status": 200,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "article_unchanged": true,
+          "current_article_returned": true,
+          "full_article_unchanged": true,
+          "owner_read_status": 200,
+          "read_status": 200,
+          "stale_error": true,
+          "status": 409
+        },
+        "kind": "contract",
+        "name": "revision_negative",
+        "observed": {
+          "article_unchanged": true,
+          "body_kind": "dict",
+          "current_article_returned": true,
+          "full_article_unchanged": true,
+          "owner_read_status": 200,
+          "read_status": 200,
+          "stale_error": true,
+          "status": 409
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:21-23; spec/features/drafts/drafts.md:65-74"
+      },
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "extra_envelope_key/create",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 200,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "extra_envelope_key/owner_read",
+        "observed": {
+          "body_kind": "dict",
+          "status": 200,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "extra_envelope_key/share",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "status": 200,
+          "usable_response": true
+        },
+        "kind": "setup",
+        "name": "extra_envelope_key/shared_read",
+        "observed": {
+          "body_kind": "dict",
+          "status": 200,
+          "usable_response": true
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-19"
+      },
+      {
+        "expected": {
+          "article_unchanged": true,
+          "full_article_unchanged": true,
+          "owner_read_status": 200,
+          "read_status": 200,
+          "status": 422,
+          "structured_errors": true
+        },
+        "kind": "quality_diagnostic",
+        "name": "extra_envelope_key",
+        "observed": {
+          "article_unchanged": false,
+          "body_kind": "dict",
+          "full_article_unchanged": false,
+          "owner_read_status": 404,
+          "read_status": 200,
+          "status": 200,
+          "structured_errors": false
+        },
+        "passed": false,
+        "source": "spec/features/live-editing/live-editing.md:21 (exact envelope interpretation; quality only)"
+      }
+    ],
+    "summary": {
+      "contract_passed": 3,
+      "contract_total": 3,
+      "quality_diagnostic_passed": 0,
+      "quality_diagnostic_total": 1,
+      "setup_passed": 17,
+      "setup_total": 17
+    }
+  },
+  "exit": 1,
+  "finished": "2026-09-29T20:07:19.860946+00:00"
+}

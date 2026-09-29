@@ -1,0 +1,28 @@
+{
+  "id": "go-one-shot-1",
+  "stack": "go",
+  "phase": "one-shot",
+  "condition": "expert-v2-tcp-readiness",
+  "started": "2026-09-29T19:50:00.425056+00:00",
+  "finished": "2026-09-29T20:06:05.625979+00:00",
+  "seconds": 965.2,
+  "exit": 0,
+  "model": "gpt-6-sol",
+  "reasoning": "xhigh",
+  "tool": "codex-cli 0.157.1",
+  "prompt_sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+  "fixture_sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+  "toolchain_image_id": "sha256:1287e4b159f278273363240c008f505851446d4ab8582c69108dfd4fca1ca66b",
+  "browser_image_id": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5",
+  "tokens": {
+    "input": 6380390,
+    "cached_input": 6246912,
+    "output": 36038,
+    "reasoning_output": 11481,
+    "commands": 80,
+    "failed_commands": 5,
+    "uncached_plus_output": 169516
+  },
+  "effective_fixture_sha256": "f806cf0d3d7c2f95497dd5d72253d000e28823b333d9d7eda20c4e052842448b",
+  "fixture_identity_note": "fixture_sha256 is the inherited base; effective_fixture_sha256 includes the TCP-readiness condition"
+}

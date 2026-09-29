@@ -1,0 +1,66 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 554B done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 0.4s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/golang:1.27.1-bookworm@sha256:69a7b9788769bec032d238959b61854e9ae87f57be9029ec04e9885fabf99195
+#4 DONE 0.0s
+
+#5 [internal] load metadata for gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 113B done
+#6 DONE 0.0s
+
+#7 [build 1/6] FROM docker.io/library/golang:1.27.1-bookworm@sha256:69a7b9788769bec032d238959b61854e9ae87f57be9029ec04e9885fabf99195
+#7 DONE 0.0s
+
+#8 [stage-1 1/3] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 1.59kB done
+#9 DONE 0.0s
+
+#10 [build 4/6] RUN go mod download
+#10 CACHED
+
+#11 [build 2/6] WORKDIR /src
+#11 CACHED
+
+#12 [build 6/6] RUN go build -trimpath -ldflags="-s -w" -o /out/server ./cmd/server
+#12 CACHED
+
+#13 [stage-1 2/3] WORKDIR /app
+#13 CACHED
+
+#14 [build 3/6] COPY go.mod go.sum ./
+#14 CACHED
+
+#15 [build 5/6] COPY . .
+#15 CACHED
+
+#16 [stage-1 3/3] COPY --from=build /out/server /app/server
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 writing image sha256:5aff113b8423a9a5bf1c444f72f497e1fb0886a197806b64ed5962434663851e done
+#17 naming to docker.io/library/agentmvc-lane-go-one-shot-1:current done
+#17 DONE 0.0s
+
+fb2384c292cafb56e4b77adc71141c3a227865631c9cbdd4c1e8f2819b1380de
+
+9ef150b772de86f1075a11cac0ab7b083008e27895a6f7b2c1d691fb61870b59
+
+f8d2ccf430d12eb681b2eb13dc10f3fa582242c53fe610db385f00fc66261b84
+
+2026/09/29 20:07:19 INFO listening address=:4110
