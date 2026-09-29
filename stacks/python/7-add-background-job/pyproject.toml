@@ -1,0 +1,31 @@
+[project]
+name = "agentmvc-python"
+version = "0.1.0"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+  "django==6.1.1",
+  "django-ninja==1.7.1",
+  "psycopg[binary,pool]==3.3.6",
+  "dj-database-url==3.1.2",
+  "uvicorn[standard]==0.54.0",
+  "PyJWT==2.15.1",
+  "argon2-cffi==25.1.0",
+  "django-cors-headers>=4.9.0",
+  "procrastinate[django]==3.10.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff==0.16.9",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+extend-exclude = [".scaffold", "realworld_spec", "harness", "security", "perf", ".checks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

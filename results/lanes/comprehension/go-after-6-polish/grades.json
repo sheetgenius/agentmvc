@@ -1,0 +1,95 @@
+{
+  "session": "go-6-polish-1",
+  "graded_at": "2026-09-29T19:29:02.557994+00:00",
+  "method": "Qualitative source-supported review against a key saved before reader launch; original 1/0.5/0 rubric.",
+  "source_sha256": "89cfb6da7535d4f61ca60ff579591f652a080dd15fb919c89350cabdffddeb36",
+  "source_sha256_after_review": "89cfb6da7535d4f61ca60ff579591f652a080dd15fb919c89350cabdffddeb36",
+  "readable_source_sha256_before": "a6a1246b887bac4253b37e1cbd2d51b5229d1ea2deb122a8e03fe92d8bfca671",
+  "readable_source_sha256_after": "a6a1246b887bac4253b37e1cbd2d51b5229d1ea2deb122a8e03fe92d8bfca671",
+  "answer_sha256": "4ee9702ebc4e55591085d6ecd7d6e98bf9a7b0aead271a8fb840842d035677c1",
+  "answer_key_sha256": "ab7d4ef29315983f0bfa8a4692b5f54d42ded41745b83f3753ad1ccea5b2acfa",
+  "answer_key_saved_at": "2026-09-29T19:26:38.137560+00:00",
+  "reader_started_at": "2026-09-29T19:26:59.621585+00:00",
+  "score": 12,
+  "maximum": 12,
+  "isolation_passed": true,
+  "source_unchanged": true,
+  "items": [
+    {
+      "question": 1,
+      "score": 1,
+      "reason": "Correct lowercasing, hyphen normalization, fallback, random suffix and regeneration only when the title changes.",
+      "source": "internal/conduit/articles.go: slug, createArticle, updateArticle"
+    },
+    {
+      "question": 2,
+      "score": 1,
+      "reason": "Correct database uniqueness mapping, 409 status and field-specific errors body.",
+      "source": "internal/conduit/users.go: userConflict, register; internal/conduit/http.go: route"
+    },
+    {
+      "question": 3,
+      "score": 1,
+      "reason": "Correct publication filter, followed-author selection and descending creation-time/ID order.",
+      "source": "internal/conduit/articles.go: feed, articleList"
+    },
+    {
+      "question": 4,
+      "score": 1,
+      "reason": "Correct favorites row count by article and zero when absent.",
+      "source": "internal/conduit/views.go: articleViews"
+    },
+    {
+      "question": 5,
+      "score": 1,
+      "reason": "Correct 403 status, comment forbidden body and comparison/serialization locations.",
+      "source": "internal/conduit/comments.go: deleteComment; internal/conduit/http.go: forbidden, route"
+    },
+    {
+      "question": 6,
+      "score": 1,
+      "reason": "Correct nil pointer normalization, SQL NULL persistence and JSON null response.",
+      "source": "internal/conduit/users.go: updateUser; internal/conduit/http.go: nullableString"
+    },
+    {
+      "question": 7,
+      "score": 1,
+      "reason": "Correct per-article tag rows, composite key, position and sorted distinct published-article tag list.",
+      "source": "internal/platform/migrations/00001_conduit.sql: article_tags; internal/conduit/articles.go: addTags, tags"
+    },
+    {
+      "question": 8,
+      "score": 1,
+      "reason": "Correct default 20 for missing, invalid or negative values and no explicit application maximum.",
+      "source": "internal/conduit/articles.go: pagination, articleList"
+    },
+    {
+      "question": 9,
+      "score": 1,
+      "reason": "Correct HS256 signing, user identifier subject and 30-day expiry. The cited code represents that identifier as a decimal string.",
+      "source": "internal/conduit/http.go: token"
+    },
+    {
+      "question": 10,
+      "score": 1,
+      "reason": "Correct AuthorID comparison in the shared helper called by update and delete.",
+      "source": "internal/conduit/articles.go: ownedArticle, updateArticle, deleteArticle"
+    },
+    {
+      "question": 11,
+      "score": 1,
+      "reason": "Correct preservation when omitted and 422 tagList cannot-be-blank error for explicit null.",
+      "source": "internal/conduit/articles.go: tagField, updateArticle; internal/conduit/http.go: invalid, route"
+    },
+    {
+      "question": 12,
+      "score": 1,
+      "reason": "Correct SHA-256, hex encoding, bcrypt default cost, storage column and library.",
+      "source": "internal/conduit/users.go: passwordDigest, passwordHash; internal/conduit/models.go: User"
+    }
+  ],
+  "limitations": [
+    "Single reader per snapshot; these small-app questions are near their scoring ceiling.",
+    "Grading confirms source comprehension, not runtime correctness or implementation quality."
+  ]
+}
