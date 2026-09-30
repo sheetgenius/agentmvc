@@ -49,7 +49,7 @@ Try a reviewed app with `tools/lane_demo.sh go one-shot-reference` or `tools/lan
 
 ## Clojure: in progress
 
-The [Clojure track](results/lanes/clojure/README.md) uses the same eight prompts and a separate expert one-shot. Its product-free Ring/Reitit scaffold has passed environment preflight and is frozen for measurement. [Stack selection](stacks/clojure/SELECTION.md) · [Recorded conditions](results/lanes/clojure/METHODOLOGY.md). No completed Clojure product result is claimed yet.
+The [Clojure track](results/lanes/clojure/README.md) uses the same eight prompts and a separate expert one-shot. Its product-free Ring/Reitit scaffold has passed environment preflight and is frozen for measurement. [Stack selection](stacks/clojure/SELECTION.md) · [Recorded conditions](results/lanes/clojure/METHODOLOGY.md). The base API is independently verified; full-product results are pending.
 
 ## Original eight-step study
 

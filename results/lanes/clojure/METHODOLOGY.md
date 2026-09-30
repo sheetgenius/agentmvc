@@ -34,6 +34,9 @@ Sequential step 1 starts from the scaffold. Each following step starts from its
 independently checked predecessor, in a fresh coding session. The one-shot also
 starts from the scaffold, with no access to sequential work. The measured model
 and reasoning setting are recorded in each run; coordinator review is separate.
+The first Clojure session records Codex CLI 0.159.0, while the earlier Go/Python
+and Rails expert runs record 0.157.1. The model and reasoning setting remain
+`gpt-6-sol` and `xhigh`; this CLI version difference is part of the dated condition.
 
 Independent development gates apply at every step; fresh production gates begin
 at step 3. The final apps include drafts, durable exports, shared editing,

@@ -2,7 +2,7 @@
 
 An eight-step build and an independent expert one-shot of the same Conduit backend. The selected stack combines Ring/Jetty, Reitit/Malli, next.jdbc/HoneySQL, Integrant, Migratus, Proletarian and Buddy, packaged as a JVM AOT uberjar.
 
-**Environment preflight passed; measured coding has not completed a verified session.**
+**1/9 coding sessions independently verified.**
 
 [Stack choice and Clojure guidance](../../../stacks/clojure/SELECTION.md) · [Conditions and method](METHODOLOGY.md) · [Shared expert prompt](../../../one-shot-v2-expert/PROMPT.md)
 
@@ -12,7 +12,7 @@ Each checkpoint preserves its source, prompt, effort, failures and independent v
 
 | Step | Owned backend and independent checks |
 | --- | --- |
-| [1 · Base API](../../../steps/1-build.md) | Pending |
+| [1 · Base API](../../../steps/1-build.md) | [4,273](../../../stacks/clojure/1-build) tokens · [pass](1-build/verification.json) |
 | [2 · Drafts](../../../steps/2-add-drafts.md) | Pending |
 | [3 · Production](../../../steps/3-package.md) | Pending |
 | [4 · Performance](../../../steps/4-tune.md) | Pending |
