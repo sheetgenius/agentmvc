@@ -2,7 +2,7 @@
 
 An eight-step build and an independent expert one-shot of the same Conduit backend. The selected stack combines Ring/Jetty, Reitit/Malli, next.jdbc/HoneySQL, Integrant, Migratus, Proletarian and Buddy, packaged as a JVM AOT uberjar.
 
-**7/9 coding sessions independently verified.**
+**8/9 coding sessions independently verified.**
 
 [Stack choice and Clojure guidance](../../../stacks/clojure/SELECTION.md) · [Conditions and method](METHODOLOGY.md) · [Shared expert prompt](../../../one-shot-v2-expert/PROMPT.md)
 
@@ -19,12 +19,17 @@ Each checkpoint preserves its source, prompt, effort, failures and independent v
 | [5 · Security](../../../steps/5-harden.md) | [5,372](../../../stacks/clojure/5-harden) tokens · [pass](5-harden/verification.json) |
 | [6 · Polish](../../../steps/6-polish.md) | [5,352](../../../stacks/clojure/6-polish) tokens · [pass](6-polish/verification.json) |
 | [7 · Exports](../../../steps/7-add-background-job.md) | [6,427](../../../stacks/clojure/7-add-background-job) tokens · [pass](7-add-background-job/verification.json) |
-| [8 · Live editing](../../../steps/8-live-editing.md) | Pending |
+| [8 · Live editing](../../../steps/8-live-editing.md) | [8,603](../../../stacks/clojure/8-live-editing) tokens · [pass](8-live-editing/verification.json) |
 
 ## Independent expert one-shot
 
 Pending
 
+## Full-product sources
+
+| Original source | Owned / whole backend tokens | Coding minutes | Uncached + output tokens | Reviewer checks |
+| --- | ---: | ---: | ---: | --- |
+| [Eight-step final](../../../stacks/clojure/8-live-editing) | 8,603 / 11,067 | 83.0 | 787,220 | Pending |
 
 ## Evidence and limits
 
@@ -37,3 +42,11 @@ AOT compiles application namespaces to JVM bytecode. JVM JIT warmup still matter
 [Comprehension after 1-build: 12/12](comprehension/clojure-after-1-build)
 
 [Comprehension after 6-polish: 12/12](comprehension/clojure-after-6-polish)
+
+Try a measured final app from the repository root (Docker and Node.js required):
+
+```sh
+tools/lane_demo.sh clojure eight
+tools/lane_demo.sh clojure one-shot
+```
+

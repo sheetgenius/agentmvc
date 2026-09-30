@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+harness/clojure.sh lint
+# The production harness runs acceptance, the shared client checks, and security against the image.
+exec harness/check-production.sh
