@@ -75,3 +75,98 @@ Record effort when available, exact source/image identities, all gate results,
 reviewer findings, tuning attempts and raw measurements. Full scrubbed transcripts
 and compressed raw streams are published as external release assets with hashes;
 they stay outside Git. Results and source guides are kept in the repository.
+
+## Reproduction commands
+
+Run these commands from the repository root with the project virtual environment,
+Docker, Node.js, zstd and the recorded authenticated Codex CLI available. The
+frozen toolchain and browser image IDs must be present locally. For a new,
+unfrozen condition, preparation is:
+
+```sh
+.venv/bin/python tools/clojure_track_preflight.py
+.venv/bin/python tools/clojure_lane.py freeze clojure
+```
+
+An existing `stacks/clojure/lane-fixture.json` is immutable. Preserve its inputs,
+preflight proof and image identities; `freeze` verifies those identities and
+refuses replacement. Rebuilding a different image or changing an input requires
+a separately recorded condition. Do not rerun preparation over an active or
+published condition.
+
+The two coding paths use independent sessions. The pipeline performs isolation,
+coding, publication and independent gates for each checkpoint before advancing:
+
+```sh
+.venv/bin/python tools/clojure_lane.py pipeline clojure --through 8
+.venv/bin/python tools/clojure_lane.py one-shot clojure
+```
+
+Published checkpoints and sessions are retained on a repeated invocation; a
+failed independent gate stops progression. Session descriptors live under
+`.work/lanes/clojure-PHASE-1/control/session.json`, where `PHASE` is the full
+step directory name or `one-shot`. These are execution instructions, not a
+claim that either path has completed.
+
+After steps 1 and 6 have independently verified snapshots, prepare fresh readers:
+
+```sh
+.venv/bin/python tools/clojure_evidence.py comprehension-prepare --session .work/lanes/clojure-1-build-1/control/session.json
+.venv/bin/python tools/clojure_evidence.py comprehension-prepare --session .work/lanes/clojure-6-polish-1/control/session.json
+```
+
+A reviewer now derives each twelve-question answer key from its source snapshot,
+saves it outside the reader workspace, and records its hash and save time in
+`key-preparation.json` before viewing any reader answer. Using keys saved at the
+following paths, launch each reader once:
+
+```sh
+.venv/bin/python tools/clojure_evidence.py comprehension-run --session .work/lanes/clojure-1-build-1/control/session.json --answer-key .work/clojure-answer-keys/after-1-build.md
+.venv/bin/python tools/clojure_evidence.py comprehension-run --session .work/lanes/clojure-6-polish-1/control/session.json --answer-key .work/clojure-answer-keys/after-6-polish.md
+```
+
+Grade the answers separately against those saved keys, with source references
+for all twelve scores. Reader evidence goes under `comprehension/`; release
+validation requires `key-preparation.json` and `grades.json` with the timestamps
+and hashes checked by `reader_graded` in `tools/clojure_artifacts.py`.
+
+After both final applications have passed their independent gates, run the
+supplemental probes on their exact published snapshots:
+
+```sh
+.venv/bin/python tools/clojure_evidence.py parity
+.venv/bin/python tools/clojure_evidence.py share --session .work/lanes/clojure-8-live-editing-1/control/session.json
+.venv/bin/python tools/clojure_evidence.py share --session .work/lanes/clojure-one-shot-1/control/session.json
+```
+
+Wait until all measured coding processes have stopped before runtime measurement
+or artifact export. The measured runtime command selects the two fixed Clojure
+finals; it preserves the first runtime directory and its failures:
+
+```sh
+.venv/bin/python tools/clojure_evidence.py runtime --condition measured
+.venv/bin/python tools/clojure_evidence.py validate --condition measured
+.venv/bin/python tools/clojure_artifacts.py export-feedback
+.venv/bin/python tools/clojure_artifacts.py export-checks
+.venv/bin/python tools/clojure_artifacts.py inspect
+.venv/bin/python tools/clojure_artifacts.py package v1
+.venv/bin/python tools/clojure_artifacts.py verify v1
+```
+
+Packaging requires nine verified coding sessions, two graded readers, the
+reviewer evidence for selected finals, and 72 measured HTTP raw streams. Repairs
+remain unscored references; reference runtime requires explicit `--session`
+arguments with `--condition reference`. Choose a new artifact version for a new
+package. Export and packaging validate scrubbed evidence and hashes locally;
+they do not upload assets. Archives are written under `.work/clojure-artifacts/`
+and their manifest under this results directory.
+
+## Preserved preparation findings
+
+The [preparation attempts](preflight-attempts/) retain an initial syntax error
+in a throwaway test and two later source-hash rejections while preparation was
+still changing. The initial advisory scan found older Jetty and Bouncy Castle
+transitives. The final scaffold pins Jetty 12.1.13 and Bouncy Castle 1.86;
+[final preflight](preflight.json) verified the coherent 90-artifact runtime graph
+and recorded zero OSV findings at scan time. These preparation results do not
+count as measured application coding or as a general security guarantee.
