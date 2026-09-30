@@ -54,7 +54,7 @@ A held-out diagnostic found a second ownership gap: registration accepted a seve
 ## Artifacts
 
 - [Frozen shared prompt](frozen-prompt.md), [fixture manifest](../../one-shot-v2/fixture-manifest.json), [preflight record](preflight.json), and [isolation result](isolation.json)
-- [Scrubbed readable transcript](pilot-1/transcript.md), [scrubbed event stream](pilot-1/transcript.jsonl), and [agent report](pilot-1/agent-report.md)
+- [Scrubbed readable transcript](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/results/one-shot-v2-servant/pilot-1/transcript.md), [scrubbed event stream](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/results/one-shot-v2-servant/pilot-1/transcript.jsonl), and [agent report](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/results/one-shot-v2-servant/pilot-1/agent-report.md)
 - [Measured effort](pilot-1/run.json), [attempt counts](pilot-1/check-attempts.json), [source size](pilot-1/size.json), [file inventory](pilot-1/source-files.json), [project docs size](pilot-1/docs.json), [test size](pilot-1/tests.json), and [finished source snapshot](pilot-1/source/)
 - [Independent development gate](pilot-1/development.json) and [log](pilot-1/development.log); [independent production gate](pilot-1/production.json) and [log](pilot-1/production.log)
 - [Runtime summary](pilot-1/runtime/summary.json), [raw stream index](pilot-1/runtime/raw-index.json), [prepared raw archive checksum](pilot-1/runtime/raw-archive.json), and the per-round HTTP and WebSocket JSON files under `pilot-1/runtime/`

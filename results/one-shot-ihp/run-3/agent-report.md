@@ -1,5 +1,0 @@
-Built the Conduit backend in IHP. [Api.hs](/work/app/Application/Controller/Api.hs) owns the HTTP rules; [Domain.hs](/work/app/Application/Domain.hs) owns tokens and share keys; [Live.hs](/work/app/Application/Controller/Live.hs) owns socket updates, presence, and room admission; and [Export.hs](/work/app/Application/Job/Export.hs) owns export snapshots. [AGENTS.md](/work/app/AGENTS.md) maps these rules for future changes.
-
-The running app uses IHP’s front controller, schema-generated models and queries, migration runner, WebSocket app, and PostgreSQL job worker. It uses cryptonite for signed JWTs and key hashing, and a compiled LiquidHaskell refinement for room capacity. Presence is process-local, matching the specified single-instance topology.
-
-**Final checks are green:** `check-all.sh` passed 17 API files, the socket protocol, four browser tests, and 13 security files. `check-production.sh` passed the same suite against a fresh database. `nix flake check --impure`, Fourmolu, and HLint passed. Validation caught and fixed share-edit field validation and JWT token format; an initial production port conflict was resolved before the successful rerun.

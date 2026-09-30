@@ -5,7 +5,7 @@ Usage: python3 tools/report.py            (needs tiktoken and matplotlib: pip in
 Writes:
 - results/sizes.json          code size of every stack at every step, and what each step added or changed;
 - results/charts/*.svg|png    the charts in the README and the findings pages;
-- stacks/<stack>/README.md    each stack's steps, with links to its code, report and transcript;
+- stacks/<stack>/README.md    each stack's steps, with links to its code, and to its report and transcript in Git history;
 - README.md                   the table between the stats markers.
 """
 import json, re, statistics, sys
@@ -159,6 +159,12 @@ def effort_cell(s):
             f"{minutes:.0f} min{'' if same else ratio(minutes, ref_minutes)}{partial}")
 
 
+def history_url(path):
+    """Agent reports and transcripts left the working tree; link each to the commit that still holds it."""
+    commit = json.loads((ROOT / "results" / "message-archive.json").read_text())["commit"]
+    return f"https://github.com/sheetgenius/agentmvc/blob/{commit}/{path}"
+
+
 def stack_readme(name, stack, sizes):
     by_step = {r["step"]: r for r in runs(name) if r["kind"] == "build"}
     lines = [f"# {stack['name']} ({stack['language']})", "", stack["description"] + ".", "",
@@ -172,11 +178,13 @@ def stack_readme(name, stack, sizes):
         lines.append(f"| {step.split('-')[0]}. {STEP_NAMES.get(step, step)} | [`{step}/`]({step}/) | {size['tokens']:,} | "
                      f"{size['step_tokens']:,} | {cell(run.get('tokens', {}).get('cost'))} | "
                      f"{cell(run['seconds'] / 60, None, ' min', 1) if run else '–'} | "
-                     f"[report](reports/{step}.md) | [transcript](transcripts/{step}.md) |")
+                     f"[report]({history_url(f'stacks/{name}/reports/{step}.md')}) | "
+                     f"[transcript]({history_url(f'stacks/{name}/transcripts/{step}.md')}) |")
     reads = [r for r in runs(name) if r["kind"] == "comprehension"]
     if reads:
         lines += ["", "Comprehension runs (read-only): " + ", ".join(
-            f"[{r['step']}](transcripts/comprehension-{r['step']}.md)" for r in reads) + "."]
+            "[{0}]({1})".format(r["step"], history_url("stacks/%s/transcripts/comprehension-%s.md" % (name, r["step"])))
+            for r in reads) + "."]
     return "\n".join(lines) + "\n"
 
 

@@ -1,6 +1,6 @@
 # Rails page-query revision
 
-This [separate source copy](../../../.work/shine-rails-query) changes only `ApplicationController#page` and `ConduitJson`. A page now preloads authors and asks Active Record for favorite counts, viewer favorites, and follows in bounded batches. The same serializer still owns the article and profile JSON shapes. It adds 207 owned tokens and 12 owned lines under the original Rails measurement exclusions.
+This separate source copy (local workdir `shine-rails-query`, not published) changes only `ApplicationController#page` and `ConduitJson`. A page now preloads authors and asks Active Record for favorite counts, viewer favorites, and follows in bounded batches. The same serializer still owns the article and profile JSON shapes. It adds 207 owned tokens and 12 owned lines under the original Rails measurement exclusions.
 
 The product and security checks passed on [development attempt 1](query/development-attempt1.json), but RuboCop found four missing spaces in newly written array literals. After formatting, [development attempt 2](query/development-attempt2.json) and the [fresh-production gate](query/production-attempt1.json) passed. Both paired runtime rounds passed all HTTP and socket checks, with [36 compressed raw HTTP streams](query/runtime/summary.json).
 

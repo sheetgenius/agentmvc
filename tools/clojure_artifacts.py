@@ -8,6 +8,7 @@ coding transcripts, two graded readers and 72 repeated-runtime raw streams.
 References are optional; the reference runtime names any promoted repairs.
 """
 import argparse
+import hashlib
 import json
 import re
 import subprocess
@@ -249,15 +250,26 @@ def reviewed(folder):
                 and parity.get("source_sha256") == share.get("source_sha256") == source)
 
 
+def answer_digest(path):
+    """Reader answers left the working tree; hash the copy the message archive's commit still holds."""
+    if path.is_file():
+        return artifacts.raw_validation.digest(path)
+    commit = read(ROOT / "results/message-archive.json").get("commit")
+    shown = subprocess.run(["git", "-C", str(ROOT), "show", f"{commit}:{path.relative_to(ROOT).as_posix()}"],
+                           capture_output=True) if commit else None
+    return hashlib.sha256(shown.stdout).hexdigest() if shown and shown.returncode == 0 else None
+
+
 def reader_graded(phase):
     folder = OUT / "comprehension" / f"clojure-after-{phase}"
     records = [read(folder / name) for name in
                ("run.json", "prepared.json", "started.json", "grades.json", "key-preparation.json", "isolation.json")]
-    if not all(records) or not all((folder / name).is_file() for name in ("answer.md", "answer-key.md")):
+    answer_sha = answer_digest(folder / "answer.md")
+    if not all(records) or not answer_sha or not (folder / "answer-key.md").is_file():
         return False
     run, prepared, started, grades, key, isolation = records
     source = verified_source(OUT / phase)
-    answer_sha, key_sha = (artifacts.raw_validation.digest(folder / name) for name in ("answer.md", "answer-key.md"))
+    key_sha = artifacts.raw_validation.digest(folder / "answer-key.md")
     try:
         timestamps = [datetime.fromisoformat(value) for value in
                       (key["saved_at"], run["started"], run["finished"], grades["graded_at"])]

@@ -16,3 +16,14 @@ stacks/**/transcripts/
 .env.*
 !.env.example
 results/**/*transcript*.md
+
+# Agent session messages stay out of Git: transcripts, final reports and comprehension answers.
+# Publish tools still write them locally; archive them with the run's other raw output.
+**/transcript*.md
+**/transcript*.jsonl
+**/agent-report.md
+**/last.md
+stacks/*/transcripts/
+stacks/*/reports/
+comprehension/answers/
+**/comprehension/**/answer.md

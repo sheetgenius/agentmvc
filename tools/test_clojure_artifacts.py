@@ -232,6 +232,26 @@ class ClojureArtifactsTests(unittest.TestCase):
         answer.write_text("changed answer\n")
         self.assertFalse(adapter.reader_graded(phase))
 
+    def test_reader_answer_can_come_from_the_message_archive(self):
+        folder = self.out / "comprehension/clojure-after-1-build"
+        answer = self.write(folder / "answer.md", "A source-supported answer\n")
+        expected = lane_run.digest(answer)
+
+        def git(*args):
+            return subprocess.run(["git", "-C", str(self.root), "-c", "user.name=test", "-c", "user.email=test@example.invalid",
+                                   "-c", "commit.gpgsign=false", *args], check=True, capture_output=True, text=True).stdout.strip()
+
+        git("init", "-q")
+        git("add", answer.relative_to(self.root).as_posix())
+        git("commit", "-q", "--no-verify", "-m", "answer")
+        commit = git("rev-parse", "HEAD")
+        answer.unlink()
+        self.assertIsNone(adapter.answer_digest(answer))
+        self.write(self.root / "results/message-archive.json", {"commit": commit})
+        self.assertEqual(adapter.answer_digest(answer), expected)
+        self.write(self.root / "results/message-archive.json", {"commit": "0" * 40})
+        self.assertIsNone(adapter.answer_digest(answer))
+
     def test_package_refuses_incomplete_evidence_before_exports_or_archives(self):
         with (patch.object(adapter, "completion", return_value={"ready": False}),
               patch.object(adapter, "export_feedback") as feedback,

@@ -1,6 +1,6 @@
 # Phoenix production release
 
-This is a build-only copy of the semantic-density Phoenix app. The application code is unchanged. `Dockerfile` now runs `mix release` and copies the release into a Debian runtime image; `Conduit.Release.migrate/0` is the release migration entry point. The [source copy](../../../.work/shine-phoenix/phoenix) passed [development](development-attempt1.json) and [fresh production](production-attempt2.json) gates. The [first production attempt](production-attempt1.json) could not bind port 4102 because the existing development server was using it; the repeat used port 4412 without touching that server.
+This is a build-only copy of the semantic-density Phoenix app. The application code is unchanged. `Dockerfile` now runs `mix release` and copies the release into a Debian runtime image; `Conduit.Release.migrate/0` is the release migration entry point. The source copy (local workdir `shine-phoenix/phoenix`, not published) passed [development](development-attempt1.json) and [fresh production](production-attempt2.json) gates. The [first production attempt](production-attempt1.json) could not bind port 4102 because the existing development server was using it; the repeat used port 4412 without touching that server.
 
 | Metric | Original image | Release image |
 | --- | ---: | ---: |

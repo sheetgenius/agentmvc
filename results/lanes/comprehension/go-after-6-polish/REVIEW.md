@@ -19,4 +19,4 @@ The fresh source-derived key was saved before the reader started, and its SHA-25
 | 11 | 1 | Omitted versus null tags — `internal/conduit/articles.go: tagField, updateArticle; internal/conduit/http.go: invalid, route` |
 | 12 | 1 | Password prehashing and bcrypt — `internal/conduit/users.go: passwordDigest, passwordHash; internal/conduit/models.go: User` |
 
-[Reader answer](answer.md) · [Pre-saved key](answer-key.md) · [Key preparation](key-preparation.json) · [Itemized grade](grades.json) · [Run and tokens](run.json) · [Isolation proof](isolation.json)
+[Reader answer](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/results/lanes/comprehension/go-after-6-polish/answer.md) · [Pre-saved key](answer-key.md) · [Key preparation](key-preparation.json) · [Itemized grade](grades.json) · [Run and tokens](run.json) · [Isolation proof](isolation.json)

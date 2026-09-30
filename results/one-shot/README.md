@@ -16,7 +16,7 @@ Each session used `codex-cli 0.157.1`, `gpt-6-sol` at `xhigh`, a fresh Codex hom
 | Phoenix | 19m 26s | 187,046 | 82 / 15 | 8,734 / 948 | 13,093 |
 | Loco scaffold | 10m 44s | 135,684 | 40 / 5 | 9,247 / 1,050 | 21,582 |
 
-The nonzero command count includes exploratory commands against missing paths and one deliberately stopped development server. Substantive failures and corrections are in the [failure ledger](failures.md). Full usage, code size, scrubbed transcripts, and each agent's own report are in the [Rails](rails/), [Phoenix](phoenix/), and [Loco](loco/) directories. Final implementation workdirs remain in [Rails](../../.work/one-shot/rails/), [Phoenix](../../.work/one-shot/phoenix/), and [Loco](../../.work/one-shot/loco/) for local review. The transcript is evidence of attempts, not a substitute for the independent results.
+The nonzero command count includes exploratory commands against missing paths and one deliberately stopped development server. Substantive failures and corrections are in the [failure ledger](failures.md). Full usage, code size, scrubbed transcripts, and each agent's own report are in the [Rails](rails/), [Phoenix](phoenix/), and [Loco](loco/) directories. Final implementation workdirs remain in Rails (local workdir `one-shot/rails`, not published), Phoenix (local workdir `one-shot/phoenix`, not published), and Loco (local workdir `one-shot/loco`, not published) for local review. The transcript is evidence of attempts, not a substitute for the independent results.
 
 ## Independent acceptance
 
@@ -36,7 +36,7 @@ The [per-stack logs](rails/development.log) and JSON records contain the exact c
 - **Phoenix:** Data rules are centralized in `Conduit.Data`, with Phoenix HTTP/socket code, a monitored room GenServer, and Oban exports. Share keys are hashed. Presence and login counters are process local; article rendering also makes per-article queries.
 - **Loco scaffold:** The agent wrote a standalone Axum and SQLx server in a 1,037-line `src/bin/server.rs`, with a custom PostgreSQL schema and polling export worker. It passes the acceptance contract, but the running backend does not use Loco's HTTP, migration, or job abstractions. This is a material departure from the prompt's request for stack idioms. Login failures are stored in PostgreSQL; live room state is process local.
 
-In a later, unmeasured [retrospective fork](loco/retrospective.md), the Loco agent said it chose Axum/SQLx as the faster path through the full contract, did not attempt a Loco implementation first, and understood that the stack-idioms instruction applied to the production server. That answer is a self-report; the measured transcript independently shows the implementation path.
+In a later, unmeasured [retrospective fork](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/results/one-shot/loco/retrospective.md), the Loco agent said it chose Axum/SQLx as the faster path through the full contract, did not attempt a Loco implementation first, and understood that the stack-idioms instruction applied to the production server. That answer is a self-report; the measured transcript independently shows the implementation path.
 
 These are one run per stack, with different starting scaffolds and local toolchain paths. The size figures describe these implementations; they do not establish a general framework ranking.
 

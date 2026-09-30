@@ -2,7 +2,7 @@
 
 This is a **build-only revision** of the fourth, expert-guided IHP app. The application and migration sources are byte-for-byte identical to `.work/one-shot-ihp-4/ihp`; only `flake.nix` and `Dockerfile` changed. It is a separate optimization result, not another scored one-shot run.
 
-The image uses IHP's `optimized-prod-server` instead of `unoptimized-prod-server`. Its startup script runs the migration first, then sets `GHCRTS=-A64m -N2 -H32m` for the server process. The worker continues to run in that server. The [source copy](../../../.work/shine-ihp/ihp), [fresh-production gate](production.json), [gate log](production.log), and [paired raw results](runtime/summary.json) retain the evidence.
+The image uses IHP's `optimized-prod-server` instead of `unoptimized-prod-server`. Its startup script runs the migration first, then sets `GHCRTS=-A64m -N2 -H32m` for the server process. The worker continues to run in that server. The source copy (local workdir `shine-ihp/ihp`, not published), [fresh-production gate](production.json), [gate log](production.log), and [paired raw results](runtime/summary.json) retain the evidence.
 
 | Metric | Guided source, original image | Same source, optimized image |
 | --- | ---: | ---: |

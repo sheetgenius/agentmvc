@@ -93,7 +93,7 @@ After steps 1 and 6, a fresh agent in a read-only sandbox answered [12 questions
 
 ## Transcripts
 
-Every session's event log is published in its stack's `transcripts/`, as raw JSONL and as readable Markdown, after [`tools/scrub.py`](../tools/scrub.py) has processed it:
+Every session's event log was published in its stack's `transcripts/`, as raw JSONL and as readable Markdown, after [`tools/scrub.py`](../tools/scrub.py) had processed it. Those files now live in Git history; [`results/message-archive.json`](../results/message-archive.json) lists each one and the commit that holds it. The scrubber works like this:
 - paths are rewritten to `/work/app`;
 - the host's account name, hostname and temp paths are replaced;
 - unrelated lines are removed from Docker listings.
