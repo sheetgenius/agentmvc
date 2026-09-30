@@ -35,3 +35,5 @@ AOT compiles application namespaces to JVM bytecode. JVM JIT warmup still matter
 [Environment preflight and its actual verdict](preflight.json)
 
 [Comprehension after 1-build: 12/12](comprehension/clojure-after-1-build)
+
+[Comprehension after 6-polish: 12/12](comprehension/clojure-after-6-polish)
