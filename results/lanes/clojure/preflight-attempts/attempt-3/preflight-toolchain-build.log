@@ -1,0 +1,481 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.toolchain
+#1 transferring dockerfile: 2.02kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/eclipse-temurin:25-jdk-noble@sha256:f6366ccac38ceae180280ad7012d18a15e8031548a430dc2bae06631d9e88ed0
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/9] FROM docker.io/library/eclipse-temurin:25-jdk-noble@sha256:f6366ccac38ceae180280ad7012d18a15e8031548a430dc2bae06631d9e88ed0
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 4.26kB done
+#5 DONE 0.0s
+
+#6 [3/9] RUN curl -fsSL --retry 5 https://github.com/clojure/brew-install/releases/download/1.12.5.1664/clojure-tools-1.12.5.1664.tar.gz -o /tmp/clojure.tar.gz &&     echo '77dd6868948074adcc93e83a796f8e8f15a1a92bcb1b9002d715fd2210e476f3  /tmp/clojure.tar.gz' | sha256sum -c - &&     tar xzf /tmp/clojure.tar.gz -C /tmp &&     mkdir -p /usr/local/lib/clojure/libexec &&     cp /tmp/clojure-tools/deps.edn /tmp/clojure-tools/example-deps.edn /tmp/clojure-tools/tools.edn /usr/local/lib/clojure/ &&     cp /tmp/clojure-tools/*.jar /usr/local/lib/clojure/libexec/ &&     sed 's@PREFIX@/usr/local/lib/clojure@g' /tmp/clojure-tools/clojure > /usr/local/bin/clojure &&     sed 's@BINDIR@/usr/local/bin@g' /tmp/clojure-tools/clj > /usr/local/bin/clj &&     chmod +x /usr/local/bin/clojure /usr/local/bin/clj &&     rm -rf /tmp/clojure-tools /tmp/clojure.tar.gz
+#6 CACHED
+
+#7 [2/9] RUN apt-get update -qq && apt-get install --no-install-recommends -y     ca-certificates curl git postgresql-client python3 ripgrep rlwrap unzip &&     rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [4/9] RUN arch="$(dpkg --print-architecture)" &&     case "$arch" in       arm64) checksum=2c71403eb443d05891c4f268c3ad771cf4f16e5443463fd7851ef8f454d3c7e4 ;;       amd64) checksum=ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108 ;;       *) exit 1 ;;     esac &&     curl -fsSL --retry 5 "https://github.com/google/osv-scanner/releases/download/v2.6.0/osv-scanner_linux_$arch" -o /usr/local/bin/osv-scanner &&     echo "$checksum  /usr/local/bin/osv-scanner" | sha256sum -c - &&     chmod +x /usr/local/bin/osv-scanner
+#8 CACHED
+
+#9 [5/9] WORKDIR /work/app
+#9 CACHED
+
+#10 [6/9] COPY scaffold/deps.edn ./
+#10 DONE 0.1s
+
+#11 [7/9] RUN clojure -P -M:dev:test:lint:format && clojure -P -T:build
+#11 0.110 Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+#11 0.385 Cloning: https://github.com/cognitect-labs/test-runner.git
+#11 4.270 Checking out: https://github.com/cognitect-labs/test-runner.git at dfb30dd6605cb6c0efc275e1df1736f6e90d4d73
+#11 5.446 Downloading: org/clojure/clojure/1.12.6/clojure-1.12.6.pom from central
+#11 5.670 Downloading: com/zaxxer/HikariCP/7.1.0/HikariCP-7.1.0.pom from central
+#11 6.843 Downloading: metosin/reitit-middleware/0.11.0/reitit-middleware-0.11.0.pom from clojars
+#11 6.920 Downloading: metosin/muuntaja/0.6.12/muuntaja-0.6.12.pom from clojars
+#11 7.582 Downloading: org/bouncycastle/bcutil-jdk18on/1.86/bcutil-jdk18on-1.86.pom from central
+#11 7.627 Downloading: integrant/repl/0.5.1/repl-0.5.1.pom from clojars
+#11 7.946 Downloading: org/bouncycastle/bcpkix-jdk18on/1.86/bcpkix-jdk18on-1.86.pom from central
+#11 8.304 Downloading: org/postgresql/postgresql/42.7.13/postgresql-42.7.13.pom from central
+#11 8.511 Downloading: ring/ring-jetty-adapter/1.15.5/ring-jetty-adapter-1.15.5.pom from clojars
+#11 8.657 Downloading: org/clojure/tools.namespace/1.5.1/tools.namespace-1.5.1.pom from central
+#11 9.007 Downloading: org/clojure/pom.contrib/1.4.0/pom.contrib-1.4.0.pom from central
+#11 9.218 Downloading: com/github/seancorfield/honeysql/2.7.1479/honeysql-2.7.1479.pom from clojars
+#11 9.589 Downloading: org/eclipse/jetty/ee9/jetty-ee9-servlet/12.1.13/jetty-ee9-servlet-12.1.13.pom from central
+#11 9.717 Downloading: metosin/reitit-ring/0.11.0/reitit-ring-0.11.0.pom from clojars
+#11 9.939 Downloading: org/eclipse/jetty/ee9/jetty-ee9/12.1.13/jetty-ee9-12.1.13.pom from central
+#11 10.13 Downloading: org/eclipse/jetty/jetty-unixdomain-server/12.1.13/jetty-unixdomain-server-12.1.13.pom from central
+#11 10.33 Downloading: org/eclipse/jetty/jetty-project/12.1.13/jetty-project-12.1.13.pom from central
+#11 10.52 Downloading: org/eclipse/jetty/jetty-core/12.1.13/jetty-core-12.1.13.pom from central
+#11 10.69 Downloading: jakarta/platform/jakarta.jakartaee-bom/9.1.0/jakarta.jakartaee-bom-9.1.0.pom from central
+#11 10.88 Downloading: com/fasterxml/jackson/jackson-bom/2.22.2/jackson-bom-2.22.2.pom from central
+#11 11.06 Downloading: jakarta/platform/jakartaee-api-parent/9.1.0/jakartaee-api-parent-9.1.0.pom from central
+#11 11.08 Downloading: com/fasterxml/jackson/jackson-parent/2.22/jackson-parent-2.22.pom from central
+#11 11.41 Downloading: org/eclipse/ee4j/project/1.0.7/project-1.0.7.pom from central
+#11 11.44 Downloading: com/fasterxml/oss-parent/79/oss-parent-79.pom from central
+#11 11.79 Downloading: io/netty/netty-bom/4.2.17.Final/netty-bom-4.2.17.Final.pom from central
+#11 12.15 Downloading: org/sonatype/oss/oss-parent/7/oss-parent-7.pom from central
+#11 12.52 Downloading: org/hibernate/search/hibernate-search-bom/8.4.0.Final/hibernate-search-bom-8.4.0.Final.pom from central
+#11 12.89 Downloading: org/infinispan/infinispan-bom/16.2.2/infinispan-bom-16.2.2.pom from central
+#11 13.29 Downloading: org/junit/junit-bom/6.1.3/junit-bom-6.1.3.pom from central
+#11 13.65 Downloading: org/ow2/asm/asm-bom/9.10.1/asm-bom-9.10.1.pom from central
+#11 14.01 Downloading: org/ow2/ow2/1.5.1/ow2-1.5.1.pom from central
+#11 14.20 Downloading: org/testcontainers/testcontainers-bom/2.0.5/testcontainers-bom-2.0.5.pom from central
+#11 14.57 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-jetty-server/12.1.13/jetty-ee9-websocket-jetty-server-12.1.13.pom from central
+#11 14.90 Downloading: migratus/migratus/1.6.8/migratus-1.6.8.pom from clojars
+#11 14.91 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket/12.1.13/jetty-ee9-websocket-12.1.13.pom from central
+#11 15.27 Downloading: org/slf4j/slf4j-simple/2.0.20/slf4j-simple-2.0.20.pom from central
+#11 15.61 Downloading: clj-kondo/clj-kondo/2026.08.04/clj-kondo-2026.08.04.pom from clojars
+#11 15.63 Downloading: org/slf4j/slf4j-parent/2.0.20/slf4j-parent-2.0.20.pom from central
+#11 15.82 Downloading: org/slf4j/slf4j-bom/2.0.20/slf4j-bom-2.0.20.pom from central
+#11 16.40 Downloading: integrant/integrant/1.0.1/integrant-1.0.1.pom from clojars
+#11 16.59 Downloading: buddy/buddy-hashers/2.0.167/buddy-hashers-2.0.167.pom from clojars
+#11 16.77 Downloading: org/bouncycastle/bcprov-jdk18on/1.86/bcprov-jdk18on-1.86.pom from central
+#11 17.30 Downloading: dev/weavejester/cljfmt/0.16.6/cljfmt-0.16.6.pom from clojars
+#11 17.47 Downloading: metosin/malli/0.20.2/malli-0.20.2.pom from clojars
+#11 18.17 Downloading: com/github/seancorfield/next.jdbc/1.3.1118/next.jdbc-1.3.1118.pom from clojars
+#11 18.33 Downloading: metosin/reitit-malli/0.11.0/reitit-malli-0.11.0.pom from clojars
+#11 19.04 Downloading: msolli/proletarian/1.0.115/proletarian-1.0.115.pom from clojars
+#11 19.21 Downloading: buddy/buddy-sign/3.6.1-359/buddy-sign-3.6.1-359.pom from clojars
+#11 19.75 Downloading: org/eclipse/jetty/jetty-server/12.1.13/jetty-server-12.1.13.pom from central
+#11 20.27 Downloading: ring/ring-core/1.15.5/ring-core-1.15.5.pom from clojars
+#11 20.45 Downloading: lambdaisland/deep-diff/0.0-47/deep-diff-0.0-47.pom from clojars
+#11 20.81 Downloading: org/clojure/spec.alpha/0.5.238/spec.alpha-0.5.238.pom from central
+#11 20.96 Downloading: metosin/spec-tools/0.10.8/spec-tools-0.10.8.pom from clojars
+#11 21.40 Downloading: org/clojure/pom.contrib/1.2.0/pom.contrib-1.2.0.pom from central
+#11 21.43 Downloading: org/clojure/core.specs.alpha/0.4.74/core.specs.alpha-0.4.74.pom from central
+#11 21.65 Downloading: org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.pom from central
+#11 22.01 Downloading: metosin/jsonista/1.0.1/jsonista-1.0.1.pom from clojars
+#11 22.02 Downloading: org/slf4j/slf4j-parent/2.0.17/slf4j-parent-2.0.17.pom from central
+#11 22.26 Downloading: org/slf4j/slf4j-bom/2.0.17/slf4j-bom-2.0.17.pom from central
+#11 22.50 Downloading: com/cognitect/transit-clj/1.1.363/transit-clj-1.1.363.pom from central
+#11 22.55 Downloading: org/clojure/tools.cli/1.0.206/tools.cli-1.0.206.pom from central
+#11 22.96 Downloading: org/clojure/pom.contrib/1.0.0/pom.contrib-1.0.0.pom from central
+#11 23.02 Downloading: io/github/tonsky/clj-reload/1.0.0/clj-reload-1.0.0.pom from clojars
+#11 23.32 Downloading: org/ring-clojure/ring-jakarta-servlet/1.15.5/ring-jakarta-servlet-1.15.5.pom from clojars
+#11 23.71 Downloading: org/checkerframework/checker-qual/3.55.1/checker-qual-3.55.1.pom from central
+#11 24.03 Downloading: org/clojure/java.classpath/1.1.1/java.classpath-1.1.1.pom from central
+#11 24.13 Downloading: org/clojure/tools.reader/1.6.0/tools.reader-1.6.0.pom from central
+#11 24.31 Downloading: org/eclipse/jetty/ee9/jetty-ee9-nested/12.1.13/jetty-ee9-nested-12.1.13.pom from central
+#11 24.56 Downloading: metosin/reitit-core/0.11.0/reitit-core-0.11.0.pom from clojars
+#11 24.68 Downloading: org/eclipse/jetty/ee9/jetty-ee9-security/12.1.13/jetty-ee9-security-12.1.13.pom from central
+#11 24.95 Downloading: org/clojure/tools.logging/1.1.0/tools.logging-1.1.0.pom from central
+#11 25.03 Downloading: org/clojure/tools.cli/1.0.219/tools.cli-1.0.219.pom from central
+#11 25.35 Downloading: org/clojure/pom.contrib/0.2.2/pom.contrib-0.2.2.pom from central
+#11 25.45 Downloading: org/clojure/pom.contrib/1.1.0/pom.contrib-1.1.0.pom from central
+#11 25.59 Downloading: org/clojure/data.json/2.5.0/data.json-2.5.0.pom from central
+#11 25.72 Downloading: org/eclipse/jetty/ee9/jetty-ee9-webapp/12.1.13/jetty-ee9-webapp-12.1.13.pom from central
+#11 25.78 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-jetty-api/12.1.13/jetty-ee9-websocket-jetty-api-12.1.13.pom from central
+#11 25.92 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-jetty-common/12.1.13/jetty-ee9-websocket-jetty-common-12.1.13.pom from central
+#11 26.13 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-servlet/12.1.13/jetty-ee9-websocket-servlet-12.1.13.pom from central
+#11 26.34 Downloading: org/eclipse/jetty/toolchain/jetty-jakarta-servlet-api/5.0.2/jetty-jakarta-servlet-api-5.0.2.pom from central
+#11 26.59 Downloading: org/slf4j/slf4j-api/2.0.20/slf4j-api-2.0.20.pom from central
+#11 26.71 Downloading: org/eclipse/jetty/toolchain/jetty-toolchain/1.6/jetty-toolchain-1.6.pom from central
+#11 27.08 Downloading: cheshire/cheshire/5.13.0/cheshire-5.13.0.pom from clojars
+#11 27.11 Downloading: io/replikativ/datalog-parser/0.2.30/datalog-parser-0.2.30.pom from clojars
+#11 27.81 Downloading: nrepl/bencode/1.2.0/bencode-1.2.0.pom from clojars
+#11 27.97 Downloading: org/babashka/sci/0.15.56/sci-0.15.56.pom from clojars
+#11 28.60 Downloading: org/ow2/asm/asm/9.7/asm-9.7.pom from central
+#11 28.85 Downloading: com/github/javaparser/javaparser-core/3.26.1/javaparser-core-3.26.1.pom from central
+#11 28.87 Downloading: babashka/fs/0.5.31/fs-0.5.31.pom from clojars
+#11 29.31 Downloading: com/github/javaparser/javaparser-parent/3.26.1/javaparser-parent-3.26.1.pom from central
+#11 29.85 Downloading: weavejester/dependency/1.0.0/dependency-1.0.0.pom from clojars
+#11 29.86 Downloading: buddy/buddy-core/1.11.423/buddy-core-1.11.423.pom from clojars
+#11 30.59 Downloading: org/clojure/tools.cli/1.2.245/tools.cli-1.2.245.pom from central
+#11 30.75 Downloading: clojurewerkz/scrypt/1.2.0/scrypt-1.2.0.pom from clojars
+#11 30.99 Downloading: org/clojure/pom.contrib/1.3.0/pom.contrib-1.3.0.pom from central
+#11 31.23 Downloading: com/googlecode/java-diff-utils/diffutils/1.3.0/diffutils-1.3.0.pom from central
+#11 31.65 Downloading: rewrite-clj/rewrite-clj/1.2.50/rewrite-clj-1.2.50.pom from clojars
+#11 31.84 Downloading: io/github/borkdude/text-diff/0.1.0/text-diff-0.1.0.pom from clojars
+#11 32.37 Downloading: fipp/fipp/0.6.29/fipp-0.6.29.pom from clojars
+#11 32.55 Downloading: mvxcvi/arrangement/2.1.0/arrangement-2.1.0.pom from clojars
+#11 33.28 Downloading: borkdude/dynaload/0.3.5/dynaload-0.3.5.pom from clojars
+#11 33.58 Downloading: borkdude/edamame/1.6.44/edamame-1.6.44.pom from clojars
+#11 33.80 Downloading: org/clojure/test.check/1.1.3/test.check-1.1.3.pom from central
+#11 34.12 Downloading: org/clojure/java.data/1.4.120/java.data-1.4.120.pom from central
+#11 34.32 Downloading: camel-snake-kebab/camel-snake-kebab/0.4.3/camel-snake-kebab-0.4.3.pom from clojars
+#11 34.82 Downloading: buddy/buddy-core/1.12.0-430/buddy-core-1.12.0-430.pom from clojars
+#11 34.97 Downloading: org/eclipse/jetty/jetty-http/12.1.13/jetty-http-12.1.13.pom from central
+#11 35.18 Downloading: org/eclipse/jetty/jetty-io/12.1.13/jetty-io-12.1.13.pom from central
+#11 35.72 Downloading: org/ring-clojure/ring-core-protocols/1.15.5/ring-core-protocols-1.15.5.pom from clojars
+#11 35.90 Downloading: org/ring-clojure/ring-websocket-protocols/1.15.5/ring-websocket-protocols-1.15.5.pom from clojars
+#11 36.44 Downloading: ring/ring-codec/1.3.0/ring-codec-1.3.0.pom from clojars
+#11 36.86 Downloading: commons-io/commons-io/2.21.0/commons-io-2.21.0.pom from central
+#11 37.20 Downloading: org/apache/commons/commons-fileupload2-core/2.0.0-M5/commons-fileupload2-core-2.0.0-M5.pom from central
+#11 37.69 Downloading: org/apache/commons/commons-fileupload2/2.0.0-M5/commons-fileupload2-2.0.0-M5.pom from central
+#11 37.89 Downloading: org/apache/commons/commons-parent/91/commons-parent-91.pom from central
+#11 38.28 Downloading: org/apache/apache/35/apache-35.pom from central
+#11 38.51 Downloading: org/junit/junit-bom/5.13.4/junit-bom-5.13.4.pom from central
+#11 38.84 Downloading: org/apache/commons/commons-parent/96/commons-parent-96.pom from central
+#11 39.03 Downloading: crypto-random/crypto-random/1.2.1/crypto-random-1.2.1.pom from clojars
+#11 39.26 Downloading: org/apache/apache/37/apache-37.pom from central
+#11 39.48 Downloading: org/junit/junit-bom/5.14.2/junit-bom-5.14.2.pom from central
+#11 39.81 Downloading: crypto-equality/crypto-equality/1.0.1/crypto-equality-1.0.1.pom from clojars
+#11 40.01 Downloading: mvxcvi/puget/1.1.2/puget-1.1.2.pom from clojars
+#11 40.36 Downloading: org/clojure/core.rrb-vector/0.0.14/core.rrb-vector-0.0.14.pom from central
+#11 40.63 Downloading: com/fasterxml/jackson/core/jackson-core/2.22.2/jackson-core-2.22.2.pom from central
+#11 40.85 Downloading: tech/droit/clj-diff/1.0.1/clj-diff-1.0.1.pom from clojars
+#11 40.96 Downloading: com/fasterxml/jackson/jackson-base/2.22.2/jackson-base-2.22.2.pom from central
+#11 41.19 Downloading: org/junit/junit-bom/5.14.3/junit-bom-5.14.3.pom from central
+#11 41.46 Downloading: com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.22.2/jackson-datatype-jsr310-2.22.2.pom from central
+#11 41.63 Downloading: com/fasterxml/jackson/core/jackson-databind/2.22.2/jackson-databind-2.22.2.pom from central
+#11 41.70 Downloading: com/fasterxml/jackson/module/jackson-modules-java8/2.22.2/jackson-modules-java8-2.22.2.pom from central
+#11 41.84 Downloading: com/cognitect/transit-java/1.1.406/transit-java-1.1.406.pom from central
+#11 42.06 Downloading: org/eclipse/jetty/jetty-security/12.1.13/jetty-security-12.1.13.pom from central
+#11 42.23 Downloading: meta-merge/meta-merge/1.0.0/meta-merge-1.0.0.pom from clojars
+#11 42.42 Downloading: org/apache/directory/api/api-parent/2.1.8/api-parent-2.1.8.pom from central
+#11 42.79 Downloading: org/eclipse/jetty/jetty-session/12.1.13/jetty-session-12.1.13.pom from central
+#11 42.81 Downloading: org/apache/directory/project/project/51/project-51.pom from central
+#11 43.14 Downloading: org/apache/apache/38/apache-38.pom from central
+#11 43.33 Downloading: org/eclipse/jetty/ee/jetty-ee-webapp/12.1.13/jetty-ee-webapp-12.1.13.pom from central
+#11 43.35 Downloading: org/eclipse/jetty/jetty-xml/12.1.13/jetty-xml-12.1.13.pom from central
+#11 43.54 Downloading: org/eclipse/jetty/websocket/jetty-websocket-core-common/12.1.13/jetty-websocket-core-common-12.1.13.pom from central
+#11 43.70 Downloading: org/eclipse/jetty/ee/jetty-ee/12.1.13/jetty-ee-12.1.13.pom from central
+#11 43.89 Downloading: org/eclipse/jetty/websocket/jetty-websocket/12.1.13/jetty-websocket-12.1.13.pom from central
+#11 44.05 Downloading: org/eclipse/jetty/websocket/jetty-websocket-core-server/12.1.13/jetty-websocket-core-server-12.1.13.pom from central
+#11 44.27 Downloading: com/fasterxml/jackson/dataformat/jackson-dataformat-smile/2.17.0/jackson-dataformat-smile-2.17.0.pom from central
+#11 44.44 Downloading: com/fasterxml/jackson/dataformat/jackson-dataformat-cbor/2.17.0/jackson-dataformat-cbor-2.17.0.pom from central
+#11 44.49 Downloading: com/fasterxml/jackson/dataformat/jackson-dataformats-binary/2.17.0/jackson-dataformats-binary-2.17.0.pom from central
+#11 44.77 Downloading: com/fasterxml/jackson/jackson-base/2.17.0/jackson-base-2.17.0.pom from central
+#11 45.02 Downloading: com/fasterxml/jackson/jackson-bom/2.17.0/jackson-bom-2.17.0.pom from central
+#11 45.27 Downloading: com/fasterxml/jackson/jackson-parent/2.17/jackson-parent-2.17.pom from central
+#11 45.60 Downloading: com/fasterxml/oss-parent/58/oss-parent-58.pom from central
+#11 45.82 Downloading: org/junit/junit-bom/5.10.2/junit-bom-5.10.2.pom from central
+#11 46.19 Downloading: org/babashka/sci.impl.types/0.0.3/sci.impl.types-0.0.3.pom from clojars
+#11 46.35 Downloading: tigris/tigris/0.1.2/tigris-0.1.2.pom from clojars
+#11 46.89 Downloading: com/lambdaworks/scrypt/1.4.0/scrypt-1.4.0.pom from central
+#11 47.08 Downloading: borkdude/graal.locking/0.0.2/graal.locking-0.0.2.pom from clojars
+#11 47.11 Downloading: org/clojure/core.rrb-vector/0.1.2/core.rrb-vector-0.1.2.pom from central
+#11 47.48 Downloading: commons-codec/commons-codec/1.17.1/commons-codec-1.17.1.pom from central
+#11 47.79 Downloading: org/eclipse/jetty/jetty-util/12.1.13/jetty-util-12.1.13.pom from central
+#11 48.05 Downloading: com/fasterxml/jackson/core/jackson-annotations/2.22/jackson-annotations-2.22.pom from central
+#11 48.25 Downloading: org/apache/commons/commons-parent/71/commons-parent-71.pom from central
+#11 48.26 Downloading: org/msgpack/msgpack-core/0.9.12/msgpack-core-0.9.12.pom from central
+#11 48.54 Downloading: org/apache/apache/32/apache-32.pom from central
+#11 48.55 Downloading: javax/xml/bind/jaxb-api/2.4.0-b180830.0359/jaxb-api-2.4.0-b180830.0359.pom from central
+#11 48.76 Downloading: org/junit/junit-bom/5.11.0-M2/junit-bom-5.11.0-M2.pom from central
+#11 48.80 Downloading: javax/xml/bind/jaxb-api-parent/2.4.0-b180830.0359/jaxb-api-parent-2.4.0-b180830.0359.pom from central
+#11 49.01 Downloading: net/java/jvnet-parent/5/jvnet-parent-5.pom from central
+#11 49.22 Downloading: javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.pom from central
+#11 49.59 Downloading: com/sun/activation/all/1.2.0/all-1.2.0.pom from central
+#11 49.80 Downloading: net/java/jvnet-parent/1/jvnet-parent-1.pom from central
+#11 50.09 Downloading: com/cognitect/transit-java/1.1.406/transit-java-1.1.406.jar from central
+#11 50.19 Downloading: metosin/reitit-middleware/0.11.0/reitit-middleware-0.11.0.jar from clojars
+#11 51.22 Downloading: io/github/borkdude/text-diff/0.1.0/text-diff-0.1.0.jar from clojars
+#11 52.07 Downloading: buddy/buddy-core/1.12.0-430/buddy-core-1.12.0-430.jar from clojars
+#11 52.15 Downloading: org/clojure/data.json/2.5.0/data.json-2.5.0.jar from central
+#11 52.65 Downloading: org/clojure/clojure/1.12.6/clojure-1.12.6.jar from central
+#11 53.42 Downloading: javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.jar from central
+#11 53.98 Downloading: commons-codec/commons-codec/1.17.1/commons-codec-1.17.1.jar from central
+#11 56.36 Downloading: weavejester/dependency/1.0.0/dependency-1.0.0.jar from clojars
+#11 56.87 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-jetty-api/12.1.13/jetty-ee9-websocket-jetty-api-12.1.13.jar from central
+#11 57.12 Downloading: org/eclipse/jetty/jetty-xml/12.1.13/jetty-xml-12.1.13.jar from central
+#11 57.61 Downloading: com/zaxxer/HikariCP/7.1.0/HikariCP-7.1.0.jar from central
+#11 58.30 Downloading: org/clojure/tools.logging/1.1.0/tools.logging-1.1.0.jar from central
+#11 58.50 Downloading: org/clojure/core.specs.alpha/0.4.74/core.specs.alpha-0.4.74.jar from central
+#11 59.04 Downloading: io/replikativ/datalog-parser/0.2.30/datalog-parser-0.2.30.jar from clojars
+#11 60.15 Downloading: metosin/muuntaja/0.6.12/muuntaja-0.6.12.jar from clojars
+#11 60.92 Downloading: com/fasterxml/jackson/core/jackson-databind/2.22.2/jackson-databind-2.22.2.jar from central
+#11 61.65 Downloading: org/clojure/spec.alpha/0.5.238/spec.alpha-0.5.238.jar from central
+#11 62.06 Downloading: org/clojure/tools.cli/1.2.245/tools.cli-1.2.245.jar from central
+#11 62.26 Downloading: org/eclipse/jetty/toolchain/jetty-jakarta-servlet-api/5.0.2/jetty-jakarta-servlet-api-5.0.2.jar from central
+#11 62.94 Downloading: org/eclipse/jetty/jetty-http/12.1.13/jetty-http-12.1.13.jar from central
+#11 62.98 Downloading: mvxcvi/puget/1.1.2/puget-1.1.2.jar from clojars
+#11 63.39 Downloading: org/eclipse/jetty/jetty-util/12.1.13/jetty-util-12.1.13.jar from central
+#11 64.11 Downloading: metosin/spec-tools/0.10.8/spec-tools-0.10.8.jar from clojars
+#11 64.26 Downloading: integrant/repl/0.5.1/repl-0.5.1.jar from clojars
+#11 64.99 Downloading: org/bouncycastle/bcutil-jdk18on/1.86/bcutil-jdk18on-1.86.jar from central
+#11 65.03 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-jetty-common/12.1.13/jetty-ee9-websocket-jetty-common-12.1.13.jar from central
+#11 65.56 Downloading: borkdude/graal.locking/0.0.2/graal.locking-0.0.2.jar from clojars
+#11 65.84 Downloading: lambdaisland/deep-diff/0.0-47/deep-diff-0.0-47.jar from clojars
+#11 66.08 Downloading: com/fasterxml/jackson/dataformat/jackson-dataformat-cbor/2.17.0/jackson-dataformat-cbor-2.17.0.jar from central
+#11 66.62 Downloading: rewrite-clj/rewrite-clj/1.2.50/rewrite-clj-1.2.50.jar from clojars
+#11 66.66 Downloading: org/bouncycastle/bcpkix-jdk18on/1.86/bcpkix-jdk18on-1.86.jar from central
+#11 67.59 Downloading: ring/ring-jetty-adapter/1.15.5/ring-jetty-adapter-1.15.5.jar from clojars
+#11 68.03 Downloading: commons-io/commons-io/2.21.0/commons-io-2.21.0.jar from central
+#11 68.39 Downloading: org/postgresql/postgresql/42.7.13/postgresql-42.7.13.jar from central
+#11 68.94 Downloading: org/clojure/tools.namespace/1.5.1/tools.namespace-1.5.1.jar from central
+#11 69.28 Downloading: com/github/seancorfield/honeysql/2.7.1479/honeysql-2.7.1479.jar from clojars
+#11 69.63 Downloading: fipp/fipp/0.6.29/fipp-0.6.29.jar from clojars
+#11 70.35 Downloading: com/fasterxml/jackson/core/jackson-core/2.22.2/jackson-core-2.22.2.jar from central
+#11 70.37 Downloading: org/apache/commons/commons-fileupload2-core/2.0.0-M5/commons-fileupload2-core-2.0.0-M5.jar from central
+#11 70.79 Downloading: org/ow2/asm/asm/9.7/asm-9.7.jar from central
+#11 70.90 Downloading: org/ring-clojure/ring-jakarta-servlet/1.15.5/ring-jakarta-servlet-1.15.5.jar from clojars
+#11 71.03 Downloading: org/msgpack/msgpack-core/0.9.12/msgpack-core-0.9.12.jar from central
+#11 71.48 Downloading: org/eclipse/jetty/ee9/jetty-ee9-servlet/12.1.13/jetty-ee9-servlet-12.1.13.jar from central
+#11 71.60 Downloading: metosin/reitit-ring/0.11.0/reitit-ring-0.11.0.jar from clojars
+#11 71.84 Downloading: org/eclipse/jetty/jetty-unixdomain-server/12.1.13/jetty-unixdomain-server-12.1.13.jar from central
+#11 72.12 Downloading: org/eclipse/jetty/jetty-security/12.1.13/jetty-security-12.1.13.jar from central
+#11 72.19 Downloading: migratus/migratus/1.6.8/migratus-1.6.8.jar from clojars
+#11 72.47 Downloading: org/eclipse/jetty/ee9/jetty-ee9-nested/12.1.13/jetty-ee9-nested-12.1.13.jar from central
+#11 72.83 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-jetty-server/12.1.13/jetty-ee9-websocket-jetty-server-12.1.13.jar from central
+#11 73.05 Downloading: org/slf4j/slf4j-simple/2.0.20/slf4j-simple-2.0.20.jar from central
+#11 73.36 Downloading: mvxcvi/arrangement/2.1.0/arrangement-2.1.0.jar from clojars
+#11 73.57 Downloading: clj-kondo/clj-kondo/2026.08.04/clj-kondo-2026.08.04.jar from clojars
+#11 74.10 Downloading: integrant/integrant/1.0.1/integrant-1.0.1.jar from clojars
+#11 75.13 Downloading: buddy/buddy-hashers/2.0.167/buddy-hashers-2.0.167.jar from clojars
+#11 75.68 Downloading: com/lambdaworks/scrypt/1.4.0/scrypt-1.4.0.jar from central
+#11 76.04 Downloading: org/bouncycastle/bcprov-jdk18on/1.86/bcprov-jdk18on-1.86.jar from central
+#11 76.84 Downloading: metosin/reitit-core/0.11.0/reitit-core-0.11.0.jar from clojars
+#11 77.71 Downloading: io/github/tonsky/clj-reload/1.0.0/clj-reload-1.0.0.jar from clojars
+#11 78.30 Downloading: clojurewerkz/scrypt/1.2.0/scrypt-1.2.0.jar from clojars
+#11 78.65 Downloading: dev/weavejester/cljfmt/0.16.6/cljfmt-0.16.6.jar from clojars
+#11 78.82 Downloading: com/fasterxml/jackson/core/jackson-annotations/2.22/jackson-annotations-2.22.jar from central
+#11 79.17 Downloading: com/googlecode/java-diff-utils/diffutils/1.3.0/diffutils-1.3.0.jar from central
+#11 79.36 Downloading: org/clojure/java.classpath/1.1.1/java.classpath-1.1.1.jar from central
+#11 79.50 Downloading: org/eclipse/jetty/jetty-session/12.1.13/jetty-session-12.1.13.jar from central
+#11 79.73 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-servlet/12.1.13/jetty-ee9-websocket-servlet-12.1.13.jar from central
+#11 79.88 Downloading: borkdude/dynaload/0.3.5/dynaload-0.3.5.jar from clojars
+#11 79.92 Downloading: org/eclipse/jetty/ee/jetty-ee-webapp/12.1.13/jetty-ee-webapp-12.1.13.jar from central
+#11 80.48 Downloading: borkdude/edamame/1.6.44/edamame-1.6.44.jar from clojars
+#11 80.69 Downloading: metosin/malli/0.20.2/malli-0.20.2.jar from clojars
+#11 81.27 Downloading: com/cognitect/transit-clj/1.1.363/transit-clj-1.1.363.jar from central
+#11 81.51 Downloading: org/eclipse/jetty/websocket/jetty-websocket-core-server/12.1.13/jetty-websocket-core-server-12.1.13.jar from central
+#11 81.70 Downloading: com/github/seancorfield/next.jdbc/1.3.1118/next.jdbc-1.3.1118.jar from clojars
+#11 82.11 Downloading: crypto-random/crypto-random/1.2.1/crypto-random-1.2.1.jar from clojars
+#11 82.54 Downloading: ring/ring-codec/1.3.0/ring-codec-1.3.0.jar from clojars
+#11 82.85 Downloading: metosin/reitit-malli/0.11.0/reitit-malli-0.11.0.jar from clojars
+#11 83.74 Downloading: org/babashka/sci.impl.types/0.0.3/sci.impl.types-0.0.3.jar from clojars
+#11 84.04 Downloading: org/clojure/core.rrb-vector/0.1.2/core.rrb-vector-0.1.2.jar from central
+#11 84.61 Downloading: org/ring-clojure/ring-websocket-protocols/1.15.5/ring-websocket-protocols-1.15.5.jar from clojars
+#11 85.34 Downloading: crypto-equality/crypto-equality/1.0.1/crypto-equality-1.0.1.jar from clojars
+#11 86.38 Downloading: org/eclipse/jetty/ee9/jetty-ee9-security/12.1.13/jetty-ee9-security-12.1.13.jar from central
+#11 86.66 Downloading: org/checkerframework/checker-qual/3.55.1/checker-qual-3.55.1.jar from central
+#11 87.72 Downloading: msolli/proletarian/1.0.115/proletarian-1.0.115.jar from clojars
+#11 88.74 Downloading: cheshire/cheshire/5.13.0/cheshire-5.13.0.jar from clojars
+#11 89.75 Downloading: tigris/tigris/0.1.2/tigris-0.1.2.jar from clojars
+#11 90.40 Downloading: com/github/javaparser/javaparser-core/3.26.1/javaparser-core-3.26.1.jar from central
+#11 91.15 Downloading: org/eclipse/jetty/jetty-io/12.1.13/jetty-io-12.1.13.jar from central
+#11 92.61 Downloading: org/clojure/tools.reader/1.6.0/tools.reader-1.6.0.jar from central
+#11 93.24 Downloading: org/ring-clojure/ring-core-protocols/1.15.5/ring-core-protocols-1.15.5.jar from clojars
+#11 93.60 Downloading: org/eclipse/jetty/ee9/jetty-ee9-webapp/12.1.13/jetty-ee9-webapp-12.1.13.jar from central
+#11 93.80 Downloading: org/babashka/sci/0.15.56/sci-0.15.56.jar from clojars
+#11 94.08 Downloading: org/eclipse/jetty/websocket/jetty-websocket-core-common/12.1.13/jetty-websocket-core-common-12.1.13.jar from central
+#11 94.62 Downloading: org/slf4j/slf4j-api/2.0.20/slf4j-api-2.0.20.jar from central
+#11 94.91 Downloading: org/clojure/test.check/1.1.3/test.check-1.1.3.jar from central
+#11 95.14 Downloading: buddy/buddy-sign/3.6.1-359/buddy-sign-3.6.1-359.jar from clojars
+#11 95.50 Downloading: metosin/jsonista/1.0.1/jsonista-1.0.1.jar from clojars
+#11 96.00 Downloading: babashka/fs/0.5.31/fs-0.5.31.jar from clojars
+#11 96.67 Downloading: tech/droit/clj-diff/1.0.1/clj-diff-1.0.1.jar from clojars
+#11 97.04 Downloading: camel-snake-kebab/camel-snake-kebab/0.4.3/camel-snake-kebab-0.4.3.jar from clojars
+#11 97.11 Downloading: org/clojure/java.data/1.4.120/java.data-1.4.120.jar from central
+#11 97.42 Downloading: org/eclipse/jetty/jetty-server/12.1.13/jetty-server-12.1.13.jar from central
+#11 97.64 Downloading: nrepl/bencode/1.2.0/bencode-1.2.0.jar from clojars
+#11 98.50 Downloading: ring/ring-core/1.15.5/ring-core-1.15.5.jar from clojars
+#11 98.53 Downloading: meta-merge/meta-merge/1.0.0/meta-merge-1.0.0.jar from clojars
+#11 99.12 Downloading: com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.22.2/jackson-datatype-jsr310-2.22.2.jar from central
+#11 99.17 Downloading: com/fasterxml/jackson/dataformat/jackson-dataformat-smile/2.17.0/jackson-dataformat-smile-2.17.0.jar from central
+#11 99.39 Downloading: javax/xml/bind/jaxb-api/2.4.0-b180830.0359/jaxb-api-2.4.0-b180830.0359.jar from central
+#11 102.3 Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+#11 103.5 Downloading: org/clojure/clojure/1.12.5/clojure-1.12.5.pom from central
+#11 103.5 Downloading: io/github/clojure/tools.build/0.10.14/tools.build-0.10.14.pom from central
+#11 103.9 Downloading: org/slf4j/slf4j-nop/1.7.36/slf4j-nop-1.7.36.pom from central
+#11 103.9 Downloading: org/clojure/tools.deps/0.31.1629/tools.deps-0.31.1629.pom from central
+#11 104.2 Downloading: org/slf4j/slf4j-parent/1.7.36/slf4j-parent-1.7.36.pom from central
+#11 104.3 Downloading: org/clojure/tools.deps.edn/0.9.27/tools.deps.edn-0.9.27.pom from central
+#11 104.6 Downloading: eu/maveniverse/maven/mima/runtime/standalone-static/2.4.44/standalone-static-2.4.44.pom from central
+#11 104.6 Downloading: eu/maveniverse/maven/mima/context/2.4.44/context-2.4.44.pom from central
+#11 104.8 Downloading: eu/maveniverse/maven/mima/runtime/runtime/2.4.44/runtime-2.4.44.pom from central
+#11 105.0 Downloading: eu/maveniverse/maven/mima/mima/2.4.44/mima-2.4.44.pom from central
+#11 105.4 Downloading: eu/maveniverse/maven/parent/parent/52/parent-52.pom from central
+#11 105.7 Downloading: eu/maveniverse/maven/mima/extensions/mmr/2.4.44/mmr-2.4.44.pom from central
+#11 105.7 Downloading: eu/maveniverse/maven/mima/extensions/mhc4/2.4.44/mhc4-2.4.44.pom from central
+#11 105.9 Downloading: eu/maveniverse/maven/mima/extensions/extensions/2.4.44/extensions-2.4.44.pom from central
+#11 106.3 Downloading: org/clojure/tools.deps.maven-s3-transporter/0.1.3/tools.deps.maven-s3-transporter-0.1.3.pom from central
+#11 106.3 Downloading: org/clojure/data.xml/0.2.0-alpha11/data.xml-0.2.0-alpha11.pom from central
+#11 106.7 Downloading: org/clojure/tools.cli/1.4.256/tools.cli-1.4.256.pom from central
+#11 106.7 Downloading: org/clojure/tools.gitlibs/2.6.217/tools.gitlibs-2.6.217.pom from central
+#11 106.9 Downloading: org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.pom from central
+#11 107.1 Downloading: org/apache/maven/resolver/maven-resolver-api/1.9.27/maven-resolver-api-1.9.27.pom from central
+#11 107.2 Downloading: org/apache/maven/resolver/maven-resolver-util/1.9.27/maven-resolver-util-1.9.27.pom from central
+#11 107.5 Downloading: org/apache/maven/resolver/maven-resolver/1.9.27/maven-resolver-1.9.27.pom from central
+#11 107.8 Downloading: org/apache/maven/maven-parent/47/maven-parent-47.pom from central
+#11 108.2 Downloading: org/apache/maven/resolver/maven-resolver-spi/1.9.27/maven-resolver-spi-1.9.27.pom from central
+#11 108.2 Downloading: eu/maveniverse/maven/mima/runtime/standalone-shared/2.4.44/standalone-shared-2.4.44.pom from central
+#11 108.6 Downloading: org/apache/maven/resolver/maven-resolver-connector-basic/1.9.27/maven-resolver-connector-basic-1.9.27.pom from central
+#11 108.6 Downloading: org/apache/maven/resolver/maven-resolver-named-locks/1.9.27/maven-resolver-named-locks-1.9.27.pom from central
+#11 108.9 Downloading: org/apache/maven/resolver/maven-resolver-impl/1.9.27/maven-resolver-impl-1.9.27.pom from central
+#11 109.0 Downloading: org/apache/maven/resolver/maven-resolver-transport-file/1.9.27/maven-resolver-transport-file-1.9.27.pom from central
+#11 109.1 Downloading: org/apache/maven/resolver/maven-resolver-transport-http/1.9.27/maven-resolver-transport-http-1.9.27.pom from central
+#11 109.3 Downloading: org/apache/maven/resolver/maven-resolver-supplier/1.9.27/maven-resolver-supplier-1.9.27.pom from central
+#11 109.5 Downloading: org/apache/maven/maven-resolver-provider/3.9.16/maven-resolver-provider-3.9.16.pom from central
+#11 109.7 Downloading: org/apache/maven/maven-model-builder/3.9.16/maven-model-builder-3.9.16.pom from central
+#11 109.9 Downloading: org/apache/maven/maven/3.9.16/maven-3.9.16.pom from central
+#11 110.3 Downloading: org/apache/maven/maven-parent/48/maven-parent-48.pom from central
+#11 110.5 Downloading: org/junit/junit-bom/5.14.4/junit-bom-5.14.4.pom from central
+#11 110.7 Downloading: org/apache/maven/maven-settings-builder/3.9.16/maven-settings-builder-3.9.16.pom from central
+#11 110.7 Downloading: com/cognitect/aws/api/0.8.824/api-0.8.824.pom from central
+#11 111.0 Downloading: com/cognitect/aws/endpoints/871.2.44.12/endpoints-871.2.44.12.pom from central
+#11 111.1 Downloading: com/cognitect/aws/s3/871.2.43.0/s3-871.2.43.0.pom from central
+#11 111.6 Downloading: org/apache/httpcomponents/httpclient/4.5.14/httpclient-4.5.14.pom from central
+#11 111.6 Downloading: com/google/code/gson/gson/2.13.2/gson-2.13.2.pom from central
+#11 111.8 Downloading: com/google/code/gson/gson-parent/2.13.2/gson-parent-2.13.2.pom from central
+#11 111.9 Downloading: org/apache/httpcomponents/httpcomponents-client/4.5.14/httpcomponents-client-4.5.14.pom from central
+#11 112.0 Downloading: org/apache/httpcomponents/httpcore/4.4.16/httpcore-4.4.16.pom from central
+#11 112.1 Downloading: org/apache/httpcomponents/httpcomponents-parent/11/httpcomponents-parent-11.pom from central
+#11 112.2 Downloading: org/apache/httpcomponents/httpcomponents-core/4.4.16/httpcomponents-core-4.4.16.pom from central
+#11 112.4 Downloading: org/apache/apache/21/apache-21.pom from central
+#11 112.6 Downloading: org/slf4j/jcl-over-slf4j/1.7.36/jcl-over-slf4j-1.7.36.pom from central
+#11 112.6 Downloading: commons-codec/commons-codec/1.21.0/commons-codec-1.21.0.pom from central
+#11 112.8 Downloading: org/apache/maven/maven-model/3.9.16/maven-model-3.9.16.pom from central
+#11 112.9 Downloading: org/apache/maven/maven-repository-metadata/3.9.16/maven-repository-metadata-3.9.16.pom from central
+#11 113.2 Downloading: org/codehaus/plexus/plexus-interpolation/1.29/plexus-interpolation-1.29.pom from central
+#11 113.2 Downloading: org/codehaus/plexus/plexus-utils/3.6.1/plexus-utils-3.6.1.pom from central
+#11 113.4 Downloading: org/codehaus/plexus/plexus/25/plexus-25.pom from central
+#11 113.5 Downloading: org/codehaus/plexus/plexus/24/plexus-24.pom from central
+#11 113.6 Downloading: org/junit/junit-bom/5.14.1/junit-bom-5.14.1.pom from central
+#11 113.7 Downloading: org/apache/maven/maven-artifact/3.9.16/maven-artifact-3.9.16.pom from central
+#11 113.9 Downloading: org/apache/maven/maven-builder-support/3.9.16/maven-builder-support-3.9.16.pom from central
+#11 114.1 Downloading: org/ow2/asm/asm/9.9.1/asm-9.9.1.pom from central
+#11 114.3 Downloading: org/apache/maven/maven-settings/3.9.16/maven-settings-3.9.16.pom from central
+#11 114.5 Downloading: org/codehaus/plexus/plexus-sec-dispatcher/2.0/plexus-sec-dispatcher-2.0.pom from central
+#11 114.7 Downloading: org/clojure/data.json/2.5.2/data.json-2.5.2.pom from central
+#11 114.9 Downloading: org/codehaus/plexus/plexus/8/plexus-8.pom from central
+#11 115.0 Downloading: org/clojure/tools.logging/1.3.1/tools.logging-1.3.1.pom from central
+#11 115.1 Downloading: org/clojure/core.async/1.8.741/core.async-1.8.741.pom from central
+#11 115.4 Downloading: com/google/errorprone/error_prone_annotations/2.41.0/error_prone_annotations-2.41.0.pom from central
+#11 115.5 Downloading: org/codehaus/plexus/plexus-cipher/2.0/plexus-cipher-2.0.pom from central
+#11 115.6 Downloading: com/google/errorprone/error_prone_parent/2.41.0/error_prone_parent-2.41.0.pom from central
+#11 115.8 Downloading: org/clojure/tools.analyzer.jvm/1.3.2/tools.analyzer.jvm-1.3.2.pom from central
+#11 116.1 Downloading: org/clojure/core.memoize/1.1.266/core.memoize-1.1.266.pom from central
+#11 116.2 Downloading: org/clojure/tools.analyzer/1.2.0/tools.analyzer-1.2.0.pom from central
+#11 116.5 Downloading: org/clojure/core.cache/1.1.234/core.cache-1.1.234.pom from central
+#11 116.9 Downloading: org/clojure/data.priority-map/1.2.0/data.priority-map-1.2.0.pom from central
+#11 117.3 Downloading: org/clojure/data.json/2.5.2/data.json-2.5.2.jar from central
+#11 117.4 Downloading: org/clojure/clojure/1.12.5/clojure-1.12.5.jar from central
+#11 117.6 Downloading: commons-codec/commons-codec/1.21.0/commons-codec-1.21.0.jar from central
+#11 118.4 Downloading: com/cognitect/aws/api/0.8.824/api-0.8.824.jar from central
+#11 118.6 Downloading: org/clojure/tools.analyzer/1.2.0/tools.analyzer-1.2.0.jar from central
+#11 118.8 Downloading: com/cognitect/aws/endpoints/871.2.44.12/endpoints-871.2.44.12.jar from central
+#11 118.9 Downloading: com/google/errorprone/error_prone_annotations/2.41.0/error_prone_annotations-2.41.0.jar from central
+#11 119.0 Downloading: org/clojure/tools.logging/1.3.1/tools.logging-1.3.1.jar from central
+#11 119.2 Downloading: eu/maveniverse/maven/mima/runtime/standalone-static/2.4.44/standalone-static-2.4.44.jar from central
+#11 119.2 Downloading: org/clojure/tools.cli/1.4.256/tools.cli-1.4.256.jar from central
+#11 119.4 Downloading: org/apache/maven/resolver/maven-resolver-supplier/1.9.27/maven-resolver-supplier-1.9.27.jar from central
+#11 119.6 Downloading: org/slf4j/jcl-over-slf4j/1.7.36/jcl-over-slf4j-1.7.36.jar from central
+#11 119.8 Downloading: org/clojure/tools.deps.edn/0.9.27/tools.deps.edn-0.9.27.jar from central
+#11 119.8 Downloading: eu/maveniverse/maven/mima/context/2.4.44/context-2.4.44.jar from central
+#11 119.9 Downloading: org/clojure/tools.analyzer.jvm/1.3.2/tools.analyzer.jvm-1.3.2.jar from central
+#11 120.0 Downloading: org/apache/maven/resolver/maven-resolver-transport-http/1.9.27/maven-resolver-transport-http-1.9.27.jar from central
+#11 120.3 Downloading: org/apache/maven/maven-model-builder/3.9.16/maven-model-builder-3.9.16.jar from central
+#11 120.4 Downloading: eu/maveniverse/maven/mima/runtime/standalone-shared/2.4.44/standalone-shared-2.4.44.jar from central
+#11 120.6 Downloading: org/codehaus/plexus/plexus-cipher/2.0/plexus-cipher-2.0.jar from central
+#11 120.7 Downloading: org/codehaus/plexus/plexus-utils/3.6.1/plexus-utils-3.6.1.jar from central
+#11 120.8 Downloading: org/apache/maven/resolver/maven-resolver-transport-file/1.9.27/maven-resolver-transport-file-1.9.27.jar from central
+#11 121.0 Downloading: org/apache/maven/maven-settings-builder/3.9.16/maven-settings-builder-3.9.16.jar from central
+#11 121.1 Downloading: org/ow2/asm/asm/9.9.1/asm-9.9.1.jar from central
+#11 121.2 Downloading: org/apache/maven/maven-settings/3.9.16/maven-settings-3.9.16.jar from central
+#11 121.4 Downloading: org/apache/httpcomponents/httpcore/4.4.16/httpcore-4.4.16.jar from central
+#11 121.4 Downloading: org/codehaus/plexus/plexus-sec-dispatcher/2.0/plexus-sec-dispatcher-2.0.jar from central
+#11 121.6 Downloading: org/apache/maven/resolver/maven-resolver-api/1.9.27/maven-resolver-api-1.9.27.jar from central
+#11 121.7 Downloading: org/clojure/tools.deps.maven-s3-transporter/0.1.3/tools.deps.maven-s3-transporter-0.1.3.jar from central
+#11 121.9 Downloading: org/apache/maven/maven-resolver-provider/3.9.16/maven-resolver-provider-3.9.16.jar from central
+#11 122.0 Downloading: org/clojure/data.xml/0.2.0-alpha11/data.xml-0.2.0-alpha11.jar from central
+#11 122.1 Downloading: eu/maveniverse/maven/mima/extensions/mmr/2.4.44/mmr-2.4.44.jar from central
+#11 122.3 Downloading: org/apache/maven/resolver/maven-resolver-spi/1.9.27/maven-resolver-spi-1.9.27.jar from central
+#11 122.4 Downloading: org/slf4j/slf4j-nop/1.7.36/slf4j-nop-1.7.36.jar from central
+#11 122.5 Downloading: org/clojure/tools.deps/0.31.1629/tools.deps-0.31.1629.jar from central
+#11 122.6 Downloading: org/codehaus/plexus/plexus-interpolation/1.29/plexus-interpolation-1.29.jar from central
+#11 122.7 Downloading: org/apache/httpcomponents/httpclient/4.5.14/httpclient-4.5.14.jar from central
+#11 122.9 Downloading: eu/maveniverse/maven/mima/extensions/mhc4/2.4.44/mhc4-2.4.44.jar from central
+#11 123.1 Downloading: org/clojure/tools.gitlibs/2.6.217/tools.gitlibs-2.6.217.jar from central
+#11 123.2 Downloading: org/apache/maven/resolver/maven-resolver-connector-basic/1.9.27/maven-resolver-connector-basic-1.9.27.jar from central
+#11 123.5 Downloading: com/cognitect/aws/s3/871.2.43.0/s3-871.2.43.0.jar from central
+#11 123.5 Downloading: io/github/clojure/tools.build/0.10.14/tools.build-0.10.14.jar from central
+#11 123.8 Downloading: org/apache/maven/resolver/maven-resolver-impl/1.9.27/maven-resolver-impl-1.9.27.jar from central
+#11 123.9 Downloading: org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar from central
+#11 124.2 Downloading: org/apache/maven/resolver/maven-resolver-util/1.9.27/maven-resolver-util-1.9.27.jar from central
+#11 124.2 Downloading: org/apache/maven/maven-model/3.9.16/maven-model-3.9.16.jar from central
+#11 124.4 Downloading: org/apache/maven/resolver/maven-resolver-named-locks/1.9.27/maven-resolver-named-locks-1.9.27.jar from central
+#11 124.8 Downloading: org/apache/maven/maven-repository-metadata/3.9.16/maven-repository-metadata-3.9.16.jar from central
+#11 124.8 Downloading: org/clojure/core.memoize/1.1.266/core.memoize-1.1.266.jar from central
+#11 125.0 Downloading: org/clojure/data.priority-map/1.2.0/data.priority-map-1.2.0.jar from central
+#11 125.0 Downloading: org/apache/maven/maven-builder-support/3.9.16/maven-builder-support-3.9.16.jar from central
+#11 125.2 Downloading: org/clojure/core.cache/1.1.234/core.cache-1.1.234.jar from central
+#11 125.2 Downloading: org/clojure/core.async/1.8.741/core.async-1.8.741.jar from central
+#11 125.4 Downloading: org/apache/maven/maven-artifact/3.9.16/maven-artifact-3.9.16.jar from central
+#11 125.5 Downloading: com/google/code/gson/gson/2.13.2/gson-2.13.2.jar from central
+#11 DONE 126.0s
+
+#12 [8/9] COPY scaffold/ ./
+#12 DONE 0.1s
+
+#13 [9/9] RUN clojure -M:test && clojure -M:lint && clojure -T:build uber
+#13 0.124 Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+#13 3.266 Downloading: org/clojure/tools.namespace/1.3.0/tools.namespace-1.3.0.pom from central
+#13 3.633 Downloading: org/clojure/tools.reader/1.3.6/tools.reader-1.3.6.pom from central
+#13 4.008 Downloading: org/clojure/tools.reader/1.5.2/tools.reader-1.5.2.pom from central
+#13 4.181 Downloading: org/clojure/java.classpath/1.0.0/java.classpath-1.0.0.pom from central
+#13 4.545 Downloading: org/clojure/tools.namespace/1.3.0/tools.namespace-1.3.0.jar from central
+#13 4.550 Downloading: org/clojure/tools.cli/1.0.219/tools.cli-1.0.219.jar from central
+#13 4.896 Downloading: org/clojure/java.classpath/1.0.0/java.classpath-1.0.0.jar from central
+#13 4.935 Downloading: org/clojure/tools.reader/1.5.2/tools.reader-1.5.2.jar from central
+#13 5.235 Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+#13 5.911 
+#13 5.911 Running tests in #{"test"}
+#13 6.897 
+#13 6.897 Testing conduit.http-test
+#13 6.916 
+#13 6.916 Ran 1 tests containing 2 assertions.
+#13 6.916 0 failures, 0 errors.
+#13 6.938 Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+#13 7.425 Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+#13 9.882 linting took 85ms, errors: 0, warnings: 0
+#13 9.903 Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+#13 10.96 Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+#13 DONE 16.3s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 0.2s done
+#14 writing image sha256:6b2d90de0b47d4193ca09b721cabf85216e35530e3f981e83884a3e0b445af4d done
+#14 naming to docker.io/library/agentmvc-clojure-toolchain:preflight done
+#14 DONE 0.3s

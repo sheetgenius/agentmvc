@@ -47,6 +47,10 @@ The [lane comparison](results/lanes/README.md) includes two repeated production 
 
 Try a reviewed app with `tools/lane_demo.sh go one-shot-reference` or `tools/lane_demo.sh python eight-reference` (Docker and Node.js required).
 
+## Clojure: in progress
+
+The [Clojure track](results/lanes/clojure/README.md) uses the same eight prompts and a separate expert one-shot. Its product-free Ring/Reitit scaffold has passed environment preflight and is frozen for measurement. [Stack selection](stacks/clojure/SELECTION.md) · [Recorded conditions](results/lanes/clojure/METHODOLOGY.md). No completed Clojure product result is claimed yet.
+
 ## Original eight-step study
 
 The earlier Rails, Phoenix, and Loco implementations followed eight prompts: build the app; add drafts; package; tune; harden; polish; add a background export; add live shared editing. Each step has the same acceptance suite, size measure, security checks, and production benchmarks. This history is separate from the expert-guided one-shot table above. [Methodology](docs/methodology.md) · [Findings](docs/README.md) · [Try the step-8 app](tools/demo.sh) (`tools/demo.sh rails|phoenix|loco`, Docker and Node.js required).

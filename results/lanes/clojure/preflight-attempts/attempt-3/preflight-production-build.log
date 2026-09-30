@@ -1,0 +1,126 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.65kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 2.2s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/eclipse-temurin:25-jre-noble@sha256:693fdaf83831eeeefd9709eae44c8b8706622652f972cf5903bd0e481bbf6ad3
+#4 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/eclipse-temurin:25-jdk-noble@sha256:f6366ccac38ceae180280ad7012d18a15e8031548a430dc2bae06631d9e88ed0
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 217B done
+#6 DONE 0.0s
+
+#7 [build 1/8] FROM docker.io/library/eclipse-temurin:25-jdk-noble@sha256:f6366ccac38ceae180280ad7012d18a15e8031548a430dc2bae06631d9e88ed0
+#7 DONE 0.0s
+
+#8 [stage-1 1/3] FROM docker.io/library/eclipse-temurin:25-jre-noble@sha256:693fdaf83831eeeefd9709eae44c8b8706622652f972cf5903bd0e481bbf6ad3
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 7.49kB done
+#9 DONE 0.0s
+
+#10 [build 2/8] RUN apt-get update -qq && apt-get install --no-install-recommends -y curl ca-certificates &&     rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [build 3/8] RUN curl -fsSL --retry 5 https://github.com/clojure/brew-install/releases/download/1.12.5.1664/clojure-tools-1.12.5.1664.tar.gz -o /tmp/clojure.tar.gz &&     echo '77dd6868948074adcc93e83a796f8e8f15a1a92bcb1b9002d715fd2210e476f3  /tmp/clojure.tar.gz' | sha256sum -c - &&     tar xzf /tmp/clojure.tar.gz -C /tmp &&     mkdir -p /usr/local/lib/clojure/libexec &&     cp /tmp/clojure-tools/deps.edn /tmp/clojure-tools/example-deps.edn /tmp/clojure-tools/tools.edn /usr/local/lib/clojure/ &&     cp /tmp/clojure-tools/*.jar /usr/local/lib/clojure/libexec/ &&     sed 's@PREFIX@/usr/local/lib/clojure@g' /tmp/clojure-tools/clojure > /usr/local/bin/clojure &&     chmod +x /usr/local/bin/clojure && rm -rf /tmp/clojure-tools /tmp/clojure.tar.gz
+#11 CACHED
+
+#12 [build 4/8] WORKDIR /src
+#12 CACHED
+
+#13 [build 5/8] COPY deps.edn ./
+#13 DONE 0.1s
+
+#14 [build 6/8] RUN --mount=type=cache,target=/root/.m2 clojure -P -T:build && clojure -P
+#14 0.121 Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+#14 0.564 Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+#14 1.754 Downloading: org/bouncycastle/bcutil-jdk18on/1.86/bcutil-jdk18on-1.86.pom from central
+#14 1.757 Downloading: org/bouncycastle/bcpkix-jdk18on/1.86/bcpkix-jdk18on-1.86.pom from central
+#14 2.123 Downloading: org/eclipse/jetty/jetty-unixdomain-server/12.1.13/jetty-unixdomain-server-12.1.13.pom from central
+#14 2.137 Downloading: org/eclipse/jetty/ee9/jetty-ee9-servlet/12.1.13/jetty-ee9-servlet-12.1.13.pom from central
+#14 2.307 Downloading: org/eclipse/jetty/jetty-core/12.1.13/jetty-core-12.1.13.pom from central
+#14 2.338 Downloading: org/eclipse/jetty/ee9/jetty-ee9/12.1.13/jetty-ee9-12.1.13.pom from central
+#14 2.844 Downloading: org/eclipse/jetty/jetty-project/12.1.13/jetty-project-12.1.13.pom from central
+#14 3.211 Downloading: io/netty/netty-bom/4.2.17.Final/netty-bom-4.2.17.Final.pom from central
+#14 3.561 Downloading: org/hibernate/search/hibernate-search-bom/8.4.0.Final/hibernate-search-bom-8.4.0.Final.pom from central
+#14 3.747 Downloading: org/infinispan/infinispan-bom/16.2.2/infinispan-bom-16.2.2.pom from central
+#14 4.099 Downloading: org/junit/junit-bom/6.1.3/junit-bom-6.1.3.pom from central
+#14 4.520 Downloading: org/ow2/asm/asm-bom/9.10.1/asm-bom-9.10.1.pom from central
+#14 4.937 Downloading: org/testcontainers/testcontainers-bom/2.0.5/testcontainers-bom-2.0.5.pom from central
+#14 5.366 Downloading: org/bouncycastle/bcprov-jdk18on/1.86/bcprov-jdk18on-1.86.pom from central
+#14 5.460 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-jetty-server/12.1.13/jetty-ee9-websocket-jetty-server-12.1.13.pom from central
+#14 5.650 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket/12.1.13/jetty-ee9-websocket-12.1.13.pom from central
+#14 5.767 Downloading: org/eclipse/jetty/jetty-server/12.1.13/jetty-server-12.1.13.pom from central
+#14 6.082 Downloading: org/eclipse/jetty/ee9/jetty-ee9-nested/12.1.13/jetty-ee9-nested-12.1.13.pom from central
+#14 6.133 Downloading: org/eclipse/jetty/ee9/jetty-ee9-security/12.1.13/jetty-ee9-security-12.1.13.pom from central
+#14 6.329 Downloading: org/eclipse/jetty/ee9/jetty-ee9-webapp/12.1.13/jetty-ee9-webapp-12.1.13.pom from central
+#14 6.496 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-jetty-api/12.1.13/jetty-ee9-websocket-jetty-api-12.1.13.pom from central
+#14 6.518 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-jetty-common/12.1.13/jetty-ee9-websocket-jetty-common-12.1.13.pom from central
+#14 6.761 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-servlet/12.1.13/jetty-ee9-websocket-servlet-12.1.13.pom from central
+#14 6.876 Downloading: org/eclipse/jetty/jetty-http/12.1.13/jetty-http-12.1.13.pom from central
+#14 7.168 Downloading: org/eclipse/jetty/jetty-io/12.1.13/jetty-io-12.1.13.pom from central
+#14 7.265 Downloading: org/eclipse/jetty/jetty-security/12.1.13/jetty-security-12.1.13.pom from central
+#14 7.413 Downloading: org/eclipse/jetty/jetty-session/12.1.13/jetty-session-12.1.13.pom from central
+#14 7.632 Downloading: org/apache/directory/api/api-parent/2.1.8/api-parent-2.1.8.pom from central
+#14 7.999 Downloading: org/apache/directory/project/project/51/project-51.pom from central
+#14 8.361 Downloading: org/eclipse/jetty/jetty-xml/12.1.13/jetty-xml-12.1.13.pom from central
+#14 8.412 Downloading: org/eclipse/jetty/ee/jetty-ee-webapp/12.1.13/jetty-ee-webapp-12.1.13.pom from central
+#14 8.596 Downloading: org/eclipse/jetty/ee/jetty-ee/12.1.13/jetty-ee-12.1.13.pom from central
+#14 8.724 Downloading: org/eclipse/jetty/websocket/jetty-websocket-core-common/12.1.13/jetty-websocket-core-common-12.1.13.pom from central
+#14 8.790 Downloading: org/eclipse/jetty/websocket/jetty-websocket-core-server/12.1.13/jetty-websocket-core-server-12.1.13.pom from central
+#14 9.083 Downloading: org/eclipse/jetty/websocket/jetty-websocket/12.1.13/jetty-websocket-12.1.13.pom from central
+#14 9.444 Downloading: org/eclipse/jetty/jetty-util/12.1.13/jetty-util-12.1.13.pom from central
+#14 9.832 Downloading: org/eclipse/jetty/jetty-xml/12.1.13/jetty-xml-12.1.13.jar from central
+#14 10.07 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-jetty-api/12.1.13/jetty-ee9-websocket-jetty-api-12.1.13.jar from central
+#14 10.42 Downloading: org/eclipse/jetty/jetty-http/12.1.13/jetty-http-12.1.13.jar from central
+#14 11.06 Downloading: org/eclipse/jetty/jetty-util/12.1.13/jetty-util-12.1.13.jar from central
+#14 11.46 Downloading: org/bouncycastle/bcutil-jdk18on/1.86/bcutil-jdk18on-1.86.jar from central
+#14 11.62 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-jetty-common/12.1.13/jetty-ee9-websocket-jetty-common-12.1.13.jar from central
+#14 11.82 Downloading: org/bouncycastle/bcpkix-jdk18on/1.86/bcpkix-jdk18on-1.86.jar from central
+#14 12.19 Downloading: org/eclipse/jetty/ee9/jetty-ee9-servlet/12.1.13/jetty-ee9-servlet-12.1.13.jar from central
+#14 12.56 Downloading: org/eclipse/jetty/jetty-security/12.1.13/jetty-security-12.1.13.jar from central
+#14 12.58 Downloading: org/eclipse/jetty/jetty-unixdomain-server/12.1.13/jetty-unixdomain-server-12.1.13.jar from central
+#14 12.93 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-jetty-server/12.1.13/jetty-ee9-websocket-jetty-server-12.1.13.jar from central
+#14 12.95 Downloading: org/eclipse/jetty/ee9/jetty-ee9-nested/12.1.13/jetty-ee9-nested-12.1.13.jar from central
+#14 13.29 Downloading: org/bouncycastle/bcprov-jdk18on/1.86/bcprov-jdk18on-1.86.jar from central
+#14 14.61 Downloading: org/eclipse/jetty/jetty-session/12.1.13/jetty-session-12.1.13.jar from central
+#14 14.99 Downloading: org/eclipse/jetty/ee9/websocket/jetty-ee9-websocket-servlet/12.1.13/jetty-ee9-websocket-servlet-12.1.13.jar from central
+#14 15.38 Downloading: org/eclipse/jetty/ee/jetty-ee-webapp/12.1.13/jetty-ee-webapp-12.1.13.jar from central
+#14 15.75 Downloading: org/eclipse/jetty/websocket/jetty-websocket-core-server/12.1.13/jetty-websocket-core-server-12.1.13.jar from central
+#14 16.11 Downloading: org/eclipse/jetty/ee9/jetty-ee9-security/12.1.13/jetty-ee9-security-12.1.13.jar from central
+#14 16.47 Downloading: org/eclipse/jetty/jetty-io/12.1.13/jetty-io-12.1.13.jar from central
+#14 16.88 Downloading: org/eclipse/jetty/ee9/jetty-ee9-webapp/12.1.13/jetty-ee9-webapp-12.1.13.jar from central
+#14 17.24 Downloading: org/eclipse/jetty/websocket/jetty-websocket-core-common/12.1.13/jetty-websocket-core-common-12.1.13.jar from central
+#14 17.48 Downloading: org/eclipse/jetty/jetty-server/12.1.13/jetty-server-12.1.13.jar from central
+#14 DONE 17.7s
+
+#15 [build 7/8] COPY . .
+#15 DONE 0.1s
+
+#16 [build 8/8] RUN --mount=type=cache,target=/root/.m2 clojure -T:build uber
+#16 0.112 Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+#16 1.163 Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+#16 DONE 6.2s
+
+#17 [stage-1 2/3] WORKDIR /app
+#17 CACHED
+
+#18 [stage-1 3/3] COPY --from=build --chown=10001:10001 /src/target/conduit.jar /app/conduit.jar
+#18 DONE 0.0s
+
+#19 exporting to image
+#19 exporting layers 0.1s done
+#19 writing image sha256:00ccd863a1aa271a4e35ec2dd6fae69208c55a1aa7d9a932d086a84573647e76 done
+#19 naming to docker.io/library/agentmvc-clojure-preflight:production done
+#19 DONE 0.1s

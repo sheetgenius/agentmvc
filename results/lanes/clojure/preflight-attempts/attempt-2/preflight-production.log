@@ -1,0 +1,24 @@
+[main] INFO migratus.core - Starting migrations
+[main] INFO com.zaxxer.hikari.HikariDataSource - conduit - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - conduit - Added connection org.postgresql.jdbc.PgConnection@2d2f09a4
+[main] INFO com.zaxxer.hikari.HikariDataSource - conduit - Start completed.
+[main] INFO migratus.database - creating migration table 'schema_migrations'
+[main] INFO migratus.core - Running up for [1 2]
+[main] INFO migratus.core - Up 1-proletarian
+[main] INFO migratus.database - Connection is  {:connection #object[com.zaxxer.hikari.pool.HikariProxyConnection 0x4e79c25 HikariProxyConnection@82287653 wrapping org.postgresql.jdbc.PgConnection@2d2f09a4]} Config is {:store :database, :migration-dir migrations, :db {:datasource #object[com.zaxxer.hikari.HikariDataSource 0x3a7d914c HikariDataSource (conduit)]}}
+[main] INFO migratus.core - Up 2-preflight
+[main] INFO migratus.database - Connection is  {:connection #object[com.zaxxer.hikari.pool.HikariProxyConnection 0x4e79c25 HikariProxyConnection@82287653 wrapping org.postgresql.jdbc.PgConnection@2d2f09a4]} Config is {:store :database, :migration-dir migrations, :db {:datasource #object[com.zaxxer.hikari.HikariDataSource 0x3a7d914c HikariDataSource (conduit)]}}
+[main] INFO migratus.core - Ending migrations
+:proletarian.worker/handling-job
+:proletarian.worker/job-finished
+[main] INFO org.eclipse.jetty.server.Server - jetty-12.1.8; built: 2026-04-01T01:09:18.991Z; git: c9cdc9aaa434a3665b8a53b4d1cc3684992da649; jvm 25.0.4.1+1-LTS
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started oeje9n.ContextHandler$CoreContextHandler@457b8fc3{ROOT,/,b=null,a=AVAILABLE,h=oeje9n.ContextHandler$CoreContextHandler$CoreToNestedHandler@37a1beb3{STARTED}}
+[main] INFO org.eclipse.jetty.server.AbstractConnector - Started oejs.ServerConnector@2b06681c{HTTP/1.1, (http/1.1)}{0.0.0.0:4112}
+[main] INFO org.eclipse.jetty.server.Server - Started oejs.Server@67cd84f9{STARTING}[12.1.8,sto=5000] @19ms
+[Thread-8] INFO org.eclipse.jetty.server.Server - Stopped oejs.Server@67cd84f9{STOPPING}[12.1.8,sto=5000]
+[Thread-8] INFO org.eclipse.jetty.server.Server - Shutdown oejs.Server@67cd84f9{STOPPING}[12.1.8,sto=5000]
+[Thread-8] INFO org.eclipse.jetty.server.AbstractConnector - Stopped oejs.ServerConnector@2b06681c{HTTP/1.1, (http/1.1)}{0.0.0.0:4112}
+:proletarian.executor/shutting-down
+:proletarian.executor/completed-shutdown
+[Thread-8] INFO com.zaxxer.hikari.HikariDataSource - conduit - Shutdown initiated...
+[Thread-8] INFO com.zaxxer.hikari.HikariDataSource - conduit - Shutdown completed.

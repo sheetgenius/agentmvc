@@ -1,0 +1,30 @@
+FROM eclipse-temurin:25-jdk-noble@sha256:f6366ccac38ceae180280ad7012d18a15e8031548a430dc2bae06631d9e88ed0
+RUN apt-get update -qq && apt-get install --no-install-recommends -y \
+    ca-certificates curl git postgresql-client python3 ripgrep rlwrap unzip && \
+    rm -rf /var/lib/apt/lists/*
+RUN curl -fsSL --retry 5 https://github.com/clojure/brew-install/releases/download/1.12.5.1664/clojure-tools-1.12.5.1664.tar.gz -o /tmp/clojure.tar.gz && \
+    echo '77dd6868948074adcc93e83a796f8e8f15a1a92bcb1b9002d715fd2210e476f3  /tmp/clojure.tar.gz' | sha256sum -c - && \
+    tar xzf /tmp/clojure.tar.gz -C /tmp && \
+    mkdir -p /usr/local/lib/clojure/libexec && \
+    cp /tmp/clojure-tools/deps.edn /tmp/clojure-tools/example-deps.edn /tmp/clojure-tools/tools.edn /usr/local/lib/clojure/ && \
+    cp /tmp/clojure-tools/*.jar /usr/local/lib/clojure/libexec/ && \
+    sed 's@PREFIX@/usr/local/lib/clojure@g' /tmp/clojure-tools/clojure > /usr/local/bin/clojure && \
+    sed 's@BINDIR@/usr/local/bin@g' /tmp/clojure-tools/clj > /usr/local/bin/clj && \
+    chmod +x /usr/local/bin/clojure /usr/local/bin/clj && \
+    rm -rf /tmp/clojure-tools /tmp/clojure.tar.gz
+RUN arch="$(dpkg --print-architecture)" && \
+    case "$arch" in \
+      arm64) checksum=2c71403eb443d05891c4f268c3ad771cf4f16e5443463fd7851ef8f454d3c7e4 ;; \
+      amd64) checksum=ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108 ;; \
+      *) exit 1 ;; \
+    esac && \
+    curl -fsSL --retry 5 "https://github.com/google/osv-scanner/releases/download/v2.6.0/osv-scanner_linux_$arch" -o /usr/local/bin/osv-scanner && \
+    echo "$checksum  /usr/local/bin/osv-scanner" | sha256sum -c - && \
+    chmod +x /usr/local/bin/osv-scanner
+WORKDIR /work/app
+ENV JAVA_TOOL_OPTIONS="-XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70"
+COPY scaffold/deps.edn ./
+RUN clojure -P -M:dev:test:lint:format && clojure -P -T:build
+COPY scaffold/ ./
+RUN clojure -M:test && clojure -M:lint && clojure -T:build uber
+CMD ["bash"]

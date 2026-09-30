@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Try a published Go/Python application with the fixed Lit client.
+# Try a published language-lane application with the fixed Lit client.
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
-stack="${1:?usage: tools/lane_demo.sh go|python [eight|one-shot|eight-reference|one-shot-reference]}"
+stack="${1:?usage: tools/lane_demo.sh go|python|clojure [eight|one-shot|eight-reference|one-shot-reference]}"
 condition="${2:-eight}"
-case "$stack" in go) default_port=4410;; python) default_port=4411;; *) exit 2;; esac
+case "$stack" in go) default_port=4410;; python) default_port=4411;; clojure) default_port=4412;; *) exit 2;; esac
 case "$condition" in
   eight) source_dir="$root/stacks/$stack/8-live-editing";;
   one-shot) source_dir="$root/results/one-shot-v2-$stack-expert/pilot-1/source";;

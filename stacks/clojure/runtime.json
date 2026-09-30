@@ -1,0 +1,21 @@
+{
+  "image": "agentmvc-clojure-toolchain:preflight",
+  "port": 4112,
+  "volumes": [
+    {"name": "agentmvc-clojure-m2", "target": "/root/.m2"},
+    {"name": "agentmvc-clojure-gitlibs", "target": "/root/.gitlibs"}
+  ],
+  "env": {"JAVA_TOOL_OPTIONS": "-XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70"},
+  "commands": {
+    "start": ["sh", "bin/dev"],
+    "prepare": ["clojure", "-P", "-M:dev"],
+    "test": ["clojure", "-M:test"],
+    "lint": ["sh", "bin/lint"],
+    "security": [],
+    "dependencies": ["sh", "bin/dependency-scan"]
+  },
+  "security_coverage": {
+    "static_analysis": "No dedicated Clojure security static analyzer supplied; clj-kondo is correctness/style lint.",
+    "dependencies": "OSV-Scanner 2.6.0 scans exact resolved runtime Maven/Clojars coordinates; no reachability analysis or dev/build dependency scan."
+  }
+}

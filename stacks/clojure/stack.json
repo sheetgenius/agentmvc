@@ -1,0 +1,26 @@
+{
+  "name": "Clojure · Ring + Reitit",
+  "stack": "clojure",
+  "order": 9,
+  "language": "Clojure",
+  "description": "Clojure 1.12.6, Ring, Reitit/Malli, next.jdbc/HoneySQL, Migratus, Proletarian, PostgreSQL 17",
+  "color": "#5881d8",
+  "port": 4112,
+  "toolchain_image": "agentmvc-clojure-toolchain:preflight",
+  "agent": {"tool": "Codex CLI", "model": "gpt-6-sol", "reasoning": "xhigh"},
+  "code": {
+    "extensions": {".clj": ";", ".cljc": ";", ".cljs": ";", ".edn": ";", ".sql": "--", ".sh": "#"},
+    "files": {"dev": "#", "serve": "#", "lint": "#", "dependency-scan": "#"},
+    "skip_files": ["Dockerfile"],
+    "skip_dirs": ["target", ".cpcache", ".clj-kondo", ".gitlibs", ".m2", "coverage", "harness", "security", "realworld_spec", ".scaffold", ".checks", "perf"],
+    "generated": []
+  },
+  "security": {
+    "manifest": "deps.edn",
+    "resolved_inventory": "target/resolved-basis.edn",
+    "analyzer": null,
+    "dependencies": "OSV-Scanner 2.6.0",
+    "limitations": "No dedicated Clojure static security analyzer, reachability analysis, or dev/build dependency scan is configured."
+  },
+  "setup": "clojure -P -M:dev:test:lint:format && clojure -P -T:build"
+}

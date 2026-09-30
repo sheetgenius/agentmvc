@@ -1,0 +1,33 @@
+Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70
+
+Running tests in #{"test"}
+
+Testing conduit.http-test
+
+Testing conduit.preflight-test
+[main] INFO migratus.core - Starting migrations
+[main] INFO com.zaxxer.hikari.HikariDataSource - conduit - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - conduit - Added connection org.postgresql.jdbc.PgConnection@62b5606a
+[main] INFO com.zaxxer.hikari.HikariDataSource - conduit - Start completed.
+[main] INFO migratus.database - creating migration table 'schema_migrations'
+[main] INFO migratus.core - Running up for [1 2]
+[main] INFO migratus.core - Up 1-proletarian
+[main] INFO migratus.database - Connection is  {:connection #object[com.zaxxer.hikari.pool.HikariProxyConnection 0x7fa36d64 HikariProxyConnection@2141416804 wrapping org.postgresql.jdbc.PgConnection@62b5606a]} Config is {:store :database, :migration-dir migrations, :db {:datasource #object[com.zaxxer.hikari.HikariDataSource 0x6bb0a32c HikariDataSource (conduit)]}}
+[main] INFO migratus.core - Up 2-preflight
+[main] INFO migratus.database - Connection is  {:connection #object[com.zaxxer.hikari.pool.HikariProxyConnection 0x7fa36d64 HikariProxyConnection@2141416804 wrapping org.postgresql.jdbc.PgConnection@62b5606a]} Config is {:store :database, :migration-dir migrations, :db {:datasource #object[com.zaxxer.hikari.HikariDataSource 0x6bb0a32c HikariDataSource (conduit)]}}
+[main] INFO migratus.core - Ending migrations
+[main] INFO migratus.core - Starting migrations
+[main] INFO migratus.core - Ending migrations
+:proletarian.worker/handling-job
+:proletarian.worker/job-finished
+:proletarian.executor/shutting-down
+:proletarian.executor/completed-shutdown
+:proletarian.worker/handling-job
+:proletarian.worker/job-finished
+:proletarian.executor/shutting-down
+:proletarian.executor/completed-shutdown
+[main] INFO com.zaxxer.hikari.HikariDataSource - conduit - Shutdown initiated...
+
+Ran 4 tests containing 20 assertions.
+0 failures, 0 errors.
+[main] INFO com.zaxxer.hikari.HikariDataSource - conduit - Shutdown completed.

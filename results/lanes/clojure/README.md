@@ -1,0 +1,35 @@
+# Clojure
+
+An eight-step build and an independent expert one-shot of the same Conduit backend. The selected stack combines Ring/Jetty, Reitit/Malli, next.jdbc/HoneySQL, Integrant, Migratus, Proletarian and Buddy, packaged as a JVM AOT uberjar.
+
+**Environment preflight passed; measured coding has not completed a verified session.**
+
+[Stack choice and Clojure guidance](../../../stacks/clojure/SELECTION.md) · [Conditions and method](METHODOLOGY.md) · [Shared expert prompt](../../../one-shot-v2-expert/PROMPT.md)
+
+## Eight-step history
+
+Each checkpoint preserves its source, prompt, effort, failures and independent verdict. Production checks begin at step 3. Preparation and later reviewer work are outside coding effort.
+
+| Step | Owned backend and independent checks |
+| --- | --- |
+| [1 · Base API](../../../steps/1-build.md) | Pending |
+| [2 · Drafts](../../../steps/2-add-drafts.md) | Pending |
+| [3 · Production](../../../steps/3-package.md) | Pending |
+| [4 · Performance](../../../steps/4-tune.md) | Pending |
+| [5 · Security](../../../steps/5-harden.md) | Pending |
+| [6 · Polish](../../../steps/6-polish.md) | Pending |
+| [7 · Exports](../../../steps/7-add-background-job.md) | Pending |
+| [8 · Live editing](../../../steps/8-live-editing.md) | Pending |
+
+## Independent expert one-shot
+
+Pending
+
+
+## Evidence and limits
+
+Backend size excludes dependencies, compiled output, tests and Markdown; tests/docs are recorded separately. Owned size uses the frozen prepared scaffold as its baseline. This focused library assembly is not a Rails-style integrated model framework.
+
+AOT compiles application namespaces to JVM bytecode. JVM JIT warmup still matters; the common short performance windows do not establish fully warmed steady-state performance or a language ranking.
+
+[Environment preflight and its actual verdict](preflight.json)

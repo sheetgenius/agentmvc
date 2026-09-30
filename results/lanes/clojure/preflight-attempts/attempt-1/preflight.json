@@ -1,0 +1,23 @@
+{
+  "passed": false,
+  "condition": "product-free Clojure infrastructure preflight",
+  "production_image": "agentmvc-clojure-preflight:production",
+  "checks": {
+    "clean_scaffold_tests_lint_and_prewarm": true,
+    "resolved_runtime_inventory_and_osv_scan_completed": true
+  },
+  "application_limits": {
+    "cpus": 2,
+    "memory": "1g"
+  },
+  "toolchain_image_id": "sha256:fd8bf222e9658cade95d5769b8d36d0214521f0bee8c25170c5c9f2b9cd2d68f",
+  "dependency_scan": {
+    "scanner": "OSV-Scanner 2.6.0",
+    "exit_code": 1,
+    "scope": "resolved production runtime Maven/Clojars dependencies",
+    "dedicated_clojure_sast": "unsupported",
+    "reachability": "unsupported"
+  },
+  "error": "command failed (1): docker run --rm; see infrastructure-tests.log\nPicked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70\n\nRunning tests in #{\"test\"}\nSyntax error reading source at (conduit/preflight_test.clj:77:56).\nUnmatched delimiter: )\n\nFull report at:\n/tmp/clojure-13958793798441877269.edn\n",
+  "wall_seconds": 179.55
+}
