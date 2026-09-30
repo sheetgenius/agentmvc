@@ -61,6 +61,8 @@ Supplemental review found two sequential contract defects: malformed owner-edit 
 
 The separate **unscored references**—[sequential, 8,634 owned tokens](results/lanes/clojure/8-live-editing/reference-1/source/) and [one-shot, 9,891](results/one-shot-v2-clojure-expert/pilot-1/reference-1/source/)—pass development, production and supplemental checks, plus [two production runtime rounds](results/lanes/clojure/runtime/reference/summary.json). The measured originals and their failures remain preserved. [Code guide and repairs](results/lanes/clojure/CODE-GUIDE.md) · [Expert review and exact verdicts](results/lanes/clojure/EXPERT-REVIEW.md) · [Stack selection](stacks/clojure/SELECTION.md) · [Recorded conditions](results/lanes/clojure/METHODOLOGY.md).
 
+[Download the scrubbed transcripts and raw measurements](https://github.com/sheetgenius/agentmvc/releases/tag/clojure-lane-v1); the [artifact manifest](results/lanes/clojure/artifacts-v1.json) records coverage and checksums. Try a reviewed app with `tools/lane_demo.sh clojure eight-reference` or `tools/lane_demo.sh clojure one-shot-reference` (Docker and Node.js required).
+
 ## Original eight-step study
 
 The earlier Rails, Phoenix, and Loco implementations followed eight prompts: build the app; add drafts; package; tune; harden; polish; add a background export; add live shared editing. Each step has the same acceptance suite, size measure, security checks, and production benchmarks. This history is separate from the expert-guided one-shot table above. [Methodology](docs/methodology.md) · [Findings](docs/README.md) · [Try the step-8 app](tools/demo.sh) (`tools/demo.sh rails|phoenix|loco`, Docker and Node.js required).

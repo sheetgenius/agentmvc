@@ -82,6 +82,8 @@ AOT compiles application namespaces to JVM bytecode. JVM JIT warmup still matter
 
 [Comprehension after 6-polish: 12/12](comprehension/clojure-after-6-polish)
 
+[Scrubbed transcripts and raw measurements](https://github.com/sheetgenius/agentmvc/releases/tag/clojure-lane-v1) · [Artifact hashes and provenance](artifacts-v1.json). Full evidence stays outside Git.
+
 Try a measured final app from the repository root (Docker and Node.js required):
 
 ```sh

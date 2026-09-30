@@ -2,7 +2,7 @@
   "schema_version": 1,
   "artifact_version": "v1",
   "created_at": "2026-09-30T04:15:58.729460+00:00",
-  "publication_status": "prepared locally; not uploaded",
+  "publication_status": "published to GitHub Releases; remote SHA-256 digests and downloaded assets verified",
   "restore_root": "repository root",
   "snapshot_status": "complete Clojure original inventory; selected references optional",
   "validation": "Unchanged decoded scrub patterns, raw zstd validation and archive member hashes",
@@ -18,19 +18,28 @@
       "asset": "agentmvc-clojure-v1-transcripts.tar.zst",
       "bytes": 216785,
       "sha256": "9974690e32d75c4a78ba0518d3de10854f4284087ebf65640787e849f340700d",
-      "files": 22
+      "files": 22,
+      "download_url": "https://github.com/sheetgenius/agentmvc/releases/download/clojure-lane-v1/agentmvc-clojure-v1-transcripts.tar.zst",
+      "release_asset_id": 600013426,
+      "remote_sha256": "9974690e32d75c4a78ba0518d3de10854f4284087ebf65640787e849f340700d"
     },
     "runtime": {
       "asset": "agentmvc-clojure-v1-runtime.tar.zst",
       "bytes": 1021354536,
       "sha256": "e74902d406c45033a9c5e5e4234b2afda6e2a9a602d33b58445164e04ae37631",
-      "files": 216
+      "files": 216,
+      "download_url": "https://github.com/sheetgenius/agentmvc/releases/download/clojure-lane-v1/agentmvc-clojure-v1-runtime.tar.zst",
+      "release_asset_id": 600013517,
+      "remote_sha256": "e74902d406c45033a9c5e5e4234b2afda6e2a9a602d33b58445164e04ae37631"
     },
     "evidence": {
       "asset": "agentmvc-clojure-v1-evidence.tar.zst",
       "bytes": 932333,
       "sha256": "fb8aa13ffa610a22230d6501df2662e59ffdbe558f0f9a895b63362ab615084f",
-      "files": 640
+      "files": 640,
+      "download_url": "https://github.com/sheetgenius/agentmvc/releases/download/clojure-lane-v1/agentmvc-clojure-v1-evidence.tar.zst",
+      "release_asset_id": 600016674,
+      "remote_sha256": "fb8aa13ffa610a22230d6501df2662e59ffdbe558f0f9a895b63362ab615084f"
     }
   },
   "files": {
@@ -8744,6 +8753,33 @@
         "clojure-one-shot-reference-1"
       ],
       "ready": true
+    }
+  },
+  "publication": {
+    "release_tag": "clojure-lane-v1",
+    "release_id": 399706951,
+    "release_url": "https://github.com/sheetgenius/agentmvc/releases/tag/clojure-lane-v1",
+    "source_commit": "1f9a9305bb4ad142ce47257053f2a4d7cbd7595b",
+    "checksum_url": "https://github.com/sheetgenius/agentmvc/releases/download/clojure-lane-v1/SHA256SUMS",
+    "checksum_sha256": "38a2216d742091a4fe0608ab6ef43148f61405072d2ef6a4865b41a16ba433d1",
+    "verified_at": "2026-09-30T04:21:12.807011+00:00",
+    "download_verification": {
+      "agentmvc-clojure-v1-transcripts.tar.zst": {
+        "sha256": "9974690e32d75c4a78ba0518d3de10854f4284087ebf65640787e849f340700d",
+        "bytes": 216785
+      },
+      "agentmvc-clojure-v1-runtime.tar.zst": {
+        "sha256": "e74902d406c45033a9c5e5e4234b2afda6e2a9a602d33b58445164e04ae37631",
+        "bytes": 1021354536
+      },
+      "agentmvc-clojure-v1-evidence.tar.zst": {
+        "sha256": "fb8aa13ffa610a22230d6501df2662e59ffdbe558f0f9a895b63362ab615084f",
+        "bytes": 932333
+      },
+      "SHA256SUMS": {
+        "sha256": "38a2216d742091a4fe0608ab6ef43148f61405072d2ef6a4865b41a16ba433d1",
+        "bytes": 311
+      }
     }
   }
 }
