@@ -1,0 +1,304 @@
+{
+  "image": "agentmvc-lane-clojure-4-tune-1:current",
+  "label": "clojure-4-tune-1-be2b660f",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "3s",
+  "image_mb": 362.9,
+  "cold_start_seconds": 1.35,
+  "seed_seconds": 18.3,
+  "idle_memory_mb": 172.0,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 6155,
+      "rps": 2048.8,
+      "p50_ms": 2.89,
+      "p95_ms": 60.67,
+      "p99_ms": 71.0,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.0,
+      "peak_memory_mb": 187.1,
+      "foreign_container_cpu_percent_max": 45.4,
+      "host_load_1m": 4.5
+    },
+    "list_signed_in": {
+      "requests": 6076,
+      "rps": 1995.5,
+      "p50_ms": 3.11,
+      "p95_ms": 61.77,
+      "p99_ms": 71.98,
+      "failed_checks": 0,
+      "sql_statements_per_request": 5.0,
+      "peak_memory_mb": 192.6,
+      "foreign_container_cpu_percent_max": 76.0,
+      "host_load_1m": 4.5
+    },
+    "list_by_tag": {
+      "requests": 5645,
+      "rps": 1875.7,
+      "p50_ms": 2.78,
+      "p95_ms": 67.05,
+      "p99_ms": 76.55,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.0,
+      "peak_memory_mb": 197.0,
+      "foreign_container_cpu_percent_max": 109.1,
+      "host_load_1m": 4.3
+    },
+    "feed": {
+      "requests": 5973,
+      "rps": 1968.3,
+      "p50_ms": 3.15,
+      "p95_ms": 60.08,
+      "p99_ms": 72.23,
+      "failed_checks": 0,
+      "sql_statements_per_request": 5.0,
+      "peak_memory_mb": 201.6,
+      "foreign_container_cpu_percent_max": 74.4,
+      "host_load_1m": 5.0
+    },
+    "article": {
+      "requests": 28508,
+      "rps": 9498.2,
+      "p50_ms": 0.88,
+      "p95_ms": 2.71,
+      "p99_ms": 31.24,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.0,
+      "peak_memory_mb": 205.0,
+      "foreign_container_cpu_percent_max": 174.7,
+      "host_load_1m": 5.0
+    },
+    "comments": {
+      "requests": 42717,
+      "rps": 14227.1,
+      "p50_ms": 0.62,
+      "p95_ms": 1.85,
+      "p99_ms": 23.31,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.0,
+      "peak_memory_mb": 208.3,
+      "foreign_container_cpu_percent_max": 220.4,
+      "host_load_1m": 4.8
+    },
+    "tags": {
+      "requests": 17274,
+      "rps": 5753.1,
+      "p50_ms": 0.92,
+      "p95_ms": 2.75,
+      "p99_ms": 66.36,
+      "failed_checks": 0,
+      "sql_statements_per_request": 1.0,
+      "peak_memory_mb": 211.8,
+      "foreign_container_cpu_percent_max": 87.5,
+      "host_load_1m": 5.4
+    },
+    "favorite_toggle": {
+      "requests": 13194,
+      "rps": 4392.0,
+      "p50_ms": 3.08,
+      "p95_ms": 6.67,
+      "p99_ms": 10.77,
+      "failed_checks": 0,
+      "sql_statements_per_request": 5.0,
+      "peak_memory_mb": 225.8,
+      "foreign_container_cpu_percent_max": 113.3,
+      "host_load_1m": 5.6
+    },
+    "create_article": {
+      "requests": 14748,
+      "rps": 4912.5,
+      "p50_ms": 2.85,
+      "p95_ms": 5.47,
+      "p99_ms": 9.22,
+      "failed_checks": 0,
+      "sql_statements_per_request": 8.0,
+      "peak_memory_mb": 230.5,
+      "foreign_container_cpu_percent_max": 215.8,
+      "host_load_1m": 5.8
+    }
+  },
+  "session": "clojure-4-tune-1",
+  "condition": "short feedback benchmark",
+  "warmup": "1s",
+  "image_sha256": "sha256:540b55db2fbc6df09ada5d20f75aa791bab6bae697bc8300c6094d386882f1c9",
+  "exit": 0,
+  "schema_version": 1,
+  "stack": "clojure",
+  "phase": "4-tune",
+  "timing_basis": "tools/lane_check.py benchmark configuration; an interrupted attempt may not finish",
+  "source_identity": "Intermediate candidate; no claim that the published checkpoint matches this measurement",
+  "image_identity": "recorded image SHA",
+  "summary_present": true,
+  "runner_log_present": true,
+  "source_session": ".work/lanes/clojure-4-tune-1/control/session.json",
+  "session_result": "results/lanes/clojure/4-tune",
+  "fixture_sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+  "original_file_sha256": {
+    ".work/lanes/clojure-4-tune-1/control/session.json": "9c8dd53b441f625cb4eb5a62cd21d294071e386343163af152e79381f31eb553",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/k6-article.json": "ab8f8a60fac16ef459a0b9550f85f0a7b02d7d1c7955a2ae81af3ba599f9d2f4",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/k6-comments.json": "b2c44384cacdaeb40ee880499ec8458c42b2a1ba4e99ee9637a5dd5c69a829e7",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/k6-create_article.json": "a6e84b037c0a76ba9d410a5d573ce03679050c16275243194a19087f6f8ea7d8",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/k6-favorite_toggle.json": "d86d73f5f0509d3eef88088c5fb2ed46a48baf4bad4166992a89a304c7fdc504",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/k6-feed.json": "66064b9128fd448e42a71d464cb8b612023a0dce679e959b97035932875bcfea",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/k6-list_anonymous.json": "012b4bd1cc147a357090e4129a71ebafb2db75283aa38955d03e7b316009fde1",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/k6-list_by_tag.json": "2290bf8294157f1e51cb02886f426e0469288a4fa0a318c285e87bd6e53b3fa9",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/k6-list_signed_in.json": "6bd5566daf724bb8c8d9fbfb5e8a0a803717d549a268786409be39378caf32c2",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/k6-tags.json": "9f4ad7f1abdca6ed10bb64a352d350afdbf10ee0bde157e56143c41b67f17835",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-article.json": "cdf91d7d7d98228785f39300a3b64aa4001295e45c9850f60b7c55f9eb428ccc",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-comments.json": "16d615e550b617fa880964b275f9041c199ee2141417b8d91cfe2be3fcae2305",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-create_article.json": "bdf8ac36b09f1a880bfc96891d1864aad458c59640dceca3ee090a572459b518",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-favorite_toggle.json": "66d9cbfba9c058d06fabf4537029812b3c7bac4644c97783f018babf7c8681cf",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-feed.json": "068be8c50d476b7b551d9fa5741b0c8748f7c2e90044d9bb764f37a457162f9d",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-list_anonymous.json": "019b2652770b36ee4efeaf79201131ac3ab9cc87c8d6ad841ec675280f156d01",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-list_by_tag.json": "27207d250401c004395d5a16ee4bdd95a2b36389d6935082ce1455dd12e37fc1",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-list_signed_in.json": "2d637f42204f4ac9e56cb55f5ae5c74a3dbfbb6606877eb85c07ce42faeaab5f",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-tags.json": "05dc5719153f19fff05d1e02fcca45852a6350bbaac66f52796110f1bc679d33",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-warmup-article.json": "63a83c97ce33e623cf2ea3cee17c516b55a9477adeab563f509ef15333c45cc3",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-warmup-comments.json": "3964b6eda37514759fdb2dfdd0253ad47c493a8c7d3223de387386998ec42352",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-warmup-create_article.json": "5cca8d9e3533cd914412ee2486c2005f6c07cde9c73cbf4bf70c740540d4ec49",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-warmup-favorite_toggle.json": "f3cb43c64bd216dc5caa3bc0292b00f94f61c4d8132fe241bb8f63ef654768b0",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-warmup-feed.json": "50ea120f29af63f5ee42d47147c52992ea2d62b4854b092574dc34e0260251cd",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-warmup-list_anonymous.json": "022f85503bd0261b8793593b77f89c4c0ef2fb4be5b9fa62d5d23aa1f3bc1512",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-warmup-list_by_tag.json": "dac7534966752a90e934e70154b59675cd953bd287aeffb8408d2d1c4a67fc31",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-warmup-list_signed_in.json": "46a6db9c4c9e83d49e0f24a4e77ddcd0a682b29e4ff48ee8a04202f20f7a901c",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/raw-warmup-tags.json": "22fcef25ed2623b089de332cd2f6bda261aa66d674794d8d7afc5e777066c9a4",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/results.json": "8ba0536dec4bba079829e47856065436548c0ad16b47cb7c3ddedd2fcebd854d",
+    ".work/lanes/clojure-4-tune-1/logs/measurements/clojure-4-tune-1-be2b660f/runner.log": "674a63fa39deb9b268062fd97df55eb10b80ebc55ea858a9476c152f8a9f7b53"
+  },
+  "raw_stream_sha256": {
+    "raw-article.json.zst": "494bf51d2cb00c683ce9d71c0579d6cad3bbee417465ba59904b879473c450dd",
+    "raw-comments.json.zst": "e356b4d335c38791a40f96df82f5d2d959823c497fc4e94715d5cf24c2ad15b8",
+    "raw-create_article.json.zst": "daaf16cd22e27d11c08c4a18f95312f72cd7b68fce8087e19efcbdd8ee3e45e1",
+    "raw-favorite_toggle.json.zst": "2d4d416e5863fe086a280e67bd3fa451238a983e7e86e4076d5fbb3d19f71328",
+    "raw-feed.json.zst": "221532781fb864fd1bdc28d7a362b7af0d4ce92effa79486983982d5b1059a7b",
+    "raw-list_anonymous.json.zst": "f50a48f438d57832cc1d909931d764dbe26433c74ec09b5eb46b0c9941565d87",
+    "raw-list_by_tag.json.zst": "2e3b174a35aba5018014c5313e61e563b454b3568a5a5709b5aed9a1b8792fc6",
+    "raw-list_signed_in.json.zst": "acb98523755c287f90f3466077735ef775c360d3b2df955289603be4283ad2f0",
+    "raw-tags.json.zst": "4d58b4175e5ce3bde9b15726aecaf634ef8b00f4c78f407773432fec895adf0c",
+    "raw-warmup-article.json.zst": "ada5a3bf4e4acafe84f6e9078085204cbed3cfe9a4721de46ec22a1d83be961d",
+    "raw-warmup-comments.json.zst": "6847c4914992ecea877c52ad64b1c9971876244fa0eb9061929f6eccfb01daed",
+    "raw-warmup-create_article.json.zst": "5ca33bac4c35c277964b60d5f4e79d18f7839ffa3531770069ded8054d02bc8f",
+    "raw-warmup-favorite_toggle.json.zst": "1035f3fbec3b724d7a338055f49ba0db2b5659a962c8fd9ea8fa829c7d6b5657",
+    "raw-warmup-feed.json.zst": "165c18fe86076d0e6111b16662929a80a841d287281c99f27ee2db79d5e2ca14",
+    "raw-warmup-list_anonymous.json.zst": "a0320e4f8a44c7a808c17d91c299f4688feb943671c48c460f7fb36946755ade",
+    "raw-warmup-list_by_tag.json.zst": "eedb2d6dc2b24490d9239cd2b51dcbfda00b018ffc3b26482f9e7b5d2cda2b35",
+    "raw-warmup-list_signed_in.json.zst": "0753e34190d99f05cfad72bef0907c39bd08d6860ca15553dc3721566d3edcf6",
+    "raw-warmup-tags.json.zst": "ad6e92e68c27f5190d9b092f5d1726e7ffb9a8cdb1e54ccbd5839dcf83594638"
+  },
+  "raw_validation": {
+    "raw-article.json.zst": {
+      "decompressed_bytes": 147858007,
+      "jsonl_records": 399134
+    },
+    "raw-comments.json.zst": {
+      "decompressed_bytes": 228428029,
+      "jsonl_records": 598060
+    },
+    "raw-create_article.json.zst": {
+      "decompressed_bytes": 65991256,
+      "jsonl_records": 206494
+    },
+    "raw-favorite_toggle.json.zst": {
+      "decompressed_bytes": 65528811,
+      "jsonl_records": 151753
+    },
+    "raw-feed.json.zst": {
+      "decompressed_bytes": 28187555,
+      "jsonl_records": 83644
+    },
+    "raw-list_anonymous.json.zst": {
+      "decompressed_bytes": 29589706,
+      "jsonl_records": 86192
+    },
+    "raw-list_by_tag.json.zst": {
+      "decompressed_bytes": 27148217,
+      "jsonl_records": 79052
+    },
+    "raw-list_signed_in.json.zst": {
+      "decompressed_bytes": 28127159,
+      "jsonl_records": 85086
+    },
+    "raw-tags.json.zst": {
+      "decompressed_bytes": 75895198,
+      "jsonl_records": 241858
+    },
+    "raw-warmup-article.json.zst": {
+      "decompressed_bytes": 44304881,
+      "jsonl_records": 119606
+    },
+    "raw-warmup-comments.json.zst": {
+      "decompressed_bytes": 74855186,
+      "jsonl_records": 195990
+    },
+    "raw-warmup-create_article.json.zst": {
+      "decompressed_bytes": 18334321,
+      "jsonl_records": 57376
+    },
+    "raw-warmup-favorite_toggle.json.zst": {
+      "decompressed_bytes": 23155372,
+      "jsonl_records": 53631
+    },
+    "raw-warmup-feed.json.zst": {
+      "decompressed_bytes": 10114666,
+      "jsonl_records": 30020
+    },
+    "raw-warmup-list_anonymous.json.zst": {
+      "decompressed_bytes": 9760996,
+      "jsonl_records": 28438
+    },
+    "raw-warmup-list_by_tag.json.zst": {
+      "decompressed_bytes": 9394238,
+      "jsonl_records": 27360
+    },
+    "raw-warmup-list_signed_in.json.zst": {
+      "decompressed_bytes": 9357932,
+      "jsonl_records": 28312
+    },
+    "raw-warmup-tags.json.zst": {
+      "decompressed_bytes": 24509455,
+      "jsonl_records": 78110
+    }
+  },
+  "export_file_sha256": {
+    "k6-article.json": "a0ff5e0e20d941f7c0c64b9c928586340b281654f6e1dd722011af00119f29e2",
+    "k6-comments.json": "613ab375aaed9bc6d37180eb8e575088369c49ddaa55f3cce4ccc54bf8e3af65",
+    "k6-create_article.json": "025228c8e1bc9039c90c998082c11aa5cdc44ac8c33a12364e3f2e3838051885",
+    "k6-favorite_toggle.json": "32a1b435eca1f799dc5884140b4e5baa95b80fa1d8ade77913e6ddd0540470b2",
+    "k6-feed.json": "a2175e54ecd4a69fe9b624a2df1ca53ade250bd4062a199f845ccee6b2d1ff38",
+    "k6-list_anonymous.json": "a404c1a1eda8fa678e682e164f61522d3d5f4de10b6cbbe3138171d94334f118",
+    "k6-list_by_tag.json": "06e1b798c7a26b1cfcb71462ea3a1df39aab75b170461e1909d9b3b847333aa8",
+    "k6-list_signed_in.json": "6722f37e1f13ef9a430d5c4d77bd0ad861bb8e81c9c822fb4e9a24562c29f5c3",
+    "k6-tags.json": "8885fc01bbfcafb0289032687a23ab19392d3053f5faa32de39dc981a51c8ebc",
+    "raw-article.json.zst": "494bf51d2cb00c683ce9d71c0579d6cad3bbee417465ba59904b879473c450dd",
+    "raw-comments.json.zst": "e356b4d335c38791a40f96df82f5d2d959823c497fc4e94715d5cf24c2ad15b8",
+    "raw-create_article.json.zst": "daaf16cd22e27d11c08c4a18f95312f72cd7b68fce8087e19efcbdd8ee3e45e1",
+    "raw-favorite_toggle.json.zst": "2d4d416e5863fe086a280e67bd3fa451238a983e7e86e4076d5fbb3d19f71328",
+    "raw-feed.json.zst": "221532781fb864fd1bdc28d7a362b7af0d4ce92effa79486983982d5b1059a7b",
+    "raw-list_anonymous.json.zst": "f50a48f438d57832cc1d909931d764dbe26433c74ec09b5eb46b0c9941565d87",
+    "raw-list_by_tag.json.zst": "2e3b174a35aba5018014c5313e61e563b454b3568a5a5709b5aed9a1b8792fc6",
+    "raw-list_signed_in.json.zst": "acb98523755c287f90f3466077735ef775c360d3b2df955289603be4283ad2f0",
+    "raw-tags.json.zst": "4d58b4175e5ce3bde9b15726aecaf634ef8b00f4c78f407773432fec895adf0c",
+    "raw-warmup-article.json.zst": "ada5a3bf4e4acafe84f6e9078085204cbed3cfe9a4721de46ec22a1d83be961d",
+    "raw-warmup-comments.json.zst": "6847c4914992ecea877c52ad64b1c9971876244fa0eb9061929f6eccfb01daed",
+    "raw-warmup-create_article.json.zst": "5ca33bac4c35c277964b60d5f4e79d18f7839ffa3531770069ded8054d02bc8f",
+    "raw-warmup-favorite_toggle.json.zst": "1035f3fbec3b724d7a338055f49ba0db2b5659a962c8fd9ea8fa829c7d6b5657",
+    "raw-warmup-feed.json.zst": "165c18fe86076d0e6111b16662929a80a841d287281c99f27ee2db79d5e2ca14",
+    "raw-warmup-list_anonymous.json.zst": "a0320e4f8a44c7a808c17d91c299f4688feb943671c48c460f7fb36946755ade",
+    "raw-warmup-list_by_tag.json.zst": "eedb2d6dc2b24490d9239cd2b51dcbfda00b018ffc3b26482f9e7b5d2cda2b35",
+    "raw-warmup-list_signed_in.json.zst": "0753e34190d99f05cfad72bef0907c39bd08d6860ca15553dc3721566d3edcf6",
+    "raw-warmup-tags.json.zst": "ad6e92e68c27f5190d9b092f5d1726e7ffb9a8cdb1e54ccbd5839dcf83594638",
+    "runner.log": "674a63fa39deb9b268062fd97df55eb10b80ebc55ea858a9476c152f8a9f7b53"
+  },
+  "exported_at": "2026-09-30T03:49:31.772393+00:00",
+  "export_tools_sha256": {
+    "tools/lane_artifacts.py": "4d08f8cb7270c2e7041e0b000e892d211ee12f384b1a26b0153fc4a22e58e79d",
+    "tools/lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "tools/scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+    "tools/v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79"
+  }
+}

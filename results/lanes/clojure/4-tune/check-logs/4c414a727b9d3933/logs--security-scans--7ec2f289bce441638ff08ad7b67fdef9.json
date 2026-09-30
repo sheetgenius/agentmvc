@@ -1,0 +1,34 @@
+{
+  "session": "clojure-4-tune-1",
+  "stack": "clojure",
+  "started": "2026-09-30T01:50:00.501528+00:00",
+  "black_box": {
+    "s01_jwt_alg_none": true,
+    "s02_jwt_signature_stripped": true,
+    "s03_jwt_garbage": true,
+    "s04_mass_assignment_user": true,
+    "s05_mass_assignment_article": true,
+    "s06_injection_filters": true,
+    "s07_malformed_json": false,
+    "s08_wrong_types": true,
+    "s09_oversized_body": true,
+    "s10_unknown_route": true,
+    "s11_login_enumeration": true,
+    "s12_nosniff_header": false,
+    "s13_login_rate_limit": false
+  },
+  "black_box_exit": 4,
+  "core_passed": 10,
+  "core_total": 11,
+  "defense_in_depth_passed": 0,
+  "defense_in_depth_total": 2,
+  "static_analysis": {
+    "status": "not configured"
+  },
+  "dependencies": {
+    "exit": 0,
+    "output": "Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70\nPicked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=70\nStarting filesystem walk for root: /\nScanned /work/app/target/resolved-osv.json file and found 83 packages\nEnd status: 0 dirs visited, 1 inodes visited, 1 Extract calls, 224.545\u00b5s elapsed, 224.545\u00b5s wall time\n{\n  \"results\": [],\n  \"experimental_config\": {\n    \"licenses\": {\n      \"summary\": false,\n      \"allowlist\": null\n    }\n  }\n}\n"
+  },
+  "finished": "2026-09-30T01:50:14.964098+00:00",
+  "image_sha256": "sha256:540b55db2fbc6df09ada5d20f75aa791bab6bae697bc8300c6094d386882f1c9"
+}

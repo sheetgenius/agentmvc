@@ -1,0 +1,54 @@
+{
+  "recorded_at": "2026-09-30T04:02:21.459235+00:00",
+  "condition": "Publication redaction of upstream advisory examples; no application or gate changes",
+  "reason": "The unchanged decoded scrubber flagged example password assignments in upstream advisory prose in two preserved preparation scans. Redact those examples while preserving advisory identities, dependency findings and verdicts.",
+  "original_publication_commit": "bf073a3",
+  "package_attempt": {
+    "exit": 1,
+    "reason": "Sensitive decoded JSON string/key: sensitive assignment",
+    "scrubbed_log": "results/lanes/clojure/preflight-publication-correction.log",
+    "original_log_sha256": "e893b6244a3b07caf2b165718d5afd7d4c0c74c6c936cfce8c5d186d76910946",
+    "published_log_sha256": "3b941c5f8b17f049f53afd1c281010f293fa973f43b642da8c06efacf6b74115",
+    "hash_scope": "Original hash is the private unsanitized failure log; published hash is the linked scrubbed copy."
+  },
+  "files": [
+    {
+      "path": "results/lanes/clojure/preflight-attempts/attempt-1/preflight-dependency-scan.json",
+      "original_sha256": "6cd27ff1135416a40de0a0646dd002bba59a8caa5aa559773221bf8aa1e24c7a",
+      "published_sha256": "66ccc7c3547cc31312f2aa06d10a768fb7b7010ae45d56bbc698faa447d9f9e2",
+      "changed_fields": [
+        "$.results[0].packages[2].vulnerabilities[0].details",
+        "$.results[0].packages[3].vulnerabilities[0].details"
+      ],
+      "advisory_id": "GHSA-2fvj-hgj9-j2gr"
+    },
+    {
+      "path": "results/lanes/clojure/preflight-attempts/attempt-2/preflight-dependency-scan.json",
+      "original_sha256": "6cd27ff1135416a40de0a0646dd002bba59a8caa5aa559773221bf8aa1e24c7a",
+      "published_sha256": "66ccc7c3547cc31312f2aa06d10a768fb7b7010ae45d56bbc698faa447d9f9e2",
+      "changed_fields": [
+        "$.results[0].packages[2].vulnerabilities[0].details",
+        "$.results[0].packages[3].vulnerabilities[0].details"
+      ],
+      "advisory_id": "GHSA-2fvj-hgj9-j2gr"
+    },
+    {
+      "path": "results/lanes/clojure/preflight-attempts/attempt-1/preflight-dependency-scan.log",
+      "original_sha256": "bd98060fd47452314b5d50cb5e19ce7f3dfd7f1fbbe03750d7fc32aeccc7d5fa",
+      "published_sha256": "c51b049f2b26a5fa7483f7ef3535dbe5c909453950d9211412b4f096536667a9",
+      "changed_fields": [
+        "Matching example assignments in the duplicated advisory log text"
+      ],
+      "advisory_id": "GHSA-2fvj-hgj9-j2gr"
+    },
+    {
+      "path": "results/lanes/clojure/preflight-attempts/attempt-2/preflight-dependency-scan.log",
+      "original_sha256": "5ff77bbfd4098da91883a87fd98bdd24f09f110d9b1adada7d7b7cce555a11c5",
+      "published_sha256": "7bc9151a2b0cddc02d2c7e29146945a6ef11d8cdab47d55fa3b5d4aea9360839",
+      "changed_fields": [
+        "Matching example assignments in the duplicated advisory log text"
+      ],
+      "advisory_id": "GHSA-2fvj-hgj9-j2gr"
+    }
+  ]
+}

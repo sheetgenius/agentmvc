@@ -1,0 +1,304 @@
+{
+  "image": "agentmvc-lane-clojure-3-package-1:current",
+  "label": "clojure-3-package-1-916a5e93",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "3s",
+  "image_mb": 362.8,
+  "cold_start_seconds": 1.39,
+  "seed_seconds": 19.3,
+  "idle_memory_mb": 172.3,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 2768,
+      "rps": 906.6,
+      "p50_ms": 9.58,
+      "p95_ms": 61.64,
+      "p99_ms": 69.31,
+      "failed_checks": 0,
+      "sql_statements_per_request": 62.0,
+      "peak_memory_mb": 187.0,
+      "foreign_container_cpu_percent_max": 23.4,
+      "host_load_1m": 4.7
+    },
+    "list_signed_in": {
+      "requests": 1967,
+      "rps": 644.5,
+      "p50_ms": 14.19,
+      "p95_ms": 66.82,
+      "p99_ms": 72.26,
+      "failed_checks": 0,
+      "sql_statements_per_request": 103.0,
+      "peak_memory_mb": 196.4,
+      "foreign_container_cpu_percent_max": 20.7,
+      "host_load_1m": 5.5
+    },
+    "list_by_tag": {
+      "requests": 2832,
+      "rps": 942.4,
+      "p50_ms": 8.89,
+      "p95_ms": 62.85,
+      "p99_ms": 70.29,
+      "failed_checks": 0,
+      "sql_statements_per_request": 62.0,
+      "peak_memory_mb": 200.9,
+      "foreign_container_cpu_percent_max": 99.1,
+      "host_load_1m": 6.1
+    },
+    "feed": {
+      "requests": 1905,
+      "rps": 627.8,
+      "p50_ms": 14.3,
+      "p95_ms": 66.18,
+      "p99_ms": 72.01,
+      "failed_checks": 0,
+      "sql_statements_per_request": 103.0,
+      "peak_memory_mb": 206.4,
+      "foreign_container_cpu_percent_max": 91.1,
+      "host_load_1m": 5.6
+    },
+    "article": {
+      "requests": 22483,
+      "rps": 7415.2,
+      "p50_ms": 1.11,
+      "p95_ms": 3.2,
+      "p99_ms": 41.18,
+      "failed_checks": 0,
+      "sql_statements_per_request": 7.0,
+      "peak_memory_mb": 211.2,
+      "foreign_container_cpu_percent_max": 130.8,
+      "host_load_1m": 6.2
+    },
+    "comments": {
+      "requests": 43069,
+      "rps": 14353.1,
+      "p50_ms": 0.61,
+      "p95_ms": 1.79,
+      "p99_ms": 21.44,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.0,
+      "peak_memory_mb": 214.6,
+      "foreign_container_cpu_percent_max": 229.2,
+      "host_load_1m": 6.2
+    },
+    "tags": {
+      "requests": 19087,
+      "rps": 6218.4,
+      "p50_ms": 0.85,
+      "p95_ms": 2.52,
+      "p99_ms": 62.45,
+      "failed_checks": 0,
+      "sql_statements_per_request": 1.0,
+      "peak_memory_mb": 233.4,
+      "foreign_container_cpu_percent_max": 112.7,
+      "host_load_1m": 5.8
+    },
+    "favorite_toggle": {
+      "requests": 10032,
+      "rps": 3328.0,
+      "p50_ms": 4.01,
+      "p95_ms": 8.88,
+      "p99_ms": 24.17,
+      "failed_checks": 0,
+      "sql_statements_per_request": 8.0,
+      "peak_memory_mb": 252.9,
+      "foreign_container_cpu_percent_max": 75.4,
+      "host_load_1m": 6.0
+    },
+    "create_article": {
+      "requests": 10268,
+      "rps": 3419.0,
+      "p50_ms": 3.81,
+      "p95_ms": 8.99,
+      "p99_ms": 12.93,
+      "failed_checks": 0,
+      "sql_statements_per_request": 11.0,
+      "peak_memory_mb": 261.8,
+      "foreign_container_cpu_percent_max": 76.2,
+      "host_load_1m": 6.8
+    }
+  },
+  "session": "clojure-3-package-1",
+  "condition": "short feedback benchmark",
+  "warmup": "1s",
+  "image_sha256": "sha256:627e7e6f95948f7af984b1a3d536e82a465aeb4fec4c8cbf501b10dae7fb5744",
+  "exit": 0,
+  "schema_version": 1,
+  "stack": "clojure",
+  "phase": "3-package",
+  "timing_basis": "tools/lane_check.py benchmark configuration; an interrupted attempt may not finish",
+  "source_identity": "Intermediate candidate; no claim that the published checkpoint matches this measurement",
+  "image_identity": "recorded image SHA",
+  "summary_present": true,
+  "runner_log_present": true,
+  "source_session": ".work/lanes/clojure-3-package-1/control/session.json",
+  "session_result": "results/lanes/clojure/3-package",
+  "fixture_sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+  "original_file_sha256": {
+    ".work/lanes/clojure-3-package-1/control/session.json": "f19d73ad349c25644b70d93ee0680c56e6edbb9ee8a16b9a7227ad3be5b2540e",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/k6-article.json": "7c95130c6ba00dde557093fa2bfaff5e6c7e05b050f2eb6842ecc94c0b45749f",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/k6-comments.json": "3e323a25c7805b7bf4153481e4ac791ceb6eae8ef571480062eb12fa7af14fb9",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/k6-create_article.json": "9e6f70243437f0c0495ae5a297233a47ca3769f0959b42451f6bad773aa0a0db",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/k6-favorite_toggle.json": "097dace25d4b5c21b227da33c0df6f129a807e3610022d6a53c20fa0b2b4ef01",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/k6-feed.json": "c6298ed9d9adc86daccd0163ffb24502aec6119a13d6c23494ce59daa1e33cca",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/k6-list_anonymous.json": "6d5f8333764b54955274de4645e72b395a8cccde1e0951eeb65d21d891b52515",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/k6-list_by_tag.json": "34f776549543347dd0fd451192c7304d0992447db1d06b19d54cbd8c32f62eb5",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/k6-list_signed_in.json": "afcc808c12272ac9cff56401a32779d46f96d4e72c4d20001e6d841d4de77987",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/k6-tags.json": "06c9b860f9aa8aed7aabd954ad7f74bc2562c226a6d8b909ec64ec4fddb5a2ed",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-article.json": "b07ccbb4cb70634805851303e2a4852faea03d14a6859a6c54cf77818134d6b3",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-comments.json": "87b9a9b0ce177f0b99355eb588fb47b8404a1046d613cd57b93a814d9aa034d9",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-create_article.json": "378ba1e6947bd08bf54df1c13c7f1f7648a51268d972dbb6f178b84cf5e3c48b",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-favorite_toggle.json": "1f72b0ef7a4e46286c00ca82ff86287e05016849308e5072a12083d721b4a012",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-feed.json": "c4a23832aab28029d7e37312dc57fc40b854ac5298c2a407f749a7a661ca4677",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-list_anonymous.json": "dd4e31b8b9da8d76b1e4e9014546cf94ecb9afa76246b1547059ed3dc68f31dd",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-list_by_tag.json": "58b90037c9d63a9558b148ca39abf23330d6c08b4c87d48b899c339d9c46e4df",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-list_signed_in.json": "dda1c4c672f27dae15140205f8407ec1c94473db6e2da4a95b55301464f67446",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-tags.json": "331c0cca250f42bc3b7c86658fe6a21bffda6a30e252a4b057b5cda8575f6ee3",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-warmup-article.json": "182673859c1051536e34f2db40924fc5b0bc227007b3b39f8eecf9689d853f56",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-warmup-comments.json": "9553908c9cd6b1e141e74dfdd695cec5639af0cda925d381c7378840d6943772",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-warmup-create_article.json": "2747bd64c51f2bc2834f565e5dbd71396f4253d7e4ff2cff1f9e94b68981ffed",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-warmup-favorite_toggle.json": "868f5cd3d6b35f014b59c60095c65621996b5bfdca562cb28363a0a7f7d8d071",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-warmup-feed.json": "5b3901a1d5ecfbd3398e2da7e344b31b19cfca2d4a477e1a5a53d9d73c58be84",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-warmup-list_anonymous.json": "0dda2db5840724172e6ba723a2e0fb5a754e833faa649ac9ada9afef04ca20c4",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-warmup-list_by_tag.json": "85d0f63f422c5d0219c859987fd87464203c9b94ea8fcdecf02d9e521b60ffbc",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-warmup-list_signed_in.json": "064f5505ff4e8f95dc96644b5792f81b5500551af80a2533b09c94606821ea50",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/raw-warmup-tags.json": "168ec92635ea2f38481f2f552dd959a581ce1827f6e7e231672ba191a2becc37",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/results.json": "67daede8006b0b95d43c47228995351a87ebcce1019246ad65da4693c092e8d5",
+    ".work/lanes/clojure-3-package-1/logs/measurements/clojure-3-package-1-916a5e93/runner.log": "9e44e8df9a50abb8bc652d2b73c1093b8fde3c42a1bd4e8f07b90bf71073b02c"
+  },
+  "raw_stream_sha256": {
+    "raw-article.json.zst": "d0672545fb4e45c08b1392873a7a01f503103746a8fc882cdab5236344e763ee",
+    "raw-comments.json.zst": "e05aaf0eadbfe97cc8edc861702f368e56f896c8dd1f4d52d27991120d7e3827",
+    "raw-create_article.json.zst": "d6cc552cf403b96ee756cc6f134eabb0d5aa96690ea856fc423d7151f3d81c43",
+    "raw-favorite_toggle.json.zst": "4bc27caff44bc46910e3ec4e970afde19658a5e2c0303a90af77ed7c7192aa25",
+    "raw-feed.json.zst": "1e72297d1a91bff6dc32f11cd8a97f25b28a1d799aa1136c0f79415f60b50ec4",
+    "raw-list_anonymous.json.zst": "036aaf6e57c795574ea3aacc6b59308d4d110c368fd9dacb80d1f92263d49850",
+    "raw-list_by_tag.json.zst": "159ca09905d98313e709465df56e9db1d9015361303046081f8ec13ae30959f7",
+    "raw-list_signed_in.json.zst": "013938f6b86dec325801b731240e52a0aa21c39d53eced1e56c7015593c4b402",
+    "raw-tags.json.zst": "58b88c8fd69e68e7aa83268e57cb34dd3f72d155c5b1bd275be517aaaeadf01a",
+    "raw-warmup-article.json.zst": "1535008bb8f51ef0a9ee401580b2617e6a377484c293839042999ef3f572a656",
+    "raw-warmup-comments.json.zst": "665dd55d740dd5901487b402b4c4f4145929121ed459e9555ffd5051861848d5",
+    "raw-warmup-create_article.json.zst": "7646834fe67ca7c2425ead208f8d8c0b86e8e3e417cd0a4d50b44096de6dae1b",
+    "raw-warmup-favorite_toggle.json.zst": "b78fa04fb59fddb558c3ed397519a7fed230452ea2b5adddfffe0b1c4465c264",
+    "raw-warmup-feed.json.zst": "d6145f8f1fdadc99ce009e0b287878fafde72d4a497eff78992dd14ade8a0ea7",
+    "raw-warmup-list_anonymous.json.zst": "188624ef7703545702ba78ee33a9b35f3dbc9e5aba1843e8fe4d7e8944d14df1",
+    "raw-warmup-list_by_tag.json.zst": "9824168510c654d6c96870e184cf22d06ade5db3e009ec06f5bc74934a281c88",
+    "raw-warmup-list_signed_in.json.zst": "ea918b1e76f262cb3002a03bf1441e16d9a9577733fe3a1acc1608fd344cdba1",
+    "raw-warmup-tags.json.zst": "0d581ed1daac8573d4b84e3dfbe09a9f41f05ee59dd394ac7e2bccfd43a9a5b5"
+  },
+  "raw_validation": {
+    "raw-article.json.zst": {
+      "decompressed_bytes": 117823222,
+      "jsonl_records": 314784
+    },
+    "raw-comments.json.zst": {
+      "decompressed_bytes": 232633596,
+      "jsonl_records": 602988
+    },
+    "raw-create_article.json.zst": {
+      "decompressed_bytes": 46501087,
+      "jsonl_records": 143774
+    },
+    "raw-favorite_toggle.json.zst": {
+      "decompressed_bytes": 50368054,
+      "jsonl_records": 115390
+    },
+    "raw-feed.json.zst": {
+      "decompressed_bytes": 9100358,
+      "jsonl_records": 26692
+    },
+    "raw-list_anonymous.json.zst": {
+      "decompressed_bytes": 13460881,
+      "jsonl_records": 38774
+    },
+    "raw-list_by_tag.json.zst": {
+      "decompressed_bytes": 13776387,
+      "jsonl_records": 39670
+    },
+    "raw-list_signed_in.json.zst": {
+      "decompressed_bytes": 9219209,
+      "jsonl_records": 27560
+    },
+    "raw-tags.json.zst": {
+      "decompressed_bytes": 84890575,
+      "jsonl_records": 267240
+    },
+    "raw-warmup-article.json.zst": {
+      "decompressed_bytes": 36570643,
+      "jsonl_records": 97710
+    },
+    "raw-warmup-comments.json.zst": {
+      "decompressed_bytes": 66045760,
+      "jsonl_records": 171196
+    },
+    "raw-warmup-create_article.json.zst": {
+      "decompressed_bytes": 15155320,
+      "jsonl_records": 46862
+    },
+    "raw-warmup-favorite_toggle.json.zst": {
+      "decompressed_bytes": 19793513,
+      "jsonl_records": 45351
+    },
+    "raw-warmup-feed.json.zst": {
+      "decompressed_bytes": 3068480,
+      "jsonl_records": 9006
+    },
+    "raw-warmup-list_anonymous.json.zst": {
+      "decompressed_bytes": 2740882,
+      "jsonl_records": 7900
+    },
+    "raw-warmup-list_by_tag.json.zst": {
+      "decompressed_bytes": 4730675,
+      "jsonl_records": 13626
+    },
+    "raw-warmup-list_signed_in.json.zst": {
+      "decompressed_bytes": 2734534,
+      "jsonl_records": 8180
+    },
+    "raw-warmup-tags.json.zst": {
+      "decompressed_bytes": 25157066,
+      "jsonl_records": 79202
+    }
+  },
+  "export_file_sha256": {
+    "k6-article.json": "b423b53472801bc74914d22a4d545b165fadd44553e2dc0df281fe85de773436",
+    "k6-comments.json": "269e438f007d35fc0fb01ee6b868faf070f36d300527f02efc22a296105b52b9",
+    "k6-create_article.json": "ad35d03dd44bf9ba7e3805a211383bacf74534ab8125feb1b93c58fde899aa3f",
+    "k6-favorite_toggle.json": "c0301eedf730303ac391e62c6b002f2a748af7ecf456f96e39ca320e46ecfa8a",
+    "k6-feed.json": "e6b3fa325caebd8d743b8c57fc863ceb5a5c0f4a8cef83a4b2a0b0ba0cfe361b",
+    "k6-list_anonymous.json": "4500979c2cd7af1e1363b2484d8852a6de4a4914375a3164a3ae81cb6d7a4f58",
+    "k6-list_by_tag.json": "4df7d8785cc9945eed240d6d41207c796783eb029b8347934cb764492d97f3f2",
+    "k6-list_signed_in.json": "6dbb7bf34f9a511517afbeb2ccfdfe1d975206ed62738425b54ca3210f26372c",
+    "k6-tags.json": "9bbbadd72c4abef6030882fa450778196fb550dcbf0048f48558968203aa191f",
+    "raw-article.json.zst": "d0672545fb4e45c08b1392873a7a01f503103746a8fc882cdab5236344e763ee",
+    "raw-comments.json.zst": "e05aaf0eadbfe97cc8edc861702f368e56f896c8dd1f4d52d27991120d7e3827",
+    "raw-create_article.json.zst": "d6cc552cf403b96ee756cc6f134eabb0d5aa96690ea856fc423d7151f3d81c43",
+    "raw-favorite_toggle.json.zst": "4bc27caff44bc46910e3ec4e970afde19658a5e2c0303a90af77ed7c7192aa25",
+    "raw-feed.json.zst": "1e72297d1a91bff6dc32f11cd8a97f25b28a1d799aa1136c0f79415f60b50ec4",
+    "raw-list_anonymous.json.zst": "036aaf6e57c795574ea3aacc6b59308d4d110c368fd9dacb80d1f92263d49850",
+    "raw-list_by_tag.json.zst": "159ca09905d98313e709465df56e9db1d9015361303046081f8ec13ae30959f7",
+    "raw-list_signed_in.json.zst": "013938f6b86dec325801b731240e52a0aa21c39d53eced1e56c7015593c4b402",
+    "raw-tags.json.zst": "58b88c8fd69e68e7aa83268e57cb34dd3f72d155c5b1bd275be517aaaeadf01a",
+    "raw-warmup-article.json.zst": "1535008bb8f51ef0a9ee401580b2617e6a377484c293839042999ef3f572a656",
+    "raw-warmup-comments.json.zst": "665dd55d740dd5901487b402b4c4f4145929121ed459e9555ffd5051861848d5",
+    "raw-warmup-create_article.json.zst": "7646834fe67ca7c2425ead208f8d8c0b86e8e3e417cd0a4d50b44096de6dae1b",
+    "raw-warmup-favorite_toggle.json.zst": "b78fa04fb59fddb558c3ed397519a7fed230452ea2b5adddfffe0b1c4465c264",
+    "raw-warmup-feed.json.zst": "d6145f8f1fdadc99ce009e0b287878fafde72d4a497eff78992dd14ade8a0ea7",
+    "raw-warmup-list_anonymous.json.zst": "188624ef7703545702ba78ee33a9b35f3dbc9e5aba1843e8fe4d7e8944d14df1",
+    "raw-warmup-list_by_tag.json.zst": "9824168510c654d6c96870e184cf22d06ade5db3e009ec06f5bc74934a281c88",
+    "raw-warmup-list_signed_in.json.zst": "ea918b1e76f262cb3002a03bf1441e16d9a9577733fe3a1acc1608fd344cdba1",
+    "raw-warmup-tags.json.zst": "0d581ed1daac8573d4b84e3dfbe09a9f41f05ee59dd394ac7e2bccfd43a9a5b5",
+    "runner.log": "9e44e8df9a50abb8bc652d2b73c1093b8fde3c42a1bd4e8f07b90bf71073b02c"
+  },
+  "exported_at": "2026-09-30T03:47:28.474819+00:00",
+  "export_tools_sha256": {
+    "tools/lane_artifacts.py": "4d08f8cb7270c2e7041e0b000e892d211ee12f384b1a26b0153fc4a22e58e79d",
+    "tools/lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "tools/scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+    "tools/v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79"
+  }
+}

@@ -187,3 +187,10 @@ transitives. The final scaffold pins Jetty 12.1.13 and Bouncy Castle 1.86;
 [final preflight](preflight.json) verified the coherent 90-artifact runtime graph
 and recorded zero OSV findings at scan time. These preparation results do not
 count as measured application coding or as a general security guarantee.
+
+Release validation also found example password assignments in the upstream
+advisory prose copied into two preparation scans and their logs. The publication
+copies redact those examples; [the correction record](preflight-publication-correction.json)
+preserves original and published hashes, the affected fields, and the failed
+packaging attempt. Advisory IDs, dependency findings and application verdicts
+are unchanged.
