@@ -1,8 +1,14 @@
 # AgentMVC
 
-**Which language and framework help agents build and evolve a large application with the most domain signal and the least incidental code?**
+**How do coding models, languages, and frameworks affect the code, effort, correctness, and runtime of the same application?**
 
-AgentMVC gives coding agents the same [RealWorld Conduit](https://github.com/realworld-apps/realworld) backend contract, then compares the code they produce, its correctness, and its runtime behavior. It is also a growing set of working references: measured one-shot builds stay frozen while later, clearly labeled revisions push each framework further. The contract adds drafts, background exports, and live shared editing; a [fixed Lit editor](frontend/) exercises the live protocol.
+AgentMVC gives coding agents the same [RealWorld Conduit](https://github.com/realworld-apps/realworld) backend contract, then compares how much domain behavior fits in their code, the effort to produce it, its correctness, and its runtime behavior. It is also a growing set of working references: measured one-shot builds stay frozen while later, clearly labeled revisions push each framework further. The contract adds drafts, background exports, and live shared editing; a [fixed Lit editor](frontend/) exercises the live protocol.
+
+## Comparing models
+
+Model, reasoning setting, stack, build protocol, and frozen inputs identify a result. The [cohort index](results/cohorts.json) links those recorded identities to source and checks; [how to compare conditions](docs/cohorts.md) explains the boundaries. All currently recorded measured coding sessions use **`gpt-6-sol` / `xhigh`**. Clojure used Codex CLI 0.159.0; earlier coding runs used 0.157.1.
+
+A [proposed GPT-6.1 refresh](docs/baseline-refresh.md) preserves this history and addresses concrete prompt/harness friction before fresh runs. Changing prompts, harness and model together establishes a new combined baseline. A comparison that isolates the model must hold those inputs fixed. No GPT-6.1 result is recorded yet.
 
 ## Start with the current code
 
@@ -47,9 +53,11 @@ The [lane comparison](results/lanes/README.md) includes two repeated production 
 
 Try a reviewed app with `tools/lane_demo.sh go one-shot-reference` or `tools/lane_demo.sh python eight-reference` (Docker and Node.js required).
 
-## Clojure: in progress
+## Clojure: coding baseline complete
 
-The [Clojure track](results/lanes/clojure/README.md) uses the same eight prompts and a separate expert one-shot. Its product-free Ring/Reitit scaffold has passed environment preflight and is frozen for measurement. [Stack selection](stacks/clojure/SELECTION.md) · [Recorded conditions](results/lanes/clojure/METHODOLOGY.md). The base API is independently verified; full-product results are pending.
+The [Clojure track](results/lanes/clojure/README.md) completed the same eight prompts and a separate expert one-shot: **9/9 coding sessions independently verified**. The sequential final has 8,603 owned backend tokens and took 83.0 coding minutes; the one-shot has 9,312 tokens and took 14.6 minutes. Both fresh comprehension checks scored 12/12.
+
+Supplemental review found input and concurrency defects, including heap exhaustion during the one-shot's concurrent login diagnostic. Original measurements and separate unscored repairs are in progress. [Code guide](results/lanes/clojure/CODE-GUIDE.md) · [Expert review](results/lanes/clojure/EXPERT-REVIEW.md) · [Stack selection](stacks/clojure/SELECTION.md) · [Recorded conditions](results/lanes/clojure/METHODOLOGY.md).
 
 ## Original eight-step study
 

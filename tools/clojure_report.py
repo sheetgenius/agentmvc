@@ -20,12 +20,35 @@ def result(folder):
 
 
 def review_cell(row):
+    proofs = {}
     for name in ("results.json", "share-boundary.json"):
         path = row["folder"] / "reviewer-parity" / name
         proof = report.read(path)
         if proof and proof.get("source_sha256") != row["snapshot"]["sha256"]:
             raise RuntimeError(f"Reviewer/source identity mismatch: {path}")
-    return report.review_cell(row["folder"])
+        proofs[name] = proof
+    proof, share = proofs["results.json"], proofs["share-boundary.json"]
+    if not proof:
+        return "Pending"
+    common = proof.get("http_probe", {}).get("summary", {})
+    favorites = proof.get("source_driven_favorites", {}).get("summary", {})
+    common_label = (f'{common["contract_passed"]}/21 contract · {common["quality_passed"]}/3 quality'
+                    if common.get("contract_total") == 21 and common.get("quality_total") == 3
+                    else "HTTP review incomplete")
+    favorite_label = (f'favorites {favorites["passed"]}/48' if favorites.get("total") == 48
+                      else "favorites review incomplete")
+    status = report.link(row["folder"] / "reviewer-parity/results.json", common_label + " · " + favorite_label)
+    if share:
+        summary = share.get("probe", {}).get("summary", {})
+        label = (f'shared {summary["contract_passed"]}/3 + {summary["quality_diagnostic_passed"]}/1'
+                 if summary.get("contract_total") == 3 and summary.get("quality_diagnostic_total") == 1
+                 else "shared review incomplete")
+        status += " · " + report.link(row["folder"] / "reviewer-parity/share-boundary.json", label)
+    else:
+        status += " · shared pending"
+    if not proof.get("passed") or not share or not share.get("passed"):
+        status += " · **not full reviewer parity**"
+    return status
 
 
 def runtime_table(condition, sources, heading):
@@ -58,12 +81,25 @@ def main():
               "**Environment preparation in progress. No measured coding result is available yet.**")
     lines = ["# Clojure", "",
              "An eight-step build and an independent expert one-shot of the same Conduit backend. "
-             "The selected stack combines Ring/Jetty, Reitit/Malli, next.jdbc/HoneySQL, "
+             "The prepared scaffold combines Ring/Jetty, Reitit/Malli, next.jdbc/HoneySQL, "
              "Integrant, Migratus, Proletarian and Buddy, packaged as a JVM AOT uberjar.", "",
              status, "",
              "[Stack choice and Clojure guidance](../../../stacks/clojure/SELECTION.md) · "
              "[Conditions and method](METHODOLOGY.md) · "
              "[Shared expert prompt](../../../one-shot-v2-expert/PROMPT.md)", "",
+             "The sequential final uses Reitit/Muuntaja and hand-written validation, with HoneySQL for "
+             "partial updates. The one-shot connects Malli coercion but declares a schema only for the "
+             "registration envelope; most validation is hand-written, and HoneySQL is declared but unused. "
+             "[Code guide](CODE-GUIDE.md) · [Expert review and remaining limits](EXPERT-REVIEW.md)", ""]
+    runs = [row["run"] for row in [*phases.values(), one_shot] if row and row["run"]]
+    if runs:
+        identities = sorted({(run.get("model", "unrecorded"), run.get("reasoning", "unrecorded"),
+                              run.get("tool", "unrecorded")) for run in runs})
+        labels = [f'`{model}` / `{reasoning}` / `{cli}`' for model, reasoning, cli in identities]
+        lines += ["Recorded coding agent" + (" (mixed cohort)" if len(labels) > 1 else "") + ": "
+                  + "; ".join(labels) + f". Attribution comes from the {len(runs)} run records; "
+                  "reviewer repairs have no measured coding-effort attribution.", ""]
+    lines += [
              "## Eight-step history", "",
              "Each checkpoint preserves its source, prompt, effort, failures and independent verdict. "
              "Production checks begin at step 3. Preparation and later reviewer work are outside coding effort.", "",

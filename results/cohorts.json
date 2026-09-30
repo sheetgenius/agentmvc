@@ -1,0 +1,5444 @@
+{
+  "schema_version": 1,
+  "generated_by": "tools/cohort_index.py",
+  "scope": "Recorded coding sessions, readers, preflights, reference repairs and run.json diagnostics; not individual runtime trials or every check attempt.",
+  "unknown": "null means not recorded or no matching published link; it never means equality with another null.",
+  "classification": "Role, series, protocol and missing stack labels use repository paths; model, reasoning and CLI come only from the run record.",
+  "counts_by_role": {
+    "diagnostic": 2,
+    "measured-coding": 65,
+    "preflight": 15,
+    "reader": 12,
+    "reference": 11
+  },
+  "entries": [
+    {
+      "record": "results/lanes/clojure/1-build/run.json",
+      "results": "results/lanes/clojure/1-build",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "clojure",
+      "phase": "1-build",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.159.0",
+      "condition": "prepared-clojure",
+      "track": null,
+      "started": "2026-09-30T01:10:32.492020+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "b40d2ce5aad4ce66a5202951ddac47b3a020d3cbece3616c1e24d2f7f0967e5e",
+        "path": "results/lanes/clojure/1-build/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+        "path": "stacks/clojure/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": "1bef490e875dad2e4ace0696014e7d7548adde0bd887a7af792c2ec1aace0d8f",
+        "effective_record": "results/lanes/clojure/1-build/effective-fixture.json"
+      },
+      "source": {
+        "sha256": "957d2bdce441a15ea338c083db6c20093dc2ae0d1c02b510d1a4ee5aa176721b",
+        "path": "stacks/clojure/1-build",
+        "manifest": "results/lanes/clojure/1-build/source-snapshot.json",
+        "inventory": "results/lanes/clojure/1-build/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:e4bd67176ea6f4e0faab3b4add12dada34051212d4bb19d3f409dda22949b98e",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/clojure/1-build/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/clojure/1-build/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/clojure/2-add-drafts/run.json",
+      "results": "results/lanes/clojure/2-add-drafts",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "clojure",
+      "phase": "2-add-drafts",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.159.0",
+      "condition": "prepared-clojure",
+      "track": null,
+      "started": "2026-09-30T01:25:04.719367+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "9f4e51f8ed10fc472d93e442c01177f69ac0b61c6e65d44af9b9e9bc50adc06a",
+        "path": "results/lanes/clojure/2-add-drafts/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+        "path": "stacks/clojure/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": "1bef490e875dad2e4ace0696014e7d7548adde0bd887a7af792c2ec1aace0d8f",
+        "effective_record": "results/lanes/clojure/2-add-drafts/effective-fixture.json"
+      },
+      "source": {
+        "sha256": "63df4a816d3ac9e3358f2ea367147746f831d3d2612928f6a7d85f997d5a207d",
+        "path": "stacks/clojure/2-add-drafts",
+        "manifest": "results/lanes/clojure/2-add-drafts/source-snapshot.json",
+        "inventory": "results/lanes/clojure/2-add-drafts/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:e4bd67176ea6f4e0faab3b4add12dada34051212d4bb19d3f409dda22949b98e",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/clojure/2-add-drafts/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/clojure/2-add-drafts/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/clojure/3-package/run.json",
+      "results": "results/lanes/clojure/3-package",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "clojure",
+      "phase": "3-package",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.159.0",
+      "condition": "prepared-clojure",
+      "track": null,
+      "started": "2026-09-30T01:31:25.723268+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "e2a2ba2eb74799aa274b6b7a694863f47842937d8db5a878ba520fa65ec8c135",
+        "path": "results/lanes/clojure/3-package/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+        "path": "stacks/clojure/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": "1bef490e875dad2e4ace0696014e7d7548adde0bd887a7af792c2ec1aace0d8f",
+        "effective_record": "results/lanes/clojure/3-package/effective-fixture.json"
+      },
+      "source": {
+        "sha256": "48ba2bc6b88122ec229fd412629610fb1a9fed05104d43bc1b23136cf302fe45",
+        "path": "stacks/clojure/3-package",
+        "manifest": "results/lanes/clojure/3-package/source-snapshot.json",
+        "inventory": "results/lanes/clojure/3-package/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:e4bd67176ea6f4e0faab3b4add12dada34051212d4bb19d3f409dda22949b98e",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/clojure/3-package/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/clojure/3-package/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/clojure/4-tune/run.json",
+      "results": "results/lanes/clojure/4-tune",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "clojure",
+      "phase": "4-tune",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.159.0",
+      "condition": "prepared-clojure",
+      "track": null,
+      "started": "2026-09-30T01:38:37.493456+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "6a521f2c50f5f6cf1e7686597ee54e1007ad9fa9427dde52dd551ede287eaa3e",
+        "path": "results/lanes/clojure/4-tune/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+        "path": "stacks/clojure/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": "1bef490e875dad2e4ace0696014e7d7548adde0bd887a7af792c2ec1aace0d8f",
+        "effective_record": "results/lanes/clojure/4-tune/effective-fixture.json"
+      },
+      "source": {
+        "sha256": "b95b8b5c4a0063f165c876e1b0d2377949fb0f1274e3b8c4a8bff89030279996",
+        "path": "stacks/clojure/4-tune",
+        "manifest": "results/lanes/clojure/4-tune/source-snapshot.json",
+        "inventory": "results/lanes/clojure/4-tune/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:e4bd67176ea6f4e0faab3b4add12dada34051212d4bb19d3f409dda22949b98e",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/clojure/4-tune/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/clojure/4-tune/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/clojure/5-harden/run.json",
+      "results": "results/lanes/clojure/5-harden",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "clojure",
+      "phase": "5-harden",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.159.0",
+      "condition": "prepared-clojure",
+      "track": null,
+      "started": "2026-09-30T01:50:44.748313+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "44aa61d73c9b90a29692ba7027098d59101c543f9b1b40ee05a23cb01bedcb4a",
+        "path": "results/lanes/clojure/5-harden/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+        "path": "stacks/clojure/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": "1bef490e875dad2e4ace0696014e7d7548adde0bd887a7af792c2ec1aace0d8f",
+        "effective_record": "results/lanes/clojure/5-harden/effective-fixture.json"
+      },
+      "source": {
+        "sha256": "ab005219f74f60b6f844bf3cc78d154570d52f10cb22726d8f430edd9efe260c",
+        "path": "stacks/clojure/5-harden",
+        "manifest": "results/lanes/clojure/5-harden/source-snapshot.json",
+        "inventory": "results/lanes/clojure/5-harden/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:e4bd67176ea6f4e0faab3b4add12dada34051212d4bb19d3f409dda22949b98e",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/clojure/5-harden/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/clojure/5-harden/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/clojure/6-polish/run.json",
+      "results": "results/lanes/clojure/6-polish",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "clojure",
+      "phase": "6-polish",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.159.0",
+      "condition": "prepared-clojure",
+      "track": null,
+      "started": "2026-09-30T02:02:45.380085+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "54628c38ba47f431770f2824e817c11c989ad57fb35ec8e2a8e1e6408c6f5954",
+        "path": "results/lanes/clojure/6-polish/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+        "path": "stacks/clojure/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": "1bef490e875dad2e4ace0696014e7d7548adde0bd887a7af792c2ec1aace0d8f",
+        "effective_record": "results/lanes/clojure/6-polish/effective-fixture.json"
+      },
+      "source": {
+        "sha256": "22901b923a92173148878646ee7b02eebf4f74d227419225a7c636bed4237946",
+        "path": "stacks/clojure/6-polish",
+        "manifest": "results/lanes/clojure/6-polish/source-snapshot.json",
+        "inventory": "results/lanes/clojure/6-polish/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:e4bd67176ea6f4e0faab3b4add12dada34051212d4bb19d3f409dda22949b98e",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/clojure/6-polish/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/clojure/6-polish/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/clojure/7-add-background-job/run.json",
+      "results": "results/lanes/clojure/7-add-background-job",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "clojure",
+      "phase": "7-add-background-job",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.159.0",
+      "condition": "prepared-clojure",
+      "track": null,
+      "started": "2026-09-30T02:13:17.029608+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "5980eb63e5b608ca57bb0956724667f5265d2a5bbbc9a2ad1ae3ae48b1f19fef",
+        "path": "results/lanes/clojure/7-add-background-job/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+        "path": "stacks/clojure/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": "1bef490e875dad2e4ace0696014e7d7548adde0bd887a7af792c2ec1aace0d8f",
+        "effective_record": "results/lanes/clojure/7-add-background-job/effective-fixture.json"
+      },
+      "source": {
+        "sha256": "d7aad207c6cad4233075d1ca6ec7fbd9927c53161564c22c4a009f3ed2fe2488",
+        "path": "stacks/clojure/7-add-background-job",
+        "manifest": "results/lanes/clojure/7-add-background-job/source-snapshot.json",
+        "inventory": "results/lanes/clojure/7-add-background-job/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:e4bd67176ea6f4e0faab3b4add12dada34051212d4bb19d3f409dda22949b98e",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/clojure/7-add-background-job/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/clojure/7-add-background-job/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/clojure/8-live-editing/reference-1/reference.json",
+      "results": "results/lanes/clojure/8-live-editing/reference-1",
+      "role": "reference",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "clojure",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "unscored-reference-repair",
+      "track": null,
+      "started": "2026-09-30T03:03:28.660225+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": "1bef490e875dad2e4ace0696014e7d7548adde0bd887a7af792c2ec1aace0d8f",
+        "effective_record": "results/lanes/clojure/8-live-editing/reference-1/reference.json"
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": "clojure-8-live-editing-1",
+        "source_sha256": "0aebf25fee2220cdeab77162529da5e9605ffc60190f1c4560d2a6edf9bd9fc1"
+      },
+      "gates": [],
+      "evidence": [
+        "results/lanes/clojure/8-live-editing/reference-1/reference.json"
+      ]
+    },
+    {
+      "record": "results/lanes/clojure/8-live-editing/run.json",
+      "results": "results/lanes/clojure/8-live-editing",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "clojure",
+      "phase": "8-live-editing",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.159.0",
+      "condition": "prepared-clojure",
+      "track": null,
+      "started": "2026-09-30T02:24:05.919801+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "f44ffb88bcf65bfe59f9841d1c8c81f32220c4b06a25fefdc5119e74b42c85d9",
+        "path": "results/lanes/clojure/8-live-editing/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+        "path": "stacks/clojure/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": "1bef490e875dad2e4ace0696014e7d7548adde0bd887a7af792c2ec1aace0d8f",
+        "effective_record": "results/lanes/clojure/8-live-editing/effective-fixture.json"
+      },
+      "source": {
+        "sha256": "0aebf25fee2220cdeab77162529da5e9605ffc60190f1c4560d2a6edf9bd9fc1",
+        "path": "stacks/clojure/8-live-editing",
+        "manifest": "results/lanes/clojure/8-live-editing/source-snapshot.json",
+        "inventory": "results/lanes/clojure/8-live-editing/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:e4bd67176ea6f4e0faab3b4add12dada34051212d4bb19d3f409dda22949b98e",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/clojure/8-live-editing/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/clojure/8-live-editing/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/clojure/comprehension/clojure-after-1-build/run.json",
+      "results": "results/lanes/clojure/comprehension/clojure-after-1-build",
+      "role": "reader",
+      "series": "prepared-lanes",
+      "protocol": "comprehension",
+      "stack": "clojure",
+      "phase": "1-build",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.159.0",
+      "condition": "fresh read-only reader; original comprehension prompt; whole-app source only",
+      "track": null,
+      "started": "2026-09-30T01:31:03.393693+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "906c62d04a1f42ee0b234f36bb4c347ee414e152be428ad616101cbe9c202e36",
+        "path": "steps/comprehension.md"
+      },
+      "fixture": {
+        "sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+        "path": "stacks/clojure/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "957d2bdce441a15ea338c083db6c20093dc2ae0d1c02b510d1a4ee5aa176721b",
+        "path": "stacks/clojure/1-build",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "grades",
+          "status": "graded",
+          "record": "results/lanes/clojure/comprehension/clojure-after-1-build/grades.json",
+          "score": 12,
+          "maximum": 12
+        }
+      ],
+      "evidence": [
+        "results/lanes/clojure/comprehension/clojure-after-1-build/prepared.json",
+        "results/lanes/clojure/comprehension/clojure-after-1-build/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/clojure/comprehension/clojure-after-6-polish/run.json",
+      "results": "results/lanes/clojure/comprehension/clojure-after-6-polish",
+      "role": "reader",
+      "series": "prepared-lanes",
+      "protocol": "comprehension",
+      "stack": "clojure",
+      "phase": "6-polish",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.159.0",
+      "condition": "fresh read-only reader; original comprehension prompt; whole-app source only",
+      "track": null,
+      "started": "2026-09-30T02:17:01.361869+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "906c62d04a1f42ee0b234f36bb4c347ee414e152be428ad616101cbe9c202e36",
+        "path": "steps/comprehension.md"
+      },
+      "fixture": {
+        "sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+        "path": "stacks/clojure/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "22901b923a92173148878646ee7b02eebf4f74d227419225a7c636bed4237946",
+        "path": "stacks/clojure/6-polish",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "grades",
+          "status": "graded",
+          "record": "results/lanes/clojure/comprehension/clojure-after-6-polish/grades.json",
+          "score": 12,
+          "maximum": 12
+        }
+      ],
+      "evidence": [
+        "results/lanes/clojure/comprehension/clojure-after-6-polish/prepared.json",
+        "results/lanes/clojure/comprehension/clojure-after-6-polish/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/clojure/preflight-attempts/attempt-1/preflight.json",
+      "results": "results/lanes/clojure/preflight-attempts/attempt-1",
+      "role": "preflight",
+      "series": "prepared-lanes",
+      "protocol": "preflight",
+      "stack": "clojure",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "product-free Clojure infrastructure preflight",
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": "sha256:fd8bf222e9658cade95d5769b8d36d0214521f0bee8c25170c5c9f2b9cd2d68f",
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "fail",
+          "record": "results/lanes/clojure/preflight-attempts/attempt-1/preflight.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/lanes/clojure/preflight-attempts/attempt-2/preflight.json",
+      "results": "results/lanes/clojure/preflight-attempts/attempt-2",
+      "role": "preflight",
+      "series": "prepared-lanes",
+      "protocol": "preflight",
+      "stack": "clojure",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "product-free Clojure infrastructure preflight",
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "8fd469860016c16bac2e6d07a8ba7fc455f151c8974e3b6a9b62988a40b74793",
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": "sha256:fd8bf222e9658cade95d5769b8d36d0214521f0bee8c25170c5c9f2b9cd2d68f",
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "fail",
+          "record": "results/lanes/clojure/preflight-attempts/attempt-2/preflight.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/lanes/clojure/preflight-attempts/attempt-3/preflight.json",
+      "results": "results/lanes/clojure/preflight-attempts/attempt-3",
+      "role": "preflight",
+      "series": "prepared-lanes",
+      "protocol": "preflight",
+      "stack": "clojure",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "product-free Clojure infrastructure preflight",
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "b6e97482a9b94a62215ef59565424c973d8b245b841a0a271fdf09c21db88fff",
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": "sha256:6b2d90de0b47d4193ca09b721cabf85216e35530e3f981e83884a3e0b445af4d",
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "fail",
+          "record": "results/lanes/clojure/preflight-attempts/attempt-3/preflight.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/lanes/clojure/preflight.json",
+      "results": "results/lanes/clojure",
+      "role": "preflight",
+      "series": "prepared-lanes",
+      "protocol": "preflight",
+      "stack": "clojure",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "product-free Clojure infrastructure preflight",
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "6de9edbbae5d3eedafc07f214bc38b2b4f94148aaddbe1482ebaa55f172f204a",
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": "sha256:e4bd67176ea6f4e0faab3b4add12dada34051212d4bb19d3f409dda22949b98e",
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "pass",
+          "record": "results/lanes/clojure/preflight.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/lanes/comprehension/go-after-1-build/run.json",
+      "results": "results/lanes/comprehension/go-after-1-build",
+      "role": "reader",
+      "series": "prepared-lanes",
+      "protocol": "comprehension",
+      "stack": "go",
+      "phase": "1-build",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "fresh read-only reader; original comprehension prompt; whole-app source only",
+      "track": null,
+      "started": "2026-09-29T18:38:32.928729+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "906c62d04a1f42ee0b234f36bb4c347ee414e152be428ad616101cbe9c202e36",
+        "path": "steps/comprehension.md"
+      },
+      "fixture": {
+        "sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+        "path": "stacks/go/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "ae1eb48dee777acd34d455c203bf06fb61c1343000f57d6e57a5d1d5ded43078",
+        "path": "stacks/go/1-build",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "grades",
+          "status": "graded",
+          "record": "results/lanes/comprehension/go-after-1-build/grades.json",
+          "score": 12,
+          "maximum": 12
+        }
+      ],
+      "evidence": [
+        "results/lanes/comprehension/go-after-1-build/prepared.json",
+        "results/lanes/comprehension/go-after-1-build/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/comprehension/go-after-6-polish/run.json",
+      "results": "results/lanes/comprehension/go-after-6-polish",
+      "role": "reader",
+      "series": "prepared-lanes",
+      "protocol": "comprehension",
+      "stack": "go",
+      "phase": "6-polish",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "fresh read-only reader; original comprehension prompt; whole-app source only",
+      "track": null,
+      "started": "2026-09-29T19:26:59.621585+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "906c62d04a1f42ee0b234f36bb4c347ee414e152be428ad616101cbe9c202e36",
+        "path": "steps/comprehension.md"
+      },
+      "fixture": {
+        "sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+        "path": "stacks/go/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "89cfb6da7535d4f61ca60ff579591f652a080dd15fb919c89350cabdffddeb36",
+        "path": "stacks/go/6-polish",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "grades",
+          "status": "graded",
+          "record": "results/lanes/comprehension/go-after-6-polish/grades.json",
+          "score": 12,
+          "maximum": 12
+        }
+      ],
+      "evidence": [
+        "results/lanes/comprehension/go-after-6-polish/prepared.json",
+        "results/lanes/comprehension/go-after-6-polish/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/comprehension/python-after-1-build/run.json",
+      "results": "results/lanes/comprehension/python-after-1-build",
+      "role": "reader",
+      "series": "prepared-lanes",
+      "protocol": "comprehension",
+      "stack": "python",
+      "phase": "1-build",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "fresh read-only reader; original comprehension prompt; whole-app source only",
+      "track": null,
+      "started": "2026-09-29T18:37:17.953884+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "906c62d04a1f42ee0b234f36bb4c347ee414e152be428ad616101cbe9c202e36",
+        "path": "steps/comprehension.md"
+      },
+      "fixture": {
+        "sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+        "path": "stacks/python/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "1de10bffe6d7ad94a3fae19b21a00ee45e0fca0650a8eb35f51427f8f5ec24ea",
+        "path": "stacks/python/1-build",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "grades",
+          "status": "graded",
+          "record": "results/lanes/comprehension/python-after-1-build/grades.json",
+          "score": 12,
+          "maximum": 12
+        }
+      ],
+      "evidence": [
+        "results/lanes/comprehension/python-after-1-build/prepared.json",
+        "results/lanes/comprehension/python-after-1-build/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/comprehension/python-after-6-polish/run.json",
+      "results": "results/lanes/comprehension/python-after-6-polish",
+      "role": "reader",
+      "series": "prepared-lanes",
+      "protocol": "comprehension",
+      "stack": "python",
+      "phase": "6-polish",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "fresh read-only reader; original comprehension prompt; whole-app source only",
+      "track": null,
+      "started": "2026-09-29T19:22:16.208853+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "906c62d04a1f42ee0b234f36bb4c347ee414e152be428ad616101cbe9c202e36",
+        "path": "steps/comprehension.md"
+      },
+      "fixture": {
+        "sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+        "path": "stacks/python/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "3925c29c4b236bd4c23ff0aee54551fef8851d26c77d651a197b15930f6d1723",
+        "path": "stacks/python/6-polish",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "grades",
+          "status": "graded",
+          "record": "results/lanes/comprehension/python-after-6-polish/grades.json",
+          "score": 12,
+          "maximum": 12
+        }
+      ],
+      "evidence": [
+        "results/lanes/comprehension/python-after-6-polish/prepared.json",
+        "results/lanes/comprehension/python-after-6-polish/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/go/1-build/run.json",
+      "results": "results/lanes/go/1-build",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "go",
+      "phase": "1-build",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T18:22:45.293386+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "b40d2ce5aad4ce66a5202951ddac47b3a020d3cbece3616c1e24d2f7f0967e5e",
+        "path": "results/lanes/clojure/1-build/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+        "path": "stacks/go/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "ae1eb48dee777acd34d455c203bf06fb61c1343000f57d6e57a5d1d5ded43078",
+        "path": "stacks/go/1-build",
+        "manifest": "results/lanes/go/1-build/source-snapshot.json",
+        "inventory": "results/lanes/go/1-build/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:1287e4b159f278273363240c008f505851446d4ab8582c69108dfd4fca1ca66b",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/go/1-build/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/go/1-build/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/go/2-add-drafts/run.json",
+      "results": "results/lanes/go/2-add-drafts",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "go",
+      "phase": "2-add-drafts",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T18:35:44.952646+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "9f4e51f8ed10fc472d93e442c01177f69ac0b61c6e65d44af9b9e9bc50adc06a",
+        "path": "results/lanes/clojure/2-add-drafts/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+        "path": "stacks/go/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "c118c404d2b691e50b2a329c384ba3462a6e0bf09c1f9cfa44495439d0048653",
+        "path": "stacks/go/2-add-drafts",
+        "manifest": "results/lanes/go/2-add-drafts/source-snapshot.json",
+        "inventory": "results/lanes/go/2-add-drafts/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:1287e4b159f278273363240c008f505851446d4ab8582c69108dfd4fca1ca66b",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/go/2-add-drafts/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/go/2-add-drafts/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/go/3-package/run.json",
+      "results": "results/lanes/go/3-package",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "go",
+      "phase": "3-package",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T18:43:21.451417+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "e2a2ba2eb74799aa274b6b7a694863f47842937d8db5a878ba520fa65ec8c135",
+        "path": "results/lanes/clojure/3-package/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+        "path": "stacks/go/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "01c08c987a01acfba0c11abb76241e51b245d27b1eb7e719bd57a6d3bc46c104",
+        "path": "stacks/go/3-package",
+        "manifest": "results/lanes/go/3-package/source-snapshot.json",
+        "inventory": "results/lanes/go/3-package/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:1287e4b159f278273363240c008f505851446d4ab8582c69108dfd4fca1ca66b",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/go/3-package/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/go/3-package/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/go/4-tune/run.json",
+      "results": "results/lanes/go/4-tune",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "go",
+      "phase": "4-tune",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T18:57:04.012782+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "6a521f2c50f5f6cf1e7686597ee54e1007ad9fa9427dde52dd551ede287eaa3e",
+        "path": "results/lanes/clojure/4-tune/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+        "path": "stacks/go/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "e8243667e3c20bc1c10aa961fbc3ea479f3377b40c1b7e25d788f338af4e527f",
+        "path": "stacks/go/4-tune",
+        "manifest": "results/lanes/go/4-tune/source-snapshot.json",
+        "inventory": "results/lanes/go/4-tune/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:1287e4b159f278273363240c008f505851446d4ab8582c69108dfd4fca1ca66b",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/go/4-tune/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/go/4-tune/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/go/5-harden/run.json",
+      "results": "results/lanes/go/5-harden",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "go",
+      "phase": "5-harden",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T19:08:09.785959+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "44aa61d73c9b90a29692ba7027098d59101c543f9b1b40ee05a23cb01bedcb4a",
+        "path": "results/lanes/clojure/5-harden/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+        "path": "stacks/go/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "881c9a1cbd80006354bac330c9e804e5162d00b52422cc6fb417bce0a73e1de6",
+        "path": "stacks/go/5-harden",
+        "manifest": "results/lanes/go/5-harden/source-snapshot.json",
+        "inventory": "results/lanes/go/5-harden/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:1287e4b159f278273363240c008f505851446d4ab8582c69108dfd4fca1ca66b",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/go/5-harden/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/go/5-harden/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/go/6-polish/run.json",
+      "results": "results/lanes/go/6-polish",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "go",
+      "phase": "6-polish",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T19:15:40.954052+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "54628c38ba47f431770f2824e817c11c989ad57fb35ec8e2a8e1e6408c6f5954",
+        "path": "results/lanes/clojure/6-polish/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+        "path": "stacks/go/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "89cfb6da7535d4f61ca60ff579591f652a080dd15fb919c89350cabdffddeb36",
+        "path": "stacks/go/6-polish",
+        "manifest": "results/lanes/go/6-polish/source-snapshot.json",
+        "inventory": "results/lanes/go/6-polish/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:1287e4b159f278273363240c008f505851446d4ab8582c69108dfd4fca1ca66b",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/go/6-polish/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/go/6-polish/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/go/7-add-background-job/run.json",
+      "results": "results/lanes/go/7-add-background-job",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "go",
+      "phase": "7-add-background-job",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T19:24:40.430557+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "5980eb63e5b608ca57bb0956724667f5265d2a5bbbc9a2ad1ae3ae48b1f19fef",
+        "path": "results/lanes/clojure/7-add-background-job/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+        "path": "stacks/go/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "2f8c5ef4197b477f6aacac859a06090013d257d85c0f7abd3c97eb449cb83eef",
+        "path": "stacks/go/7-add-background-job",
+        "manifest": "results/lanes/go/7-add-background-job/source-snapshot.json",
+        "inventory": "results/lanes/go/7-add-background-job/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:1287e4b159f278273363240c008f505851446d4ab8582c69108dfd4fca1ca66b",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/go/7-add-background-job/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/go/7-add-background-job/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/go/8-live-editing/reference-1/reference.json",
+      "results": "results/lanes/go/8-live-editing/reference-1",
+      "role": "reference",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "go",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "unscored-reference-repair",
+      "track": null,
+      "started": "2026-09-29T19:58:44.515982+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "b2659e1b97b48a91e381d867bfc0aacb9912f9d19196ba846ba1cd8b13aa681c",
+        "path": "results/lanes/go/8-live-editing/reference-1/source",
+        "manifest": "results/lanes/go/8-live-editing/reference-1/source-snapshot.json",
+        "inventory": "results/lanes/go/8-live-editing/reference-1/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": "go-8-live-editing-1",
+        "source_sha256": "c8a93f91761329389be2527feb51b940e639ef0b787ba548c13a58d4d928138c"
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/go/8-live-editing/reference-1/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/go/8-live-editing/reference-1/reference.json"
+      ]
+    },
+    {
+      "record": "results/lanes/go/8-live-editing/run.json",
+      "results": "results/lanes/go/8-live-editing",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "go",
+      "phase": "8-live-editing",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T19:36:32.336434+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "f44ffb88bcf65bfe59f9841d1c8c81f32220c4b06a25fefdc5119e74b42c85d9",
+        "path": "results/lanes/clojure/8-live-editing/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+        "path": "stacks/go/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "c8a93f91761329389be2527feb51b940e639ef0b787ba548c13a58d4d928138c",
+        "path": "stacks/go/8-live-editing",
+        "manifest": "results/lanes/go/8-live-editing/source-snapshot.json",
+        "inventory": "results/lanes/go/8-live-editing/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:1287e4b159f278273363240c008f505851446d4ab8582c69108dfd4fca1ca66b",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/go/8-live-editing/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/go/8-live-editing/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/go/preflight.json",
+      "results": "results/lanes/go",
+      "role": "preflight",
+      "series": "prepared-lanes",
+      "protocol": "preflight",
+      "stack": "go",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "product-free Go infrastructure preflight",
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "6a7dcb7042eac31b8f709bd99cca1272b6e7838590fa05e643601554603a084f",
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": "sha256:1287e4b159f278273363240c008f505851446d4ab8582c69108dfd4fca1ca66b",
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "pass",
+          "record": "results/lanes/go/preflight.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/lanes/python/1-build/run.json",
+      "results": "results/lanes/python/1-build",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "python",
+      "phase": "1-build",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T18:21:38.903638+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "b40d2ce5aad4ce66a5202951ddac47b3a020d3cbece3616c1e24d2f7f0967e5e",
+        "path": "results/lanes/clojure/1-build/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+        "path": "stacks/python/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "1de10bffe6d7ad94a3fae19b21a00ee45e0fca0650a8eb35f51427f8f5ec24ea",
+        "path": "stacks/python/1-build",
+        "manifest": "results/lanes/python/1-build/source-snapshot.json",
+        "inventory": "results/lanes/python/1-build/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/python/1-build/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/python/1-build/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/python/2-add-drafts/run.json",
+      "results": "results/lanes/python/2-add-drafts",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "python",
+      "phase": "2-add-drafts",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T18:34:52.235212+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "9f4e51f8ed10fc472d93e442c01177f69ac0b61c6e65d44af9b9e9bc50adc06a",
+        "path": "results/lanes/clojure/2-add-drafts/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+        "path": "stacks/python/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "c59fa8a7a49848aab5baf1e4eff6d593d2a3c2e25e2119cc3ec39a87075aa25f",
+        "path": "stacks/python/2-add-drafts",
+        "manifest": "results/lanes/python/2-add-drafts/source-snapshot.json",
+        "inventory": "results/lanes/python/2-add-drafts/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/python/2-add-drafts/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/python/2-add-drafts/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/python/3-package/run.json",
+      "results": "results/lanes/python/3-package",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "python",
+      "phase": "3-package",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T18:42:30.446177+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "e2a2ba2eb74799aa274b6b7a694863f47842937d8db5a878ba520fa65ec8c135",
+        "path": "results/lanes/clojure/3-package/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+        "path": "stacks/python/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "61799abd196da6f49754e3af64dbe75d3dde175eb5c5864fa402608dfb16e22f",
+        "path": "stacks/python/3-package",
+        "manifest": "results/lanes/python/3-package/source-snapshot.json",
+        "inventory": "results/lanes/python/3-package/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/python/3-package/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/python/3-package/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/python/4-tune/run.json",
+      "results": "results/lanes/python/4-tune",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "python",
+      "phase": "4-tune",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T18:48:59.102501+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "6a521f2c50f5f6cf1e7686597ee54e1007ad9fa9427dde52dd551ede287eaa3e",
+        "path": "results/lanes/clojure/4-tune/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+        "path": "stacks/python/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "11598976122f9680a6a184ecb45702d3ee99a93bec251cb884070e4b1070cce6",
+        "path": "stacks/python/4-tune",
+        "manifest": "results/lanes/python/4-tune/source-snapshot.json",
+        "inventory": "results/lanes/python/4-tune/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/python/4-tune/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/python/4-tune/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/python/5-harden/run.json",
+      "results": "results/lanes/python/5-harden",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "python",
+      "phase": "5-harden",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T19:01:58.373394+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "44aa61d73c9b90a29692ba7027098d59101c543f9b1b40ee05a23cb01bedcb4a",
+        "path": "results/lanes/clojure/5-harden/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+        "path": "stacks/python/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "7ae10adfd418f1cbfd6bc1982f9657d22338fbaef3c87b80fdec36e972353795",
+        "path": "stacks/python/5-harden",
+        "manifest": "results/lanes/python/5-harden/source-snapshot.json",
+        "inventory": "results/lanes/python/5-harden/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/python/5-harden/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/python/5-harden/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/python/6-polish/run.json",
+      "results": "results/lanes/python/6-polish",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "python",
+      "phase": "6-polish",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T19:10:56.129577+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "54628c38ba47f431770f2824e817c11c989ad57fb35ec8e2a8e1e6408c6f5954",
+        "path": "results/lanes/clojure/6-polish/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+        "path": "stacks/python/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "3925c29c4b236bd4c23ff0aee54551fef8851d26c77d651a197b15930f6d1723",
+        "path": "stacks/python/6-polish",
+        "manifest": "results/lanes/python/6-polish/source-snapshot.json",
+        "inventory": "results/lanes/python/6-polish/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/python/6-polish/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/python/6-polish/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/python/7-add-background-job/run.json",
+      "results": "results/lanes/python/7-add-background-job",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "python",
+      "phase": "7-add-background-job",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T19:20:51.606263+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "5980eb63e5b608ca57bb0956724667f5265d2a5bbbc9a2ad1ae3ae48b1f19fef",
+        "path": "results/lanes/clojure/7-add-background-job/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+        "path": "stacks/python/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "7925e84ce3f9075bf62c7c998d13f69baa02815797aad209ea3aa0749880aac7",
+        "path": "stacks/python/7-add-background-job",
+        "manifest": "results/lanes/python/7-add-background-job/source-snapshot.json",
+        "inventory": "results/lanes/python/7-add-background-job/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/python/7-add-background-job/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/python/7-add-background-job/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/python/8-live-editing/reference-1/reference.json",
+      "results": "results/lanes/python/8-live-editing/reference-1",
+      "role": "reference",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "python",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "unscored-reference-repair",
+      "track": null,
+      "started": "2026-09-29T19:51:55.943109+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "be978eed3af3bcf3b72c63c5f6e7352be2d60cf008d9691de5ce8e87a03f7f89",
+        "path": "results/lanes/python/8-live-editing/reference-1/source",
+        "manifest": "results/lanes/python/8-live-editing/reference-1/source-snapshot.json",
+        "inventory": "results/lanes/python/8-live-editing/reference-1/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": "python-8-live-editing-1",
+        "source_sha256": "ac70ce9dbcc12d7254f426e8fb60b595e68d6d4787cabb07d9eaecf83d0b57b4"
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/python/8-live-editing/reference-1/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/python/8-live-editing/reference-1/reference.json"
+      ]
+    },
+    {
+      "record": "results/lanes/python/8-live-editing/run.json",
+      "results": "results/lanes/python/8-live-editing",
+      "role": "measured-coding",
+      "series": "prepared-lanes",
+      "protocol": "eight-step",
+      "stack": "python",
+      "phase": "8-live-editing",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "eight-step-prepared-scaffold",
+      "track": null,
+      "started": "2026-09-29T19:32:08.632063+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "f44ffb88bcf65bfe59f9841d1c8c81f32220c4b06a25fefdc5119e74b42c85d9",
+        "path": "results/lanes/clojure/8-live-editing/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+        "path": "stacks/python/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "ac70ce9dbcc12d7254f426e8fb60b595e68d6d4787cabb07d9eaecf83d0b57b4",
+        "path": "stacks/python/8-live-editing",
+        "manifest": "results/lanes/python/8-live-editing/source-snapshot.json",
+        "inventory": "results/lanes/python/8-live-editing/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/python/8-live-editing/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/lanes/python/8-live-editing/isolation.json"
+      ]
+    },
+    {
+      "record": "results/lanes/python/preflight.json",
+      "results": "results/lanes/python",
+      "role": "preflight",
+      "series": "prepared-lanes",
+      "protocol": "preflight",
+      "stack": "python",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": null,
+      "track": null,
+      "started": "2026-09-29T18:17:31Z",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "9ac31ed1ab5a24e725df0820700c8a8df6b9e2df10dca79ff06f08b0386dfeb4",
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": "sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3",
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "pass",
+          "record": "results/lanes/python/preflight.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-ihp/guided/preflight.json",
+      "results": "results/one-shot-ihp/guided",
+      "role": "preflight",
+      "series": "one-shot-ihp",
+      "protocol": "preflight",
+      "stack": "ihp",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": null,
+      "track": "guided fourth IHP run",
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "917ce8c2db7b90de148ff0aed65f18505bf11f2fc2d085328b64445bce2bd85a",
+        "path": "results/one-shot-ihp/guided/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "98dec77242bbae3403c40e952292fcdce6ac82f2dc68fe07bb588574b80793e8",
+        "path": "results/one-shot-ihp/guided/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "unknown",
+          "record": "results/one-shot-ihp/guided/preflight.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-ihp/guided/run.json",
+      "results": "results/one-shot-ihp/guided",
+      "role": "diagnostic",
+      "series": "one-shot-ihp",
+      "protocol": "one-shot",
+      "stack": "ihp",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": null,
+      "track": "guided",
+      "started": "2026-09-28T07:53:24.120074+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "917ce8c2db7b90de148ff0aed65f18505bf11f2fc2d085328b64445bce2bd85a",
+        "path": "results/one-shot-ihp/guided/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "98dec77242bbae3403c40e952292fcdce6ac82f2dc68fe07bb588574b80793e8",
+        "path": "results/one-shot-ihp/guided/fixture-manifest.json",
+        "base_sha256": "26fb7e622524b0d540a564134c674ea64adc9e4817633dbbee9f84bfd5ccdecc",
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": "results/one-shot-ihp/guided/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-ihp/guided/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-ihp/guided/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-ihp/preflight-aborted-run/run.json",
+      "results": "results/one-shot-ihp/preflight-aborted-run",
+      "role": "preflight",
+      "series": "one-shot-ihp",
+      "protocol": "preflight",
+      "stack": "ihp",
+      "phase": null,
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-28T01:15:22.121711+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "7a992cd7f4a4e0be917bdefc93a6090d00c5ee2bb3483b06e58d114ea65a76e6",
+        "path": "one-shot/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "7306f5428ea4cd6669fa9ba4d82d3af9992570f0074f64c975f37dedad09b86f",
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-ihp/preflight-isolation-run/run.json",
+      "results": "results/one-shot-ihp/preflight-isolation-run",
+      "role": "preflight",
+      "series": "one-shot-ihp",
+      "protocol": "preflight",
+      "stack": "ihp",
+      "phase": null,
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-28T01:59:41.386729+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "7a992cd7f4a4e0be917bdefc93a6090d00c5ee2bb3483b06e58d114ea65a76e6",
+        "path": "one-shot/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "49dad1427a12385ddebdcb184445a6da4d4f7816966297ff9aff375d926114b5",
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-ihp/preflight.json",
+      "results": "results/one-shot-ihp",
+      "role": "preflight",
+      "series": "one-shot-ihp",
+      "protocol": "preflight",
+      "stack": "ihp",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": null,
+      "track": "IHP + LiquidHaskell + Z3 candidate, final preflight",
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "7a992cd7f4a4e0be917bdefc93a6090d00c5ee2bb3483b06e58d114ea65a76e6",
+        "path": "one-shot/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "26fb7e622524b0d540a564134c674ea64adc9e4817633dbbee9f84bfd5ccdecc",
+        "path": "ihp-candidate/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "unknown",
+          "record": "results/one-shot-ihp/preflight.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-ihp/run-1/run.json",
+      "results": "results/one-shot-ihp/run-1",
+      "role": "measured-coding",
+      "series": "one-shot-ihp",
+      "protocol": "one-shot",
+      "stack": "ihp",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-28T02:32:27.258845+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "7a992cd7f4a4e0be917bdefc93a6090d00c5ee2bb3483b06e58d114ea65a76e6",
+        "path": "one-shot/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "26fb7e622524b0d540a564134c674ea64adc9e4817633dbbee9f84bfd5ccdecc",
+        "path": "ihp-candidate/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": "results/one-shot-ihp/run-1/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-ihp/run-1/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-ihp/run-1/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-ihp/run-2/run.json",
+      "results": "results/one-shot-ihp/run-2",
+      "role": "measured-coding",
+      "series": "one-shot-ihp",
+      "protocol": "one-shot",
+      "stack": "ihp",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-28T04:04:36.940934+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "7a992cd7f4a4e0be917bdefc93a6090d00c5ee2bb3483b06e58d114ea65a76e6",
+        "path": "one-shot/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "26fb7e622524b0d540a564134c674ea64adc9e4817633dbbee9f84bfd5ccdecc",
+        "path": "ihp-candidate/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": "results/one-shot-ihp/run-2/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-ihp/run-2/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-ihp/run-2/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-ihp/run-3/run.json",
+      "results": "results/one-shot-ihp/run-3",
+      "role": "measured-coding",
+      "series": "one-shot-ihp",
+      "protocol": "one-shot",
+      "stack": "ihp",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-28T05:18:13.021499+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "7a992cd7f4a4e0be917bdefc93a6090d00c5ee2bb3483b06e58d114ea65a76e6",
+        "path": "one-shot/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "26fb7e622524b0d540a564134c674ea64adc9e4817633dbbee9f84bfd5ccdecc",
+        "path": "ihp-candidate/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": "results/one-shot-ihp/run-3/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-ihp/run-3/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-ihp/run-3/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-semantic-density/loco/run.json",
+      "results": "results/one-shot-semantic-density/loco",
+      "role": "measured-coding",
+      "series": "one-shot-semantic-density",
+      "protocol": "one-shot",
+      "stack": "loco",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T18:22:44.894802+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "7a992cd7f4a4e0be917bdefc93a6090d00c5ee2bb3483b06e58d114ea65a76e6",
+        "path": "one-shot/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "3c80961922dadb5f7a41ce27e081e787a5d0cabfc3ae0094588aaeb79c5faa25",
+        "path": "one-shot/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": "results/one-shot-semantic-density/loco/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-semantic-density/loco/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-semantic-density/loco/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-semantic-density/phoenix/run.json",
+      "results": "results/one-shot-semantic-density/phoenix",
+      "role": "measured-coding",
+      "series": "one-shot-semantic-density",
+      "protocol": "one-shot",
+      "stack": "phoenix",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T18:03:36.408115+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "7a992cd7f4a4e0be917bdefc93a6090d00c5ee2bb3483b06e58d114ea65a76e6",
+        "path": "one-shot/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "3c80961922dadb5f7a41ce27e081e787a5d0cabfc3ae0094588aaeb79c5faa25",
+        "path": "one-shot/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": "results/one-shot-semantic-density/phoenix/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-semantic-density/phoenix/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-semantic-density/phoenix/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-semantic-density/rails/run.json",
+      "results": "results/one-shot-semantic-density/rails",
+      "role": "measured-coding",
+      "series": "one-shot-semantic-density",
+      "protocol": "one-shot",
+      "stack": "rails",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T17:47:04.777969+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "7a992cd7f4a4e0be917bdefc93a6090d00c5ee2bb3483b06e58d114ea65a76e6",
+        "path": "one-shot/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "3c80961922dadb5f7a41ce27e081e787a5d0cabfc3ae0094588aaeb79c5faa25",
+        "path": "one-shot/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": "results/one-shot-semantic-density/rails/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-semantic-density/rails/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-semantic-density/rails/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-v2-clojure-expert/pilot-1/reference-1/reference.json",
+      "results": "results/one-shot-v2-clojure-expert/pilot-1/reference-1",
+      "role": "reference",
+      "series": "one-shot-v2-clojure-expert",
+      "protocol": "one-shot",
+      "stack": "clojure",
+      "phase": "one-shot",
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "unscored-reference-repair",
+      "track": null,
+      "started": "2026-09-30T03:03:29.027400+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": "1bef490e875dad2e4ace0696014e7d7548adde0bd887a7af792c2ec1aace0d8f",
+        "effective_record": "results/one-shot-v2-clojure-expert/pilot-1/reference-1/reference.json"
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": "clojure-one-shot-1",
+        "source_sha256": "85416e19319c5e1aac46fc3ad2367e340868f5d3b0fcafda844ff9b2f9996118"
+      },
+      "gates": [],
+      "evidence": [
+        "results/one-shot-v2-clojure-expert/pilot-1/reference-1/reference.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-clojure-expert/pilot-1/run.json",
+      "results": "results/one-shot-v2-clojure-expert/pilot-1",
+      "role": "measured-coding",
+      "series": "one-shot-v2-clojure-expert",
+      "protocol": "one-shot",
+      "stack": "clojure",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.159.0",
+      "condition": "prepared-clojure",
+      "track": null,
+      "started": "2026-09-30T02:44:43.041072+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+        "path": "one-shot-v2/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+        "path": "stacks/clojure/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": "1bef490e875dad2e4ace0696014e7d7548adde0bd887a7af792c2ec1aace0d8f",
+        "effective_record": "results/one-shot-v2-clojure-expert/pilot-1/effective-fixture.json"
+      },
+      "source": {
+        "sha256": "85416e19319c5e1aac46fc3ad2367e340868f5d3b0fcafda844ff9b2f9996118",
+        "path": "results/one-shot-v2-clojure-expert/pilot-1/source",
+        "manifest": "results/one-shot-v2-clojure-expert/pilot-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-clojure-expert/pilot-1/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:e4bd67176ea6f4e0faab3b4add12dada34051212d4bb19d3f409dda22949b98e",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/one-shot-v2-clojure-expert/pilot-1/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-clojure-expert/pilot-1/isolation.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-go-expert/pilot-1/reference-1/reference.json",
+      "results": "results/one-shot-v2-go-expert/pilot-1/reference-1",
+      "role": "reference",
+      "series": "one-shot-v2-go-expert",
+      "protocol": "one-shot",
+      "stack": "go",
+      "phase": "one-shot",
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "unscored-reference-repair",
+      "track": null,
+      "started": "2026-09-29T20:08:38.146978+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "632acb4f0dc55af31dcede3b8170b592a4cc2dbc15ac97c1e3627e3c6384fa92",
+        "path": "results/one-shot-v2-go-expert/pilot-1/reference-1/source",
+        "manifest": "results/one-shot-v2-go-expert/pilot-1/reference-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-go-expert/pilot-1/reference-1/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": "go-one-shot-1",
+        "source_sha256": "b9530e5dc410b91a5105a707e55386ee5e182e1cacbe4b6630474a65dea90a1c"
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/one-shot-v2-go-expert/pilot-1/reference-1/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-go-expert/pilot-1/reference-1/reference.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-go-expert/pilot-1/run.json",
+      "results": "results/one-shot-v2-go-expert/pilot-1",
+      "role": "measured-coding",
+      "series": "one-shot-v2-go-expert",
+      "protocol": "one-shot",
+      "stack": "go",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "expert-v2-tcp-readiness",
+      "track": null,
+      "started": "2026-09-29T19:50:00.425056+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+        "path": "one-shot-v2/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "2c0def8bcc6317a063c40b9dc8ba677a13a47976d42310ab16263891b5f30a3b",
+        "path": "stacks/go/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": "f806cf0d3d7c2f95497dd5d72253d000e28823b333d9d7eda20c4e052842448b",
+        "effective_record": "results/one-shot-v2-go-expert/pilot-1/effective-fixture.json"
+      },
+      "source": {
+        "sha256": "b9530e5dc410b91a5105a707e55386ee5e182e1cacbe4b6630474a65dea90a1c",
+        "path": "results/one-shot-v2-go-expert/pilot-1/source",
+        "manifest": "results/one-shot-v2-go-expert/pilot-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-go-expert/pilot-1/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:1287e4b159f278273363240c008f505851446d4ab8582c69108dfd4fca1ca66b",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/one-shot-v2-go-expert/pilot-1/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-go-expert/pilot-1/isolation.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-phoenix-expert/pilot-1/run.json",
+      "results": "results/one-shot-v2-phoenix-expert/pilot-1",
+      "role": "measured-coding",
+      "series": "one-shot-v2-phoenix-expert",
+      "protocol": "one-shot",
+      "stack": "phoenix",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "v2-expert-diagnostic",
+      "track": null,
+      "started": "2026-09-29T10:27:32.829568+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+        "path": "one-shot-v2/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "fe4624b0126a9ed83bd69df09f4d8ff5eef40f519db38c1a52efcd7a22e8a36e",
+        "path": "one-shot-v2-phoenix-expert/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "96c0d9798699d5d9f485115de8becda9fda98876a9edd11885792d635e9df74d",
+        "path": "results/one-shot-v2-phoenix-expert/pilot-1/source",
+        "manifest": "results/one-shot-v2-phoenix-expert/pilot-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-phoenix-expert/pilot-1/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:403752a89dca2fcec682f38a6fefe06466d9027a55c5282e53c2e83bb37c370c",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-v2-phoenix-expert/pilot-1/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-v2-phoenix-expert/pilot-1/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-v2-phoenix-expert/preflight.json",
+      "results": "results/one-shot-v2-phoenix-expert",
+      "role": "preflight",
+      "series": "one-shot-v2-phoenix-expert",
+      "protocol": "preflight",
+      "stack": "phoenix",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": null,
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+        "path": "one-shot-v2/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "fe4624b0126a9ed83bd69df09f4d8ff5eef40f519db38c1a52efcd7a22e8a36e",
+        "path": "one-shot-v2-phoenix-expert/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": "sha256:403752a89dca2fcec682f38a6fefe06466d9027a55c5282e53c2e83bb37c370c",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "pass",
+          "record": "results/one-shot-v2-phoenix-expert/preflight.json"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-phoenix-expert/isolation.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-phoenix-expert/reference-1/source-snapshot.json",
+      "results": "results/one-shot-v2-phoenix-expert/reference-1",
+      "role": "reference",
+      "series": "one-shot-v2-phoenix-expert",
+      "protocol": "one-shot",
+      "stack": "phoenix",
+      "phase": "one-shot",
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": null,
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "3c2d062c42c7be5622e1310770f3888360619ca03a8c76d12defd1594b5d4b38",
+        "path": "results/one-shot-v2-phoenix-expert/reference-1/source",
+        "manifest": "results/one-shot-v2-phoenix-expert/reference-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-phoenix-expert/reference-1/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-v2-phoenix-expert/reference-1/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-v2-phoenix-expert/reference-1/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-v2-phoenix-expert/reference-2/validation.json",
+      "results": "results/one-shot-v2-phoenix-expert/reference-2",
+      "role": "reference",
+      "series": "one-shot-v2-phoenix-expert",
+      "protocol": "one-shot",
+      "stack": "phoenix",
+      "phase": "one-shot",
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "reference-2",
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": "fe4624b0126a9ed83bd69df09f4d8ff5eef40f519db38c1a52efcd7a22e8a36e",
+        "path": "one-shot-v2-phoenix-expert/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "73c2416ebe98ce0c0554c977d8d0c572949cfc0952966bb41919eccaa9ffcd60",
+        "path": "results/one-shot-v2-phoenix-expert/reference-2/source",
+        "manifest": "results/one-shot-v2-phoenix-expert/reference-2/source-snapshot.json",
+        "inventory": "results/one-shot-v2-phoenix-expert/reference-2/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "validation",
+          "status": "unknown",
+          "record": "results/one-shot-v2-phoenix-expert/reference-2/validation.json"
+        },
+        {
+          "scope": "independent_development",
+          "status": "pass",
+          "record": "results/one-shot-v2-phoenix-expert/reference-2/validation.json#/independent_development"
+        },
+        {
+          "scope": "independent_production",
+          "status": "pass",
+          "record": "results/one-shot-v2-phoenix-expert/reference-2/validation.json#/independent_production"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-phoenix-expert/reference-2/change-summary.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-python-expert/pilot-1/reference-1/reference.json",
+      "results": "results/one-shot-v2-python-expert/pilot-1/reference-1",
+      "role": "reference",
+      "series": "one-shot-v2-python-expert",
+      "protocol": "one-shot",
+      "stack": "python",
+      "phase": "one-shot",
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "unscored-reference-repair",
+      "track": null,
+      "started": "2026-09-29T20:04:19.596089+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "71109c872b7fe3ebb9246df4d648cbf2085d5ac66088c69a39aa975311170868",
+        "path": "results/one-shot-v2-python-expert/pilot-1/reference-1/source",
+        "manifest": "results/one-shot-v2-python-expert/pilot-1/reference-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-python-expert/pilot-1/reference-1/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": "python-one-shot-1",
+        "source_sha256": "e34cf3c29a7ffa1d1373927cc7c97af193ba5d1b6941204314c1326c883209c3"
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "fail",
+          "record": "results/one-shot-v2-python-expert/pilot-1/reference-1/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-python-expert/pilot-1/reference-1/reference.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-python-expert/pilot-1/reference-2/reference.json",
+      "results": "results/one-shot-v2-python-expert/pilot-1/reference-2",
+      "role": "reference",
+      "series": "one-shot-v2-python-expert",
+      "protocol": "one-shot",
+      "stack": "python",
+      "phase": "one-shot",
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "unscored-reference-repair",
+      "track": null,
+      "started": "2026-09-29T20:16:33.791547+00:00",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "9a6808e9b9f82318eb7ebeba2a711ad7632c0be5e9dc7df0968596790ed48e1e",
+        "path": "results/one-shot-v2-python-expert/pilot-1/reference-2/source",
+        "manifest": "results/one-shot-v2-python-expert/pilot-1/reference-2/source-snapshot.json",
+        "inventory": "results/one-shot-v2-python-expert/pilot-1/reference-2/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": "python-one-shot-reference-1",
+        "source_sha256": "71109c872b7fe3ebb9246df4d648cbf2085d5ac66088c69a39aa975311170868"
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/one-shot-v2-python-expert/pilot-1/reference-2/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-python-expert/pilot-1/reference-2/reference.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-python-expert/pilot-1/run.json",
+      "results": "results/one-shot-v2-python-expert/pilot-1",
+      "role": "measured-coding",
+      "series": "one-shot-v2-python-expert",
+      "protocol": "one-shot",
+      "stack": "python",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "expert-v2-tcp-readiness",
+      "track": null,
+      "started": "2026-09-29T19:48:07.881806+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+        "path": "one-shot-v2/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "f9cd5af52b0ee2e85440d6ccba16183b720ab6c946368d94cb144afc4a7787cd",
+        "path": "stacks/python/lane-fixture.json",
+        "base_sha256": null,
+        "effective_sha256": "90ea1278aca72a8ce29f22021a8e175cf6287b9a40937038351a428aec2f6f24",
+        "effective_record": "results/one-shot-v2-python-expert/pilot-1/effective-fixture.json"
+      },
+      "source": {
+        "sha256": "e34cf3c29a7ffa1d1373927cc7c97af193ba5d1b6941204314c1326c883209c3",
+        "path": "results/one-shot-v2-python-expert/pilot-1/source",
+        "manifest": "results/one-shot-v2-python-expert/pilot-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-python-expert/pilot-1/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:95b5a1c0eea78dc6a1190c9f2d40b4135d935dee808507d3fadb9755492158a3",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/one-shot-v2-python-expert/pilot-1/verification.json"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-python-expert/pilot-1/isolation.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-rails-expert/pilot-1/reference-1/validation.json",
+      "results": "results/one-shot-v2-rails-expert/pilot-1/reference-1",
+      "role": "reference",
+      "series": "one-shot-v2-rails-expert",
+      "protocol": "one-shot",
+      "stack": "rails",
+      "phase": "one-shot",
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "reference-1",
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": "55a085d8c6645c56e24e1144f2e9cf5ab300b9ff823b65b2d5039a23343da3b7",
+        "path": "one-shot-v2-rails-expert/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "870f114eefb3c93214af52544bd69f5bbc40b97ec62f716c84d71fe626990a2f",
+        "path": "results/one-shot-v2-rails-expert/pilot-1/reference-1/source",
+        "manifest": "results/one-shot-v2-rails-expert/pilot-1/reference-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-rails-expert/pilot-1/reference-1/source-files.json"
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "validation",
+          "status": "unknown",
+          "record": "results/one-shot-v2-rails-expert/pilot-1/reference-1/validation.json"
+        },
+        {
+          "scope": "independent_development",
+          "status": "pass",
+          "record": "results/one-shot-v2-rails-expert/pilot-1/reference-1/validation.json#/independent_development"
+        },
+        {
+          "scope": "independent_production",
+          "status": "pass",
+          "record": "results/one-shot-v2-rails-expert/pilot-1/reference-1/validation.json#/independent_production"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-rails-expert/pilot-1/reference-1/change-summary.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-rails-expert/pilot-1/run.json",
+      "results": "results/one-shot-v2-rails-expert/pilot-1",
+      "role": "measured-coding",
+      "series": "one-shot-v2-rails-expert",
+      "protocol": "one-shot",
+      "stack": "rails",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "v2-expert-diagnostic",
+      "track": null,
+      "started": "2026-09-29T15:44:03.500802+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+        "path": "one-shot-v2/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "55a085d8c6645c56e24e1144f2e9cf5ab300b9ff823b65b2d5039a23343da3b7",
+        "path": "one-shot-v2-rails-expert/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "e29ac67ad482938761a2252853d1d19a4725e7082bf0c0d18ca570fce58d44ea",
+        "path": "results/one-shot-v2-rails-expert/pilot-1/source",
+        "manifest": "results/one-shot-v2-rails-expert/pilot-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-rails-expert/pilot-1/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:c7d0edbe56f428b32e4727ddde5ff73f202d361d5297a9c85ecbb55f91279ae1",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-v2-rails-expert/pilot-1/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-v2-rails-expert/pilot-1/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-v2-rails-expert/preflight.json",
+      "results": "results/one-shot-v2-rails-expert",
+      "role": "preflight",
+      "series": "one-shot-v2-rails-expert",
+      "protocol": "preflight",
+      "stack": "rails",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": null,
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+        "path": "one-shot-v2/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "55a085d8c6645c56e24e1144f2e9cf5ab300b9ff823b65b2d5039a23343da3b7",
+        "path": "one-shot-v2-rails-expert/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": "sha256:c7d0edbe56f428b32e4727ddde5ff73f202d361d5297a9c85ecbb55f91279ae1",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "pass",
+          "record": "results/one-shot-v2-rails-expert/preflight.json"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-rails-expert/isolation.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-servant/pilot-1/run.json",
+      "results": "results/one-shot-v2-servant/pilot-1",
+      "role": "measured-coding",
+      "series": "one-shot-v2-servant",
+      "protocol": "one-shot",
+      "stack": "servant",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "v2-pilot",
+      "track": null,
+      "started": "2026-09-28T15:40:55.631374+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+        "path": "one-shot-v2/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "c4dda93c55799387d4617caccc7fa405966f5c8a5fecd51950bfd39e16a2052b",
+        "path": "one-shot-v2/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "results/one-shot-v2-servant/pilot-1/source",
+        "manifest": "results/one-shot-v2-servant/pilot-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-servant/pilot-1/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:1cae06d0a90e60a5c0cc3eafaed6b524e234b9bd9040d29978c787c72e0666bd",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-v2-servant/pilot-1/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-v2-servant/pilot-1/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-v2-servant/preflight.json",
+      "results": "results/one-shot-v2-servant",
+      "role": "preflight",
+      "series": "one-shot-v2-servant",
+      "protocol": "preflight",
+      "stack": "servant",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "v2 Servant pilot, before measured agent",
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": "c4dda93c55799387d4617caccc7fa405966f5c8a5fecd51950bfd39e16a2052b",
+        "path": "one-shot-v2/fixture-manifest.json",
+        "base_sha256": "3c80961922dadb5f7a41ce27e081e787a5d0cabfc3ae0094588aaeb79c5faa25",
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": "sha256:1cae06d0a90e60a5c0cc3eafaed6b524e234b9bd9040d29978c787c72e0666bd",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "unknown",
+          "record": "results/one-shot-v2-servant/preflight.json"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-servant/isolation.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-typescript-expert/expert-1/reference-1/production.json",
+      "results": "results/one-shot-v2-typescript-expert/expert-1/reference-1",
+      "role": "reference",
+      "series": "one-shot-v2-typescript-expert",
+      "protocol": "one-shot",
+      "stack": "typescript",
+      "phase": "one-shot",
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": null,
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "71904d3a33f9e8dec09a3924ee0f29659b2bf05fa45a066190833eb7239a9c1e",
+        "path": "results/one-shot-v2-typescript-expert/expert-1/reference-1/source",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-v2-typescript-expert/expert-1/reference-1/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-v2-typescript-expert/expert-1/reference-1/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-v2-typescript-expert/expert-1/run.json",
+      "results": "results/one-shot-v2-typescript-expert/expert-1",
+      "role": "measured-coding",
+      "series": "one-shot-v2-typescript-expert",
+      "protocol": "one-shot",
+      "stack": "typescript",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "v2-expert-guided",
+      "track": null,
+      "started": "2026-09-29T09:41:31.844695+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+        "path": "one-shot-v2/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "31947deee0870e654a96a829b2beaa48275ed0caf0fa341e9e15f589c42cdee7",
+        "path": "one-shot-v2-typescript-expert/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "results/one-shot-v2-typescript-expert/expert-1/source",
+        "manifest": "results/one-shot-v2-typescript-expert/expert-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-typescript-expert/expert-1/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:658eafb6020d341d180dbe8faa1912f88ea746dc8cf5ab3b8c5e254ed5968d70",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-v2-typescript-expert/expert-1/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-v2-typescript-expert/expert-1/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-v2-typescript-expert/preflight.json",
+      "results": "results/one-shot-v2-typescript-expert",
+      "role": "preflight",
+      "series": "one-shot-v2-typescript-expert",
+      "protocol": "preflight",
+      "stack": "typescript",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": null,
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+        "path": "one-shot-v2/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "31947deee0870e654a96a829b2beaa48275ed0caf0fa341e9e15f589c42cdee7",
+        "path": "one-shot-v2-typescript-expert/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": "sha256:658eafb6020d341d180dbe8faa1912f88ea746dc8cf5ab3b8c5e254ed5968d70",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "pass",
+          "record": "results/one-shot-v2-typescript-expert/preflight.json"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-typescript-expert/isolation.json"
+      ]
+    },
+    {
+      "record": "results/one-shot-v2-typescript/pilot-1/run.json",
+      "results": "results/one-shot-v2-typescript/pilot-1",
+      "role": "measured-coding",
+      "series": "one-shot-v2-typescript",
+      "protocol": "one-shot",
+      "stack": "typescript",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": "v2-pilot",
+      "track": null,
+      "started": "2026-09-29T03:28:56.207395+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+        "path": "one-shot-v2/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "d7e4579bb7205a7e475aab382547f005626f34bf9dcf775626477852c7cebcc9",
+        "path": "one-shot-v2-typescript/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "results/one-shot-v2-typescript/pilot-1/source",
+        "manifest": "results/one-shot-v2-typescript/pilot-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-typescript/pilot-1/source-files.json"
+      },
+      "images": {
+        "toolchain": "sha256:658eafb6020d341d180dbe8faa1912f88ea746dc8cf5ab3b8c5e254ed5968d70",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot-v2-typescript/pilot-1/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot-v2-typescript/pilot-1/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot-v2-typescript/preflight.json",
+      "results": "results/one-shot-v2-typescript",
+      "role": "preflight",
+      "series": "one-shot-v2-typescript",
+      "protocol": "preflight",
+      "stack": "typescript",
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "v2-pilot",
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+        "path": "one-shot-v2/PROMPT.md"
+      },
+      "fixture": {
+        "sha256": "d7e4579bb7205a7e475aab382547f005626f34bf9dcf775626477852c7cebcc9",
+        "path": "one-shot-v2-typescript/fixture-manifest.json",
+        "base_sha256": "3c80961922dadb5f7a41ce27e081e787a5d0cabfc3ae0094588aaeb79c5faa25",
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": "sha256:658eafb6020d341d180dbe8faa1912f88ea746dc8cf5ab3b8c5e254ed5968d70",
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "preflight",
+          "status": "unknown",
+          "record": "results/one-shot-v2-typescript/preflight.json"
+        }
+      ],
+      "evidence": [
+        "results/one-shot-v2-typescript/isolation.json"
+      ]
+    },
+    {
+      "record": "results/one-shot/loco/run.json",
+      "results": "results/one-shot/loco",
+      "role": "measured-coding",
+      "series": "one-shot",
+      "protocol": "one-shot",
+      "stack": "loco",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T14:13:59.852151+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "39461187761fb6de81d5ce9fc09812ddb0a4a97deaa1b638df78d1772d33d899",
+        "path": "results/one-shot/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "432db079d956436c753c3355cb00a9d6b2501b3e194dc2410b258db58dbe0728",
+        "path": "results/one-shot/frozen-fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot/loco/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot/loco/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot/phoenix/run.json",
+      "results": "results/one-shot/phoenix",
+      "role": "measured-coding",
+      "series": "one-shot",
+      "protocol": "one-shot",
+      "stack": "phoenix",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T13:52:29.762338+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "39461187761fb6de81d5ce9fc09812ddb0a4a97deaa1b638df78d1772d33d899",
+        "path": "results/one-shot/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "432db079d956436c753c3355cb00a9d6b2501b3e194dc2410b258db58dbe0728",
+        "path": "results/one-shot/frozen-fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot/phoenix/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot/phoenix/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/one-shot/rails/run.json",
+      "results": "results/one-shot/rails",
+      "role": "measured-coding",
+      "series": "one-shot",
+      "protocol": "one-shot",
+      "stack": "rails",
+      "phase": "one-shot",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "codex-cli 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T13:34:35.818637+00:00",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "39461187761fb6de81d5ce9fc09812ddb0a4a97deaa1b638df78d1772d33d899",
+        "path": "results/one-shot/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "432db079d956436c753c3355cb00a9d6b2501b3e194dc2410b258db58dbe0728",
+        "path": "results/one-shot/frozen-fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": "sha256:e4467f16d22ff02b133be201e9c8288a75c1c6218bf4f99f9620c46fd6131fe5"
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "development",
+          "status": "pass",
+          "record": "results/one-shot/rails/development.json"
+        },
+        {
+          "scope": "production",
+          "status": "pass",
+          "record": "results/one-shot/rails/production.json"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "results/ruby-compile/roundhouse-spinel-v2026.9.18/run.json",
+      "results": "results/ruby-compile/roundhouse-spinel-v2026.9.18",
+      "role": "diagnostic",
+      "series": "ruby-compile",
+      "protocol": "diagnostic",
+      "stack": null,
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "roundhouse-spinel-feasibility",
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": "9e9943e15479cc470aef83980617d2b52b75158b7e9fcae4eb1207ca873fb9cf",
+        "path": "results/one-shot-v2-rails-expert/pilot-1/source",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [],
+      "evidence": []
+    },
+    {
+      "record": "stacks/loco/runs.json#/0",
+      "results": "stacks/loco",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "loco",
+      "phase": "1-build",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T02:12:02Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "b40d2ce5aad4ce66a5202951ddac47b3a020d3cbece3616c1e24d2f7f0967e5e",
+        "path": "results/lanes/clojure/1-build/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/loco/1-build",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/0/verified/check"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/loco/runs.json#/1",
+      "results": "stacks/loco",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "loco",
+      "phase": "2-add-drafts",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T02:53:40Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "9f4e51f8ed10fc472d93e442c01177f69ac0b61c6e65d44af9b9e9bc50adc06a",
+        "path": "results/lanes/clojure/2-add-drafts/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/loco/2-add-drafts",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/1/verified/check"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/loco/runs.json#/2",
+      "results": "stacks/loco",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "loco",
+      "phase": "3-package",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T03:12:20Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "e2a2ba2eb74799aa274b6b7a694863f47842937d8db5a878ba520fa65ec8c135",
+        "path": "results/lanes/clojure/3-package/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/loco/3-package",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/2/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/2/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/loco/runs.json#/3",
+      "results": "stacks/loco",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "loco",
+      "phase": "4-tune",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T03:38:29Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "6a521f2c50f5f6cf1e7686597ee54e1007ad9fa9427dde52dd551ede287eaa3e",
+        "path": "results/lanes/clojure/4-tune/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/loco/4-tune",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/3/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/3/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/loco/runs.json#/4",
+      "results": "stacks/loco",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "loco",
+      "phase": "5-harden",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T04:50:22Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "44aa61d73c9b90a29692ba7027098d59101c543f9b1b40ee05a23cb01bedcb4a",
+        "path": "results/lanes/clojure/5-harden/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/loco/5-harden",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/4/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/4/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/loco/runs.json#/5",
+      "results": "stacks/loco",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "loco",
+      "phase": "6-polish",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T05:01:02Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "54628c38ba47f431770f2824e817c11c989ad57fb35ec8e2a8e1e6408c6f5954",
+        "path": "results/lanes/clojure/6-polish/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/loco/6-polish",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/5/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/5/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/loco/runs.json#/6",
+      "results": "stacks/loco",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "loco",
+      "phase": "7-add-background-job",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T05:11:13Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "5980eb63e5b608ca57bb0956724667f5265d2a5bbbc9a2ad1ae3ae48b1f19fef",
+        "path": "results/lanes/clojure/7-add-background-job/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/loco/7-add-background-job",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/6/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/6/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/loco/runs.json#/7",
+      "results": "stacks/loco",
+      "role": "reader",
+      "series": "original-eight-step",
+      "protocol": "comprehension",
+      "stack": "loco",
+      "phase": "after-1-build",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T02:48:04Z",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "906c62d04a1f42ee0b234f36bb4c347ee414e152be428ad616101cbe9c202e36",
+        "path": "steps/comprehension.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/loco/1-build",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "reader-grade",
+          "status": "graded",
+          "score": 11.5,
+          "record": "comprehension/grades.json#/after-1-build/loco"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/loco/runs.json#/8",
+      "results": "stacks/loco",
+      "role": "reader",
+      "series": "original-eight-step",
+      "protocol": "comprehension",
+      "stack": "loco",
+      "phase": "after-6-polish",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T05:12:46Z",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "906c62d04a1f42ee0b234f36bb4c347ee414e152be428ad616101cbe9c202e36",
+        "path": "steps/comprehension.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/loco/6-polish",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "reader-grade",
+          "status": "graded",
+          "score": 11.5,
+          "record": "comprehension/grades.json#/after-6-polish/loco"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/loco/runs.json#/9",
+      "results": "stacks/loco",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "loco",
+      "phase": "8-live-editing",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T08:36:19Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "f44ffb88bcf65bfe59f9841d1c8c81f32220c4b06a25fefdc5119e74b42c85d9",
+        "path": "results/lanes/clojure/8-live-editing/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "5cf8a83f3be200afe9a90f6d3db9b11958ea7db824e13d8dfa8d7db7cdf1bf65",
+        "path": "spec/features/live-editing/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/loco/8-live-editing",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/9/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/loco/runs.json#/9/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/phoenix/runs.json#/0",
+      "results": "stacks/phoenix",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "phoenix",
+      "phase": "1-build",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T02:12:01Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "b40d2ce5aad4ce66a5202951ddac47b3a020d3cbece3616c1e24d2f7f0967e5e",
+        "path": "results/lanes/clojure/1-build/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/phoenix/1-build",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/0/verified/check"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/phoenix/runs.json#/1",
+      "results": "stacks/phoenix",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "phoenix",
+      "phase": "2-add-drafts",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T02:58:07Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "9f4e51f8ed10fc472d93e442c01177f69ac0b61c6e65d44af9b9e9bc50adc06a",
+        "path": "results/lanes/clojure/2-add-drafts/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/phoenix/2-add-drafts",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/1/verified/check"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/phoenix/runs.json#/2",
+      "results": "stacks/phoenix",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "phoenix",
+      "phase": "3-package",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T03:06:56Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "e2a2ba2eb74799aa274b6b7a694863f47842937d8db5a878ba520fa65ec8c135",
+        "path": "results/lanes/clojure/3-package/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/phoenix/3-package",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/2/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/2/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/phoenix/runs.json#/3",
+      "results": "stacks/phoenix",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "phoenix",
+      "phase": "4-tune",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T03:38:28Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "6a521f2c50f5f6cf1e7686597ee54e1007ad9fa9427dde52dd551ede287eaa3e",
+        "path": "results/lanes/clojure/4-tune/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/phoenix/4-tune",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/3/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/3/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/phoenix/runs.json#/4",
+      "results": "stacks/phoenix",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "phoenix",
+      "phase": "5-harden",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T04:50:21Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "44aa61d73c9b90a29692ba7027098d59101c543f9b1b40ee05a23cb01bedcb4a",
+        "path": "results/lanes/clojure/5-harden/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/phoenix/5-harden",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/4/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/4/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/phoenix/runs.json#/5",
+      "results": "stacks/phoenix",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "phoenix",
+      "phase": "6-polish",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T05:01:01Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "54628c38ba47f431770f2824e817c11c989ad57fb35ec8e2a8e1e6408c6f5954",
+        "path": "results/lanes/clojure/6-polish/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/phoenix/6-polish",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/5/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/5/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/phoenix/runs.json#/6",
+      "results": "stacks/phoenix",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "phoenix",
+      "phase": "7-add-background-job",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T05:11:12Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "5980eb63e5b608ca57bb0956724667f5265d2a5bbbc9a2ad1ae3ae48b1f19fef",
+        "path": "results/lanes/clojure/7-add-background-job/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/phoenix/7-add-background-job",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/6/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/6/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/phoenix/runs.json#/7",
+      "results": "stacks/phoenix",
+      "role": "reader",
+      "series": "original-eight-step",
+      "protocol": "comprehension",
+      "stack": "phoenix",
+      "phase": "after-1-build",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T02:48:03Z",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "906c62d04a1f42ee0b234f36bb4c347ee414e152be428ad616101cbe9c202e36",
+        "path": "steps/comprehension.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/phoenix/1-build",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "reader-grade",
+          "status": "graded",
+          "score": 11.5,
+          "record": "comprehension/grades.json#/after-1-build/phoenix"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/phoenix/runs.json#/8",
+      "results": "stacks/phoenix",
+      "role": "reader",
+      "series": "original-eight-step",
+      "protocol": "comprehension",
+      "stack": "phoenix",
+      "phase": "after-6-polish",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T05:12:45Z",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "906c62d04a1f42ee0b234f36bb4c347ee414e152be428ad616101cbe9c202e36",
+        "path": "steps/comprehension.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/phoenix/6-polish",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "reader-grade",
+          "status": "graded",
+          "score": 12.0,
+          "record": "comprehension/grades.json#/after-6-polish/phoenix"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/phoenix/runs.json#/9",
+      "results": "stacks/phoenix",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "phoenix",
+      "phase": "8-live-editing",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T08:36:19Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "f44ffb88bcf65bfe59f9841d1c8c81f32220c4b06a25fefdc5119e74b42c85d9",
+        "path": "results/lanes/clojure/8-live-editing/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "5cf8a83f3be200afe9a90f6d3db9b11958ea7db824e13d8dfa8d7db7cdf1bf65",
+        "path": "spec/features/live-editing/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/phoenix/8-live-editing",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/9/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/phoenix/runs.json#/9/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/rails/runs.json#/0",
+      "results": "stacks/rails",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "rails",
+      "phase": "1-build",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T02:12:00Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "b40d2ce5aad4ce66a5202951ddac47b3a020d3cbece3616c1e24d2f7f0967e5e",
+        "path": "results/lanes/clojure/1-build/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/rails/1-build",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/0/verified/check"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/rails/runs.json#/1",
+      "results": "stacks/rails",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "rails",
+      "phase": "2-add-drafts",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T02:53:39Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "9f4e51f8ed10fc472d93e442c01177f69ac0b61c6e65d44af9b9e9bc50adc06a",
+        "path": "results/lanes/clojure/2-add-drafts/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/rails/2-add-drafts",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/1/verified/check"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/rails/runs.json#/2",
+      "results": "stacks/rails",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "rails",
+      "phase": "3-package",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T03:05:53Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "e2a2ba2eb74799aa274b6b7a694863f47842937d8db5a878ba520fa65ec8c135",
+        "path": "results/lanes/clojure/3-package/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/rails/3-package",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/2/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/2/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/rails/runs.json#/3",
+      "results": "stacks/rails",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "rails",
+      "phase": "4-tune",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T03:38:27Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "6a521f2c50f5f6cf1e7686597ee54e1007ad9fa9427dde52dd551ede287eaa3e",
+        "path": "results/lanes/clojure/4-tune/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/rails/4-tune",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/3/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/3/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/rails/runs.json#/4",
+      "results": "stacks/rails",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "rails",
+      "phase": "5-harden",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T04:50:20Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "44aa61d73c9b90a29692ba7027098d59101c543f9b1b40ee05a23cb01bedcb4a",
+        "path": "results/lanes/clojure/5-harden/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/rails/5-harden",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/4/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/4/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/rails/runs.json#/5",
+      "results": "stacks/rails",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "rails",
+      "phase": "6-polish",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T05:01:00Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "54628c38ba47f431770f2824e817c11c989ad57fb35ec8e2a8e1e6408c6f5954",
+        "path": "results/lanes/clojure/6-polish/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/rails/6-polish",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/5/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/5/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/rails/runs.json#/6",
+      "results": "stacks/rails",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "rails",
+      "phase": "7-add-background-job",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T05:11:11Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "5980eb63e5b608ca57bb0956724667f5265d2a5bbbc9a2ad1ae3ae48b1f19fef",
+        "path": "results/lanes/clojure/7-add-background-job/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/rails/7-add-background-job",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/6/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/6/verified/check_production"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/rails/runs.json#/7",
+      "results": "stacks/rails",
+      "role": "reader",
+      "series": "original-eight-step",
+      "protocol": "comprehension",
+      "stack": "rails",
+      "phase": "after-1-build",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T02:48:01Z",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "906c62d04a1f42ee0b234f36bb4c347ee414e152be428ad616101cbe9c202e36",
+        "path": "steps/comprehension.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/rails/1-build",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "reader-grade",
+          "status": "graded",
+          "score": 12.0,
+          "record": "comprehension/grades.json#/after-1-build/rails"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/rails/runs.json#/8",
+      "results": "stacks/rails",
+      "role": "reader",
+      "series": "original-eight-step",
+      "protocol": "comprehension",
+      "stack": "rails",
+      "phase": "after-6-polish",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T05:12:44Z",
+      "coding_exit": null,
+      "prompt": {
+        "sha256": "906c62d04a1f42ee0b234f36bb4c347ee414e152be428ad616101cbe9c202e36",
+        "path": "steps/comprehension.md"
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/rails/6-polish",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "reader-grade",
+          "status": "graded",
+          "score": 11.5,
+          "record": "comprehension/grades.json#/after-6-polish/rails"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "record": "stacks/rails/runs.json#/9",
+      "results": "stacks/rails",
+      "role": "measured-coding",
+      "series": "original-eight-step",
+      "protocol": "eight-step",
+      "stack": "rails",
+      "phase": "8-live-editing",
+      "model": "gpt-6-sol",
+      "reasoning": "xhigh",
+      "cli": "Codex CLI 0.157.1",
+      "condition": null,
+      "track": null,
+      "started": "2026-09-27T08:36:19Z",
+      "coding_exit": 0,
+      "prompt": {
+        "sha256": "f44ffb88bcf65bfe59f9841d1c8c81f32220c4b06a25fefdc5119e74b42c85d9",
+        "path": "results/lanes/clojure/8-live-editing/frozen-prompt.md"
+      },
+      "fixture": {
+        "sha256": "5cf8a83f3be200afe9a90f6d3db9b11958ea7db824e13d8dfa8d7db7cdf1bf65",
+        "path": "spec/features/live-editing/fixture-manifest.json",
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": "stacks/rails/8-live-editing",
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [
+        {
+          "scope": "check",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/9/verified/check"
+        },
+        {
+          "scope": "check_production",
+          "status": "pass",
+          "record": "stacks/rails/runs.json#/9/verified/check_production"
+        }
+      ],
+      "evidence": []
+    }
+  ]
+}

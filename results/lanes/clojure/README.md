@@ -1,10 +1,14 @@
 # Clojure
 
-An eight-step build and an independent expert one-shot of the same Conduit backend. The selected stack combines Ring/Jetty, Reitit/Malli, next.jdbc/HoneySQL, Integrant, Migratus, Proletarian and Buddy, packaged as a JVM AOT uberjar.
+An eight-step build and an independent expert one-shot of the same Conduit backend. The prepared scaffold combines Ring/Jetty, Reitit/Malli, next.jdbc/HoneySQL, Integrant, Migratus, Proletarian and Buddy, packaged as a JVM AOT uberjar.
 
 **9/9 coding sessions independently verified.**
 
 [Stack choice and Clojure guidance](../../../stacks/clojure/SELECTION.md) · [Conditions and method](METHODOLOGY.md) · [Shared expert prompt](../../../one-shot-v2-expert/PROMPT.md)
+
+The sequential final uses Reitit/Muuntaja and hand-written validation, with HoneySQL for partial updates. The one-shot connects Malli coercion but declares a schema only for the registration envelope; most validation is hand-written, and HoneySQL is declared but unused. [Code guide](CODE-GUIDE.md) · [Expert review and remaining limits](EXPERT-REVIEW.md)
+
+Recorded coding agent: `gpt-6-sol` / `xhigh` / `codex-cli 0.159.0`. Attribution comes from the 9 run records; reviewer repairs have no measured coding-effort attribution.
 
 ## Eight-step history
 
@@ -29,8 +33,8 @@ Each checkpoint preserves its source, prompt, effort, failures and independent v
 
 | Original source | Owned / whole backend tokens | Coding minutes | Uncached + output tokens | Reviewer checks |
 | --- | ---: | ---: | ---: | --- |
-| [Eight-step final](../../../stacks/clojure/8-live-editing) | 8,603 / 11,067 | 83.0 | 787,220 | [19/21 contract · 2/3 quality · favorites 48/48](8-live-editing/reviewer-parity/results.json) · shared pending · **not full reviewer parity** |
-| [Expert one-shot](../../one-shot-v2-clojure-expert/pilot-1/source) | 9,312 / 12,235 | 14.6 | 206,564 | [0/21 contract · 0/3 quality · favorites 0/48](../../one-shot-v2-clojure-expert/pilot-1/reviewer-parity/results.json) · shared pending · **not full reviewer parity** |
+| [Eight-step final](../../../stacks/clojure/8-live-editing) | 8,603 / 11,067 | 83.0 | 787,220 | [19/21 contract · 2/3 quality · favorites 48/48](8-live-editing/reviewer-parity/results.json) · [shared 3/3 + 0/1](8-live-editing/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
+| [Expert one-shot](../../one-shot-v2-clojure-expert/pilot-1/source) | 9,312 / 12,235 | 14.6 | 206,564 | [HTTP review incomplete · favorites review incomplete](../../one-shot-v2-clojure-expert/pilot-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](../../one-shot-v2-clojure-expert/pilot-1/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
 
 ## Evidence and limits
 

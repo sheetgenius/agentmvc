@@ -1,0 +1,86 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.65kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 1.1s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/eclipse-temurin:25-jre-noble@sha256:693fdaf83831eeeefd9709eae44c8b8706622652f972cf5903bd0e481bbf6ad3
+#4 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/eclipse-temurin:25-jdk-noble@sha256:f6366ccac38ceae180280ad7012d18a15e8031548a430dc2bae06631d9e88ed0
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 217B done
+#6 DONE 0.0s
+
+#7 [stage-1 1/3] FROM docker.io/library/eclipse-temurin:25-jre-noble@sha256:693fdaf83831eeeefd9709eae44c8b8706622652f972cf5903bd0e481bbf6ad3
+#7 DONE 0.0s
+
+#8 [build 1/8] FROM docker.io/library/eclipse-temurin:25-jdk-noble@sha256:f6366ccac38ceae180280ad7012d18a15e8031548a430dc2bae06631d9e88ed0
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 56.59kB done
+#9 DONE 0.0s
+
+#10 [build 2/8] RUN apt-get update -qq && apt-get install --no-install-recommends -y curl ca-certificates &&     rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [build 3/8] RUN curl -fsSL --retry 5 https://github.com/clojure/brew-install/releases/download/1.12.5.1664/clojure-tools-1.12.5.1664.tar.gz -o /tmp/clojure.tar.gz &&     echo '77dd6868948074adcc93e83a796f8e8f15a1a92bcb1b9002d715fd2210e476f3  /tmp/clojure.tar.gz' | sha256sum -c - &&     tar xzf /tmp/clojure.tar.gz -C /tmp &&     mkdir -p /usr/local/lib/clojure/libexec &&     cp /tmp/clojure-tools/deps.edn /tmp/clojure-tools/example-deps.edn /tmp/clojure-tools/tools.edn /usr/local/lib/clojure/ &&     cp /tmp/clojure-tools/*.jar /usr/local/lib/clojure/libexec/ &&     sed 's@PREFIX@/usr/local/lib/clojure@g' /tmp/clojure-tools/clojure > /usr/local/bin/clojure &&     chmod +x /usr/local/bin/clojure && rm -rf /tmp/clojure-tools /tmp/clojure.tar.gz
+#11 CACHED
+
+#12 [build 6/8] RUN --mount=type=cache,target=/root/.m2 clojure -P -T:build && clojure -P
+#12 CACHED
+
+#13 [build 5/8] COPY deps.edn ./
+#13 CACHED
+
+#14 [stage-1 2/3] WORKDIR /app
+#14 CACHED
+
+#15 [build 7/8] COPY . .
+#15 CACHED
+
+#16 [build 4/8] WORKDIR /src
+#16 CACHED
+
+#17 [build 8/8] RUN --mount=type=cache,target=/root/.m2 clojure -T:build uber
+#17 CACHED
+
+#18 [stage-1 3/3] COPY --from=build --chown=10001:10001 /src/target/conduit.jar /app/conduit.jar
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 writing image sha256:c29dd338dd0538d467945ab36f975270e9777a664cd076891e8fcbb571ceb556 done
+#19 naming to docker.io/library/agentmvc-lane-clojure-one-shot-1:current done
+#19 DONE 0.0s
+
+50ed37ee6a2618732d792c5cb8695d40d7e67baf35417bf72ba6444936507158
+
+1c451a9c17607a71516b274e715605bdb4231fda9fca2453884708b0b858036a
+
+4c94564ea3a6aa0642f913761a7342780c74f422f30c76bacc8b9cbe56a36693
+
+[main] INFO migratus.core - Starting migrations
+[main] INFO com.zaxxer.hikari.HikariDataSource - conduit - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - conduit - Added connection org.postgresql.jdbc.PgConnection@31f5ffb9
+[main] INFO com.zaxxer.hikari.HikariDataSource - conduit - Start completed.
+[main] INFO migratus.database - creating migration table 'schema_migrations'
+[main] INFO migratus.core - Running up for [1 2]
+[main] INFO migratus.core - Up 1-proletarian
+[main] INFO migratus.database - Connection is  {:connection #object[com.zaxxer.hikari.pool.HikariProxyConnection 0x1bcf2c64 HikariProxyConnection@466562148 wrapping org.postgresql.jdbc.PgConnection@31f5ffb9]} Config is {:store :database, :migration-dir migrations, :db {:datasource #object[com.zaxxer.hikari.HikariDataSource 0x1ba98508 HikariDataSource (conduit)]}}
+[main] INFO migratus.core - Up 2-conduit
+[main] INFO migratus.database - Connection is  {:connection #object[com.zaxxer.hikari.pool.HikariProxyConnection 0x1bcf2c64 HikariProxyConnection@466562148 wrapping org.postgresql.jdbc.PgConnection@31f5ffb9]} Config is {:store :database, :migration-dir migrations, :db {:datasource #object[com.zaxxer.hikari.HikariDataSource 0x1ba98508 HikariDataSource (conduit)]}}
+[main] INFO migratus.core - Ending migrations
+[main] INFO org.eclipse.jetty.server.Server - jetty-12.1.13; built: 2026-09-04T06:53:08.311Z; git: e99386749a0a4888cd9b555ffc96a476fd48d94e; jvm 25.0.4.1+1-LTS
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started oeje9n.ContextHandler$CoreContextHandler@1b08d26f{ROOT,/,b=null,a=AVAILABLE,h=oeje9n.ContextHandler$CoreContextHandler$CoreToNestedHandler@565030b7{STARTED}}
+[main] INFO org.eclipse.jetty.server.AbstractConnector - Started oejs.ServerConnector@457d3f54{HTTP/1.1, (http/1.1)}{0.0.0.0:4112}
+[main] INFO org.eclipse.jetty.server.Server - Started oejs.Server@1da61a29{STARTING}[12.1.13,sto=5000] @20ms
