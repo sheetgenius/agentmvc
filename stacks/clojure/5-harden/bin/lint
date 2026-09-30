@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+clojure -M:lint
+clojure -M:format check src dev test build.clj
