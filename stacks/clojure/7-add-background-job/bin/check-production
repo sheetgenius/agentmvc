@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+# The production harness runs acceptance, then the security Hurl suite in its container.
+exec harness/check-production.sh
