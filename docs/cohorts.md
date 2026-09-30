@@ -67,3 +67,5 @@ Two useful experiments answer different questions:
 2. **Refreshed baseline:** streamline prompts and repair harness friction, then launch fresh GPT-6.1 builds under a new fixture and result root. This measures the combined revised condition. To isolate the model within those revised inputs, run both models on the same new fixture.
 
 Preserve existing result roots and their failed attempts. Record the new cohort's model and conditions in its own launch/run metadata. The [baseline refresh assessment](baseline-refresh.md) identifies the proposed prompt and harness work; neither document launches a GPT-6.1 run.
+
+[Experiment v3](experiment-v3.md) proposes the next cohort. It changes the contract to two instances, splits each stack's guidance into a neutral environment and an optional practitioner brief, and runs both arms on the same new fixture. Its results form a new baseline and are not pooled with the conditions above.

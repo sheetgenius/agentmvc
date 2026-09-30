@@ -11,6 +11,10 @@ Start with the [repository map](README.md#repository-map), the [current results]
 
 Keep these labels visible in PRs and result pages. A reference improvement can teach us more than another one-shot, but its effort and runtime numbers cannot be pooled with a frozen run.
 
+## Submit a practitioner brief
+
+A practitioner brief is up to 500 words of stack-specific guidance from someone who knows the stack. [briefs/README.md](briefs/README.md) has the rules, the template and draft seeds. Check yours with `python3 tools/brief_check.py`, and include your prediction of what it will change. Maintainers run each brief with and without it on the same inputs, as [experiment v3](docs/experiment-v3.md) describes, so a brief's effect is reported for its own stack only.
+
 ## Propose a lane improvement
 
 Open a focused PR with:
