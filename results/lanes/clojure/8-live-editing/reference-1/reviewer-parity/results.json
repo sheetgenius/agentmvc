@@ -1,0 +1,1825 @@
+{
+  "session": "clojure-8-live-editing-reference-1",
+  "stack": "clojure",
+  "phase": "reference",
+  "started": "2026-09-30T03:24:55.833791+00:00",
+  "tools_sha256": {
+    "lane_evidence.py": "6cab1f79fadd7e4d4459223a344cf6de48adc5797a3c94982a977559b202678a",
+    "lane_check.py": "145a6f3bbee6c55cd616732a9663389903c0a41fb2682b5bd12e84b147fe7e61",
+    "lane_broker.py": "ac58c5d1ad9972c7907014781dd267ae5c288dbf9a8ce3376503e06b8a58d628",
+    "lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "lane_review.py": "0131bb4fc4e9aab709eede4020f60bd8a962b9f6b9d0da816aa509516af7e348",
+    "reviewer_common_http_probe.py": "d40c80b7cda2295cf9367b6b4435a04f5d180532de0390e7c95d73ff4fcd3499",
+    "lane_favorites_probe.py": "e8391c242479bcdf5c94e6ec862dcf1de32dd0cd574a0ff6cec7ee1fd84e99a2",
+    "lane_share_probe.py": "207274444bdbc261955bd73112b9442cd7bf80f9ef111a9c372b1f48e83f300e",
+    "lane_share_review.py": "4d645daad98d4194d6d8f16d182a6e5b72116965daf5eed9f68f80c5b31915c2",
+    "bench/bench.py": "d9eb2fbceb835f5798f5a193588c61ef2d5b1a36a3af7a393196f23d3b9aa2ab",
+    "bench/load.js": "9057777b106e10fada6fc0fbfe85168258643f04a537ea5313277c0e86b37481",
+    "bench/seed.py": "ae62d6f3c25f4f77873ad828855c662a895c2dc75517a957f83b9d7ad6448c93",
+    "one_shot_live_bench.py": "c1f86e7359ce27ea14746bd36a768c2c5f4e0fdb43cdea87bf2ee3c5a2ef5528",
+    "live-load.mjs": "2ca75930e55074274db5d9a49bf9b55e7107c534d5048ce23801fc6fb28b0ce2",
+    "v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79",
+    "scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+    "clojure_lane.py": "4c2b2f211e48265415d6314452c8e30389ea430f3082f23404a13c936bc1915e",
+    "clojure_evidence.py": "2e008ebd2a01f216d6b01e096e9d32238e7352caddd697a2f7e0064871c188d1"
+  },
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "database": "postgres:17-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193",
+  "app_environment_keys": [
+    "DATABASE_URL",
+    "SECRET_KEY_BASE",
+    "PORT"
+  ],
+  "passed": true,
+  "common_parity_passed": true,
+  "exit": 0,
+  "condition": "unscored-reference-repair",
+  "source_sha256": "94de69bcd802935a011c2072054ce4ceee79aea8b6b840aaa58874a376a9f961",
+  "fixture_sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+  "fixture_record_sha256": "6ce0dfc20387b2bc257a461f60a65f5f2fbaa993da6c3cc17b5ff5035d0afb07",
+  "prompt_sha256": "f44ffb88bcf65bfe59f9841d1c8c81f32220c4b06a25fefdc5119e74b42c85d9",
+  "image_sha256": "sha256:e3d57bd9af5767f2e29b95022a1f183be47b571b511ca3574651f58ac3060b22",
+  "frozen_production_gate_exit": 0,
+  "http_probe_exit": 0,
+  "http_probe": {
+    "base_url": "http://127.0.0.1:4113",
+    "condition": "reviewer-only common HTTP diagnostic; never a frozen gate",
+    "results": [
+      {
+        "expected": {
+          "errors.revision[0]": "is stale",
+          "status": 409,
+          "unchanged": true
+        },
+        "kind": "contract",
+        "name": "revision_zero",
+        "observed": {
+          "edit": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "revision-zero-229c9e1b7b3e-c85ab5f7",
+              "title": "revision_zero 229c9e1b7b3e"
+            },
+            "errors": {
+              "revision": [
+                "is stale"
+              ]
+            },
+            "status": 409
+          },
+          "read": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "revision-zero-229c9e1b7b3e-c85ab5f7",
+              "title": "revision_zero 229c9e1b7b3e"
+            },
+            "status": 200
+          }
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:65-81"
+      },
+      {
+        "expected": {
+          "errors.revision[0]": "is stale",
+          "status": 409,
+          "unchanged": true
+        },
+        "kind": "contract",
+        "name": "revision_negative",
+        "observed": {
+          "edit": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "revision-negative-229c9e1b7b3e-f6b3b9b9",
+              "title": "revision_negative 229c9e1b7b3e"
+            },
+            "errors": {
+              "revision": [
+                "is stale"
+              ]
+            },
+            "status": 409
+          },
+          "read": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "revision-negative-229c9e1b7b3e-f6b3b9b9",
+              "title": "revision_negative 229c9e1b7b3e"
+            },
+            "status": 200
+          }
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:65-81"
+      },
+      {
+        "expected": {
+          "errors.revision[0]": "is invalid",
+          "status": 422,
+          "unchanged": true
+        },
+        "kind": "contract",
+        "name": "revision_noninteger",
+        "observed": {
+          "edit": {
+            "errors": {
+              "revision": [
+                "is invalid"
+              ]
+            },
+            "status": 422
+          },
+          "read": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "revision-noninteger-229c9e1b7b3e-05aa4837",
+              "title": "revision_noninteger 229c9e1b7b3e"
+            },
+            "status": 200
+          }
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:65-81"
+      },
+      {
+        "expected": {
+          "errors.revision[0]": "is invalid",
+          "status": 422,
+          "unchanged": true
+        },
+        "kind": "contract",
+        "name": "revision_null",
+        "observed": {
+          "edit": {
+            "errors": {
+              "revision": [
+                "is invalid"
+              ]
+            },
+            "status": 422
+          },
+          "read": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "revision-null-229c9e1b7b3e-f06d7e31",
+              "title": "revision_null 229c9e1b7b3e"
+            },
+            "status": 200
+          }
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:65-81"
+      },
+      {
+        "expected": {
+          "revision": 2,
+          "status": 200
+        },
+        "kind": "contract",
+        "name": "matching_revision",
+        "observed": {
+          "article": {
+            "body": "Explicit revision",
+            "description": "Diagnostic",
+            "revision": 2,
+            "slug": "parity-article-229c9e1b7b3e-a83bd911",
+            "title": "Parity article 229c9e1b7b3e"
+          },
+          "status": 200
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:65-68"
+      },
+      {
+        "expected": {
+          "revision": 3,
+          "status": 200
+        },
+        "kind": "contract",
+        "name": "omitted_revision",
+        "observed": {
+          "article": {
+            "body": "Omitted revision",
+            "description": "Diagnostic",
+            "revision": 3,
+            "slug": "parity-article-229c9e1b7b3e-a83bd911",
+            "title": "Parity article 229c9e1b7b3e"
+          },
+          "status": 200
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:65-68; spec/features/drafts/hurl/drafts.hurl:158-169"
+      },
+      {
+        "expected": {
+          "current_revision": 3,
+          "status": 409
+        },
+        "kind": "contract",
+        "name": "stale_revision_returns_current",
+        "observed": {
+          "article": {
+            "body": "Omitted revision",
+            "description": "Diagnostic",
+            "revision": 3,
+            "slug": "parity-article-229c9e1b7b3e-a83bd911",
+            "title": "Parity article 229c9e1b7b3e"
+          },
+          "errors": {
+            "revision": [
+              "is stale"
+            ]
+          },
+          "status": 409
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:69-73"
+      },
+      {
+        "expected": {
+          "errors.token[0]": "is missing",
+          "status": 401
+        },
+        "kind": "contract",
+        "name": "malformed_unauthenticated",
+        "observed": {
+          "errors": {
+            "token": "[redacted]"
+          },
+          "status": 401
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:77-81"
+      },
+      {
+        "expected": {
+          "errors.article[0]": "forbidden",
+          "status": 403
+        },
+        "kind": "contract",
+        "name": "malformed_stranger",
+        "observed": {
+          "errors": {
+            "article": [
+              "forbidden"
+            ]
+          },
+          "status": 403
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:77-81"
+      },
+      {
+        "expected": {
+          "errors.article[0]": "not found",
+          "status": 404
+        },
+        "kind": "contract",
+        "name": "malformed_missing_article",
+        "observed": {
+          "errors": {
+            "article": [
+              "not found"
+            ]
+          },
+          "status": 404
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:77-81"
+      },
+      {
+        "expected": {
+          "status": 422
+        },
+        "kind": "contract",
+        "name": "malformed_owner",
+        "observed": {
+          "errors": {
+            "article": [
+              "is invalid"
+            ]
+          },
+          "status": 422
+        },
+        "passed": true,
+        "source": "spec/features/drafts/drafts.md:77-81"
+      },
+      {
+        "expected": "clean 201 with readable slug, or clean 422; no server error",
+        "kind": "quality_diagnostic",
+        "name": "long_title_boundary",
+        "observed": {
+          "create": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa229c9e1b7b3e-4a07ff01",
+              "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa229c9e1b7b3e"
+            },
+            "status": 201
+          },
+          "read_status": 200
+        },
+        "passed": true,
+        "source": "spec/docs/endpoints.md:145-185"
+      },
+      {
+        "expected": "second accepted title gets a distinct, readable slug",
+        "kind": "contract",
+        "name": "duplicate_long_title_slug",
+        "observed": {
+          "create": {
+            "article": {
+              "body": "Initial",
+              "description": "Diagnostic",
+              "revision": 1,
+              "slug": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa229c9e1b7b3e-c97af86b",
+              "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa229c9e1b7b3e"
+            },
+            "status": 201
+          },
+          "first_slug": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa229c9e1b7b3e-4a07ff01",
+          "second_read_status": 200
+        },
+        "passed": true,
+        "source": "spec/docs/endpoints.md:183-185"
+      },
+      {
+        "expected": {
+          "errors.export[0]": "not found",
+          "status": 404
+        },
+        "kind": "contract",
+        "name": "huge_export_id",
+        "observed": {
+          "errors": {
+            "export": [
+              "not found"
+            ]
+          },
+          "status": 404
+        },
+        "passed": true,
+        "source": "spec/features/exports/exports.md:24-44"
+      },
+      {
+        "expected": {
+          "errors.comment[0]": "not found",
+          "status": 404
+        },
+        "kind": "contract",
+        "name": "huge_comment_id",
+        "observed": {
+          "errors": {
+            "comment": [
+              "not found"
+            ]
+          },
+          "status": 404
+        },
+        "passed": true,
+        "source": "spec/docs/error-handling.md:25; spec/api/hurl/errors_comments.hurl:81-86"
+      },
+      {
+        "expected": "accepted nonblank text round-trips unchanged",
+        "kind": "quality_diagnostic",
+        "name": "padded_text_preservation",
+        "observed": {
+          "create": {
+            "article": {
+              "body": "  Padded body  ",
+              "description": "  Padded description  ",
+              "revision": 1,
+              "slug": "-padded-229c9e1b7b3e--f3af4425",
+              "title": "  Padded 229c9e1b7b3e  "
+            },
+            "status": 201
+          },
+          "edit": {
+            "article": {
+              "body": "  Edited body  ",
+              "description": "  Padded description  ",
+              "revision": 2,
+              "slug": "-padded-229c9e1b7b3e--f3af4425",
+              "title": "  Padded 229c9e1b7b3e  "
+            },
+            "status": 200
+          },
+          "read": {
+            "article": {
+              "body": "  Padded body  ",
+              "description": "  Padded description  ",
+              "revision": 1,
+              "slug": "-padded-229c9e1b7b3e--f3af4425",
+              "title": "  Padded 229c9e1b7b3e  "
+            },
+            "status": 200
+          }
+        },
+        "passed": true,
+        "source": "spec/docs/endpoints.md:145-185 (exact whitespace is not asserted by frozen checks)"
+      },
+      {
+        "expected": "valid 200 exact shared shape; wrong key 404",
+        "kind": "contract",
+        "name": "share_key_access",
+        "observed": {
+          "valid": {
+            "article": {
+              "body": "Omitted revision",
+              "revision": 3,
+              "slug": "parity-article-229c9e1b7b3e-a83bd911",
+              "title": "Parity article 229c9e1b7b3e"
+            },
+            "status": 200
+          },
+          "wrong": {
+            "errors": {
+              "share": [
+                "not found"
+              ]
+            },
+            "status": 404
+          }
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:9-19"
+      },
+      {
+        "expected": "200, revision +1, same share ID reads new slug",
+        "kind": "contract",
+        "name": "share_edit_stable_identity",
+        "observed": {
+          "edit": {
+            "article": {
+              "body": "Shared body",
+              "revision": 4,
+              "slug": "share-edit-229c9e1b7b3e-a70f672d",
+              "title": "Share edit 229c9e1b7b3e"
+            },
+            "status": 200
+          },
+          "read": {
+            "article": {
+              "body": "Shared body",
+              "revision": 4,
+              "slug": "share-edit-229c9e1b7b3e-a70f672d",
+              "title": "Share edit 229c9e1b7b3e"
+            },
+            "status": 200
+          }
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:21-23"
+      },
+      {
+        "expected": "409 with current shared article",
+        "kind": "contract",
+        "name": "share_stale_revision",
+        "observed": {
+          "article": {
+            "body": "Shared body",
+            "revision": 4,
+            "slug": "share-edit-229c9e1b7b3e-a70f672d",
+            "title": "Share edit 229c9e1b7b3e"
+          },
+          "errors": {
+            "revision": [
+              "is stale"
+            ]
+          },
+          "status": 409
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:21-23"
+      },
+      {
+        "expected": "422 without mutation",
+        "kind": "contract",
+        "name": "share_exact_input_shape",
+        "observed": {
+          "after": {
+            "article": {
+              "body": "Shared body",
+              "revision": 4,
+              "slug": "share-edit-229c9e1b7b3e-a70f672d",
+              "title": "Share edit 229c9e1b7b3e"
+            },
+            "status": 200
+          },
+          "invalid": {
+            "errors": {
+              "article": [
+                "is invalid"
+              ]
+            },
+            "status": 422
+          }
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:21-23"
+      },
+      {
+        "expected": "201; old link 404; new link 200",
+        "kind": "contract",
+        "name": "share_rotation",
+        "observed": {
+          "new": {
+            "article": {
+              "body": "Shared body",
+              "revision": 4,
+              "slug": "share-edit-229c9e1b7b3e-a70f672d",
+              "title": "Share edit 229c9e1b7b3e"
+            },
+            "status": 200
+          },
+          "old": {
+            "errors": {
+              "share": [
+                "not found"
+              ]
+            },
+            "status": 404
+          },
+          "rotate": {
+            "share": {
+              "id": "117d9c04-5f89-470a-9bbc-1b22bbbc916e",
+              "key": "[redacted]"
+            },
+            "status": 201
+          }
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-9"
+      },
+      {
+        "expected": "204; revoked link 404",
+        "kind": "contract",
+        "name": "share_revocation",
+        "observed": {
+          "after": {
+            "errors": {
+              "share": [
+                "not found"
+              ]
+            },
+            "status": 404
+          },
+          "revoke": {
+            "body_kind": "NoneType",
+            "status": 204
+          }
+        },
+        "passed": true,
+        "source": "spec/features/live-editing/live-editing.md:7-11"
+      },
+      {
+        "expected": "after 20 failed logins, next attempt is 429",
+        "kind": "contract",
+        "name": "login_rate_limit_sequential",
+        "observed": {
+          "first_twenty_status_counts": {
+            "401": 10,
+            "429": 10
+          },
+          "next": {
+            "errors": {
+              "credentials": [
+                "too many attempts"
+              ]
+            },
+            "status": 429
+          }
+        },
+        "passed": true,
+        "source": "security/hurl/s13_login_rate_limit.hurl:15-27 (frozen fixture path in each workdir)"
+      },
+      {
+        "expected": "25 concurrent bad logins admit at most 20; later attempts are 429",
+        "kind": "quality_diagnostic",
+        "name": "login_rate_limit_burst",
+        "observed": {
+          "burst_status_counts": {
+            "401": 10,
+            "429": 15
+          },
+          "next": {
+            "errors": {
+              "credentials": [
+                "too many attempts"
+              ]
+            },
+            "status": 429
+          }
+        },
+        "passed": true,
+        "source": "security/hurl/s13_login_rate_limit.hurl:15-27 (concurrency is outside frozen S13)"
+      }
+    ],
+    "summary": {
+      "contract_passed": 21,
+      "contract_total": 21,
+      "quality_passed": 3,
+      "quality_total": 3
+    }
+  },
+  "http_probe_complete": true,
+  "source_driven_favorites_exit": 0,
+  "source_driven_favorites": {
+    "condition": "source-driven supplemental favorites diagnostic; not a frozen gate",
+    "contract_sources": [
+      "spec/docs/endpoints.md",
+      "spec/docs/api-response-format.md"
+    ],
+    "results": [
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "name": "setup/register_author",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "name": "setup/register_a",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "name": "setup/register_b",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "name": "setup/register_reader",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "name": "setup/create_article",
+        "observed": {
+          "body_kind": "dict",
+          "status": 201,
+          "usable_response": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "status": 200,
+          "usable_response": true
+        },
+        "name": "setup/favorite_a",
+        "observed": {
+          "body_kind": "dict",
+          "status": 200,
+          "usable_response": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "status": 200,
+          "usable_response": true
+        },
+        "name": "setup/favorite_b",
+        "observed": {
+          "body_kind": "dict",
+          "status": 200,
+          "usable_response": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "favorited": false,
+          "favorites_count": 2,
+          "status": 200,
+          "target_article": true
+        },
+        "name": "two_favorites/anonymous/direct",
+        "observed": {
+          "body_kind": "dict",
+          "favorited": false,
+          "favorites_count": 2,
+          "status": 200,
+          "target_article": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/anonymous/no_favorite_filter",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/anonymous/favorited_a",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/anonymous/favorited_b",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "favorited": false,
+          "favorites_count": 2,
+          "status": 200,
+          "target_article": true
+        },
+        "name": "two_favorites/author/direct",
+        "observed": {
+          "body_kind": "dict",
+          "favorited": false,
+          "favorites_count": 2,
+          "status": 200,
+          "target_article": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/author/no_favorite_filter",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/author/favorited_a",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/author/favorited_b",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "favorited": true,
+          "favorites_count": 2,
+          "status": 200,
+          "target_article": true
+        },
+        "name": "two_favorites/a/direct",
+        "observed": {
+          "body_kind": "dict",
+          "favorited": true,
+          "favorites_count": 2,
+          "status": 200,
+          "target_article": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/a/no_favorite_filter",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/a/favorited_a",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/a/favorited_b",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "favorited": true,
+          "favorites_count": 2,
+          "status": 200,
+          "target_article": true
+        },
+        "name": "two_favorites/b/direct",
+        "observed": {
+          "body_kind": "dict",
+          "favorited": true,
+          "favorites_count": 2,
+          "status": 200,
+          "target_article": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/b/no_favorite_filter",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/b/favorited_a",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/b/favorited_b",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "favorited": false,
+          "favorites_count": 2,
+          "status": 200,
+          "target_article": true
+        },
+        "name": "two_favorites/reader/direct",
+        "observed": {
+          "body_kind": "dict",
+          "favorited": false,
+          "favorites_count": 2,
+          "status": 200,
+          "target_article": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/reader/no_favorite_filter",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/reader/favorited_a",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "two_favorites/reader/favorited_b",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            2
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "status": 200,
+          "usable_response": true
+        },
+        "name": "setup/unfavorite_a",
+        "observed": {
+          "body_kind": "dict",
+          "status": 200,
+          "usable_response": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "favorited": false,
+          "favorites_count": 1,
+          "status": 200,
+          "target_article": true
+        },
+        "name": "one_favorite/anonymous/direct",
+        "observed": {
+          "body_kind": "dict",
+          "favorited": false,
+          "favorites_count": 1,
+          "status": 200,
+          "target_article": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "one_favorite/anonymous/no_favorite_filter",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 0,
+          "articles_is_list": true,
+          "favorited_flags": [],
+          "favorites_counts": [],
+          "returned_count": 0,
+          "status": 200,
+          "target_occurrences": 0
+        },
+        "name": "one_favorite/anonymous/favorited_a",
+        "observed": {
+          "articles_count": 0,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [],
+          "favorites_counts": [],
+          "returned_count": 0,
+          "status": 200,
+          "target_occurrences": 0
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "one_favorite/anonymous/favorited_b",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "favorited": false,
+          "favorites_count": 1,
+          "status": 200,
+          "target_article": true
+        },
+        "name": "one_favorite/author/direct",
+        "observed": {
+          "body_kind": "dict",
+          "favorited": false,
+          "favorites_count": 1,
+          "status": 200,
+          "target_article": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "one_favorite/author/no_favorite_filter",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 0,
+          "articles_is_list": true,
+          "favorited_flags": [],
+          "favorites_counts": [],
+          "returned_count": 0,
+          "status": 200,
+          "target_occurrences": 0
+        },
+        "name": "one_favorite/author/favorited_a",
+        "observed": {
+          "articles_count": 0,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [],
+          "favorites_counts": [],
+          "returned_count": 0,
+          "status": 200,
+          "target_occurrences": 0
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "one_favorite/author/favorited_b",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "favorited": false,
+          "favorites_count": 1,
+          "status": 200,
+          "target_article": true
+        },
+        "name": "one_favorite/a/direct",
+        "observed": {
+          "body_kind": "dict",
+          "favorited": false,
+          "favorites_count": 1,
+          "status": 200,
+          "target_article": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "one_favorite/a/no_favorite_filter",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 0,
+          "articles_is_list": true,
+          "favorited_flags": [],
+          "favorites_counts": [],
+          "returned_count": 0,
+          "status": 200,
+          "target_occurrences": 0
+        },
+        "name": "one_favorite/a/favorited_a",
+        "observed": {
+          "articles_count": 0,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [],
+          "favorites_counts": [],
+          "returned_count": 0,
+          "status": 200,
+          "target_occurrences": 0
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "one_favorite/a/favorited_b",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "favorited": true,
+          "favorites_count": 1,
+          "status": 200,
+          "target_article": true
+        },
+        "name": "one_favorite/b/direct",
+        "observed": {
+          "body_kind": "dict",
+          "favorited": true,
+          "favorites_count": 1,
+          "status": 200,
+          "target_article": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "one_favorite/b/no_favorite_filter",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 0,
+          "articles_is_list": true,
+          "favorited_flags": [],
+          "favorites_counts": [],
+          "returned_count": 0,
+          "status": 200,
+          "target_occurrences": 0
+        },
+        "name": "one_favorite/b/favorited_a",
+        "observed": {
+          "articles_count": 0,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [],
+          "favorites_counts": [],
+          "returned_count": 0,
+          "status": 200,
+          "target_occurrences": 0
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "one_favorite/b/favorited_b",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            true
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "favorited": false,
+          "favorites_count": 1,
+          "status": 200,
+          "target_article": true
+        },
+        "name": "one_favorite/reader/direct",
+        "observed": {
+          "body_kind": "dict",
+          "favorited": false,
+          "favorites_count": 1,
+          "status": 200,
+          "target_article": true
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "one_favorite/reader/no_favorite_filter",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 0,
+          "articles_is_list": true,
+          "favorited_flags": [],
+          "favorites_counts": [],
+          "returned_count": 0,
+          "status": 200,
+          "target_occurrences": 0
+        },
+        "name": "one_favorite/reader/favorited_a",
+        "observed": {
+          "articles_count": 0,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [],
+          "favorites_counts": [],
+          "returned_count": 0,
+          "status": 200,
+          "target_occurrences": 0
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "name": "one_favorite/reader/favorited_b",
+        "observed": {
+          "articles_count": 1,
+          "articles_is_list": true,
+          "body_kind": "dict",
+          "favorited_flags": [
+            false
+          ],
+          "favorites_counts": [
+            1
+          ],
+          "returned_count": 1,
+          "status": 200,
+          "target_occurrences": 1
+        },
+        "passed": true
+      }
+    ],
+    "summary": {
+      "failed": 0,
+      "passed": 48,
+      "total": 48
+    }
+  },
+  "source_driven_favorites_passed": true,
+  "finished": "2026-09-30T03:25:23.833453+00:00"
+}

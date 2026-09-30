@@ -36,6 +36,29 @@ Each checkpoint preserves its source, prompt, effort, failures and independent v
 | [Eight-step final](../../../stacks/clojure/8-live-editing) | 8,603 / 11,067 | 83.0 | 787,220 | [19/21 contract · 2/3 quality · favorites 48/48](8-live-editing/reviewer-parity/results.json) · [shared 3/3 + 0/1](8-live-editing/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
 | [Expert one-shot](../../one-shot-v2-clojure-expert/pilot-1/source) | 9,312 / 12,235 | 14.6 | 206,564 | [HTTP review incomplete · favorites review incomplete](../../one-shot-v2-clojure-expert/pilot-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](../../one-shot-v2-clojure-expert/pilot-1/reviewer-parity/share-boundary.json) · **not full reviewer parity** |
 
+### Repeated original runtime
+
+Two rounds; 16 concurrent users; 3-second warmup and 15-second samples; app and database each limited to 2 CPUs and 1 GiB. The HTTP fixture has 50 users and 500 articles. Ranges show both rounds. Source and image hashes must match the runtime manifest before metrics are shown; all nine HTTP workloads and 10/100/500-subscriber socket results are linked.
+
+| Application | List req/s | Article req/s | SQL / list | Image MB | Cold start seconds | Runtime checks |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| [Eight-step final](runtime/measured/clojure-8-live-editing-1) | 2,150–2,162 | 9,286–9,493 | 4.00 | 364.2 | 1.49–1.72 | pass |
+| [Expert one-shot](runtime/measured/clojure-one-shot-1) | 4,197–4,339 | 7,920–8,151 | 3.00 | 365.8 | 1.47 | pass |
+
+[Runtime manifest and all workloads](runtime/measured/summary.json). Runtime success does not imply supplemental reviewer parity; see the parity column above.
+
+The original sequential app failed two common contract cases (malformed owner updates and oversized comment IDs), plus the login-burst and outer shared-envelope quality diagnostics. The original one-shot HTTP review stopped during a concurrent login burst with repeated JVM heap exhaustion; its HTTP review is incomplete, and the following favorites setup failed. Its fresh shared-boundary checks passed. The nine repeated HTTP workloads do not include that login burst, so their passing runtime results do not resolve this failure. [Observed evidence and source review](EXPERT-REVIEW.md).
+
+
+## Reviewed references
+
+These independently checked repairs preserve their measured parents and earlier attempts. Their editing effort is unscored; supplemental review is shown separately.
+
+| Source | Owned backend tokens | Reviewer checks |
+| --- | ---: | --- |
+| [Eight-step final · reference 1](8-live-editing/reference-1/source) | 8,634 | [21/21 contract · 3/3 quality · favorites 48/48](8-live-editing/reference-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](8-live-editing/reference-1/reviewer-parity/share-boundary.json) |
+| [Expert one-shot · reference 1](../../one-shot-v2-clojure-expert/pilot-1/reference-1/source) | 9,891 | [21/21 contract · 3/3 quality · favorites 48/48](../../one-shot-v2-clojure-expert/pilot-1/reference-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](../../one-shot-v2-clojure-expert/pilot-1/reference-1/reviewer-parity/share-boundary.json) |
+
 ## Evidence and limits
 
 Backend size excludes dependencies, compiled output, tests and Markdown; tests/docs are recorded separately. Owned size uses the frozen prepared scaffold as its baseline. This focused library assembly is not a Rails-style integrated model framework.
@@ -53,5 +76,12 @@ Try a measured final app from the repository root (Docker and Node.js required):
 ```sh
 tools/lane_demo.sh clojure eight
 tools/lane_demo.sh clojure one-shot
+```
+
+Use the separately reviewed references:
+
+```sh
+tools/lane_demo.sh clojure eight-reference
+tools/lane_demo.sh clojure one-shot-reference
 ```
 

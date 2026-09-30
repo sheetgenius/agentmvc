@@ -137,6 +137,13 @@ def main():
                     references.append({**candidate, "session": identity["session"],
                                        "label": f"{label} · reference {match[1]}"})
         lines += runtime_table("measured", originals, "Repeated original runtime")
+        lines += ["", "The original sequential app failed two common contract cases (malformed owner updates "
+                  "and oversized comment IDs), plus the login-burst and outer shared-envelope quality diagnostics. "
+                  "The original one-shot HTTP review stopped during a concurrent login burst with repeated JVM "
+                  "heap exhaustion; its HTTP review is incomplete, and the following favorites setup failed. "
+                  "Its fresh shared-boundary checks passed. The nine repeated HTTP workloads do not include "
+                  "that login burst, so their passing runtime results do not resolve this failure. "
+                  "[Observed evidence and source review](EXPERT-REVIEW.md).", ""]
     if references:
         lines += ["", "## Reviewed references", "",
                   "These independently checked repairs preserve their measured parents and earlier attempts. "
@@ -171,6 +178,10 @@ def main():
     if finals:
         lines += ["", "Try a measured final app from the repository root (Docker and Node.js required):", "",
                   "```sh", "tools/lane_demo.sh clojure eight", "tools/lane_demo.sh clojure one-shot", "```", ""]
+        if references:
+            lines += ["Use the separately reviewed references:", "", "```sh",
+                      "tools/lane_demo.sh clojure eight-reference", "tools/lane_demo.sh clojure one-shot-reference",
+                      "```", ""]
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "README.md").write_text("\n".join(lines) + "\n")
     print(f"Clojure overview: {completed}/9 independently verified")

@@ -164,6 +164,20 @@ package. Export and packaging validate scrubbed evidence and hashes locally;
 they do not upload assets. Archives are written under `.work/clojure-artifacts/`
 and their manifest under this results directory.
 
+The two published unscored repairs use `reference-1`. Their repeated runtime
+selects both source-bound sessions explicitly:
+
+```sh
+.venv/bin/python tools/clojure_evidence.py runtime --condition reference --session .work/lanes/clojure-8-live-editing-reference-1/control/session.json --session .work/lanes/clojure-one-shot-reference-1/control/session.json
+.venv/bin/python tools/clojure_evidence.py validate --condition reference
+```
+
+The final package retains 72 original and 72 reference HTTP raw streams, plus
+the tuning feedback, socket results, transcripts and failed check attempts.
+Reference editing time is excluded from measured agent effort. See the
+[sequential repair record](8-live-editing/reference-1/REPAIRS.md) and
+[one-shot repair record](ONE-SHOT-REFERENCE-REPAIRS.md) for scope and validation.
+
 ## Preserved preparation findings
 
 The [preparation attempts](preflight-attempts/) retain an initial syntax error

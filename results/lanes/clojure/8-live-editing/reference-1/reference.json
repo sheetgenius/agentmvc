@@ -1,0 +1,19 @@
+{
+  "condition": "unscored-reference-repair",
+  "session": "clojure-8-live-editing-reference-1",
+  "parent_session": "clojure-8-live-editing-1",
+  "parent_source_sha256": "0aebf25fee2220cdeab77162529da5e9605ffc60190f1c4560d2a6edf9bd9fc1",
+  "parent_independent_checks_passed": true,
+  "revision": 1,
+  "created_at": "2026-09-30T03:03:28.660225+00:00",
+  "coding_effort": "Not a comparable measured coding session",
+  "check_port": 4113,
+  "originals_modified": false,
+  "checks": "Use tools/clojure_lane.py check REFERENCE_SESSION, then the parity and share commands of tools/clojure_evidence.py with --session REFERENCE_SESSION; inherited agent wrappers retain their historical ports",
+  "effective_fixture_sha256": "1bef490e875dad2e4ace0696014e7d7548adde0bd887a7af792c2ec1aace0d8f",
+  "reviewer_tools_sha256": {
+    "clojure_evidence.py": "2e008ebd2a01f216d6b01e096e9d32238e7352caddd697a2f7e0064871c188d1",
+    "clojure_lane.py": "4c2b2f211e48265415d6314452c8e30389ea430f3082f23404a13c936bc1915e",
+    "lane_reference.py": "9f26f4d9c1a888ad9646acdaa90c375b98fd1942ff4bb909c8a93eaa64cc8781"
+  }
+}

@@ -396,10 +396,10 @@
         "effective_record": "results/lanes/clojure/8-live-editing/reference-1/reference.json"
       },
       "source": {
-        "sha256": null,
-        "path": null,
-        "manifest": null,
-        "inventory": null
+        "sha256": "94de69bcd802935a011c2072054ce4ceee79aea8b6b840aaa58874a376a9f961",
+        "path": "results/lanes/clojure/8-live-editing/reference-1/source",
+        "manifest": "results/lanes/clojure/8-live-editing/reference-1/source-snapshot.json",
+        "inventory": "results/lanes/clojure/8-live-editing/reference-1/source-files.json"
       },
       "images": {
         "toolchain": null,
@@ -409,7 +409,13 @@
         "session": "clojure-8-live-editing-1",
         "source_sha256": "0aebf25fee2220cdeab77162529da5e9605ffc60190f1c4560d2a6edf9bd9fc1"
       },
-      "gates": [],
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/lanes/clojure/8-live-editing/reference-1/verification.json"
+        }
+      ],
       "evidence": [
         "results/lanes/clojure/8-live-editing/reference-1/reference.json"
       ]
@@ -2590,10 +2596,10 @@
         "effective_record": "results/one-shot-v2-clojure-expert/pilot-1/reference-1/reference.json"
       },
       "source": {
-        "sha256": null,
-        "path": null,
-        "manifest": null,
-        "inventory": null
+        "sha256": "897da5082836db4126c1e91260b23bfc574bedc2bf15c3b890600daba7621f79",
+        "path": "results/one-shot-v2-clojure-expert/pilot-1/reference-1/source",
+        "manifest": "results/one-shot-v2-clojure-expert/pilot-1/reference-1/source-snapshot.json",
+        "inventory": "results/one-shot-v2-clojure-expert/pilot-1/reference-1/source-files.json"
       },
       "images": {
         "toolchain": null,
@@ -2603,7 +2609,13 @@
         "session": "clojure-one-shot-1",
         "source_sha256": "85416e19319c5e1aac46fc3ad2367e340868f5d3b0fcafda844ff9b2f9996118"
       },
-      "gates": [],
+      "gates": [
+        {
+          "scope": "verification",
+          "status": "pass",
+          "record": "results/one-shot-v2-clojure-expert/pilot-1/reference-1/verification.json"
+        }
+      ],
       "evidence": [
         "results/one-shot-v2-clojure-expert/pilot-1/reference-1/reference.json"
       ]

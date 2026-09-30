@@ -58,4 +58,29 @@ The one-shot is **709 owned backend tokens larger**. It keeps domain modules but
 
 The one-shot validates the shared edit's outer envelope as well as its inner fields. Its live wiring has source-visible omissions: article deletion does not revoke admitted sockets, and publication does not broadcast the new revision. It also authorizes a shared request before the article transaction without rechecking the capability under that transaction's lock. These are review observations beyond the passing frozen gates; consult the [expert review](EXPERT-REVIEW.md) for separately recorded probes and their scope. Both measured originals remain preserved.
 
+## Unscored reference repairs
+
+Repairs are separate maintainer revisions with their own source and verification. Their changes and effort are not credited to the measured coding sessions above.
+
+The [eight-step reference-1 source](8-live-editing/reference-1/source/) adds four narrow repairs:
+
+- [Article operations](8-live-editing/reference-1/source/src/conduit/articles.clj) reject a non-map owner-edit payload after visibility and ownership checks, and use non-throwing comment-ID parsing to retain the structured 404 response.
+- [Login admission](8-live-editing/reference-1/source/src/conduit/users.clj) reserves an attempt atomically before password work. The existing bounded, expiring cache still resets on successful authentication.
+- [Shared edits](8-live-editing/reference-1/source/src/conduit/shares.clj) receive the complete request envelope and validate both its outer and inner fields after capability authorization.
+
+It has **8,634 owned backend tokens**, 31 more than its parent. [Repair scope](8-live-editing/reference-1/REPAIRS.md) distinguishes the two contract defects from the login and outer-envelope quality diagnostics. The socket coordination and export implementation are unchanged.
+
+The [one-shot reference-1 source](../../one-shot-v2-clojure-expert/pilot-1/reference-1/source/) contains broader repairs, at **9,891 owned backend tokens**, 579 more than its parent:
+
+- [Password work](../../one-shot-v2-clojure-expert/pilot-1/reference-1/source/src/conduit/users.clj) uses a two-permit semaphore for hashing and verification, and reserves login admission before expensive work. Token parsing no longer hides database lookup failures as authentication failures.
+- [Capability and room operations](../../one-shot-v2-clojure-expert/pilot-1/reference-1/source/src/conduit/shares.clj) recheck the capability under the same article lock used by rotation and revocation. Disconnect cleanup removes membership and terminates the sender; queue overflow triggers that cleanup. Publication now broadcasts its revision, and article deletion revokes its room.
+- [Export snapshots](../../one-shot-v2-clojure-expert/pilot-1/reference-1/source/src/conduit/exports.clj) use Repeatable Read for the separate article and tag queries. The [queue worker](../../one-shot-v2-clojure-expert/pilot-1/reference-1/source/src/conduit/queue.clj) configures three delayed retries.
+- New [focused tests](../../one-shot-v2-clojure-expert/pilot-1/reference-1/source/test/conduit/reference_test.clj) and [database integration tests](../../one-shot-v2-clojure-expert/pilot-1/reference-1/source/test/conduit/reference_integration_test.clj) exercise admission, password concurrency, sender cleanup, a save waiting across revocation, coherent export reads, transient worker failure and live publication/deletion.
+
+Both references pass independent development/production and all completed supplemental probes: **21/21 common contract, 3/3 common quality, 48/48 favorites, 3/3 shared contract and 1/1 outer-envelope diagnostic**. Evidence: eight-step [gates](8-live-editing/reference-1/verification.json), [common/favorites](8-live-editing/reference-1/reviewer-parity/results.json), [shared boundary](8-live-editing/reference-1/reviewer-parity/share-boundary.json); one-shot [gates](../../one-shot-v2-clojure-expert/pilot-1/reference-1/verification.json), [common/favorites](../../one-shot-v2-clojure-expert/pilot-1/reference-1/reviewer-parity/results.json), [shared boundary](../../one-shot-v2-clojure-expert/pilot-1/reference-1/reviewer-parity/share-boundary.json). Repeated production runtime measurements for the references are in progress.
+
+## Original runtime evidence
+
+Both originals completed [two production runtime rounds](runtime/measured/summary.json), passing all nine HTTP workloads and socket checks at 10, 100 and 500 subscribers. The [raw-stream validation](runtime/measured/raw-validation.json) records 72 retained HTTP streams. These workloads do not include the concurrent login burst that exhausted the one-shot's heap during supplemental review. Runtime success therefore leaves that incomplete common-HTTP review and the other recorded defects visible.
+
 For measured history and conditions, see the [lane report](README.md) and [methodology](METHODOLOGY.md).
