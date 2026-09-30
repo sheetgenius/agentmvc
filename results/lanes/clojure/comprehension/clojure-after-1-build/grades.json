@@ -1,0 +1,97 @@
+{
+  "session": "clojure-1-build-1",
+  "graded_at": "2026-09-30T01:34:19.346934+00:00",
+  "source_sha256": "957d2bdce441a15ea338c083db6c20093dc2ae0d1c02b510d1a4ee5aa176721b",
+  "answer_sha256": "7f8c9f19ec7e3aaca121a4749143156511b794ad2bbe72e13c5741fc32a08c64",
+  "answer_key_sha256": "c96d6c8a1eb954fb327a8aeb93c8c2572f0ac1eeba439e42a577ecf9a6c13f30",
+  "answer_key_saved_at": "2026-09-30T01:28:17.394776+00:00",
+  "reader_started_at": "2026-09-30T01:31:03.393693+00:00",
+  "score": 12,
+  "maximum": 12,
+  "items": [
+    {
+      "question": 1,
+      "score": 1,
+      "reason": "Correct title normalization, random UUID suffix, and regeneration whenever title is supplied, including an unchanged title; cites the generating and updating functions.",
+      "source": "src/conduit/articles.clj — slug, create!, update! (19–21, 55–82)"
+    },
+    {
+      "question": 2,
+      "score": 1,
+      "reason": "Correct HTTP 409 and field-specific error JSON for pre-existing duplicates, with the availability check and exception-to-response path identified.",
+      "source": "src/conduit/users.clj — available!, register!; src/conduit/domain.clj — fail; src/conduit/http.clj — wrap-api"
+    },
+    {
+      "question": 3,
+      "score": 1,
+      "reason": "Correct followed-author membership, additional conjunctive filters, descending creation time and ID tie-breaker, then pagination.",
+      "source": "src/conduit/articles.clj — listing (102–115); src/conduit/http.clj — handler, /api/articles/feed (60)"
+    },
+    {
+      "question": 4,
+      "score": 1,
+      "reason": "Correct count of favorite rows for the article ID and exact projection function.",
+      "source": "src/conduit/articles.clj — present (39–40)"
+    },
+    {
+      "question": 5,
+      "score": 1,
+      "reason": "Correct 403 and errors.comment=[forbidden] response, with comment ownership and response serialization locations.",
+      "source": "src/conduit/articles.clj — delete-comment!; src/conduit/domain.clj — owned, fail; src/conduit/http.clj — wrap-api"
+    },
+    {
+      "question": 6,
+      "score": 1,
+      "reason": "Correct empty-string-to-NULL update and null public projection, with both implementing functions.",
+      "source": "src/conduit/users.clj — update!, public (63–71, 26–28)"
+    },
+    {
+      "question": 7,
+      "score": 1,
+      "reason": "Correct association-table storage, per-article uniqueness, global DISTINCT tags and ascending database ordering; cites schema and query functions.",
+      "source": "resources/migrations/001-conduit.up.sql — article_tags (27–32); src/conduit/articles.clj — replace-tags!, all-tags; src/conduit/http.clj — handler"
+    },
+    {
+      "question": 8,
+      "score": 1,
+      "reason": "Correct default 20 and absence of a configured upper clamp, with the signed 32-bit parse bound distinguished from an application maximum.",
+      "source": "src/conduit/articles.clj — page-size, listing (98–113)"
+    },
+    {
+      "question": 9,
+      "score": 1,
+      "reason": "Correct Buddy JWT signing with configured secret, user ID claim and exp 30 days after issuance; token is the precise implementing function.",
+      "source": "src/conduit/users.clj — token (12–14)"
+    },
+    {
+      "question": 10,
+      "score": 1,
+      "reason": "Correct ownership enforcement in both mutators through the shared owner-ID comparison.",
+      "source": "src/conduit/articles.clj — update!, delete! (67, 86); src/conduit/domain.clj — owned (17–19)"
+    },
+    {
+      "question": 11,
+      "score": 1,
+      "reason": "Correct distinction: omitted tagList preserves tags; explicit null returns 422 with errors.tagList=[is invalid]. Correct validation/update/serialization locations.",
+      "source": "src/conduit/articles.clj — update!, valid-tags (68–81, 50–53); src/conduit/http.clj — wrap-api"
+    },
+    {
+      "question": 12,
+      "score": 1,
+      "reason": "Correct stored derived hash column, Buddy derive calls and check verification, without inventing an explicit hashing-algorithm choice.",
+      "source": "src/conduit/users.clj — register!, update!, login! (45, 64, 50); resources/migrations/001-conduit.up.sql — users.password_hash (5)"
+    }
+  ],
+  "limitations": [
+    "One fresh gpt-6-sol/xhigh reader on the published step 1 snapshot; this score does not establish general maintainability or a model/language ranking.",
+    "Applied the saved 1/0.5/0 behavior-and-location rubric; confidence labels and self-reported file count were not scored.",
+    "Concise answers need not repeat every optional corner case in the key. Library-default algorithm names absent from application source were not required."
+  ],
+  "integrity": {
+    "reader_exit": 0,
+    "reader_source_unchanged": true,
+    "isolation_passed": true,
+    "key_saved_before_reader": true,
+    "archived_key_matches_presaved_key": true
+  }
+}
