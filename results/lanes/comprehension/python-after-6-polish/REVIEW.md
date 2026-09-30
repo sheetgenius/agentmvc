@@ -21,4 +21,4 @@ The fresh source-derived key was saved before the reader started, and its SHA-25
 
 The favorite-count answer identifies the implemented annotation and relation-count fallback; its comprehension score does not resolve the separately reviewed favorite-filter behavior.
 
-[Reader answer](answer.md) · [Pre-saved key](answer-key.md) · [Key preparation](key-preparation.json) · [Itemized grade](grades.json) · [Run and tokens](run.json) · [Isolation proof](isolation.json)
+[Reader answer](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/results/lanes/comprehension/python-after-6-polish/answer.md) · [Pre-saved key](answer-key.md) · [Key preparation](key-preparation.json) · [Itemized grade](grades.json) · [Run and tokens](run.json) · [Isolation proof](isolation.json)

@@ -1,7 +1,0 @@
-Built the Conduit backend and verified it in both development and a fresh production container.
-
-**Checks:** `harness/check-all.sh 4104` and `harness/check-production.sh 4104` passed all 17 API files, the WebSocket protocol, 4 browser tests, and 13 security files. `nix flake check --impure` passed with the toolchain’s Nix features enabled. Stylish Haskell completed and HLint reported no hints.
-
-IHP owns HTTP routing, PostgreSQL persistence, migrations, the WebSocket route, and the durable export worker. The main rule owners are [Api.hs](/work/app/Application/Controller/Api.hs), [Live.hs](/work/app/Application/Live.hs), [Export.hs](/work/app/Application/Job/Export.hs), and [Schema.sql](/work/app/Application/Schema.sql). [AGENTS.md](/work/app/AGENTS.md:28) maps those rules for future changes. Typed SQL inference, PostgreSQL JSON projections, Haskell pattern matching, and IHP’s job runner keep the domain code compact; [TypedSql.hs](/work/app/Application/TypedSql.hs) uses unprepared Hasql execution to avoid a pooled prepared statement cache failure.
-
-Acceptance runs exposed and resolved response validation and status errors, the prepared statement failure, and the security suite’s signed JWT requirement. The first production run hit a port conflict with the development app; stopping it let the fresh container pass. Known limit: issued tokens have no expiry or rotation flow.

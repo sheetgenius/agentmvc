@@ -131,7 +131,10 @@ following paths, launch each reader once:
 Grade the answers separately against those saved keys, with source references
 for all twelve scores. Reader evidence goes under `comprehension/`; release
 validation requires `key-preparation.json` and `grades.json` with the timestamps
-and hashes checked by `reader_graded` in `tools/clojure_artifacts.py`.
+and hashes checked by `reader_graded` in `tools/clojure_artifacts.py`. The
+reader's `answer.md` is an agent message, so Git ignores it; `reader_graded`
+hashes the local copy, or the one held by the commit that
+`results/message-archive.json` names.
 
 After both final applications have passed their independent gates, run the
 supplemental probes on their exact published snapshots:

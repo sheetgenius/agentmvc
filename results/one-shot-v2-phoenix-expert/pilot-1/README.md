@@ -14,7 +14,7 @@ This is a **guided, unscored diagnostic**, separate from the original Phoenix on
 | Security | 13/13 files, 52 requests |
 | Formatter, warnings-as-errors compile, focused tests | Pass; 5 tests |
 
-The [run record](run.json), [check attempts](check-attempts.json), [command failures](command-failures.json), [development log](development.log), and [production log](production.log) contain the underlying results. The [transcript](transcript.md) and [agent report](agent-report.md) are scrubbed. The [source snapshot](source/) and [source hash manifest](source-snapshot.json) make the measured candidate reviewable.
+The [run record](run.json), [check attempts](check-attempts.json), [command failures](command-failures.json), [development log](development.log), and [production log](production.log) contain the underlying results. The [transcript](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/results/one-shot-v2-phoenix-expert/pilot-1/transcript.md) and [agent report](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/results/one-shot-v2-phoenix-expert/pilot-1/agent-report.md) are scrubbed. The [source snapshot](source/) and [source hash manifest](source-snapshot.json) make the measured candidate reviewable.
 
 ## Code and runtime
 

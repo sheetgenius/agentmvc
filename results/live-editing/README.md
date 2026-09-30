@@ -10,9 +10,9 @@ Independent reruns of `tools/check.sh STACK 8-live-editing` passed for all three
 
 | Stack | Agent report | Scrubbed transcript | Independent gates | Separate reviewer checks |
 | --- | --- | --- | --- | --- |
-| Rails | [report](../../stacks/rails/reports/8-live-editing.md) | [transcript](../../stacks/rails/transcripts/8-live-editing.md) | Pass | Pass |
-| Phoenix | [report](../../stacks/phoenix/reports/8-live-editing.md) | [transcript](../../stacks/phoenix/transcripts/8-live-editing.md) | Pass | Pass |
-| Loco | [report](../../stacks/loco/reports/8-live-editing.md) | [transcript](../../stacks/loco/transcripts/8-live-editing.md) | Pass | Pass |
+| Rails | [report](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/stacks/rails/reports/8-live-editing.md) | [transcript](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/stacks/rails/transcripts/8-live-editing.md) | Pass | Pass |
+| Phoenix | [report](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/stacks/phoenix/reports/8-live-editing.md) | [transcript](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/stacks/phoenix/transcripts/8-live-editing.md) | Pass | Pass |
+| Loco | [report](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/stacks/loco/reports/8-live-editing.md) | [transcript](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/stacks/loco/transcripts/8-live-editing.md) | Pass | Pass |
 
 `tools/demo.sh rails|phoenix|loco` built and started each production image with PostgreSQL and the same shared editor, created a draft and editing link, and printed a usable URL. The later [review script](../../tools/live-review.mjs) passed on each production image: an invalid link in a fresh browser, a save after revocation, repeated save/subscription races, owner edits reaching subscribers, and 105 simultaneous admission attempts yielding exactly 100 ready and five room-full responses. That review script was outside the frozen agent fixture.
 

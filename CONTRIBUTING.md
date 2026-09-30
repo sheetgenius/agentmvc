@@ -26,7 +26,7 @@ For a new language lane, first make its environment and gates reproducible. Disc
 
 ## Transcripts and private data
 
-Do not add new full agent transcripts, chat exports, raw credentials, local workdirs, or account details to Git. Existing historical transcripts are preserved as study artifacts; this policy applies to new contributions. A short decision note and links to the code, prompt, checks, and measurements are usually enough.
+Do not add agent transcripts, agent final reports, chat exports, raw credentials, local workdirs, or account details to Git; `.gitignore` keeps the usual file names out. The historical transcripts, agent reports and comprehension answers have left the working tree too. [`results/message-archive.json`](results/message-archive.json) lists each one with its checksum and the commit that still holds it, and `git show COMMIT:PATH` restores any of them. A short decision note and links to the code, prompt, checks, and measurements are usually enough.
 
 If a transcript helps reviewers, publish it separately as a private or public gist or release attachment after scrubbing **and reading the output yourself**. `tools/scrub.py` handles Codex JSONL and plain-text transcripts:
 

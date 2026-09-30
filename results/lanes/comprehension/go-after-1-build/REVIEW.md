@@ -19,6 +19,6 @@ The answer key was saved before the fresh reader started, and its recorded SHA-2
 | 11 | 1 | Omitted tags unchanged; null returns 422 blank error — `internal/conduit/articles.go: tagField, updateArticle; internal/conduit/http.go: invalid, route` |
 | 12 | 1 | SHA-256 hex digest then x/crypto bcrypt at DefaultCost — `internal/conduit/users.go: passwordDigest, passwordHash` |
 
-[Reader answer](answer.md) · [Pre-saved key](answer-key.md) · [Itemized grade](grades.json) · [Run and tokens](run.json) · [Isolation proof](isolation.json)
+[Reader answer](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/results/lanes/comprehension/go-after-1-build/answer.md) · [Pre-saved key](answer-key.md) · [Itemized grade](grades.json) · [Run and tokens](run.json) · [Isolation proof](isolation.json)
 
 All seven isolation checks passed before this fresh reader ran. The source copy was unchanged afterward. Total and cached input are retained beside uncached-plus-output so cache variation is visible.

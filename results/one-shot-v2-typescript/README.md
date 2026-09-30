@@ -52,7 +52,7 @@ The TypeScript pilot is about 29% smaller in owned tokens than the one Servant v
 ## Artifacts
 
 - [Frozen shared prompt](frozen-prompt.md), [fixture manifest](../../one-shot-v2-typescript/fixture-manifest.json), [preflight](preflight.json), and [isolation probe](isolation.json)
-- [Scrubbed transcript](pilot-1/transcript.md), [event stream](pilot-1/transcript.jsonl), [agent report](pilot-1/agent-report.md), [effort record](pilot-1/run.json), [command failures](pilot-1/command-failures.json), and [attempt counts](pilot-1/check-attempts.json)
+- [Scrubbed transcript](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/results/one-shot-v2-typescript/pilot-1/transcript.md), [event stream](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/results/one-shot-v2-typescript/pilot-1/transcript.jsonl), [agent report](https://github.com/sheetgenius/agentmvc/blob/8c8999d8ef4c29acacd01a60d4fed1400231143d/results/one-shot-v2-typescript/pilot-1/agent-report.md), [effort record](pilot-1/run.json), [command failures](pilot-1/command-failures.json), and [attempt counts](pilot-1/check-attempts.json)
 - [Source snapshot](pilot-1/source/), [size](pilot-1/size.json), [file inventory](pilot-1/source-files.json), [test size](pilot-1/tests.json), [project docs size](pilot-1/docs.json), and [source review](pilot-1/review.json)
 - [Development gate](pilot-1/development.json), [production gate](pilot-1/production.json), their logs, and the [first production attempt](pilot-1/production-attempt1.json)
 - [Repeated runtime summary](pilot-1/runtime/summary.json), per-round HTTP and WebSocket JSON, and lossless raw streams indexed in [raw-data](../raw-data/README.md)
