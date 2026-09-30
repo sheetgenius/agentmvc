@@ -53,11 +53,13 @@ The [lane comparison](results/lanes/README.md) includes two repeated production 
 
 Try a reviewed app with `tools/lane_demo.sh go one-shot-reference` or `tools/lane_demo.sh python eight-reference` (Docker and Node.js required).
 
-## Clojure: original coding and runtime baseline complete
+## Clojure: measured builds and verified references
 
 The [Clojure track](results/lanes/clojure/README.md) completed the same eight prompts and a separate expert one-shot: **9/9 coding sessions independently verified**. The sequential final has 8,603 owned backend tokens and took 83.0 coding minutes; the one-shot has 9,312 tokens and took 14.6 minutes. Both fresh readers scored **12/12**. [Two production runtime rounds](results/lanes/clojure/runtime/measured/summary.json) passed all nine HTTP workloads and socket checks for both originals; those workloads do not repeat the concurrent login diagnostic.
 
-Supplemental review found two sequential contract defects: malformed owner-edit payloads mutated articles, and oversized comment IDs produced 500 responses. Separate diagnostics found that concurrent bad logins bypassed the limit and an extra shared-envelope field was accepted with mutation. The one-shot's common HTTP review remains **incomplete** after heap exhaustion during the login burst; subsequent favorites setup failed, while shared-edit checks passed on a fresh instance. Both separate **unscored references now pass development, production and supplemental checks**; their repeated runtime measurements are in progress. [Code guide and repairs](results/lanes/clojure/CODE-GUIDE.md) · [Expert review and exact verdicts](results/lanes/clojure/EXPERT-REVIEW.md) · [Stack selection](stacks/clojure/SELECTION.md) · [Recorded conditions](results/lanes/clojure/METHODOLOGY.md).
+Supplemental review found two sequential contract defects: malformed owner-edit payloads mutated articles, and oversized comment IDs produced 500 responses. Separate diagnostics found that concurrent bad logins bypassed the limit and an extra shared-envelope field was accepted with mutation. The one-shot's common HTTP review remains **incomplete** after heap exhaustion during the login burst; subsequent favorites setup failed, while shared-edit checks passed on a fresh instance.
+
+The separate **unscored references**—[sequential, 8,634 owned tokens](results/lanes/clojure/8-live-editing/reference-1/source/) and [one-shot, 9,891](results/one-shot-v2-clojure-expert/pilot-1/reference-1/source/)—pass development, production and supplemental checks, plus [two production runtime rounds](results/lanes/clojure/runtime/reference/summary.json). The measured originals and their failures remain preserved. [Code guide and repairs](results/lanes/clojure/CODE-GUIDE.md) · [Expert review and exact verdicts](results/lanes/clojure/EXPERT-REVIEW.md) · [Stack selection](stacks/clojure/SELECTION.md) · [Recorded conditions](results/lanes/clojure/METHODOLOGY.md).
 
 ## Original eight-step study
 

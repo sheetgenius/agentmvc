@@ -1,0 +1,178 @@
+{
+  "condition": "reference",
+  "description": "prepared-scaffold final production runtime",
+  "started": "2026-09-30T03:27:55.025931+00:00",
+  "rounds": 2,
+  "http_vus": 16,
+  "http_warmup": "3s",
+  "http_duration": "15s",
+  "http_scenarios": [
+    "list_anonymous",
+    "list_signed_in",
+    "list_by_tag",
+    "feed",
+    "article",
+    "comments",
+    "tags",
+    "favorite_toggle",
+    "create_article"
+  ],
+  "socket_subscribers": [
+    10,
+    100,
+    500
+  ],
+  "socket_saves": 20,
+  "limits": {
+    "app": "2 CPU, 1 GiB",
+    "database": "2 CPU, 1 GiB"
+  },
+  "tools_sha256": {
+    "lane_evidence.py": "6cab1f79fadd7e4d4459223a344cf6de48adc5797a3c94982a977559b202678a",
+    "lane_check.py": "145a6f3bbee6c55cd616732a9663389903c0a41fb2682b5bd12e84b147fe7e61",
+    "lane_broker.py": "ac58c5d1ad9972c7907014781dd267ae5c288dbf9a8ce3376503e06b8a58d628",
+    "lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "lane_review.py": "0131bb4fc4e9aab709eede4020f60bd8a962b9f6b9d0da816aa509516af7e348",
+    "reviewer_common_http_probe.py": "d40c80b7cda2295cf9367b6b4435a04f5d180532de0390e7c95d73ff4fcd3499",
+    "lane_favorites_probe.py": "e8391c242479bcdf5c94e6ec862dcf1de32dd0cd574a0ff6cec7ee1fd84e99a2",
+    "lane_share_probe.py": "207274444bdbc261955bd73112b9442cd7bf80f9ef111a9c372b1f48e83f300e",
+    "lane_share_review.py": "4d645daad98d4194d6d8f16d182a6e5b72116965daf5eed9f68f80c5b31915c2",
+    "bench/bench.py": "d9eb2fbceb835f5798f5a193588c61ef2d5b1a36a3af7a393196f23d3b9aa2ab",
+    "bench/load.js": "9057777b106e10fada6fc0fbfe85168258643f04a537ea5313277c0e86b37481",
+    "bench/seed.py": "ae62d6f3c25f4f77873ad828855c662a895c2dc75517a957f83b9d7ad6448c93",
+    "one_shot_live_bench.py": "c1f86e7359ce27ea14746bd36a768c2c5f4e0fdb43cdea87bf2ee3c5a2ef5528",
+    "live-load.mjs": "2ca75930e55074274db5d9a49bf9b55e7107c534d5048ce23801fc6fb28b0ce2",
+    "v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79",
+    "scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+    "clojure_lane.py": "4c2b2f211e48265415d6314452c8e30389ea430f3082f23404a13c936bc1915e",
+    "clojure_evidence.py": "2e008ebd2a01f216d6b01e096e9d32238e7352caddd697a2f7e0064871c188d1"
+  },
+  "applications": {
+    "clojure-8-live-editing-reference-1": {
+      "session": "clojure-8-live-editing-reference-1",
+      "stack": "clojure",
+      "phase": "reference",
+      "condition": "unscored-reference-repair",
+      "source_sha256": "94de69bcd802935a011c2072054ce4ceee79aea8b6b840aaa58874a376a9f961",
+      "fixture_sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+      "fixture_record_sha256": "6ce0dfc20387b2bc257a461f60a65f5f2fbaa993da6c3cc17b5ff5035d0afb07",
+      "prompt_sha256": "f44ffb88bcf65bfe59f9841d1c8c81f32220c4b06a25fefdc5119e74b42c85d9",
+      "image_sha256": "sha256:e3d57bd9af5767f2e29b95022a1f183be47b571b511ca3574651f58ac3060b22"
+    },
+    "clojure-one-shot-reference-1": {
+      "session": "clojure-one-shot-reference-1",
+      "stack": "clojure",
+      "phase": "reference",
+      "condition": "unscored-reference-repair",
+      "source_sha256": "897da5082836db4126c1e91260b23bfc574bedc2bf15c3b890600daba7621f79",
+      "fixture_sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+      "fixture_record_sha256": "0a222760a531dca176eff7f02a147d438030951292572f2bbc4f73052b5bbca3",
+      "prompt_sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+      "image_sha256": "sha256:0f93067087a248773c008c02b85d9b7f36bce3a37de98bcd439e16210fac973d"
+    }
+  },
+  "order": [
+    {
+      "round": 1,
+      "session": "clojure-8-live-editing-reference-1"
+    },
+    {
+      "round": 1,
+      "session": "clojure-one-shot-reference-1"
+    },
+    {
+      "round": 2,
+      "session": "clojure-one-shot-reference-1"
+    },
+    {
+      "round": 2,
+      "session": "clojure-8-live-editing-reference-1"
+    }
+  ],
+  "records": [
+    {
+      "session": "clojure-8-live-editing-reference-1",
+      "round": 1,
+      "kind": "http",
+      "passed": true,
+      "path": "clojure-8-live-editing-reference-1/round1/http"
+    },
+    {
+      "session": "clojure-8-live-editing-reference-1",
+      "round": 1,
+      "kind": "socket",
+      "passed": true,
+      "path": "clojure-8-live-editing-reference-1/round1/socket"
+    },
+    {
+      "session": "clojure-one-shot-reference-1",
+      "round": 1,
+      "kind": "http",
+      "passed": true,
+      "path": "clojure-one-shot-reference-1/round1/http"
+    },
+    {
+      "session": "clojure-one-shot-reference-1",
+      "round": 1,
+      "kind": "socket",
+      "passed": true,
+      "path": "clojure-one-shot-reference-1/round1/socket"
+    },
+    {
+      "session": "clojure-one-shot-reference-1",
+      "round": 2,
+      "kind": "socket",
+      "passed": true,
+      "path": "clojure-one-shot-reference-1/round2/socket"
+    },
+    {
+      "session": "clojure-one-shot-reference-1",
+      "round": 2,
+      "kind": "http",
+      "passed": true,
+      "path": "clojure-one-shot-reference-1/round2/http"
+    },
+    {
+      "session": "clojure-8-live-editing-reference-1",
+      "round": 2,
+      "kind": "socket",
+      "passed": true,
+      "path": "clojure-8-live-editing-reference-1/round2/socket"
+    },
+    {
+      "session": "clojure-8-live-editing-reference-1",
+      "round": 2,
+      "kind": "http",
+      "passed": true,
+      "path": "clojure-8-live-editing-reference-1/round2/http"
+    }
+  ],
+  "passed": true,
+  "reviewer_parity": {
+    "clojure-8-live-editing-reference-1": {
+      "passed": true,
+      "http_probe_complete": true,
+      "http_probe_exit": 0,
+      "frozen_production_gate_exit": 0,
+      "source_driven_favorites_passed": true,
+      "common_parity_passed": true
+    },
+    "clojure-one-shot-reference-1": {
+      "passed": true,
+      "http_probe_complete": true,
+      "http_probe_exit": 0,
+      "frozen_production_gate_exit": 0,
+      "source_driven_favorites_passed": true,
+      "common_parity_passed": true
+    }
+  },
+  "interpretation": "Runtime success does not imply supplemental reviewer parity; see reviewer_parity.",
+  "shared_edit_review": {
+    "clojure-8-live-editing-reference-1": true,
+    "clojure-one-shot-reference-1": true
+  },
+  "http_database_image_sha256": "sha256:8ee7c900f4de054e8f0a3b42b8f5da38b8fba57c3ccd7c1a02be28cb0b06494f",
+  "load_generator_image_sha256": "sha256:4d79f9384ce43a49b40f135a2c57fd3562ebc704ecb0e81e3cc4a624bac12646",
+  "socket_database_image": "postgres:17-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193",
+  "finished": "2026-09-30T03:45:23.355947+00:00"
+}

@@ -59,6 +59,17 @@ These independently checked repairs preserve their measured parents and earlier 
 | [Eight-step final · reference 1](8-live-editing/reference-1/source) | 8,634 | [21/21 contract · 3/3 quality · favorites 48/48](8-live-editing/reference-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](8-live-editing/reference-1/reviewer-parity/share-boundary.json) |
 | [Expert one-shot · reference 1](../../one-shot-v2-clojure-expert/pilot-1/reference-1/source) | 9,891 | [21/21 contract · 3/3 quality · favorites 48/48](../../one-shot-v2-clojure-expert/pilot-1/reference-1/reviewer-parity/results.json) · [shared 3/3 + 1/1](../../one-shot-v2-clojure-expert/pilot-1/reference-1/reviewer-parity/share-boundary.json) |
 
+### Repeated reference runtime
+
+Two rounds; 16 concurrent users; 3-second warmup and 15-second samples; app and database each limited to 2 CPUs and 1 GiB. The HTTP fixture has 50 users and 500 articles. Ranges show both rounds. Source and image hashes must match the runtime manifest before metrics are shown; all nine HTTP workloads and 10/100/500-subscriber socket results are linked.
+
+| Application | List req/s | Article req/s | SQL / list | Image MB | Cold start seconds | Runtime checks |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| [Eight-step final · reference 1](runtime/reference/clojure-8-live-editing-reference-1) | 2,096–2,142 | 9,352–9,398 | 4.00 | 364.2 | 1.49–1.61 | pass |
+| [Expert one-shot · reference 1](runtime/reference/clojure-one-shot-reference-1) | 4,243–4,303 | 7,886–8,165 | 3.00 | 365.8 | 1.46–1.49 | pass |
+
+[Runtime manifest and all workloads](runtime/reference/summary.json). Each runtime label names the exact reference version measured, which may precede a newer verified reference.
+
 ## Evidence and limits
 
 Backend size excludes dependencies, compiled output, tests and Markdown; tests/docs are recorded separately. Owned size uses the frozen prepared scaffold as its baseline. This focused library assembly is not a Rails-style integrated model framework.

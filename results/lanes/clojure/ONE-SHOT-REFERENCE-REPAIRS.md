@@ -1,6 +1,6 @@
 # One-shot Clojure reference repairs
 
-**Status: published; focused tests, full independent gates and supplemental probes passed. Repeated runtime in progress.** This is an unscored reference. Nothing here changes the measured original or credits it with repaired behavior.
+**Status: published; focused tests, full independent gates, supplemental probes and both repeated runtime rounds passed.** This is an unscored reference. Nothing here changes the measured original or credits it with repaired behavior.
 
 - Original snapshot: `85416e19319c5e1aac46fc3ad2367e340868f5d3b0fcafda844ff9b2f9996118`.
 - Published reference: [source](../../one-shot-v2-clojure-expert/pilot-1/reference-1/source/), snapshot `897da5082836db4126c1e91260b23bfc574bedc2bf15c3b890600daba7621f79`.
@@ -38,5 +38,7 @@ The [successful test attempt](../../one-shot-v2-clojure-expert/pilot-1/reference
 The nine new tests cover the repaired boundaries; the existing three tests also pass. The database tests observed a save actually waiting on a PostgreSQL lock before revocation committed, forced a concurrent article/tag edit between export reads, exercised the real Proletarian worker through a transient exception, and called the actual publish/delete HTTP handlers. Queue tests blocked a sender and filled its output queue, then verified closure, room release, and thread termination.
 
 The published snapshot passed both [independent development and production gates](../../one-shot-v2-clojure-expert/pilot-1/reference-1/verification.json). The unchanged [HTTP and favorites probes](../../one-shot-v2-clojure-expert/pilot-1/reference-1/reviewer-parity/results.json) passed 21/21 contract cases, 3/3 quality cases and 48/48 favorites cases, including the concurrent login burst. The [shared-boundary probes](../../one-shot-v2-clojure-expert/pilot-1/reference-1/reviewer-parity/share-boundary.json) passed 3/3 contract cases and 1/1 quality diagnostic. All verdicts bind to the reference source hash above. Integration tests require `DATABASE_URL`; the broker points the test container at the separate `agentmvc_test` database, and the fixture migrates it.
+
+Both [repeated production runtime rounds](runtime/reference/summary.json) passed all nine HTTP workloads and socket checks at 10, 100 and 500 subscribers. These short samples retain the JVM warmup limitation described in the [methodology](METHODOLOGY.md).
 
 The original one-shot common probe is incomplete, not a measured zero contract score. Later passing reference checks must be recorded with the reference source hash, never substituted for that original result. No comparable agent-effort claim is made for these repairs.
