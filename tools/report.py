@@ -4,9 +4,9 @@ Usage: python3 tools/report.py            (needs tiktoken and matplotlib: pip in
 
 Writes:
 - results/sizes.json          code size of every stack at every step, and what each step added or changed;
-- results/charts/*.svg|png    the charts in the README and the findings pages;
+- results/charts/*.svg|png    the charts in the eight-step study and the findings pages;
 - stacks/<stack>/README.md    each stack's steps, with links to its code, and to its report and transcript in Git history;
-- README.md                   the table between the stats markers.
+- docs/eight-step-study.md    the table between the stats markers.
 """
 import json, re, statistics, sys
 from pathlib import Path
@@ -321,11 +321,11 @@ def main():
     throughput_chart(all_stacks, charts)
     for s, stack in all_stacks.items():
         (ROOT / "stacks" / s / "README.md").write_text(stack_readme(s, stack, sizes[s]))
-    readme = (ROOT / "README.md").read_text()
+    readme = (ROOT / "docs" / "eight-step-study.md").read_text()
     table = stats_table(all_stacks, sizes)
     readme = re.sub(re.escape(STATS_START) + r".*?" + re.escape(STATS_END),
                     lambda _m: f"{STATS_START}\n{table}\n{STATS_END}", readme, flags=re.S)
-    (ROOT / "README.md").write_text(readme)
+    (ROOT / "docs" / "eight-step-study.md").write_text(readme)
     print(f"report: {len(all_stacks)} stacks, {sum(len(v) for v in sizes.values())} steps measured")
 
 

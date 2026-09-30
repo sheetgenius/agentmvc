@@ -4,7 +4,7 @@
 
 The repository also preserves several earlier experimental conditions. Their prompts, fixture guidance, and dates differ; read each result in its own context:
 
-- [Original eight-step Rails/Phoenix/Loco study](../docs/README.md), with [per-step metrics](../docs/findings/), [original one-shots](one-shot/README.md), and [semantic-density one-shots](one-shot-semantic-density/README.md).
+- [Original eight-step Rails/Phoenix/Loco study](../docs/eight-step-study.md), with [per-step metrics](../docs/findings/), [original one-shots](one-shot/README.md), and [semantic-density one-shots](one-shot-semantic-density/README.md).
 - [IHP / Haskell exploration](one-shot-ihp/README.md) and [Servant safe-evolution pilot](one-shot-v2-servant/README.md).
 - [Earlier TypeScript pilot](one-shot-v2-typescript/README.md), then the [expert-guided TypeScript](one-shot-v2-typescript-expert/README.md) and [Phoenix](one-shot-v2-phoenix-expert/pilot-1/README.md) diagnostics.
 - [Roundhouse + Spinel Ruby compilation feasibility](ruby-compile/roundhouse-spinel-v2026.9.18/README.md), a compatibility finding without a throughput number.
