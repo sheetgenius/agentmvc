@@ -2,7 +2,7 @@
 
 An eight-step build and an independent expert one-shot of the same Conduit backend. The selected stack combines Ring/Jetty, Reitit/Malli, next.jdbc/HoneySQL, Integrant, Migratus, Proletarian and Buddy, packaged as a JVM AOT uberjar.
 
-**2/9 coding sessions independently verified.**
+**3/9 coding sessions independently verified.**
 
 [Stack choice and Clojure guidance](../../../stacks/clojure/SELECTION.md) · [Conditions and method](METHODOLOGY.md) · [Shared expert prompt](../../../one-shot-v2-expert/PROMPT.md)
 
@@ -14,7 +14,7 @@ Each checkpoint preserves its source, prompt, effort, failures and independent v
 | --- | --- |
 | [1 · Base API](../../../steps/1-build.md) | [4,273](../../../stacks/clojure/1-build) tokens · [pass](1-build/verification.json) |
 | [2 · Drafts](../../../steps/2-add-drafts.md) | [4,935](../../../stacks/clojure/2-add-drafts) tokens · [pass](2-add-drafts/verification.json) |
-| [3 · Production](../../../steps/3-package.md) | Pending |
+| [3 · Production](../../../steps/3-package.md) | [4,935](../../../stacks/clojure/3-package) tokens · [pass](3-package/verification.json) |
 | [4 · Performance](../../../steps/4-tune.md) | Pending |
 | [5 · Security](../../../steps/5-harden.md) | Pending |
 | [6 · Polish](../../../steps/6-polish.md) | Pending |
