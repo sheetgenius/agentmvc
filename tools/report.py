@@ -22,6 +22,7 @@ import measure  # noqa: E402
 ROOT = measure.ROOT
 RESULTS = ROOT / "results"
 REFERENCE = "rails"  # ratios are relative to this stack
+STUDY = ("rails", "phoenix", "loco")  # the eight-step study; later lanes publish their own pages
 STEP_NAMES = {"1-build": "Build", "2-add-drafts": "Add drafts", "3-package": "Package", "4-tune": "Tune",
               "5-harden": "Harden", "6-polish": "Polish", "7-add-background-job": "Add a background job",
               "8-live-editing": "Live shared editing"}
@@ -45,8 +46,8 @@ def load(path):
 
 
 def stacks():
-    """Every stack, reference first, then in the order they were added."""
-    loaded = {p.parent.name: measure.load_stack(p.parent.name) for p in (ROOT / "stacks").glob("*/stack.json")}
+    """The eight-step study's stacks, reference first, then in the order they were added."""
+    loaded = {name: measure.load_stack(name) for name in STUDY}
     return dict(sorted(loaded.items(), key=lambda kv: (kv[0] != REFERENCE, kv[1].get("order", 100), kv[0])))
 
 
@@ -127,7 +128,7 @@ def stats_table(all_stacks, sizes):
         ("Fresh agent's comprehension score, after steps 1 and 6 (of 12)", lambda s: comprehension_cell(s)),
         ("Agent effort, all steps (tokens, wall-clock)", lambda s: effort_cell(s)),
     ]
-    header = "| | " + " | ".join(f"[{all_stacks[s]['name']}](stacks/{s}/) ({all_stacks[s]['language']})" for s in all_stacks) + " |"
+    header = "| | " + " | ".join(f"[{all_stacks[s]['name']}](../stacks/{s}/) ({all_stacks[s]['language']})" for s in all_stacks) + " |"
     lines = [header, "| --- |" + " ---: |" * len(all_stacks)]
     lines += [f"| {label} | " + " | ".join(fn(s) for s in all_stacks) + " |" for label, fn in rows]
     return "\n".join(lines)
