@@ -2,7 +2,7 @@
 
 An eight-step build and an independent expert one-shot of the same Conduit backend. The selected stack combines Ring/Jetty, Reitit/Malli, next.jdbc/HoneySQL, Integrant, Migratus, Proletarian and Buddy, packaged as a JVM AOT uberjar.
 
-**8/9 coding sessions independently verified.**
+**9/9 coding sessions independently verified.**
 
 [Stack choice and Clojure guidance](../../../stacks/clojure/SELECTION.md) · [Conditions and method](METHODOLOGY.md) · [Shared expert prompt](../../../one-shot-v2-expert/PROMPT.md)
 
@@ -23,13 +23,14 @@ Each checkpoint preserves its source, prompt, effort, failures and independent v
 
 ## Independent expert one-shot
 
-Pending
+[9,312](../../one-shot-v2-clojure-expert/pilot-1/source) tokens · [pass](../../one-shot-v2-clojure-expert/pilot-1/verification.json)
 
 ## Full-product sources
 
 | Original source | Owned / whole backend tokens | Coding minutes | Uncached + output tokens | Reviewer checks |
 | --- | ---: | ---: | ---: | --- |
-| [Eight-step final](../../../stacks/clojure/8-live-editing) | 8,603 / 11,067 | 83.0 | 787,220 | Pending |
+| [Eight-step final](../../../stacks/clojure/8-live-editing) | 8,603 / 11,067 | 83.0 | 787,220 | [19/21 contract · 2/3 quality · favorites 48/48](8-live-editing/reviewer-parity/results.json) · shared pending · **not full reviewer parity** |
+| [Expert one-shot](../../one-shot-v2-clojure-expert/pilot-1/source) | 9,312 / 12,235 | 14.6 | 206,564 | [0/21 contract · 0/3 quality · favorites 0/48](../../one-shot-v2-clojure-expert/pilot-1/reviewer-parity/results.json) · shared pending · **not full reviewer parity** |
 
 ## Evidence and limits
 

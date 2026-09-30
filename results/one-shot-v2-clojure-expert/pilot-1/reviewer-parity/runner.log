@@ -1,0 +1,226 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.65kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 0.8s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/eclipse-temurin:25-jre-noble@sha256:693fdaf83831eeeefd9709eae44c8b8706622652f972cf5903bd0e481bbf6ad3
+#4 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/eclipse-temurin:25-jdk-noble@sha256:f6366ccac38ceae180280ad7012d18a15e8031548a430dc2bae06631d9e88ed0
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 217B done
+#6 DONE 0.0s
+
+#7 [build 1/8] FROM docker.io/library/eclipse-temurin:25-jdk-noble@sha256:f6366ccac38ceae180280ad7012d18a15e8031548a430dc2bae06631d9e88ed0
+#7 DONE 0.0s
+
+#8 [stage-1 1/3] FROM docker.io/library/eclipse-temurin:25-jre-noble@sha256:693fdaf83831eeeefd9709eae44c8b8706622652f972cf5903bd0e481bbf6ad3
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 56.59kB done
+#9 DONE 0.0s
+
+#10 [build 3/8] RUN curl -fsSL --retry 5 https://github.com/clojure/brew-install/releases/download/1.12.5.1664/clojure-tools-1.12.5.1664.tar.gz -o /tmp/clojure.tar.gz &&     echo '77dd6868948074adcc93e83a796f8e8f15a1a92bcb1b9002d715fd2210e476f3  /tmp/clojure.tar.gz' | sha256sum -c - &&     tar xzf /tmp/clojure.tar.gz -C /tmp &&     mkdir -p /usr/local/lib/clojure/libexec &&     cp /tmp/clojure-tools/deps.edn /tmp/clojure-tools/example-deps.edn /tmp/clojure-tools/tools.edn /usr/local/lib/clojure/ &&     cp /tmp/clojure-tools/*.jar /usr/local/lib/clojure/libexec/ &&     sed 's@PREFIX@/usr/local/lib/clojure@g' /tmp/clojure-tools/clojure > /usr/local/bin/clojure &&     chmod +x /usr/local/bin/clojure && rm -rf /tmp/clojure-tools /tmp/clojure.tar.gz
+#10 CACHED
+
+#11 [build 6/8] RUN --mount=type=cache,target=/root/.m2 clojure -P -T:build && clojure -P
+#11 CACHED
+
+#12 [build 7/8] COPY . .
+#12 CACHED
+
+#13 [build 2/8] RUN apt-get update -qq && apt-get install --no-install-recommends -y curl ca-certificates &&     rm -rf /var/lib/apt/lists/*
+#13 CACHED
+
+#14 [stage-1 2/3] WORKDIR /app
+#14 CACHED
+
+#15 [build 5/8] COPY deps.edn ./
+#15 CACHED
+
+#16 [build 8/8] RUN --mount=type=cache,target=/root/.m2 clojure -T:build uber
+#16 CACHED
+
+#17 [build 4/8] WORKDIR /src
+#17 CACHED
+
+#18 [stage-1 3/3] COPY --from=build --chown=10001:10001 /src/target/conduit.jar /app/conduit.jar
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 writing image sha256:c29dd338dd0538d467945ab36f975270e9777a664cd076891e8fcbb571ceb556 done
+#19 naming to docker.io/library/agentmvc-lane-clojure-one-shot-1:current done
+#19 DONE 0.0s
+
+96e9d702563224e8e196e3f2d85567776642fbc97d5207aa74fbcce440660275
+
+605cb8e9b77b25cf67a68d16da83ddf90d468430828c31658900b0e15468747f
+
+1d530ada1bb2eaa40ad6773b0b0e7d12710bffa78eb213b76ba87caf7897a652
+
+Success api/hurl/articles.hurl (17 request(s) in 205 ms)
+Success api/hurl/auth.hurl (20 request(s) in 194 ms)
+Success api/hurl/comments.hurl (13 request(s) in 111 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 99 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 389 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 169 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 89 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 84 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 95 ms)
+Success api/hurl/feed.hurl (12 request(s) in 181 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 85 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 157 ms)
+Success api/hurl/tags.hurl (4 request(s) in 84 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 197 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 179 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 505 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 169 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (78.6/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          3014 ms (0h:0m:3s:14ms)
+
+Success s01_jwt_alg_none.hurl (1 request(s) in 1 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 83 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 1 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 81 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 72 ms)
+Success s06_injection_filters.hurl (4 request(s) in 4 ms)
+Success s07_malformed_json.hurl (1 request(s) in 1 ms)
+Success s08_wrong_types.hurl (8 request(s) in 84 ms)
+Success s09_oversized_body.hurl (2 request(s) in 72 ms)
+Success s10_unknown_route.hurl (1 request(s) in 1 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 155 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 2 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 1514 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (25.0/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          2080 ms (0h:0m:2s:80ms)
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (595ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (588ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (148ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (261ms)
+
+  4 passed (1.9s)
+
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1240)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1194)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.OutOfMemoryError: Java heap space
+[qtp319323253-280] WARN org.eclipse.jetty.ee9.nested.HttpChannel - /api/users/login
+jakarta.servlet.ServletException: Unexpected Exception
+	at org.eclipse.jetty.ee9.nested.ContextHandler.doScope(ContextHandler.java:982)
+	at org.eclipse.jetty.ee9.nested.ScopedHandler.handle(ScopedHandler.java:123)
+	at org.eclipse.jetty.ee9.nested.ContextHandler.handle(ContextHandler.java:1738)
+	at org.eclipse.jetty.ee9.nested.HttpChannel$RequestDispatchable.dispatch(HttpChannel.java:1586)
+	at org.eclipse.jetty.ee9.nested.HttpChannel.dispatch(HttpChannel.java:737)
+	at org.eclipse.jetty.ee9.nested.HttpChannel.handle(HttpChannel.java:520)
+	at org.eclipse.jetty.ee9.nested.ContextHandler$CoreContextHandler$CoreToNestedHandler.handle(ContextHandler.java:3098)
+	at org.eclipse.jetty.server.handler.ContextHandler.handle(ContextHandler.java:1253)
+	at org.eclipse.jetty.server.Server.handle(Server.java:197)
+	at org.eclipse.jetty.server.internal.HttpChannelState$HandlerInvoker.run(HttpChannelState.java:804)
+	at org.eclipse.jetty.server.internal.HttpConnection.onFillable(HttpConnection.java:420)
+	at org.eclipse.jetty.server.internal.HttpConnection$FillableCallback.succeeded(HttpConnection.java:1790)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:105)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:54)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:492)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.epcRunTask(AdaptiveExecutionStrategy.java:428)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:401)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:255)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.run(AdaptiveExecutionStrategy.java:204)
+	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:317)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:1009)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1240)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1194)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.OutOfMemoryError: Java heap space
+[qtp319323253-301] WARN org.eclipse.jetty.ee9.nested.HttpChannel - /api/users/login
+jakarta.servlet.ServletException: Unexpected Exception
+	at org.eclipse.jetty.ee9.nested.ContextHandler.doScope(ContextHandler.java:982)
+	at org.eclipse.jetty.ee9.nested.ScopedHandler.handle(ScopedHandler.java:123)
+	at org.eclipse.jetty.ee9.nested.ContextHandler.handle(ContextHandler.java:1738)
+	at org.eclipse.jetty.ee9.nested.HttpChannel$RequestDispatchable.dispatch(HttpChannel.java:1586)
+	at org.eclipse.jetty.ee9.nested.HttpChannel.dispatch(HttpChannel.java:737)
+	at org.eclipse.jetty.ee9.nested.HttpChannel.handle(HttpChannel.java:520)
+	at org.eclipse.jetty.ee9.nested.ContextHandler$CoreContextHandler$CoreToNestedHandler.handle(ContextHandler.java:3098)
+	at org.eclipse.jetty.server.handler.ContextHandler.handle(ContextHandler.java:1253)
+	at org.eclipse.jetty.server.Server.handle(Server.java:197)
+	at org.eclipse.jetty.server.internal.HttpChannelState$HandlerInvoker.run(HttpChannelState.java:804)
+	at org.eclipse.jetty.server.internal.HttpConnection.onFillable(HttpConnection.java:420)
+	at org.eclipse.jetty.server.internal.HttpConnection$FillableCallback.succeeded(HttpConnection.java:1790)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:105)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:54)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:1009)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1240)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1194)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.OutOfMemoryError: Java heap space
+[qtp319323253-281] WARN org.eclipse.jetty.ee9.nested.HttpChannel - /api/users
+jakarta.servlet.ServletException: Unexpected Exception
+	at org.eclipse.jetty.ee9.nested.ContextHandler.doScope(ContextHandler.java:982)
+	at org.eclipse.jetty.ee9.nested.ScopedHandler.handle(ScopedHandler.java:123)
+	at org.eclipse.jetty.ee9.nested.ContextHandler.handle(ContextHandler.java:1738)
+	at org.eclipse.jetty.ee9.nested.HttpChannel$RequestDispatchable.dispatch(HttpChannel.java:1586)
+	at org.eclipse.jetty.ee9.nested.HttpChannel.dispatch(HttpChannel.java:737)
+	at org.eclipse.jetty.ee9.nested.HttpChannel.handle(HttpChannel.java:520)
+	at org.eclipse.jetty.ee9.nested.ContextHandler$CoreContextHandler$CoreToNestedHandler.handle(ContextHandler.java:3098)
+	at org.eclipse.jetty.server.handler.ContextHandler.handle(ContextHandler.java:1253)
+	at org.eclipse.jetty.server.Server.handle(Server.java:197)
+	at org.eclipse.jetty.server.internal.HttpChannelState$HandlerInvoker.run(HttpChannelState.java:804)
+	at org.eclipse.jetty.server.internal.HttpConnection.onFillable(HttpConnection.java:420)
+	at org.eclipse.jetty.server.internal.HttpConnection$FillableCallback.succeeded(HttpConnection.java:1790)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:105)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:54)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:492)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.epcRunTask(AdaptiveExecutionStrategy.java:428)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:401)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:255)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.run(AdaptiveExecutionStrategy.java:204)
+	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:317)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:1009)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1240)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1194)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.OutOfMemoryError: Java heap space
+[qtp319323253-267] WARN org.eclipse.jetty.ee9.nested.HttpChannel - /api/users/login
+jakarta.servlet.ServletException: Unexpected Exception
+	at org.eclipse.jetty.ee9.nested.ContextHandler.doScope(ContextHandler.java:982)
+	at org.eclipse.jetty.ee9.nested.ScopedHandler.handle(ScopedHandler.java:123)
+	at org.eclipse.jetty.ee9.nested.ContextHandler.handle(ContextHandler.java:1738)
+	at org.eclipse.jetty.ee9.nested.HttpChannel$RequestDispatchable.dispatch(HttpChannel.java:1586)
+	at org.eclipse.jetty.ee9.nested.HttpChannel.dispatch(HttpChannel.java:737)
+	at org.eclipse.jetty.ee9.nested.HttpChannel.handle(HttpChannel.java:520)
+	at org.eclipse.jetty.ee9.nested.ContextHandler$CoreContextHandler$CoreToNestedHandler.handle(ContextHandler.java:3098)
+	at org.eclipse.jetty.server.handler.ContextHandler.handle(ContextHandler.java:1253)
+	at org.eclipse.jetty.server.Server.handle(Server.java:197)
+	at org.eclipse.jetty.server.internal.HttpChannelState$HandlerInvoker.run(HttpChannelState.java:804)
+	at org.eclipse.jetty.server.internal.HttpConnection.onFillable(HttpConnection.java:420)
+	at org.eclipse.jetty.server.internal.HttpConnection$FillableCallback.succeeded(HttpConnection.java:1790)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:105)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:54)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:1009)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1240)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1194)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.OutOfMemoryError: Java heap space

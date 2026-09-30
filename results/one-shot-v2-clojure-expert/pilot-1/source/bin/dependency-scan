@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+clojure -T:build inventory
+rm -f target/dependency-scan.json
+set +e
+osv-scanner scan source --lockfile osv-scanner:target/resolved-osv.json --format json --output-file target/dependency-scan.json
+scan_status=$?
+if [ -f target/dependency-scan.json ]; then
+    cat target/dependency-scan.json
+fi
+exit "$scan_status"

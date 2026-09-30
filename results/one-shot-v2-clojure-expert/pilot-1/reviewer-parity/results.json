@@ -1,0 +1,86 @@
+{
+  "session": "clojure-one-shot-1",
+  "stack": "clojure",
+  "phase": "one-shot",
+  "started": "2026-09-30T03:00:36.535343+00:00",
+  "tools_sha256": {
+    "lane_evidence.py": "6cab1f79fadd7e4d4459223a344cf6de48adc5797a3c94982a977559b202678a",
+    "lane_check.py": "145a6f3bbee6c55cd616732a9663389903c0a41fb2682b5bd12e84b147fe7e61",
+    "lane_broker.py": "ac58c5d1ad9972c7907014781dd267ae5c288dbf9a8ce3376503e06b8a58d628",
+    "lane_continue.py": "2882693dd1bf92575e4eb52bbbcfbf2e4ca88db9ce738f35a68905ad1825b0e1",
+    "lane_review.py": "0131bb4fc4e9aab709eede4020f60bd8a962b9f6b9d0da816aa509516af7e348",
+    "reviewer_common_http_probe.py": "d40c80b7cda2295cf9367b6b4435a04f5d180532de0390e7c95d73ff4fcd3499",
+    "lane_favorites_probe.py": "e8391c242479bcdf5c94e6ec862dcf1de32dd0cd574a0ff6cec7ee1fd84e99a2",
+    "lane_share_probe.py": "207274444bdbc261955bd73112b9442cd7bf80f9ef111a9c372b1f48e83f300e",
+    "lane_share_review.py": "4d645daad98d4194d6d8f16d182a6e5b72116965daf5eed9f68f80c5b31915c2",
+    "bench/bench.py": "d9eb2fbceb835f5798f5a193588c61ef2d5b1a36a3af7a393196f23d3b9aa2ab",
+    "bench/load.js": "9057777b106e10fada6fc0fbfe85168258643f04a537ea5313277c0e86b37481",
+    "bench/seed.py": "ae62d6f3c25f4f77873ad828855c662a895c2dc75517a957f83b9d7ad6448c93",
+    "one_shot_live_bench.py": "c1f86e7359ce27ea14746bd36a768c2c5f4e0fdb43cdea87bf2ee3c5a2ef5528",
+    "live-load.mjs": "2ca75930e55074274db5d9a49bf9b55e7107c534d5048ce23801fc6fb28b0ce2",
+    "v2_expert_symmetry_validate.py": "2e99d9b8e9aa07b709579e80961e98e7e9f3b924ec8a0605d7a869dcc2c1eb79",
+    "scrub.py": "c8dbd847a7613628e479abf71aac61067d3aec52ba9039c683bb0efd9535b295",
+    "clojure_lane.py": "4c2b2f211e48265415d6314452c8e30389ea430f3082f23404a13c936bc1915e",
+    "clojure_evidence.py": "2e008ebd2a01f216d6b01e096e9d32238e7352caddd697a2f7e0064871c188d1"
+  },
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "database": "postgres:17-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193",
+  "app_environment_keys": [
+    "DATABASE_URL",
+    "SECRET_KEY_BASE",
+    "PORT"
+  ],
+  "passed": false,
+  "common_parity_passed": false,
+  "exit": 1,
+  "condition": "prepared-clojure",
+  "source_sha256": "85416e19319c5e1aac46fc3ad2367e340868f5d3b0fcafda844ff9b2f9996118",
+  "fixture_sha256": "7380c9d63c71d16603ccf84e907cd686a9c7c4ef0cda7edfc6442b04f7376120",
+  "fixture_record_sha256": "39bf04c4ce0ffe318bac55dacd2e7d14131fe32afd70a0431235ca0e1269d37d",
+  "prompt_sha256": "8d39c1f7f584ee1c00e5f3056c80d99214a4c0790bf23c22b0ea0f5dccabb943",
+  "image_sha256": "sha256:c29dd338dd0538d467945ab36f975270e9777a664cd076891e8fcbb571ceb556",
+  "frozen_production_gate_exit": 0,
+  "http_probe_exit": 2,
+  "http_probe": {
+    "base_url": "http://127.0.0.1:4112",
+    "condition": "reviewer-only common HTTP diagnostic; never a frozen gate",
+    "fatal_setup_or_transport_error": "TimeoutError: timed out"
+  },
+  "http_probe_complete": false,
+  "source_driven_favorites_exit": 2,
+  "source_driven_favorites": {
+    "condition": "source-driven supplemental favorites diagnostic; not a frozen gate",
+    "contract_sources": [
+      "spec/docs/endpoints.md",
+      "spec/docs/api-response-format.md"
+    ],
+    "fatal_setup_or_transport_error": {
+      "type": "RuntimeError"
+    },
+    "results": [
+      {
+        "expected": {
+          "status": 201,
+          "usable_response": true
+        },
+        "name": "setup/register_author",
+        "observed": {
+          "body_kind": "dict",
+          "status": 500,
+          "usable_response": false
+        },
+        "passed": false
+      }
+    ],
+    "summary": {
+      "failed": 1,
+      "passed": 0,
+      "total": 1
+    }
+  },
+  "source_driven_favorites_passed": false,
+  "finished": "2026-09-30T03:01:11.694620+00:00"
+}
