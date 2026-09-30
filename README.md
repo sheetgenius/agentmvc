@@ -10,6 +10,8 @@ Model, reasoning setting, stack, build protocol, and frozen inputs identify a re
 
 A [proposed GPT-6.1 refresh](docs/baseline-refresh.md) preserves this history and addresses concrete prompt/harness friction before fresh runs. Changing prompts, harness and model together establishes a new combined baseline. A comparison that isolates the model must hold those inputs fixed. No GPT-6.1 result is recorded yet.
 
+The [Opus handoff](docs/opus-handoff.md) summarizes the published state and recommends directions for product evolution, framework use, reliability and model comparisons.
+
 ## Start with the current code
 
 | Stack | Current source for agents to explore | Current owned backend | Current anonymous list† | Framework strengths in this app |
