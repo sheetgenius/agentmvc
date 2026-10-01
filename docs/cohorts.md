@@ -1,4 +1,8 @@
-# Comparing models and experiment conditions
+# How to read the results
+
+Every number in AgentMVC belongs to a setup (a "condition"): the model, prompt, stack guidance, starting scaffold, build protocol and checks that produced it. This page explains how setups are recorded and which comparisons they support. The [glossary](glossary.md) defines the terms.
+
+## The cohort index
 
 The [cohort index](../results/cohorts.json) makes recorded model, prompt and fixture identities visible across the historical runs. It is a navigation index over existing evidence. Its `series` labels describe where results live; they do not assert that every entry in a series is a matched experiment.
 

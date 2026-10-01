@@ -1,4 +1,4 @@
-# Caveats
+# Eight-step study: caveats
 
 - **One run per stack per step.** Agent runs vary. Treat differences under about 20% as noise; the size of a gap is more reliable than its exact value.
 - **One model.** Every run used Codex `gpt-6-sol` at `xhigh` reasoning. The results reflect what that model writes well in each stack, including how familiar it is with each one. A second model would be the most useful check.

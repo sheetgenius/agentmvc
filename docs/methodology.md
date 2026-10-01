@@ -1,4 +1,4 @@
-# Methodology
+# Eight-step study: methodology
 
 ## The question
 

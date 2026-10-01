@@ -1,4 +1,6 @@
-# Proposed one-shot comparison
+# The single-session contract
+
+*Written before the first single-session (one-shot) builds. Later setups changed the prompt and guidance; see [all results](../results/README.md).*
 
 The eight-step study is the exploratory record. The next comparison asks a simpler question: **given the complete product contract at once, what backend does one agent build in each stack?** It is a new experiment alongside the step history, with no step-7 starting point and no claim about incremental growth.
 
