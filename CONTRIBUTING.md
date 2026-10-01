@@ -2,7 +2,7 @@
 
 AgentMVC is an evergreen comparison and a set of reference implementations. The question is how well an agent can build and keep improving a large application in each language and framework. Make a lane better, show what changed, and leave enough evidence for the next contributor to climb from there. Small, useful improvements are welcome; you do not need to rerun the entire study for each one.
 
-Start with the [repository map](README.md#repository-map), the [current results](results/README.md), and the prompt for the lane you want to improve. The one-shot prompts are also reusable starting points for your own projects.
+Start with the [repository map](docs/README.md#repository-map), the [current results](results/README.md), and the prompt for the lane you want to improve. The one-shot prompts are also reusable starting points for your own projects.
 
 ## Two kinds of work
 
