@@ -68,6 +68,8 @@ I would make the minimum runner changes needed for fresh result roots, explicit 
 
 The [Ruby compiler probe](../results/ruby-compile/roundhouse-spinel-v2026.9.18/README.md) is a lower-priority avenue in my judgment. The pinned Roundhouse release failed strict compatibility, and there is no compiled Conduit throughput result. A future attempt needs product and deployment parity before a speed comparison.
 
+> **Update, 1 October 2026:** that attempt now exists. A compile variant built with patched Roundhouse `main` and Spinel passes the same production gate and edge-case probe as the Rails reference. It served 2.0–5.4× the requests per second of Rails sized to the same 2-CPU budget. See [the results and their limits](../results/ruby-compile/roundhouse-spinel-conduit-pg-20260930/README.md). The paragraph above is kept as written on 30 September.
+
 ## First useful deliverable
 
 Read the [README](../README.md), [cohort rules](cohorts.md), [refresh assessment](baseline-refresh.md) and [workshop plan](semantic-density-workshop.md), then inspect the source guides for the stacks relevant to your chosen question. Produce one concrete experiment proposal: starting source identities, task, frozen checks, model and reasoning, repetitions, service budget and measurements. The publication and handoff work is complete; the future experiment still needs its scope selected.
