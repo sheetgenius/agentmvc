@@ -1,0 +1,33 @@
+Success api/hurl/articles.hurl (17 request(s) in 276 ms)
+Success api/hurl/auth.hurl (20 request(s) in 493 ms)
+Success api/hurl/comments.hurl (13 request(s) in 251 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 248 ms)
+error: Assert status code
+   --> api/hurl/errors_auth.hurl:111:6
+    |
+    | POST {{host}}/api/users/login
+    | ...
+111 | HTTP 401
+    |      ^^^ actual value is <500>
+    |
+
+Failure api/hurl/errors_auth.hurl (9 request(s) in 1607 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 472 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 232 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 237 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 255 ms)
+Success api/hurl/feed.hurl (12 request(s) in 468 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 230 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 451 ms)
+Success api/hurl/tags.hurl (4 request(s) in 239 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 476 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 469 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 732 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 508 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 226 (29.5/s)
+Succeeded files:   16 (94.1%)
+Failed files:      1 (5.9%)
+Duration:          7670 ms (0h:0m:7s:670ms)
+

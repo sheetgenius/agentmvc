@@ -1,0 +1,9 @@
+conduit (spinel) listening on http://0.0.0.0:8080, pid 1
+  one green thread per connection; OS workers: 4 (cgroup cpu.max 200000/100000; factor 2); processes: 1
+  Memory budget: 1073741824 bytes (cgroup memory limit)
+[conduit] 500 POST /api/articles -- RuntimeError: SQLSTATE 22008: ERROR:  timestamp out of range: "8920956-03-10 02:24:09.000000"
+LINE 1: ...load body', '2026-09-30 10:28:16.350100', 'load', '8920956-0...
+                                                             ^
+[conduit] 500 POST /api/articles -- RuntimeError: SQLSTATE 22008: ERROR:  timestamp out of range: "8920954-06-18 00:25:29.000000"
+LINE 1: ...load body', '2026-09-30 10:28:19.005354', 'load', '8920954-0...
+                                                             ^

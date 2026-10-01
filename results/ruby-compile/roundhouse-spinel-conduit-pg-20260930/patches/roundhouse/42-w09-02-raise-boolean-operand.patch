@@ -1,0 +1,68 @@
+diff --git a/src/emit/ruby/expr.rs b/src/emit/ruby/expr.rs
+index 665472d5..5eac270f 100644
+--- a/src/emit/ruby/expr.rs
++++ b/src/emit/ruby/expr.rs
+@@ -519,6 +519,13 @@ fn emit_bool_op_operand(
+     parent_op: crate::expr::BoolOpKind,
+     parent_surface: crate::expr::BoolOpSurface,
+ ) -> String {
++    // Parentheses ingest as a statement sequence, including a singleton.
++    // Inspect that singleton's precedence rather than losing its grouping.
++    if let ExprNode::Seq { exprs } = &*child.node {
++        if exprs.len() == 1 {
++            return emit_bool_op_operand(&exprs[0], parent_op, parent_surface);
++        }
++    }
+     let s = emit_expr(child);
+     match &*child.node {
+         ExprNode::BoolOp { op, surface, .. } => {
+@@ -534,7 +541,15 @@ fn emit_bool_op_operand(
+         // as `a && (user = (find && user.active?))` — evaluating
+         // `user.active?` before `user` is bound (nil crash), then
+         // binding `user` to a boolean.
+-        ExprNode::Assign { .. } | ExprNode::OpAssign { .. } => {
++        ExprNode::Assign { .. } | ExprNode::OpAssign { .. } | ExprNode::Raise { .. } => {
++            return format!("({s})");
++        }
++        // `raise Error.new(...)` is a command-style Send in source IR,
++        // not a synthesized Raise. Command arguments need grouping when
++        // used as a boolean operand, just as they do as a call receiver.
++        ExprNode::Send { method, args, parenthesized: false, .. }
++            if !args.is_empty() && !is_binary_operator(method.as_str())
++                && method.as_str() != "[]" && method.as_str() != "[]=" => {
+             return format!("({s})");
+         }
+         ExprNode::Seq { exprs } if exprs.len() > 1 => {
+@@ -1299,6 +1314,32 @@ mod tests {
+     use crate::ident::Symbol;
+     use crate::span::Span;
+ 
++    #[test]
++    fn compile_blocker_raise_boolean_operand_parses() {
++        let expr = Expr::new(Span::default(), ExprNode::BoolOp {
++            op: crate::expr::BoolOpKind::Or,
++            surface: crate::expr::BoolOpSurface::Symbol,
++            left: lit_sym("found"),
++            right: Expr::new(Span::default(), ExprNode::Raise { value: lit_str("missing") }),
++        });
++        let emitted = emit_expr(&expr);
++        let parsed = ruby_prism::parse(emitted.as_bytes());
++        assert_eq!(parsed.errors().count(), 0, "{emitted}");
++    }
++
++    #[test]
++    fn compile_blocker_parenthesized_command_boolean_operand_parses() {
++        let source = b"user || (raise ApplicationController::Failure.new(404, :profile, \"not found\"))";
++        let parsed = ruby_prism::parse(source);
++        let root = parsed.node();
++        let statements = root.as_program_node().unwrap().statements();
++        let node = statements.body().iter().next().unwrap();
++        let expr = crate::ingest::ingest_expr(&node, "profile.rb").unwrap();
++        let emitted = emit_expr(&expr);
++        assert_eq!(ruby_prism::parse(emitted.as_bytes()).errors().count(), 0, "{emitted}");
++        assert!(emitted.contains("(raise ApplicationController::Failure.new"), "{emitted}");
++    }
++
+     fn lit_sym(s: &str) -> Expr {
+         Expr::new(Span::default(), ExprNode::Lit { value: Literal::Sym { value: Symbol::from(s) } })
+     }

@@ -1,0 +1,1875 @@
+diff --git avariant/COMPILE-VARIANT.md bvariant/COMPILE-VARIANT.md
+new file mode 100644
+index 0000000..a64f3ab
+--- /dev/null
++++ bvariant/COMPILE-VARIANT.md
+@@ -0,0 +1,382 @@
++# Conduit compile variant v2
++
++**Accepted on the complete 12-patch integrated series plus patch 70.** Native
++API 17/17, security 13/13, live protocol PASS, and Playwright 4/4 pass. The
++same Rails source passes the production gate under CRuby. No action is needed.
++This ledger describes every delivered file differing from the reference;
++it supersedes the inherited v1 ledger.
++
++Reference: `results/one-shot-v2-rails-expert/pilot-1/reference-1/source`.
++The input was copied from `workers/w11-conduit-pg/variant`, without changing
++that worker's files. Evidence paths below are relative to the w15 directory.
++
++## Acceptance and exact delta
++
++| Gate | Result | Receipt |
++| --- | --- | --- |
++| Native API | 17/17; 237 requests | `runs/08-native-full/gates.log` |
++| Native security | 13/13; 52 requests | Same receipt |
++| Native protocol/browser | PASS; 4/4 | Same receipt |
++| Rails production | All four gates pass | `runs/rails-production-01/gates.log` |
++| Rails development | Zeitwerk, RuboCop, 21 tests pass | `runs/rails-dev-01/` |
++
++The final emitter's fresh output is byte-identical across **337 files** to
++what built the accepted native executable. Source comments and this ledger
++therefore do not invalidate the binary receipt. See
++`logs/delivery-emission-comparison.json`. Strict emission has zero errors;
++`roundhouse check` has zero parse errors, zero errors, and 196 warnings.
++
++The delta inventory excludes only `harness/`, `realworld_spec/`, `security/`,
++and `db/structure.sql`, as requested. Exact recursive diff and counts are
++`logs/reference-variant.diff`, `logs/variant-delta.json`, and
++`logs/variant-delta.stat`. Regenerate with `./tools/audit-variant.py`.
++
++- Application/runtime source: **17 files, 220 insertions, 48 deletions**.
++- Inherited regression tests: **2 files, 77 insertions, 0 deletions**.
++- This ledger: **1 file, 327 insertions, 0 deletions**.
++- Total: **20 files, 624 insertions, 48 deletions**.
++
++The actual per-file counts are reproduced below; additions/deletions count
++lines, including comments. They are equivalent to no-index Git numstat.
++
++```text
++ COMPILE-VARIANT.md                                           |  327 (+327/-0)
++ app/controllers/application_controller.rb                    |   81 (+71/-10)
++ app/controllers/articles_controller.rb                       |   17 (+9/-8)
++ app/controllers/comments_controller.rb                       |    8 (+4/-4)
++ app/controllers/exports_controller.rb                        |    6 (+5/-1)
++ app/controllers/profiles_controller.rb                       |    2 (+1/-1)
++ app/controllers/shares_controller.rb                         |   16 (+9/-7)
++ app/controllers/tags_controller.rb                           |    3 (+2/-1)
++ app/controllers/users_controller.rb                          |   27 (+21/-6)
++ app/jobs/export_articles_job.rb                              |    3 (+2/-1)
++ app/models/article_export.rb                                 |    3 (+2/-1)
++ app/models/user.rb                                           |    7 (+6/-1)
++ app/services/article_commit.rb                               |    6 (+4/-2)
++ app/services/json_cast.rb                                    |    9 (+9/-0)
++ app/services/live_rooms.rb                                   |   13 (+11/-2)
++ app/services/login_throttle.rb                               |    9 (+6/-3)
++ app/services/token_codec.rb                                  |   52 (+52/-0)
++ config/initializers/recover_exports.rb                       |    6 (+6/-0)
++ test/controllers/compile_variant_contract_test.rb            |   39 (+39/-0)
++ test/services/token_codec_test.rb                            |   38 (+38/-0)
++ 20 files changed, 624 insertions(+), 48 deletions(-)
++```
++
++## Framework forms restored
++
++All `TEMPORARY(w10)` labels are removed. The supported reference forms are
++back: bang find/create with association objects, case-insensitive uniqueness
++validations, typed duplicate-error predicates, SecurityUtils, `.to_set`,
++association-plus-scope chains, export association creation, and
++`left_joins` aggregation. All four article locking paths use the reference
++`with_lock`. `FavoritesController`, `Article`, and `ArticleShare` are now
++byte-identical to the reference. Native gates exercise these restorations.
++
++Patch 70 adds the missing model-instance `with_lock` analysis registration,
++plus symbolic `errors.of_kind?` lowering over retained structured errors.
++Only two literal Symbol arguments are claimed; other predicates still fail
++strict emission explicitly. The runtime body and RBS signature are shared.
++The patch contains no application-specific name or Spinel source changes.
++
++Some old labels overstated what patch 60 fixed. The remaining `loaded?`,
++model-class recovery iteration, association lookup, and computed alias
++limitations below were reproduced on the full series rather than assumed
++resolved. Every remaining source workaround has a reason comment.
++
++## File-by-file ledger
++
++### `app/controllers/application_controller.rb`
++
++Reason: native parameters retain string values rather than typed JSON and
++strong-parameter objects. `json_body`, `object!`, wrappers, scalar filtering,
++`JsonCast`, and `param` preserve JSON request types, lazy parse failure order,
++and malformed-JSON 400 responses. An explicit field array avoids the
++controller-rest-parameter ingest gap; symbol attribute keys satisfy generated
++constructors. TokenCodec replaces unsupported JWT gem dispatch. The author
++reader removes an unsupported association `loaded?` call whose two reference
++branches already return the same author. Set calls and error projections
++have been restored.
++
++Impact: **edge-case differences**, outside the accepted JSON contract:
++
++- Object inputs supplied solely by URL-encoded forms or bracketed query
++  parameters are rejected with 422 instead of becoming Rails parameter objects.
++- The inherited native `param` lane does not implement Rails' body-over-query
++  merge for GET JSON bodies with conflicting filter/pagination keys. CRuby
++  continues to use Rails' merged `params` for these scalar reads.
++- String `strip` differs from Rails Unicode `blank?`: Unicode-whitespace-only
++  login fields proceed to authentication instead of the blank-field 422;
++  NUL-only strings are treated as blank by `strip`, unlike Rails `blank?`.
++- Authentication has the TokenCodec edge differences described below.
++
++The author simplification, symbol keys, sets, default pagination after integer
++conversion, and parser rescue have **no contract behavior difference**.
++`runs/06-gates-workspace/app.log` proves the unresolved author reader.
++
++### `app/controllers/articles_controller.rb`
++
++Reason: filters use the parsing helper; JSON objects use string keys and the
++scalar filter. Explicit `key?` plus indexing avoids Spinel's absent-key
++`Hash#fetch` Array-default bug. `ArticleCommit` receives the typed Hash rather
++than unsupported `to_unsafe_h`. Association scope revocation is restored.
++
++Impact: **none within the contract**. Inherits the parameter-input and commit
++edge cases documented in their owning files. Absent tags still become `[]`;
++explicit invalid or null tags still fail validation.
++
++### `app/controllers/comments_controller.rb`
++
++Reason: use the parsing helper for scalar parameters and cast a raw JSON body
++like Rails' string attribute writer. `.to_set` is restored.
++
++Impact: **none within the contract**; inherits the object-input limitations
++from ApplicationController.
++
++### `app/controllers/exports_controller.rb`
++
++Reason: explicit integer-query serialization prevents PostgreSQL 22P02/500 for
++nonnumeric export IDs and retains Rails' numeric-prefix behavior. Owner lookup
++uses `user_id` directly: the controller association rewrite still derives
++nonexistent `current_user_id` from the ivar name. Association creation is restored.
++
++Impact: **none for exercised IDs and authorization**. Native parsing of
++integers outside the machine range is not established. Rails' full integer
++range/serialization semantics are not claimed. The bad generated lookup is
++retained in `runs/03-lock-and-errors/out/app/controllers/exports_controller.rb`.
++
++### `app/controllers/profiles_controller.rb`
++
++Reason: the sole delta is `param(:username)` for lazy JSON parse ordering.
++The original bang find/create and association values are restored.
++
++Impact: **none within the contract**; inherits the parsing/input limitations.
++
++### `app/controllers/shares_controller.rb`
++
++Reason: raw JSON uses string-key reads and needs no `to_unsafe_h`.
++`wrap: false` preserves this controller's different wrapper name. Scalar
++route IDs use the parsing helper. Locking and association scopes are restored;
++the pluck/update/result statements replace a local relation plus `tap`, whose
++relation type Roundhouse cannot retain correctly.
++
++Impact: **none within the contract**. The same active IDs are read and revoked
++under the same article lock, then broadcast. Inherits object-input limitations.
++Strict failures for the local relation are in `runs/01-restored/emit.log` and
++`runs/02-lock-catalog/emit.log`.
++
++### `app/controllers/tags_controller.rb`
++
++Reason: native Relation lacks `connection`, and Connection lacks `select_values`.
++Use the class connection with a named column and map its result rows.
++
++Impact: **none**. The same SQL filters published articles and produces distinct,
++ordered tags. The inherited regression test also checks publication filtering.
++
++### `app/controllers/users_controller.rb`
++
++Reason: typed JSON uses string-key reads and scalar filtering. Direct model
++writers followed by `save!` avoid the inherited Spinel crash in the generated
++RBS-seeded `update!` hash consumer. Login uses the shared blank predicate;
++tokens use TokenCodec. The reference `of_kind?` and `to_hash` calls are restored.
++
++Impact: **none within the contract**. Inherits the blank/input/JWT edge cases.
++The direct writers preserve supplied-nil handling, callbacks, validation, and
++single-record save behavior. The w11 reduction establishes wrong RBS-seeded
++hash-update behavior, not a fully identified compiler crash root cause.
++
++### `app/jobs/export_articles_job.rb`
++
++Reason: the sole semantic source substitution is
++`article["comments_total"]` for an unsupported computed named getter.
++The original left join, grouping, attributes projection, ordering, and lock
++are restored; the PostgreSQL-specific JSON aggregate workaround is removed.
++
++Impact: **none**. Both readers return the same projected count, converted with
++`to_i`. The export remains one aggregate-query snapshot followed by its locked,
++idempotent completion.
++
++### `app/models/article_export.rb`
++
++Reason: this model-class query becomes a materialized Array before `find_each`
++dispatch, including with an explicit model receiver. Use `each` for recovery.
++Native boot failed with the restored form in `runs/03-lock-and-errors/app.log`;
++`runs/probe-explicit-root/out/` records the unsuccessful alternate spelling.
++
++Impact: **edge-case difference**: CRuby recovery materializes all pending
++exports instead of Rails' batched, primary-key-ordered traversal. Memory use,
++enqueue order, and concurrent-change observation can differ for large/changing
++pending sets. Recovery still queues each observed pending export; the job is
++idempotent. The fixed gate verifies the persisted export contract, not every
++batching option.
++
++### `app/models/user.rb`
++
++Reason: the minimum-password rule uses an equivalent callback because
++Roundhouse drops the validation macro's `if:` lambda. The original
++case-insensitive uniqueness validations and secure-password writer are restored.
++
++Impact: **none in HTTP validation behavior**. Condition, message, and callback
++order remain the same. The custom callback's internal error type is `:invalid`
++where the Rails length validator uses `:too_short`; code consuming error details
++outside this application could distinguish them.
++
++### `app/services/article_commit.rb`
++
++Reason: raw JSON strings need Rails-equivalent attribute casting; generated
++`update!` reads symbol keys. The reference locking form is restored.
++
++Impact: **edge-case difference**: casting precedes the slug comparison.
++A non-String title whose cast equals the current title does not rotate the
++slug, whereas the reference compares the raw value first. Boolean titles also
++use `t`/`f` for a new slug prefix rather than the reference's `true`/`false`.
++Revision checks, lock/revalidation, tag checks, writes, and broadcasts match
++the accepted contract. String-title edits are unaffected.
++
++### `app/services/json_cast.rb` — added
++
++Reason: provide Active Model's JSON scalar string cast: nil stays nil,
++booleans become `t`/`f`, other scalars use `to_s`.
++
++Impact: **none as a string attribute cast**. Its placement before slug
++comparison has the ArticleCommit edge difference above.
++
++### `app/services/live_rooms.rb`
++
++Reason: an explicit Room avoids Spinel's `Struct#members` collision with the
++member field. A deleted nil seed selects the boxed-key hash needed for socket
++keys. The original association-plus-scope broadcast query is restored.
++
++Impact: **none for room behavior**. Locking, member maps, presence, cap,
++ordering, and revocation match the contract. Room is internally a class rather
++than a Struct, with no Struct introspection or externally supplied constructor.
++
++### `app/services/login_throttle.rb`
++
++Reason: eager initialization is restored, without lazy duplication. `select`
++replaces `reject!` on the boxed Array that the default-block Hash produces;
++the exact integrated regression was missing `Array#reject!` dispatch. The
++limit is decided under the mutex and the Failure raised after leaving it,
++because Spinel loses custom exception attributes raised through synchronize.
++
++Impact: **none for the application's finite timestamp values**. The same
++email/IP key, strict 60-second cutoff, append, and >20 decision are protected
++by the same lock. Replacing the private Array changes allocation and object
++identity, which the application does not expose. Security s13 proves the 21st
++failed request returns 429; failed login requests return 401 again.
++
++### `app/services/token_codec.rb` — added
++
++Reason: the JWT gem is not compiled; implement the application's HS256
++encode/decode path with binary SHA256 HMAC and the restored SecurityUtils.
++
++Impact: **none for issued tokens and the frozen JWT/security contract**.
++HS256 interoperability, exp/nbf boundaries, binary/long-key HMAC, and tampering
++are covered by inherited tests. **Edge-case differences**, empirically checked
++under CRuby in `logs/jwt-edge-probe.log`: correctly signed tokens with padded
++Base64 segments are rejected although JWT accepts them; non-object payloads
++and nonscalar exp values become authentication 401 instead of the reference
++controller's TypeError/NoMethodError 500. This is an app codec, not complete JWT
++or arbitrary token-claim parity. The dependency remains for reference tests.
++
++### `config/initializers/recover_exports.rb` — added
++
++Reason: native boot hooks do not execute the Docker entrypoint's Rails runner;
++recover after server initialization instead. Guard with `defined?(Rails::Server)`
++so migrations, tests, and runner invocations do not gain this boot action.
++
++Impact: **edge-case difference under CRuby**: production already queues recovery
++in the unchanged Docker entrypoint; server boot can queue it again. A development
++server also gains recovery. Duplicate jobs are idempotent and exports persist,
++but enqueue count and startup work differ. Native boot recovers once.
++
++### `test/controllers/compile_variant_contract_test.rb` — added
++
++Reason: inherited regression coverage for registration/token interoperability,
++duplicate identity status/messages, invalid registration, and published tags.
++
++Impact: **none in deployed application behavior**; tests are Docker-excluded.
++
++### `test/services/token_codec_test.rb` — added
++
++Reason: inherited HMAC, JWT interoperability, expiry/not-before, algorithm,
++signature, and malformed-token regression coverage.
++
++Impact: **none in deployed application behavior**; tests are Docker-excluded.
++
++### `COMPILE-VARIANT.md` — added
++
++Reason: the authoritative source-difference, behavioral-impact, and acceptance
++ledger required for v2. Counts include this file itself.
++
++Impact: **none**; documentation only.
++
++## Excluded infrastructure and limits
++
++The unchanged gate copies are excluded from the application delta. The full
++PostgreSQL structure dump is also excluded as requested; native boot creates
++all 14 tables, including GoodJob and Rails metadata tables. It was inherited
++from w11's real migration dump; schema.rb and migrations match the reference.
++
++Native jobs use the integrated job drain rather than all GoodJob gem features.
++The room and throttle state remain process-local, as in the reference. Arbitrary
++integer ranges, unsupported input media, full JWT functionality, and concurrent
++recovery batches are outside the acceptance claim. The large native security
++body took 111.4 seconds versus 347 ms in Rails at v2 time; root cause (quadratic string building in the PG
++placeholder rewriter) was fixed by roundhouse patch 70 (w16); with it the 2 MB POST takes ~75 ms natively.
++No unsupported-emission switch, stub, edited emitted source, or changed gate
++fixture was used for acceptance.
++
++
++## v3 additions (lead, after load testing)
++
++v3 = v2 + two source changes, found by the benchmark smoke run, not by the functional gates.
++
++### `app/controllers/articles_controller.rb` (create)
++
++Before (v2 / reference shape): `Article.new(permitted(...).merge(author:, status:, published_at:, tag_list: tags.uniq, slug:))`.
++After: `Article.new(permitted(...))` followed by typed writers `author=`, `status=`, `published_at=` (only when
++published), `tag_list=` with fresh String copies (`tags.uniq.map { |tag| "#{tag}" }`), `slug=`.
++
++Reason: under the benchmark's create_article load (~1,200 creates/s) the compiled binary died with SIGSEGV
++(exit 139, not OOM; also with SPINEL_WORKERS=1) inside `sp_str_length` called from `Db.encode_array`
++(gdb: workers/w19-load-crash/logs/debug02-gdb-live.log). Copying the JSON-derived tag strings removed the crash,
++but values that still travelled through the mixed-type merged Hash were occasionally corrupted (an INSERT with
++published_at year 8920956 -> PG 22008, 500). Assigning through typed writers removed both symptoms
++(lead/crash: v3a/v3b 0 failures over ~24k creates; v3full1/v3full2 two full 9-scenario runs, 0 failed checks,
++no 500s). Suspected Spinel defect: values extracted from boxed/heterogeneous containers (JSON-parsed strings,
++Time in a mixed Hash) are not kept alive/valid across a collection. Not yet root-caused (two Codex attempts were
++stopped by the provider's content filter); recorded as an upstream candidate.
++
++Impact: **none**. Same attributes, same values, same validation and save; `published_at` stays nil for drafts
++exactly as `(Time.current if status == "published")` did.
++
++### `app/services/article_commit.rb`
++
++`changes["tag_list"] = tags.uniq.map { |tag| "#{tag}" }` (fresh String copies), same reason. Impact: **none**.
++The update path still passes a merged Hash to `update!`; it is exercised by the gates but not by the benchmark
++workload, so the same latent defect may affect it under heavy concurrent editing (open risk).
++
++v3 acceptance: compiled production gate exit 0 (prod/production-gate-v3-1.log); Rails production gate on the same
++source exit 0 (gates/v3-rails-production.log).
++
++
++## v4 (final, lead)
++
++v4 = v3 with the two v3 load workarounds **reverted** (articles_controller.rb#create and article_commit.rb are
++byte-identical to v2 again) and ExportsController simplified (w21):
++
++- The v3 crash was a Spinel code-generation bug, now fixed in the toolchain: arguments of a call on a dynamically
++  typed receiver (and the result temp of a no-else `(expr if cond)`) were not registered as GC roots
++  (`spinel-poly-dispatch-arg-roots.patch`, root-caused by the lead's Claude subagent c01; see
++  .work/ruby-compile/spinel-spike/workers/c01-spinel-lifetime). With it, the original merged-Hash create path survives
++  ~50,000 creates under the benchmark load with zero failures (lead/crash/v4a, v4b).
++- `app/controllers/exports_controller.rb`: the explicit integer-serialization regex/`to_i` is removed; roundhouse patch 74
++  now gives Rails' out-of-range / nonnumeric integer predicate semantics generally (huge IDs -> no match -> 404).
++  The only remaining delta in this file is the direct `user_id` query (association `find_by` lowering still derives a
++  nonexistent `current_user_id`) plus `param(:id)`.
++
++v4 acceptance: compiled production gate exit 0 (prod/production-gate-v4-1.log); common reviewer probe 21/21 contract,
++3/3 quality (probe/compiled-v4-common-http.json); Rails production gate exit 0 (gates/v4-rails-production.log); Rails
++db:prepare, Zeitwerk, RuboCop (51 files, no offenses), 21 tests / 115 assertions (gates/v4-rails-dev).
++Behavioral difference removed in v4: huge numeric export/comment IDs now return 404 as in Rails.
+diff --git areference/app/controllers/application_controller.rb bvariant/app/controllers/application_controller.rb
+index 3eba7df..ef04600 100644
+--- areference/app/controllers/application_controller.rb
++++ bvariant/app/controllers/application_controller.rb
+@@ -15,7 +15,7 @@ class ApplicationController < ActionController::API
+   rescue_from ActiveRecord::RecordNotUnique do
+     render json: { errors: { base: [ "has already been taken" ] } }, status: :conflict
+   end
+-  rescue_from ActionDispatch::Http::Parameters::ParseError, ActionController::BadRequest do
++  rescue_from JSON::ParserError, ActionDispatch::Http::Parameters::ParseError, ActionController::BadRequest do
+     render json: { errors: { body: [ "is invalid" ] } }, status: :bad_request
+   end
+ 
+@@ -30,10 +30,10 @@ class ApplicationController < ActionController::API
+     header = request.authorization.to_s
+     return if header.empty?
+     raise Failure.new(401, :token, "is invalid") unless header.start_with?("Token ")
+-    payload = JWT.decode(header.delete_prefix("Token "), Rails.application.secret_key_base, true, algorithm: "HS256").first
++    payload = TokenCodec.decode(header.delete_prefix("Token "), Rails.application.secret_key_base)
+     @current_user = User.find_by(id: payload["sub"])
+     raise Failure.new(401, :token, "is invalid") unless @current_user
+-  rescue JWT::DecodeError
++  rescue TokenCodec::DecodeError
+     raise Failure.new(401, :token, "is invalid")
+   end
+ 
+@@ -41,14 +41,74 @@ class ApplicationController < ActionController::API
+     raise Failure.new(401, :token, "is missing") unless @current_user
+   end
+ 
+-  def object!(name)
+-    value = params[name]
+-    raise Failure.new(422, name, "is invalid") unless value.is_a?(ActionController::Parameters)
++  # Compile variant: the compiled lane's `params` hold strings only, so JSON request bodies are
++  # read here with their JSON types. Rails parses a JSON body lazily on the first `params` read
++  # (malformed -> ParseError -> 400 below); `param` parses first to keep that error order.
++  JSON_MEDIA_TYPES = %w[application/json text/x-json application/jsonrequest].freeze
++  # ParamsWrapper (on by default for JSON in API mode) nests unwrapped bodies under the
++  # controller's model name, keeping only the model's attribute names.
++  WRAPPED_ATTRIBUTES = {
++    "user" => %w[id username email password_digest bio image created_at updated_at],
++    "article" => %w[id author_id slug title description body tag_list status published_at revision created_at updated_at],
++    "comment" => %w[id article_id author_id body created_at updated_at]
++  }.freeze
++
++  def json_body
++    unless @json_body_parsed
++      media = request.headers["Content-Type"].to_s.split(";").first.to_s.strip.downcase
++      raw = request.raw_post.to_s
++      value = JSON_MEDIA_TYPES.include?(media) && !raw.empty? ? JSON.parse(raw) : {}
++      @json_body = value.is_a?(Hash) ? value : {}
++      @json_media = JSON_MEDIA_TYPES.include?(media)
++      @json_body_parsed = true
++    end
++    @json_body
++  end
++
++  def param(name)
++    json_body
++    params[name]
++  end
++
++  # `wrap: false` where the controller's ParamsWrapper key differs from `name` (SharesController wraps as "share").
++  def object!(name, wrap: true)
++    body = json_body
++    key = name.to_s
++    value = body[key]
++    attributes = WRAPPED_ATTRIBUTES[key]
++    if wrap && @json_media && attributes && !body.key?(key)
++      value = body.slice(*attributes)
++    end
++    raise Failure.new(422, name, "is invalid") unless value.is_a?(Hash)
+     value
+   end
+ 
++  # Roundhouse drops controller rest parameters and expects symbol attribute keys.
++  # Strong-parameter `permit` for scalars, then Active Model's string cast.
++  def permitted(input, names)
++    out = {}
++    names.each do |name|
++      key = name.to_s
++      next unless input.key?(key)
++      value = input[key]
++      next if value.is_a?(Hash) || value.is_a?(Array)
++      out[name] = string_cast(value)
++    end
++    out
++  end
++
++  def string_cast(value)
++    JsonCast.string(value)
++  end
++
++  # Spinel uses ASCII strip here; Unicode-whitespace-only login fields differ from Rails blank?.
++  def blank_value?(value)
++    value.nil? || value == false || (value.is_a?(String) && value.strip.empty?) ||
++      (value.is_a?(Array) && value.empty?) || (value.is_a?(Hash) && value.empty?)
++  end
++
+   def article!
+-    article = Article.find_by(slug: params[:slug])
++    article = Article.find_by(slug: param(:slug))
+     raise Failure.new(404, :article, "not found") unless article && (article.status == "published" || article.author_id == @current_user&.id)
+     article
+   end
+@@ -76,7 +136,8 @@ class ApplicationController < ActionController::API
+   end
+ 
+   def article_json(article, list: false, following_ids: nil, favorite_ids: nil, favorite_counts: nil)
+-    author = article.association(:author).loaded? ? article.author : article.author
++    # Roundhouse cannot dispatch belongs_to Association#loaded?; both reference branches read author.
++    author = article.author
+     favorited = @current_user && (favorite_ids ? favorite_ids.include?(article.id) : Favorite.exists?(user_id: @current_user.id, article_id: article.id))
+     count = favorite_counts ? favorite_counts.fetch(article.id, 0) : Favorite.where(article_id: article.id).count
+     data = { slug: article.slug, title: article.title, description: article.description,
+@@ -88,8 +149,8 @@ class ApplicationController < ActionController::API
+   end
+ 
+   def article_page(relation)
+-    limit = Integer(params.fetch(:limit, 20)) rescue 20
+-    offset = Integer(params.fetch(:offset, 0)) rescue 0
++    limit = Integer(param(:limit) || 20) rescue 20
++    offset = Integer(param(:offset) || 0) rescue 0
+     limit = limit.clamp(0, 100)
+     offset = offset.clamp(0, 1_000_000)
+     count = relation.count
+diff --git areference/app/controllers/articles_controller.rb bvariant/app/controllers/articles_controller.rb
+index 13d86b6..34aa34d 100644
+--- areference/app/controllers/articles_controller.rb
++++ bvariant/app/controllers/articles_controller.rb
+@@ -1,9 +1,9 @@
+ class ArticlesController < ApplicationController
+   def index
+     relation = Article.published
+-    relation = relation.where("tag_list @> ARRAY[?]::text[]", params[:tag]) if params[:tag].present?
+-    relation = relation.joins(:author).where(users: { username: params[:author] }) if params[:author].present?
+-    relation = relation.where(id: Favorite.joins(:user).where(users: { username: params[:favorited] }).select(:article_id)) if params[:favorited].present?
++    relation = relation.where("tag_list @> ARRAY[?]::text[]", param(:tag)) if param(:tag).present?
++    relation = relation.joins(:author).where(users: { username: param(:author) }) if param(:author).present?
++    relation = relation.where(id: Favorite.joins(:user).where(users: { username: param(:favorited) }).select(:article_id)) if param(:favorited).present?
+     render json: article_page(relation)
+   end
+ 
+@@ -25,13 +25,14 @@ class ArticlesController < ApplicationController
+   def create
+     require_user!
+     input = object!(:article)
+-    status = input.fetch(:status, "published")
++    status = input.fetch("status", "published")
+     raise Failure.new(422, :status, "is invalid") unless %w[draft published].include?(status)
+-    tags = input.fetch(:tagList, [])
++    # Spinel Hash#fetch with an Array default returns nil for an absent key.
++    tags = input.key?("tagList") ? input["tagList"] : []
+     raise Failure.new(422, :tagList, "is invalid") unless tags.is_a?(Array) && tags.all? { |tag| tag.is_a?(String) }
+-    article = Article.new(input.permit(:title, :description, :body).to_h.merge(
++    article = Article.new(permitted(input, %i[title description body]).merge(
+       author: @current_user, status: status, published_at: (Time.current if status == "published"),
+-      tag_list: tags.uniq, slug: Article.slug_for(input[:title])))
++      tag_list: tags.uniq, slug: Article.slug_for(input["title"])))
+     article.save!
+     render json: { article: article_json(article) }, status: :created
+   end
+@@ -39,7 +40,7 @@ class ArticlesController < ApplicationController
+   def update
+     article = author_article!
+     input = object!(:article)
+-    ArticleCommit.call(article, input.to_unsafe_h, expected: input[:revision], representation: ->(a) { article_json(a) })
++    ArticleCommit.call(article, input, expected: input["revision"], representation: ->(a) { article_json(a) })
+     render json: { article: article_json(article) }
+   end
+ 
+diff --git areference/app/controllers/comments_controller.rb bvariant/app/controllers/comments_controller.rb
+index 7aca0e8..f26395a 100644
+--- areference/app/controllers/comments_controller.rb
++++ bvariant/app/controllers/comments_controller.rb
+@@ -2,8 +2,8 @@ class CommentsController < ApplicationController
+   def index
+     article = article!
+     comments = article.comments.order(created_at: :desc, id: :desc).includes(:author)
+-    comments = comments.limit((Integer(params[:limit]) rescue 100).clamp(0, 100)) if params.key?(:limit)
+-    comments = comments.offset((Integer(params[:offset]) rescue 0).clamp(0, 1_000_000)) if params.key?(:offset)
++    comments = comments.limit((Integer(param(:limit)) rescue 100).clamp(0, 100)) if params.key?(:limit)
++    comments = comments.offset((Integer(param(:offset)) rescue 0).clamp(0, 1_000_000)) if params.key?(:offset)
+     comments = comments.to_a
+     followed = @current_user ? Follow.where(follower_id: @current_user.id, followed_id: comments.map(&:author_id)).pluck(:followed_id).to_set : nil
+     render json: { comments: comments.map { |comment| comment_json(comment, followed) } }
+@@ -12,14 +12,14 @@ class CommentsController < ApplicationController
+   def create
+     require_user!
+     article = public_article!
+-    comment = article.comments.create!(author: @current_user, body: object!(:comment)[:body])
++    comment = article.comments.create!(author: @current_user, body: string_cast(object!(:comment)["body"]))
+     render json: { comment: comment_json(comment) }, status: :created
+   end
+ 
+   def destroy
+     require_user!
+     article = article!
+-    comment = article.comments.find_by(id: params[:id]) || (raise Failure.new(404, :comment, "not found"))
++    comment = article.comments.find_by(id: param(:id)) || (raise Failure.new(404, :comment, "not found"))
+     raise Failure.new(403, :comment, "forbidden") unless comment.author_id == @current_user.id
+     comment.destroy!
+     head :no_content
+diff --git areference/app/controllers/exports_controller.rb bvariant/app/controllers/exports_controller.rb
+index 68b2963..eecaa42 100644
+--- areference/app/controllers/exports_controller.rb
++++ bvariant/app/controllers/exports_controller.rb
+@@ -7,7 +7,8 @@ class ExportsController < ApplicationController
+   end
+   def show
+     require_user!
+-    export = @current_user.article_exports.find_by(id: params[:id])
++    # Roundhouse association find_by still derives current_user_id from the ivar name.
++    export = ArticleExport.find_by(id: param(:id), user_id: @current_user.id)
+     raise Failure.new(404, :export, "not found") unless export
+     render json: { export: export_json(export) }
+   end
+diff --git areference/app/controllers/profiles_controller.rb bvariant/app/controllers/profiles_controller.rb
+index 6608a81..8d8e6e1 100644
+--- areference/app/controllers/profiles_controller.rb
++++ bvariant/app/controllers/profiles_controller.rb
+@@ -16,6 +16,6 @@ class ProfilesController < ApplicationController
+   end
+   private
+   def profile!
+-    User.find_by(username: params[:username]) || (raise Failure.new(404, :profile, "not found"))
++    User.find_by(username: param(:username)) || (raise Failure.new(404, :profile, "not found"))
+   end
+ end
+diff --git areference/app/controllers/shares_controller.rb bvariant/app/controllers/shares_controller.rb
+index a4213ed..e016b2b 100644
+--- areference/app/controllers/shares_controller.rb
++++ bvariant/app/controllers/shares_controller.rb
+@@ -8,8 +8,10 @@ class SharesController < ApplicationController
+   def destroy
+     article = author_article!
+     ids = article.with_lock do
+-      active = article.article_shares.active
+-      active.pluck(:id).tap { active.update_all(revoked_at: Time.current) }
++      # Roundhouse cannot retain a scoped association's relation in a local.
++      ids = article.article_shares.active.pluck(:id)
++      article.article_shares.active.update_all(revoked_at: Time.current)
++      ids
+     end
+     LiveRooms.revoked(ids)
+     head :no_content
+@@ -20,18 +22,18 @@ class SharesController < ApplicationController
+   end
+   def update
+     share = share!
+-    input = object!(:article)
++    input = object!(:article, wrap: false)
+     required = %w[title body revision]
+-    raise Failure.new(422, :article, "is invalid") unless input.keys.sort == required.sort && input[:title].is_a?(String) && input[:body].is_a?(String)
+-    ArticleCommit.call(share.article, input.to_unsafe_h, expected: input[:revision], representation: ->(a) { a.shared_json }, share: share, key: request.headers["X-Share-Key"])
++    raise Failure.new(422, :article, "is invalid") unless input.keys.sort == required.sort && input["title"].is_a?(String) && input["body"].is_a?(String)
++    ArticleCommit.call(share.article, input, expected: input["revision"], representation: ->(a) { a.shared_json }, share: share, key: request.headers["X-Share-Key"])
+     render json: { article: share.article.shared_json }
+   end
+   def live
+-    LiveSocket.open(request.env, params[:id])
++    LiveSocket.open(request.env, param(:id))
+   end
+   private
+   def share!
+-    share = ArticleShare.active.find_by(id: params[:id])
++    share = ArticleShare.active.find_by(id: param(:id))
+     raise Failure.new(404, :share, "not found") unless share&.valid_key?(request.headers["X-Share-Key"])
+     share
+   end
+diff --git areference/app/controllers/tags_controller.rb bvariant/app/controllers/tags_controller.rb
+index 94344cf..8671d0b 100644
+--- areference/app/controllers/tags_controller.rb
++++ bvariant/app/controllers/tags_controller.rb
+@@ -1,6 +1,7 @@
+ class TagsController < ApplicationController
+   def index
+-    tags = Article.published.connection.select_values("SELECT DISTINCT unnest(tag_list) FROM articles WHERE status = 'published' ORDER BY 1")
++    # Roundhouse lacks relation.connection and Connection#select_values.
++    tags = Article.connection.select_all("SELECT DISTINCT unnest(tag_list) AS tag FROM articles WHERE status = 'published' ORDER BY 1").to_a.map { |row| row["tag"] }
+     render json: { tags: tags }
+   end
+ end
+diff --git areference/app/controllers/users_controller.rb bvariant/app/controllers/users_controller.rb
+index 3f5531c..b7c2c8f 100644
+--- areference/app/controllers/users_controller.rb
++++ bvariant/app/controllers/users_controller.rb
+@@ -1,7 +1,7 @@
+ class UsersController < ApplicationController
+   def create
+     input = object!(:user)
+-    user = User.new(input.permit(:username, :email, :password))
++    user = User.new(permitted(input, %i[username email password]))
+     if user.save
+       render json: { user: user_json(user) }, status: :created
+     elsif user.errors.of_kind?(:username, :taken) || user.errors.of_kind?(:email, :taken)
+@@ -14,10 +14,10 @@ class UsersController < ApplicationController
+   def login
+     input = object!(:user)
+     %i[email password].each do |field|
+-      raise Failure.new(422, field, "can't be blank") if input[field].blank?
++      raise Failure.new(422, field, "can't be blank") if blank_value?(input[field.to_s])
+     end
+-    email = input[:email]
+-    password = input[:password]
++    email = input["email"]
++    password = input["password"]
+     raise Failure.new(422, :credentials, "invalid") unless email.is_a?(String) && password.is_a?(String)
+     user = User.where("lower(email) = ?", email.downcase).first
+     if user&.authenticate(password)
+@@ -35,14 +35,29 @@ class UsersController < ApplicationController
+ 
+   def update
+     require_user!
+-    @current_user.update!(object!(:user).permit(:username, :email, :password, :image, :bio))
++    input = object!(:user)
++    # Spinel workaround: direct writers avoid the crashing synthesized update! hash path.
++    %w[username email password image bio].each do |name|
++      next unless input.key?(name)
++      value = input[name]
++      next if value.is_a?(Hash) || value.is_a?(Array)
++      value = string_cast(value)
++      case name
++      when "username" then @current_user.username = value
++      when "email" then @current_user.email = value
++      when "password" then @current_user.password = value
++      when "image" then @current_user.image = value
++      when "bio" then @current_user.bio = value
++      end
++    end
++    @current_user.save!
+     render json: { user: user_json(@current_user) }
+   end
+ 
+   private
+ 
+   def user_json(user)
+-    token = JWT.encode({ sub: user.id, exp: 30.days.from_now.to_i }, Rails.application.secret_key_base, "HS256")
++    token = TokenCodec.encode({ sub: user.id, exp: 30.days.from_now.to_i }, Rails.application.secret_key_base)
+     { email: user.email, token: token, username: user.username, bio: user.bio, image: user.image }
+   end
+ end
+diff --git areference/app/jobs/export_articles_job.rb bvariant/app/jobs/export_articles_job.rb
+index 676e702..2181da6 100644
+--- areference/app/jobs/export_articles_job.rb
++++ bvariant/app/jobs/export_articles_job.rb
+@@ -2,11 +2,12 @@ class ExportArticlesJob < ApplicationJob
+   def perform(id)
+     export = ArticleExport.find_by(id: id)
+     return unless export && export.status == "pending"
++    # Roundhouse retains computed select aliases through [], without named getters.
+     articles = Article.where(author_id: export.user_id).order(:created_at, :id)
+       .left_joins(:comments).select("articles.*, COUNT(comments.id) AS comments_total")
+       .group("articles.id").map do |article|
+       article.attributes.slice("slug", "title", "description", "body", "status").merge(
+-        "tagList" => article.tag_list, "commentsCount" => article.comments_total.to_i
++        "tagList" => article.tag_list, "commentsCount" => article["comments_total"].to_i
+       )
+     end
+     export.with_lock do
+diff --git areference/app/models/article_export.rb bvariant/app/models/article_export.rb
+index 0544218..c3cc6a7 100644
+--- areference/app/models/article_export.rb
++++ bvariant/app/models/article_export.rb
+@@ -2,6 +2,7 @@ class ArticleExport < ApplicationRecord
+   belongs_to :user
+ 
+   def self.recover_pending!
+-    where(status: "pending").find_each { |export| ExportArticlesJob.perform_later(export.id) }
++    # Roundhouse folds this model-class query to an Array before find_each dispatch.
++    where(status: "pending").each { |export| ExportArticlesJob.perform_later(export.id) }
+   end
+ end
+diff --git areference/app/models/user.rb bvariant/app/models/user.rb
+index 659327d..93f87e3 100644
+--- areference/app/models/user.rb
++++ bvariant/app/models/user.rb
+@@ -6,7 +6,7 @@ class User < ApplicationRecord
+   validates :username, :email, presence: true
+   validates :username, uniqueness: { case_sensitive: false }
+   validates :email, uniqueness: { case_sensitive: false }
+-  validates :password, length: { minimum: 8 }, if: -> { password.present? }
++  validate :password_has_minimum_length
+   validate :password_is_present_when_supplied
+ 
+   def normalize_optional_fields
+@@ -14,6 +14,11 @@ class User < ApplicationRecord
+     self.image = nil if image == ""
+   end
+ 
++  # Preserve the conditional that the validation macro ingest drops.
++  def password_has_minimum_length
++    errors.add(:password, "is too short (minimum is 8 characters)") if password.present? && password.length < 8
++  end
++
+   def password_is_present_when_supplied
+     errors.add(:password, "can't be blank") if @password_supplied && password.blank?
+   end
+diff --git areference/app/services/article_commit.rb bvariant/app/services/article_commit.rb
+index 120017a..aae64d8 100644
+--- areference/app/services/article_commit.rb
++++ bvariant/app/services/article_commit.rb
+@@ -8,14 +8,16 @@ class ArticleCommit
+       if expected && expected != article.revision
+         raise ApplicationController::Failure.new(409, :revision, "is stale", article: representation.call(article))
+       end
+-      changes = input.slice("title", "description", "body")
++      # Roundhouse lacks Rails attribute string casting for the raw JSON values.
++      changes = input.slice("title", "description", "body").transform_values { |value| JsonCast.string(value) }
+       changes["slug"] = Article.slug_for(changes["title"]) if changes.key?("title") && changes["title"] != article.title
+       if input.key?("tagList")
+         tags = input["tagList"]
+         raise ApplicationController::Failure.new(422, :tagList, "is invalid") unless tags.is_a?(Array) && tags.all? { |tag| tag.is_a?(String) }
+         changes["tag_list"] = tags.uniq
+       end
+-      article.update!(changes.merge("revision" => article.revision + 1))
++      # Generated update! consumes symbol attribute keys.
++      article.update!(changes.merge("revision" => article.revision + 1).transform_keys { |name| name.to_sym })
+     end
+     LiveRooms.updated(article)
+     article
+diff --git avariant/app/services/json_cast.rb bvariant/app/services/json_cast.rb
+new file mode 100644
+index 0000000..3abbece
+--- /dev/null
++++ bvariant/app/services/json_cast.rb
+@@ -0,0 +1,9 @@
++# Compile variant: Active Model's string cast for typed JSON values (Rails applies it on assignment).
++class JsonCast
++  def self.string(value)
++    return nil if value.nil?
++    return "t" if value == true
++    return "f" if value == false
++    value.is_a?(String) ? value : value.to_s
++  end
++end
+diff --git areference/app/services/live_rooms.rb bvariant/app/services/live_rooms.rb
+index e56c39a..8686cf0 100644
+--- areference/app/services/live_rooms.rb
++++ bvariant/app/services/live_rooms.rb
+@@ -1,9 +1,18 @@
+ class LiveRooms
+-  Room = Struct.new(:lock, :members)
++  # Spinel Struct#members collides with the room member field.
++  class Room
++    attr_reader :lock, :members
++    def initialize
++      @lock = Mutex.new
++      # A nil key seeds Spinel's boxed-key hash representation.
++      @members = { nil => 0 }
++      @members.delete(nil)
++    end
++  end
+ 
+   def self.room(id)
+     state = Rails.application.config.x.live_rooms_state
+-    state[:lock].synchronize { state[:rooms][id] ||= Room.new(Mutex.new, {}) }
++    state[:lock].synchronize { state[:rooms][id] ||= Room.new }
+   end
+ 
+   def self.join(share, socket)
+diff --git areference/app/services/login_throttle.rb bvariant/app/services/login_throttle.rb
+index cf623ee..38ec3ac 100644
+--- areference/app/services/login_throttle.rb
++++ bvariant/app/services/login_throttle.rb
+@@ -2,12 +2,15 @@ class LoginThrottle
+   @lock = Mutex.new
+   @failures = Hash.new { |hash, key| hash[key] = [] }
+   def self.fail!(email, ip)
+-    @lock.synchronize do
++    # Spinel loses custom exception attributes raised across Mutex#synchronize.
++    limited = @lock.synchronize do
+       key = [ email.downcase, ip ]
+       now = Time.now.to_f
+-      @failures[key].reject! { |time| time < now - 60 }
++      # Spinel cannot dispatch reject! on the boxed Array from the default-block Hash.
++      @failures[key] = @failures[key].select { |time| time >= now - 60 }
+       @failures[key] << now
+-      raise ApplicationController::Failure.new(429, :credentials, "rate limited") if @failures[key].length > 20
++      @failures[key].length > 20
+     end
++    raise ApplicationController::Failure.new(429, :credentials, "rate limited") if limited
+   end
+ end
+diff --git avariant/app/services/token_codec.rb bvariant/app/services/token_codec.rb
+new file mode 100644
+index 0000000..f6151df
+--- /dev/null
++++ bvariant/app/services/token_codec.rb
+@@ -0,0 +1,52 @@
++require "base64"
++require "digest"
++require "json"
++
++# Roundhouse cannot compile the JWT gem; this implements the app's HS256 paths.
++class TokenCodec
++  class DecodeError < StandardError
++  end
++
++  def self.encode(payload, secret)
++    header = encode_segment(JSON.generate({ alg: "HS256", typ: "JWT" }))
++    body = encode_segment(JSON.generate(payload))
++    input = "#{header}.#{body}"
++    "#{input}.#{encode_segment(hmac(secret, input))}"
++  end
++
++  def self.decode(token, secret)
++    parts = token.split(".", -1)
++    raise DecodeError unless parts.length == 3 && parts.all? { |part| part.match?(/\A[A-Za-z0-9_-]+\z/) }
++    header = JSON.parse(Base64.urlsafe_decode64(parts[0]))
++    raise DecodeError unless header.is_a?(Hash) && header["alg"] == "HS256"
++    input = "#{parts[0]}.#{parts[1]}"
++    signature = encode_segment(hmac(secret, input))
++    raise DecodeError unless ActiveSupport::SecurityUtils.secure_compare(signature, parts[2])
++    payload = JSON.parse(Base64.urlsafe_decode64(parts[1]))
++    raise DecodeError unless payload.is_a?(Hash)
++    now = Time.now.to_i
++    raise DecodeError if payload.key?("exp") && payload["exp"].to_i <= now
++    raise DecodeError if payload.key?("nbf") && payload["nbf"].to_i > now
++    payload
++  rescue ArgumentError, JSON::ParserError, TypeError, NoMethodError
++    raise DecodeError
++  end
++
++  def self.encode_segment(bytes)
++    Base64.strict_encode64(bytes).tr("+/", "-_").delete("=")
++  end
++
++  def self.hmac(secret, input)
++    key = secret.bytesize > 64 ? Digest::SHA256.digest(secret) : secret
++    inner = +""
++    outer = +""
++    position = 0
++    while position < 64
++      byte = position < key.bytesize ? key.getbyte(position) : 0
++      inner << (byte ^ 0x36).chr
++      outer << (byte ^ 0x5c).chr
++      position += 1
++    end
++    Digest::SHA256.digest(outer + Digest::SHA256.digest(inner + input.b))
++  end
++end
+diff --git avariant/config/initializers/recover_exports.rb bvariant/config/initializers/recover_exports.rb
+new file mode 100644
+index 0000000..b031f40
+--- /dev/null
++++ bvariant/config/initializers/recover_exports.rb
+@@ -0,0 +1,6 @@
++# Roundhouse boot hooks omit the reference bin/rails runner; also recover on Rails server boot.
++if defined?(Rails::Server)
++  Rails.application.config.after_initialize do
++    ArticleExport.recover_pending!
++  end
++end
+diff --git avariant/db/structure.sql bvariant/db/structure.sql
+new file mode 100644
+index 0000000..d28ffd0
+--- /dev/null
++++ bvariant/db/structure.sql
+@@ -0,0 +1,838 @@
++--
++-- PostgreSQL database dump
++--
++
++\restrict QbCb7cJdPgUfVcWj1AgSNCR7lDAPI776PFNw3203PhMWFP7nUnvU75P8ZkmIZy8
++
++-- Dumped from database version 17.10
++-- Dumped by pg_dump version 17.10
++
++SET statement_timeout = 0;
++SET lock_timeout = 0;
++SET idle_in_transaction_session_timeout = 0;
++SET transaction_timeout = 0;
++SET client_encoding = 'UTF8';
++SET standard_conforming_strings = on;
++SELECT pg_catalog.set_config('search_path', '', false);
++SET check_function_bodies = false;
++SET xmloption = content;
++SET client_min_messages = warning;
++SET row_security = off;
++
++SET default_tablespace = '';
++
++SET default_table_access_method = heap;
++
++--
++-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.ar_internal_metadata (
++    key character varying NOT NULL,
++    value character varying,
++    created_at timestamp(6) without time zone NOT NULL,
++    updated_at timestamp(6) without time zone NOT NULL
++);
++
++
++--
++-- Name: article_exports; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.article_exports (
++    id bigint NOT NULL,
++    articles jsonb,
++    completed_at timestamp(6) without time zone,
++    created_at timestamp(6) without time zone NOT NULL,
++    status character varying DEFAULT 'pending'::character varying NOT NULL,
++    updated_at timestamp(6) without time zone NOT NULL,
++    user_id bigint NOT NULL,
++    CONSTRAINT export_state CHECK (((((status)::text = 'pending'::text) AND (articles IS NULL) AND (completed_at IS NULL)) OR (((status)::text = 'done'::text) AND (articles IS NOT NULL) AND (completed_at IS NOT NULL))))
++);
++
++
++--
++-- Name: article_exports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
++--
++
++CREATE SEQUENCE public.article_exports_id_seq
++    START WITH 1
++    INCREMENT BY 1
++    NO MINVALUE
++    NO MAXVALUE
++    CACHE 1;
++
++
++--
++-- Name: article_exports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
++--
++
++ALTER SEQUENCE public.article_exports_id_seq OWNED BY public.article_exports.id;
++
++
++--
++-- Name: article_shares; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.article_shares (
++    id uuid DEFAULT gen_random_uuid() NOT NULL,
++    article_id bigint NOT NULL,
++    created_at timestamp(6) without time zone NOT NULL,
++    key_hash character varying NOT NULL,
++    revoked_at timestamp(6) without time zone,
++    updated_at timestamp(6) without time zone NOT NULL
++);
++
++
++--
++-- Name: articles; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.articles (
++    id bigint NOT NULL,
++    author_id bigint NOT NULL,
++    body text NOT NULL,
++    created_at timestamp(6) without time zone NOT NULL,
++    description text NOT NULL,
++    published_at timestamp(6) without time zone,
++    revision integer DEFAULT 1 NOT NULL,
++    slug character varying NOT NULL,
++    status character varying DEFAULT 'published'::character varying NOT NULL,
++    tag_list text[] DEFAULT '{}'::text[] NOT NULL,
++    title character varying NOT NULL,
++    updated_at timestamp(6) without time zone NOT NULL,
++    CONSTRAINT article_lifecycle CHECK ((((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('published'::character varying)::text])) AND ((((status)::text = 'draft'::text) AND (published_at IS NULL)) OR (((status)::text = 'published'::text) AND (published_at IS NOT NULL))))),
++    CONSTRAINT positive_revision CHECK ((revision > 0))
++);
++
++
++--
++-- Name: articles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
++--
++
++CREATE SEQUENCE public.articles_id_seq
++    START WITH 1
++    INCREMENT BY 1
++    NO MINVALUE
++    NO MAXVALUE
++    CACHE 1;
++
++
++--
++-- Name: articles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
++--
++
++ALTER SEQUENCE public.articles_id_seq OWNED BY public.articles.id;
++
++
++--
++-- Name: comments; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.comments (
++    id bigint NOT NULL,
++    article_id bigint NOT NULL,
++    author_id bigint NOT NULL,
++    body text NOT NULL,
++    created_at timestamp(6) without time zone NOT NULL,
++    updated_at timestamp(6) without time zone NOT NULL
++);
++
++
++--
++-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
++--
++
++CREATE SEQUENCE public.comments_id_seq
++    START WITH 1
++    INCREMENT BY 1
++    NO MINVALUE
++    NO MAXVALUE
++    CACHE 1;
++
++
++--
++-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
++--
++
++ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
++
++
++--
++-- Name: favorites; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.favorites (
++    article_id bigint NOT NULL,
++    user_id bigint NOT NULL
++);
++
++
++--
++-- Name: follows; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.follows (
++    followed_id bigint NOT NULL,
++    follower_id bigint NOT NULL,
++    CONSTRAINT no_self_follow CHECK ((follower_id <> followed_id))
++);
++
++
++--
++-- Name: good_job_batches; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.good_job_batches (
++    id uuid DEFAULT gen_random_uuid() NOT NULL,
++    callback_priority integer,
++    callback_queue_name text,
++    created_at timestamp(6) without time zone NOT NULL,
++    description text,
++    discarded_at timestamp(6) without time zone,
++    enqueued_at timestamp(6) without time zone,
++    finished_at timestamp(6) without time zone,
++    jobs_finished_at timestamp(6) without time zone,
++    on_discard text,
++    on_finish text,
++    on_success text,
++    serialized_properties jsonb,
++    updated_at timestamp(6) without time zone NOT NULL
++);
++
++
++--
++-- Name: good_job_executions; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.good_job_executions (
++    id uuid DEFAULT gen_random_uuid() NOT NULL,
++    active_job_id uuid NOT NULL,
++    created_at timestamp(6) without time zone NOT NULL,
++    duration interval,
++    error text,
++    error_backtrace text[],
++    error_event smallint,
++    finished_at timestamp(6) without time zone,
++    job_class text,
++    process_id uuid,
++    queue_name text,
++    scheduled_at timestamp(6) without time zone,
++    serialized_params jsonb,
++    updated_at timestamp(6) without time zone NOT NULL
++);
++
++
++--
++-- Name: good_job_processes; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.good_job_processes (
++    id uuid DEFAULT gen_random_uuid() NOT NULL,
++    created_at timestamp(6) without time zone NOT NULL,
++    lock_type smallint,
++    state jsonb,
++    updated_at timestamp(6) without time zone NOT NULL
++);
++
++
++--
++-- Name: good_job_settings; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.good_job_settings (
++    id uuid DEFAULT gen_random_uuid() NOT NULL,
++    created_at timestamp(6) without time zone NOT NULL,
++    key text,
++    updated_at timestamp(6) without time zone NOT NULL,
++    value jsonb
++);
++
++
++--
++-- Name: good_jobs; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.good_jobs (
++    id uuid DEFAULT gen_random_uuid() NOT NULL,
++    active_job_id uuid,
++    batch_callback_id uuid,
++    batch_id uuid,
++    concurrency_key text,
++    created_at timestamp(6) without time zone NOT NULL,
++    cron_at timestamp(6) without time zone,
++    cron_key text,
++    error text,
++    error_event smallint,
++    executions_count integer,
++    finished_at timestamp(6) without time zone,
++    is_discrete boolean,
++    job_class text,
++    labels text[],
++    lock_type smallint,
++    locked_at timestamp(6) without time zone,
++    locked_by_id uuid,
++    performed_at timestamp(6) without time zone,
++    priority integer,
++    queue_name text,
++    retried_good_job_id uuid,
++    scheduled_at timestamp(6) without time zone,
++    serialized_params jsonb,
++    updated_at timestamp(6) without time zone NOT NULL
++);
++
++
++--
++-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.schema_migrations (
++    version character varying NOT NULL
++);
++
++
++--
++-- Name: users; Type: TABLE; Schema: public; Owner: -
++--
++
++CREATE TABLE public.users (
++    id bigint NOT NULL,
++    bio text,
++    created_at timestamp(6) without time zone NOT NULL,
++    email character varying NOT NULL,
++    image character varying,
++    password_digest character varying NOT NULL,
++    updated_at timestamp(6) without time zone NOT NULL,
++    username character varying NOT NULL
++);
++
++
++--
++-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
++--
++
++CREATE SEQUENCE public.users_id_seq
++    START WITH 1
++    INCREMENT BY 1
++    NO MINVALUE
++    NO MAXVALUE
++    CACHE 1;
++
++
++--
++-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
++--
++
++ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
++
++
++--
++-- Name: article_exports id; Type: DEFAULT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.article_exports ALTER COLUMN id SET DEFAULT nextval('public.article_exports_id_seq'::regclass);
++
++
++--
++-- Name: articles id; Type: DEFAULT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.articles ALTER COLUMN id SET DEFAULT nextval('public.articles_id_seq'::regclass);
++
++
++--
++-- Name: comments id; Type: DEFAULT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.comments_id_seq'::regclass);
++
++
++--
++-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
++
++
++--
++-- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.ar_internal_metadata
++    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
++
++
++--
++-- Name: article_exports article_exports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.article_exports
++    ADD CONSTRAINT article_exports_pkey PRIMARY KEY (id);
++
++
++--
++-- Name: article_shares article_shares_pkey; Type: CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.article_shares
++    ADD CONSTRAINT article_shares_pkey PRIMARY KEY (id);
++
++
++--
++-- Name: articles articles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.articles
++    ADD CONSTRAINT articles_pkey PRIMARY KEY (id);
++
++
++--
++-- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.comments
++    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
++
++
++--
++-- Name: good_job_batches good_job_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.good_job_batches
++    ADD CONSTRAINT good_job_batches_pkey PRIMARY KEY (id);
++
++
++--
++-- Name: good_job_executions good_job_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.good_job_executions
++    ADD CONSTRAINT good_job_executions_pkey PRIMARY KEY (id);
++
++
++--
++-- Name: good_job_processes good_job_processes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.good_job_processes
++    ADD CONSTRAINT good_job_processes_pkey PRIMARY KEY (id);
++
++
++--
++-- Name: good_job_settings good_job_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.good_job_settings
++    ADD CONSTRAINT good_job_settings_pkey PRIMARY KEY (id);
++
++
++--
++-- Name: good_jobs good_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.good_jobs
++    ADD CONSTRAINT good_jobs_pkey PRIMARY KEY (id);
++
++
++--
++-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.schema_migrations
++    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
++
++
++--
++-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.users
++    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
++
++
++--
++-- Name: index_article_exports_on_user_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_article_exports_on_user_id ON public.article_exports USING btree (user_id);
++
++
++--
++-- Name: index_article_shares_on_article_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE UNIQUE INDEX index_article_shares_on_article_id ON public.article_shares USING btree (article_id) WHERE (revoked_at IS NULL);
++
++
++--
++-- Name: index_articles_on_author_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_articles_on_author_id ON public.articles USING btree (author_id);
++
++
++--
++-- Name: index_articles_on_slug; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE UNIQUE INDEX index_articles_on_slug ON public.articles USING btree (slug);
++
++
++--
++-- Name: index_articles_on_status_and_created_at; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_articles_on_status_and_created_at ON public.articles USING btree (status, created_at);
++
++
++--
++-- Name: index_articles_on_tag_list; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_articles_on_tag_list ON public.articles USING gin (tag_list);
++
++
++--
++-- Name: index_comments_on_article_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_comments_on_article_id ON public.comments USING btree (article_id);
++
++
++--
++-- Name: index_comments_on_author_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_comments_on_author_id ON public.comments USING btree (author_id);
++
++
++--
++-- Name: index_favorites_on_article_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_favorites_on_article_id ON public.favorites USING btree (article_id);
++
++
++--
++-- Name: index_favorites_on_user_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_favorites_on_user_id ON public.favorites USING btree (user_id);
++
++
++--
++-- Name: index_favorites_on_user_id_and_article_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE UNIQUE INDEX index_favorites_on_user_id_and_article_id ON public.favorites USING btree (user_id, article_id);
++
++
++--
++-- Name: index_follows_on_followed_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_follows_on_followed_id ON public.follows USING btree (followed_id);
++
++
++--
++-- Name: index_follows_on_follower_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_follows_on_follower_id ON public.follows USING btree (follower_id);
++
++
++--
++-- Name: index_follows_on_follower_id_and_followed_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE UNIQUE INDEX index_follows_on_follower_id_and_followed_id ON public.follows USING btree (follower_id, followed_id);
++
++
++--
++-- Name: index_good_job_executions_on_active_job_id_and_created_at; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_job_executions_on_active_job_id_and_created_at ON public.good_job_executions USING btree (active_job_id, created_at);
++
++
++--
++-- Name: index_good_job_executions_on_process_id_and_created_at; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_job_executions_on_process_id_and_created_at ON public.good_job_executions USING btree (process_id, created_at);
++
++
++--
++-- Name: index_good_job_jobs_for_candidate_lookup; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_job_jobs_for_candidate_lookup ON public.good_jobs USING btree (priority, created_at) WHERE (finished_at IS NULL);
++
++
++--
++-- Name: index_good_job_settings_on_key; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE UNIQUE INDEX index_good_job_settings_on_key ON public.good_job_settings USING btree (key);
++
++
++--
++-- Name: index_good_jobs_for_candidate_dequeue_unlocked; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_for_candidate_dequeue_unlocked ON public.good_jobs USING btree (priority, scheduled_at, id) WHERE ((finished_at IS NULL) AND (locked_by_id IS NULL));
++
++
++--
++-- Name: index_good_jobs_jobs_on_finished_at_only; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_jobs_on_finished_at_only ON public.good_jobs USING btree (finished_at) WHERE (finished_at IS NOT NULL);
++
++
++--
++-- Name: index_good_jobs_jobs_on_priority_created_at_when_unfinished; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_jobs_on_priority_created_at_when_unfinished ON public.good_jobs USING btree (priority DESC NULLS LAST, created_at) WHERE (finished_at IS NULL);
++
++
++--
++-- Name: index_good_jobs_on_active_job_id_and_created_at; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_active_job_id_and_created_at ON public.good_jobs USING btree (active_job_id, created_at);
++
++
++--
++-- Name: index_good_jobs_on_batch_callback_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_batch_callback_id ON public.good_jobs USING btree (batch_callback_id) WHERE (batch_callback_id IS NOT NULL);
++
++
++--
++-- Name: index_good_jobs_on_batch_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_batch_id ON public.good_jobs USING btree (batch_id) WHERE (batch_id IS NOT NULL);
++
++
++--
++-- Name: index_good_jobs_on_concurrency_key_and_created_at; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_concurrency_key_and_created_at ON public.good_jobs USING btree (concurrency_key, created_at);
++
++
++--
++-- Name: index_good_jobs_on_concurrency_key_when_unfinished; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_concurrency_key_when_unfinished ON public.good_jobs USING btree (concurrency_key) WHERE (finished_at IS NULL);
++
++
++--
++-- Name: index_good_jobs_on_created_at; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_created_at ON public.good_jobs USING btree (created_at);
++
++
++--
++-- Name: index_good_jobs_on_cron_key_and_created_at_cond; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_cron_key_and_created_at_cond ON public.good_jobs USING btree (cron_key, created_at) WHERE (cron_key IS NOT NULL);
++
++
++--
++-- Name: index_good_jobs_on_cron_key_and_cron_at_cond; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE UNIQUE INDEX index_good_jobs_on_cron_key_and_cron_at_cond ON public.good_jobs USING btree (cron_key, cron_at) WHERE (cron_key IS NOT NULL);
++
++
++--
++-- Name: index_good_jobs_on_discarded; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_discarded ON public.good_jobs USING btree (finished_at DESC) WHERE ((finished_at IS NOT NULL) AND (error IS NOT NULL));
++
++
++--
++-- Name: index_good_jobs_on_discarded_job_class; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_discarded_job_class ON public.good_jobs USING btree (job_class, finished_at) WHERE ((finished_at IS NOT NULL) AND (error IS NOT NULL));
++
++
++--
++-- Name: index_good_jobs_on_job_class; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_job_class ON public.good_jobs USING btree (job_class);
++
++
++--
++-- Name: index_good_jobs_on_labels; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_labels ON public.good_jobs USING gin (labels) WHERE (labels IS NOT NULL);
++
++
++--
++-- Name: index_good_jobs_on_locked_by_id; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_locked_by_id ON public.good_jobs USING btree (locked_by_id) WHERE (locked_by_id IS NOT NULL);
++
++
++--
++-- Name: index_good_jobs_on_priority_scheduled_at_unfinished; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_priority_scheduled_at_unfinished ON public.good_jobs USING btree (priority, scheduled_at, id) WHERE (finished_at IS NULL);
++
++
++--
++-- Name: index_good_jobs_on_priority_scheduled_at_unfinished_unlocked; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_priority_scheduled_at_unfinished_unlocked ON public.good_jobs USING btree (priority, scheduled_at) WHERE ((finished_at IS NULL) AND (locked_by_id IS NULL));
++
++
++--
++-- Name: index_good_jobs_on_queue_name; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_queue_name ON public.good_jobs USING btree (queue_name);
++
++
++--
++-- Name: index_good_jobs_on_queue_name_and_scheduled_at; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_queue_name_and_scheduled_at ON public.good_jobs USING btree (queue_name, scheduled_at) WHERE (finished_at IS NULL);
++
++
++--
++-- Name: index_good_jobs_on_queue_name_priority_scheduled_at_unfinished; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_queue_name_priority_scheduled_at_unfinished ON public.good_jobs USING btree (queue_name, scheduled_at, id) WHERE (finished_at IS NULL);
++
++
++--
++-- Name: index_good_jobs_on_scheduled_at; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_scheduled_at ON public.good_jobs USING btree (scheduled_at) WHERE (finished_at IS NULL);
++
++
++--
++-- Name: index_good_jobs_on_scheduled_at_and_queue_name; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_scheduled_at_and_queue_name ON public.good_jobs USING btree (scheduled_at, queue_name);
++
++
++--
++-- Name: index_good_jobs_on_unfinished_or_errored; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE INDEX index_good_jobs_on_unfinished_or_errored ON public.good_jobs USING btree (id) WHERE ((finished_at IS NULL) OR (error IS NOT NULL));
++
++
++--
++-- Name: index_users_on_lower_email; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE UNIQUE INDEX index_users_on_lower_email ON public.users USING btree (lower((email)::text));
++
++
++--
++-- Name: index_users_on_lower_username; Type: INDEX; Schema: public; Owner: -
++--
++
++CREATE UNIQUE INDEX index_users_on_lower_username ON public.users USING btree (lower((username)::text));
++
++
++--
++-- Name: favorites fk_rails_00f2e522fe; Type: FK CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.favorites
++    ADD CONSTRAINT fk_rails_00f2e522fe FOREIGN KEY (article_id) REFERENCES public.articles(id);
++
++
++--
++-- Name: comments fk_rails_3bf61a60d3; Type: FK CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.comments
++    ADD CONSTRAINT fk_rails_3bf61a60d3 FOREIGN KEY (article_id) REFERENCES public.articles(id);
++
++
++--
++-- Name: follows fk_rails_5ef72a3867; Type: FK CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.follows
++    ADD CONSTRAINT fk_rails_5ef72a3867 FOREIGN KEY (followed_id) REFERENCES public.users(id);
++
++
++--
++-- Name: follows fk_rails_622d34a301; Type: FK CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.follows
++    ADD CONSTRAINT fk_rails_622d34a301 FOREIGN KEY (follower_id) REFERENCES public.users(id);
++
++
++--
++-- Name: article_shares fk_rails_7352bc4470; Type: FK CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.article_shares
++    ADD CONSTRAINT fk_rails_7352bc4470 FOREIGN KEY (article_id) REFERENCES public.articles(id);
++
++
++--
++-- Name: article_exports fk_rails_b30880ca2b; Type: FK CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.article_exports
++    ADD CONSTRAINT fk_rails_b30880ca2b FOREIGN KEY (user_id) REFERENCES public.users(id);
++
++
++--
++-- Name: favorites fk_rails_d15744e438; Type: FK CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.favorites
++    ADD CONSTRAINT fk_rails_d15744e438 FOREIGN KEY (user_id) REFERENCES public.users(id);
++
++
++--
++-- Name: articles fk_rails_e74ce85cbc; Type: FK CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.articles
++    ADD CONSTRAINT fk_rails_e74ce85cbc FOREIGN KEY (author_id) REFERENCES public.users(id);
++
++
++--
++-- Name: comments fk_rails_f44b1e3c8a; Type: FK CONSTRAINT; Schema: public; Owner: -
++--
++
++ALTER TABLE ONLY public.comments
++    ADD CONSTRAINT fk_rails_f44b1e3c8a FOREIGN KEY (author_id) REFERENCES public.users(id);
++
++
++--
++-- PostgreSQL database dump complete
++--
++
++\unrestrict QbCb7cJdPgUfVcWj1AgSNCR7lDAPI776PFNw3203PhMWFP7nUnvU75P8ZkmIZy8
++
+diff --git avariant/test/controllers/compile_variant_contract_test.rb bvariant/test/controllers/compile_variant_contract_test.rb
+new file mode 100644
+index 0000000..5aa4682
+--- /dev/null
++++ bvariant/test/controllers/compile_variant_contract_test.rb
+@@ -0,0 +1,39 @@
++require "test_helper"
++
++class CompileVariantContractTest < ActionDispatch::IntegrationTest
++  test "registration tokens authenticate and duplicate accounts conflict" do
++    input = { username: "variant_signup", email: "variant_signup@test.com", password: "password123" }
++    post "/api/users", params: { user: input }, as: :json
++    assert_response :created
++    token = response.parsed_body.fetch("user").fetch("token")
++    get "/api/user", headers: { "Authorization" => "Token #{token}" }
++    assert_response :ok
++    assert_equal input[:email], response.parsed_body.fetch("user").fetch("email")
++
++    post "/api/users", params: { user: input.merge(email: "other_variant@test.com") }, as: :json
++    assert_response :conflict
++    assert_equal [ "has already been taken" ], response.parsed_body.dig("errors", "username")
++
++    post "/api/users", params: { user: input.merge(username: "other_variant") }, as: :json
++    assert_response :conflict
++    assert_equal [ "has already been taken" ], response.parsed_body.dig("errors", "email")
++  end
++
++  test "invalid registration retains the attribute message response" do
++    post "/api/users", params: { user: { username: "", email: "", password: "short" } }, as: :json
++    assert_response :unprocessable_entity
++    assert_includes response.parsed_body.fetch("errors").fetch("username"), "can't be blank"
++    assert_includes response.parsed_body.fetch("errors").fetch("email"), "can't be blank"
++  end
++
++  test "tags remain distinct ordered and publication filtered in PostgreSQL" do
++    owner = User.create!(username: "variant_tags", email: "variant_tags@test.com", password: "password123")
++    [ [ "published", [ "zebra", "alpha", "alpha" ] ], [ "published", [ "beta", "alpha" ] ], [ "draft", [ "private_tag" ] ] ].each_with_index do |(status, tags), index|
++      Article.create!(author: owner, title: "Tag #{index}", slug: "variant-tag-#{index}", description: "Description",
++        body: "Body", status: status, tag_list: tags, published_at: status == "published" ? Time.current : nil)
++    end
++    get "/api/tags"
++    assert_response :ok
++    assert_equal [ "alpha", "beta", "zebra" ], response.parsed_body.fetch("tags")
++  end
++end
+diff --git avariant/test/services/token_codec_test.rb bvariant/test/services/token_codec_test.rb
+new file mode 100644
+index 0000000..8b9f0fa
+--- /dev/null
++++ bvariant/test/services/token_codec_test.rb
+@@ -0,0 +1,38 @@
++require "test_helper"
++require "openssl"
++
++class TokenCodecTest < ActiveSupport::TestCase
++  test "HMAC matches OpenSSL across short long and binary keys" do
++    [ "", "test-key", "k" * 64, "k" * 65, "k" * 200, "nul\0key", "\xFF\x80\0".b, "ключ" ].each do |key|
++      [ "", "payload", "\0binary\xFF".b, "café" ].each do |input|
++        assert_equal OpenSSL::HMAC.digest("SHA256", key, input), TokenCodec.hmac(key, input)
++      end
++    end
++  end
++
++  test "issued tokens interoperate in both directions with JWT" do
++    payload = { sub: 42, exp: Time.now.to_i + 3600 }
++    key = "interop-test-key"
++    encoded = TokenCodec.encode(payload, key)
++    assert_equal payload.transform_keys(&:to_s), JWT.decode(encoded, key, true, algorithm: "HS256").first
++    assert_equal payload.transform_keys(&:to_s), TokenCodec.decode(JWT.encode(payload, key, "HS256"), key)
++  end
++
++  test "expiration not-before signatures and algorithms are verified" do
++    key = "claims-test-key"
++    [ { exp: Time.now.to_i - 1 }, { exp: Time.now.to_i }, { nbf: Time.now.to_i + 3600 } ].each do |payload|
++      assert_raises(TokenCodec::DecodeError) { TokenCodec.decode(JWT.encode(payload, key, "HS256"), key) }
++    end
++    assert_raises(TokenCodec::DecodeError) { TokenCodec.decode(JWT.encode({ sub: 42 }, key, "HS256"), "wrong-key") }
++    assert_raises(TokenCodec::DecodeError) { TokenCodec.decode(JWT.encode({ sub: 42 }, key, "HS384"), key) }
++    assert_raises(TokenCodec::DecodeError) { TokenCodec.decode(JWT.encode({ sub: 42 }, nil, "none"), key) }
++  end
++
++  test "malformed token segments and non-object claims are rejected" do
++    [ "", "a.b", "a.b.c.d", "a.b.", "!.b.c", "e30.e30.c" ].each do |token|
++      assert_raises(TokenCodec::DecodeError) { TokenCodec.decode(token, "malformed-test-key") }
++    end
++    token = TokenCodec.encode([ 42 ], "malformed-test-key")
++    assert_raises(TokenCodec::DecodeError) { TokenCodec.decode(token, "malformed-test-key") }
++  end
++end

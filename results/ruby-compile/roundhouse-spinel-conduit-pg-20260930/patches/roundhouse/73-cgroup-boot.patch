@@ -1,0 +1,88 @@
+diff --git a/runtime/spinel/db_pg.rb b/runtime/spinel/db_pg.rb
+index 99846618..20398eb3 100644
+--- a/runtime/spinel/db_pg.rb
++++ b/runtime/spinel/db_pg.rb
+@@ -207,6 +207,12 @@ module Db
+   @prepare_lock = Mutex.new
+ 
+   def self.configure(conninfo, pool_size: 8)
++    # libpq calls block OS workers. Use twice the cgroup CPU quota, rounded
++    # after scaling, to overlap DB waits; never a deployment-specific count.
++    # SPINEL_WORKERS still wins; SPINEL_WORKER_FACTOR=1 opts out. With no quota
++    # Spinel keeps the affinity/online CPU bound. Set before the first Thread.
++    factor = ENV["SPINEL_WORKER_FACTOR"]
++    ENV["SPINEL_WORKER_FACTOR"] = "2" if factor.nil? || factor.empty?
+     close
+     n = pool_size
+     ev = ENV["DATABASE_POOL_SIZE"]
+diff --git a/runtime/spinel/scaffold/main.rb b/runtime/spinel/scaffold/main.rb
+index f8ae8b9c..9891f65f 100644
+--- a/runtime/spinel/scaffold/main.rb
++++ b/runtime/spinel/scaffold/main.rb
+@@ -666,7 +666,7 @@ while i < ARGV.length
+     puts "  -w, --workers N  prefork N processes (default 1; WORKERS env)"
+     puts "  -h, --help       show this help and exit"
+     puts ""
+-    puts "  OS workers per process: one per core; SPINEL_WORKERS=N caps it"
++    puts "  OS workers per process: CPU budget (cgroup/affinity); SPINEL_WORKERS=N overrides it"
+     puts "  TEP_SERVER=fiber runs the fiber-per-connection server instead"
+     puts "    (HTTP only, one thread; the measurement lane, matz/spinel#4306)"
+     puts "  SQLite file: BLOG_DB env (default storage/development.sqlite3)"
+diff --git a/runtime/spinel/tep/net.rb b/runtime/spinel/tep/net.rb
+index 4b9bfcfb..30763468 100644
+--- a/runtime/spinel/tep/net.rb
++++ b/runtime/spinel/tep/net.rb
+@@ -168,3 +168,11 @@ module TepSocketControl
+   ffi_lib "c"
+   ffi_func :shutdown, [:int, :int], :int
+ end
++
++# Resource policy is owned by Spinel, shared by the scheduler and this banner.
++module SpinelResources
++  ffi_func :sp_sched_worker_count, [], :int
++  ffi_func :sp_sched_worker_source, [], :str
++  ffi_func :sp_resource_memory_limit, [], :size_t
++  ffi_func :sp_resource_memory_source, [], :str
++end
+diff --git a/runtime/spinel/tep/server_threaded.rb b/runtime/spinel/tep/server_threaded.rb
+index c13ee194..2c36b012 100644
+--- a/runtime/spinel/tep/server_threaded.rb
++++ b/runtime/spinel/tep/server_threaded.rb
+@@ -80,6 +80,7 @@ module Tep
+           puts "  one green thread per connection; OS workers: " +
+                Tep.os_workers_desc + "; processes: " +
+                Tep.processes_desc(workers)
++          puts "  Memory budget: " + Tep.memory_budget_desc
+           $stdout.flush
+         end
+ 
+diff --git a/runtime/spinel/tep/tep_core.rb b/runtime/spinel/tep/tep_core.rb
+index 7c1ad008..9b11ad57 100644
+--- a/runtime/spinel/tep/tep_core.rb
++++ b/runtime/spinel/tep/tep_core.rb
+@@ -8,17 +8,15 @@ module Tep
+     n.length > 0 ? n : File.basename($PROGRAM_NAME)
+   end
+ 
+-  # What the banner says about OS workers. The runtime reads
+-  # SPINEL_WORKERS at the first Thread.new and otherwise runs one worker
+-  # per core; it has no accessor for the effective count, so the banner
+-  # reports the declaration, never a measurement.
++  # Spinel resolves the process budget before its first scheduler helper starts.
+   def self.os_workers_desc
+-    w = ENV["SPINEL_WORKERS"] || ""
+-    if w.length == 0
+-      "one per core (SPINEL_WORKERS=N to cap)"
+-    else
+-      w + " (SPINEL_WORKERS)"
+-    end
++    SpinelResources.sp_sched_worker_count.to_s + " (" +
++      SpinelResources.sp_sched_worker_source + ")"
++  end
++
++  def self.memory_budget_desc
++    SpinelResources.sp_resource_memory_limit.to_s + " bytes (" +
++      SpinelResources.sp_resource_memory_source + ")"
+   end
+ 
+   # `--workers N` preforks N processes; the banner names the flag only

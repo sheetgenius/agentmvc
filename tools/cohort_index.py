@@ -143,7 +143,7 @@ def make_record(path: Path, data: dict, role: str, prompts: dict, fixtures: dict
                         facts.get("source_tree_sha256"), facts.get("scaffold_sha256"))
     if source_hash is None and role == "reference":
         source_hash = read(base / "production.json").get("reference_source_tree_sha256")
-    if role == "diagnostic" and facts.get("source"):
+    if role == "diagnostic" and isinstance(facts.get("source"), str):
         source_path = existing(ROOT / facts["source"])
     return {
         "record": record, "results": rel(base), "role": role, "series": series, "protocol": protocol,

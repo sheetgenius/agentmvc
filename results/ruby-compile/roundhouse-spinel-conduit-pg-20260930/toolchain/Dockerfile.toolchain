@@ -1,0 +1,36 @@
+# syntax=docker/dockerfile:1
+# Source exports are frozen by ../prepare-toolchain.sh; see patches/SHA256SUMS.
+FROM rust:1.90.0-trixie@sha256:e227f20ec42af3ea9a3c9c1dd1b2012aa15f12279b5e9d5fb890ca1c2bb5726c AS builder
+ENV DEBIAN_FRONTEND=noninteractive CC=clang CARGO_BUILD_JOBS=8 MAKEFLAGS=-j8
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    clang make git pkg-config libsqlite3-dev sqlite3 libjemalloc-dev \
+    libpq-dev postgresql-client curl ca-certificates libssl-dev libcrypt-dev \
+    ruby file time && rm -rf /var/lib/apt/lists/*
+COPY vendor/roundhouse /src/roundhouse
+WORKDIR /src/roundhouse
+RUN --mount=type=cache,id=spinel-spike-lead-cargo-registry,target=/usr/local/cargo/registry \
+    --mount=type=cache,id=spinel-spike-lead-cargo-git,target=/usr/local/cargo/git \
+    --mount=type=cache,id=spinel-spike-lead-cargo-target,target=/src/roundhouse/target \
+    ROUNDHOUSE_COMMIT=25609ca3 cargo build --locked --release --bin roundhouse -j8 \
+    && install -m755 target/release/roundhouse /usr/local/bin/roundhouse
+COPY vendor/spinel /src/spinel
+WORKDIR /src/spinel
+RUN make deps -j8 && make -j8 CC=clang && make install -j8 CC=clang
+RUN roundhouse --version && spinel --version && spin --version
+
+FROM rust:1.90.0-trixie@sha256:e227f20ec42af3ea9a3c9c1dd1b2012aa15f12279b5e9d5fb890ca1c2bb5726c
+ENV DEBIAN_FRONTEND=noninteractive CC=clang CARGO_BUILD_JOBS=8 MAKEFLAGS=-j8
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    clang make git pkg-config libsqlite3-dev sqlite3 libjemalloc-dev \
+    libpq-dev postgresql-client curl ca-certificates libssl-dev libcrypt-dev \
+    ruby file time && rm -rf /var/lib/apt/lists/*
+COPY --from=builder /usr/local/lib/spinel /usr/local/lib/spinel
+COPY --from=builder /usr/local/bin/roundhouse /usr/local/bin/roundhouse
+COPY patches /usr/local/share/roundhouse-patches
+RUN ln -s /usr/local/lib/spinel/spinel /usr/local/bin/spinel \
+    && ln -s /usr/local/lib/spinel/spin /usr/local/bin/spin
+LABEL org.opencontainers.image.title="spinel-spike-lead-toolchain" \
+    roundhouse.commit="25609ca374c75301a5ff0f66cf1c61bffaca485d" \
+    roundhouse.patches="/usr/local/share/roundhouse-patches/SHA256SUMS" \
+    spinel.commit="813def1fbab00e770a77b1e4e4b244eb41dd44b4"
+WORKDIR /work

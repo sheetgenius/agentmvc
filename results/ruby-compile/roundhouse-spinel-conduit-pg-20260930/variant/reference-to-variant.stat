@@ -1,0 +1,22 @@
+ /dev/null => variant/COMPILE-VARIANT.md                                | 382 +++++++++++++++++++
+ {reference => variant}/app/controllers/application_controller.rb       |  81 +++-
+ {reference => variant}/app/controllers/articles_controller.rb          |  17 +-
+ {reference => variant}/app/controllers/comments_controller.rb          |   8 +-
+ {reference => variant}/app/controllers/exports_controller.rb           |   3 +-
+ {reference => variant}/app/controllers/profiles_controller.rb          |   2 +-
+ {reference => variant}/app/controllers/shares_controller.rb            |  16 +-
+ {reference => variant}/app/controllers/tags_controller.rb              |   3 +-
+ {reference => variant}/app/controllers/users_controller.rb             |  27 +-
+ {reference => variant}/app/jobs/export_articles_job.rb                 |   3 +-
+ {reference => variant}/app/models/article_export.rb                    |   3 +-
+ {reference => variant}/app/models/user.rb                              |   7 +-
+ {reference => variant}/app/services/article_commit.rb                  |   6 +-
+ /dev/null => variant/app/services/json_cast.rb                         |   9 +
+ {reference => variant}/app/services/live_rooms.rb                      |  13 +-
+ {reference => variant}/app/services/login_throttle.rb                  |   9 +-
+ /dev/null => variant/app/services/token_codec.rb                       |  52 +++
+ /dev/null => variant/config/initializers/recover_exports.rb            |   6 +
+ /dev/null => variant/db/structure.sql                                  | 838 +++++++++++++++++++++++++++++++++++++++++
+ /dev/null => variant/test/controllers/compile_variant_contract_test.rb |  39 ++
+ /dev/null => variant/test/services/token_codec_test.rb                 |  38 ++
+ 21 files changed, 1514 insertions(+), 48 deletions(-)

@@ -1,0 +1,53 @@
+diff --git a/src/emit/ruby/library.rs b/src/emit/ruby/library.rs
+index 2c48d58a..cb438c90 100644
+--- a/src/emit/ruby/library.rs
++++ b/src/emit/ruby/library.rs
+@@ -18,6 +18,30 @@ use crate::expr::{Expr, ExprNode, InterpPart, LValue, Literal};
+ use crate::ident::{ClassId, Symbol, VarId};
+ use crate::span::Span;
+ 
++#[cfg(test)]
++mod compile_blocker_tests {
++    use super::*;
++
++    #[test]
++    fn compile_blocker_nested_exception_reopens_controller_as_class() {
++        let source = b"class ApplicationController\n  class Failure < StandardError\n  end\nend\n";
++        let mut app = App::new();
++        app.library_classes = crate::ingest::ingest_library_classes(source, "failure.rb").unwrap()
++            .into_iter().filter(|c| c.name.0.as_str().ends_with("::Failure")).collect();
++        app.controllers.push(crate::dialect::Controller {
++            name: ClassId(Symbol::from("ApplicationController")),
++            parent: Some(ClassId(Symbol::from("ActionController::API"))),
++            body: vec![], layout: Default::default(), sibling_classes: vec![],
++        });
++        let files = emit_library_class_decls(&app);
++        let failure = files.iter().find(|f| f.path.ends_with("failure.rb")).unwrap();
++        assert!(failure.content.contains("class ApplicationController < ActionController::API"),
++            "{}", failure.content);
++        assert!(!failure.content.contains("module ApplicationController"));
++        assert_eq!(ruby_prism::parse(failure.content.as_bytes()).errors().count(), 0);
++    }
++}
++
+ pub(super) fn emit_library_class_decls(app: &App) -> Vec<EmittedFile> {
+     let mut lcs: Vec<LibraryClass> = app.library_classes.clone();
+     // A block-taking tag helper gains a `<name>_into(io, …)` variant
+@@ -6139,6 +6163,7 @@ fn report_dropped_class_body_call(lc: &LibraryClass, call: &Expr) {
+ /// segments that name one must reopen as `class`, not `module`.
+ fn is_app_class(name: &str, app: &App) -> bool {
+     app.models.iter().any(|m| m.name.0.as_str() == name)
++        || app.controllers.iter().any(|c| c.name.0.as_str() == name)
+         || app
+             .library_classes
+             .iter()
+@@ -6151,6 +6176,9 @@ fn outer_class_parent(name: &str, app: &App) -> Option<ClassId> {
+     if let Some(m) = app.models.iter().find(|m| m.name.0.as_str() == name) {
+         return m.parent.clone();
+     }
++    if let Some(c) = app.controllers.iter().find(|c| c.name.0.as_str() == name) {
++        return c.parent.clone();
++    }
+     app.library_classes
+         .iter()
+         .find(|c| c.name.0.as_str() == name && !c.is_module)

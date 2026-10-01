@@ -1,0 +1,37 @@
+diff --git a/src/ingest/schema.rs b/src/ingest/schema.rs
+index 029191c4..4c46f8e0 100644
+--- a/src/ingest/schema.rs
++++ b/src/ingest/schema.rs
+@@ -800,7 +800,9 @@ fn parse_column_opts<'pr>(nodes: impl Iterator<Item = &'pr Node<'pr>>) -> Column
+             match key.as_str() {
+                 "null" => opts.nullable = bool_value(value),
+                 "array" => opts.array = bool_value(value).unwrap_or(false),
+-                "default" => opts.default = string_value(value),
++                "default" => opts.default = string_value(value)
++                    .or_else(|| integer_value(value).map(|n| n.to_string()))
++                    .or_else(|| bool_value(value).map(|v| v.to_string())),
+                 "limit" => {
+                     if let Some(n) = integer_value(value) {
+                         if n >= 0 {
+@@ -1125,3 +1127,21 @@ mod tests {
+         assert_eq!(col_names(&schema, "articles"), ["id", "title", "created_at"]);
+     }
+ }
++
++#[cfg(test)]
++mod primitive_default_tests {
++    #[test]
++    fn integer_and_boolean_defaults_are_retained() {
++        let schema = super::ingest_schema(br#"
++ActiveRecord::Schema.define(version: 1) do
++  create_table :items do |t|
++    t.integer :revision, default: 1, null: false
++    t.boolean :enabled, default: true, null: false
++  end
++end
++"#, "db/schema.rb").unwrap();
++        let table = &schema.tables[&crate::ident::Symbol::from("items")];
++        assert_eq!(table.columns.iter().find(|c| c.name.as_str() == "revision").unwrap().default.as_deref(), Some("1"));
++        assert_eq!(table.columns.iter().find(|c| c.name.as_str() == "enabled").unwrap().default.as_deref(), Some("true"));
++    }
++}

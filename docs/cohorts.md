@@ -29,7 +29,7 @@ The deterministic [generator](../tools/cohort_index.py) reads entries in `stacks
 | `reader` | A read-only comprehension session, with its own model and grading evidence. |
 | `reference` | A separately preserved maintainer repair. Its model/CLI remain unknown unless separately recorded; it never inherits the parent's agent identity or coding effort. |
 | `preflight` | Infrastructure preparation, including the excluded IHP agent probes and retained failed Clojure attempts. |
-| `diagnostic` | A separately labeled experiment: the IHP guided coding run or the Ruby compiler feasibility probe. The guided run retains its recorded model and distinct prompt/fixture; it is excluded from the three scored IHP builds. |
+| `diagnostic` | A separately labeled experiment: the IHP guided coding run, the Ruby compiler feasibility probe, or the compiled Rails variant built with patched Roundhouse and Spinel. The guided run retains its recorded model and distinct prompt/fixture; it is excluded from the three scored IHP builds. |
 
 Each entry links its `record`, results directory, prompt, fixture, published source/manifest, and available gate evidence. Paths are relative to the repository root. A suffix such as `#/9` is a JSON Pointer into an array; nested gate and grade pointers identify their recorded fields. Stack, protocol and role can be classified from directory names. Model, reasoning and CLI are copied only from that entry's historical run record, preserving the original spelling.
 

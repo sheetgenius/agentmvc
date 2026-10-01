@@ -1,0 +1,365 @@
+diff --git a/runtime/spinel/db_pg.rb b/runtime/spinel/db_pg.rb
+index 99846618..872e2c20 100644
+--- a/runtime/spinel/db_pg.rb
++++ b/runtime/spinel/db_pg.rb
+@@ -16,7 +16,20 @@ module PG
+   ffi_func :PQstatus, [:ptr], :int
+   ffi_func :PQerrorMessage, [:ptr], :str
+   ffi_func :PQfinish, [:ptr], :void
++  ffi_func :PQreset, [:ptr], :void, blocking: true
+   ffi_func :PQexec, [:ptr, :str], :ptr, blocking: true
++  ffi_func :PQexecParams, [:ptr, :str, :int, :ptr, :ptr, :ptr, :ptr, :int], :ptr, blocking: true
++  ffi_func :PQsetnonblocking, [:ptr, :int], :int
++  ffi_func :PQsendQuery, [:ptr, :str], :int
++  ffi_func :PQsendQueryParams, [:ptr, :str, :int, :ptr, :ptr, :ptr, :ptr, :int], :int
++  ffi_func :PQsendPrepare, [:ptr, :str, :str, :int, :ptr], :int
++  ffi_func :PQsendDescribePrepared, [:ptr, :str], :int
++  ffi_func :PQsendQueryPrepared, [:ptr, :str, :int, :ptr, :ptr, :ptr, :int], :int
++  ffi_func :PQsocket, [:ptr], :int
++  ffi_func :PQflush, [:ptr], :int
++  ffi_func :PQconsumeInput, [:ptr], :int
++  ffi_func :PQisBusy, [:ptr], :int
++  ffi_func :PQgetResult, [:ptr], :ptr
+   ffi_func :PQprepare, [:ptr, :str, :str, :int, :ptr], :ptr, blocking: true
+   ffi_func :PQdescribePrepared, [:ptr, :str], :ptr, blocking: true
+   ffi_func :PQexecPrepared, [:ptr, :str, :int, :ptr, :ptr, :ptr, :int], :ptr, blocking: true
+@@ -38,6 +51,25 @@ module PG
+   ffi_source <<~C
+     #include <stdlib.h>
+     #include <string.h>
++    #include <poll.h>
++    void rh_pg_forget(int fd) {
++    #ifdef SP_THREADS
++      sp_sched_ev_forget(fd);
++    #endif
++    }
++    int rh_pg_wait(int fd, int writing) {
++      short events = writing ? POLLIN | POLLOUT : POLLIN;
++      struct pollfd p = {fd, events, 0};
++      if (poll(&p, 1, 0) > 0) return 1;
++    #ifdef SP_THREADS
++      /* Same primitive as sp_net; do not declare this FFI blocking. */
++      return sp_sched_wait_io(fd, events);
++    #else
++      int rc;
++      do { rc = poll(&p, 1, -1); } while (rc < 0 && errno == EINTR);
++      return rc > 0;
++    #endif
++    }
+     const char *rh_pg_string(void *p) { return (const char *)p; }
+     void *rh_pg_params_new(int n) { return calloc(n ? n : 1, sizeof(char *)); }
+     int rh_pg_params_set(void *p, int n, int i, const char *s) {
+@@ -58,6 +90,54 @@ module PG
+   ffi_func :rh_pg_params_new, [:int], :ptr
+   ffi_func :rh_pg_params_set, [:ptr, :int, :int, :str], :int
+   ffi_func :rh_pg_params_free, [:ptr, :int], :void
++  ffi_func :rh_pg_wait, [:int, :int], :int
++  ffi_func :rh_pg_forget, [:int], :void
++
++  # Fully drain through ReadyForQuery before handing the connection back.
++  # Retain the last PGresult, matching PQexec for multi-statement schema SQL.
++  def self.await_result(dbh, sent)
++    raise "libpq send: " + PG.PQerrorMessage(dbh) if sent != 1
++    result = nil
++    begin
++      flush = PG.PQflush(dbh)
++      while flush == 1
++        raise "libpq wait interrupted" if PG.rh_pg_wait(PG.PQsocket(dbh), 1) != 1
++        raise "libpq consume: " + PG.PQerrorMessage(dbh) if PG.PQconsumeInput(dbh) != 1
++        flush = PG.PQflush(dbh)
++      end
++      raise "libpq flush: " + PG.PQerrorMessage(dbh) if flush < 0
++      loop do
++        raise "libpq consume: " + PG.PQerrorMessage(dbh) if PG.PQconsumeInput(dbh) != 1
++        while PG.PQisBusy(dbh) == 1
++          raise "libpq wait interrupted" if PG.rh_pg_wait(PG.PQsocket(dbh), 0) != 1
++          raise "libpq consume: " + PG.PQerrorMessage(dbh) if PG.PQconsumeInput(dbh) != 1
++        end
++        next_result = PG.PQgetResult(dbh)
++        break if next_result.nil?
++        PG.PQclear(result) if !result.nil?
++        result = next_result
++      end
++    rescue
++      PG.PQclear(result) if !result.nil?
++      raise
++    end
++    result
++  end
++  def self.exec(dbh, sql)
++    await_result(dbh, PG.PQsendQuery(dbh, sql))
++  end
++  def self.exec_params(dbh, sql)
++    await_result(dbh, PG.PQsendQueryParams(dbh, sql, 0, nil, nil, nil, nil, 0))
++  end
++  def self.prepare(dbh, name, sql)
++    await_result(dbh, PG.PQsendPrepare(dbh, name, sql, 0, nil))
++  end
++  def self.describe(dbh, name)
++    await_result(dbh, PG.PQsendDescribePrepared(dbh, name))
++  end
++  def self.exec_prepared(dbh, name, nparams, params)
++    await_result(dbh, PG.PQsendQueryPrepared(dbh, name, nparams, params, nil, nil, 0))
++  end
+ end
+ 
+ class DbConn
+@@ -71,11 +151,14 @@ class DbConn
+       raise "PQconnectdb: " + message
+     end
+     @serial = 0
++    @statement_names = {}
++    @statement_order = []
+     @changes = 0
+     @sqlstate = ""
+     r = PG.PQexec(@dbh, "SET standard_conforming_strings = on; SET timezone = 'UTC'; SET datestyle = 'ISO, YMD'; SET client_min_messages = warning")
+     Db.check_result(self, r)
+     PG.PQclear(r)
++    raise "PQsetnonblocking failed" if PG.PQsetnonblocking(@dbh, 1) != 0
+   end
+   def dbh
+     @dbh
+@@ -84,6 +167,64 @@ class DbConn
+     @serial += 1
+     "rh_pg_" + @serial.to_s
+   end
++  def cached_name(sql)
++    name = @statement_names[sql]
++    return name if !name.nil? && name != ""
++    if name == ""
++      # Promote only after a second use; one-shot SQL pays a single trip.
++      name = next_name
++      r = PG.prepare(@dbh, name, sql)
++      Db.check_result(self, r)
++      PG.PQclear(r)
++      @statement_names[sql] = name
++      return name
++    end
++    if @statement_order.length >= 128
++      old_sql = @statement_order[0]
++      old_name = @statement_names[old_sql]
++      if old_name != ""
++        r = PG.exec(@dbh, "DEALLOCATE " + old_name.to_s)
++        Db.check_result(self, r)
++        PG.PQclear(r)
++      end
++      @statement_order.delete_at(0)
++      @statement_names.delete(old_sql)
++    end
++    @statement_names[sql] = ""
++    @statement_order.push(sql)
++    ""
++  end
++  def forget_statements
++    @statement_names = {}
++    @statement_order = []
++    nil
++  end
++  def reset
++    PG.rh_pg_forget(PG.PQsocket(@dbh))
++    PG.PQreset(@dbh)
++    forget_statements
++    @serial = 0
++    @changes = 0
++    @sqlstate = ""
++    raise "PQreset: " + PG.PQerrorMessage(@dbh) if PG.PQstatus(@dbh) != PG::CONNECTION_OK
++    raise "PQsetnonblocking failed" if PG.PQsetnonblocking(@dbh, 1) != 0
++    r = PG.exec(@dbh, "SET standard_conforming_strings = on; SET timezone = 'UTC'; SET datestyle = 'ISO, YMD'; SET client_min_messages = warning")
++    Db.check_result(self, r)
++    PG.PQclear(r)
++    nil
++  end
++  def recover
++    status = PG.PQtransactionStatus(@dbh)
++    # An interrupted async wait can leave a command in flight. Reconnect
++    # before reuse instead of sending ROLLBACK into a busy libpq connection.
++    if PG.PQstatus(@dbh) != PG::CONNECTION_OK || status == 1 || status == 4
++      reset
++    elsif status != 0
++      r = PG.exec(@dbh, "ROLLBACK")
++      PG.PQclear(r) if !r.nil?
++    end
++    nil
++  end
+   def changes
+     @changes
+   end
+@@ -97,21 +238,28 @@ class DbConn
+     @sqlstate = s
+   end
+   def close
++    PG.rh_pg_forget(PG.PQsocket(@dbh))
+     PG.PQfinish(@dbh)
++    forget_statements
+   end
+ end
+ 
+-# Owns both server prepared statement and PGresult cursor. Result metadata is
+-# available immediately from PQdescribePrepared, before bind/step (select_rows
+-# relies on this). Unlike SQLite, PGresult materializes all rows at first step.
++# Each connection owns at most 128 SQL entries / named server statements.
++# Parameter-free one-shot SQL uses the unnamed extended protocol in one trip;
++# a second use promotes it to a named prepared statement. Cache entries own
++# no PGresults: metadata comes from execution, never PQdescribePrepared.
++# Metadata readers execute lazily without advancing the cursor (select_rows
++# asks for names before step). Explicit $n binds retain prepare/describe, so
++# callers can inspect metadata before binding. PGresult materializes all rows.
+ class PgStmt
+-  def initialize(conn, name, description)
++  def initialize(conn, name, description, sql = "")
+     @conn = conn
+     @name = name
++    @sql = sql
+     @result = description
+-    @nparams = PG.PQnparams(description)
+-    @params = PG.rh_pg_params_new(@nparams)
+-    raise "parameter allocation failed" if @params.nil?
++    @nparams = description.nil? ? 0 : PG.PQnparams(description)
++    @params = @nparams == 0 ? nil : PG.rh_pg_params_new(@nparams)
++    raise "parameter allocation failed" if @nparams > 0 && @params.nil?
+     @row = -1
+     @executed = false
+     @closed = false
+@@ -120,6 +268,7 @@ class PgStmt
+     @conn
+   end
+   def result
++    execute if @sql != ""
+     @result
+   end
+   def row
+@@ -131,27 +280,37 @@ class PgStmt
+     raise "invalid parameter index/allocation" if rc != 0
+     nil
+   end
+-  def advance
+-    raise "step after finalize" if @closed
++  def execute
++    raise "execute after finalize" if @closed
+     if !@executed
+-      r = PG.PQexecPrepared(@conn.dbh, @name, @nparams, @params, nil, nil, 0)
++      # Pick the name immediately before sending. A handle may sit unexecuted
++      # while other SQL evicts its cache entry; PGresults already executed are
++      # independent of their server statement's lifetime.
++      @name = @conn.cached_name(@sql) if @sql != ""
++      r = @name == "" ? PG.exec_params(@conn.dbh, @sql) : PG.exec_prepared(@conn.dbh, @name, @nparams, @params)
+       Db.check_result(@conn, r)
+-      PG.PQclear(@result)
++      PG.PQclear(@result) if !@result.nil?
+       @result = r
+       @executed = true
+       @conn.set_changes(PG.PQcmdTuples(r).to_i)
+     end
++    nil
++  end
++  def advance
++    execute
+     @row += 1
+     @row < PG.PQntuples(@result)
+   end
+   def close
+     return nil if @closed
+-    PG.PQclear(@result)
++    PG.PQclear(@result) if !@result.nil?
+     PG.rh_pg_params_free(@params, @nparams)
+     # DEALLOCATE errors during an aborted transaction must not mask the
+     # original error; rollback on lease release will recover the connection.
+-    r = PG.PQexec(@conn.dbh, "DEALLOCATE " + @name)
+-    PG.PQclear(r) if !r.nil?
++    if @name != "" && @sql == ""
++      r = PG.exec(@conn.dbh, "DEALLOCATE " + @name)
++      PG.PQclear(r) if !r.nil?
++    end
+     @closed = true
+     nil
+   end
+@@ -256,12 +415,12 @@ module Db
+       result = yield
+     ensure
+       # libpq connections in INTRANS/INERROR cannot go back to a free pool.
+-      if PG.PQtransactionStatus(conn.dbh) != 0
+-        r = PG.PQexec(conn.dbh, "ROLLBACK")
+-        PG.PQclear(r) if !r.nil?
++      begin
++        conn.recover
++      ensure
++        Thread.current[:db_conn] = nil
++        pool.release(idx)
+       end
+-      Thread.current[:db_conn] = nil
+-      pool.release(idx)
+     end
+     result
+   end
+@@ -275,8 +434,8 @@ module Db
+   def self.prepare_lock
+     @prepare_lock
+   end
+-  # Cache hooks keep the external API; this prototype does not replay rows or
+-  # cache prepared statements. Every finalize releases its server statement.
++  # Query-result cache hooks remain no-ops; prepared statements are cached
++  # independently on their owning connection, never across connections.
+   def self.query_cache_begin
+     nil
+   end
+@@ -327,8 +486,9 @@ module Db
+   def self.exec(sql)
+     record_query(sql)
+     c = current_conn
+-    r = PG.PQexec(c.dbh, sql)
++    r = PG.exec(c.dbh, sql)
+     check_result(c, r)
++    c.forget_statements if !sql.match(/\A\s*(?:DEALLOCATE(?:\s+PREPARE)?\s+ALL|DISCARD\s+ALL)\s*;?\s*\z/i).nil?
+     c.set_changes(PG.PQcmdTuples(r).to_i)
+     PG.PQclear(r)
+     nil
+@@ -423,16 +583,19 @@ module Db
+     rewrite_placeholders(sql, literals)
+   end
+   def self.prepare(sql)
+-    prepare_native(rewrite_placeholders(sql))
++    prepare_native(sql.include?("?") ? rewrite_placeholders(sql) : sql)
+   end
+   def self.prepare_native(sql)
+     record_query(sql)
+     c = current_conn
++    # Conservative detection also sends quoted/commented $n through the old
++    # path. It cannot mistake a real bind for a parameter-free statement.
++    return PgStmt.new(c, "", nil, sql) if !sql.include?("$") || sql.match(/\$[1-9][0-9]*/).nil?
+     name = c.next_name
+-    r = PG.PQprepare(c.dbh, name, sql, 0, nil)
++    r = PG.prepare(c.dbh, name, sql)
+     check_result(c, r)
+     PG.PQclear(r)
+-    description = PG.PQdescribePrepared(c.dbh, name)
++    description = PG.describe(c.dbh, name)
+     check_result(c, description)
+     PgStmt.new(c, name, description)
+   end
+@@ -519,7 +682,7 @@ module Db
+   # Lowered inserts use RETURNING; this is only the legacy facade fallback.
+   def self.last_insert_rowid
+     c = current_conn
+-    r = PG.PQexec(c.dbh, "SELECT lastval()")
++    r = PG.exec(c.dbh, "SELECT lastval()")
+     check_result(c, r)
+     n = PG.PQgetvalue(r, 0, 0).to_i
+     PG.PQclear(r)
+@@ -575,12 +738,12 @@ module Db
+     ensure
+       if tx.idx >= 0
+         conn = current_conn
+-        if PG.PQtransactionStatus(conn.dbh) != 0
+-          r = PG.PQexec(conn.dbh, "ROLLBACK")
+-          PG.PQclear(r) if !r.nil?
++        begin
++          conn.recover
++        ensure
++          Thread.current[:db_conn] = nil
++          tx.pool.release(tx.idx)
+         end
+-        Thread.current[:db_conn] = nil
+-        tx.pool.release(tx.idx)
+       end
+     end
+     nil
