@@ -1,0 +1,30 @@
+diff --git a/src/project.rs b/src/project.rs
+index 439fe762..ae15c290 100644
+--- a/src/project.rs
++++ b/src/project.rs
+@@ -2687,9 +2687,6 @@ fn apply_views_aggregator(files: &mut [(String, String)]) {
+         .map(|(p, _)| p.as_str())
+         .filter(|p| p.starts_with("app/views/") && p.ends_with(".rb"))
+         .collect();
+-    if views.is_empty() {
+-        return;
+-    }
+     // Partials (`_foo.rb`) first, then alphabetical — deterministic.
+     views.sort_by_key(|p| {
+         let is_partial = Path::new(p)
+@@ -6315,6 +6312,15 @@ fn walk_ruby(
+ mod tests {
+     use super::*;
+ 
++    #[test]
++    fn compile_blocker_zero_view_aggregator_drops_scaffold_requires() {
++        let mut files = vec![("app/views.rb".to_string(),
++            "require_relative \"views/comments/_comment\"\n".to_string())];
++        apply_views_aggregator(&mut files);
++        assert!(!files[0].1.contains("require_relative"));
++        assert!(files[0].1.contains("Generated"));
++    }
++
+     /// The three test-case parents campfire's `test/channels` and
+     /// `test/helpers` write against are lane tests, the way an
+     /// integration test is; a Minitest one still is not.

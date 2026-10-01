@@ -1,0 +1,261 @@
+{
+  "started": "2026-09-30T11:25:27.322614+00:00",
+  "budget": {
+    "app": "--cpus=2 --memory=1g",
+    "database": "--cpus=2 --memory=1g"
+  },
+  "bench_sha256": "d9eb2fbceb835f5798f5a193588c61ef2d5b1a36a3af7a393196f23d3b9aa2ab",
+  "load_sha256": "9057777b106e10fada6fc0fbfe85168258643f04a537ea5313277c0e86b37481",
+  "k6_image": "sha256:4d79f9384ce43a49b40f135a2c57fd3562ebc704ecb0e81e3cc4a624bac12646",
+  "postgres_image": "sha256:8ee7c900f4de054e8f0a3b42b8f5da38b8fba57c3ccd7c1a02be28cb0b06494f",
+  "configs": {
+    "rails-ref-1proc": {
+      "image": "agentmvc-v2-expert-rails-reference-1:review",
+      "image_id": "sha256:00999c21b297988fbe7044f727a7628d2a083fb0211ed3fbf6666b5d5af834a3",
+      "extra_env": "",
+      "description": "Rails reference-1 image as recorded: one Puma process, RAILS_MAX_THREADS default 3, YJIT"
+    },
+    "rails-ref-auto": {
+      "image": "agentmvc-v2-expert-rails-reference-1:review",
+      "image_id": "sha256:00999c21b297988fbe7044f727a7628d2a083fb0211ed3fbf6666b5d5af834a3",
+      "extra_env": "WEB_CONCURRENCY=auto",
+      "description": "Rails reference-1 image, Puma workers derived from the cgroup quota (concurrent-ruby available_processor_count)"
+    },
+    "cruby-v3-1proc": {
+      "image": "spinel-spike-lead-conduit:v3-cruby",
+      "image_id": "sha256:b7e1f734c14aeff6c9e811a62ff28aa5abedf5ac70da22e01a37cf0b0a07c83e",
+      "extra_env": "",
+      "description": "Compile variant v3 source on CRuby/Rails (control for source changes), one Puma process"
+    },
+    "compiled-v3": {
+      "image": "spinel-spike-lead-conduit:v3-compiled",
+      "image_id": "sha256:c6722d2bdc266f5e855318e7f65c1312c99357b17c73ecf5bb2c7998f220ad80",
+      "extra_env": "",
+      "description": "Compiled v3: OS workers derived from cgroup quota x PG-lane factor 2 (documented rule)"
+    },
+    "compiled-v3-k1": {
+      "image": "spinel-spike-lead-conduit:v3-compiled",
+      "image_id": "sha256:c6722d2bdc266f5e855318e7f65c1312c99357b17c73ecf5bb2c7998f220ad80",
+      "extra_env": "SPINEL_WORKER_FACTOR=1",
+      "description": "Compiled v3: OS workers = ceil(quota) (factor 1)"
+    }
+  },
+  "overrides": {
+    "scenarios": "",
+    "warmup": "",
+    "duration": ""
+  },
+  "runs": [
+    {
+      "label": "rails-ref-1proc",
+      "round": 3,
+      "exit": 0,
+      "seconds": 233.0,
+      "derived_workers": null,
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 249.7,
+        "list_signed_in": 185.5,
+        "list_by_tag": 210.4,
+        "feed": 171.0,
+        "article": 297.2,
+        "comments": 359.8,
+        "tags": 697.7,
+        "favorite_toggle": 196.4,
+        "create_article": 200.0
+      },
+      "foreign_cpu_max": 979.4
+    },
+    {
+      "label": "rails-ref-auto",
+      "round": 3,
+      "exit": 0,
+      "seconds": 230.6,
+      "derived_workers": null,
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 537.1,
+        "list_signed_in": 372.9,
+        "list_by_tag": 498.6,
+        "feed": 354.2,
+        "article": 617.8,
+        "comments": 901.3,
+        "tags": 1428.5,
+        "favorite_toggle": 417.0,
+        "create_article": 378.6
+      },
+      "foreign_cpu_max": 790.6
+    },
+    {
+      "label": "cruby-v3-1proc",
+      "round": 3,
+      "exit": 0,
+      "seconds": 230.3,
+      "derived_workers": null,
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 189.2,
+        "list_signed_in": 156.8,
+        "list_by_tag": 211.5,
+        "feed": 143.8,
+        "article": 255.4,
+        "comments": 334.5,
+        "tags": 546.9,
+        "favorite_toggle": 179.3,
+        "create_article": 185.2
+      },
+      "foreign_cpu_max": 872.7
+    },
+    {
+      "label": "compiled-v3",
+      "round": 3,
+      "exit": 0,
+      "seconds": 223.2,
+      "derived_workers": "4 (cgroup cpu.max 200000/100000; factor 2)",
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 2355.0,
+        "list_signed_in": 1914.3,
+        "list_by_tag": 2743.5,
+        "feed": 1515.5,
+        "article": 2834.9,
+        "comments": 4954.0,
+        "tags": 5061.7,
+        "favorite_toggle": 1238.6,
+        "create_article": 1283.2
+      },
+      "foreign_cpu_max": 829.7
+    },
+    {
+      "label": "compiled-v3-k1",
+      "round": 3,
+      "exit": 0,
+      "seconds": 225.6,
+      "derived_workers": "2 (cgroup cpu.max 200000/100000)",
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 2065.4,
+        "list_signed_in": 1617.3,
+        "list_by_tag": 2142.1,
+        "feed": 1335.6,
+        "article": 2771.8,
+        "comments": 4928.6,
+        "tags": 4972.2,
+        "favorite_toggle": 1116.1,
+        "create_article": 1339.4
+      },
+      "foreign_cpu_max": 1058.8
+    },
+    {
+      "label": "compiled-v3-k1",
+      "round": 4,
+      "exit": 0,
+      "seconds": 223.7,
+      "derived_workers": "2 (cgroup cpu.max 200000/100000)",
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 2228.0,
+        "list_signed_in": 1810.6,
+        "list_by_tag": 2509.0,
+        "feed": 1510.9,
+        "article": 3231.9,
+        "comments": 5762.2,
+        "tags": 5201.7,
+        "favorite_toggle": 1038.7,
+        "create_article": 1127.8
+      },
+      "foreign_cpu_max": 1147.9
+    },
+    {
+      "label": "compiled-v3",
+      "round": 4,
+      "exit": 0,
+      "seconds": 225.2,
+      "derived_workers": "4 (cgroup cpu.max 200000/100000; factor 2)",
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 2329.6,
+        "list_signed_in": 1804.0,
+        "list_by_tag": 2911.8,
+        "feed": 1545.0,
+        "article": 3332.9,
+        "comments": 5817.0,
+        "tags": 5139.2,
+        "favorite_toggle": 1162.5,
+        "create_article": 1479.8
+      },
+      "foreign_cpu_max": 1012.0
+    },
+    {
+      "label": "cruby-v3-1proc",
+      "round": 4,
+      "exit": 0,
+      "seconds": 224.8,
+      "derived_workers": null,
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 236.5,
+        "list_signed_in": 178.0,
+        "list_by_tag": 237.4,
+        "feed": 185.3,
+        "article": 318.3,
+        "comments": 387.5,
+        "tags": 913.8,
+        "favorite_toggle": 264.1,
+        "create_article": 266.6
+      },
+      "foreign_cpu_max": 1004.4
+    },
+    {
+      "label": "rails-ref-auto",
+      "round": 4,
+      "exit": 0,
+      "seconds": 218.9,
+      "derived_workers": null,
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 707.4,
+        "list_signed_in": 589.7,
+        "list_by_tag": 674.6,
+        "feed": 532.4,
+        "article": 923.1,
+        "comments": 1163.5,
+        "tags": 1861.1,
+        "favorite_toggle": 584.9,
+        "create_article": 471.0
+      },
+      "foreign_cpu_max": 1082.2
+    },
+    {
+      "label": "rails-ref-1proc",
+      "round": 4,
+      "exit": 0,
+      "seconds": 230.8,
+      "derived_workers": null,
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 209.2,
+        "list_signed_in": 197.7,
+        "list_by_tag": 245.4,
+        "feed": 149.2,
+        "article": 227.8,
+        "comments": 321.8,
+        "tags": 642.4,
+        "favorite_toggle": 221.2,
+        "create_article": 203.6
+      },
+      "foreign_cpu_max": 1192.8
+    }
+  ],
+  "finished": "2026-09-30T12:03:13.786043+00:00"
+}

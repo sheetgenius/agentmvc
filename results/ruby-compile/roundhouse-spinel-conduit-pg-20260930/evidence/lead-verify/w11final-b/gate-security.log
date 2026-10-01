@@ -1,0 +1,38 @@
+Success s01_jwt_alg_none.hurl (1 request(s) in 2 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 221 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 2 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 241 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 245 ms)
+Success s06_injection_filters.hurl (4 request(s) in 4 ms)
+Success s07_malformed_json.hurl (1 request(s) in 0 ms)
+Success s08_wrong_types.hurl (8 request(s) in 235 ms)
+Success s09_oversized_body.hurl (2 request(s) in 109685 ms)
+Success s10_unknown_route.hurl (1 request(s) in 1 ms)
+error: Assert status code
+  --> s11_login_enumeration.hurl:19:6
+   |
+   | POST {{host}}/api/users/login
+   | ...
+19 | HTTP 401
+   |      ^^^ actual value is <500>
+   |
+
+Failure s11_login_enumeration.hurl (2 request(s) in 251 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 3 ms)
+error: Assert status code
+  --> s13_login_rate_limit.hurl:27:6
+   |
+   | POST {{host}}/api/users/login
+   | ...
+27 | HTTP 429
+   |      ^^^ actual value is <500>
+   |
+
+Failure s13_login_rate_limit.hurl (22 request(s) in 9207 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 51 (0.4/s)
+Succeeded files:   11 (84.6%)
+Failed files:      2 (15.4%)
+Duration:          120118 ms (0h:2m:0s:118ms)
+

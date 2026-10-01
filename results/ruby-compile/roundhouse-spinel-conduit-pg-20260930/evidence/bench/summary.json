@@ -1,0 +1,471 @@
+{
+  "started": "2026-09-30T12:47:52.721384+00:00",
+  "budget": {
+    "app": "--cpus=2 --memory=1g",
+    "database": "--cpus=2 --memory=1g"
+  },
+  "bench_sha256": "d9eb2fbceb835f5798f5a193588c61ef2d5b1a36a3af7a393196f23d3b9aa2ab",
+  "load_sha256": "9057777b106e10fada6fc0fbfe85168258643f04a537ea5313277c0e86b37481",
+  "k6_image": "sha256:4d79f9384ce43a49b40f135a2c57fd3562ebc704ecb0e81e3cc4a624bac12646",
+  "postgres_image": "sha256:8ee7c900f4de054e8f0a3b42b8f5da38b8fba57c3ccd7c1a02be28cb0b06494f",
+  "configs": {
+    "rails-ref-1proc": {
+      "image": "agentmvc-v2-expert-rails-reference-1:review",
+      "image_id": "sha256:00999c21b297988fbe7044f727a7628d2a083fb0211ed3fbf6666b5d5af834a3",
+      "extra_env": "",
+      "description": "Rails reference-1 image as recorded: one Puma process, RAILS_MAX_THREADS default 3, YJIT"
+    },
+    "rails-ref-auto": {
+      "image": "agentmvc-v2-expert-rails-reference-1:review",
+      "image_id": "sha256:00999c21b297988fbe7044f727a7628d2a083fb0211ed3fbf6666b5d5af834a3",
+      "extra_env": "WEB_CONCURRENCY=auto",
+      "description": "Rails reference-1 image, Puma workers derived from the cgroup quota (concurrent-ruby available_processor_count)"
+    },
+    "cruby-v4-1proc": {
+      "image": "spinel-spike-lead-conduit:v4-cruby",
+      "image_id": "sha256:a9f0e930fd0568be39a416cdfa709828e8a03bcc2bb302c361ad254497ad479e",
+      "extra_env": "",
+      "description": "Compile variant v4 source on CRuby/Rails (control for source changes), one Puma process"
+    },
+    "compiled-v4": {
+      "image": "spinel-spike-lead-conduit:v4-compiled",
+      "image_id": "sha256:872570a65593472a7e16ae05c64fe3bc9bfdca39152c0174d295222fbf7e5550",
+      "extra_env": "",
+      "description": "Compiled v4: OS workers derived from cgroup quota x PG-lane factor 2 (documented rule)"
+    },
+    "compiled-v4-k1": {
+      "image": "spinel-spike-lead-conduit:v4-compiled",
+      "image_id": "sha256:872570a65593472a7e16ae05c64fe3bc9bfdca39152c0174d295222fbf7e5550",
+      "extra_env": "SPINEL_WORKER_FACTOR=1",
+      "description": "Compiled v4: OS workers = ceil(quota) (factor 1)"
+    }
+  },
+  "overrides": {
+    "scenarios": "",
+    "warmup": "",
+    "duration": ""
+  },
+  "runs": [
+    {
+      "label": "rails-ref-1proc",
+      "round": 1,
+      "exit": 0,
+      "seconds": 214.2,
+      "derived_workers": null,
+      "puma_workers": "see boot-banners (Rails request logging hides the Puma banner in app_log_tail)",
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 567.3,
+        "list_signed_in": 425.4,
+        "list_by_tag": 543.6,
+        "feed": 417.0,
+        "article": 663.6,
+        "comments": 857.5,
+        "tags": 1204.3,
+        "favorite_toggle": 560.4,
+        "create_article": 551.0
+      },
+      "foreign_cpu_max": 73.8
+    },
+    {
+      "label": "rails-ref-auto",
+      "round": 1,
+      "exit": 0,
+      "seconds": 211.6,
+      "derived_workers": null,
+      "puma_workers": "see boot-banners (Rails request logging hides the Puma banner in app_log_tail)",
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 1264.2,
+        "list_signed_in": 958.9,
+        "list_by_tag": 1195.1,
+        "feed": 924.9,
+        "article": 1519.4,
+        "comments": 1651.2,
+        "tags": 3165.8,
+        "favorite_toggle": 1000.2,
+        "create_article": 987.8
+      },
+      "foreign_cpu_max": 144.8
+    },
+    {
+      "label": "cruby-v4-1proc",
+      "round": 1,
+      "exit": 0,
+      "seconds": 211.9,
+      "derived_workers": null,
+      "puma_workers": "see boot-banners (Rails request logging hides the Puma banner in app_log_tail)",
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 565.8,
+        "list_signed_in": 432.2,
+        "list_by_tag": 534.4,
+        "feed": 284.9,
+        "article": 669.5,
+        "comments": 702.2,
+        "tags": 1745.7,
+        "favorite_toggle": 407.3,
+        "create_article": 498.8
+      },
+      "foreign_cpu_max": 1138.9
+    },
+    {
+      "label": "compiled-v4",
+      "round": 1,
+      "exit": 0,
+      "seconds": 208.6,
+      "derived_workers": "OS workers: 4 (cgroup cpu.max 200000/100000; factor 2); processes: 1",
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 3193.0,
+        "list_signed_in": 3255.8,
+        "list_by_tag": 5070.1,
+        "feed": 2440.1,
+        "article": 5291.5,
+        "comments": 10005.4,
+        "tags": 6431.3,
+        "favorite_toggle": 2524.7,
+        "create_article": 2370.4
+      },
+      "foreign_cpu_max": 177.1
+    },
+    {
+      "label": "compiled-v4-k1",
+      "round": 1,
+      "exit": 0,
+      "seconds": 203.8,
+      "derived_workers": "OS workers: 2 (cgroup cpu.max 200000/100000); processes: 1",
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 3906.6,
+        "list_signed_in": 2886.3,
+        "list_by_tag": 3612.2,
+        "feed": 2190.0,
+        "article": 5082.2,
+        "comments": 9585.6,
+        "tags": 6476.0,
+        "favorite_toggle": 2579.2,
+        "create_article": 2465.6
+      },
+      "foreign_cpu_max": 194.3
+    },
+    {
+      "label": "compiled-v4-k1",
+      "round": 2,
+      "exit": 0,
+      "seconds": 206.9,
+      "derived_workers": "OS workers: 2 (cgroup cpu.max 200000/100000); processes: 1",
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 3974.3,
+        "list_signed_in": 2969.1,
+        "list_by_tag": 4238.8,
+        "feed": 2529.9,
+        "article": 5495.1,
+        "comments": 10496.3,
+        "tags": 6344.2,
+        "favorite_toggle": 2645.0,
+        "create_article": 2321.3
+      },
+      "foreign_cpu_max": 325.5
+    },
+    {
+      "label": "compiled-v4",
+      "round": 2,
+      "exit": 0,
+      "seconds": 207.8,
+      "derived_workers": "OS workers: 4 (cgroup cpu.max 200000/100000; factor 2); processes: 1",
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 4086.8,
+        "list_signed_in": 3466.6,
+        "list_by_tag": 5196.9,
+        "feed": 2217.1,
+        "article": 5180.9,
+        "comments": 10146.6,
+        "tags": 6403.0,
+        "favorite_toggle": 2521.3,
+        "create_article": 2804.8
+      },
+      "foreign_cpu_max": 230.1
+    },
+    {
+      "label": "cruby-v4-1proc",
+      "round": 2,
+      "exit": 0,
+      "seconds": 211.3,
+      "derived_workers": null,
+      "puma_workers": "see boot-banners (Rails request logging hides the Puma banner in app_log_tail)",
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 563.1,
+        "list_signed_in": 390.5,
+        "list_by_tag": 495.5,
+        "feed": 415.7,
+        "article": 680.0,
+        "comments": 803.2,
+        "tags": 1662.7,
+        "favorite_toggle": 557.6,
+        "create_article": 577.8
+      },
+      "foreign_cpu_max": 260.4
+    },
+    {
+      "label": "rails-ref-auto",
+      "round": 2,
+      "exit": 0,
+      "seconds": 210.7,
+      "derived_workers": null,
+      "puma_workers": "see boot-banners (Rails request logging hides the Puma banner in app_log_tail)",
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 1258.8,
+        "list_signed_in": 946.1,
+        "list_by_tag": 1184.3,
+        "feed": 904.4,
+        "article": 1505.6,
+        "comments": 1880.2,
+        "tags": 3213.4,
+        "favorite_toggle": 977.0,
+        "create_article": 945.4
+      },
+      "foreign_cpu_max": 166.9
+    },
+    {
+      "label": "rails-ref-1proc",
+      "round": 2,
+      "exit": 0,
+      "seconds": 211.5,
+      "derived_workers": null,
+      "puma_workers": "see boot-banners (Rails request logging hides the Puma banner in app_log_tail)",
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 502.3,
+        "list_signed_in": 405.6,
+        "list_by_tag": 478.3,
+        "feed": 328.1,
+        "article": 597.3,
+        "comments": 826.9,
+        "tags": 1665.0,
+        "favorite_toggle": 555.0,
+        "create_article": 554.6
+      },
+      "foreign_cpu_max": 716.8
+    },
+    {
+      "label": "rails-ref-1proc",
+      "round": 3,
+      "exit": 0,
+      "seconds": 209.1,
+      "derived_workers": null,
+      "puma_workers": "see boot-banners (Rails request logging hides the Puma banner in app_log_tail)",
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 565.0,
+        "list_signed_in": 427.3,
+        "list_by_tag": 541.7,
+        "feed": 414.2,
+        "article": 665.5,
+        "comments": 848.2,
+        "tags": 1677.0,
+        "favorite_toggle": 537.2,
+        "create_article": 562.5
+      },
+      "foreign_cpu_max": 51.5
+    },
+    {
+      "label": "rails-ref-auto",
+      "round": 3,
+      "exit": 0,
+      "seconds": 212.6,
+      "derived_workers": null,
+      "puma_workers": "see boot-banners (Rails request logging hides the Puma banner in app_log_tail)",
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 1231.6,
+        "list_signed_in": 950.2,
+        "list_by_tag": 1182.5,
+        "feed": 926.8,
+        "article": 1454.4,
+        "comments": 1597.3,
+        "tags": 2704.1,
+        "favorite_toggle": 864.3,
+        "create_article": 972.0
+      },
+      "foreign_cpu_max": 173.8
+    },
+    {
+      "label": "cruby-v4-1proc",
+      "round": 3,
+      "exit": 0,
+      "seconds": 207.5,
+      "derived_workers": null,
+      "puma_workers": "see boot-banners (Rails request logging hides the Puma banner in app_log_tail)",
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 507.9,
+        "list_signed_in": 401.5,
+        "list_by_tag": 493.9,
+        "feed": 389.8,
+        "article": 636.0,
+        "comments": 791.9,
+        "tags": 1637.6,
+        "favorite_toggle": 531.2,
+        "create_article": 509.3
+      },
+      "foreign_cpu_max": 55.1
+    },
+    {
+      "label": "compiled-v4",
+      "round": 3,
+      "exit": 0,
+      "seconds": 202.4,
+      "derived_workers": "OS workers: 4 (cgroup cpu.max 200000/100000; factor 2); processes: 1",
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 3774.2,
+        "list_signed_in": 3474.1,
+        "list_by_tag": 5145.1,
+        "feed": 2194.0,
+        "article": 4867.8,
+        "comments": 8626.5,
+        "tags": 6166.0,
+        "favorite_toggle": 2488.9,
+        "create_article": 2407.4
+      },
+      "foreign_cpu_max": 104.1
+    },
+    {
+      "label": "compiled-v4-k1",
+      "round": 3,
+      "exit": 0,
+      "seconds": 205.4,
+      "derived_workers": "OS workers: 2 (cgroup cpu.max 200000/100000); processes: 1",
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 3746.4,
+        "list_signed_in": 2887.2,
+        "list_by_tag": 4074.8,
+        "feed": 2333.4,
+        "article": 5220.5,
+        "comments": 10606.7,
+        "tags": 6579.4,
+        "favorite_toggle": 2601.3,
+        "create_article": 2760.5
+      },
+      "foreign_cpu_max": 100.4
+    },
+    {
+      "label": "compiled-v4-k1",
+      "round": 4,
+      "exit": 0,
+      "seconds": 202.3,
+      "derived_workers": "OS workers: 2 (cgroup cpu.max 200000/100000); processes: 1",
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 3900.8,
+        "list_signed_in": 3018.4,
+        "list_by_tag": 4238.8,
+        "feed": 2499.7,
+        "article": 5549.6,
+        "comments": 10559.6,
+        "tags": 6421.9,
+        "favorite_toggle": 2513.2,
+        "create_article": 2721.0
+      },
+      "foreign_cpu_max": 111.5
+    },
+    {
+      "label": "compiled-v4",
+      "round": 4,
+      "exit": 0,
+      "seconds": 203.1,
+      "derived_workers": "OS workers: 4 (cgroup cpu.max 200000/100000; factor 2); processes: 1",
+      "puma_workers": null,
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 4180.5,
+        "list_signed_in": 3742.0,
+        "list_by_tag": 5662.8,
+        "feed": 2449.9,
+        "article": 5484.5,
+        "comments": 9906.4,
+        "tags": 6459.0,
+        "favorite_toggle": 2731.6,
+        "create_article": 2682.7
+      },
+      "foreign_cpu_max": 108.7
+    },
+    {
+      "label": "cruby-v4-1proc",
+      "round": 4,
+      "exit": 0,
+      "seconds": 206.4,
+      "derived_workers": null,
+      "puma_workers": "see boot-banners (Rails request logging hides the Puma banner in app_log_tail)",
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 562.3,
+        "list_signed_in": 428.4,
+        "list_by_tag": 536.5,
+        "feed": 417.0,
+        "article": 513.0,
+        "comments": 775.1,
+        "tags": 1568.3,
+        "favorite_toggle": 533.4,
+        "create_article": 579.7
+      },
+      "foreign_cpu_max": 64.0
+    },
+    {
+      "label": "rails-ref-auto",
+      "round": 4,
+      "exit": 0,
+      "seconds": 208.9,
+      "derived_workers": null,
+      "puma_workers": "see boot-banners (Rails request logging hides the Puma banner in app_log_tail)",
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 1234.6,
+        "list_signed_in": 943.7,
+        "list_by_tag": 1174.0,
+        "feed": 916.1,
+        "article": 1561.7,
+        "comments": 1803.6,
+        "tags": 3175.0,
+        "favorite_toggle": 1017.4,
+        "create_article": 1076.4
+      },
+      "foreign_cpu_max": 231.0
+    },
+    {
+      "label": "rails-ref-1proc",
+      "round": 4,
+      "exit": 0,
+      "seconds": 210.6,
+      "derived_workers": null,
+      "puma_workers": "see boot-banners (Rails request logging hides the Puma banner in app_log_tail)",
+      "failed_checks": 0,
+      "rps": {
+        "list_anonymous": 521.7,
+        "list_signed_in": 393.4,
+        "list_by_tag": 490.8,
+        "feed": 381.5,
+        "article": 592.5,
+        "comments": 769.7,
+        "tags": 1527.8,
+        "favorite_toggle": 514.5,
+        "create_article": 511.8
+      },
+      "foreign_cpu_max": 66.3
+    }
+  ],
+  "finished": "2026-09-30T13:57:19.486628+00:00"
+}

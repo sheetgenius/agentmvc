@@ -8,6 +8,7 @@ The repository also preserves several earlier experimental conditions. Their pro
 - [IHP / Haskell exploration](one-shot-ihp/README.md) and [Servant safe-evolution pilot](one-shot-v2-servant/README.md).
 - [Earlier TypeScript pilot](one-shot-v2-typescript/README.md), then the [expert-guided TypeScript](one-shot-v2-typescript-expert/README.md) and [Phoenix](one-shot-v2-phoenix-expert/pilot-1/README.md) diagnostics.
 - [Roundhouse + Spinel Ruby compilation feasibility](ruby-compile/roundhouse-spinel-v2026.9.18/README.md), a compatibility finding without a throughput number.
+- [Roundhouse + Spinel compiled Conduit on PostgreSQL](ruby-compile/roundhouse-spinel-conduit-pg-20260930/README.md), an experimental compile variant of the Rails reference built with locally patched compilers; it passes the production gate and is benchmarked separately from the measured builds.
 
 Small summaries and reports live in Git. Earlier scrubbed transcripts remain with their historical results; newer large session transcripts and compressed per-request HTTP streams are distributed as release assets, so a normal clone stays small. The [earlier raw runs](raw-data/README.md), [expert-guided raw runs](raw-data-v2-expert/README.md), and [paired three-stack release](https://github.com/sheetgenius/agentmvc/releases/tag/raw-data-v2-expert-symmetry) have checksum indexes. Download an asset when you need to inspect or recompute its raw points.
 

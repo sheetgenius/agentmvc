@@ -1,0 +1,12 @@
+{
+  "declared_budget": {"app": "--cpus=2 --memory=1g", "database": "--cpus=2 --memory=1g",
+                      "source": "tools/bench/bench.py LIMITS (unchanged)"},
+  "note": "run_paired.py's derived_workers/puma_workers fields were not populated (Rails request logging pushes the Puma banner out of bench.py's 20-line app_log_tail; the compiled regex did not match at runtime). The counts below come from boot banners captured under the same limits and env (boot-banners/*.log) and, for the compiled runs, from each run's results.json app_log_tail.",
+  "configs": {
+    "rails-ref-1proc": {"image": "agentmvc-v2-expert-rails-reference-1:review", "extra_env": "", "puma_mode": "single", "processes": 1, "threads_per_process": 3, "evidence": "boot-banners/rails-ref-1proc.log", "also_in_process": "GoodJob async scheduler max_threads=2"},
+    "rails-ref-auto": {"image": "agentmvc-v2-expert-rails-reference-1:review", "extra_env": "WEB_CONCURRENCY=auto", "puma_mode": "cluster", "processes": 2, "threads_per_process": 3, "derivation": "Puma 8.0.2 WEB_CONCURRENCY=auto -> Concurrent.available_processor_count = 2.0 (cgroup cpu.max 200000/100000)", "evidence": "boot-banners/rails-ref-auto.log"},
+    "cruby-v3-1proc": {"image": "spinel-spike-lead-conduit:v3-cruby", "extra_env": "", "puma_mode": "single", "processes": 1, "threads_per_process": 3, "evidence": "boot-banners/cruby-v3-1proc.log"},
+    "compiled-v3": {"image": "spinel-spike-lead-conduit:v3-compiled", "extra_env": "", "processes": 1, "os_workers": 4, "green_threads": "one per connection", "derivation": "ceil(quota 200000/100000 x PG-lane factor 2) (Spinel cgroup autodetect + roundhouse PG-lane factor)", "memory_budget_bytes": 1073741824, "evidence": "boot-banners/compiled-v3.log; compiled-v3/round*/results.json app_log_tail"},
+    "compiled-v3-k1": {"image": "spinel-spike-lead-conduit:v3-compiled", "extra_env": "SPINEL_WORKER_FACTOR=1", "processes": 1, "os_workers": 2, "green_threads": "one per connection", "derivation": "ceil(quota 200000/100000 x 1)", "memory_budget_bytes": 1073741824, "evidence": "boot-banners/compiled-v3-k1.log; compiled-v3-k1/round*/results.json app_log_tail"}
+  }
+}

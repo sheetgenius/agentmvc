@@ -1,0 +1,638 @@
+diff --git a/Makefile b/Makefile
+index a93105b26..6820d133c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -520,7 +520,7 @@ build/sp_cold.o: lib/sp_cold.c $(RT_HDRS)
+ 
+ SP_RT_LIB = lib/libspinel_rt.a
+ 
+-RT_MEMBERS = sp_bigint sp_crypto sp_pack sp_time sp_core sp_net sp_system sp_gc sp_slab sp_alloc sp_dtoa sp_marshal sp_format sp_string sp_inspect sp_array sp_str sp_hash sp_proc sp_exc sp_re sp_random sp_fiber sp_sched sp_io sp_iobuffer sp_cold sp_process sp_process_status
++RT_MEMBERS = sp_bigint sp_crypto sp_pack sp_time sp_core sp_net sp_system sp_gc sp_slab sp_alloc sp_dtoa sp_marshal sp_format sp_string sp_inspect sp_array sp_str sp_hash sp_proc sp_exc sp_re sp_random sp_fiber sp_sched sp_resource sp_io sp_iobuffer sp_cold sp_process sp_process_status
+ 
+ $(SP_RT_LIB): $(RE_OBJ) $(addprefix build/,$(addsuffix .o,$(RT_MEMBERS)))
+ 	ar rcs $@ $^
+@@ -926,7 +926,7 @@ test: $(SPINEL_TIMEOUT)
+ # The actual run. rbs-test golden-checks the RBS extractor (cheap, C-only).
+ # rbs-seed-test checks the seeds actually reach the analyzer (incl. nested
+ # classes, #1417).
+-test-run: rbs-test rbs-seed-test re-lit-test reject-test cli-opts-test backtrace-test gc-minor-test gc-phases-test gc-threshold-test gc-obj-budget-test gc-str-major-test threaded-render-test gc-locality-test byref-capture-test thread-puts-test ext-test ext-cruby-test test-corpus-summary
++test-run: resource-test rbs-test rbs-seed-test re-lit-test reject-test cli-opts-test backtrace-test gc-minor-test gc-phases-test gc-threshold-test gc-obj-budget-test gc-str-major-test threaded-render-test gc-locality-test byref-capture-test thread-puts-test ext-test ext-cruby-test test-corpus-summary
+ 
+ # The test/*.rb corpus (and the bundled packages') on its own, without the
+ # C-side legs: what a 32-bit target runs (`make test-corpus CC='cc -m32'`),
+@@ -2681,3 +2681,10 @@ uninstall:
+ clean:
+ 	rm -rf build/ bin/
+ 	rm -f spinel
++
++# Process budgets: fake proc/cgroup trees, without requiring root or Docker.
++.PHONY: resource-test
++resource-test:
++	@tmp=$$(mktemp -d /tmp/spinel-resource.XXXXXX); \
++	$(CC) $(CFLAGS) -Ilib test/resource_limits.c -o "$$tmp/test" && "$$tmp/test" "$$tmp"; \
++	rc=$$?; rm -rf "$$tmp"; exit $$rc
+diff --git a/docs/limitations.md b/docs/limitations.md
+index 08610f706..7372891ed 100644
+--- a/docs/limitations.md
++++ b/docs/limitations.md
+@@ -106,7 +106,7 @@ Limited today, but additively fixable; listed roughly easiest-first.
+ | Feature | Today | Path to relax |
+ |---|---|---|
+ | `Exception#backtrace` / `Kernel#caller` | return `[]` (class + message work) | populate frames from a compile-time call-site→source side-table (the `--line-map` map already exists) |
+-| `Thread` real parallelism | implemented as a true M:N runtime (no GVL): N OS workers (`min(online cores, SPINEL_WORKERS)`) run green threads in parallel over a stop-the-world GC, with real `Mutex`/`Queue`/`SizedQueue`/`ConditionVariable`. A monitor thread timeslices CPU-bound threads (~10ms quantum) so a thread looping without yielding cannot starve its siblings (it signals the worker with `SIGURG`, overridable via `SPINEL_PREEMPT_SIGNAL`). The single-threaded archive is unchanged (a non-`Thread` program is byte-identical) | the N workers run per-worker run queues with work stealing, and `Kernel#sleep` and blocking I/O are scheduler-aware (a sleeping / I/O-blocked thread frees its OS worker). preemption is taken at safepoint polls (loop back-edges), so a thread spending a long time inside a single runtime call with no poll yields only when that call returns; concurrent allocation is thread-safe (heap-lock-protected allocators, atomic heap byte counters, per-worker object pools) but every allocation still crosses one global heap lock; remaining work: fully async (signal-interrupted) preemption of such regions, and per-worker allocation buffers (TLAB) to make allocation-heavy parallel code scale. See [docs/thread.md](thread.md) |
++| `Thread` real parallelism | implemented as a true M:N runtime (no GVL): N OS workers (`ceil(cgroup CPU quota)` bounded by affinity and online CPUs; `SPINEL_WORKERS` overrides) run green threads in parallel over a stop-the-world GC, with real `Mutex`/`Queue`/`SizedQueue`/`ConditionVariable`. A monitor thread timeslices CPU-bound threads (~10ms quantum) so a thread looping without yielding cannot starve its siblings (it signals the worker with `SIGURG`, overridable via `SPINEL_PREEMPT_SIGNAL`). The single-threaded archive is unchanged (a non-`Thread` program is byte-identical) | the N workers run per-worker run queues with work stealing, and `Kernel#sleep` and blocking I/O are scheduler-aware (a sleeping / I/O-blocked thread frees its OS worker). preemption is taken at safepoint polls (loop back-edges), so a thread spending a long time inside a single runtime call with no poll yields only when that call returns; concurrent allocation is thread-safe (heap-lock-protected allocators, atomic heap byte counters, per-worker object pools) but every allocation still crosses one global heap lock; remaining work: fully async (signal-interrupted) preemption of such regions, and per-worker allocation buffers (TLAB) to make allocation-heavy parallel code scale. See [docs/thread.md](thread.md) |
+ | `Marshal` of user objects with container-typed ivars | primitives + Array + Hash + Bignum + Complex + Rational + plain user objects work, including cyclic and shared references (`Marshal.dump`/`load`, CRuby 4.8 wire format, byte-compatible for the supported subset); an object whose ivar is a *statically typed* Array/Hash (not a poly ivar) is not yet dumpable | a user object dumps/loads through a compile-time-generated per-class dispatcher. Supported ivar types: scalars (Integer/Float/String/true/false/Symbol/Bignum), `poly` (mixed) ivars, and nested user objects. A typed-container ivar would mismatch the loader's always-poly containers, so such a class raises `TypeError` on dump; value-type and Exception-subclass objects are also out of scope. Complex's components are float-only, so they round-trip as Floats |
+ | Mixin/inheritance lifecycle hooks (`included` / `inherited` / `extended`) | defined but not fired | emit a startup call with the literal class arg (the include/inherit graph is known at compile time) |
+ | Methods added to `Class` (`class Class; include M; end`, `Class.class_eval { include M }`, a `def` in either) | a class method of every class: `Klass.m`, `String.m`, and a bare `m` in any class body. Refused at compile time, naming the line: `Class.class_eval` anywhere but a top-level statement, and `class Class < ...`. On a builtin class a class-level `@ivar` of such a method is one slot shared by every builtin class | a nested or conditional addition would need the methods to exist only once it has run; a builtin class has no class-ivar storage of its own |
+diff --git a/docs/thread.md b/docs/thread.md
+index 753d6f17e..afdad8f98 100644
+--- a/docs/thread.md
++++ b/docs/thread.md
+@@ -15,10 +15,10 @@ is a user guarantee.
+ 
+ ## The execution model
+ 
+-- **N OS workers.** Worker count is `min(online cores, SPINEL_WORKERS)`.
++- **N OS workers.** Worker count follows the process CPU budget (cgroup quota, then affinity, then online CPUs).
+   Set `SPINEL_WORKERS=1` to force the single-worker cooperative model, or a
+   fixed number to cap parallelism. Absent the env var, Spinel autodetects the
+-  number of online cores.
++  process CPU budget.
+ - **Real parallelism, no GVL.** Two threads run Ruby code on two cores
+   simultaneously. There is no implicit per-object lock, so unsynchronized
+   shared mutation is a data race (see [By design](#by-design) below).
+@@ -37,9 +37,8 @@ is a user guarantee.
+   spends a long time inside a single runtime call with no poll yields only when
+   that call returns. The preemption signal is `SIGURG`, overridable with
+   `SPINEL_PREEMPT_SIGNAL`.
+-- **The single-threaded archive is unchanged.** A program that never uses
+-  `Thread` compiles and runs byte-identically to before; none of the scheduler
+-  machinery is linked in.
++- **Programs without threads use the single-threaded archive.** No scheduler
++  helpers run; the container memory ceilings also apply to this archive.
+ 
+ ## Supported API
+ 
+@@ -149,7 +148,7 @@ These are deliberate consequences of real parallelism, listed in
+ 
+ | variable | effect |
+ |---|---|
+-| `SPINEL_WORKERS` | number of OS workers; overrides the online-core autodetect (min 1). Read at the first `Thread.new`, so a program can set it itself: `ENV["SPINEL_WORKERS"] = "1"` before spawning caps its own pool, and `... = "1" unless ENV["SPINEL_WORKERS"]` declares a default the environment still overrides |
++| `SPINEL_WORKERS` | number of OS workers; overrides CPU-budget autodetection (min 1, includes main worker 0). Read at the first `Thread.new`, so a program can set it itself: `ENV["SPINEL_WORKERS"] = "1"` before spawning caps its own pool, and `... = "1" unless ENV["SPINEL_WORKERS"]` declares a default the environment still overrides |
+ | `SPINEL_PREEMPT_SIGNAL` | the signal the monitor uses to preempt a busy worker (default `SIGURG`) |
+ | `SPINEL_SCHED_STATS` | `1` prints, at exit, what the scheduler's monitor did (turns, polls, readiness arms). `2` also prints every five seconds three histograms of what a green thread waited for: on a run queue after being readied, in `Mutex#lock`, and in `ConditionVariable#wait`, plus how the live threads are pinned across the workers. These are the numbers a tail latency is made of when the CPU is not the bottleneck |
+ | `SPINEL_GC_MINOR` | `0` turns the generational object mark off: every collection then marks the whole live heap. On by default since 2026-09-12: a minor cycle marks the young objects plus what the write barrier remembered of the old ones, and a full cycle runs on the cadence the survival ratio sets (`SPINEL_GC_FULL_INTERVAL=N` pins it). `SPINEL_GC_VERIFY_GEN=1` re-marks the whole heap after every minor and names any holder the barrier missed |
+@@ -358,3 +357,38 @@ madvise and four faults). It is per class now, sized from what the class
+ took in the cycle. And on a full cycle the remembered set's dirty bits are
+ cleared through the set's own array, as the concurrent form always did,
+ instead of by a walk of every old object.
++
++## Container budgets
++
++With `SPINEL_WORKERS` unset or empty, Linux reads the process cgroup from
++`/proc/self/cgroup` and resolves its mount through `/proc/self/mountinfo`.
++The smallest visible ancestor quota wins: v2 `cpu.max`, then v1
++`cpu.cfs_quota_us` / `cpu.cfs_period_us`. Unlimited or invalid quotas fall
++back to `sched_getaffinity`, then `sysconf(_SC_NPROCESSORS_ONLN)`.
++Workers are `max(1, min(online CPUs, affinity CPUs, ceil(quota / period)))`;
++missing bounds are omitted. Main worker 0 is included, so a two-CPU container
++gets at most two execution workers. Monitor and GC sweeper threads are
++separate from execution workers. The compile-time slot bound still applies.
++
++The general default uses factor 1. A blocking-I/O application can set
++`SPINEL_WORKER_FACTOR=2` before its first thread to use
++`ceil(2 * quota / period)`, still bounded by affinity and online CPUs. Scaling
++happens before rounding: 1.5 CPUs become 3 workers. Without a finite quota
++the factor has no effect. There is no image-specific worker count.
++An explicit `SPINEL_WORKERS` still overrides detection, including values above
++the CPU budget. The count is frozen at the first `Thread.new` or resource query.
++Limits hidden above the cgroup namespace's mount root cannot be inspected.
++Escaped mount paths fall back to affinity; non-Linux builds use online CPUs.
++
++The same cgroup lookup reads the smallest visible `memory.max` (v2), or
++`memory.limit_in_bytes` (v1). Unlimited limits preserve existing GC pacing.
++For finite memory M, the object and old-string collection triggers are capped
++at M/8 each; the young-string trigger is capped at M/(8 * execution workers).
++This ceiling applies to initial floors, explicit GC floors, and adaptive retunes.
++The existing 256 KiB floors and live-set heuristics remain below the ceiling.
++These are collection triggers, not hard heap or RSS caps: live objects, external
++allocations, stacks and socket buffers still consume memory. Kernel limits
++remain authoritative. Budgets are discovered at startup, not polled for changes.
++
++`make resource-test` tests fake proc and cgroup trees through the production
++parser, without a runtime environment seam, root privileges, or Docker.
+diff --git a/lib/sp_alloc.c b/lib/sp_alloc.c
+index e519e7a5c..4c74e4e17 100644
+--- a/lib/sp_alloc.c
++++ b/lib/sp_alloc.c
+@@ -13,6 +13,7 @@
+ #include <pthread.h>   /* the thread that does the writing */
+ #endif
+ #include "sp_alloc.h"
++#include "sp_resource.h"
+ #include "sp_dtoa.h"   /* sp_format_float for locale-independent Float#to_s */
+ /* Per-site allocation attribution (SPINEL_ALLOC_SITES=1, on top of
+    SPINEL_ALLOC_REPORT). The site is the raw return address of the frame that
+@@ -254,6 +255,17 @@ static void sp_alloc_floor_from_env(const char *name, size_t *cur, size_t *init)
+    at 256 KB and said `trigger 0.25 MB` while the operator read the manual.
+    The budget MODE was moved out of here for the same reason and with the same
+    sentence (see sp_gc.c): the pacing is not a threads-only question. */
++/* A pool can grow after a retune: cap the per-worker string allowance against
++   the configured maximum, rather than today's smaller active participant set. */
++static int sp_alloc_budget_workers = 1;
++static void sp_alloc_memory_cap(int workers) {
++  sp_gc_threshold = sp_resource_gc_budget(sp_gc_threshold, 1);
++  sp_str_threshold = sp_resource_gc_budget(sp_str_threshold, workers);
++  sp_str_old_threshold = sp_resource_gc_budget(sp_str_old_threshold, 1);
++  sp_gc_threshold_init = sp_resource_gc_budget(sp_gc_threshold_init, 1);
++  sp_str_threshold_init = sp_resource_gc_budget(sp_str_threshold_init, workers);
++  sp_str_old_threshold_init = sp_resource_gc_budget(sp_str_old_threshold_init, 1);
++}
+ void sp_alloc_floors_from_env(void) {
+   const char *e = getenv("SPINEL_GC_THRESHOLD_KB");
+   if (e && *e) {
+@@ -274,6 +286,7 @@ void sp_alloc_floors_from_env(void) {
+      the string old list (#4407). This sets the floor under the growth backstop,
+      and is the control that lets the cadence be measured against a pinned one. */
+   sp_alloc_floor_from_env("SPINEL_GC_STR_MAJOR_KB", &sp_str_old_threshold, &sp_str_old_threshold_init);
++  sp_alloc_memory_cap(1);
+ }
+ #ifdef SP_THREADS
+ void sp_alloc_worker_tune(int workers) {
+@@ -284,6 +297,7 @@ void sp_alloc_worker_tune(int workers) {
+   }
+   if (workers < 1) workers = 1;
+   if (workers > SP_MAX_WORKERS) workers = SP_MAX_WORKERS;
++  sp_alloc_budget_workers = workers;
+   if (workers == 1) return;
+   sp_gc_threshold_init *= (size_t)workers;
+   /* Raise the CURRENT threshold to the new base, do not multiply it. The cost
+@@ -299,6 +313,7 @@ void sp_alloc_worker_tune(int workers) {
+      (#4146). */
+   { size_t cur = SP_GC_CTR_GET(sp_gc_threshold);
+     if (sp_gc_threshold_init > cur) SP_GC_CTR_SET(sp_gc_threshold, sp_gc_threshold_init); }
++  sp_alloc_memory_cap(workers);
+ }
+ #endif
+ 
+@@ -544,6 +559,7 @@ void sp_gc_retune_object(size_t before) {
+   if (freed < before / 4) { sp_gc_threshold = sp_gc_sat_mul(before + (walk - live), 2); }
+   else if (live > 0) { sp_gc_threshold = sp_gc_sat_mul(walk, 2); if (sp_gc_threshold < sp_gc_threshold_init) sp_gc_threshold = sp_gc_threshold_init; }
+   else { sp_gc_threshold = sp_gc_threshold_init; }
++  sp_gc_threshold = sp_resource_gc_budget(sp_gc_threshold, 1);
+ }
+ /* `before` and `after` are both the WHOLE live string set -- young plus old --
+    the way sp_gc_retune_object reads the whole object heap. Sizing from the
+@@ -587,6 +603,7 @@ static void sp_str_retune(size_t before, size_t promoted) {
+   if (freed < before / 4) { sp_str_threshold = sp_gc_sat_mul(before, 2); }
+   else if (after > 0) { sp_str_threshold = sp_gc_sat_mul(after, 2); if (sp_str_threshold < sp_str_threshold_init) sp_str_threshold = sp_str_threshold_init; }
+   else { sp_str_threshold = sp_str_threshold_init; }
++  sp_str_threshold = sp_resource_gc_budget(sp_str_threshold, sp_alloc_budget_workers);
+ }
+ 
+ /* Collect and re-tune. The caller guarantees exclusive heap access: the
+@@ -993,6 +1010,7 @@ void sp_str_sweep_end(int major, size_t promoted) {
+       sp_str_old_threshold = sp_gc_sat_mul(kept, 2);
+       if (sp_str_old_threshold < sp_str_old_threshold_init)
+         sp_str_old_threshold = sp_str_old_threshold_init;
++      sp_str_old_threshold = sp_resource_gc_budget(sp_str_old_threshold, 1);
+       /* Adapt the CADENCE from the survival RATIO. A ratio is scale-free, so
+          unlike a size it cannot carry the last major's inflation into the next
+          one. A major FORCED by the backstop is not a sample taken on schedule:
+diff --git a/lib/sp_resource.c b/lib/sp_resource.c
+new file mode 100644
+index 000000000..9a8a26f63
+--- /dev/null
++++ b/lib/sp_resource.c
+@@ -0,0 +1,227 @@
++/* sp_resource.c -- container-aware defaults; no allocation on the hot path. */
++#ifdef __linux__
++#ifndef _GNU_SOURCE
++#define _GNU_SOURCE
++#endif
++#endif
++#include "sp_resource.h"
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <stdint.h>
++#include <limits.h>
++#include <unistd.h>
++#include <errno.h>
++#ifdef __linux__
++#include <sched.h>
++#endif
++
++typedef struct {
++  unsigned long long quota, period;
++  size_t memory;
++  int version;
++} sp_limits;
++
++#ifdef __linux__
++/* Controller names are tokens, not substrings (cpu != cpuacct). */
++static int sp_controller(const char *list, const char *name) {
++  size_t n = strlen(name);
++  while (*list) {
++    const char *end = strchr(list, ',');
++    size_t len = end ? (size_t)(end - list) : strlen(list);
++    if (len == n && memcmp(list, name, n) == 0) return 1;
++    if (!end) break;
++    list = end + 1;
++  }
++  return 0;
++}
++
++static int sp_cgroup_path(const char *file, const char *controller, char *path, size_t cap) {
++  FILE *f = fopen(file, "r");
++  if (!f) return 0;
++  char line[4096]; int found = 0;
++  while (fgets(line, sizeof line, f)) {
++    char *a = strchr(line, ':'), *b = a ? strchr(a + 1, ':') : NULL;
++    if (!b) continue;
++    *b++ = 0; b[strcspn(b, "\r\n")] = 0;
++    if (controller ? sp_controller(a + 1, controller) : a[1] == 0) {
++      /* Reject namespace paths escaping the visible mount. */
++      if (*b == '/' && !strstr(b, "/../") && strcmp(b, "/..") != 0 && strlen(b) < cap) {
++        strcpy(path, b); found = 1; break;
++      }
++    }
++  }
++  fclose(f); return found;
++}
++
++/* mountinfo supplies both the mount point and its hierarchy root: a bind mount
++   may expose only a subtree. cgroup namespaces usually report path "/". */
++static int sp_cgroup_mount(const char *file, const char *controller, const char *group,
++                           char *dir, size_t cap, size_t *root_len) {
++  FILE *f = fopen(file, "r");
++  if (!f) return 0;
++  char line[8192]; int found = 0;
++  while (fgets(line, sizeof line, f)) {
++    char root[4096], mount[4096], type[32], device[256], opts[256];
++    char *sep = strstr(line, " - ");
++    if (!sep || sscanf(line, "%*s %*s %*s %4095s %4095s", root, mount) != 2 ||
++        sscanf(sep + 3, "%31s %255s %255s", type, device, opts) != 3) continue;
++    if (controller ? (strcmp(type, "cgroup") != 0 || !sp_controller(opts, controller))
++                   : strcmp(type, "cgroup2") != 0) continue;
++    /* Escaped mount names are uncommon; leave them to the affinity fallback
++       rather than accidentally reading an unrelated path. */
++    if (strchr(mount, '\\') || strchr(root, '\\')) continue;
++    const char *suffix = group;
++    size_t n = strlen(root);
++    if (strcmp(root, "/") != 0 && strncmp(group, root, n) == 0 &&
++        (group[n] == '/' || group[n] == 0)) suffix = group + n;
++    int len = snprintf(dir, cap, "%s%s", mount, strcmp(suffix, "/") == 0 ? "" : suffix);
++    if (len > 0 && (size_t)len < cap) { *root_len = strlen(mount); found = 1; break; }
++  }
++  fclose(f); return found;
++}
++
++static int sp_limit_number(const char *s, unsigned long long *n, char **end) {
++  if (*s < '0' || *s > '9') return 0;
++  errno = 0; *n = strtoull(s, end, 10);
++  return errno == 0 && *n > 0;
++}
++
++static int sp_limit_read(const char *dir, const char *name, char *buf, size_t cap) {
++  char path[8192];
++  int n = snprintf(path, sizeof path, "%s/%s", dir, name);
++  if (n < 0 || (size_t)n >= sizeof path) return 0;
++  FILE *f = fopen(path, "r");
++  if (!f) return 0;
++  int ok = fgets(buf, (int)cap, f) != NULL;
++  fclose(f); return ok;
++}
++
++/* Visit every visible ancestor. Limits above a cgroup namespace's mount root
++   cannot be read; the kernel still enforces them. */
++static void sp_cgroup_limits(const char *cgroup, const char *mountinfo,
++                             const char *controller, sp_limits *lim) {
++  char group[4096], dir[8192], buf[256]; size_t root_len;
++  if (!sp_cgroup_path(cgroup, controller, group, sizeof group) ||
++      !sp_cgroup_mount(mountinfo, controller, group, dir, sizeof dir, &root_len)) return;
++  int v2 = controller == NULL;
++  do {
++    unsigned long long q = 0, p = 0; char *end;
++    if (v2 && sp_limit_read(dir, "cpu.max", buf, sizeof buf) &&
++        sp_limit_number(buf, &q, &end)) {
++      while (*end == ' ' || *end == '\t') end++;
++      if (!sp_limit_number(end, &p, &end) || end[strspn(end, " \t\r\n")] != 0) p = 0;
++    } else if (!v2 && strcmp(controller, "cpu") == 0 &&
++               sp_limit_read(dir, "cpu.cfs_quota_us", buf, sizeof buf) &&
++               sp_limit_number(buf, &q, &end) &&
++               sp_limit_read(dir, "cpu.cfs_period_us", buf, sizeof buf)) {
++      if (!sp_limit_number(buf, &p, &end) || end[strspn(end, " \t\r\n")] != 0) p = 0;
++    }
++    if (q && p && (!lim->period || (long double)q / p < (long double)lim->quota / lim->period)) {
++      lim->quota = q; lim->period = p; lim->version = v2 ? 2 : 1;
++    }
++    if ((v2 || strcmp(controller, "memory") == 0) &&
++        sp_limit_read(dir, v2 ? "memory.max" : "memory.limit_in_bytes", buf, sizeof buf) &&
++        sp_limit_number(buf, &q, &end) && q <= SIZE_MAX &&
++        (v2 || q < (unsigned long long)LLONG_MAX / 2) &&
++        (!lim->memory || q < lim->memory)) lim->memory = (size_t)q;
++    if (strlen(dir) <= root_len) break;
++    char *slash = strrchr(dir, '/');
++    if (!slash || (size_t)(slash - dir) < root_len) break;
++    *slash = 0;
++  } while (1);
++}
++#endif
++
++/* Kept separate from the cached accessor so the C regression can supply fake
++   proc/mountinfo files without adding a production environment override. */
++static int sp_resource_detect(const char *cgroup, const char *mountinfo, int online,
++                               int affinity, sp_limits *lim, char *source, size_t cap) {
++#ifdef __linux__
++  sp_cgroup_limits(cgroup, mountinfo, NULL, lim);
++  if (!lim->period) sp_cgroup_limits(cgroup, mountinfo, "cpu", lim);
++  if (!lim->memory) sp_cgroup_limits(cgroup, mountinfo, "memory", lim);
++#else
++  (void)cgroup; (void)mountinfo; (void)lim;
++#endif
++  int n = online > 0 ? online : 1;
++  snprintf(source, cap, "online CPUs");
++  if (affinity > 0 && affinity <= n) { n = affinity; snprintf(source, cap, "sched_getaffinity"); }
++  if (lim->period) {
++    unsigned long long q = lim->quota / lim->period + (lim->quota % lim->period != 0);
++    if (q <= (unsigned)n) {
++      n = (int)q;
++      snprintf(source, cap, "cgroup %s %llu/%llu", lim->version == 2 ? "cpu.max" : "cpu.cfs_quota_us",
++               lim->quota, lim->period);
++    }
++  }
++  return n > 0 ? n : 1;
++}
++
++static int sp_resources_ready, sp_resources_workers, sp_resources_cpu_cap;
++static sp_limits sp_resources_limits;
++static char sp_resources_source[128];
++static void sp_resource_init(void) {
++  if (sp_resources_ready) return;
++  long online = sysconf(_SC_NPROCESSORS_ONLN); int affinity = 0;
++#ifdef __linux__
++  /* A raw bit mask avoids a fixed CPU_SETSIZE limit on large machines. */
++  unsigned long mask[1024] = {0};
++  if (sched_getaffinity(0, sizeof mask, (cpu_set_t *)mask) == 0)
++    for (size_t i = 0; i < sizeof mask / sizeof *mask; i++)
++      for (unsigned long bits = mask[i]; bits; bits &= bits - 1) affinity++;
++#endif
++  sp_resources_cpu_cap = online > INT_MAX ? INT_MAX : online > 0 ? (int)online : 1;
++  if (affinity > 0 && affinity < sp_resources_cpu_cap) sp_resources_cpu_cap = affinity;
++  sp_resources_workers = sp_resource_detect("/proc/self/cgroup", "/proc/self/mountinfo",
++      online > INT_MAX ? INT_MAX : (int)online, affinity, &sp_resources_limits,
++      sp_resources_source, sizeof sp_resources_source);
++  sp_resources_ready = 1;
++}
++static int sp_resource_factor(void) {
++  const char *e = getenv("SPINEL_WORKER_FACTOR");
++  long n = e && *e ? strtol(e, NULL, 10) : 1;
++  return n > 1 && n <= INT_MAX ? (int)n : 1;
++}
++int sp_resource_workers(void) {
++  sp_resource_init();
++  const char *e = getenv("SPINEL_WORKERS");
++  if (e && *e) {
++    long n = strtol(e, NULL, 10);
++    return n > INT_MAX ? INT_MAX : n < 1 ? 1 : (int)n;
++  }
++  int factor = sp_resource_factor();
++  if (factor > 1 && sp_resources_limits.period) {
++    long double budget = (long double)sp_resources_limits.quota * factor / sp_resources_limits.period;
++    if (budget >= sp_resources_cpu_cap) return sp_resources_cpu_cap;
++    int n = (int)budget;
++    return budget > n ? n + 1 : n;
++  }
++  return sp_resources_workers;
++}
++const char *sp_resource_worker_source(void) {
++  sp_resource_init();
++  const char *e = getenv("SPINEL_WORKERS");
++  if (e && *e) return "SPINEL_WORKERS";
++  int factor = sp_resource_factor();
++  if (factor > 1 && strncmp(sp_resources_source, "cgroup ", 7) == 0) {
++    static char source[160];
++    snprintf(source, sizeof source, "%s; factor %d", sp_resources_source, factor);
++    return source;
++  }
++  return sp_resources_source;
++}
++size_t sp_resource_memory_limit(void) { sp_resource_init(); return sp_resources_limits.memory; }
++const char *sp_resource_memory_source(void) {
++  sp_resource_init(); return sp_resources_limits.memory ? "cgroup memory limit" : "unlimited (no visible cgroup limit)";
++}
++/* Each of the object, aggregate young-string, and old-string triggers gets at
++   most 1/8 of the memory limit. This bounds collection pacing, NOT live data,
++   malloc arenas, stacks, or process RSS. The kernel enforces the hard limit. */
++size_t sp_resource_gc_budget(size_t requested, int workers) {
++  size_t memory = sp_resource_memory_limit();
++  if (!memory) return requested;
++  size_t cap = memory / 8 / (size_t)(workers > 0 ? workers : 1);
++  if (!cap) cap = 1;
++  return requested < cap ? requested : cap;
++}
+diff --git a/lib/sp_resource.h b/lib/sp_resource.h
+new file mode 100644
+index 000000000..a49ca5141
+--- /dev/null
++++ b/lib/sp_resource.h
+@@ -0,0 +1,10 @@
++/* Process resource budgets, resolved once before scheduler helpers start. */
++#ifndef SP_RESOURCE_H
++#define SP_RESOURCE_H
++#include <stddef.h>
++int sp_resource_workers(void);
++const char *sp_resource_worker_source(void);
++size_t sp_resource_memory_limit(void);  /* 0: no visible finite cgroup limit */
++const char *sp_resource_memory_source(void);
++size_t sp_resource_gc_budget(size_t requested, int workers);
++#endif
+diff --git a/lib/sp_sched.c b/lib/sp_sched.c
+index 35155f5c9..4183c6090 100644
+--- a/lib/sp_sched.c
++++ b/lib/sp_sched.c
+@@ -2,6 +2,7 @@
+  * See sp_sched.h. Built on the sp_fiber context switch: the main thread runs on
+  * the root fiber and pumps a run queue of green threads whenever it blocks. */
+ #include "sp_sched.h"
++#include "sp_resource.h"
+ #include "sp_alloc.h"   /* sp_box_nil / sp_box_obj */
+ #include <stdlib.h>
+ #include <string.h>
+@@ -1968,11 +1969,11 @@ static void sp_trim_thread_start(void) {
+ static void sp_trim_thread_start(void) {}
+ #endif
+ 
+-static int sp_worker_count(void);   /* defined below; the pool size */
++int sp_sched_worker_count(void);   /* defined below; the pool size */
+ static int sp_sched_ensure_workers(void) {
+   if (g_workers_started) return 1;
+   sp_alloc_stress_init();   /* set the stress flags once here, before any helper reads them */
+-  sp_alloc_worker_tune(sp_worker_count());  /* and size the GC budget for the pool */
++  sp_alloc_worker_tune(sp_sched_worker_count());  /* and size the GC budget for the pool */
+   if (!sp_sched_start_workers()) return 0;
+   g_workers_started = 1;
+   /* Hand parked workers their own slots from here on. Workers spawn lazily, so
+@@ -2550,20 +2551,25 @@ sp_PolyArray *sp_Thread_tls_keys(sp_thread *t) {
+   return a;
+ }
+ 
++/* Total execution workers, including main worker 0; reserve the sweeper slot.
++   Freeze at the first Thread.new (or query), not in the allocator constructor:
++   Ruby may set SPINEL_WORKERS before spawning its first thread. */
++static int g_configured_workers;
++static char g_worker_source[128];
++int sp_sched_worker_count(void) {
++  if (!g_configured_workers) {
++    int n = sp_resource_workers();
++    g_configured_workers = n < SP_MAX_WORKERS - 1 ? n : SP_MAX_WORKERS - 1;
++    snprintf(g_worker_source, sizeof g_worker_source, "%s", sp_resource_worker_source());
++  }
++  return g_configured_workers;
++}
++const char *sp_sched_worker_source(void) { sp_sched_worker_count(); return g_worker_source; }
++
+ #ifdef SP_THREADS
+ /* ---- helper OS workers (design 3.2, Appendix B) ---- */
+ static pthread_t g_worker_threads[SP_MAX_WORKERS];
+ 
+-/* min(online cores, SPINEL_WORKERS); the env var overrides the autodetect. */
+-static int sp_worker_count(void) {
+-  const char *e = getenv("SPINEL_WORKERS");
+-  int n;
+-  if (e && *e) { n = atoi(e); if (n < 1) n = 1; }
+-  else { long c = sysconf(_SC_NPROCESSORS_ONLN); n = (c > 0) ? (int)c : 1; }
+-  if (n > SP_MAX_WORKERS) n = SP_MAX_WORKERS;
+-  return n;
+-}
+-
+ /* The monitor thread (sysmon, design §5). Two jobs, both off the workers' backs:
+    (1) fire scheduler timers (sleep, timed I/O, and timed condition waits), and (2) enforce the
+    timeslice -- when a worker has run the same green thread past the quantum, flag
+@@ -3078,7 +3084,7 @@ static int sp_sched_start_workers(void) {
+      it through the pthread_create happens-before edge (no lock needed). Helpers
+      themselves are spawned on demand (sp_sched_maybe_grow), not here -- main
+      stays worker 0 and starts as the only participant (sp_active_workers 1). */
+-  g_worker_cap = sp_worker_count();
++  g_worker_cap = sp_sched_worker_count() - 1;
+   /* main is worker 0 and the last slot belongs to the sweeper threads */
+   if (g_worker_cap > SP_MAX_WORKERS - 2) g_worker_cap = SP_MAX_WORKERS - 2;
+   /* Install the preemption signal handler before any worker can be targeted.
+@@ -3129,7 +3135,7 @@ static void sp_sched_spawn_helper(void) {
+ }
+ 
+ /* Grow the helper pool toward one execution worker per live green thread, capped
+-   at g_worker_cap. Called under the lock wherever a thread becomes runnable; a
++   at g_worker_cap helpers (the configured total includes main worker 0). Called under the lock wherever a thread becomes runnable; a
+    no-op once at the cap or while a collection is reading the participant count
+    (we never change it mid-STW). This turns "SPINEL_WORKERS=N" into up to N real
+    parallel execution threads while never starting a helper the workload has no
+diff --git a/lib/sp_sched.h b/lib/sp_sched.h
+index ba1b03a89..b7cf7a794 100644
+--- a/lib/sp_sched.h
++++ b/lib/sp_sched.h
+@@ -290,4 +290,9 @@ sp_RbVal    sp_CondVar_wait_timeout(sp_condvar *cv, sp_mutex *m, double seconds)
+ void        sp_CondVar_signal(sp_condvar *cv);             /* #signal */
+ void        sp_CondVar_broadcast(sp_condvar *cv);          /* #broadcast */
+ 
++
++/* Configured execution-worker budget (main included), and how it was derived. */
++int sp_sched_worker_count(void);
++const char *sp_sched_worker_source(void);
++
+ #endif /* SP_SCHED_H */
+diff --git a/test/resource_limits.c b/test/resource_limits.c
+new file mode 100644
+index 000000000..8f4ad21f7
+--- /dev/null
++++ b/test/resource_limits.c
+@@ -0,0 +1,88 @@
++/* C-side regression: production parser, fake proc files, no privileged cgroups. */
++#include <assert.h>
++#include <sys/stat.h>
++#include "../lib/sp_resource.c"
++
++static char base[4096], procfile[4096], mountfile[4096], mount[4096];
++static void write_file(const char *path, const char *body) {
++  FILE *f = fopen(path, "w"); assert(f); fputs(body, f); assert(fclose(f) == 0);
++}
++static void limit(const char *suffix, const char *name, const char *body) {
++  char path[8192]; snprintf(path, sizeof path, "%s%s/%s", mount, suffix, name); write_file(path, body);
++}
++static void mounts(const char *root, const char *type, const char *options) {
++  char text[8192];
++  snprintf(text, sizeof text, "1 0 0:1 %s %s rw - %s cgroup %s\n", root, mount, type, options);
++  write_file(mountfile, text);
++}
++static int detect(int online, int affinity, sp_limits *lim, char *source) {
++  memset(lim, 0, sizeof *lim);
++  return sp_resource_detect(procfile, mountfile, online, affinity, lim, source, 128);
++}
++int main(int argc, char **argv) {
++  assert(argc == 2); snprintf(base, sizeof base, "%s", argv[1]);
++  snprintf(procfile, sizeof procfile, "%s/proc", base);
++  snprintf(mountfile, sizeof mountfile, "%s/mountinfo", base);
++  snprintf(mount, sizeof mount, "%s/cgroup", base); assert(mkdir(mount, 0700) == 0);
++  char child[8192]; snprintf(child, sizeof child, "%s/child", mount); assert(mkdir(child, 0700) == 0);
++  sp_limits lim; char source[128];
++#ifdef __linux__
++  mounts("/", "cgroup2", "rw"); write_file(procfile, "0::/child\n");
++  limit("", "cpu.max", "max 100000\n"); limit("/child", "cpu.max", "200000 100000\n");
++  limit("", "memory.max", "max\n"); limit("/child", "memory.max", "1073741824\n");
++  assert(detect(18, 18, &lim, source) == 2); assert(lim.memory == 1073741824);
++  assert(strcmp(source, "cgroup cpu.max 200000/100000") == 0);
++  limit("/child", "cpu.max", "150000 100000\n"); assert(detect(18, 18, &lim, source) == 2);
++  limit("/child", "cpu.max", "50000 100000\n"); assert(detect(18, 18, &lim, source) == 1);
++  limit("/child", "cpu.max", "400000 100000\n"); assert(detect(18, 18, &lim, source) == 4);
++  assert(detect(18, 1, &lim, source) == 1); assert(strcmp(source, "sched_getaffinity") == 0);
++  assert(detect(2, 0, &lim, source) == 2);
++  limit("", "cpu.max", "120000 100000\n"); assert(detect(18, 18, &lim, source) == 2);
++  assert(lim.quota == 120000); /* parent wins, despite child's larger quota */
++  limit("", "memory.max", "536870912\n"); detect(18, 18, &lim, source); assert(lim.memory == 536870912);
++  limit("", "cpu.max", "max 100000\n");
++  const char *invalid[] = {"max 100000\n", "broken\n", "0 100000\n", "100000 0\n", "-1 100000\n",
++    "184467440737095516160 100000\n", "100000 100000junk\n"};
++  for (size_t i = 0; i < sizeof invalid / sizeof *invalid; i++) {
++    limit("/child", "cpu.max", invalid[i]); assert(detect(18, 3, &lim, source) == 3);
++  }
++  limit("/child", "cpu.max", "18446744073709551615 1\n"); assert(detect(18, 18, &lim, source) == 18);
++  /* A subtree bind mount: strip its hierarchy root from the proc path. */
++  mounts("/parent", "cgroup2", "rw"); write_file(procfile, "0::/parent/child\n");
++  limit("/child", "cpu.max", "200000 100000\n"); assert(detect(18, 18, &lim, source) == 2);
++  /* Separate v1 cpu and memory mounts, including cpu,cpuacct token matching. */
++  write_file(procfile, "5:cpu,cpuacct:/child\n6:memory:/child\n");
++  mounts("/", "cgroup", "rw,cpu,cpuacct,memory");
++  limit("", "cpu.cfs_quota_us", "-1\n"); limit("", "cpu.cfs_period_us", "100000\n");
++  limit("/child", "cpu.cfs_quota_us", "150000\n"); limit("/child", "cpu.cfs_period_us", "100000\n");
++  limit("", "memory.limit_in_bytes", "9223372036854771712\n");
++  limit("/child", "memory.limit_in_bytes", "268435456\n");
++  assert(detect(18, 18, &lim, source) == 2); assert(lim.version == 1); assert(lim.memory == 268435456);
++  limit("", "cpu.cfs_quota_us", "50000\n"); assert(detect(18, 18, &lim, source) == 1);
++  mounts("/", "cgroup", "rw,cpuacct"); assert(detect(18, 3, &lim, source) == 3);
++#endif
++  write_file(procfile, ""); write_file(mountfile, "");
++  assert(detect(18, 3, &lim, source) == 3); assert(detect(18, 0, &lim, source) == 18);
++  assert(detect(0, 0, &lim, source) == 1);
++  /* Explicit values retain precedence; an empty value autodetects. */
++  setenv("SPINEL_WORKERS", "7", 1); sp_resources_ready = 0;
++  assert(sp_resource_workers() == 7); assert(strcmp(sp_resource_worker_source(), "SPINEL_WORKERS") == 0);
++  setenv("SPINEL_WORKERS", "0", 1); sp_resources_ready = 0; assert(sp_resource_workers() == 1);
++  setenv("SPINEL_WORKERS", "", 1); sp_resources_ready = 0; assert(sp_resource_workers() >= 1);
++  assert(strcmp(sp_resource_worker_source(), "SPINEL_WORKERS") != 0);
++  /* Scaling rounds the quota AFTER multiplication: 1.5 CPUs * 2 = 3. */
++  sp_resources_ready = 1; sp_resources_cpu_cap = 18; sp_resources_workers = 2;
++  sp_resources_limits.quota = 150000; sp_resources_limits.period = 100000;
++  setenv("SPINEL_WORKER_FACTOR", "2", 1); assert(sp_resource_workers() == 3);
++  sp_resources_cpu_cap = 2; assert(sp_resource_workers() == 2);
++  setenv("SPINEL_WORKERS", "7", 1); assert(sp_resource_workers() == 7);
++  setenv("SPINEL_WORKERS", "", 1); setenv("SPINEL_WORKER_FACTOR", "1", 1);
++  assert(sp_resource_workers() == 2);
++  sp_resources_limits.period = 0;
++  sp_resources_limits.memory = 1073741824; sp_resources_ready = 1;
++  assert(sp_resource_gc_budget(SIZE_MAX, 1) == 134217728);
++  assert(sp_resource_gc_budget(SIZE_MAX, 2) == 67108864);
++  assert(sp_resource_gc_budget(2048, 2) == 2048);
++  sp_resources_limits.memory = 0; assert(sp_resource_gc_budget(SIZE_MAX, 1) == SIZE_MAX);
++  puts("resource-test: pass"); return 0;
++}

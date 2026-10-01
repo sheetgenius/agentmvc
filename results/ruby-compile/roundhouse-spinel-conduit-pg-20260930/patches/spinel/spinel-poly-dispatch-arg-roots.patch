@@ -1,0 +1,154 @@
+diff --git a/src/codegen_call.c b/src/codegen_call.c
+index 1d3c54108..245acce95 100644
+--- a/src/codegen_call.c
++++ b/src/codegen_call.c
+@@ -8669,6 +8669,15 @@ static int emit_poly_method_dispatch(Compiler *c, int id, Buf *b) {
+           emit_ctype(c, at, b);
+           buf_printf(b, " _t%d = ", atmp[a]); emit_expr(c, argv[a], b); buf_puts(b, "; ");
+         }
++        /* Root the argument temp as the receiver's is rooted above. A fresh
++           value (`tags.uniq`, a boxed Time) is held by nothing but this temp
++           while the arguments after it run, and while each arm builds what it
++           passes on -- the keyword hash an arm allocates before it stores the
++           values into it. Unrooted, a collection there freed it and the arm
++           stored a dangling pointer: the callee read another object's bytes
++           (a Time of year 8920956) or a string array whose slot a later
++           allocation had reused (SIGSEGV in sp_str_length). */
++        emit_gc_root_tmp(c, atmp_ty[a], atmp[a], b); buf_puts(b, " ");
+       }
+       /* keyword values, evaluated once like the positionals; matched to each
+          arm's keyword params by name below (#3268) */
+@@ -8700,6 +8709,9 @@ static int emit_poly_method_dispatch(Compiler *c, int id, Buf *b) {
+             emit_ctype(c, at, b);
+             buf_printf(b, " _t%d = ", kwtmp[e]); emit_expr(c, val, b); buf_puts(b, "; ");
+           }
++          /* the keyword values are held until an arm builds its hash from
++             them, which allocates first: root them like the positionals */
++          emit_gc_root_tmp(c, kwty[e], kwtmp[e], b); buf_puts(b, " ");
+         }
+         /* The builtin arms read the keyword hash as the last positional
+            argument (`h.fetch(k, a: 1)` takes it as the default), through the
+diff --git a/src/codegen_expr.c b/src/codegen_expr.c
+index 71cd1da90..54c3b2cec 100644
+--- a/src/codegen_expr.c
++++ b/src/codegen_expr.c
+@@ -3576,6 +3576,17 @@ else {
+       emit_ctype(c, res, g_pre);
+       buf_printf(g_pre, " _t%d = %s;\n", tr,
+                  res == TY_RANGE ? "(sp_Range){0}" : default_value(res));
++      /* The temp is set here and read at the end of the enclosing statement,
++         with every operand written after this `if` evaluated in between:
++         `m(a: (Time.now if c), b: xs.uniq, c: f(x))` boxes the Time into
++         _tN, then runs the allocating operands to its right. A heap result
++         held by nothing else was collected there -- root it for the
++         statement's scope. */
++      if (ty_gc_rootable(c, res)) {
++        emit_indent(g_pre, g_indent);
++        emit_gc_root_tmp(c, res, tr, g_pre);
++        buf_puts(g_pre, "\n");
++      }
+       /* Emit the condition into its own buffer: any prolog it hoists is a
+          statement, and writing it to g_pre after "if (" had been written left
+          the declaration in the middle of the expression. */
+diff --git a/test/poly_dispatch_arg_gc_root.rb b/test/poly_dispatch_arg_gc_root.rb
+new file mode 100644
+index 000000000..a3336f801
+--- /dev/null
++++ b/test/poly_dispatch_arg_gc_root.rb
+@@ -0,0 +1,74 @@
++# A call on a boxed receiver dispatches on its runtime class, and the
++# arguments are evaluated into temps first, left to right, before the arm
++# for the class is chosen. Each temp must be rooted: a fresh value held by
++# nothing but its temp (`tags.uniq`, a boxed Time) was collected while a
++# later argument allocated, or while the arm allocated the keyword hash it
++# stores the values into, and the callee then read a freed slot -- a
++# string array whose slot another array had taken (SIGSEGV in
++# sp_str_length), or a Time read back as some year 8920956.
++#
++# The `(Time.at(...) if st == "published")` operand is a no-else `if`
++# written as a statement ahead of the call: its result temp must be
++# rooted too, as the receiver and every operand to its right run before
++# the call.
++#
++# `mark` runs GC.start and then reuses the freed slots; the receiver
++# (`source`) and the last argument call it, after the values before them
++# are held only by their temps.
++
++class Bag
++  def merge(other)
++    other
++  end
++end
++
++# returns a Hash or a Bag, so `.merge` below dispatches on a boxed receiver
++def source(k)
++  return Bag.new if k < 0
++  { title: mark("t#{k}") }
++end
++
++def mark(s)
++  GC.start
++  # reuse what the collection freed, so a dangling temp reads other bytes
++  junk = []
++  64.times { |k| junk << ["j#{k}", "k#{k}", "l#{k}"]; junk << Time.at(k) }
++  s + "-" + junk.size.to_s
++end
++
++def fresh_tags(i)
++  ["a#{i}", "b#{i}", "a#{i}"]
++end
++
++3.times do |i|
++  st = i >= 0 ? "published" : "draft"
++  h = source(i).merge(at: (Time.at(1_700_000_000 + i) if st == "published"),
++                      tags: fresh_tags(i).uniq,
++                      slug: mark("s#{i}"))
++  GC.start
++  puts h[:title]
++  puts h[:at].to_i
++  puts h[:tags].map { |t| t.upcase }.join(",")
++  puts h[:slug]
++end
++
++# the same through positional arguments of a user method on a boxed receiver
++class Pair
++  def initialize(a, b); @a = a; @b = b; end
++  def put(a, b); [a, b]; end
++end
++
++class Twin
++  def put(a, b); [b, a]; end
++end
++
++def pick(k)
++  k > 5 ? Twin.new : Pair.new(1, 2)
++end
++
++2.times do |i|
++  r = pick(i).put(fresh_tags(i).uniq, mark("p#{i}"))
++  GC.start
++  puts r[0].join("+")
++  puts r[1]
++end
+diff --git a/test/poly_dispatch_arg_gc_root.rb.expected b/test/poly_dispatch_arg_gc_root.rb.expected
+new file mode 100644
+index 000000000..ef97154ca
+--- /dev/null
++++ b/test/poly_dispatch_arg_gc_root.rb.expected
+@@ -0,0 +1,16 @@
++t0-128
++1700000000
++A0,B0
++s0-128
++t1-128
++1700000001
++A1,B1
++s1-128
++t2-128
++1700000002
++A2,B2
++s2-128
++a0+b0
++p0-128
++a1+b1
++p1-128

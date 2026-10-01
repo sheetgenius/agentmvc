@@ -1,0 +1,195 @@
+diff --git a/runtime/spinel/db_pg.rb b/runtime/spinel/db_pg.rb
+index 99846618..d7e488be 100644
+--- a/runtime/spinel/db_pg.rb
++++ b/runtime/spinel/db_pg.rb
+@@ -339,84 +339,85 @@ module Db
+   # '?' jsonb operators are ambiguous with the legacy API: write native $n
+   # parameters and use prepare_native for queries containing ?/?|/?& operators.
+   def self.rewrite_placeholders(sql, literals = [])
+-    out = ""
++    # SQL delimiters are ASCII bytes. Scan bytes so UTF-8 inside a literal does
++    # not turn character indexing into repeated walks of the whole prefix.
++    # Copy only spans around actual binds: appending every character with +
++    # repeatedly copied the growing SQL (quadratic for large inline literals).
++    out = +""
+     i = 0
++    start = 0
+     n = 0
+-    quote = ""
++    size = sql.bytesize
++    quote = 0
+     dollar = ""
+     line_comment = false
+     depth = 0
+     escape_quote = false
+-    while i < sql.length
+-      c = sql[i, 1]
+-      pair = sql[i, 2]
++    while i < size
++      c = sql.getbyte(i)
++      following = sql.getbyte(i + 1)
+       if line_comment
+-        out += c
+-        line_comment = false if c == "\n"
++        line_comment = false if c == 10
+       elsif depth > 0
+-        if pair == "/*"
++        if c == 47 && following == 42
+           depth += 1
+-          out += pair
+           i += 1
+-        elsif pair == "*/"
++        elsif c == 42 && following == 47
+           depth -= 1
+-          out += pair
+           i += 1
+-        else
+-          out += c
+         end
+       elsif dollar != ""
+-        if sql[i, dollar.length] == dollar
+-          out += dollar
+-          i += dollar.length - 1
++        if c == 36 && sql.byteslice(i, dollar.bytesize) == dollar
++          i += dollar.bytesize - 1
+           dollar = ""
+-        else
+-          out += c
+         end
+-      elsif quote != ""
+-        out += c
+-        if escape_quote && c == "\\"
++      elsif quote != 0
++        if escape_quote && c == 92
+           i += 1
+-          out += sql[i, 1].to_s
+         elsif c == quote
+-          if sql[i + 1, 1] == quote
+-            out += quote
++          if following == quote
+             i += 1
+           else
+-            quote = ""
++            quote = 0
+           end
+         end
+-      elsif pair == "--"
++      elsif c == 45 && following == 45
+         line_comment = true
+-        out += pair
+         i += 1
+-      elsif pair == "/*"
++      elsif c == 47 && following == 42
+         depth = 1
+-        out += pair
+         i += 1
+-      elsif c == "'" || c == '"'
++      elsif c == 39 || c == 34
+         quote = c
+-        prev = i > 0 ? sql[i - 1, 1] : ""
+-        escape_quote = c == "'" && (prev == "E" || prev == "e")
+-        out += c
+-      elsif c == "$"
+-        rest = sql[i, sql.length - i]
+-        tag = rest.match(/\A\$(?:[A-Za-z_][A-Za-z_0-9]*)?\$/)
+-        if !tag.nil?
+-          dollar = tag[0]
+-          out += dollar
+-          i += dollar.length - 1
+-        else
+-          out += c
++        prev = i > 0 ? sql.getbyte(i - 1) : 0
++        escape_quote = c == 39 && (prev == 69 || prev == 101)
++      elsif c == 36
++        # Recognize $$ or $identifier$ without copying the remaining SQL.
++        j = i + 1
++        first = sql.getbyte(j)
++        if first == 95 || (!first.nil? && ((first >= 65 && first <= 90) || (first >= 97 && first <= 122)))
++          j += 1
++          while j < size
++            b = sql.getbyte(j)
++            break unless b == 95 || (b >= 65 && b <= 90) || (b >= 97 && b <= 122) || (b >= 48 && b <= 57)
++            j += 1
++          end
+         end
+-      elsif c == "?"
++        if sql.getbyte(j) == 36
++          dollar = sql.byteslice(i, j - i + 1)
++          i = j
++        end
++      elsif c == 63
+         n += 1
+-        out += literals.empty? ? "$" + n.to_s : literals[n - 1].to_s
+-      else
+-        out += c
++        out << sql.byteslice(start, i - start)
++        out << (literals.empty? ? "$" + n.to_s : literals[n - 1].to_s)
++        start = i + 1
+       end
+       i += 1
+     end
++    # The common generated INSERT/UPDATE has no binds left to rewrite.
++    return sql if n == 0
++    out << sql.byteslice(start, size - start)
+     out
+   end
+   def self.interpolate(sql, literals)
+diff --git a/tests/db_pg_placeholders.rb b/tests/db_pg_placeholders.rb
+new file mode 100644
+index 00000000..c2964183
+--- /dev/null
++++ b/tests/db_pg_placeholders.rb
+@@ -0,0 +1,30 @@
++# Evaluated after the actual Db.rewrite_placeholders method has been extracted.
++# No libpq connection is needed to exercise this lexical rewrite.
++cases = [
++  ["SELECT ?", "SELECT $1"],
++  ["SELECT ?, ?", "SELECT $1, $2"],
++  ["SELECT '?' AS x, ?", "SELECT '?' AS x, $1"],
++  ["SELECT 'it''s ?' AS x, ?", "SELECT 'it''s ?' AS x, $1"],
++  [%q{SELECT "a""?b", ?}, %q{SELECT "a""?b", $1}],
++  [%q{SELECT E'it\'s ? \\ ?', ?}, %q{SELECT E'it\'s ? \\ ?', $1}],
++  ["SELECT ? -- ?\n, ?", "SELECT $1 -- ?\n, $2"],
++  ["SELECT /* ? /* ? */ ? */ ?", "SELECT /* ? /* ? */ ? */ $1"],
++  ['SELECT $$?$$, ?', 'SELECT $$?$$, $1'],
++  ['SELECT $tag_9$?$tag_9$, ?', 'SELECT $tag_9$?$tag_9$, $1'],
++  ['SELECT $9$, ?', 'SELECT $9$, $1'],
++  ['SELECT $1, ?', 'SELECT $1, $1'],
++  ["SELECT 'héllo 😀 ?', ? AS 世界", "SELECT 'héllo 😀 ?', $1 AS 世界"],
++  ["SELECT -- 世界 ?\n ?", "SELECT -- 世界 ?\n $1"],
++  ["", ""],
++  ["SELECT '" + "界" * 10000 + "?', ?", "SELECT '" + "界" * 10000 + "?', $1"],
++]
++cases.each_with_index do |pair, i|
++  sql = pair[0]
++  expected = pair[1]
++  got = Db.rewrite_placeholders(sql)
++  raise "case #{i}: mismatch" unless got == expected
++end
++sql = "SELECT ?, '?', ? /* ? */"
++raise "literal interpolation" unless Db.rewrite_placeholders(sql, ["'héllo'", "NULL"]) == "SELECT 'héllo', '?', NULL /* ? */"
++raise "input mutated" unless sql == "SELECT ?, '?', ? /* ? */"
++puts "PASS 18 placeholder checks"
+diff --git a/tests/db_pg_placeholders.rs b/tests/db_pg_placeholders.rs
+new file mode 100644
+index 00000000..cbb302aa
+--- /dev/null
++++ b/tests/db_pg_placeholders.rs
+@@ -0,0 +1,17 @@
++//! Test the actual PostgreSQL SQL rewriter without loading the FFI adapter.
++use std::process::Command;
++
++#[test]
++fn postgres_placeholders_preserve_sql_literals_comments_and_utf8() {
++    let source = include_str!("../runtime/spinel/db_pg.rb");
++    let start = source.find("  def self.rewrite_placeholders(").unwrap();
++    let end = source[start..].find("  def self.interpolate(").unwrap() + start;
++    let script = format!(
++        "module Db\n{}end\n{}",
++        &source[start..end],
++        include_str!("db_pg_placeholders.rb")
++    );
++    let output = Command::new("ruby").arg("-e").arg(script).output().expect("ruby");
++    assert!(output.status.success(), "{}", String::from_utf8_lossy(&output.stderr));
++    assert_eq!(String::from_utf8_lossy(&output.stdout).trim(), "PASS 18 placeholder checks");
++}

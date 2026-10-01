@@ -14,13 +14,29 @@ The [Opus handoff](docs/opus-handoff.md) summarizes the published state and reco
 
 ## Start with the current code
 
-| Stack | Current source for agents to explore | Current owned backend | Current anonymous list† | Framework strengths in this app |
-| --- | --- | ---: | ---: | --- |
-| Ruby · Rails | [Rails reference](results/one-shot-v2-rails-expert/pilot-1/reference-1/source/) | 6,085 tokens · 657 lines | 608–618 req/s | Active Record, jobs, domain services |
-| Elixir · Phoenix | [Phoenix reference](results/one-shot-v2-phoenix-expert/reference-2/source/) | 12,893 tokens · 1,464 lines | 5,139–5,183 req/s | Ecto, PubSub, supervised rooms |
-| TypeScript · AdonisJS | [AdonisJS reference](results/one-shot-v2-typescript-expert/expert-1/reference-1/source/) | 10,546 tokens · 1,168 lines | 3,517–3,545 req/s | Routing, typed services, queue |
+Each language row is the current reviewed reference for its expert one-shot build. All of them implement the same product and pass the same development and production gates.
 
-These reference revisions are **unscored improvements** to the measured builds. Each source tree includes an `AGENTS.md` rule map. † The current-list figures come from a [short, paired reference diagnostic](results/v2-expert-symmetry/reference-runtime/summary.json): two 10-second rounds at 16 users, not the full nine-workload one-shot benchmark. See the [current three-stack results](results/v2-expert-symmetry/README.md) for validation and remaining limits.
+| Language · framework | Reference source | Owned backend | Anonymous list | What carries the app |
+| --- | --- | ---: | ---: | --- |
+| Ruby · Rails | [Rails](results/one-shot-v2-rails-expert/pilot-1/reference-1/source/) | 6,085 tokens · 657 lines | 608–618 req/s ᵃ ᵈ | Active Record, Active Job, domain services |
+| Elixir · Phoenix | [Phoenix](results/one-shot-v2-phoenix-expert/reference-2/source/) | 12,893 tokens · 1,464 lines | 5,139–5,183 req/s ᵃ | Ecto, PubSub, supervised rooms |
+| TypeScript · AdonisJS | [AdonisJS](results/one-shot-v2-typescript-expert/expert-1/reference-1/source/) | 10,546 tokens · 1,168 lines | 3,517–3,545 req/s ᵃ | Routing, typed services, queue |
+| Go · chi + Bun | [Go](results/one-shot-v2-go-expert/pilot-1/reference-1/source/) | 12,846 tokens · 1,623 lines | 1,907–1,984 req/s ᵇ | chi, SQL through Bun, Goose, River |
+| Python · Django | [Python](results/one-shot-v2-python-expert/pilot-1/reference-2/source/) | 9,058 tokens · 1,254 lines | 374–376 req/s ᵇ | Django, Ninja, Channels, Procrastinate |
+| Clojure · Ring + Reitit | [Clojure](results/one-shot-v2-clojure-expert/pilot-1/reference-1/source/) | 9,891 tokens · 771 lines | 4,243–4,303 req/s ᵇ | next.jdbc, Migratus, Proletarian, Integrant |
+| *Ruby · Rails, compiled with Roundhouse + Spinel (experimental)* | [Compile variant](results/ruby-compile/roundhouse-spinel-conduit-pg-20260930/variant/source/) | 7,150 tokens · 787 lines | 3,930 req/s ᶜ | The Rails app above, emitted as Spinel Ruby and compiled to a native binary |
+
+These references are **unscored improvements** to the measured builds; each source tree includes an `AGENTS.md` rule map. Measured originals and eight-step references are linked from each track's results page.
+
+- **Size** is owned backend source relative to each stack's product-free scaffold, in `o200k` tokens and nonblank, noncomment lines. Each stack has its own counting rules, so treat cross-stack differences as approximate.
+- **Throughput** figures come from three different sessions on one shared workstation, with the app and PostgreSQL each limited to 2 CPUs and 1 GiB. Compare rows within the same footnote group.
+  - ᵃ [Short paired reference diagnostic](results/v2-expert-symmetry/reference-runtime/summary.json): two 10-second rounds at 16 users. [Three-stack results](results/v2-expert-symmetry/README.md).
+  - ᵇ Full nine-workload runtime: two 15-second rounds at 16 users. [Go and Python](results/lanes/README.md) · [Clojure](results/lanes/clojure/README.md).
+  - ᶜ Median of four alternating 15-second rounds in a separate session. In that session the Rails reference served 543 req/s with one Puma process and 1,247 with Puma sized to 2 CPUs; the compiled build was 2.0–5.4× sized Rails across all nine workloads.
+  - ᵈ The Rails reference runs a single Puma process, so it uses about one of its two CPUs. Sizing Puma to the budget roughly doubled its throughput in the compiled-Rails session.
+- **The compiled row is an experiment, not a measured build.** It needed 17 local Roundhouse patches, 2 Spinel patches and a compile-friendly variant of the Rails reference (+217/−48 lines; 7,150 tokens excludes a generated `pg_dump` schema). It passes the same production gate and edge-case probe as the Rails reference. [Write-up, limits and reproduction](results/ruby-compile/roundhouse-spinel-conduit-pg-20260930/README.md).
+
+Other tracks used different prompts or earlier benchmark sessions and have their own pages: [Rust · Loco](stacks/loco/) in the original eight-step study, [Haskell · IHP](results/one-shot-ihp/README.md), and a [Haskell · Servant pilot](results/one-shot-v2-servant/README.md).
 
 ### The matched one-shot baseline
 
@@ -35,8 +51,6 @@ One agent per stack received the [same frozen prompt](one-shot-v2-expert/PROMPT.
 ¹ Two same-session production rounds, 16 virtual users, with the app and PostgreSQL each limited to 2 CPUs and 1 GiB. All three independently passed the full development and fresh-production gates. The [results page](results/v2-expert-symmetry/README.md) gives the other workloads, held-out failures, source counts, run records, and raw-measurement provenance. This is one agent run per stack, not a population estimate or a language ranking.
 
 [Explore the comparison](results/v2-expert-symmetry/README.md) · [Read the prompt](one-shot-v2-expert/PROMPT.md) · [Contribute a revision or track](CONTRIBUTING.md)
-
-Other recorded paths include [Loco / Rust in the eight-step study](stacks/loco/), [IHP / Haskell](results/one-shot-ihp/README.md), and a [Servant / Haskell pilot](results/one-shot-v2-servant/README.md). Their briefs and measurement sessions differ, so they have their own result pages.
 
 ## Go and Python: complete tracks
 

@@ -1,0 +1,200 @@
+warning: Error disabling address space randomization: Operation not permitted
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/aarch64-linux-gnu/libthread_db.so.1".
+[New Thread 0xfffb41769860 (LWP 18)]
+[New Thread 0xffff41a69860 (LWP 19)]
+[New Thread 0xffff41959860 (LWP 20)]
+[New Thread 0xfffb40f59860 (LWP 21)]
+[New Thread 0xfffb40969860 (LWP 22)]
+[New Thread 0xfffb40859860 (LWP 23)]
+conduit (spinel) listening on http://0.0.0.0:8080, pid 16
+  one green thread per connection; OS workers: 4 (cgroup cpu.max 200000/100000; factor 2); processes: 1
+  Memory budget: 1073741824 bytes (cgroup memory limit)
+[New Thread 0xfffb3fa29860 (LWP 24)]
+[New Thread 0xfffb3d969860 (LWP 25)]
+
+Thread 8 "server" received signal SIGSEGV, Segmentation fault.
+[Switching to Thread 0xfffb3fa29860 (LWP 24)]
+0x0000aaaac925cd68 in sp_str_length ()
+
+Thread 9 (Thread 0xfffb3d969860 (LWP 25) "server"):
+#0  0x0000ffff8372ef6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x0000ffff83722618 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#2  0x0000ffff8372265c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#3  0x0000ffff8378e164 in epoll_pwait () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#4  0x0000aaaac9291b04 in sp_ev_worker_wait ()
+No symbol table info available.
+#5  0x0000aaaac92919b0 in sp_worker_main ()
+No symbol table info available.
+#6  0x0000ffff83725f38 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#7  0x0000ffff8378dc2c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 8 (Thread 0xfffb3fa29860 (LWP 24) "server"):
+#0  0x0000aaaac925cd68 in sp_str_length ()
+No symbol table info available.
+#1  0x0000aaaac90e5124 in sp_Db_s_encode_array ()
+No symbol table info available.
+#2  0x0000aaaac90e5398 in sp_Db_s_escape_array ()
+No symbol table info available.
+#3  0x0000aaaac91a18e4 in sp_Article__adapter_insert ()
+No symbol table info available.
+#4  0x0000aaaac910a594 in sp_ActiveRecord__Base_save_after_validation ()
+No symbol table info available.
+#5  0x0000aaaac9109d48 in sp_ActiveRecord__Base_save ()
+No symbol table info available.
+#6  0x0000aaaac910c658 in sp_ActiveRecord__Base_save_bang ()
+No symbol table info available.
+#7  0x0000aaaac9189514 in sp_ArticlesController_create ()
+No symbol table info available.
+#8  0x0000aaaac9186748 in sp_ArticlesController_process_action ()
+No symbol table info available.
+#9  0x0000aaaac91ed110 in sp_pd_79 ()
+No symbol table info available.
+#10 0x0000aaaac91eb0f8 in sp_Main_s_dispatch ()
+No symbol table info available.
+#11 0x0000aaaac9159e14 in sp_App_dispatch ()
+No symbol table info available.
+#12 0x0000aaaac915de78 in sp_Threaded_s_handle_one ()
+No symbol table info available.
+#13 0x0000aaaac915d8ec in sp_Threaded_s_handle_connection ()
+No symbol table info available.
+#14 0x0000aaaac9030244 in _fiber_body_2 ()
+No symbol table info available.
+#15 0x0000aaaac9287054 in sp_fiber_trampoline ()
+No symbol table info available.
+#16 0x0000aaaac9286f80 in sp_Fiber_resume ()
+No symbol table info available.
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+
+Thread 7 (Thread 0xfffb40859860 (LWP 23) "server"):
+#0  0x0000ffff8372ef6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x0000ffff83722618 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#2  0x0000ffff8372265c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#3  0x0000ffff8378e164 in epoll_pwait () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#4  0x0000aaaac9291b04 in sp_ev_worker_wait ()
+No symbol table info available.
+#5  0x0000aaaac92919b0 in sp_worker_main ()
+No symbol table info available.
+#6  0x0000ffff83725f38 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#7  0x0000ffff8378dc2c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 6 (Thread 0xfffb40969860 (LWP 22) "sp-sweeper"):
+#0  0x0000ffff8372ef68 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x0000ffff83722618 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#2  0x0000ffff837229b0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#3  0x0000ffff837253ac in pthread_cond_wait () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#4  0x0000aaaac9290c88 in sp_cs_sweeper_main ()
+No symbol table info available.
+#5  0x0000ffff83725f38 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#6  0x0000ffff8378dc2c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 5 (Thread 0xfffb40f59860 (LWP 21) "sp-sweeper"):
+#0  0x0000ffff8372ef68 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x0000ffff83722618 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#2  0x0000ffff837229b0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#3  0x0000ffff837253ac in pthread_cond_wait () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#4  0x0000aaaac9290c88 in sp_cs_sweeper_main ()
+No symbol table info available.
+#5  0x0000ffff83725f38 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#6  0x0000ffff8378dc2c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 4 (Thread 0xffff41959860 (LWP 20) "sp-sweeper"):
+#0  0x0000ffff8372ef68 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x0000ffff83722618 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#2  0x0000ffff837229b0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#3  0x0000ffff837253ac in pthread_cond_wait () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#4  0x0000aaaac9290c88 in sp_cs_sweeper_main ()
+No symbol table info available.
+#5  0x0000ffff83725f38 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#6  0x0000ffff8378dc2c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 3 (Thread 0xffff41a69860 (LWP 19) "server"):
+#0  0x0000ffff8372ef68 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x0000ffff83722618 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#2  0x0000ffff8375e25c in clock_nanosleep () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#3  0x0000ffff83768880 in nanosleep () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#4  0x0000aaaac9290b8c in sp_trim_thread_main ()
+No symbol table info available.
+#5  0x0000ffff83725f38 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#6  0x0000ffff8378dc2c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 2 (Thread 0xfffb41769860 (LWP 18) "server"):
+#0  0x0000ffff8372ef68 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x0000ffff83722618 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#2  0x0000ffff837229b0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#3  0x0000ffff837255b4 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#4  0x0000aaaac928ff18 in sp_sysmon_main ()
+No symbol table info available.
+#5  0x0000ffff83725f38 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#6  0x0000ffff8378dc2c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 1 (Thread 0xffff82798020 (LWP 16) "server"):
+#0  0x0000ffff8372ef6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x0000ffff83722618 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#2  0x0000ffff8372265c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#3  0x0000ffff8378e164 in epoll_pwait () from /lib/aarch64-linux-gnu/libc.so.6
+No symbol table info available.
+#4  0x0000aaaac9291b04 in sp_ev_worker_wait ()
+No symbol table info available.
+#5  0x0000aaaac928c8e0 in sp_sched_pump ()
+No symbol table info available.
+#6  0x0000aaaac928c46c in sp_sched_wait_io_impl ()
+No symbol table info available.
+#7  0x0000aaaac92b0fa8 in sp_io_wait_events ()
+No symbol table info available.
+#8  0x0000aaaac915d4b4 in sp_Threaded_s_run_worker ()
+No symbol table info available.
+#9  0x0000aaaac915d228 in sp_Threaded_run ()
+No symbol table info available.
+#10 0x0000aaaac9202b28 in _sp_main_body ()
+No symbol table info available.
+#11 0x0000aaaac9285974 in sp_main_stack_entry ()
+No symbol table info available.
+#12 0x0000aaaac9285960 in sp_main_stack_run ()
+No symbol table info available.
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)

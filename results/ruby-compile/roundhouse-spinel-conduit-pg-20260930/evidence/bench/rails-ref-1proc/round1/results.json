@@ -1,0 +1,126 @@
+{
+  "image": "agentmvc-v2-expert-rails-reference-1:review",
+  "label": "spinel-spike-rails-ref-1proc-r1",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "15s",
+  "image_mb": 324.0,
+  "cold_start_seconds": 2.24,
+  "seed_seconds": 24.6,
+  "idle_memory_mb": 119.3,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 8523,
+      "rps": 567.3,
+      "p50_ms": 27.29,
+      "p95_ms": 38.19,
+      "p99_ms": 43.29,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.0,
+      "peak_memory_mb": 125.6,
+      "foreign_container_cpu_percent_max": 40.3,
+      "host_load_1m": 5.5
+    },
+    "list_signed_in": {
+      "requests": 6393,
+      "rps": 425.4,
+      "p50_ms": 36.98,
+      "p95_ms": 48.35,
+      "p99_ms": 54.38,
+      "failed_checks": 0,
+      "sql_statements_per_request": 7.0,
+      "peak_memory_mb": 127.4,
+      "foreign_container_cpu_percent_max": 36.4,
+      "host_load_1m": 5.0
+    },
+    "list_by_tag": {
+      "requests": 8165,
+      "rps": 543.6,
+      "p50_ms": 28.6,
+      "p95_ms": 38.16,
+      "p99_ms": 42.63,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.0,
+      "peak_memory_mb": 128.4,
+      "foreign_container_cpu_percent_max": 33.9,
+      "host_load_1m": 5.5
+    },
+    "feed": {
+      "requests": 6272,
+      "rps": 417.0,
+      "p50_ms": 37.64,
+      "p95_ms": 49.51,
+      "p99_ms": 54.06,
+      "failed_checks": 0,
+      "sql_statements_per_request": 7.0,
+      "peak_memory_mb": 128.4,
+      "foreign_container_cpu_percent_max": 37.6,
+      "host_load_1m": 6.0
+    },
+    "article": {
+      "requests": 9968,
+      "rps": 663.6,
+      "p50_ms": 23.34,
+      "p95_ms": 34.74,
+      "p99_ms": 41.27,
+      "failed_checks": 0,
+      "sql_statements_per_request": 5.98,
+      "peak_memory_mb": 128.5,
+      "foreign_container_cpu_percent_max": 73.8,
+      "host_load_1m": 5.9
+    },
+    "comments": {
+      "requests": 12885,
+      "rps": 857.5,
+      "p50_ms": 17.82,
+      "p95_ms": 26.56,
+      "p99_ms": 31.65,
+      "failed_checks": 0,
+      "sql_statements_per_request": 3.0,
+      "peak_memory_mb": 128.4,
+      "foreign_container_cpu_percent_max": 38.7,
+      "host_load_1m": 5.8
+    },
+    "tags": {
+      "requests": 18075,
+      "rps": 1204.3,
+      "p50_ms": 12.8,
+      "p95_ms": 20.89,
+      "p99_ms": 24.51,
+      "failed_checks": 0,
+      "sql_statements_per_request": 1.0,
+      "peak_memory_mb": 129.5,
+      "foreign_container_cpu_percent_max": 51.5,
+      "host_load_1m": 7.5
+    },
+    "favorite_toggle": {
+      "requests": 8432,
+      "rps": 560.4,
+      "p50_ms": 27.25,
+      "p95_ms": 39.71,
+      "p99_ms": 46.85,
+      "failed_checks": 0,
+      "sql_statements_per_request": 8.44,
+      "peak_memory_mb": 129.9,
+      "foreign_container_cpu_percent_max": 53.8,
+      "host_load_1m": 7.5
+    },
+    "create_article": {
+      "requests": 8283,
+      "rps": 551.0,
+      "p50_ms": 27.18,
+      "p95_ms": 41.57,
+      "p99_ms": 52.61,
+      "failed_checks": 0,
+      "sql_statements_per_request": 8.0,
+      "peak_memory_mb": 136.9,
+      "foreign_container_cpu_percent_max": 38.0,
+      "host_load_1m": 7.4
+    }
+  },
+  "app_log_tail": "\"=>\"load body\", \"tagList\"=>[\"tag19\"]}}\n[44079990-17e0-4d08-874d-7b0618de2d61] Completed 201 Created in 8ms (Views: 0.0ms | ActiveRecord: 8.5ms (6 queries, 0 cached) | GC: 0.0ms)\n[b2b206ab-c9bf-4a6c-aaf7-a66cf45dca5d] Completed 201 Created in 4ms (Views: 0.0ms | ActiveRecord: 3.9ms (6 queries, 0 cached) | GC: 0.0ms)\n[c8e00c17-3bf4-46fd-98a5-6cbe7a822135] Started POST \"/api/articles\" for 172.29.55.4 at 2026-09-30 12:51:25 +0000\n[c8e00c17-3bf4-46fd-98a5-6cbe7a822135] Processing by ArticlesController#create as JSON\n[c8e00c17-3bf4-46fd-98a5-6cbe7a822135]   Parameters: {\"article\"=>{\"title\"=>\"Load 11-516-0.6018203090311437\", \"description\"=>\"load\", \"body\"=>\"load body\", \"tagList\"=>[\"tag08\"]}}\n[1226dc75-8187-4dbc-b637-a2fce38f28be] Started POST \"/api/articles\" for 172.29.55.4 at 2026-09-30 12:51:25 +0000\n[1226dc75-8187-4dbc-b637-a2fce38f28be] Processing by ArticlesController#create as JSON\n[1226dc75-8187-4dbc-b637-a2fce38f28be]   Parameters: {\"article\"=>{\"title\"=>\"Load 16-517-0.22489698319086243\", \"description\"=>\"load\", \"body\"=>\"load body\", \"tagList\"=>[\"tag13\"]}}\n[31e59d68-8ab4-42ea-a502-ceedb0b422cb] Completed 201 Created in 5ms (Views: 0.0ms | ActiveRecord: 3.6ms (6 queries, 0 cached) | GC: 0.7ms)\n[c318e859-df9b-4788-ae94-1585e6c71899] Started POST \"/api/articles\" for 172.29.55.4 at 2026-09-30 12:51:25 +0000\n[c318e859-df9b-4788-ae94-1585e6c71899] Processing by ArticlesController#create as JSON\n[c318e859-df9b-4788-ae94-1585e6c71899]   Parameters: {\"article\"=>{\"title\"=>\"Load 1-517-0.2559036702805156\", \"description\"=>\"load\", \"body\"=>\"load body\", \"tagList\"=>[\"tag04\"]}}\n[1226dc75-8187-4dbc-b637-a2fce38f28be] Completed 201 Created in 4ms (Views: 0.0ms | ActiveRecord: 3.8ms (6 queries, 0 cached) | GC: 0.7ms)\n[c318e859-df9b-4788-ae94-1585e6c71899] Completed 201 Created in 3ms (Views: 0.0ms | ActiveRecord: 2.1ms (6 queries, 0 cached) | GC: 0.2ms)\n[c8e00c17-3bf4-46fd-98a5-6cbe7a822135] Completed 201 Created in 6ms (Views: 0.0ms | ActiveRecord: 5.7ms (6 queries, 0 cached) | GC: 0.9ms)"
+}

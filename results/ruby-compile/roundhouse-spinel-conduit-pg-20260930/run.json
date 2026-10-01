@@ -1,0 +1,101 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant",
+  "date": "2026-09-30",
+  "source": {
+    "reference": "results/one-shot-v2-rails-expert/pilot-1/reference-1/source",
+    "variant": "variant/source (compile variant v4)",
+    "ledger": "variant/source/COMPILE-VARIANT.md"
+  },
+  "toolchain": {
+    "roundhouse_base": "25609ca374c75301a5ff0f66cf1c61bffaca485d",
+    "roundhouse_patches": "patches/roundhouse/series (17)",
+    "spinel_base": "813def1fbab00e770a77b1e4e4b244eb41dd44b4",
+    "spinel_patches": [
+      "patches/spinel/spinel-cgroup-workers.patch",
+      "patches/spinel/spinel-poly-dispatch-arg-roots.patch"
+    ],
+    "manifest_sha256": "83918594c52258f616fe65b1214510e1119f6e5a265802c65f53bb7edebc57b2",
+    "toolchain_image": "spinel-spike-lead-toolchain:83918594c522",
+    "toolchain_image_id": "sha256:45a9a5f62758d7b4edb5b78c3411aa29e73b3b9335a3fd1f5ac679778624039a",
+    "flags": "RH_DATABASE_ADAPTER=postgresql; strict emit (no --allow-unsupported); spin build -- --cc=clang"
+  },
+  "images": {
+    "compiled": {
+      "tag": "spinel-spike-lead-conduit:v4-compiled",
+      "id": "sha256:872570a65593472a7e16ae05c64fe3bc9bfdca39152c0174d295222fbf7e5550",
+      "mb": 119
+    },
+    "variant_on_cruby": {
+      "tag": "spinel-spike-lead-conduit:v4-cruby",
+      "id": "sha256:a9f0e930fd0568be39a416cdfa709828e8a03bcc2bb302c361ad254497ad479e"
+    },
+    "rails_reference": {
+      "tag": "agentmvc-v2-expert-rails-reference-1:review",
+      "id": "sha256:00999c21b297988fbe7044f727a7628d2a083fb0211ed3fbf6666b5d5af834a3"
+    }
+  },
+  "gates": {
+    "compiled_production_gate": {
+      "exit": 0,
+      "log": "evidence/gates/compiled-v4-production-gate.log"
+    },
+    "variant_rails_production_gate": {
+      "exit": 0,
+      "log": "evidence/gates/variant-v4-on-rails-production-gate.log"
+    },
+    "variant_rails_dev_checks": {
+      "zeitwerk": 0,
+      "rubocop": 0,
+      "tests": "21 runs, 115 assertions, 0 failures",
+      "dir": "evidence/gates/variant-v4-rails-dev"
+    },
+    "common_http_probe": {
+      "contract": "21/21",
+      "quality": "3/3",
+      "file": "evidence/compiled-v4-common-http-probe.json"
+    }
+  },
+  "benchmark": {
+    "dir": "evidence/bench",
+    "rounds": 4,
+    "configs": 5,
+    "runs": 20,
+    "failed_checks": 0,
+    "bench_sha256": "d9eb2fbceb835f5798f5a193588c61ef2d5b1a36a3af7a393196f23d3b9aa2ab",
+    "load_sha256": "9057777b106e10fada6fc0fbfe85168258643f04a537ea5313277c0e86b37481",
+    "budget": "app and PostgreSQL each --cpus=2 --memory=1g",
+    "vus": 16,
+    "warmup": "3s",
+    "duration": "15s"
+  },
+  "owned_size": {
+    "rules": "tools/measure.py with stacks/rails-expert/stack.json, baseline stacks/rails-expert/scaffold",
+    "reference-1": {
+      "tokens": 12654,
+      "lines": 1283,
+      "code_lines": 1008,
+      "owned_tokens": 6085,
+      "owned_lines": 657,
+      "files_created": 23,
+      "files_changed": 3
+    },
+    "v4_incl_structure_sql": {
+      "tokens": 19680,
+      "lines": 1997,
+      "code_lines": 1414,
+      "owned_tokens": 10423,
+      "owned_lines": 1063,
+      "files_created": 27,
+      "files_changed": 3
+    },
+    "v4_excl_structure_sql": {
+      "tokens": 14169,
+      "lines": 1440,
+      "code_lines": 1138,
+      "owned_tokens": 7150,
+      "owned_lines": 787,
+      "files_created": 26,
+      "files_changed": 3
+    }
+  }
+}

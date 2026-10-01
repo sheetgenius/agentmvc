@@ -1,0 +1,126 @@
+{
+  "image": "spinel-spike-lead-conduit:v4-compiled",
+  "label": "spinel-spike-compiled-v4-k1-r1",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "SPINEL_WORKER_FACTOR=1",
+  "vus": 16,
+  "duration": "15s",
+  "image_mb": 119.0,
+  "cold_start_seconds": 0.4,
+  "seed_seconds": 17.6,
+  "idle_memory_mb": 24.5,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 58612,
+      "rps": 3906.6,
+      "p50_ms": 3.91,
+      "p95_ms": 6.88,
+      "p99_ms": 8.71,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.74,
+      "peak_memory_mb": 27.8,
+      "foreign_container_cpu_percent_max": 77.2,
+      "host_load_1m": 9.3
+    },
+    "list_signed_in": {
+      "requests": 43306,
+      "rps": 2886.3,
+      "p50_ms": 5.32,
+      "p95_ms": 8.87,
+      "p99_ms": 11.22,
+      "failed_checks": 0,
+      "sql_statements_per_request": 7.55,
+      "peak_memory_mb": 27.9,
+      "foreign_container_cpu_percent_max": 68.3,
+      "host_load_1m": 8.8
+    },
+    "list_by_tag": {
+      "requests": 54202,
+      "rps": 3612.2,
+      "p50_ms": 4.12,
+      "p95_ms": 7.61,
+      "p99_ms": 9.55,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.0,
+      "peak_memory_mb": 27.3,
+      "foreign_container_cpu_percent_max": 166.0,
+      "host_load_1m": 9.5
+    },
+    "feed": {
+      "requests": 32862,
+      "rps": 2190.0,
+      "p50_ms": 6.97,
+      "p95_ms": 11.72,
+      "p99_ms": 15.44,
+      "failed_checks": 0,
+      "sql_statements_per_request": 8.97,
+      "peak_memory_mb": 27.4,
+      "foreign_container_cpu_percent_max": 61.7,
+      "host_load_1m": 9.9
+    },
+    "article": {
+      "requests": 76247,
+      "rps": 5082.2,
+      "p50_ms": 2.93,
+      "p95_ms": 5.14,
+      "p99_ms": 6.77,
+      "failed_checks": 0,
+      "sql_statements_per_request": 6.62,
+      "peak_memory_mb": 23.8,
+      "foreign_container_cpu_percent_max": 81.7,
+      "host_load_1m": 9.9
+    },
+    "comments": {
+      "requests": 143801,
+      "rps": 9585.6,
+      "p50_ms": 1.51,
+      "p95_ms": 2.94,
+      "p99_ms": 4.28,
+      "failed_checks": 0,
+      "sql_statements_per_request": 3.26,
+      "peak_memory_mb": 26.4,
+      "foreign_container_cpu_percent_max": 121.0,
+      "host_load_1m": 9.8
+    },
+    "tags": {
+      "requests": 97179,
+      "rps": 6476.0,
+      "p50_ms": 1.06,
+      "p95_ms": 2.13,
+      "p99_ms": 55.84,
+      "failed_checks": 0,
+      "sql_statements_per_request": 1.0,
+      "peak_memory_mb": 25.6,
+      "foreign_container_cpu_percent_max": 79.6,
+      "host_load_1m": 10.2
+    },
+    "favorite_toggle": {
+      "requests": 38724,
+      "rps": 2579.2,
+      "p50_ms": 5.75,
+      "p95_ms": 9.78,
+      "p99_ms": 12.46,
+      "failed_checks": 0,
+      "sql_statements_per_request": 10.23,
+      "peak_memory_mb": 26.5,
+      "foreign_container_cpu_percent_max": 69.7,
+      "host_load_1m": 9.1
+    },
+    "create_article": {
+      "requests": 36997,
+      "rps": 2465.6,
+      "p50_ms": 5.82,
+      "p95_ms": 10.7,
+      "p99_ms": 15.66,
+      "failed_checks": 0,
+      "sql_statements_per_request": 8.89,
+      "peak_memory_mb": 25.0,
+      "foreign_container_cpu_percent_max": 194.3,
+      "host_load_1m": 9.6
+    }
+  },
+  "app_log_tail": "conduit (spinel) listening on http://0.0.0.0:8080, pid 1\n  one green thread per connection; OS workers: 2 (cgroup cpu.max 200000/100000); processes: 1\n  Memory budget: 1073741824 bytes (cgroup memory limit)"
+}

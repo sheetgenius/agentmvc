@@ -1,0 +1,30 @@
+{
+  "image": "spinel-spike-lead-conduit:v2-tagcopy",
+  "label": "spinel-spike-lead-tagcopy2",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "10s",
+  "image_mb": 119.0,
+  "cold_start_seconds": 0.91,
+  "seed_seconds": 32.0,
+  "idle_memory_mb": 19.9,
+  "scenarios": {
+    "create_article": {
+      "requests": 12449,
+      "rps": 1243.5,
+      "p50_ms": 11.57,
+      "p95_ms": 22.18,
+      "p99_ms": 35.85,
+      "failed_checks": 2,
+      "sql_statements_per_request": 8.91,
+      "peak_memory_mb": 27.0,
+      "foreign_container_cpu_percent_max": 968.6,
+      "host_load_1m": 15.1
+    }
+  },
+  "app_log_tail": "conduit (spinel) listening on http://0.0.0.0:8080, pid 1\n  one green thread per connection; OS workers: 4 (cgroup cpu.max 200000/100000; factor 2); processes: 1\n  Memory budget: 1073741824 bytes (cgroup memory limit)"
+}

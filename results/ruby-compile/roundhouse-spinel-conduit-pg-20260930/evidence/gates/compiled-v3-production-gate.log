@@ -1,0 +1,119 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 1.84kB done
+#1 DONE 0.8s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 3.6s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/debian:trixie-slim@sha256:020c0d20b9880058cbe785a9db107156c3c75c2ac944a6aa7ab59f2add76a7bd
+#4 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/spinel-spike-lead-toolchain:ff291854a7b2
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 210B done
+#6 DONE 0.1s
+
+#7 [toolchain 1/2] FROM docker.io/library/spinel-spike-lead-toolchain:ff291854a7b2
+#7 DONE 0.0s
+
+#8 [runtime 1/4] FROM docker.io/library/debian:trixie-slim@sha256:020c0d20b9880058cbe785a9db107156c3c75c2ac944a6aa7ab59f2add76a7bd
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 128.04kB done
+#9 DONE 0.1s
+
+#10 [toolchain 2/2] RUN echo 'ff291854a7b2c8b095d68f9236816b75dc3c1aafe6a05c71c14b61c3e92731fd  /usr/local/share/roundhouse-patches/SHA256SUMS' | sha256sum -c -
+#10 CACHED
+
+#11 [build 4/5] WORKDIR /build
+#11 CACHED
+
+#12 [build 3/5] RUN roundhouse check /src/app && roundhouse --target spinel -o /build /src/app
+#12 CACHED
+
+#13 [build 2/5] COPY . .
+#13 CACHED
+
+#14 [runtime 2/4] RUN apt-get update -qq     && apt-get install --no-install-recommends -y libpq5 libjemalloc2 ca-certificates     && rm -rf /var/lib/apt/lists/*     && groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home --home-dir /app app
+#14 CACHED
+
+#15 [runtime 3/4] WORKDIR /app
+#15 CACHED
+
+#16 [build 1/5] WORKDIR /src/app
+#16 CACHED
+
+#17 [build 5/5] RUN spin build -- --cc=clang --jobs=8     && mkdir -p /runtime/static /runtime/public /runtime/db /runtime/config /runtime/storage     && set -- build/bin/* && test "$#" -eq 1 && test -x "$1"     && install -m755 "$1" /runtime/server && strip /runtime/server     && for dir in static public db config; do if [ -d "$dir" ]; then cp -a "$dir/." "/runtime/$dir/"; fi; done     && test -s /runtime/db/structure.sql && ldd /runtime/server
+#17 CACHED
+
+#18 [runtime 4/4] COPY --from=build --chown=10001:10001 /runtime/ ./
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 writing image sha256:c6722d2bdc266f5e855318e7f65c1312c99357b17c73ecf5bb2c7998f220ad80 done
+#19 naming to docker.io/library/agentmvc-one-shot-ws-v3-99606:latest done
+#19 DONE 0.0s
+Success api/hurl/articles.hurl (17 request(s) in 295 ms)
+Success api/hurl/auth.hurl (20 request(s) in 541 ms)
+Success api/hurl/comments.hurl (13 request(s) in 280 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 266 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 2637 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 459 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 244 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 225 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 254 ms)
+Success api/hurl/feed.hurl (12 request(s) in 478 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 245 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 453 ms)
+Success api/hurl/tags.hurl (4 request(s) in 217 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 445 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 443 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 723 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 482 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (27.2/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          8722 ms (0h:0m:8s:722ms)
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (884ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (738ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (355ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (513ms)
+
+  4 passed (3.1s)
+Success s01_jwt_alg_none.hurl (1 request(s) in 1 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 245 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 1 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 290 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 270 ms)
+Success s06_injection_filters.hurl (4 request(s) in 7 ms)
+Success s07_malformed_json.hurl (1 request(s) in 2 ms)
+Success s08_wrong_types.hurl (8 request(s) in 248 ms)
+Success s09_oversized_body.hurl (2 request(s) in 371 ms)
+Success s10_unknown_route.hurl (1 request(s) in 0 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 493 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 2 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 4338 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (8.3/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          6289 ms (0h:0m:6s:289ms)
+
