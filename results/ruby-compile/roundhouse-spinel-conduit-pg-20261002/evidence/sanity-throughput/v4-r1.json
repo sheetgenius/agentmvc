@@ -1,0 +1,30 @@
+{
+  "image": "spinel-spike-lead-conduit:v4-compiled",
+  "label": "sanity-v4-r1",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "15s",
+  "image_mb": 119.0,
+  "cold_start_seconds": 0.39,
+  "seed_seconds": 17.3,
+  "idle_memory_mb": 14.3,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 62290,
+      "rps": 4148.2,
+      "p50_ms": 3.2,
+      "p95_ms": 7.4,
+      "p99_ms": 19.3,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.74,
+      "peak_memory_mb": 26.3,
+      "foreign_container_cpu_percent_max": 75.5,
+      "host_load_1m": 5.9
+    }
+  },
+  "app_log_tail": "conduit (spinel) listening on http://0.0.0.0:8080, pid 1\n  one green thread per connection; OS workers: 4 (cgroup cpu.max 200000/100000; factor 2); processes: 1\n  Memory budget: 1073741824 bytes (cgroup memory limit)"
+}

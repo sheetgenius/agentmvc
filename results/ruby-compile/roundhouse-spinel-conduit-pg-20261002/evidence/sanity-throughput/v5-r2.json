@@ -1,0 +1,30 @@
+{
+  "image": "v5-conduit:compiled",
+  "label": "sanity-v5-r2",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "extra_env": "",
+  "vus": 16,
+  "duration": "15s",
+  "image_mb": 119.1,
+  "cold_start_seconds": 0.32,
+  "seed_seconds": 17.0,
+  "idle_memory_mb": 16.6,
+  "scenarios": {
+    "list_anonymous": {
+      "requests": 64692,
+      "rps": 4307.3,
+      "p50_ms": 2.99,
+      "p95_ms": 7.05,
+      "p99_ms": 21.1,
+      "failed_checks": 0,
+      "sql_statements_per_request": 4.74,
+      "peak_memory_mb": 33.2,
+      "foreign_container_cpu_percent_max": 94.5,
+      "host_load_1m": 6.8
+    }
+  },
+  "app_log_tail": "conduit (spinel) listening on http://0.0.0.0:8080, pid 1\n  one green thread per connection; OS workers: 4 (SPINEL_WORKERS); processes: 1"
+}

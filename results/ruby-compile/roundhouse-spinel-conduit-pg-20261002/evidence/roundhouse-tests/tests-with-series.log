@@ -1,0 +1,64 @@
+    ide::tests::type_at_reaches_class_body_dsl
+    lower::broadcasts::tests::model_without_broadcasts_lowers_to_empty
+    lower::broadcasts::tests::real_blog_article_broadcasts_to_prepend
+    lower::broadcasts::tests::real_blog_comment_has_broadcasts_to_and_commit_hooks
+    lsp::tests::code_lens_traces_each_action_over_the_protocol
+    lsp::tests::completion_over_the_protocol
+    lsp::tests::hover_reports_inferred_type_over_the_protocol
+    mcp::tests::diagnostics_filters_by_severity_code_and_limit
+    mcp::tests::diagnostics_real_blog_has_no_errors
+    mcp::tests::diagnostics_reports_the_missing_preload_coverage_triple
+    mcp::tests::diagnostics_surfaces_uningested_view_templates
+    mcp::tests::initialize_reports_server_info_and_echoes_version
+    mcp::tests::notification_without_id_gets_no_response
+    mcp::tests::references_lists_ivar_uses
+    mcp::tests::related_files_follows_analyzed_edges_from_a_relative_path
+    mcp::tests::tools_list_advertises_every_tool
+    mcp::tests::trace_targets_lists_routes_and_narrows_by_controller
+    mcp::tests::traceroute_attributes_a_helper_n_plus_one_to_the_action
+    mcp::tests::traceroute_ends_a_redirecting_action_in_a_response_hop
+    mcp::tests::traceroute_misses_politely
+    mcp::tests::traceroute_returns_the_structured_chain_with_coverage
+    mcp::tests::type_at_resolves_a_string_in_class_body_dsl
+    mcp::tests::unknown_gem_surface_is_attributed_not_accused
+    mcp::tests::wont_lower_lowers_datetime_cleanly_and_bad_target_is_an_error
+    project::tests::a_stale_seed_file_is_REPLACED_not_preserved
+    project::tests::seed_sql_is_generated_from_the_apps_own_seeds
+
+test result: FAILED. 853 passed; 40 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.54s
+
+error: test failed, to rerun pass `--lib`
+=== test api_mode
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+=== test assoc_class_method_scope
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+=== test boot_hooks
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+=== test compile_contract_surfaces
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+=== test db_pg_placeholders
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+=== test errors_index_lowering
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+=== test integer_query_predicates
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+=== test rails_surface
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+=== test relation_class_method_scope
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+=== test runtime_src_integration
+test every_runtime_method_body_concretely_typed ... FAILED
+thread 'every_runtime_method_body_concretely_typed' (302239602) panicked at tests/runtime_src_integration.rs:1487:5:
+test result: FAILED. 3 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+error: test failed, to rerun pass `--test runtime_src_integration`
+=== test secure_password_lowering
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+=== test spinel_raw_websocket
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+=== PG lib
+test emit::shared::schema_sql::tests::postgres_types_follow_rails_postgresql_adapter ... ok
+test naming::postgresql_tests::postgresql_identifier_quoting ... ok
+test ingest::structure_sql::tests::postgresql_sql_dump_controls_and_codecs ... ok
+test ingest::schema::tests::postgresql_array_and_jsonb_are_schema_facts ... ok
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 890 filtered out; finished in 0.00s
+done
