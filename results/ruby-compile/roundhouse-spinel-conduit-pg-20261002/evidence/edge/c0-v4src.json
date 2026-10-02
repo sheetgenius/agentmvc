@@ -1,0 +1,2024 @@
+{
+ "image": "v5-probe:c0-v4src",
+ "image_id": "sha256:32ced8e0bb5cb5f7d5182d5b1a84a1667c3cd536472a3381590e25e212330502",
+ "results": [
+  {
+   "name": "register_b",
+   "status": 201,
+   "body": {
+    "user": {
+     "email": "bob@example.com",
+     "token": "<token>",
+     "username": "bob",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "update_bio_string",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u0@example.com",
+     "token": "<token>",
+     "username": "u0",
+     "bio": "hello",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_bio_string",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u0@example.com",
+     "token": "<token>",
+     "username": "u0",
+     "bio": "hello",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_string_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u0@example.com",
+     "token": "<token>",
+     "username": "u0",
+     "bio": "hello",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_string_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_bio_string_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_bio_null",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u1@example.com",
+     "token": "<token>",
+     "username": "u1",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_bio_null",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u1@example.com",
+     "token": "<token>",
+     "username": "u1",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_null_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u1@example.com",
+     "token": "<token>",
+     "username": "u1",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_null_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_bio_null_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_bio_empty",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u2@example.com",
+     "token": "<token>",
+     "username": "u2",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_bio_empty",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u2@example.com",
+     "token": "<token>",
+     "username": "u2",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_empty_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u2@example.com",
+     "token": "<token>",
+     "username": "u2",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_empty_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_bio_empty_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_image_number",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u3@example.com",
+     "token": "<token>",
+     "username": "u3",
+     "bio": null,
+     "image": "123"
+    }
+   }
+  },
+  {
+   "name": "after_image_number",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u3@example.com",
+     "token": "<token>",
+     "username": "u3",
+     "bio": null,
+     "image": "123"
+    }
+   }
+  },
+  {
+   "name": "login_image_number_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u3@example.com",
+     "token": "<token>",
+     "username": "u3",
+     "bio": null,
+     "image": "123"
+    }
+   }
+  },
+  {
+   "name": "login_image_number_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_image_number_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_bio_true",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u4@example.com",
+     "token": "<token>",
+     "username": "u4",
+     "bio": "t",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_bio_true",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u4@example.com",
+     "token": "<token>",
+     "username": "u4",
+     "bio": "t",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_true_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u4@example.com",
+     "token": "<token>",
+     "username": "u4",
+     "bio": "t",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_true_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_bio_true_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_bio_false",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u5@example.com",
+     "token": "<token>",
+     "username": "u5",
+     "bio": "f",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_bio_false",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u5@example.com",
+     "token": "<token>",
+     "username": "u5",
+     "bio": "f",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_false_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u5@example.com",
+     "token": "<token>",
+     "username": "u5",
+     "bio": "f",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_false_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_bio_false_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_bio_float",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u6@example.com",
+     "token": "<token>",
+     "username": "u6",
+     "bio": "1.5",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_bio_float",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u6@example.com",
+     "token": "<token>",
+     "username": "u6",
+     "bio": "1.5",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_float_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u6@example.com",
+     "token": "<token>",
+     "username": "u6",
+     "bio": "1.5",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_float_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_bio_float_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_bio_hash",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u7@example.com",
+     "token": "<token>",
+     "username": "u7",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_bio_hash",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u7@example.com",
+     "token": "<token>",
+     "username": "u7",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_hash_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u7@example.com",
+     "token": "<token>",
+     "username": "u7",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_hash_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_bio_hash_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_bio_array",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u8@example.com",
+     "token": "<token>",
+     "username": "u8",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_bio_array",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u8@example.com",
+     "token": "<token>",
+     "username": "u8",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_array_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u8@example.com",
+     "token": "<token>",
+     "username": "u8",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_bio_array_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_bio_array_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_empty_user",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u9@example.com",
+     "token": "<token>",
+     "username": "u9",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_empty_user",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u9@example.com",
+     "token": "<token>",
+     "username": "u9",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_empty_user_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u9@example.com",
+     "token": "<token>",
+     "username": "u9",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_empty_user_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_empty_user_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_unwrapped_bio",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u10@example.com",
+     "token": "<token>",
+     "username": "u10",
+     "bio": "unwrapped",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_unwrapped_bio",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u10@example.com",
+     "token": "<token>",
+     "username": "u10",
+     "bio": "unwrapped",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_unwrapped_bio_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u10@example.com",
+     "token": "<token>",
+     "username": "u10",
+     "bio": "unwrapped",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_unwrapped_bio_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_unwrapped_bio_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_unknown_key",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u11@example.com",
+     "token": "<token>",
+     "username": "u11",
+     "bio": "k",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_unknown_key",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u11@example.com",
+     "token": "<token>",
+     "username": "u11",
+     "bio": "k",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_unknown_key_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u11@example.com",
+     "token": "<token>",
+     "username": "u11",
+     "bio": "k",
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_unknown_key_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_unknown_key_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_username_null",
+   "status": 422,
+   "body": {
+    "errors": {
+     "username": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "after_username_null",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u12@example.com",
+     "token": "<token>",
+     "username": "u12",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_username_null_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u12@example.com",
+     "token": "<token>",
+     "username": "u12",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_username_null_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_username_null_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_username_empty",
+   "status": 422,
+   "body": {
+    "errors": {
+     "username": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "after_username_empty",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u13@example.com",
+     "token": "<token>",
+     "username": "u13",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_username_empty_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u13@example.com",
+     "token": "<token>",
+     "username": "u13",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_username_empty_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_username_empty_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_email_spaces",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "   ",
+     "token": "<token>",
+     "username": "u14",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_email_spaces",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "   ",
+     "token": "<token>",
+     "username": "u14",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_email_spaces_password123",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_spaces_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_spaces_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_username_taken",
+   "status": 422,
+   "body": {
+    "errors": {
+     "username": [
+      "has already been taken"
+     ]
+    }
+   }
+  },
+  {
+   "name": "after_username_taken",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u15@example.com",
+     "token": "<token>",
+     "username": "u15",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_username_taken_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u15@example.com",
+     "token": "<token>",
+     "username": "u15",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_username_taken_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_username_taken_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_email_taken",
+   "status": 422,
+   "body": {
+    "errors": {
+     "email": [
+      "has already been taken"
+     ]
+    }
+   }
+  },
+  {
+   "name": "after_email_taken",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u16@example.com",
+     "token": "<token>",
+     "username": "u16",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_email_taken_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u16@example.com",
+     "token": "<token>",
+     "username": "u16",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_email_taken_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_taken_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_password_short",
+   "status": 422,
+   "body": {
+    "errors": {
+     "password": [
+      "is too short (minimum is 8 characters)"
+     ]
+    }
+   }
+  },
+  {
+   "name": "after_password_short",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u17@example.com",
+     "token": "<token>",
+     "username": "u17",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_password_short_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u17@example.com",
+     "token": "<token>",
+     "username": "u17",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_password_short_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_password_short_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_password_empty",
+   "status": 422,
+   "body": {
+    "errors": {
+     "password": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "after_password_empty",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u18@example.com",
+     "token": "<token>",
+     "username": "u18",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_password_empty_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u18@example.com",
+     "token": "<token>",
+     "username": "u18",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_password_empty_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_password_empty_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_password_null",
+   "status": 422,
+   "body": {
+    "errors": {
+     "password": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "after_password_null",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u19@example.com",
+     "token": "<token>",
+     "username": "u19",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_password_null_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u19@example.com",
+     "token": "<token>",
+     "username": "u19",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_password_null_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_password_null_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_password_number",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u20@example.com",
+     "token": "<token>",
+     "username": "u20",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_password_number",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u20@example.com",
+     "token": "<token>",
+     "username": "u20",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_password_number_password123",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_password_number_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_password_number_123456789",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u20@example.com",
+     "token": "<token>",
+     "username": "u20",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "update_multi",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u21@example.com",
+     "token": "<token>",
+     "username": "multi2",
+     "bio": "b",
+     "image": "http://i/x.png"
+    }
+   }
+  },
+  {
+   "name": "after_multi",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u21@example.com",
+     "token": "<token>",
+     "username": "multi2",
+     "bio": "b",
+     "image": "http://i/x.png"
+    }
+   }
+  },
+  {
+   "name": "login_multi_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u21@example.com",
+     "token": "<token>",
+     "username": "multi2",
+     "bio": "b",
+     "image": "http://i/x.png"
+    }
+   }
+  },
+  {
+   "name": "login_multi_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_multi_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_password_change",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u22@example.com",
+     "token": "<token>",
+     "username": "u22",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "after_password_change",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u22@example.com",
+     "token": "<token>",
+     "username": "u22",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_password_change_password123",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_password_change_newpassword1",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u22@example.com",
+     "token": "<token>",
+     "username": "u22",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_password_change_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_user_not_object",
+   "status": 422,
+   "body": {
+    "errors": {
+     "user": [
+      "is invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "after_user_not_object",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u23@example.com",
+     "token": "<token>",
+     "username": "u23",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_user_not_object_password123",
+   "status": 200,
+   "body": {
+    "user": {
+     "email": "u23@example.com",
+     "token": "<token>",
+     "username": "u23",
+     "bio": null,
+     "image": null
+    }
+   }
+  },
+  {
+   "name": "login_user_not_object_newpassword1",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_user_not_object_123456789",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "update_malformed",
+   "status": 400,
+   "body": {
+    "errors": {
+     "body": [
+      "is invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_empty",
+   "status": 422,
+   "body": {
+    "errors": {
+     "email": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_spaces",
+   "status": 422,
+   "body": {
+    "errors": {
+     "email": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_null",
+   "status": 422,
+   "body": {
+    "errors": {
+     "email": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_false",
+   "status": 422,
+   "body": {
+    "errors": {
+     "email": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_true",
+   "status": 422,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_zero",
+   "status": 422,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_array",
+   "status": 422,
+   "body": {
+    "errors": {
+     "email": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_hash",
+   "status": 422,
+   "body": {
+    "errors": {
+     "email": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_tab_newline",
+   "status": 422,
+   "body": {
+    "errors": {
+     "email": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_email_missing",
+   "status": 422,
+   "body": {
+    "errors": {
+     "email": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_password_empty",
+   "status": 422,
+   "body": {
+    "errors": {
+     "password": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_password_array1",
+   "status": 422,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "login_both_blank",
+   "status": 422,
+   "body": {
+    "errors": {
+     "email": [
+      "can't be blank"
+     ]
+    }
+   }
+  },
+  {
+   "name": "create_no_tags",
+   "status": 201,
+   "body": {
+    "article": {
+     "slug": "<slug>",
+     "title": "T0",
+     "description": "D",
+     "tagList": [],
+     "createdAt": "<ts>",
+     "updatedAt": "<ts>",
+     "favorited": false,
+     "favoritesCount": 0,
+     "author": {
+      "username": "alice",
+      "bio": null,
+      "image": null,
+      "following": false
+     },
+     "status": "published",
+     "publishedAt": "<ts>",
+     "revision": 1,
+     "body": "B"
+    }
+   }
+  },
+  {
+   "name": "create_tags_dup",
+   "status": 201,
+   "body": {
+    "article": {
+     "slug": "<slug>",
+     "title": "T1",
+     "description": "D",
+     "tagList": [
+      "a",
+      "b"
+     ],
+     "createdAt": "<ts>",
+     "updatedAt": "<ts>",
+     "favorited": false,
+     "favoritesCount": 0,
+     "author": {
+      "username": "alice",
+      "bio": null,
+      "image": null,
+      "following": false
+     },
+     "status": "published",
+     "publishedAt": "<ts>",
+     "revision": 1,
+     "body": "B"
+    }
+   }
+  },
+  {
+   "name": "create_tags_empty",
+   "status": 201,
+   "body": {
+    "article": {
+     "slug": "<slug>",
+     "title": "T2",
+     "description": "D",
+     "tagList": [],
+     "createdAt": "<ts>",
+     "updatedAt": "<ts>",
+     "favorited": false,
+     "favoritesCount": 0,
+     "author": {
+      "username": "alice",
+      "bio": null,
+      "image": null,
+      "following": false
+     },
+     "status": "published",
+     "publishedAt": "<ts>",
+     "revision": 1,
+     "body": "B"
+    }
+   }
+  },
+  {
+   "name": "create_tags_null",
+   "status": 422,
+   "body": {
+    "errors": {
+     "tagList": [
+      "is invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "create_tags_string",
+   "status": 422,
+   "body": {
+    "errors": {
+     "tagList": [
+      "is invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "create_tags_int",
+   "status": 422,
+   "body": {
+    "errors": {
+     "tagList": [
+      "is invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "create_draft_no_tags",
+   "status": 201,
+   "body": {
+    "article": {
+     "slug": "<slug>",
+     "title": "T6",
+     "description": "D",
+     "tagList": [],
+     "createdAt": "<ts>",
+     "updatedAt": "<ts>",
+     "favorited": false,
+     "favoritesCount": 0,
+     "author": {
+      "username": "alice",
+      "bio": null,
+      "image": null,
+      "following": false
+     },
+     "status": "draft",
+     "publishedAt": null,
+     "revision": 1,
+     "body": "B"
+    }
+   }
+  },
+  {
+   "name": "create_status_bad",
+   "status": 422,
+   "body": {
+    "errors": {
+     "status": [
+      "is invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_01",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_02",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_03",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_04",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_05",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_06",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_07",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_08",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_09",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_10",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_11",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_12",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_13",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_14",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_15",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_16",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_17",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_18",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_19",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_20",
+   "status": 401,
+   "body": {
+    "errors": {
+     "credentials": [
+      "invalid"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_21",
+   "status": 429,
+   "body": {
+    "errors": {
+     "credentials": [
+      "rate limited"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_22",
+   "status": 429,
+   "body": {
+    "errors": {
+     "credentials": [
+      "rate limited"
+     ]
+    }
+   }
+  },
+  {
+   "name": "throttle_23",
+   "status": 429,
+   "body": {
+    "errors": {
+     "credentials": [
+      "rate limited"
+     ]
+    }
+   }
+  }
+ ],
+ "app_log_tail": "conduit (spinel) listening on http://0.0.0.0:8080, pid 1\n  one green thread per connection; OS workers: 4 (SPINEL_WORKERS); processes: 1"
+}

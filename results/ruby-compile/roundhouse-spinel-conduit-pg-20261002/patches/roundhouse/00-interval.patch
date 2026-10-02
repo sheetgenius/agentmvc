@@ -1,0 +1,29 @@
+diff --git a/src/ingest/schema.rs b/src/ingest/schema.rs
+index cbdaea67..9ac5bc96 100644
+--- a/src/ingest/schema.rs
++++ b/src/ingest/schema.rs
+@@ -982,7 +982,7 @@ fn column_with_type(
+         "bigint" => ColumnType::BigInt,
+         "float" => ColumnType::Float,
+         "decimal" | "numeric" => ColumnType::Decimal { precision: None, scale: None },
+-        "string" | "inet" | "cidr" | "macaddr" | "enum" => ColumnType::String { limit: opts.limit },
++        "string" | "inet" | "cidr" | "macaddr" | "enum" | "interval" => ColumnType::String { limit: opts.limit },
+         "text" | "citext" => ColumnType::Text,
+         "boolean" => ColumnType::Boolean,
+         "date" => ColumnType::Date,
+@@ -1063,6 +1063,15 @@ fn index_from_call(call: &ruby_prism::CallNode<'_>, table_name: &str) -> Option<
+ mod tests {
+     use super::*;
+ 
++    #[test]
++    fn interval_column_matches_structure_sql_storage_mapping() {
++        let source = b"ActiveRecord::Schema.define do\n  create_table :good_job_executions do |table|\n    table.interval :duration\n  end\nend\n";
++        let schema = ingest_schema(source, "db/schema.rb").unwrap();
++        let table = schema.tables.get(&Symbol::from("good_job_executions")).unwrap();
++        let duration = table.columns.iter().find(|column| column.name.as_str() == "duration").unwrap();
++        assert!(matches!(duration.col_type, ColumnType::String { limit: None }));
++    }
++
+     fn fold(files: &[&str]) -> Schema {
+         let mut schema = Schema::default();
+         for (i, src) in files.iter().enumerate() {

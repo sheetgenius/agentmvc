@@ -1,0 +1,452 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.98kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 0.3s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/v5-toolchain:5ae600946b7e
+#4 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/debian:trixie-slim@sha256:020c0d20b9880058cbe785a9db107156c3c75c2ac944a6aa7ab59f2add76a7bd
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context:
+#6 transferring context: 210B done
+#6 DONE 0.0s
+
+#7 [toolchain 1/2] FROM docker.io/library/v5-toolchain:5ae600946b7e
+#7 DONE 0.0s
+
+#8 [runtime 1/4] FROM docker.io/library/debian:trixie-slim@sha256:020c0d20b9880058cbe785a9db107156c3c75c2ac944a6aa7ab59f2add76a7bd
+#8 DONE 0.0s
+
+#9 [toolchain 2/2] RUN echo '5ae600946b7e0149ac2c8c8c38ab123a1b9112e8c78aea8fdb688220e1e438a5  /usr/local/share/roundhouse-patches/SHA256SUMS' | sha256sum -c -
+#9 CACHED
+
+#10 [build 1/5] WORKDIR /src/app
+#10 CACHED
+
+#11 [internal] load build context
+#11 transferring context: 131.51kB 0.0s done
+#11 DONE 0.1s
+
+#12 [build 2/5] COPY . .
+#12 DONE 0.1s
+
+#13 [build 3/5] RUN roundhouse check /src/app && roundhouse --target spinel -o /build /src/app
+#13 0.230 /src/app/app/controllers/application_controller.rb:23:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.230 /src/app/app/controllers/application_controller.rb:30:14: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.230 /src/app/app/controllers/application_controller.rb:33:15: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.230 /src/app/app/controllers/application_controller.rb:33:65: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.230 /src/app/app/controllers/application_controller.rb:34:38: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.230 /src/app/app/controllers/application_controller.rb:34:38: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.230 /src/app/app/controllers/application_controller.rb:58:15: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.230 /src/app/app/controllers/application_controller.rb:59:13: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.230 /src/app/app/controllers/application_controller.rb:60:65: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.230 /src/app/app/controllers/application_controller.rb:70:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.230 /src/app/app/controllers/application_controller.rb:76:11: warning[unresolved_type]: local read `name` has unresolved type
+#13 0.230 /src/app/app/controllers/application_controller.rb:79:8: warning[unresolved_type]: local read `wrap` has unresolved type
+#13 0.230 /src/app/app/controllers/application_controller.rb:82:28: warning[unresolved_type]: local read `name` has unresolved type
+#13 0.230 /src/app/app/controllers/application_controller.rb:90:5: warning[unresolved_type]: local read `names` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:91:13: warning[unresolved_type]: local read `name` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:92:19: warning[unresolved_type]: local read `input` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:93:15: warning[unresolved_type]: local read `input` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:94:15: warning[unresolved_type]: local read `value` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:94:36: warning[unresolved_type]: local read `value` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:95:11: warning[unresolved_type]: local read `name` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:95:31: warning[unresolved_type]: local read `value` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:101:21: warning[unresolved_type]: local read `value` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:106:5: warning[unresolved_type]: local read `value` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:106:19: warning[unresolved_type]: local read `value` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:106:38: warning[unresolved_type]: local read `value` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:106:61: warning[unresolved_type]: local read `value` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:107:8: warning[unresolved_type]: local read `value` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:107:30: warning[unresolved_type]: local read `value` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:107:48: warning[unresolved_type]: local read `value` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:107:69: warning[unresolved_type]: local read `value` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:111:37: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:131:7: warning[unresolved_type]: local read `following_ids` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:131:23: warning[unresolved_type]: local read `following_ids` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:131:46: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:131:46: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:131:116: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:131:116: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:135:17: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:135:17: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:135:37: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:135:37: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:135:54: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:135:54: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:140:14: warning[gradual_untyped]: expression resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:140:14: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:140:14: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:140:53: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:140:53: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:140:70: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:140:70: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:141:35: warning[unresolved_type]: local read `favorite_ids` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:141:50: warning[unresolved_type]: local read `favorite_ids` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:141:72: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:141:72: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:141:142: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:141:142: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:142:13: warning[unresolved_type]: local read `favorite_counts` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:142:31: warning[unresolved_type]: local read `favorite_counts` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:142:53: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:142:53: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:142:97: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:142:97: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:143:20: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:143:20: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:143:41: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:143:41: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:143:69: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:143:69: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:144:16: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:144:16: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:144:45: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:144:45: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:144:87: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:144:87: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:145:75: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:145:83: warning[unresolved_type]: local read `following_ids` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:146:15: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:146:15: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:146:44: warning[gradual_untyped]: expression resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:146:44: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:146:44: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:146:88: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:146:88: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:147:39: warning[unresolved_type]: local read `list` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:147:19: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:147:19: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:152:13: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:152:21: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:153:14: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:153:22: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:154:13: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:155:14: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:156:13: warning[unresolved_type]: local read `relation` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:157:16: warning[unresolved_type]: local read `relation` has unresolved type
+#13 0.233 /src/app/app/controllers/application_controller.rb:157:67: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:157:81: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:158:25: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:158:25: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:159:32: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:159:32: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:163:49: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/application_controller.rb:163:174: warning[unresolved_type]: local read `count` has unresolved type
+#13 0.233 /src/app/app/controllers/articles_controller.rb:4:79: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:4:63: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:5:86: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:5:65: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:6:127: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:6:82: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:7:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:13:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:18:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:22:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:28:14: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:29:87: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:31:12: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:31:36: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:32:98: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:34:38: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:34:77: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:35:17: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:35:51: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:37:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:43:50: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:43:106: warning[unresolved_type]: local read `a` has unresolved type
+#13 0.233 /src/app/app/controllers/articles_controller.rb:44:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:51:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/articles_controller.rb:57:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:5:85: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:5:31: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:5:32: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:5:40: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:6:91: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:6:32: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:6:33: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:6:41: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:9:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:15:81: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:16:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:22:44: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:25:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/comments_controller.rb:31:64: warning[unresolved_type]: local read `followed` has unresolved type
+#13 0.233 /src/app/app/controllers/exports_controller.rb:6:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/exports_controller.rb:11:40: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/exports_controller.rb:13:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/favorites_controller.rb:6:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/favorites_controller.rb:12:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/health_controller.rb:3:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/profiles_controller.rb:3:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/profiles_controller.rb:9:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/profiles_controller.rb:15:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/profiles_controller.rb:19:28: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:6:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:10:11: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:16:23: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:17:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:21:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:27:59: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:27:95: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:27:127: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:28:56: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:28:99: warning[unresolved_type]: local read `a` has unresolved type
+#13 0.233 /src/app/app/controllers/shares_controller.rb:28:135: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:29:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:32:21: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:32:34: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:36:45: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/shares_controller.rb:37:74: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/tags_controller.rb:5:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:5:5: warning[gradual_untyped]: expression resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:6:7: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:7:5: warning[gradual_untyped]: expression resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:8:7: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:10:7: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:17:71: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:19:13: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:20:16: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:21:60: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:21:83: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:22:43: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:22:43: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:23:5: warning[gradual_untyped]: expression resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:23:27: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:24:7: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:26:27: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:26:34: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:33:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:41:19: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:42:15: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:43:15: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:43:36: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:44:27: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:54:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:60:52: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/controllers/users_controller.rb:60:77: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/models/article.rb:10:80: warning[unresolved_type]: local read `user` has unresolved type
+#13 0.233 /src/app/app/models/article.rb:13:8: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/models/article.rb:13:8: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#13 0.233 /src/app/app/models/user.rb:19:72: warning[unresolved_type]: method call `password` has unresolved type
+#13 0.233 /src/app/app/models/user.rb:19:93: warning[unresolved_type]: method call `password` has unresolved type
+#13 0.233 /src/app/app/models/user.rb:23:70: warning[unresolved_type]: method call `password` has unresolved type
+#13 0.233 /src/app/app/models/user.rb:28:5: warning[gradual_untyped]: expression resolves to RBS `untyped` (gradual escape)
+#13 0.233 
+#13 0.233 roundhouse-check: 10 gems: 1 framework, 1 modeled, 5 infrastructure, 3 unknown (faye-websocket, good_job, jwt)
+#13 0.233 roundhouse-check: /src/app — 0 parse error(s), 0 error(s), 201 warning(s), 0 gap-attributed note(s), 0 survey gap(s)
+#13 0.500 roundhouse: treeshake (spinel): dropped 41 runtime defs + 157 synthesized model defs (text-level, whole-tree name scan)
+#13 0.500 roundhouse: 239 analyze warning(s) not shown — rerun with --allow-unsupported to list them
+#13 0.514 roundhouse: wrote 323 files to /build (spinel)
+#13 DONE 0.6s
+
+#14 [build 4/5] WORKDIR /build
+#14 DONE 0.1s
+
+#15 [build 5/5] RUN spin build -- --cc=clang --jobs=8     && mkdir -p /runtime/static /runtime/public /runtime/db /runtime/config /runtime/storage     && set -- build/bin/* && test "$#" -eq 1 && test -x "$1"     && install -m755 "$1" /runtime/server && strip /runtime/server     && for dir in static public db config; do if [ -d "$dir" ]; then cp -a "$dir/." "/runtime/$dir/"; fi; done     && test -s /runtime/db/structure.sql && ldd /runtime/server
+#15 2.718 build blog
+#15 3.461 cc bcrypt/crypt_blowfish.c
+#15 4.123 cc bcrypt/crypt_blowfish.c (threaded)
+#15 4.238 cc bcrypt/sp_bcrypt.c
+#15 4.539 cc bcrypt/sp_bcrypt.c (threaded)
+#15 39.61 warning: --rbs: Attached @variations: Array[Variation] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#15 39.61 warning: --rbs: ActiveRecord__Base @validation_entries: Array[ActiveModel__Error] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#15 39.61 warning: --rbs: UserAgent @tokens: Array[UserAgentToken] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#15 39.61 warning: --rbs: ApplicationRecord @validation_entries: Array[ActiveModel__Error] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#15 39.61 warning: --rbs: Article @validation_entries: Array[ActiveModel__Error] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#15 39.61 warning: --rbs: ArticleExport @validation_entries: Array[ActiveModel__Error] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#15 39.61 warning: --rbs: ArticleShare @validation_entries: Array[ActiveModel__Error] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#15 39.61 warning: --rbs: Comment @validation_entries: Array[ActiveModel__Error] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#15 39.61 warning: --rbs: Favorite @validation_entries: Array[ActiveModel__Error] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#15 39.61 warning: --rbs: Follow @validation_entries: Array[ActiveModel__Error] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#15 39.61 warning: --rbs: User @validation_entries: Array[ActiveModel__Error] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#15 39.61 /build/bin/blog.rb -> /build/build/bin/blog
+#15 39.63 	linux-vdso.so.1 (0x0000ffffb681b000)
+#15 39.63 	libm.so.6 => /lib/aarch64-linux-gnu/libm.so.6 (0x0000ffffb6200000)
+#15 39.63 	libjemalloc.so.2 => /lib/aarch64-linux-gnu/libjemalloc.so.2 (0x0000ffffb60d0000)
+#15 39.63 	libpq.so.5 => /lib/aarch64-linux-gnu/libpq.so.5 (0x0000ffffb6050000)
+#15 39.63 	libc.so.6 => /lib/aarch64-linux-gnu/libc.so.6 (0x0000ffffb5e90000)
+#15 39.63 	/lib/ld-linux-aarch64.so.1 (0x0000ffffb67d0000)
+#15 39.63 	libstdc++.so.6 => /lib/aarch64-linux-gnu/libstdc++.so.6 (0x0000ffffb5c20000)
+#15 39.63 	libgcc_s.so.1 => /lib/aarch64-linux-gnu/libgcc_s.so.1 (0x0000ffffb5be0000)
+#15 39.63 	libssl.so.3 => /lib/aarch64-linux-gnu/libssl.so.3 (0x0000ffffb5ab0000)
+#15 39.63 	libcrypto.so.3 => /lib/aarch64-linux-gnu/libcrypto.so.3 (0x0000ffffb5490000)
+#15 39.63 	libgssapi_krb5.so.2 => /lib/aarch64-linux-gnu/libgssapi_krb5.so.2 (0x0000ffffb5420000)
+#15 39.63 	libldap.so.2 => /lib/aarch64-linux-gnu/libldap.so.2 (0x0000ffffb53a0000)
+#15 39.63 	libz.so.1 => /lib/aarch64-linux-gnu/libz.so.1 (0x0000ffffb5360000)
+#15 39.63 	libzstd.so.1 => /lib/aarch64-linux-gnu/libzstd.so.1 (0x0000ffffb5290000)
+#15 39.63 	libkrb5.so.3 => /lib/aarch64-linux-gnu/libkrb5.so.3 (0x0000ffffb51a0000)
+#15 39.63 	libk5crypto.so.3 => /lib/aarch64-linux-gnu/libk5crypto.so.3 (0x0000ffffb5150000)
+#15 39.63 	libcom_err.so.2 => /lib/aarch64-linux-gnu/libcom_err.so.2 (0x0000ffffb5120000)
+#15 39.63 	libkrb5support.so.0 => /lib/aarch64-linux-gnu/libkrb5support.so.0 (0x0000ffffb50f0000)
+#15 39.63 	liblber.so.2 => /lib/aarch64-linux-gnu/liblber.so.2 (0x0000ffffb50c0000)
+#15 39.63 	libsasl2.so.2 => /lib/aarch64-linux-gnu/libsasl2.so.2 (0x0000ffffb5080000)
+#15 39.63 	libkeyutils.so.1 => /lib/aarch64-linux-gnu/libkeyutils.so.1 (0x0000ffffb5050000)
+#15 39.63 	libresolv.so.2 => /lib/aarch64-linux-gnu/libresolv.so.2 (0x0000ffffb5020000)
+#15 DONE 39.7s
+
+#16 [runtime 2/4] RUN apt-get update -qq     && apt-get install --no-install-recommends -y libpq5 libjemalloc2 ca-certificates     && rm -rf /var/lib/apt/lists/*     && groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home --home-dir /app app
+#16 CACHED
+
+#17 [runtime 3/4] WORKDIR /app
+#17 CACHED
+
+#18 [runtime 4/4] COPY --from=build --chown=10001:10001 /runtime/ ./
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 writing image sha256:da92904219b3dec5af9dd19971b786e0c774f989869135bb7b38763248facc1e done
+#19 naming to docker.io/library/agentmvc-one-shot-v5-gate-ap7-loaded-58931:latest done
+#19 DONE 0.0s
+error: Assert status code
+   --> api/hurl/articles.hurl:25:6
+    |
+    | POST {{host}}/api/articles
+    | ...
+ 25 | HTTP 201
+    |      ^^^ actual value is <500>
+    |
+
+Failure api/hurl/articles.hurl (2 request(s) in 203 ms)
+Success api/hurl/auth.hurl (20 request(s) in 380 ms)
+error: Assert status code
+   --> api/hurl/comments.hurl:24:6
+    |
+    | POST {{host}}/api/articles
+    | ...
+ 24 | HTTP 201
+    |      ^^^ actual value is <500>
+    |
+
+Failure api/hurl/comments.hurl (2 request(s) in 187 ms)
+error: Assert status code
+   --> api/hurl/errors_articles.hurl:120:6
+    |
+    | POST {{host}}/api/articles
+    | ...
+120 | HTTP 201
+    |      ^^^ actual value is <500>
+    |
+
+Failure api/hurl/errors_articles.hurl (12 request(s) in 181 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 1939 ms)
+error: Assert status code
+  --> api/hurl/errors_authorization.hurl:37:6
+   |
+   | POST {{host}}/api/articles
+   | ...
+37 | HTTP 201
+   |      ^^^ actual value is <500>
+   |
+
+Failure api/hurl/errors_authorization.hurl (3 request(s) in 368 ms)
+error: Assert status code
+  --> api/hurl/errors_comments.hurl:40:6
+   |
+   | POST {{host}}/api/articles
+   | ...
+40 | HTTP 201
+   |      ^^^ actual value is <500>
+   |
+
+Failure api/hurl/errors_comments.hurl (4 request(s) in 183 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 177 ms)
+error: Assert status code
+   --> api/hurl/favorites.hurl:24:6
+    |
+    | POST {{host}}/api/articles
+    | ...
+ 24 | HTTP 201
+    |      ^^^ actual value is <500>
+    |
+
+Failure api/hurl/favorites.hurl (2 request(s) in 178 ms)
+error: Assert status code
+   --> api/hurl/feed.hurl:52:6
+    |
+    | POST {{host}}/api/articles
+    | ...
+ 52 | HTTP 201
+    |      ^^^ actual value is <500>
+    |
+
+Failure api/hurl/feed.hurl (5 request(s) in 364 ms)
+error: Assert status code
+  --> api/hurl/pagination.hurl:24:6
+   |
+   | POST {{host}}/api/articles
+   | ...
+24 | HTTP 201
+   |      ^^^ actual value is <500>
+   |
+
+Failure api/hurl/pagination.hurl (2 request(s) in 182 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 356 ms)
+error: Assert status code
+  --> api/hurl/tags.hurl:25:6
+   |
+   | POST {{host}}/api/articles
+   | ...
+25 | HTTP 201
+   |      ^^^ actual value is <500>
+   |
+
+Failure api/hurl/tags.hurl (2 request(s) in 179 ms)
+error: Assert status code
+   --> features/drafts/hurl/drafts.hurl:44:6
+    |
+    | POST {{host}}/api/articles
+    | ...
+ 44 | HTTP 201
+    |      ^^^ actual value is <500>
+    |
+
+Failure features/drafts/hurl/drafts.hurl (4 request(s) in 361 ms)
+error: Assert status code
+   --> features/drafts/hurl/errors_drafts.hurl:38:6
+    |
+    | POST {{host}}/api/articles
+    | ...
+ 38 | HTTP 201
+    |      ^^^ actual value is <500>
+    |
+
+Failure features/drafts/hurl/errors_drafts.hurl (3 request(s) in 371 ms)
+error: Assert status code
+   --> features/exports/hurl/exports.hurl:38:6
+    |
+    | POST {{host}}/api/articles
+    | ...
+ 38 | HTTP 201
+    |      ^^^ actual value is <500>
+    |
+
+Failure features/exports/hurl/exports.hurl (3 request(s) in 353 ms)
+error: Assert status code
+   --> features/live-editing/hurl/live-editing.hurl:17:6
+    |
+    | POST {{host}}/api/articles
+    | ...
+ 17 | HTTP 201
+    |      ^^^ actual value is <500>
+    |
+
+Failure features/live-editing/hurl/live-editing.hurl (3 request(s) in 361 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 100 (15.8/s)
+Succeeded files:   4 (23.5%)
+Failed files:      13 (76.5%)
+Duration:          6348 ms (0h:0m:6s:348ms)
+

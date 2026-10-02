@@ -1,0 +1,963 @@
+diff --git a/runtime/ruby/action_controller/base.rb b/runtime/ruby/action_controller/base.rb
+index 16f85283..a2f876e0 100644
+--- a/runtime/ruby/action_controller/base.rb
++++ b/runtime/ruby/action_controller/base.rb
+@@ -321,6 +321,11 @@ module ActionController
+       nil
+     end
+ 
++    def set_header(name, value)
++      @headers.store(name, value)
++      value
++    end
++
+     def headers
+       @headers
+     end
+@@ -338,9 +343,7 @@ module ActionController
+       nil
+     end
+ 
+-    # Monomorphic on Symbol — real-blog never passes a literal Integer
+-    # status, so the previous `is_a?(Integer)` pass-through branch is
+-    # contracted away. Symbol -> Integer via the STATUS_CODES table.
++    # Rails accepts Integer codes as well as registered Symbol statuses.
+     #
+     # RAISES on a symbol the table doesn't carry, as Rails does
+     # ("Invalid HTTP status"). It used to answer 200, which turned a
+@@ -350,8 +353,19 @@ module ActionController
+     # perfectly ordinary 200. With the table now ported whole, a miss
+     # means the app named a status no HTTP registry has.
+     def resolve_status(s)
++      return s if s.is_a?(Integer)
+       raise "Invalid HTTP status: #{s}" unless STATUS_CODES.key?(s)
+       STATUS_CODES.fetch(s, 200)
+     end
+   end
++
++  # API controllers share the buffered request/response contract.
++  class API < Base
++    def initialize
++      super
++      # Rails' default response header also covers rescue responses,
++      # independently of successful-action callbacks.
++      @headers.store("X-Content-Type-Options", "nosniff")
++    end
++  end
+ end
+diff --git a/runtime/ruby/action_controller/base.rbs b/runtime/ruby/action_controller/base.rbs
+index 408d6d6c..41799700 100644
+--- a/runtime/ruby/action_controller/base.rbs
++++ b/runtime/ruby/action_controller/base.rbs
+@@ -61,13 +61,10 @@ module ActionController
+ 
+     # `render(body, status:, content_type:, location:)` — sets @body,
+     # @status, and optionally @content_type / @location. `status:` is
+-    # monomorphic Symbol (was untyped Symbol|Integer; real-blog only
+-    # passes Symbol forms — `:ok`, `:created`, `:unprocessable_entity`
+-    # etc. — and STATUS_CODES maps them). Callers needing a literal
+-    # integer code coerce upstream.
++    # a registered Symbol or an Integer code, as in Rails.
+     def render: (
+       String body,
+-      ?status: Symbol,
++      ?status: Symbol | Integer,
+       ?content_type: String?,
+       ?location: String?
+     ) -> void
+@@ -78,12 +75,12 @@ module ActionController
+       String path,
+       ?notice: String?,
+       ?alert: String?,
+-      ?status: Symbol
++      ?status: Symbol | Integer
+     ) -> void
+ 
+     # `head(:no_content, content_type: "application/json")` — empty
+     # body, status only; content_type optional.
+-    def head: (Symbol status, ?content_type: String?, ?location: String?) -> void
++    def head: (Symbol | Integer status, ?content_type: String?, ?location: String?) -> void
+     def response: () -> Base
+     def fresh_when: (untyped subject) -> void
+     def stale?: (?etag: untyped) -> bool
+@@ -92,12 +89,14 @@ module ActionController
+     def expires_in: (Integer seconds, ?public: bool, ?stale_while_revalidate: Integer) -> void
+     def cache_control_max_age: () -> Integer
+     def cache_control_public: () -> bool
++    def set_header: (String name, String value) -> String
+     def headers: () -> Hash[String, String]
+     def send_data: (String data, ?type: String, ?disposition: String) -> void
+ 
+-    # Monomorphic on Symbol — body looks up STATUS_CODES. Integer
+-    # pass-through was previously supported via `is_a?(Integer)`
+-    # narrowing; that branch is removed since real-blog never uses it.
+-    def resolve_status: (Symbol s) -> Integer
++    # Integer codes pass through; Symbols look up STATUS_CODES.
++    def resolve_status: (Symbol | Integer s) -> Integer
++  end
++  class API < Base
++    def initialize: () -> void
+   end
+ end
+diff --git a/runtime/ruby/action_controller/parameter_missing.rb b/runtime/ruby/action_controller/parameter_missing.rb
+index 38ef46c9..519b1774 100644
+--- a/runtime/ruby/action_controller/parameter_missing.rb
++++ b/runtime/ruby/action_controller/parameter_missing.rb
+@@ -34,3 +34,16 @@ module ActionController
+   class UnknownFormat < StandardError
+   end
+ end
++
++module ActionController
++  class BadRequest < StandardError
++  end
++end
++module ActionDispatch
++  module Http
++    module Parameters
++      class ParseError < StandardError
++      end
++    end
++  end
++end
+diff --git a/runtime/ruby/action_controller/parameter_missing.rbs b/runtime/ruby/action_controller/parameter_missing.rbs
+index e95e7e5b..488839a6 100644
+--- a/runtime/ruby/action_controller/parameter_missing.rbs
++++ b/runtime/ruby/action_controller/parameter_missing.rbs
+@@ -11,3 +11,16 @@ module ActionController
+   class UnknownFormat < StandardError
+   end
+ end
++
++module ActionController
++  class BadRequest < StandardError
++  end
++end
++module ActionDispatch
++  module Http
++    module Parameters
++      class ParseError < StandardError
++      end
++    end
++  end
++end
+diff --git a/runtime/ruby/action_dispatch/request.rb b/runtime/ruby/action_dispatch/request.rb
+index 67d8e26a..40b9bf53 100644
+--- a/runtime/ruby/action_dispatch/request.rb
++++ b/runtime/ruby/action_dispatch/request.rb
+@@ -113,6 +113,21 @@ module ActionDispatch
+     end
+   end
+ 
++  class RequestHeaders
++    def initialize
++      @values = {}
++    end
++
++    def [](name)
++      @values.fetch(name.downcase, nil)
++    end
++
++    def []=(name, value)
++      @values.store(name.downcase, value)
++      value
++    end
++  end
++
+   class Request
+     attr_accessor :remote_ip
+     attr_accessor :path
+@@ -140,6 +155,7 @@ module ActionDispatch
+       @body = +""
+       @body_io = nil
+       @env = {}
++      @http_headers = RequestHeaders.new
+       # `@params` too, and for a reason `@env` shows: `Request.for`
+       # COPIES into both (`params.each { |k, v| r.params[k] = v }`),
+       # which READS the slot before anything writes it. Unset, that read
+@@ -203,6 +219,15 @@ module ActionDispatch
+       @body
+     end
+ 
++    # Header names are case-insensitive on the HTTP wire.
++    def headers
++      @http_headers
++    end
++
++    def authorization
++      @env.key?("HTTP_AUTHORIZATION") ? @env.fetch("HTTP_AUTHORIZATION", "").to_s : nil
++    end
++
+     def get?
+       @request_method == "GET"
+     end
+diff --git a/runtime/ruby/action_dispatch/request.rbs b/runtime/ruby/action_dispatch/request.rbs
+index 310bbdcd..8aae30de 100644
+--- a/runtime/ruby/action_dispatch/request.rbs
++++ b/runtime/ruby/action_dispatch/request.rbs
+@@ -22,7 +22,17 @@ module ActionDispatch
+     def self.create: (Hash[String, untyped] env) -> Request
+   end
+ 
++  class RequestHeaders
++    @values: Hash[String, String]
++    def initialize: () -> void
++    def []: (String name) -> String?
++    def []=: (String name, String value) -> String
++  end
++
+   class Request
++    @http_headers: RequestHeaders
++    def headers: () -> RequestHeaders
++    def authorization: () -> String?
+     @remote_ip: String
+     @path: String
+     @query_string: String
+diff --git a/runtime/ruby/action_dispatch/router.rb b/runtime/ruby/action_dispatch/router.rb
+index ee612608..a3cc7af3 100644
+--- a/runtime/ruby/action_dispatch/router.rb
++++ b/runtime/ruby/action_dispatch/router.rb
+@@ -173,7 +173,7 @@ module ActionDispatch
+       i = 0
+       while i < table.length
+         route = table[i]
+-        if route.verb.to_s == method_upcase
++        if route.verb.to_s == "ANY" || route.verb.to_s == method_upcase || (method_upcase == "HEAD" && route.verb.to_s == "GET")
+           params = match_parts(route.pattern_parts, path_parts, route.int_params, format)
+           unless params.nil?
+             return MatchResult.new(route.controller, route.action, params, route.req_format)
+diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+index 23d95276..4f954de4 100644
+--- a/runtime/ruby/active_record/base.rb
++++ b/runtime/ruby/active_record/base.rb
+@@ -140,6 +140,18 @@ module ActiveRecord
+     # AND compiler-hostile for typed targets (Rust struct types
+     # `@errors` as `Vec<String>`, not `Option<Vec<String>>`; `.nil?`
+     # on a Vec doesn't exist).
++    # Attribute-keyed messages, independent of the full-message array.
++    def errors_messages
++      @validation_messages
++    end
++
++    def record_validation_message(field, message)
++      list = @validation_messages.fetch(field, [])
++      list.push(message)
++      @validation_messages.store(field, list)
++      @errors
++    end
++
+     def errors
+       @errors
+     end
+@@ -195,6 +207,7 @@ module ActiveRecord
+       # (`self.id = (attrs[:id] || 0)` — `|| ""` for a string key), not
+       # here: see the class comment on why the base holds no `@id`.
+       @errors = []
++      @validation_messages = {}
+       @id_previously_changed = false
+       @persisted = false
+       @destroyed = false
+@@ -956,6 +969,7 @@ module ActiveRecord
+ 
+     def valid?
+       @errors = []
++      @validation_messages = {}
+       validate
+       @errors.empty?
+     end
+diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+index 784d9874..41b1190c 100644
+--- a/runtime/ruby/active_record/base.rbs
++++ b/runtime/ruby/active_record/base.rbs
+@@ -63,6 +63,9 @@ module ActiveRecord
+   # accessors, attributes hash, and `[]/[]=` indexers; Base supplies
+   # the shared CRUD + lifecycle protocol.
+   class Base
++    @validation_messages: Hash[Symbol, Array[String]]
++    def errors_messages: () -> Hash[Symbol, Array[String]]
++    def record_validation_message: (Symbol field, String message) -> Array[String]
+     EMPTY_ATTRS: Hash[Symbol, untyped]
+     HYDRATE_ATTRS: Hash[Symbol, untyped]
+ 
+diff --git a/runtime/ruby/active_support_ext.rb b/runtime/ruby/active_support_ext.rb
+index 447fe12b..29c5c745 100644
+--- a/runtime/ruby/active_support_ext.rb
++++ b/runtime/ruby/active_support_ext.rb
+@@ -722,7 +722,12 @@ module ActiveSupport
+ 
+   def self.present(t)
+     zone = current_zone
+-    zone.nil? ? t.getlocal : t.getlocal(zone.offset_at(t.to_i))
++    # TimeWithZone in the UTC zone serializes with Z (not +00:00).
++    if zone.nil?
++      Rails.application.config_time_zone == "UTC" ? t.utc : t.getlocal
++    else
++      zone.name == "UTC" ? t.utc : t.getlocal(zone.offset_at(t.to_i))
++    end
+   end
+ 
+   def self.present_db(t)
+@@ -808,3 +813,13 @@ module ActiveSupport
+     out
+   end
+ end
++
++# Native Ruby-family JSON trees already carry boxed scalar/container values.
++# The CRuby overlay extends this encoder with record/as_json normalization.
++module ActionController
++  module JsonRender
++    def self.encode(value)
++      value.is_a?(String) ? value : JSON.generate(value)
++    end
++  end
++end
+diff --git a/runtime/ruby/active_support_ext.rbs b/runtime/ruby/active_support_ext.rbs
+index ab3d485a..c218cb2f 100644
+--- a/runtime/ruby/active_support_ext.rbs
++++ b/runtime/ruby/active_support_ext.rbs
+@@ -102,3 +102,9 @@ module ActiveSupport
+   def self.humanize: (String text) -> String
+   def self.titleize: (String text) -> String
+ end
++
++module ActionController
++  module JsonRender
++    def self.encode: (untyped value) -> String
++  end
++end
+diff --git a/runtime/spinel/scaffold/main.rb b/runtime/spinel/scaffold/main.rb
+index 2f5c2a10..a00e45af 100644
+--- a/runtime/spinel/scaffold/main.rb
++++ b/runtime/spinel/scaffold/main.rb
+@@ -222,7 +222,7 @@ module Main
+   # the profile, because /u allocates enough per request to trigger several
+   # collections and every one of them re-marked the table.
+   def self.route_table
+-    @route_table ||= [RouteTable.root] + RouteTable.table + ActiveStorage::Routes.table
++    @route_table ||= RouteTable.all + ActiveStorage::Routes.table
+   end
+ 
+   # Tep::Server callback. Routes, runs the controller, copies
+@@ -405,6 +405,8 @@ module Main
+     fmt_name = "js" if request_format == :js
+     request_obj.format = fmt_name
+     request_obj.body = req.raw_body
++    req.req_headers.each { |k, v| request_obj.headers[k] = v }
++    request_obj.env["HTTP_AUTHORIZATION"] = req.req_headers.fetch("authorization", "") if req.req_headers.key?("authorization")
+     # Write straight into the RBS-pinned `@env` (Hash[String, untyped] ->
+     # StrPolyHash), which already owns the representation. Building a local
+     # `env = {}` here fills it with only String values, so spinel infers it
+@@ -519,8 +521,10 @@ module Main
+     # that overlay dispatch returns for the same routes.
+     if request_format == :rss
+       res.headers["Content-Type"] = "application/rss+xml; charset=utf-8"
+-    elsif controller.content_type != "text/html; charset=utf-8"
+-      res.headers["Content-Type"] = controller.content_type
++    elsif controller.status != 204 && controller.status != 304 && controller.content_type != "text/html; charset=utf-8"
++      type = controller.content_type
++      type = "application/json; charset=utf-8" if type == "application/json"
++      res.headers["Content-Type"] = type
+     end
+     # Headers the action set beyond those two — a `Content-Disposition`
+     # on a download, the Cache-Control a blob route asks for. A nil
+diff --git a/runtime/spinel/scaffold/ruby_overlay/main.rb b/runtime/spinel/scaffold/ruby_overlay/main.rb
+index 1de281b5..d2065808 100644
+--- a/runtime/spinel/scaffold/ruby_overlay/main.rb
++++ b/runtime/spinel/scaffold/ruby_overlay/main.rb
+@@ -56,7 +56,7 @@ module Main
+   # hygiene, not a measured win. (Benign race under Puma threads: both
+   # winners compute the same array.)
+   def self.route_table
+-    @route_table ||= [RouteTable.root] + RouteTable.table + ActiveStorage::Routes.table
++    @route_table ||= RouteTable.all + ActiveStorage::Routes.table
+   end
+ 
+   def self.dispatch_core(env, stdin)
+diff --git a/runtime/spinel/tep/net.rb b/runtime/spinel/tep/net.rb
+index 39b247ec..c5871bef 100644
+--- a/runtime/spinel/tep/net.rb
++++ b/runtime/spinel/tep/net.rb
+@@ -20,6 +20,7 @@ module Sock
+   ffi_func :sp_net_accept,                [:int],             :int
+   ffi_func :sp_net_accept_nb,             [:int],             :int
+   ffi_func :sp_net_set_nonblock,          [:int],             :int
++  ffi_func :sp_net_sock_ip,               [:int, :int, :str, :int], :int
+   ffi_func :sp_net_close,                 [:int],             :int
+   ffi_func :sp_net_write_str,             [:int, :str],       :int
+   ffi_func :sp_net_write_bytes,           [:int, :str, :int], :int
+@@ -62,6 +63,14 @@ module Sock
+   def self.sphttp_poll_ready(slot);         Sock.sp_net_poll_ready(slot);         end
+   def self.sphttp_shell_capture(cmd, n);    Sock.sp_net_shell_capture(cmd, n);    end
+ 
++  # The accepted socket's numeric peer address (IPv4 or IPv6).
++  def self.sphttp_remote_host(fd)
++    buffer = "\0" * 64
++    port = Sock.sp_net_sock_ip(fd, 1, buffer, 64)
++    return "" if port < 0
++    buffer.split("\0").first.to_s
++  end
++
+   # Monotonic clock in microseconds. Replaces the C `sphttp_now_us`:
+   # spinel exposes a native monotonic clock (Process.clock_gettime →
+   # sp_process_clock_gettime / CLOCK_MONOTONIC). Float seconds → µs Int.
+diff --git a/runtime/spinel/tep/server.rb b/runtime/spinel/tep/server.rb
+index 58c1c088..1479aee1 100644
+--- a/runtime/spinel/tep/server.rb
++++ b/runtime/spinel/tep/server.rb
+@@ -12,6 +12,8 @@ module Tep
+     if status == 400; return "Bad Request"; end
+     if status == 401; return "Unauthorized"; end
+     if status == 403; return "Forbidden"; end
++    if status == 409; return "Conflict"; end
++    if status == 422; return "Unprocessable Content"; end
+     if status == 404; return "Not Found"; end
+     if status == 500; return "Internal Server Error"; end
+     "OK"
+@@ -162,6 +164,7 @@ module Tep
+         send_simple(client, 400, "bad request")
+         return false
+       end
++      req.remote_host = Sock.sphttp_remote_host(client)
+       req.consume_body(client)
+       res = Response.new
+       begin
+diff --git a/runtime/spinel/tep/server_scheduled.rb b/runtime/spinel/tep/server_scheduled.rb
+index f2d3ab9d..748282bb 100644
+--- a/runtime/spinel/tep/server_scheduled.rb
++++ b/runtime/spinel/tep/server_scheduled.rb
+@@ -205,6 +205,7 @@ module Tep
+           return false
+         end
+ 
++        req.remote_host = Sock.sphttp_remote_host(client)
+         req.consume_body_via_scheduler(client)
+ 
+         res = Response.new
+diff --git a/runtime/spinel/tep/server_threaded.rb b/runtime/spinel/tep/server_threaded.rb
+index ea542037..670796f6 100644
+--- a/runtime/spinel/tep/server_threaded.rb
++++ b/runtime/spinel/tep/server_threaded.rb
+@@ -183,6 +183,7 @@ module Tep
+           return false
+         end
+ 
++        req.remote_host = Sock.sphttp_remote_host(client)
+         req.consume_body_via_io(io, client)
+ 
+         res = Response.new
+diff --git a/runtime/spinel/test/test_helper.rb b/runtime/spinel/test/test_helper.rb
+index 4071d507..4979d642 100644
+--- a/runtime/spinel/test/test_helper.rb
++++ b/runtime/spinel/test/test_helper.rb
+@@ -1355,7 +1355,7 @@ module RequestDispatch
+     require_relative "../app/controllers/articles_controller"
+     require_relative "../app/controllers/comments_controller"
+     ActionView::ViewHelpers.reset_slots!
+-    # `[RouteTable.root] + RouteTable.table`, exactly as both production
++    # `RouteTable.all`, exactly as both production
+     # dispatchers compose it: `root "c#a"` is kept as its own constant
+     # (it is the only literal-pattern entry) and the table walk stays
+     # flat. The harness searched `table` alone, so `get "/"` — the one
+@@ -1375,7 +1375,7 @@ module RequestDispatch
+     # its non-segment options into one.
+     match_path, _, query = path.partition("?")
+     matched = ActionDispatch::Router.match(
+-      method, match_path, [RouteTable.root] + RouteTable.table + ActiveStorage::Routes.table
++      method, match_path, RouteTable.all + ActiveStorage::Routes.table
+     )
+     raise "No route matches #{method} #{path}" if matched.nil?
+     controller = case matched.controller
+diff --git a/src/analyze/registry/activemodel.rs b/src/analyze/registry/activemodel.rs
+index e16dd441..f6f94845 100644
+--- a/src/analyze/registry/activemodel.rs
++++ b/src/analyze/registry/activemodel.rs
+@@ -77,6 +77,7 @@ pub(in crate::analyze) fn register(classes: &mut HashMap<ClassId, ClassInfo>) {
+         ("messages_for", str_arr()),
+         // Not `details`: the accumulator keeps no error type, so only the message projection `lower::errors_index` can ground types.
+         ("messages", Ty::Hash { key: Box::new(Ty::Sym), value: Box::new(str_arr()) }),
++        ("to_hash", Ty::Hash { key: Box::new(Ty::Sym), value: Box::new(str_arr()) }),
+         // `.each` yields an Error — registered via block_params_for below.
+         ("each", error_ty.clone()),
+         // `errors << "message"` is the transpiled-shape idiom for adding
+diff --git a/src/lower/controller_to_library/mod.rs b/src/lower/controller_to_library/mod.rs
+index fe8ee206..7fc3e18d 100644
+--- a/src/lower/controller_to_library/mod.rs
++++ b/src/lower/controller_to_library/mod.rs
+@@ -1221,9 +1221,7 @@ fn build_methods(
+         ));
+     }
+     if let Some((preamble, wraps)) = pending_dispatcher {
+-        methods.insert(
+-            dispatcher_at,
+-            synthesize_process_action(
++        let mut dispatcher = synthesize_process_action(
+                 &preamble,
+                 &publics_inlined,
+                 &inherited,
+@@ -1231,8 +1229,15 @@ fn build_methods(
+                 &deferred_tails,
+                 &collect_rescue_handlers(controller, all_controllers, format_breadth),
+                 &wraps,
+-            ),
+-        );
++            );
++        // Callback blocks and rescue bodies respond just like private helpers.
++        // Run the same pipeline without synthesizing an implicit render.
++        dispatcher.body = lower_action_body(
++            &dispatcher.body, controller, "process_action", &privs, &params_privs,
++            false, params_specs, &[], view_ivars, partials, format_breadth,
++            &shadows, route_id_segments, false, None, None, &[],
++        ).0;
++        methods.insert(dispatcher_at, dispatcher);
+     }
+     // The empty set for both non-public loops below: `is_public: false`
+     // already suppresses the implicit render, so there is never one to
+@@ -2126,13 +2131,13 @@ fn insert_baseline_controller_methods(info: &mut crate::analyze::ClassInfo) {
+ }
+ 
+ /// `rescue_from <Class>[, <Class>] { … }` / `rescue_from <Class>, with:
+-/// :handler` — the controller's exception handlers, ITS OWN first and
+-/// then each ancestor's.
++/// :handler` — the controller's exception handlers, ancestors first
++/// then the controller's own declarations.
+ ///
+ /// Rails registers them on `process_action`, so they cover the filter
+ /// chain as well as the action; and it walks the registry in REVERSE,
+ /// so a subclass's handler wins over the one it inherits. Order here is
+-/// declaration order (own, then nearer ancestors, then further);
++/// declaration order (furthest ancestor through the subclass);
+ /// `synthesize_process_action` reverses it into Ruby's source-order
+ /// `rescue` matching.
+ ///
+@@ -2156,6 +2161,8 @@ fn collect_rescue_handlers(
+     let mut out: Vec<RescueHandler> = Vec::new();
+     let mut chain: Vec<&Controller> = vec![controller];
+     chain.extend(ancestor_chain(controller, all_controllers));
++    // Inherited declarations precede subclass declarations; last wins.
++    chain.reverse();
+     for c in chain {
+         let handler_arity = |name: &Symbol| -> Option<usize> {
+             c.actions().find(|a| &a.name == name).map(|a| a.params.fields.len())
+diff --git a/src/lower/errors_add.rs b/src/lower/errors_add.rs
+index 4d988957..08419a56 100644
+--- a/src/lower/errors_add.rs
++++ b/src/lower/errors_add.rs
+@@ -145,6 +145,41 @@ fn rewrite_errors_add(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
+         };
+         return;
+     }
++    let mut preamble = Vec::new();
++    let mut short_message = msg.clone().unwrap_or_else(|| Expr::new(span,
++        ExprNode::Lit { value: Literal::Str { value: "is invalid".into() } }));
++    // A dynamic message is evaluated once, even though both projections
++    // retain it. The source offset keeps distinct adds in one scope apart.
++    if !matches!(&*short_message.node, ExprNode::Lit { .. } | ExprNode::Var { .. }) {
++        let name = Symbol::from(format!("__rh_error_message_{}", span.start));
++        preamble.push(Expr::new(span, ExprNode::Assign {
++            target: crate::expr::LValue::Var { id: crate::ident::VarId(0), name: name.clone() },
++            value: short_message,
++        }));
++        short_message = Expr::new(span, ExprNode::Var { id: crate::ident::VarId(0), name });
++        short_message.ty = Some(crate::ty::Ty::Str);
++        msg = Some(short_message.clone());
++    }
++    let mut recv = recv;
++    let mut owner = match recv.as_ref().map(|r| &*r.node) {
++        Some(ExprNode::Send { recv, .. }) => recv.clone(),
++        _ => None,
++    };
++    if let Some(o) = &owner {
++        if !matches!(&*o.node, ExprNode::Var { .. } | ExprNode::Ivar { .. } | ExprNode::SelfRef) {
++            let name = Symbol::from(format!("__rh_error_owner_{}", span.start));
++            preamble.insert(0, Expr::new(span, ExprNode::Assign {
++                target: crate::expr::LValue::Var { id: crate::ident::VarId(0), name: name.clone() },
++                value: o.clone(),
++            }));
++            let mut var = Expr::new(span, ExprNode::Var { id: crate::ident::VarId(0), name });
++            var.ty = o.ty.clone();
++            owner = Some(var.clone());
++            if let Some(r) = &mut recv {
++                if let ExprNode::Send { recv, .. } = &mut *r.node { *recv = Some(var); }
++            }
++        }
++    }
+     let humanized = super::model_to_library::validations::humanize(field.as_str());
+     let message: Expr = if field.as_str() == "base" {
+         // :base attaches the message to the record, not a field.
+@@ -184,13 +219,19 @@ fn rewrite_errors_add(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
+     // post-lowering `diagnose` walk reads stamped types without re-
+     // dispatching — leaving `ty = None` here makes it false-positive a
+     // `send_dispatch_failed` on a receiver it can see the type of.
+-    let recv_ty = recv.as_ref().and_then(|r| r.ty.clone());
+-    *expr.node = ExprNode::Send {
+-        recv,
+-        method: Symbol::from("<<"),
+-        args: vec![message],
+-        block: None,
+-        parenthesized: false,
+-    };
+-    expr.ty = recv_ty;
++    let array_ty = crate::ty::Ty::Array { elem: Box::new(crate::ty::Ty::Str) };
++    let mut recv = recv;
++    if let Some(r) = &mut recv { r.ty = Some(array_ty.clone()); }
++    let mut push = Expr::new(span, ExprNode::Send {
++        recv, method: Symbol::from("<<"), args: vec![message], block: None, parenthesized: false,
++    });
++    push.ty = Some(array_ty.clone());
++    let mut retain = Expr::new(span, ExprNode::Send {
++        recv: owner, method: Symbol::from("record_validation_message"),
++        args: vec![field_expr, short_message], block: None, parenthesized: true,
++    });
++    retain.ty = Some(array_ty.clone());
++    preamble.extend([push, retain]);
++    *expr.node = ExprNode::Seq { exprs: preamble };
++    expr.ty = Some(array_ty);
+ }
+diff --git a/src/lower/errors_index.rs b/src/lower/errors_index.rs
+index 7ad789ff..681c9d4c 100644
+--- a/src/lower/errors_index.rs
++++ b/src/lower/errors_index.rs
+@@ -145,9 +145,23 @@ fn rewrite_messages(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
+ }
+ 
+ fn rewrite(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
+-    expr.node.for_each_child_mut(&mut |c| rewrite(c, diags));
++    // Ground outer predicates before visiting their messages receiver.
+     rewrite_messages(expr, diags);
++    expr.node.for_each_child_mut(&mut |c| rewrite(c, diags));
+     rewrite_index(expr, diags);
++    // Whole messages/to_hash projections use the retained attribute column.
++    if let ExprNode::Send { recv: Some(r), method, args, block: None, .. } = &*expr.node {
++        if matches!(method.as_str(), "messages" | "to_hash") && args.is_empty() && is_errors_read(r) {
++            let ExprNode::Send { recv, .. } = &*r.node else { unreachable!() };
++            let recv = recv.clone();
++            *expr.node = ExprNode::Send {
++                recv, method: Symbol::from("errors_messages"), args: vec![],
++                block: None, parenthesized: false,
++            };
++            expr.ty = Some(Ty::Hash { key: Box::new(Ty::Sym),
++                value: Box::new(Ty::Array { elem: Box::new(Ty::Str) }) });
++        }
++    }
+ }
+ 
+ fn ledger_messages(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
+diff --git a/src/lower/model_to_library/mod.rs b/src/lower/model_to_library/mod.rs
+index 64c6f495..23affe0b 100644
+--- a/src/lower/model_to_library/mod.rs
++++ b/src/lower/model_to_library/mod.rs
+@@ -1385,6 +1385,11 @@ fn build_class_info(
+         "errors",
+         fn_sig(vec![], Ty::Array { elem: Box::new(Ty::Str) }),
+     );
++    insert_default(&mut info.instance_methods, "errors_messages", fn_sig(vec![],
++        Ty::Hash { key: Box::new(Ty::Sym), value: Box::new(Ty::Array { elem: Box::new(Ty::Str) }) }));
++    insert_default(&mut info.instance_methods, "record_validation_message", fn_sig(
++        vec![(Symbol::from("field"), Ty::Sym), (Symbol::from("message"), Ty::Str)],
++        Ty::Array { elem: Box::new(Ty::Str) }));
+     insert_default(&mut info.instance_methods, "valid?", fn_sig(vec![], Ty::Bool));
+     insert_default(
+         &mut info.instance_methods,
+diff --git a/src/lower/model_to_library/validations.rs b/src/lower/model_to_library/validations.rs
+index 7e4fea52..ab419c6f 100644
+--- a/src/lower/model_to_library/validations.rs
++++ b/src/lower/model_to_library/validations.rs
+@@ -57,7 +57,7 @@ pub(super) fn push_validate_method(methods: &mut Vec<MethodDef>, model: &Model)
+                 );
+                 let mut check = if_with_nil_else(
+                     send(reader, "nil?", vec![]),
+-                    errors_push(format!("{} can't be blank", humanize(v.attribute.as_str()))),
++                    errors_push(&v.attribute, format!("{} can't be blank", humanize(v.attribute.as_str()))),
+                 );
+                 check.inherit_span(span);
+                 stmts.push(check);
+@@ -201,6 +201,20 @@ fn push_active_model_validation_surface(methods: &mut Vec<MethodDef>, model: &Mo
+     };
+     let span = model.span;
+     let errors_read = || Expr::new(span, ExprNode::Ivar { name: Symbol::from("errors") });
++    // Tableless ActiveModel classes have no Base to inherit from. Reuse
++    // the shared Ruby bodies rather than maintaining a second implementation.
++    let shared = crate::runtime_src::parse_methods_with_rbs(
++        include_str!("../../../runtime/ruby/active_record/base.rb"),
++        include_str!("../../../runtime/ruby/active_record/base.rbs"),
++    ).expect("typed ActiveRecord runtime");
++    for mut method in shared {
++        if matches!(method.name.as_str(), "errors_messages" | "record_validation_message")
++            && !defines(method.name.as_str()) {
++            method.enclosing_class = Some(model.name.0.clone());
++            methods.push(method);
++        }
++    }
++
+     if !defines("valid?") {
+         // `before_validation :sanitize_fields` runs INSIDE `valid?` for
+         // an ActiveModel class (`ActiveModel::Validations::Callbacks`),
+@@ -231,6 +245,10 @@ fn push_active_model_validation_surface(methods: &mut Vec<MethodDef>, model: &Mo
+                 },
+             ));
+         }
++        body_stmts.push(Expr::new(span, ExprNode::Assign {
++            target: crate::expr::LValue::Ivar { name: Symbol::from("validation_messages") },
++            value: Expr::new(span, ExprNode::Hash { entries: vec![], kwargs: false }),
++        }));
+         body_stmts.extend(vec![
+             Expr::new(
+                 span,
+@@ -378,7 +396,7 @@ fn inline_belongs_to_check(
+             ExprNode::Lit { value: Literal::Int { value: 0 } },
+         )],
+     );
+-    let push_err = errors_push(format!("{} must exist", humanize(assoc_name.as_str())));
++    let push_err = errors_push(assoc_name, format!("{} must exist", humanize(assoc_name.as_str())));
+     if polymorphic {
+         return if_with_nil_else(bool_op(BoolOpKind::Or, nil_check, zero_check), push_err);
+     }
+@@ -441,7 +459,7 @@ fn inline_presence_check(attr: &Symbol, attr_ty: Option<&Ty>) -> Expr {
+             send(raw_ivar.clone(), "nil?", vec![]),
+             send(raw_ivar, "empty?", vec![]),
+         );
+-        let push_err = errors_push(format!("{} can't be blank", humanize(attr.as_str())));
++        let push_err = errors_push(attr, format!("{} can't be blank", humanize(attr.as_str())));
+         return if_with_nil_else(cond, push_err);
+     }
+     let attr_ivar = ivar(attr);
+@@ -497,7 +515,7 @@ fn inline_presence_check(attr: &Symbol, attr_ty: Option<&Ty>) -> Expr {
+         }
+     };
+     // `errors << "attr can't be blank"`
+-    let push_err = errors_push(format!("{} can't be blank", humanize(attr.as_str())));
++    let push_err = errors_push(attr, format!("{} can't be blank", humanize(attr.as_str())));
+     // The wrapping `if cond then push_err end` (Nil else).
+     if_with_nil_else(cond, push_err)
+ }
+@@ -536,7 +554,7 @@ fn inline_absence_check(attr: &Symbol) -> Expr {
+             parenthesized: false,
+         },
+     );
+-    let push_err = errors_push(format!("{} must be blank", humanize(attr.as_str())));
++    let push_err = errors_push(attr, format!("{} must be blank", humanize(attr.as_str())));
+     if_with_nil_else(not_blank, push_err)
+ }
+ 
+@@ -570,7 +588,7 @@ fn inline_inclusion_check(attr: &Symbol, values: &[Literal]) -> Expr {
+         },
+     );
+     let push_err =
+-        errors_push(format!("{} is not included in the list", humanize(attr.as_str())));
++        errors_push(attr, format!("{} is not included in the list", humanize(attr.as_str())));
+     if_with_nil_else(not_included, push_err)
+ }
+ 
+@@ -601,7 +619,7 @@ fn inline_format_check(attr: &Symbol, pattern: &str) -> Expr {
+             parenthesized: false,
+         },
+     );
+-    let push_err = errors_push(format!("{} is invalid", humanize(attr.as_str())));
++    let push_err = errors_push(attr, format!("{} is invalid", humanize(attr.as_str())));
+     if_with_nil_else(invalid, push_err)
+ }
+ 
+@@ -697,7 +715,7 @@ fn inline_length_check(
+                 n
+             ),
+         };
+-        inner_stmts.push(if_with_nil_else(lt, errors_push(msg)));
++        inner_stmts.push(if_with_nil_else(lt, errors_push(attr, msg)));
+     }
+     if let Some(n) = max {
+         let gt = send(
+@@ -716,7 +734,7 @@ fn inline_length_check(
+                 n
+             ),
+         };
+-        inner_stmts.push(if_with_nil_else(gt, errors_push(msg)));
++        inner_stmts.push(if_with_nil_else(gt, errors_push(attr, msg)));
+     }
+     let body_seq = seq(inner_stmts);
+ 
+@@ -768,7 +786,7 @@ fn inline_numericality_check(
+         },
+     );
+     let bad_cond = bool_op(BoolOpKind::Or, nil_check, not_numeric);
+-    let nan_msg = errors_push(format!("{} is not a number", humanize(attr.as_str())));
++    let nan_msg = errors_push(attr, format!("{} is not a number", humanize(attr.as_str())));
+ 
+     // Build the else-branch Seq of per-option checks.
+     let mut else_stmts: Vec<Expr> = Vec::new();
+@@ -786,7 +804,7 @@ fn inline_numericality_check(
+             humanize(attr.as_str()),
+             format_float(n)
+         );
+-        else_stmts.push(if_with_nil_else(le, errors_push(msg)));
++        else_stmts.push(if_with_nil_else(le, errors_push(attr, msg)));
+     }
+     if let Some(n) = lt {
+         let ge = send(
+@@ -802,7 +820,7 @@ fn inline_numericality_check(
+             humanize(attr.as_str()),
+             format_float(n)
+         );
+-        else_stmts.push(if_with_nil_else(ge, errors_push(msg)));
++        else_stmts.push(if_with_nil_else(ge, errors_push(attr, msg)));
+     }
+     if only_integer {
+         let is_int = is_a_check(&attr_ivar, "Integer");
+@@ -817,7 +835,7 @@ fn inline_numericality_check(
+             },
+         );
+         let msg = format!("{} must be an integer", humanize(attr.as_str()));
+-        else_stmts.push(if_with_nil_else(not_int, errors_push(msg)));
++        else_stmts.push(if_with_nil_else(not_int, errors_push(attr, msg)));
+     }
+     // If the else has no stmts, just use the if-form (the rule has
+     // only the implicit "is a number" check). Otherwise wrap in
+@@ -896,7 +914,11 @@ fn is_a_check(value: &Expr, class_name: &str) -> Expr {
+ /// collection. `errors` is reached via implicit-self Send (the same
+ /// shape every existing validates_*_of helper produces inside the
+ /// Validations module).
+-fn errors_push(msg: String) -> Expr {
++fn errors_push(attr: &Symbol, msg: String) -> Expr {
++    // Keep the full-message accumulator stable, and retain the actual
++    // attribute separately. Never recover attributes by parsing human text.
++    let prefix = format!("{} ", humanize(attr.as_str()));
++    let short = msg.strip_prefix(&prefix).unwrap_or(&msg).to_string();
+     let errors_call = Expr::new(
+         Span::synthetic(),
+         ExprNode::Send {
+@@ -911,7 +933,16 @@ fn errors_push(msg: String) -> Expr {
+         Span::synthetic(),
+         ExprNode::Lit { value: Literal::Str { value: msg } },
+     );
+-    send(errors_call, "<<", vec![msg_lit])
++    seq(vec![
++        send(errors_call, "<<", vec![msg_lit]),
++        Expr::new(Span::synthetic(), ExprNode::Send {
++            recv: None, method: Symbol::from("record_validation_message"),
++            args: vec![
++                Expr::new(Span::synthetic(), ExprNode::Lit { value: Literal::Sym { value: attr.clone() } }),
++                Expr::new(Span::synthetic(), ExprNode::Lit { value: Literal::Str { value: short } }),
++            ], block: None, parenthesized: true,
++        }),
++    ])
+ }
+ 
+ fn if_with_nil_else(cond: Expr, then_branch: Expr) -> Expr {
+diff --git a/src/lower/routes_to_library/mod.rs b/src/lower/routes_to_library/mod.rs
+index 6ddd2e1c..4b3275ab 100644
+--- a/src/lower/routes_to_library/mod.rs
++++ b/src/lower/routes_to_library/mod.rs
+@@ -88,6 +88,20 @@ pub fn lower_routes_to_dispatch_functions(app: &App) -> Vec<LibraryFunction> {
+         is_async: false,
+     });
+ 
++    // Complete declaration-ordered dispatch, including an optional root.
++    out.push(LibraryFunction {
++        module_path: module_path.clone(),
++        name: Symbol::from("all"),
++        params: Vec::new(),
++        body: with_ty(Expr::new(Span::synthetic(), ExprNode::Array {
++            elements: flat.iter().map(|r| build_route_new(r, &route_class_id, &route_ty)).collect(),
++            style: ArrayStyle::Brackets,
++        }), Ty::Array { elem: Box::new(route_ty.clone()) }),
++        signature: Some(fn_sig(vec![], Ty::Array { elem: Box::new(route_ty.clone()) })),
++        effects: EffectSet::default(),
++        is_async: false,
++    });
++
+     if let Some(r) = root_routes.first() {
+         let root_body = build_route_new(r, &route_class_id, &route_ty);
+         out.push(LibraryFunction {
+diff --git a/tests/api_mode.rs b/tests/api_mode.rs
+new file mode 100644
+index 00000000..dfcfcb44
+--- /dev/null
++++ b/tests/api_mode.rs
+@@ -0,0 +1,55 @@
++//! Viewless API controllers use the same lowering in actions, callbacks,
++//! and inherited rescue handlers. Native HTTP coverage lives in the w06 probe.
++use std::collections::HashMap;
++use std::path::PathBuf;
++use roundhouse::ingest::ingest_app_from_tree;
++
++fn files() -> Vec<roundhouse::emit::EmittedFile> {
++    let source: HashMap<PathBuf, Vec<u8>> = [
++        ("app/controllers/application_controller.rb", r#"class ApplicationController < ActionController::API
++  rescue_from StandardError do |failure|
++    render json: { errors: [failure.message] }, status: 422
++  end
++  after_action { response.set_header("X-Probe", "yes") }
++end"#),
++        ("app/controllers/posts_controller.rb", r#"class PostsController < ApplicationController
++  rescue_from StandardError do |failure|
++    render json: { errors: [failure.message] }, status: 409
++  end
++  def show
++    render json: { title: params[:post][:title], limit: params.fetch(:limit, 20), hasLimit: params.key?(:limit) }
++  end
++end"#),
++        ("config/routes.rb", r#"Rails.application.routes.draw do
++  scope :api do
++    get "posts/:slug", to: "posts#show"
++  end
++  match "*unmatched", to: "application#not_found", via: :all
++end"#),
++    ].into_iter().map(|(p,s)| (PathBuf::from(p), s.as_bytes().to_vec())).collect();
++    let mut app = ingest_app_from_tree(source).expect("ingest");
++    roundhouse::session::analyze_and_lower(&mut app);
++    roundhouse::emit::ruby::emit_spinel(&app)
++}
++
++#[test]
++fn json_handlers_and_nested_params_are_lowered() {
++    let emitted = files();
++    let controller = &emitted.iter().find(|f| f.path.ends_with("posts_controller.rb")).unwrap().content;
++    assert!(controller.contains("@params[\"post\"][\"title\"]"), "{controller}");
++    assert!(controller.contains("@params.fetch(\"limit\", 20)"), "{controller}");
++    assert!(controller.contains("@params.key?(\"limit\")"), "{controller}");
++    assert!(controller.contains("render(ActionController::JsonRender.encode({ errors:"), "{controller}");
++    assert!(controller.contains("response.set_header(\"X-Probe\", \"yes\")"), "{controller}");
++    let dispatch = controller.split("def process_action").nth(1).expect("dispatcher");
++    assert!(dispatch.find("status: :conflict").unwrap_or_else(|| panic!("{dispatch}")) < dispatch.find("status: :unprocessable_entity").unwrap_or_else(|| panic!("{dispatch}")), "subclass handler wins: {dispatch}");
++}
++
++#[test]
++fn dispatch_has_a_complete_table_without_a_root() {
++    let emitted = files();
++    let routes = &emitted.iter().find(|f| f.path.ends_with("routes.rb")).unwrap().content;
++    assert!(routes.contains("def self.all"), "{routes}");
++    assert!(!routes.contains("def self.root"), "{routes}");
++    assert!(routes.contains("\"ANY\", \"/*unmatched\""), "{routes}");
++}
+diff --git a/tests/errors_index_lowering.rs b/tests/errors_index_lowering.rs
+index c1982b94..9b9a2285 100644
+--- a/tests/errors_index_lowering.rs
++++ b/tests/errors_index_lowering.rs
+@@ -202,19 +202,21 @@ end
+ }
+ 
+ #[test]
+-fn whole_messages_hash_declines_with_residue() {
+-    // The accumulator keeps no attribute column, so a use of the whole
+-    // Hash has nothing to be rebuilt from.
++fn whole_messages_and_to_hash_use_retained_attributes() {
+     let (out, diags) = lower_and_emit(
+         r#"
+ class Draft
+   def problems
+-    errors.messages.compact_blank
++    errors.messages
++  end
++  def other_problems(record)
++    record.errors.to_hash
+   end
+ end
+ "#,
+     );
+-    assert!(out.contains("errors.messages"), "left alone:\n{out}");
+-    assert_eq!(diags.len(), 1, "expected one residue entry: {diags:?}");
+-    assert!(diags[0].contains("errors.messages"), "{diags:?}");
++    assert!(out.contains("errors_messages"), "grounded whole Hash:\n{out}");
++    assert!(out.contains("record.errors_messages"), "foreign projection:\n{out}");
++    assert!(!out.contains("errors.messages"), "no dynamic messages call:\n{out}");
++    assert!(diags.is_empty(), "unexpected residue: {diags:?}");
+ }

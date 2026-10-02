@@ -1,0 +1,10 @@
+config round rps p95_ms failed sql/req idle_mb peak_mb foreign_cpu_max workers
+v4 1 4148.2 7.4 0 4.74 14.3 26.3 75.5 4 (cgroup cpu.max 200000/100000
+v5 1 4308.0 6.7 0 4.74 14.7 30.3 97.4 4 (SPINEL_WORKERS)
+v4 2 4270.8 7.05 0 4.74 13.8 25.6 102.1 4 (cgroup cpu.max 200000/100000
+v5 2 4307.3 7.05 0 4.74 16.6 33.2 94.5 4 (SPINEL_WORKERS)
+v4 3 3406.4 11.21 0 4.74 15.8 26.9 1560.5 4 (cgroup cpu.max 200000/100000
+v5 3 4066.3 7.72 0 4.74 15.7 31.5 125.4 4 (SPINEL_WORKERS)
+v4 median rps 4148.2 range 3406.4 4270.8
+v5 median rps 4307.3 range 4066.3 4308.0
+same-round v5/v4: [1.039, 1.009, 1.194]

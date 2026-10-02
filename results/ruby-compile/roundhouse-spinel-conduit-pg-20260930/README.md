@@ -1,5 +1,7 @@
 # Roundhouse + Spinel: compiled Conduit on PostgreSQL
 
+A newer rebuild on upstream heads is at [roundhouse-spinel-conduit-pg-20261002](../roundhouse-spinel-conduit-pg-20261002/README.md).
+
 **A compiled build of the Rails Conduit app passes the same fresh-production gate as the Rails app and served 2.0–5.4× the requests per second of Rails given the same 2-CPU budget.** The range is the per-scenario median of four alternating rounds. It is a separately labeled **compile variant** of the current Rails reference, built with locally patched Roundhouse and Spinel. It is not the measured one-shot source and not an unmodified upstream toolchain.
 
 The [v2026.9.18 feasibility result](../roundhouse-spinel-v2026.9.18/README.md) still stands for that release and the frozen source.

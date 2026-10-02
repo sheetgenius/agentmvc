@@ -1,0 +1,154 @@
+{
+ "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v5-upstream-heads",
+ "date": "2026-10-02",
+ "previous": "results/ruby-compile/roundhouse-spinel-conduit-pg-20260930 (v4, holds the benchmark)",
+ "source": {
+  "reference": "results/one-shot-v2-rails-expert/pilot-1/reference-1/source",
+  "base_variant": "results/ruby-compile/roundhouse-spinel-conduit-pg-20260930/variant/source (v4)",
+  "variant": "variant/source (compile variant v5)",
+  "ledger": "variant/source/COMPILE-VARIANT.md (v5 section appended)",
+  "gated_files_sha256": "reproduce/gated-source.sha256 (75 files; the ledger is excluded)",
+  "app_delta_vs_reference": "16 application and config files, +184/-46 (excluding the ledger, db/structure.sql and two added tests)"
+ },
+ "toolchain": {
+  "roundhouse_base": "5bbc4765ea05937f5760f4a64fbf1ff2b97c68f0",
+  "roundhouse_patches": "patches/roundhouse/series (11)",
+  "spinel_base": "d2c20df0bdc2c9c0788c24fff935c8a2fd6c5007",
+  "spinel_patches": [],
+  "manifest_sha256": "5ae600946b7e0149ac2c8c8c38ab123a1b9112e8c78aea8fdb688220e1e438a5",
+  "toolchain_image": "v5-toolchain:5ae600946b7e",
+  "toolchain_image_id": "sha256:8b77bd0691065249e20b58d37fbd58b6250490e0abe82629a04368a4b430b477",
+  "vendor_tree_sha256": {
+   "roundhouse": "9819b51297dd4b03ee12e595b8bfe4ab27e0ee21977e5482afd366a6fb1a92f4",
+   "spinel": "22a31b2edd6c8a1424b4cbd4160c2970317a1342015b6a3d0684716699c5fc29"
+  },
+  "versions": "roundhouse 2026.9.18 (5bbc4765); spinel 2026.09.12+4484 (d2c20df0b)",
+  "workers": "ENV SPINEL_WORKERS=4 in Dockerfile.production (no cgroup patch)",
+  "flags": "RH_DATABASE_ADAPTER=postgresql; strict emit (no --allow-unsupported); spin build -- --cc=clang",
+  "spinel_patches_note": "patches/spinel/README.md"
+ },
+ "images": {
+  "compiled": {
+   "tag": "v5-conduit:compiled",
+   "id": "sha256:35e20405d6257ee3d3478a480d2fa3086b55fa5c08803f8ff6b2c8134443bd78",
+   "mb": 119.1,
+   "server_sha256": "e8d6b30c6c8ba812153a09c9b34f99b8ed233ac310c30d1741054a2478408081"
+  }
+ },
+ "gates": {
+  "compiled_production_gate": {
+   "exit": 0,
+   "log": "evidence/gates/compiled-v5-production-gate.log"
+  },
+  "variant_rails_production_gate": {
+   "exit": 0,
+   "log": "evidence/gates/variant-v5-on-rails-production-gate.log"
+  },
+  "control_v4_source_on_v5_toolchain": {
+   "exit": 0,
+   "log": "evidence/gates/control-v4-source-on-v5-toolchain-production-gate.log"
+  },
+  "variant_rails_dev_checks": {
+   "zeitwerk": 0,
+   "rubocop": "51 files, no offenses",
+   "tests": "21 runs, 115 assertions, 0 failures",
+   "dir": "evidence/gates/variant-v5-rails-dev"
+  },
+  "common_http_probe": {
+   "contract": "21/21",
+   "quality": "3/3",
+   "file": "evidence/compiled-v5-common-http-probe.json"
+  },
+  "single_revert_gates": {
+   "dir": "evidence/gates/reverts",
+   "note": "each v4 workaround reverted alone on the v5 toolchain"
+  }
+ },
+ "edge_comparison": {
+  "dir": "evidence/edge",
+  "runner": "evidence/edge/edge_diff.py",
+  "requests": 166,
+  "v5_vs_v4_differences": 0,
+  "v5_vs_rails_reference_differences": 7,
+  "v4_vs_rails_reference_differences": 7
+ },
+ "sanity_throughput": {
+  "note": "a single sanity check, not a benchmark; the v4 package holds the benchmark",
+  "scenario": "list_anonymous",
+  "rounds": 3,
+  "order": "v4, v5, v5, v4, v4, v5",
+  "budget": "app and PostgreSQL each --cpus=2 --memory=1g",
+  "vus": 16,
+  "duration": "15s",
+  "v4_rps_median": 4148.2,
+  "v5_rps_median": 4307.3,
+  "dir": "evidence/sanity-throughput"
+ },
+ "upstream_merged": {
+  "spinel": [
+   6549,
+   6572,
+   6580,
+   6654
+  ],
+  "roundhouse": [
+   246,
+   259,
+   260,
+   269,
+   283,
+   288,
+   291,
+   292
+  ]
+ },
+ "owned_size": {
+  "rules": "tools/measure.py with stacks/rails-expert/stack.json, baseline stacks/rails-expert/scaffold",
+  "reference-1": {
+   "tokens": 12654,
+   "lines": 1283,
+   "code_lines": 1008,
+   "owned_tokens": 6085,
+   "owned_lines": 657,
+   "files_created": 23,
+   "files_changed": 3
+  },
+  "v4_incl_structure_sql": {
+   "tokens": 19680,
+   "lines": 1997,
+   "code_lines": 1414,
+   "owned_tokens": 10423,
+   "owned_lines": 1063,
+   "files_created": 27,
+   "files_changed": 3
+  },
+  "v4_excl_structure_sql": {
+   "tokens": 14169,
+   "lines": 1440,
+   "code_lines": 1138,
+   "owned_tokens": 7150,
+   "owned_lines": 787,
+   "files_created": 26,
+   "files_changed": 3
+  },
+  "v5_incl_structure_sql": {
+   "tokens": 19413,
+   "lines": 1967,
+   "code_lines": 1389,
+   "owned_tokens": 10235,
+   "owned_lines": 1038,
+   "files_created": 27,
+   "files_changed": 3
+  },
+  "v5_excl_structure_sql": {
+   "tokens": 13902,
+   "lines": 1410,
+   "code_lines": 1113,
+   "owned_tokens": 6962,
+   "owned_lines": 762,
+   "files_created": 26,
+   "files_changed": 3
+  },
+  "file": "variant/size.json"
+ }
+}

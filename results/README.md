@@ -28,6 +28,7 @@ Later repairs and improvements are published beside the build they started from,
 These sit outside the measured setups:
 
 - [Compiled Conduit on PostgreSQL](ruby-compile/roundhouse-spinel-conduit-pg-20260930/README.md): the Rails reviewed version compiled to a native binary with locally patched Roundhouse and Spinel. It passes the production gate and reviewer probe, and is benchmarked in its own session.
+- [Compiled Conduit on upstream heads](ruby-compile/roundhouse-spinel-conduit-pg-20261002/README.md): the same compile variant rebuilt on current Roundhouse and Spinel, with 11 local Roundhouse patches and none to Spinel. It passes the same gate and probe; it has no new benchmark.
 - [Roundhouse + Spinel feasibility](ruby-compile/roundhouse-spinel-v2026.9.18/README.md): the earlier compatibility probe against the September release, with no throughput result.
 - [IHP with an expert brief](one-shot-ihp/README.md#guided-diagnostic-and-integrity): a guided IHP run with a different prompt, excluded from the three scored IHP builds.
 - [Framework-native optimization](../docs/shine-track.md): labeled diagnostics that push finished apps further.

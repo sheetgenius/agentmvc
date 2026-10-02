@@ -1,0 +1,116 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.09kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 1.1s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/ruby:3.3.2-slim
+#4 DONE 3.8s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 210B done
+#5 DONE 0.0s
+
+#6 [base 1/3] FROM docker.io/library/ruby:3.3.2-slim@sha256:4d611590cb3dc3211dc2e42c87347970c0ae9f7ad9c3db17a121d5996296f8ff
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 132.56kB done
+#7 DONE 0.0s
+
+#8 [base 2/3] WORKDIR /rails
+#8 CACHED
+
+#9 [base 3/3] RUN apt-get update -qq && apt-get install --no-install-recommends -y     libpq5 ca-certificates && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [build 2/5] COPY Gemfile Gemfile.lock ./
+#10 CACHED
+
+#11 [build 1/5] RUN apt-get update -qq && apt-get install --no-install-recommends -y     build-essential libpq-dev git && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [build 3/5] RUN bundle install && rm -rf /usr/local/bundle/ruby/*/cache
+#12 CACHED
+
+#13 [build 4/5] COPY . .
+#13 DONE 0.1s
+
+#14 [build 5/5] RUN bundle exec bootsnap precompile -j 1 --gemfile &&     bundle exec bootsnap precompile -j 1 app/ lib/
+#14 DONE 2.6s
+
+#15 [stage-2 1/3] RUN groupadd --system --gid 1000 rails &&     useradd rails --uid 1000 --gid 1000 --create-home
+#15 CACHED
+
+#16 [stage-2 2/3] COPY --from=build --chown=rails:rails /usr/local/bundle /usr/local/bundle
+#16 CACHED
+
+#17 [stage-2 3/3] COPY --from=build --chown=rails:rails /rails /rails
+#17 DONE 0.2s
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 0.2s done
+#18 writing image sha256:cba895f6da723e2301932499b3a80446ff6f7a6ced5ac0bcd84794d044a46d9e done
+#18 naming to docker.io/library/agentmvc-one-shot-v5-gate-v5-final-rails-71099:latest done
+#18 DONE 0.2s
+Success api/hurl/articles.hurl (17 request(s) in 389 ms)
+Success api/hurl/auth.hurl (20 request(s) in 490 ms)
+Success api/hurl/comments.hurl (13 request(s) in 242 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 267 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 1622 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 377 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 192 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 185 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 229 ms)
+Success api/hurl/feed.hurl (12 request(s) in 393 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 200 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 365 ms)
+Success api/hurl/tags.hurl (4 request(s) in 187 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 451 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 386 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 692 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 399 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (33.4/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          7089 ms (0h:0m:7s:89ms)
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (619ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (685ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (301ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (480ms)
+
+  4 passed (2.4s)
+Success s01_jwt_alg_none.hurl (1 request(s) in 2 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 188 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 3 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 182 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 180 ms)
+Success s06_injection_filters.hurl (4 request(s) in 6 ms)
+Success s07_malformed_json.hurl (1 request(s) in 1 ms)
+Success s08_wrong_types.hurl (8 request(s) in 202 ms)
+Success s09_oversized_body.hurl (2 request(s) in 233 ms)
+Success s10_unknown_route.hurl (1 request(s) in 2 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 353 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 3 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 3832 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (10.0/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          5198 ms (0h:0m:5s:198ms)
+
