@@ -1,0 +1,663 @@
+diff --git a/docs/guide/spinel-jobs.md b/docs/guide/spinel-jobs.md
+new file mode 100644
+index 00000000..ab638041
+--- /dev/null
++++ b/docs/guide/spinel-jobs.md
+@@ -0,0 +1,90 @@
++# Spinel server boot hooks and recoverable jobs
++
++The Spinel server lowers literal, zero-argument `config.after_initialize`
++blocks from `config/application.rb` and `config/initializers/**/*.rb` into
++ordinary methods on the emitted `Rails::Application`. Their bodies go through
++app analysis and shared lowering, including model queries and `perform_later`.
++Registration order is application.rb first, then initializer paths in lexical
++order, with source order preserved inside each file.
++
++Server startup configures the database, registers the ActiveJob drain, and
++calls all hooks once inside `Db.with_connection`. Only then does it start the
++job thread and HTTP listener. Requiring `boot.rb` for an emitted test does not
++run hooks. Hook exceptions fail startup visibly; they do not leave a partially
++recovered server accepting requests.
++
++Supported registration forms are `config.after_initialize` in the Rails
++application class or `Rails.application.configure` block, and
++`Rails.application.config.after_initialize` in an initializer. The optional
++outer guard `if defined?(Rails::Server)` is recognized as true at the compiled
++server entry point. Block parameters, proc/symbol callbacks, other conditional
++registration guards, and Rails callback dependency ordering are outside this
++subset. Unsupported recognized registrations produce ingest errors.
++
++## Exact Conduit source variant
++
++Add `config/initializers/recover_exports.rb`:
++
++```ruby
++if defined?(Rails::Server)
++  Rails.application.config.after_initialize do
++    ArticleExport.recover_pending!
++  end
++end
++```
++
++The outer guard keeps CRuby rake, assets, and runner invocations from running
++server recovery. The emitted server does not need a fake `Rails::Server`
++constant: the guard is recognized during ingest, and the lifted method is
++called only by server main. Keep the guard around registration, not inside the
++block body.
++
++Use this compile-friendly, Rails-valid recovery method:
++
++```ruby
++class ArticleExport < ApplicationRecord
++  def self.recover_pending!
++    where(status: "pending").each do |export|
++      ExportArticlesJob.perform_later(export.id)
++    end
++  end
++end
++```
++
++The base currently materializes this query as an Array, so its original
++`find_each` call cannot run. `each` has the same recovery result while loading
++all pending exports at once; it does not provide Rails' batch-memory bound.
++The old docker-entrypoint runner may be removed when server recovery is used
++on the Rails lane; compiled startup runs no Rails runner.
++
++## Queue, transactions, and durability
++
++Spinel uses one FIFO process-local queue and one serial job drain. Enqueue,
++dequeue, pending-count, adapter suspension state, and drain registration use
++one mutex. The mutex is released before executing a job, so slow jobs do not
++hold up enqueue and a job may enqueue another job. Job execution uses a fresh
++DB connection lease per job, clearing the query cache between jobs. A
++`StandardError` logs `[job] a queued job raised: <message>` and the drain
++continues. Jobs are neither automatically retried nor scheduled by priority,
++queue name, or delay. The existing 50 ms idle poll is retained.
++
++Enqueue does **not** wait for an enclosing database transaction to commit.
++A job may begin before the enqueuing HTTP response has been sent. Callers
++must commit their durable pending row before calling `perform_later`.
++Conduit's controller creates its export outside an enclosing transaction,
++then enqueues after that row is committed. Enqueueing inside a transaction,
++or relying on the base's incompletely deferred after-commit callbacks, can
++let the job observe missing/stale data or execute work later rolled back.
++This change does not claim transaction callback parity.
++
++The queue itself is not persistent. Durable application rows plus a boot
++recovery hook provide **at-least-once** restart recovery for exports: a crash
++between row commit and enqueue, during queueing, or while a job is executing
++leaves a pending row that the next startup enqueues again. Persist the
++snapshot, completion status, and timestamp atomically. The job must be
++idempotent; if multiple processes or other job workers can run the same work,
++use a real transaction and row lock to serialize its completion check.
++There is no automatic retry of a failed pending export until another recovery
++runs, and no generic persistent ActiveJob adapter/GoodJob implementation is
++claimed. All new queue and boot code is adapter-agnostic; PostgreSQL dialect,
++row-locking, and snapshot codecs remain separate prerequisites for Conduit.
+diff --git a/runtime/ruby/active_job.rb b/runtime/ruby/active_job.rb
+index cc4b975d..dc1161ee 100644
+--- a/runtime/ruby/active_job.rb
++++ b/runtime/ruby/active_job.rb
+@@ -155,6 +155,22 @@ module ActiveJob
+     PENDING.length
+   end
+ 
++  # The parallel Spinel lane overrides this primitive under its queue
++  # mutex. Execute outside that mutex: jobs can enqueue more work.
++  def self.dequeue
++    PENDING.shift
++  end
++
++  def self.run_queued(work)
++    begin
++      work.call
++      true
++    rescue StandardError => e
++      warn "[job] a queued job raised: " + e.message
++      false
++    end
++  end
++
+   # Run every job queued so far, FIFO, and answer how many ran.
+   #
+   # A RAISE IS ONE LOST JOB, NEVER A LOST DRAIN, and on the spinel lane
+@@ -168,14 +184,10 @@ module ActiveJob
+   # Rails' behaviour for an inline drain too.
+   def self.drain
+     ran = 0
+-    while PENDING.length > 0
+-      work = PENDING.shift
+-      begin
+-        work.call
+-        ran = ran + 1
+-      rescue StandardError => e
+-        warn "[job] a queued job raised: " + e.message
+-      end
++    while true
++      work = dequeue
++      break if work.nil?
++      ran = ran + 1 if run_queued(work)
+     end
+     ran
+   end
+diff --git a/runtime/ruby/active_job.rbs b/runtime/ruby/active_job.rbs
+index 38f7584f..0f89507f 100644
+--- a/runtime/ruby/active_job.rbs
++++ b/runtime/ruby/active_job.rbs
+@@ -17,6 +17,8 @@ module ActiveJob
+   def self.register_drain: () -> nil
+   def self.enqueue: (^() -> nil work) -> nil
+   def self.pending_count: () -> Integer
++  def self.dequeue: () -> (^() -> nil)?
++  def self.run_queued: (^() -> nil work) -> bool
+   def self.drain: () -> Integer
+ 
+   class Base
+diff --git a/runtime/ruby/rails.rb b/runtime/ruby/rails.rb
+index 8e57d352..28431293 100644
+--- a/runtime/ruby/rails.rb
++++ b/runtime/ruby/rails.rb
+@@ -365,6 +365,12 @@ module Rails
+   # real config methods aren't ingested, so they NameError rather than
+   # being silently stubbed.
+   class Application
++    # App config.after_initialize blocks override this with lowered calls.
++    # Called by the server entry point, once after DB and queue setup.
++    def run_after_initialize
++      nil
++    end
++
+     # Name of the cookie the session travels in. This is a FRAMEWORK
+     # DEFAULT, not a stub for un-ingested app config: Rails always has a
+     # session cookie name (it derives one from the app name when the app
+diff --git a/runtime/ruby/rails.rbs b/runtime/ruby/rails.rbs
+index 29805abe..ba56ed37 100644
+--- a/runtime/ruby/rails.rbs
++++ b/runtime/ruby/rails.rbs
+@@ -60,6 +60,7 @@ module Rails
+   end
+ 
+   class Application
++    def run_after_initialize: () -> nil
+     def session_cookie_key: () -> String
+     def global_id_app: () -> String
+     def secret_key_base: () -> String
+diff --git a/runtime/spinel/scaffold/main.rb b/runtime/spinel/scaffold/main.rb
+index 491f09ac..35b606dc 100644
+--- a/runtime/spinel/scaffold/main.rb
++++ b/runtime/spinel/scaffold/main.rb
+@@ -257,25 +257,24 @@ module Main
+   # error ends the process rather than the request, a job that cannot
+   # work takes the server with it.
+   #
+-  # ITS OWN DB LEASE, taken per drain rather than held. `Main.dispatch`
++  # ITS OWN DB LEASE, taken per job rather than held. `Main.dispatch`
+   # wraps each request in `Db.with_connection`, and this fiber is not
+   # inside one — a job that touches a model on a borrowed handle would
+   # be using the connection of whatever request happened to be running.
+-  # Taken around the whole drain rather than per job: the jobs in one
+-  # pass are the ones a single request enqueued, and they are far more
+-  # likely to touch the same rows than not.
++  # Taking a fresh lease also clears the query cache between jobs, and
++  # returns the connection even when a job raises.
+   #
+-  # NOTHING IS RETRIED and nothing survives a restart. The queue is a
+-  # process-local Array — that is the honest shape for a single-worker
+-  # binary with no store, and it is the ledgered limit rather than an
+-  # oversight (docs/pipeline/runtime.md). What it buys over running
+-  # inline is that a job's latency and a job's failure both stop
+-  # belonging to a request.
++  # The queue is process-local, FIFO at dequeue, and does not retry.
++  # Apps can persist pending work and recover it in after_initialize.
++  # Enqueue does not defer until transaction commit: callers must enqueue
++  # after committing their row (or use a correctly deferred callback).
+   def self.job_loop
+     while true
+       sleep(JOB_POLL_INTERVAL)
+-      if ActiveJob.pending_count > 0
+-        Db.with_connection { ActiveJob.drain }
++      while true
++        work = ActiveJob.dequeue
++        break if work.nil?
++        Db.with_connection { ActiveJob.run_queued(work) }
+       end
+     end
+     0
+@@ -714,6 +713,10 @@ Broadcasts.set_transport(Cable::Transport.new)
+ # reaches this line keeps the inline behaviour rather than dropping work
+ # into an Array nobody reads.
+ ActiveJob.register_drain
++# Fail boot visibly if a callback fails. Recovery runs with a DB lease
++# after queue registration, before the drain or listener starts, so all
++# recovered jobs are enqueued rather than executed in this boot thread.
++Db.with_connection { Rails.application.run_after_initialize }
+ Thread.new do
+   Main.job_loop
+ end
+diff --git a/runtime/spinel/thread_state.rb b/runtime/spinel/thread_state.rb
+index fca982ef..4402ea3f 100644
+--- a/runtime/spinel/thread_state.rb
++++ b/runtime/spinel/thread_state.rb
+@@ -201,6 +201,33 @@ module ActiveJob
+   # never holds the queue against the requests still enqueueing.
+   QUEUE_LOCK = Mutex.new
+ 
++  def self.drain_registered
++    registered = false
++    QUEUE_LOCK.synchronize { registered = DRAINED.length > 0 }
++    registered
++  end
++
++  def self.register_drain
++    QUEUE_LOCK.synchronize { DRAINED << "1" if DRAINED.empty? }
++    nil
++  end
++
++  def self.enqueue_only
++    suspended = false
++    QUEUE_LOCK.synchronize { suspended = ENQUEUE_ONLY.length > 0 }
++    suspended
++  end
++
++  def self.enqueue_without_running
++    QUEUE_LOCK.synchronize { ENQUEUE_ONLY << "1" }
++    nil
++  end
++
++  def self.run_enqueued
++    QUEUE_LOCK.synchronize { ENQUEUE_ONLY.pop }
++    nil
++  end
++
+   def self.enqueue(work)
+     QUEUE_LOCK.synchronize do
+       PENDING << work
+@@ -216,22 +243,12 @@ module ActiveJob
+     n
+   end
+ 
+-  def self.drain
+-    ran = 0
+-    while true
+-      work = nil
+-      QUEUE_LOCK.synchronize do
+-        work = PENDING.shift if PENDING.length > 0
+-      end
+-      break if work.nil?
+-      begin
+-        work.call
+-        ran = ran + 1
+-      rescue StandardError => e
+-        warn "[job] a queued job raised: " + e.message
+-      end
++  def self.dequeue
++    work = nil
++    QUEUE_LOCK.synchronize do
++      work = PENDING.shift if PENDING.length > 0
+     end
+-    ran
++    work
+   end
+ end
+ 
+diff --git a/src/ingest/app.rs b/src/ingest/app.rs
+index 0d3795a4..8e906b86 100644
+--- a/src/ingest/app.rs
++++ b/src/ingest/app.rs
+@@ -1047,6 +1047,44 @@ end
+         }
+     }
+ 
++    // Server boot callbacks are ordinary app methods, so analysis and
++    // shared lowerings (model queries, perform_later, etc.) see their bodies.
++    // Initializers are sorted by read_rb_files, after application.rb.
++    {
++        let mut sources = Vec::new();
++        if let Ok(bytes) = vfs.read(&app_config_path) {
++            sources.push((app_config_path.clone(), bytes));
++        }
++        let init_dir = dir.join("config/initializers");
++        if vfs.is_dir(&init_dir) {
++            for path in read_rb_files(vfs, &init_dir)? {
++                sources.push((path.clone(), vfs.read(&path)?));
++            }
++        }
++        let mut hooks = Vec::new();
++        for (path, bytes) in sources {
++            hooks.extend(super::boot_hooks::extract(&bytes, &path.display().to_string())?);
++        }
++        if !hooks.is_empty() {
++            let mut source = String::from("class Rails::Application\n");
++            for (i, body) in hooks.iter().enumerate() {
++                source.push_str(&format!("def __boot_hook_{i}\n{body}\nnil\nend\n"));
++            }
++            source.push_str("def run_after_initialize\n");
++            for i in 0..hooks.len() {
++                source.push_str(&format!("__boot_hook_{i}\n"));
++            }
++            source.push_str("nil\nend\nend\n");
++            let mut classes = ingest_library_classes(source.as_bytes(), "<after_initialize>")?;
++            let hooks = classes.remove(0);
++            if let Some(application) = &mut app.rails_application {
++                application.methods.extend(hooks.methods);
++            } else {
++                app.rails_application = Some(hooks);
++            }
++        }
++    }
++
+     // Top-level constants an initializer defines that are not mixins —
+     // kept or dropped after every app file is read (see
+     // `keep_initializer_defined`).
+@@ -5514,7 +5552,7 @@ fn extract_config_assignments(source: &[u8], file: &str) -> Vec<(Vec<String>, St
+ /// reads back the same way, as a plain method on `Rails::Application`.
+ /// `config_reader` flattens the read side identically, so the two halves
+ /// meet at the same name.
+-fn config_receiver_path(recv: &Option<ruby_prism::Node<'_>>) -> Option<Vec<String>> {
++pub(super) fn config_receiver_path(recv: &Option<ruby_prism::Node<'_>>) -> Option<Vec<String>> {
+     let path = config_path_of(recv.as_ref()?, 0)?;
+     // Only `config.<key>` and the `x` namespace. A deeper chain that is
+     // NOT `x` is a framework subsection (`config.action_mailer.
+diff --git a/src/ingest/boot_hooks.rs b/src/ingest/boot_hooks.rs
+new file mode 100644
+index 00000000..46a798e8
+--- /dev/null
++++ b/src/ingest/boot_hooks.rs
+@@ -0,0 +1,168 @@
++//! Lift zero-argument Rails config.after_initialize blocks into app methods.
++//! The Spinel server invokes them after DB/queue setup, before listening.
++//! A Rails::Server registration guard is true at that entry point; it keeps
++//! the original Rails source from running recovery during rake/assets tasks.
++
++use super::{IngestError, IngestResult};
++use ruby_prism::Node;
++
++pub(super) fn extract(source: &[u8], file: &str) -> IngestResult<Vec<String>> {
++    fn walk(
++        stmts: Vec<Node<'_>>,
++        src: &str,
++        file: &str,
++        out: &mut Vec<String>,
++    ) -> IngestResult<()> {
++        for stmt in stmts {
++            if let Some(class) = stmt.as_class_node() {
++                walk(
++                    class
++                        .body()
++                        .map(super::util::flatten_statements)
++                        .unwrap_or_default(),
++                    src,
++                    file,
++                    out,
++                )?;
++                continue;
++            }
++            if let Some(module) = stmt.as_module_node() {
++                walk(
++                    module
++                        .body()
++                        .map(super::util::flatten_statements)
++                        .unwrap_or_default(),
++                    src,
++                    file,
++                    out,
++                )?;
++                continue;
++            }
++            if let Some(guard) = stmt.as_if_node() {
++                let condition = guard.predicate();
++                let loc = condition.location();
++                let text: String = src[loc.start_offset()..loc.end_offset()]
++                    .chars()
++                    .filter(|c| !c.is_whitespace())
++                    .collect();
++                let mut nested = Vec::new();
++                walk(
++                    guard
++                        .statements()
++                        .map(|s| s.body().iter().collect())
++                        .unwrap_or_default(),
++                    src,
++                    file,
++                    &mut nested,
++                )?;
++                if let Some(branch) = guard.subsequent() {
++                    if let Some(otherwise) = branch.as_else_node() {
++                        walk(
++                            otherwise
++                                .statements()
++                                .map(|s| s.body().iter().collect())
++                                .unwrap_or_default(),
++                            src,
++                            file,
++                            &mut nested,
++                        )?;
++                    } else {
++                        walk(vec![branch], src, file, &mut nested)?;
++                    }
++                }
++                // Other registration guards cannot be discarded: their value
++                // at Rails initialization need not equal their value at boot.
++                if !nested.is_empty()
++                    && (text != "defined?(Rails::Server)" || guard.subsequent().is_some())
++                {
++                    return Err(IngestError::Unsupported { file: file.into(),
++                        message: "after_initialize registration supports only an unguarded block or if defined?(Rails::Server) without else".into() });
++                }
++                out.extend(nested);
++                continue;
++            }
++            if let Some(guard) = stmt.as_unless_node() {
++                let mut nested = Vec::new();
++                walk(
++                    guard
++                        .statements()
++                        .map(|s| s.body().iter().collect())
++                        .unwrap_or_default(),
++                    src,
++                    file,
++                    &mut nested,
++                )?;
++                if let Some(branch) = guard.else_clause() {
++                    walk(
++                        branch
++                            .statements()
++                            .map(|s| s.body().iter().collect())
++                            .unwrap_or_default(),
++                        src,
++                        file,
++                        &mut nested,
++                    )?;
++                }
++                if !nested.is_empty() {
++                    return Err(IngestError::Unsupported {
++                        file: file.into(),
++                        message: "after_initialize registration does not support unless guards"
++                            .into(),
++                    });
++                }
++                continue;
++            }
++            let Some(call) = stmt.as_call_node() else {
++                continue;
++            };
++            let name = super::util::constant_id_str(&call.name());
++            if name == "configure" {
++                if let Some(body) = call
++                    .block()
++                    .and_then(|b| b.as_block_node())
++                    .and_then(|b| b.body())
++                {
++                    walk(super::util::flatten_statements(body), src, file, out)?;
++                }
++                continue;
++            }
++            if name != "after_initialize"
++                || super::app::config_receiver_path(&call.receiver()) != Some(Vec::new())
++            {
++                continue;
++            }
++            let block = call.block().and_then(|b| b.as_block_node());
++            let Some(block) = block else {
++                return Err(IngestError::Unsupported {
++                    file: file.into(),
++                    message: "after_initialize requires a literal zero-argument block".into(),
++                });
++            };
++            if block.parameters().is_some() || call.arguments().is_some() {
++                return Err(IngestError::Unsupported {
++                    file: file.into(),
++                    message: "after_initialize requires a literal zero-argument block".into(),
++                });
++            }
++            let body = block
++                .body()
++                .map(|b| {
++                    let loc = b.location();
++                    src[loc.start_offset()..loc.end_offset()].to_string()
++                })
++                .unwrap_or_default();
++            out.push(body);
++        }
++        Ok(())
++    }
++    let parsed = super::prism::parse(source, file);
++    let root = parsed.node();
++    let stmts = root
++        .as_program_node()
++        .map(|p| p.statements().body().iter().collect())
++        .unwrap_or_default();
++    let src = String::from_utf8_lossy(source);
++    let mut hooks = Vec::new();
++    walk(stmts, &src, file, &mut hooks)?;
++    Ok(hooks)
++}
+diff --git a/src/ingest/mod.rs b/src/ingest/mod.rs
+index 88842a06..754792c0 100644
+--- a/src/ingest/mod.rs
++++ b/src/ingest/mod.rs
+@@ -20,6 +20,7 @@ mod class_configuration;
+ pub mod allow_browser;
+ pub mod app;
+ mod concern_accessors;
++mod boot_hooks;
+ pub mod controller;
+ pub mod expr;
+ pub mod fixture;
+diff --git a/tests/boot_hooks.rs b/tests/boot_hooks.rs
+new file mode 100644
+index 00000000..967d3685
+--- /dev/null
++++ b/tests/boot_hooks.rs
+@@ -0,0 +1,111 @@
++//! after_initialize must run as lowered app code, and only in server main.
++use roundhouse::project::{BuildTarget, target_files};
++use std::collections::HashMap;
++use std::io::Write;
++use std::path::{Path, PathBuf};
++use std::process::{Command, Stdio};
++
++fn app(initializer: &str) -> Result<roundhouse::App, roundhouse::ingest::IngestError> {
++    let files = [
++        (
++            "config/application.rb",
++            "module BootFixture\n class Application < Rails::Application\n config.after_initialize { BootProbe.mark(1) }\n end\nend\n",
++        ),
++        ("config/initializers/a.rb", initializer),
++        (
++            "app/models/application_record.rb",
++            "class ApplicationRecord < ActiveRecord::Base\nend\n",
++        ),
++        (
++            "app/controllers/application_controller.rb",
++            "class ApplicationController < ActionController::Base\nend\n",
++        ),
++        (
++            "app/controllers/probes_controller.rb",
++            "class ProbesController < ApplicationController\n def index\n render \"ok\"\n end\nend\n",
++        ),
++        (
++            "app/services/boot_probe.rb",
++            "class BootProbe\n def self.mark(value)\n value\n end\nend\n",
++        ),
++        (
++            "config/routes.rb",
++            "Rails.application.routes.draw { root \"probes#index\" }\n",
++        ),
++        ("db/schema.rb", "ActiveRecord::Schema.define {}\n"),
++    ];
++    let tree: HashMap<PathBuf, Vec<u8>> = files
++        .into_iter()
++        .map(|(p, s)| (p.into(), s.as_bytes().to_vec()))
++        .collect();
++    roundhouse::ingest::ingest_app_from_tree(tree)
++}
++
++#[test]
++fn boot_hooks_emit_and_run_in_registration_order() {
++    let mut app = app("if defined?(Rails::Server)\n Rails.application.config.after_initialize { BootProbe.mark(2) }\nend\nRails.application.configure do\n config.after_initialize { BootProbe.mark(3) }\nend\n").unwrap();
++    let diags = roundhouse::session::analyze_and_lower(&mut app);
++    assert!(
++        !diags
++            .iter()
++            .any(|d| d.severity == roundhouse::diagnostic::Severity::Error),
++        "{diags:?}"
++    );
++    let files = target_files(&app, Path::new("."), BuildTarget::Spinel).unwrap();
++    let config = &files
++        .iter()
++        .find(|(p, _)| p == "config/application.rb")
++        .unwrap()
++        .1;
++    let main = &files.iter().find(|(p, _)| p == "main.rb").unwrap().1;
++    let setup = main.rfind("Main.configure_default_adapter!").unwrap();
++    let register = main.rfind("ActiveJob.register_drain").unwrap();
++    let hooks = main
++        .find("Db.with_connection { Rails.application.run_after_initialize }")
++        .unwrap();
++    let thread = main[hooks..].find("Thread.new").unwrap() + hooks;
++    let listener = main.rfind("Tep::Server::Threaded.new").unwrap();
++    assert!(setup < register && register < hooks && hooks < thread && thread < listener);
++    assert_eq!(
++        main.matches("Rails.application.run_after_initialize")
++            .count(),
++        1
++    );
++    let boot = &files.iter().find(|(p, _)| p == "boot.rb").unwrap().1;
++    assert!(!boot.contains("run_after_initialize")); // requiring the app never runs hooks
++    let script = format!(
++        "module Rails; end\nclass BootProbe\n LOG = []\n def self.mark(value); LOG << value; end\nend\n{config}\nraise 'ran at require' unless BootProbe::LOG.empty?\nRails::Application.new.run_after_initialize\nraise BootProbe::LOG.inspect unless BootProbe::LOG == [1, 2, 3]\n"
++    );
++    let mut child = Command::new("ruby")
++        .arg("-")
++        .stdin(Stdio::piped())
++        .stdout(Stdio::piped())
++        .stderr(Stdio::piped())
++        .spawn()
++        .unwrap();
++    child
++        .stdin
++        .take()
++        .unwrap()
++        .write_all(script.as_bytes())
++        .unwrap();
++    let output = child.wait_with_output().unwrap();
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++}
++
++#[test]
++fn boot_hooks_reject_unlowered_registration_forms() {
++    for source in [
++        "Rails.application.config.after_initialize { |app| app.recover! }",
++        "Rails.application.config.after_initialize :recover!",
++        "if ENV['RECOVER']\n Rails.application.config.after_initialize { BootProbe.mark(2) }\nend",
++        "if defined?(Rails::Server)\n nil\nelse\n Rails.application.config.after_initialize { BootProbe.mark(2) }\nend",
++        "unless ENV['SKIP']\n Rails.application.config.after_initialize { BootProbe.mark(2) }\nend",
++    ] {
++        assert!(app(source).is_err(), "silently dropped: {source}");
++    }
++}

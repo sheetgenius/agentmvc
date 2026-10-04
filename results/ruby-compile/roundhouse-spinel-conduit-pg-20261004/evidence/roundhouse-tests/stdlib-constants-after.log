@@ -1,0 +1,31 @@
+   Compiling roundhouse v2026.9.18 (/work/app/src/roundhouse)
+warning: unused variable: `parenthesized`
+   --> src/lower/enumerable_ext.rs:203:53
+    |
+203 |     let ExprNode::Send { recv, method, args, block, parenthesized } = &mut *expr.node else {
+    |                                                     ^^^^^^^^^^^^^ help: try ignoring the field: `parenthesized: _`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: `roundhouse` (lib) generated 1 warning (run `cargo fix --lib -p roundhouse` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.11s
+     Running tests/qualified_constant_reads.rs (target/debug/deps/qualified_constant_reads-324345cddd32fd4d)
+
+running 7 tests
+test a_bare_model_read_uses_its_source_declaration ... ok
+test an_absolute_nested_constant_keeps_its_root_and_resolves_its_owner ... ok
+test the_owner_is_resolved_the_way_ruby_resolves_it ... ok
+test a_qualified_class_read_is_the_class_not_a_same_named_constant ... ok
+test a_qualified_constant_read_still_resolves_through_its_owner ... ok
+test an_absolute_class_uses_the_same_registry_identity_as_a_bare_class ... ok
+test source_references_use_ruby_lexical_nesting_not_the_body_self_class ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/stdlib_constant_execution.rs (target/debug/deps/stdlib_constant_execution-3b4713b1cd127e0e)
+
+running 1 test
+test struct_mutex_and_json_error_constants_execute_after_emission ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+

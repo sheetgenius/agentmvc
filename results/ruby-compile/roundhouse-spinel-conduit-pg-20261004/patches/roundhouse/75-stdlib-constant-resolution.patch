@@ -1,0 +1,106 @@
+diff --git a/src/analyze/registry/stdlib.rs b/src/analyze/registry/stdlib.rs
+index 52264976..294fd38c 100644
+--- a/src/analyze/registry/stdlib.rs
++++ b/src/analyze/registry/stdlib.rs
+@@ -409,7 +409,7 @@ pub(in crate::analyze) fn register(classes: &mut HashMap<ClassId, ClassInfo>) {
+         // Both CRuby's bundled libraries and Spinel's uri/net packages
+         // define these exception classes; emitted requires load them.
+         "URI::InvalidURIError", "Net::OpenTimeout", "Net::ReadTimeout",
+-        "OpenSSL::OpenSSLError",
++        "OpenSSL::OpenSSLError", "JSON::ParserError",
+     ] {
+         register_stdlib_class(classes, exc, &[], &[
+             ("message", Ty::Str),
+@@ -521,6 +521,12 @@ pub(in crate::analyze) fn register(classes: &mut HashMap<ClassId, ClassInfo>) {
+     // JSON dispatch is already intrinsic in BodyTyper and the emitters;
+     // a source-backed reference must also recognize its exact namespace.
+     register_stdlib_class(classes, "JSON", &[], &[]);
++    // Ruby and Spinel provide both core classes. The existing constructor
++    // rule carries Struct.new's value into an assigned constant, so reads
++    // of that constant and Mutex.new retain their source expressions.
++    // Do not invent member or synchronization return types here.
++    register_stdlib_class(classes, "Struct", &[], &[]);
++    register_stdlib_class(classes, "Mutex", &[], &[]);
+     // `Array.wrap` is folded by `lower::enumerable_ext` before emit.
+     // Registered so the analyzer does not report it as unknown. The
+     // element type is not known from a scalar argument.
+diff --git a/src/project.rs b/src/project.rs
+index 1c6608fd..09e6630b 100644
+--- a/src/project.rs
++++ b/src/project.rs
+@@ -3608,7 +3608,8 @@ fn report_unsupported_bundled_constants(app: &App, target: BuildTarget) {
+                 if matches!(id.0.as_str(),
+                     "URI::HTTP" | "URI::InvalidURIError" | "Net::OpenTimeout" | "Net::ReadTimeout"
+                     | "Net::HTTPRedirection" | "Net::HTTPOK" | "StringIO" | "OpenSSL::OpenSSLError"
+-                    | "Rails::HTML5::SafeListSanitizer" | "JSON")
++                    | "Rails::HTML5::SafeListSanitizer" | "JSON" | "JSON::ParserError"
++                    | "Struct" | "Mutex")
+                     // Nokogiri does not supply HTML5 on JRuby. The
+                     // other bundled values remain available there.
+                     && (target != "jruby" || id.0.as_str() == "Rails::HTML5::SafeListSanitizer")
+diff --git a/tests/emitted_require_graph.rs b/tests/emitted_require_graph.rs
+index a0d28791..3fe68177 100644
+--- a/tests/emitted_require_graph.rs
++++ b/tests/emitted_require_graph.rs
+@@ -180,7 +180,7 @@ fn bundled_class_constants_are_ledgered_only_on_targets_without_them() {
+   def index
+     [URI::HTTP, URI::InvalidURIError, Net::OpenTimeout, Net::ReadTimeout,
+      Net::HTTPRedirection, Net::HTTPOK, StringIO, OpenSSL::OpenSSLError,
+-     Rails::HTML5::SafeListSanitizer, JSON]
++     Rails::HTML5::SafeListSanitizer, JSON, JSON::ParserError, Struct, Mutex]
+   end
+ end
+ "#),
+@@ -212,10 +212,10 @@ end
+             assert_eq!(gaps[0].severity, roundhouse::diagnostic::Severity::Error);
+             assert!(!gaps[0].span.is_synthetic(), "{gaps:?}");
+         } else {
+-            assert_eq!(gaps.len(), 10, "{target:?}: {gaps:?}");
++            assert_eq!(gaps.len(), 13, "{target:?}: {gaps:?}");
+             for name in ["URI::HTTP", "URI::InvalidURIError", "Net::OpenTimeout", "Net::ReadTimeout",
+                 "Net::HTTPRedirection", "Net::HTTPOK", "StringIO", "OpenSSL::OpenSSLError",
+-                "Rails::HTML5::SafeListSanitizer", "JSON"] {
++                "Rails::HTML5::SafeListSanitizer", "JSON", "JSON::ParserError", "Struct", "Mutex"] {
+                 let gap = gaps.iter().find(|d| d.message.contains(name)).expect(name);
+                 assert_eq!(gap.severity, roundhouse::diagnostic::Severity::Error);
+                 assert!(!gap.span.is_synthetic(), "{gap:?}");
+diff --git a/tests/stdlib_constant_execution.rs b/tests/stdlib_constant_execution.rs
+new file mode 100644
+index 00000000..04234e7f
+--- /dev/null
++++ b/tests/stdlib_constant_execution.rs
+@@ -0,0 +1,34 @@
++//! Ruby and Spinel supply these constants; resolving source names must
++//! preserve the constructors and rescue classes in emitted Ruby.
++#[path = "support/emit_and_run.rs"]
++mod emit_and_run;
++
++#[test]
++fn struct_mutex_and_json_error_constants_execute_after_emission() {
++    emit_and_run::empty_app()
++        .write("db/schema.rb", "ActiveRecord::Schema.define do\n  create_table :items do |t|\n    t.string :name\n  end\nend\n")
++        .write("app/controllers/application_controller.rb", "class ApplicationController < ActionController::Base\nend\n")
++        .write("config/routes.rb", "Rails.application.routes.draw do\nend\n")
++        .write("app/services/registry.rb", r#"require "json"
++class Registry
++  Entry = Struct.new(:lock, :members)
++  def self.entry
++    Entry.new(Mutex.new, {})
++  end
++  def self.parse(text)
++    JSON.parse(text)
++  rescue JSON::ParserError
++    nil
++  end
++end
++"#)
++        .run_ruby(r#"
++entry = Registry.entry
++entry.lock.synchronize { entry.members["member"] = 7 }
++raise "struct or mutex lost" unless entry.members == { "member" => 7 }
++raise "valid JSON changed" unless Registry.parse('{"ok":true}') == { "ok" => true }
++raise "JSON rescue lost" unless Registry.parse('{') == nil
++puts "stdlib constant execution passed"
++"#)
++        .assert_passes();
++}

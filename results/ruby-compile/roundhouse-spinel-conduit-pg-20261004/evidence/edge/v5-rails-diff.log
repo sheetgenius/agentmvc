@@ -1,0 +1,15 @@
+DIFF update_email_spaces: 200 {"user": {"email": "   ", "token": "[redacted]", "username": "u14", "bio": null, "image": null}}
+     vs 422 {"errors": {"email": ["can't be blank"]}}
+DIFF after_email_spaces: 200 {"user": {"email": "   ", "token": "[redacted]", "username": "u14", "bio": null, "image": null}}
+     vs 200 {"user": {"email": "[redacted-email]", "token": "[redacted]", "username": "u14", "bio": null, "image": null}}
+DIFF login_email_spaces_password123: [redacted] {"errors": {"credentials": ["invalid"]}}
+     vs 200 {"user": {"email": "[redacted-email]", "token": "[redacted]", "username": "u14", "bio": null, "image": null}}
+DIFF update_password_null: [redacted] {"errors": {"password": [redacted]"can't be blank"]}}
+     vs 422 {"errors": {"password": [redacted]"can't be blank", "can't be blank"]}}
+DIFF update_password_number: [redacted] {"user": {"email": "[redacted-email]", "token": "[redacted]", "username": "u20", "bio": null, "image": null}}
+     vs 500 {"status": 500, "error": "Internal Server Error"}
+DIFF login_password_number_password123: [redacted] {"errors": {"credentials": ["invalid"]}}
+     vs 200 {"user": {"email": "[redacted-email]", "token": "[redacted]", "username": "u20", "bio": null, "image": null}}
+DIFF login_password_number_123456789: [redacted] {"user": {"email": "[redacted-email]", "token": "[redacted]", "username": "u20", "bio": null, "image": null}}
+     vs 401 {"errors": {"credentials": ["invalid"]}}
+7 of 166 differ (conduit-v6-baseline:v5 vs conduit-v6-rails:reference-1)
