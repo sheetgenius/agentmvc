@@ -1,0 +1,35 @@
+# syntax=docker/dockerfile:1
+# Compiled production image for the Conduit compile variant v6 (Roundhouse -> Spinel, PostgreSQL/libpq lane).
+# Toolchain: roundhouse main ac1fa43e + patches/series (12), Spinel master b7d04a903 unpatched (see SHA256SUMS).
+ARG TOOLCHAIN_IMAGE=conduit-v6-toolchain:2b395944ea25
+FROM ${TOOLCHAIN_IMAGE} AS toolchain
+RUN echo '2b395944ea25f8989ba9bea324514968caacedd86bf51f82e3a0b3c54556ea4f  /usr/local/share/roundhouse-patches/SHA256SUMS' | sha256sum -c -
+
+FROM toolchain AS build
+ENV RH_DATABASE_ADAPTER=postgresql CC=clang MAKEFLAGS=-j8
+WORKDIR /src/app
+COPY . .
+RUN roundhouse check /src/app && roundhouse --target spinel -o /build /src/app
+WORKDIR /build
+RUN spin build -- --cc=clang --jobs=8 \
+    && mkdir -p /runtime/static /runtime/public /runtime/db /runtime/config /runtime/storage \
+    && set -- build/bin/* && test "$#" -eq 1 && test -x "$1" \
+    && install -m755 "$1" /runtime/server && strip /runtime/server \
+    && for dir in static public db config; do if [ -d "$dir" ]; then cp -a "$dir/." "/runtime/$dir/"; fi; done \
+    && test -s /runtime/db/structure.sql && ldd /runtime/server
+
+FROM debian:trixie-slim@sha256:020c0d20b9880058cbe785a9db107156c3c75c2ac944a6aa7ab59f2add76a7bd AS runtime
+RUN apt-get update -qq \
+    && apt-get install --no-install-recommends -y libpq5 libjemalloc2 ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home --home-dir /app app
+WORKDIR /app
+COPY --from=build --chown=10001:10001 /runtime/ ./
+USER 10001:10001
+# Deploy configuration, not a toolchain patch: OS workers per process for the declared 2-CPU budget,
+# at the PostgreSQL lane's 2 workers per CPU (v4 derived the same 4 from the cgroup quota with a local
+# Spinel patch). Spinel reads SPINEL_WORKERS at the first Thread.new and logs it in the boot banner.
+ENV SPINEL_WORKERS=4
+ENV PORT=8080
+EXPOSE 8080
+ENTRYPOINT ["/app/server"]

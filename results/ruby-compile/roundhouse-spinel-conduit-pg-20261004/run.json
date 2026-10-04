@@ -1,0 +1,207 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v6-upstream-heads",
+  "date": "2026-10-04",
+  "previous": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261002 (v5; unchanged)",
+  "benchmark_reference": "results/ruby-compile/roundhouse-spinel-conduit-pg-20260930 (v4)",
+  "source": {
+    "reference": "results/one-shot-v2-rails-expert/pilot-1/reference-1/source",
+    "base_variant": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261002/variant/source (v5)",
+    "variant": "variant/source (compile variant v6)",
+    "ledger": "variant/source/COMPILE-VARIANT.md (v6 section appended)",
+    "gated_files_sha256": "reproduce/gated-source.sha256 (75 files, excluding ledger)",
+    "app_delta_vs_reference": "16 application/config files, +184/-46; unchanged from v5",
+    "v5_control": "evidence/source-control.json"
+  },
+  "toolchain": {
+    "roundhouse_base": "ac1fa43e3d7fce8cae4dd31a4694ea6b10093ceb",
+    "roundhouse_patches": "patches/roundhouse/series (12)",
+    "roundhouse_delta": {
+      "files": 83,
+      "added": 3243,
+      "removed": 224
+    },
+    "spinel_base": "b7d04a903c909ee6681c6b203ded8830841d114e",
+    "spinel_patches": [],
+    "manifest_sha256": "2b395944ea25f8989ba9bea324514968caacedd86bf51f82e3a0b3c54556ea4f",
+    "toolchain_image": "conduit-v6-toolchain:2b395944ea25",
+    "toolchain_image_id": "sha256:9d5176550e5c2903663522d2133c2483be6a6e1a8e08c852c042d7866581c78c",
+    "vendor_tree_sha256": {
+      "roundhouse": "16ce7d31f32fcaea4c2f43ccd4ada25cdefbfe0b82caf31406a169e8cce87457",
+      "spinel": "d5a0ecbf6fd2bceed3074c71fb197de6fdca952fa390c0ae2be6b64ce42172b3"
+    },
+    "versions": "roundhouse 2026.9.18 (ac1fa43e); spinel 2026.09.12+4823 (b7d04a903)",
+    "workers": "ENV SPINEL_WORKERS=4; unchanged from v5",
+    "flags": "Rust 1.98.1; RH_DATABASE_ADAPTER=postgresql; strict emit; spin build -- --cc=clang --jobs=8"
+  },
+  "images": {
+    "toolchain": {
+      "tag": "conduit-v6-toolchain:2b395944ea25",
+      "id": "sha256:9d5176550e5c2903663522d2133c2483be6a6e1a8e08c852c042d7866581c78c",
+      "bytes": 1967851292
+    },
+    "compiled": {
+      "tag": "conduit-v6-app:compiled",
+      "id": "sha256:e668f08278fa8e0870c60770981affd0f0f0e7571ddf9b8f50df74ac5160daf2",
+      "bytes": 119142256,
+      "server_sha256": "870f90a6ee2febf12243c37ba523b54eb48e8c4887935c4e75a50318c1946715"
+    },
+    "variant_rails": {
+      "tag": "conduit-v6-app:cruby",
+      "id": "sha256:94a28f04b8dd213a4e8bcfb9009f80844bcdbba14ddeaf3c6b9f9c3d7d85f9db",
+      "bytes": 324105581
+    },
+    "reference_rails": {
+      "tag": "conduit-v6-rails:reference-1",
+      "id": "sha256:fcc4d0d1710c61283c53d387cdb841c3553fe959a6007228f1b71ea4f4fcd337",
+      "bytes": 324043851
+    },
+    "v5": {
+      "tag": "conduit-v6-baseline:v5",
+      "id": "sha256:35e20405d6257ee3d3478a480d2fa3086b55fa5c08803f8ff6b2c8134443bd78",
+      "bytes": 119144695
+    }
+  },
+  "gates": {
+    "compiled_production_gate": {
+      "exit": 0,
+      "log": "evidence/gates/compiled-v6-production-gate.log"
+    },
+    "variant_rails_production_gate": {
+      "exit": 0,
+      "log": "evidence/gates/variant-v6-on-rails-production-gate.log"
+    },
+    "control_v5_source_on_v6_toolchain": {
+      "exit": 0,
+      "log": "evidence/gates/control-v5-source-on-v6-toolchain-production-gate.log",
+      "note": "Executed before the v6 ledger was appended. All other 75 source files are byte-identical to the v5 source."
+    },
+    "common_http_probe": {
+      "contract": "21/21",
+      "quality": "3/3",
+      "file": "evidence/compiled-v6-common-http-probe.json"
+    },
+    "workaround_reverts": {
+      "accepted": [],
+      "trials": [
+        {
+          "name": "throttle-reference",
+          "exit": 4,
+          "failure": "500 instead of 401: no Array#reject! dispatch"
+        },
+        {
+          "name": "throttle-reject",
+          "exit": 4,
+          "failure": "500 instead of 401: no Array#reject! dispatch"
+        },
+        {
+          "name": "throttle-raise",
+          "exit": 4,
+          "failure": "511 instead of 429 at security rate-limit check"
+        },
+        {
+          "name": "author-loaded",
+          "exit": 1,
+          "failure": "Strict Roundhouse analysis: no known association method on Article"
+        }
+      ],
+      "dir": "evidence/gates/reverts"
+    },
+    "roundhouse_tests": {
+      "focused_passed": 49,
+      "focused_ignored": 4,
+      "target_capability_passed": 1,
+      "runtime_typing": {
+        "patched": "fail: 559 untyped sites, ceiling 521",
+        "upstream": "pass"
+      },
+      "dir": "evidence/roundhouse-tests"
+    }
+  },
+  "edge_comparison": {
+    "requests": 166,
+    "v6_vs_v5_differences": 0,
+    "v6_vs_rails_reference_differences": 7,
+    "v5_vs_rails_reference_differences": 7,
+    "dir": "evidence/edge",
+    "summary": "evidence/edge/summary.json"
+  },
+  "timing": {
+    "run": false,
+    "reason": "Shared host with another developer; no throughput claims. v4 remains the benchmark reference."
+  },
+  "upstream_merged": {
+    "roundhouse": [
+      297,
+      299,
+      304,
+      376,
+      384
+    ],
+    "note": "#299 contributes upstream bigint support but retires no v5 hunk."
+  },
+  "new_regression_patch": {
+    "patch": 75,
+    "introducing_commit": "78169247c9156acf7d2abde58dbc75e0f27685c0",
+    "merged_pr": 279,
+    "evidence": "evidence/roundhouse-tests/stdlib-at-rubydex.log"
+  },
+  "reproduction": {
+    "fresh_upstream_clones": true,
+    "vendor_digests_match": true,
+    "compiled_image_reproduced": true,
+    "production_gate_exit": 0,
+    "dir": "evidence/reproduction"
+  },
+  "owned_size": {
+    "rules": "tools/measure.py with stacks/rails-expert/stack.json, baseline stacks/rails-expert/scaffold",
+    "reference-1": {
+      "tokens": 12654,
+      "lines": 1283,
+      "code_lines": 1008,
+      "owned_tokens": 6085,
+      "owned_lines": 657,
+      "files_created": 23,
+      "files_changed": 3
+    },
+    "v5_incl_structure_sql": {
+      "tokens": 19413,
+      "lines": 1967,
+      "code_lines": 1389,
+      "owned_tokens": 10235,
+      "owned_lines": 1038,
+      "files_created": 27,
+      "files_changed": 3
+    },
+    "v5_excl_structure_sql": {
+      "tokens": 13902,
+      "lines": 1410,
+      "code_lines": 1113,
+      "owned_tokens": 6962,
+      "owned_lines": 762,
+      "files_created": 26,
+      "files_changed": 3
+    },
+    "v6_incl_structure_sql": {
+      "tokens": 19413,
+      "lines": 1967,
+      "code_lines": 1389,
+      "owned_tokens": 10235,
+      "owned_lines": 1038,
+      "files_created": 27,
+      "files_changed": 3
+    },
+    "v6_excl_structure_sql": {
+      "tokens": 13902,
+      "lines": 1410,
+      "code_lines": 1113,
+      "owned_tokens": 6962,
+      "owned_lines": 762,
+      "files_created": 26,
+      "files_changed": 3
+    }
+  },
+  "repository_checks": {
+    "passed": true,
+    "dir": "evidence/repository-checks"
+  }
+}

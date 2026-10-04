@@ -1,0 +1,18 @@
+   Compiling roundhouse v2026.9.18 (/work/app/src/roundhouse-base)
+warning: unused variable: `parenthesized`
+   --> src/lower/enumerable_ext.rs:203:53
+    |
+203 |     let ExprNode::Send { recv, method, args, block, parenthesized } = &mut *expr.node else {
+    |                                                     ^^^^^^^^^^^^^ help: try ignoring the field: `parenthesized: _`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: `roundhouse` (lib) generated 1 warning (run `cargo fix --lib -p roundhouse` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.46s
+     Running tests/runtime_src_integration.rs (/work/app/src/roundhouse/target/debug/deps/runtime_src_integration-262eae67de34c55d)
+
+running 1 test
+test every_runtime_method_body_concretely_typed ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.10s
+

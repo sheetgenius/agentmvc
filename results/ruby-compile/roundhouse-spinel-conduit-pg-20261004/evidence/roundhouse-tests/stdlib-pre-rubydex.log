@@ -1,0 +1,135 @@
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.45
+   Compiling unicode-ident v1.0.24
+   Compiling cfg-if v1.0.4
+   Compiling serde_core v1.0.228
+   Compiling memchr v2.8.0
+   Compiling glob v0.3.3
+   Compiling clang-sys v1.8.1
+   Compiling log v0.4.29
+   Compiling prettyplease v0.2.37
+   Compiling libc v0.2.185
+   Compiling syn v2.0.117
+   Compiling minimal-lexical v0.2.1
+   Compiling regex-syntax v0.8.10
+   Compiling itoa v1.0.18
+   Compiling serde v1.0.228
+   Compiling regex-automata v0.4.14
+   Compiling nom v7.1.3
+   Compiling serde_derive v1.0.228
+   Compiling libloading v0.8.9
+   Compiling either v1.15.0
+   Compiling shlex v1.3.0
+   Compiling bindgen v0.72.1
+   Compiling itertools v0.13.0
+   Compiling cexpr v0.6.0
+   Compiling regex v1.12.3
+   Compiling find-msvc-tools v0.1.9
+   Compiling bitflags v2.11.1
+   Compiling rustc-hash v2.1.2
+   Compiling cc v1.2.60
+   Compiling zmij v1.0.21
+   Compiling equivalent v1.0.2
+   Compiling serde_json v1.0.149
+   Compiling foldhash v0.2.0
+   Compiling hashbrown v0.17.0
+   Compiling crc32fast v1.5.0
+   Compiling ryu v1.0.23
+   Compiling unsafe-libyaml v0.2.11
+   Compiling indexmap v2.14.0
+   Compiling ruby-prism-sys v1.9.0
+   Compiling crossbeam-utils v0.8.21
+   Compiling simd-adler32 v0.3.9
+   Compiling rustix v1.1.4
+   Compiling errno v0.3.14
+   Compiling serde_yaml v0.9.34+deprecated
+   Compiling ruby-rbs-sys v0.3.0
+   Compiling thiserror v2.0.18
+   Compiling adler2 v2.0.1
+   Compiling miniz_oxide v0.8.9
+   Compiling ruby-rbs v0.3.0
+   Compiling ruby-prism v1.9.0
+   Compiling thiserror-impl v2.0.18
+   Compiling zip v2.4.2
+   Compiling pulldown-cmark v0.13.4
+   Compiling bitflags v1.3.2
+   Compiling bumpalo v3.20.2
+   Compiling zopfli v0.8.3
+   Compiling fluent-uri v0.1.4
+   Compiling crossbeam-channel v0.5.15
+   Compiling xattr v1.6.1
+   Compiling flate2 v1.1.9
+   Compiling filetime v0.2.27
+   Compiling hashlink v0.12.2
+   Compiling displaydoc v0.2.5
+   Compiling serde_repr v0.1.20
+   Compiling roundhouse v2026.9.18 (/work/app/src/roundhouse-base)
+   Compiling unicase v2.9.0
+   Compiling arraydeque v0.5.1
+   Compiling pulldown-cmark-escape v0.11.0
+   Compiling yaml-rust2 v0.13.0
+   Compiling lsp-types v0.97.0
+   Compiling tar v0.4.45
+   Compiling lsp-server v0.7.9
+   Compiling serde_yaml_ng v0.10.0
+warning: unused import: `synthesize_implicit_render`
+  --> src/lower/controller_to_library/mod.rs:44:65
+   |
+44 |     has_toplevel_terminal, synthesize_deferred_implicit_render, synthesize_implicit_render,
+   |                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unreachable pattern
+    --> src/analyze/body/send.rs:1685:48
+     |
+1684 |         "iso8601" | "rfc2822" | "rfc3339" | "to_s" | "to_fs" | "to_formatted_s"
+     |                     --------- matches all the relevant values
+1685 |         | "strftime" | "httpdate" | "rfc822" | "rfc2822" | "ctime" | "asctime" | "inspect"
+     |                                                ^^^^^^^^^ no value can reach this
+     |
+     = note: `#[warn(unreachable_patterns)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `singular` is never read
+   --> src/lower/model_to_library/broadcasts.rs:705:5
+    |
+704 | struct OwnerRef {
+    |        -------- field in this struct
+705 |     singular: String,
+    |     ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `string_values_of` is never used
+   --> src/lower/send_dispatch.rs:849:4
+    |
+849 | fn string_values_of(e: &Expr, consts: &HashMap<&str, &Expr>) -> Option<BTreeSet<String>> {
+    |    ^^^^^^^^^^^^^^^^
+
+warning: function `eq_empty_str` is never used
+   --> src/lower/rich_text.rs:763:4
+    |
+763 | fn eq_empty_str(recv: Expr) -> Expr {
+    |    ^^^^^^^^^^^^
+
+warning: function `walk_dir_partitioned` is never used
+    --> src/project.rs:6085:4
+     |
+6085 | fn walk_dir_partitioned(
+     |    ^^^^^^^^^^^^^^^^^^^^
+
+warning: function `walk_dir_flat` is never used
+    --> src/project.rs:6133:4
+     |
+6133 | fn walk_dir_flat(
+     |    ^^^^^^^^^^^^^
+
+warning: `roundhouse` (lib) generated 7 warnings (run `cargo fix --lib -p roundhouse` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 50.56s
+     Running tests/stdlib_constant_execution.rs (build/constant-bisect-target/debug/deps/stdlib_constant_execution-1c558d450f143ecb)
+
+running 1 test
+test struct_mutex_and_json_error_constants_execute_after_emission ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+

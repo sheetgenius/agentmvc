@@ -1,0 +1,507 @@
+diff --git areference-1/app/controllers/application_controller.rb bvariant/app/controllers/application_controller.rb
+index 3eba7df..c55d2c6 100644
+--- areference-1/app/controllers/application_controller.rb
++++ bvariant/app/controllers/application_controller.rb
+@@ -15,7 +15,7 @@ class ApplicationController < ActionController::API
+   rescue_from ActiveRecord::RecordNotUnique do
+     render json: { errors: { base: [ "has already been taken" ] } }, status: :conflict
+   end
+-  rescue_from ActionDispatch::Http::Parameters::ParseError, ActionController::BadRequest do
++  rescue_from JSON::ParserError, ActionDispatch::Http::Parameters::ParseError, ActionController::BadRequest do
+     render json: { errors: { body: [ "is invalid" ] } }, status: :bad_request
+   end
+ 
+@@ -30,10 +30,10 @@ class ApplicationController < ActionController::API
+     header = request.authorization.to_s
+     return if header.empty?
+     raise Failure.new(401, :token, "is invalid") unless header.start_with?("Token ")
+-    payload = JWT.decode(header.delete_prefix("Token "), Rails.application.secret_key_base, true, algorithm: "HS256").first
++    payload = TokenCodec.decode(header.delete_prefix("Token "), Rails.application.secret_key_base)
+     @current_user = User.find_by(id: payload["sub"])
+     raise Failure.new(401, :token, "is invalid") unless @current_user
+-  rescue JWT::DecodeError
++  rescue TokenCodec::DecodeError
+     raise Failure.new(401, :token, "is invalid")
+   end
+ 
+@@ -41,14 +41,68 @@ class ApplicationController < ActionController::API
+     raise Failure.new(401, :token, "is missing") unless @current_user
+   end
+ 
+-  def object!(name)
+-    value = params[name]
+-    raise Failure.new(422, name, "is invalid") unless value.is_a?(ActionController::Parameters)
++  # Compile variant: the compiled lane's `params` hold strings only, so JSON request bodies are
++  # read here with their JSON types. Rails parses a JSON body lazily on the first `params` read
++  # (malformed -> ParseError -> 400 below); `param` parses first to keep that error order.
++  JSON_MEDIA_TYPES = %w[application/json text/x-json application/jsonrequest].freeze
++  # ParamsWrapper (on by default for JSON in API mode) nests unwrapped bodies under the
++  # controller's model name, keeping only the model's attribute names.
++  WRAPPED_ATTRIBUTES = {
++    "user" => %w[id username email password_digest bio image created_at updated_at],
++    "article" => %w[id author_id slug title description body tag_list status published_at revision created_at updated_at],
++    "comment" => %w[id article_id author_id body created_at updated_at]
++  }.freeze
++
++  def json_body
++    unless @json_body_parsed
++      media = request.headers["Content-Type"].to_s.split(";").first.to_s.strip.downcase
++      raw = request.raw_post.to_s
++      value = JSON_MEDIA_TYPES.include?(media) && !raw.empty? ? JSON.parse(raw) : {}
++      @json_body = value.is_a?(Hash) ? value : {}
++      @json_media = JSON_MEDIA_TYPES.include?(media)
++      @json_body_parsed = true
++    end
++    @json_body
++  end
++
++  def param(name)
++    json_body
++    params[name]
++  end
++
++  # `wrap: false` where the controller's ParamsWrapper key differs from `name` (SharesController wraps as "share").
++  def object!(name, wrap: true)
++    body = json_body
++    key = name.to_s
++    value = body[key]
++    attributes = WRAPPED_ATTRIBUTES[key]
++    if wrap && @json_media && attributes && !body.key?(key)
++      value = body.slice(*attributes)
++    end
++    raise Failure.new(422, name, "is invalid") unless value.is_a?(Hash)
+     value
+   end
+ 
++  # Roundhouse drops controller rest parameters and expects symbol attribute keys.
++  # Strong-parameter `permit` for scalars, then Active Model's string cast.
++  def permitted(input, names)
++    out = {}
++    names.each do |name|
++      key = name.to_s
++      next unless input.key?(key)
++      value = input[key]
++      next if value.is_a?(Hash) || value.is_a?(Array)
++      out[name] = string_cast(value)
++    end
++    out
++  end
++
++  def string_cast(value)
++    JsonCast.string(value)
++  end
++
+   def article!
+-    article = Article.find_by(slug: params[:slug])
++    article = Article.find_by(slug: param(:slug))
+     raise Failure.new(404, :article, "not found") unless article && (article.status == "published" || article.author_id == @current_user&.id)
+     article
+   end
+@@ -76,7 +130,8 @@ class ApplicationController < ActionController::API
+   end
+ 
+   def article_json(article, list: false, following_ids: nil, favorite_ids: nil, favorite_counts: nil)
+-    author = article.association(:author).loaded? ? article.author : article.author
++    # Roundhouse cannot dispatch belongs_to Association#loaded?; both reference branches read author.
++    author = article.author
+     favorited = @current_user && (favorite_ids ? favorite_ids.include?(article.id) : Favorite.exists?(user_id: @current_user.id, article_id: article.id))
+     count = favorite_counts ? favorite_counts.fetch(article.id, 0) : Favorite.where(article_id: article.id).count
+     data = { slug: article.slug, title: article.title, description: article.description,
+@@ -88,8 +143,8 @@ class ApplicationController < ActionController::API
+   end
+ 
+   def article_page(relation)
+-    limit = Integer(params.fetch(:limit, 20)) rescue 20
+-    offset = Integer(params.fetch(:offset, 0)) rescue 0
++    limit = Integer(param(:limit) || 20) rescue 20
++    offset = Integer(param(:offset) || 0) rescue 0
+     limit = limit.clamp(0, 100)
+     offset = offset.clamp(0, 1_000_000)
+     count = relation.count
+diff --git areference-1/app/controllers/articles_controller.rb bvariant/app/controllers/articles_controller.rb
+index 13d86b6..aa76ea4 100644
+--- areference-1/app/controllers/articles_controller.rb
++++ bvariant/app/controllers/articles_controller.rb
+@@ -1,9 +1,9 @@
+ class ArticlesController < ApplicationController
+   def index
+     relation = Article.published
+-    relation = relation.where("tag_list @> ARRAY[?]::text[]", params[:tag]) if params[:tag].present?
+-    relation = relation.joins(:author).where(users: { username: params[:author] }) if params[:author].present?
+-    relation = relation.where(id: Favorite.joins(:user).where(users: { username: params[:favorited] }).select(:article_id)) if params[:favorited].present?
++    relation = relation.where("tag_list @> ARRAY[?]::text[]", param(:tag)) if param(:tag).present?
++    relation = relation.joins(:author).where(users: { username: param(:author) }) if param(:author).present?
++    relation = relation.where(id: Favorite.joins(:user).where(users: { username: param(:favorited) }).select(:article_id)) if param(:favorited).present?
+     render json: article_page(relation)
+   end
+ 
+@@ -25,13 +25,13 @@ class ArticlesController < ApplicationController
+   def create
+     require_user!
+     input = object!(:article)
+-    status = input.fetch(:status, "published")
++    status = input.fetch("status", "published")
+     raise Failure.new(422, :status, "is invalid") unless %w[draft published].include?(status)
+-    tags = input.fetch(:tagList, [])
++    tags = input.fetch("tagList", [])
+     raise Failure.new(422, :tagList, "is invalid") unless tags.is_a?(Array) && tags.all? { |tag| tag.is_a?(String) }
+-    article = Article.new(input.permit(:title, :description, :body).to_h.merge(
++    article = Article.new(permitted(input, %i[title description body]).merge(
+       author: @current_user, status: status, published_at: (Time.current if status == "published"),
+-      tag_list: tags.uniq, slug: Article.slug_for(input[:title])))
++      tag_list: tags.uniq, slug: Article.slug_for(input["title"])))
+     article.save!
+     render json: { article: article_json(article) }, status: :created
+   end
+@@ -39,7 +39,7 @@ class ArticlesController < ApplicationController
+   def update
+     article = author_article!
+     input = object!(:article)
+-    ArticleCommit.call(article, input.to_unsafe_h, expected: input[:revision], representation: ->(a) { article_json(a) })
++    ArticleCommit.call(article, input, expected: input["revision"], representation: ->(a) { article_json(a) })
+     render json: { article: article_json(article) }
+   end
+ 
+diff --git areference-1/app/controllers/comments_controller.rb bvariant/app/controllers/comments_controller.rb
+index 7aca0e8..f26395a 100644
+--- areference-1/app/controllers/comments_controller.rb
++++ bvariant/app/controllers/comments_controller.rb
+@@ -2,8 +2,8 @@ class CommentsController < ApplicationController
+   def index
+     article = article!
+     comments = article.comments.order(created_at: :desc, id: :desc).includes(:author)
+-    comments = comments.limit((Integer(params[:limit]) rescue 100).clamp(0, 100)) if params.key?(:limit)
+-    comments = comments.offset((Integer(params[:offset]) rescue 0).clamp(0, 1_000_000)) if params.key?(:offset)
++    comments = comments.limit((Integer(param(:limit)) rescue 100).clamp(0, 100)) if params.key?(:limit)
++    comments = comments.offset((Integer(param(:offset)) rescue 0).clamp(0, 1_000_000)) if params.key?(:offset)
+     comments = comments.to_a
+     followed = @current_user ? Follow.where(follower_id: @current_user.id, followed_id: comments.map(&:author_id)).pluck(:followed_id).to_set : nil
+     render json: { comments: comments.map { |comment| comment_json(comment, followed) } }
+@@ -12,14 +12,14 @@ class CommentsController < ApplicationController
+   def create
+     require_user!
+     article = public_article!
+-    comment = article.comments.create!(author: @current_user, body: object!(:comment)[:body])
++    comment = article.comments.create!(author: @current_user, body: string_cast(object!(:comment)["body"]))
+     render json: { comment: comment_json(comment) }, status: :created
+   end
+ 
+   def destroy
+     require_user!
+     article = article!
+-    comment = article.comments.find_by(id: params[:id]) || (raise Failure.new(404, :comment, "not found"))
++    comment = article.comments.find_by(id: param(:id)) || (raise Failure.new(404, :comment, "not found"))
+     raise Failure.new(403, :comment, "forbidden") unless comment.author_id == @current_user.id
+     comment.destroy!
+     head :no_content
+diff --git areference-1/app/controllers/exports_controller.rb bvariant/app/controllers/exports_controller.rb
+index 68b2963..eecaa42 100644
+--- areference-1/app/controllers/exports_controller.rb
++++ bvariant/app/controllers/exports_controller.rb
+@@ -7,7 +7,8 @@ class ExportsController < ApplicationController
+   end
+   def show
+     require_user!
+-    export = @current_user.article_exports.find_by(id: params[:id])
++    # Roundhouse association find_by still derives current_user_id from the ivar name.
++    export = ArticleExport.find_by(id: param(:id), user_id: @current_user.id)
+     raise Failure.new(404, :export, "not found") unless export
+     render json: { export: export_json(export) }
+   end
+diff --git areference-1/app/controllers/profiles_controller.rb bvariant/app/controllers/profiles_controller.rb
+index 6608a81..8d8e6e1 100644
+--- areference-1/app/controllers/profiles_controller.rb
++++ bvariant/app/controllers/profiles_controller.rb
+@@ -16,6 +16,6 @@ class ProfilesController < ApplicationController
+   end
+   private
+   def profile!
+-    User.find_by(username: params[:username]) || (raise Failure.new(404, :profile, "not found"))
++    User.find_by(username: param(:username)) || (raise Failure.new(404, :profile, "not found"))
+   end
+ end
+diff --git areference-1/app/controllers/shares_controller.rb bvariant/app/controllers/shares_controller.rb
+index a4213ed..e016b2b 100644
+--- areference-1/app/controllers/shares_controller.rb
++++ bvariant/app/controllers/shares_controller.rb
+@@ -8,8 +8,10 @@ class SharesController < ApplicationController
+   def destroy
+     article = author_article!
+     ids = article.with_lock do
+-      active = article.article_shares.active
+-      active.pluck(:id).tap { active.update_all(revoked_at: Time.current) }
++      # Roundhouse cannot retain a scoped association's relation in a local.
++      ids = article.article_shares.active.pluck(:id)
++      article.article_shares.active.update_all(revoked_at: Time.current)
++      ids
+     end
+     LiveRooms.revoked(ids)
+     head :no_content
+@@ -20,18 +22,18 @@ class SharesController < ApplicationController
+   end
+   def update
+     share = share!
+-    input = object!(:article)
++    input = object!(:article, wrap: false)
+     required = %w[title body revision]
+-    raise Failure.new(422, :article, "is invalid") unless input.keys.sort == required.sort && input[:title].is_a?(String) && input[:body].is_a?(String)
+-    ArticleCommit.call(share.article, input.to_unsafe_h, expected: input[:revision], representation: ->(a) { a.shared_json }, share: share, key: request.headers["X-Share-Key"])
++    raise Failure.new(422, :article, "is invalid") unless input.keys.sort == required.sort && input["title"].is_a?(String) && input["body"].is_a?(String)
++    ArticleCommit.call(share.article, input, expected: input["revision"], representation: ->(a) { a.shared_json }, share: share, key: request.headers["X-Share-Key"])
+     render json: { article: share.article.shared_json }
+   end
+   def live
+-    LiveSocket.open(request.env, params[:id])
++    LiveSocket.open(request.env, param(:id))
+   end
+   private
+   def share!
+-    share = ArticleShare.active.find_by(id: params[:id])
++    share = ArticleShare.active.find_by(id: param(:id))
+     raise Failure.new(404, :share, "not found") unless share&.valid_key?(request.headers["X-Share-Key"])
+     share
+   end
+diff --git areference-1/app/controllers/tags_controller.rb bvariant/app/controllers/tags_controller.rb
+index 94344cf..8671d0b 100644
+--- areference-1/app/controllers/tags_controller.rb
++++ bvariant/app/controllers/tags_controller.rb
+@@ -1,6 +1,7 @@
+ class TagsController < ApplicationController
+   def index
+-    tags = Article.published.connection.select_values("SELECT DISTINCT unnest(tag_list) FROM articles WHERE status = 'published' ORDER BY 1")
++    # Roundhouse lacks relation.connection and Connection#select_values.
++    tags = Article.connection.select_all("SELECT DISTINCT unnest(tag_list) AS tag FROM articles WHERE status = 'published' ORDER BY 1").to_a.map { |row| row["tag"] }
+     render json: { tags: tags }
+   end
+ end
+diff --git areference-1/app/controllers/users_controller.rb bvariant/app/controllers/users_controller.rb
+index 3f5531c..fd3bfe6 100644
+--- areference-1/app/controllers/users_controller.rb
++++ bvariant/app/controllers/users_controller.rb
+@@ -1,7 +1,7 @@
+ class UsersController < ApplicationController
+   def create
+     input = object!(:user)
+-    user = User.new(input.permit(:username, :email, :password))
++    user = User.new(permitted(input, %i[username email password]))
+     if user.save
+       render json: { user: user_json(user) }, status: :created
+     elsif user.errors.of_kind?(:username, :taken) || user.errors.of_kind?(:email, :taken)
+@@ -14,10 +14,10 @@ class UsersController < ApplicationController
+   def login
+     input = object!(:user)
+     %i[email password].each do |field|
+-      raise Failure.new(422, field, "can't be blank") if input[field].blank?
++      raise Failure.new(422, field, "can't be blank") if input[field.to_s].blank?
+     end
+-    email = input[:email]
+-    password = input[:password]
++    email = input["email"]
++    password = input["password"]
+     raise Failure.new(422, :credentials, "invalid") unless email.is_a?(String) && password.is_a?(String)
+     user = User.where("lower(email) = ?", email.downcase).first
+     if user&.authenticate(password)
+@@ -35,14 +35,14 @@ class UsersController < ApplicationController
+ 
+   def update
+     require_user!
+-    @current_user.update!(object!(:user).permit(:username, :email, :password, :image, :bio))
++    @current_user.update!(permitted(object!(:user), %i[username email password image bio]))
+     render json: { user: user_json(@current_user) }
+   end
+ 
+   private
+ 
+   def user_json(user)
+-    token = JWT.encode({ sub: user.id, exp: 30.days.from_now.to_i }, Rails.application.secret_key_base, "HS256")
++    token = TokenCodec.encode({ sub: user.id, exp: 30.days.from_now.to_i }, Rails.application.secret_key_base)
+     { email: user.email, token: token, username: user.username, bio: user.bio, image: user.image }
+   end
+ end
+diff --git areference-1/app/jobs/export_articles_job.rb bvariant/app/jobs/export_articles_job.rb
+index 676e702..2181da6 100644
+--- areference-1/app/jobs/export_articles_job.rb
++++ bvariant/app/jobs/export_articles_job.rb
+@@ -2,11 +2,12 @@ class ExportArticlesJob < ApplicationJob
+   def perform(id)
+     export = ArticleExport.find_by(id: id)
+     return unless export && export.status == "pending"
++    # Roundhouse retains computed select aliases through [], without named getters.
+     articles = Article.where(author_id: export.user_id).order(:created_at, :id)
+       .left_joins(:comments).select("articles.*, COUNT(comments.id) AS comments_total")
+       .group("articles.id").map do |article|
+       article.attributes.slice("slug", "title", "description", "body", "status").merge(
+-        "tagList" => article.tag_list, "commentsCount" => article.comments_total.to_i
++        "tagList" => article.tag_list, "commentsCount" => article["comments_total"].to_i
+       )
+     end
+     export.with_lock do
+diff --git areference-1/app/models/article_export.rb bvariant/app/models/article_export.rb
+index 0544218..c3cc6a7 100644
+--- areference-1/app/models/article_export.rb
++++ bvariant/app/models/article_export.rb
+@@ -2,6 +2,7 @@ class ArticleExport < ApplicationRecord
+   belongs_to :user
+ 
+   def self.recover_pending!
+-    where(status: "pending").find_each { |export| ExportArticlesJob.perform_later(export.id) }
++    # Roundhouse folds this model-class query to an Array before find_each dispatch.
++    where(status: "pending").each { |export| ExportArticlesJob.perform_later(export.id) }
+   end
+ end
+diff --git areference-1/app/models/user.rb bvariant/app/models/user.rb
+index 659327d..93f87e3 100644
+--- areference-1/app/models/user.rb
++++ bvariant/app/models/user.rb
+@@ -6,7 +6,7 @@ class User < ApplicationRecord
+   validates :username, :email, presence: true
+   validates :username, uniqueness: { case_sensitive: false }
+   validates :email, uniqueness: { case_sensitive: false }
+-  validates :password, length: { minimum: 8 }, if: -> { password.present? }
++  validate :password_has_minimum_length
+   validate :password_is_present_when_supplied
+ 
+   def normalize_optional_fields
+@@ -14,6 +14,11 @@ class User < ApplicationRecord
+     self.image = nil if image == ""
+   end
+ 
++  # Preserve the conditional that the validation macro ingest drops.
++  def password_has_minimum_length
++    errors.add(:password, "is too short (minimum is 8 characters)") if password.present? && password.length < 8
++  end
++
+   def password_is_present_when_supplied
+     errors.add(:password, "can't be blank") if @password_supplied && password.blank?
+   end
+diff --git areference-1/app/services/article_commit.rb bvariant/app/services/article_commit.rb
+index 120017a..aae64d8 100644
+--- areference-1/app/services/article_commit.rb
++++ bvariant/app/services/article_commit.rb
+@@ -8,14 +8,16 @@ class ArticleCommit
+       if expected && expected != article.revision
+         raise ApplicationController::Failure.new(409, :revision, "is stale", article: representation.call(article))
+       end
+-      changes = input.slice("title", "description", "body")
++      # Roundhouse lacks Rails attribute string casting for the raw JSON values.
++      changes = input.slice("title", "description", "body").transform_values { |value| JsonCast.string(value) }
+       changes["slug"] = Article.slug_for(changes["title"]) if changes.key?("title") && changes["title"] != article.title
+       if input.key?("tagList")
+         tags = input["tagList"]
+         raise ApplicationController::Failure.new(422, :tagList, "is invalid") unless tags.is_a?(Array) && tags.all? { |tag| tag.is_a?(String) }
+         changes["tag_list"] = tags.uniq
+       end
+-      article.update!(changes.merge("revision" => article.revision + 1))
++      # Generated update! consumes symbol attribute keys.
++      article.update!(changes.merge("revision" => article.revision + 1).transform_keys { |name| name.to_sym })
+     end
+     LiveRooms.updated(article)
+     article
+diff --git avariant/app/services/json_cast.rb bvariant/app/services/json_cast.rb
+new file mode 100644
+index 0000000..3abbece
+--- /dev/null
++++ bvariant/app/services/json_cast.rb
+@@ -0,0 +1,9 @@
++# Compile variant: Active Model's string cast for typed JSON values (Rails applies it on assignment).
++class JsonCast
++  def self.string(value)
++    return nil if value.nil?
++    return "t" if value == true
++    return "f" if value == false
++    value.is_a?(String) ? value : value.to_s
++  end
++end
+diff --git areference-1/app/services/login_throttle.rb bvariant/app/services/login_throttle.rb
+index cf623ee..38ec3ac 100644
+--- areference-1/app/services/login_throttle.rb
++++ bvariant/app/services/login_throttle.rb
+@@ -2,12 +2,15 @@ class LoginThrottle
+   @lock = Mutex.new
+   @failures = Hash.new { |hash, key| hash[key] = [] }
+   def self.fail!(email, ip)
+-    @lock.synchronize do
++    # Spinel loses custom exception attributes raised across Mutex#synchronize.
++    limited = @lock.synchronize do
+       key = [ email.downcase, ip ]
+       now = Time.now.to_f
+-      @failures[key].reject! { |time| time < now - 60 }
++      # Spinel cannot dispatch reject! on the boxed Array from the default-block Hash.
++      @failures[key] = @failures[key].select { |time| time >= now - 60 }
+       @failures[key] << now
+-      raise ApplicationController::Failure.new(429, :credentials, "rate limited") if @failures[key].length > 20
++      @failures[key].length > 20
+     end
++    raise ApplicationController::Failure.new(429, :credentials, "rate limited") if limited
+   end
+ end
+diff --git avariant/app/services/token_codec.rb bvariant/app/services/token_codec.rb
+new file mode 100644
+index 0000000..f6151df
+--- /dev/null
++++ bvariant/app/services/token_codec.rb
+@@ -0,0 +1,52 @@
++require "base64"
++require "digest"
++require "json"
++
++# Roundhouse cannot compile the JWT gem; this implements the app's HS256 paths.
++class TokenCodec
++  class DecodeError < StandardError
++  end
++
++  def self.encode(payload, secret)
++    header = encode_segment(JSON.generate({ alg: "HS256", typ: "JWT" }))
++    body = encode_segment(JSON.generate(payload))
++    input = "#{header}.#{body}"
++    "#{input}.#{encode_segment(hmac(secret, input))}"
++  end
++
++  def self.decode(token, secret)
++    parts = token.split(".", -1)
++    raise DecodeError unless parts.length == 3 && parts.all? { |part| part.match?(/\A[A-Za-z0-9_-]+\z/) }
++    header = JSON.parse(Base64.urlsafe_decode64(parts[0]))
++    raise DecodeError unless header.is_a?(Hash) && header["alg"] == "HS256"
++    input = "#{parts[0]}.#{parts[1]}"
++    signature = encode_segment(hmac(secret, input))
++    raise DecodeError unless ActiveSupport::SecurityUtils.secure_compare(signature, parts[2])
++    payload = JSON.parse(Base64.urlsafe_decode64(parts[1]))
++    raise DecodeError unless payload.is_a?(Hash)
++    now = Time.now.to_i
++    raise DecodeError if payload.key?("exp") && payload["exp"].to_i <= now
++    raise DecodeError if payload.key?("nbf") && payload["nbf"].to_i > now
++    payload
++  rescue ArgumentError, JSON::ParserError, TypeError, NoMethodError
++    raise DecodeError
++  end
++
++  def self.encode_segment(bytes)
++    Base64.strict_encode64(bytes).tr("+/", "-_").delete("=")
++  end
++
++  def self.hmac(secret, input)
++    key = secret.bytesize > 64 ? Digest::SHA256.digest(secret) : secret
++    inner = +""
++    outer = +""
++    position = 0
++    while position < 64
++      byte = position < key.bytesize ? key.getbyte(position) : 0
++      inner << (byte ^ 0x36).chr
++      outer << (byte ^ 0x5c).chr
++      position += 1
++    end
++    Digest::SHA256.digest(outer + Digest::SHA256.digest(inner + input.b))
++  end
++end
+diff --git avariant/config/initializers/recover_exports.rb bvariant/config/initializers/recover_exports.rb
+new file mode 100644
+index 0000000..b031f40
+--- /dev/null
++++ bvariant/config/initializers/recover_exports.rb
+@@ -0,0 +1,6 @@
++# Roundhouse boot hooks omit the reference bin/rails runner; also recover on Rails server boot.
++if defined?(Rails::Server)
++  Rails.application.config.after_initialize do
++    ArticleExport.recover_pending!
++  end
++end

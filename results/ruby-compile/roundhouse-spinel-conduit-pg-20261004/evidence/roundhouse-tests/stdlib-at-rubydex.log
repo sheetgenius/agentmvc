@@ -1,0 +1,164 @@
+    Updating crates.io index
+ Downloading crates ...
+  Downloaded rubydex v0.2.5
+   Compiling syn v3.0.6
+   Compiling stable_deref_trait v1.2.1
+   Compiling litemap v0.8.3
+   Compiling writeable v0.6.4
+   Compiling utf8_iter v1.0.4
+   Compiling crossbeam-utils v0.8.21
+   Compiling icu_properties_data v2.3.0
+   Compiling icu_normalizer_data v2.3.0
+   Compiling utf8parse v0.2.2
+   Compiling smallvec v1.16.2
+   Compiling anstyle-parse v1.0.0
+   Compiling crossbeam-epoch v0.9.21
+   Compiling synstructure v0.14.0
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling anstyle v1.0.14
+   Compiling anstyle-query v1.1.5
+   Compiling colorchoice v1.0.5
+   Compiling anstream v1.0.0
+   Compiling clap_lex v1.1.1
+   Compiling heck v0.5.0
+   Compiling percent-encoding v2.3.2
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.3
+   Compiling zerovec-derive v0.11.6
+   Compiling zerofrom v0.1.8
+   Compiling crossbeam-deque v0.8.8
+   Compiling strsim v0.11.1
+   Compiling clap_builder v4.6.7
+   Compiling crossbeam-channel v0.5.15
+   Compiling form_urlencoded v1.2.2
+   Compiling clap_derive v4.6.7
+   Compiling yoke v0.8.3
+   Compiling nohash-hasher v0.2.0
+   Compiling text-size v1.1.1
+   Compiling clap v4.6.7
+   Compiling line-index v0.1.2
+   Compiling roundhouse v2026.9.18 (/work/app/src/roundhouse-base)
+   Compiling xxhash-rust v0.8.19
+   Compiling bytecount v0.6.9
+   Compiling lsp-server v0.7.9
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling icu_collections v2.3.0
+   Compiling icu_locale_core v2.3.0
+   Compiling icu_provider v2.3.1
+   Compiling icu_normalizer v2.3.0
+   Compiling icu_properties v2.3.0
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling url v2.5.8
+   Compiling rubydex v0.2.5
+warning: unused import: `synthesize_implicit_render`
+  --> src/lower/controller_to_library/mod.rs:44:65
+   |
+44 |     has_toplevel_terminal, synthesize_deferred_implicit_render, synthesize_implicit_render,
+   |                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unreachable pattern
+    --> src/analyze/body/send.rs:1685:48
+     |
+1684 |         "iso8601" | "rfc2822" | "rfc3339" | "to_s" | "to_fs" | "to_formatted_s"
+     |                     --------- matches all the relevant values
+1685 |         | "strftime" | "httpdate" | "rfc822" | "rfc2822" | "ctime" | "asctime" | "inspect"
+     |                                                ^^^^^^^^^ no value can reach this
+     |
+     = note: `#[warn(unreachable_patterns)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `singular` is never read
+   --> src/lower/model_to_library/broadcasts.rs:705:5
+    |
+704 | struct OwnerRef {
+    |        -------- field in this struct
+705 |     singular: String,
+    |     ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `string_values_of` is never used
+   --> src/lower/send_dispatch.rs:849:4
+    |
+849 | fn string_values_of(e: &Expr, consts: &HashMap<&str, &Expr>) -> Option<BTreeSet<String>> {
+    |    ^^^^^^^^^^^^^^^^
+
+warning: function `eq_empty_str` is never used
+   --> src/lower/rich_text.rs:763:4
+    |
+763 | fn eq_empty_str(recv: Expr) -> Expr {
+    |    ^^^^^^^^^^^^
+
+warning: function `walk_dir_partitioned` is never used
+    --> src/project.rs:6085:4
+     |
+6085 | fn walk_dir_partitioned(
+     |    ^^^^^^^^^^^^^^^^^^^^
+
+warning: function `walk_dir_flat` is never used
+    --> src/project.rs:6133:4
+     |
+6133 | fn walk_dir_flat(
+     |    ^^^^^^^^^^^^^
+
+warning: `roundhouse` (lib) generated 7 warnings (run `cargo fix --lib -p roundhouse` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 43.48s
+     Running tests/stdlib_constant_execution.rs (build/constant-bisect-target/debug/deps/stdlib_constant_execution-493ca8b87350bfe3)
+
+running 1 test
+test struct_mutex_and_json_error_constants_execute_after_emission ... FAILED
+
+failures:
+
+---- struct_mutex_and_json_error_constants_execute_after_emission stdout ----
+roundhouse: treeshake (ruby): dropped 44 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+
+thread 'struct_mutex_and_json_error_constants_execute_after_emission' (4059764) panicked at tests/support/emit_and_run.rs:225:9:
+check is clean but the emitted program failed: `ruby -e <script>` in $TMPDIR/roundhouse-emit-and-run-81734-1/emitted
+
+=== stdout ===
+
+=== stderr ===
+$TMPDIR/roundhouse-emit-and-run-81734-1/emitted/app/models.rb:7:in 'Kernel#require_relative': --> $TMPDIR/roundhouse-emit-and-run-81734-1/emitted/app/models/registry.rb
+
+expected a closing delimiter for the `rescue` clause
+
+   1  class Registry
+   8    def self.parse(text)
+>  9      begin
+> 11      rescue raise "roundhouse: constant not supported (all targets)"
+> 13      end
+  14    end
+  15  end
+
+$TMPDIR/roundhouse-emit-and-run-81734-1/emitted/app/models/registry.rb:11: syntax error found (SyntaxError)
+   9 |     begin
+  10 |       raise "roundhouse: constant not supported (all targets)".parse(text)
+> 11 |     rescue raise "roundhouse: constant not supp ...
+     |                 ^ expected a closing delimiter for the `rescue` clause
+  12 |       nil
+  13 |     end
+
+	from $TMPDIR/roundhouse-emit-and-run-81734-1/emitted/app/models.rb:7:in '<top (required)>'
+	from $TMPDIR/roundhouse-emit-and-run-81734-1/emitted/boot.rb:256:in 'Kernel#require_relative'
+	from $TMPDIR/roundhouse-emit-and-run-81734-1/emitted/boot.rb:256:in '<top (required)>'
+	from $TMPDIR/roundhouse-emit-and-run-81734-1/emitted/main.rb:33:in 'Kernel#require_relative'
+	from $TMPDIR/roundhouse-emit-and-run-81734-1/emitted/main.rb:33:in '<top (required)>'
+	from <internal:~/.rbenv/versions/3.4.9/lib/ruby/3.4.0/rubygems/core_ext/kernel_require.rb>:136:in 'Kernel#require'
+	from <internal:~/.rbenv/versions/3.4.9/lib/ruby/3.4.0/rubygems/core_ext/kernel_require.rb>:136:in 'Kernel#require'
+	from -e:1:in '<main>'
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    struct_mutex_and_json_error_constants_execute_after_emission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.55s
+
+error: test failed, to rerun pass `--test stdlib_constant_execution`

@@ -1,0 +1,128 @@
+Waiting for shared Docker lock: ~/co/agentmvc/.work/lane-docker.lock
+Acquired shared Docker lock
+gate inputs: 72 files, sha256 a8999f01c936cc37fe182c314c7a9a602b62611c1a15dc8338e7853d30831710 (matches the published workspace)
+workspace: /work/app/build/gate-rails/conduit-v6-ws-rails
+log: /work/app/build/gate-rails/gate-rails.log
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.09kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 4.4s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/ruby:3.3.2-slim
+#4 DONE 3.4s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 210B done
+#5 DONE 0.0s
+
+#6 [base 1/3] FROM docker.io/library/ruby:3.3.2-slim@sha256:4d611590cb3dc3211dc2e42c87347970c0ae9f7ad9c3db17a121d5996296f8ff
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 132.61kB done
+#7 DONE 0.0s
+
+#8 [build 2/5] COPY Gemfile Gemfile.lock ./
+#8 CACHED
+
+#9 [build 1/5] RUN apt-get update -qq && apt-get install --no-install-recommends -y     build-essential libpq-dev git && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [build 3/5] RUN bundle install && rm -rf /usr/local/bundle/ruby/*/cache
+#10 CACHED
+
+#11 [base 3/3] RUN apt-get update -qq && apt-get install --no-install-recommends -y     libpq5 ca-certificates && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [base 2/3] WORKDIR /rails
+#12 CACHED
+
+#13 [build 4/5] COPY . .
+#13 CACHED
+
+#14 [build 5/5] RUN bundle exec bootsnap precompile -j 1 --gemfile &&     bundle exec bootsnap precompile -j 1 app/ lib/
+#14 CACHED
+
+#15 [stage-2 2/3] COPY --from=build --chown=rails:rails /usr/local/bundle /usr/local/bundle
+#15 CACHED
+
+#16 [stage-2 1/3] RUN groupadd --system --gid 1000 rails &&     useradd rails --uid 1000 --gid 1000 --create-home
+#16 CACHED
+
+#17 [stage-2 3/3] COPY --from=build --chown=rails:rails /rails /rails
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers done
+#18 writing image sha256:94a28f04b8dd213a4e8bcfb9009f80844bcdbba14ddeaf3c6b9f9c3d7d85f9db done
+#18 naming to docker.io/library/conduit-v6-gate-conduit-v6-ws-rails-80659:latest done
+#18 DONE 0.0s
+Success api/hurl/articles.hurl (17 request(s) in 365 ms)
+Success api/hurl/auth.hurl (20 request(s) in 466 ms)
+Success api/hurl/comments.hurl (13 request(s) in 255 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 236 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 1675 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 405 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 204 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 194 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 236 ms)
+Success api/hurl/feed.hurl (12 request(s) in 409 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 209 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 383 ms)
+Success api/hurl/tags.hurl (4 request(s) in 197 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 436 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 399 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 725 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 413 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (32.8/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          7229 ms (0h:0m:7s:229ms)
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (900ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (826ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (336ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (479ms)
+
+  4 passed (3.0s)
+Success s01_jwt_alg_none.hurl (1 request(s) in 1 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 185 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 1 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 182 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 182 ms)
+Success s06_injection_filters.hurl (4 request(s) in 7 ms)
+Success s07_malformed_json.hurl (1 request(s) in 2 ms)
+Success s08_wrong_types.hurl (8 request(s) in 207 ms)
+Success s09_oversized_body.hurl (2 request(s) in 242 ms)
+Success s10_unknown_route.hurl (1 request(s) in 2 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 357 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 3 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 4111 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (9.5/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          5496 ms (0h:0m:5s:496ms)
+
+package/results/ruby-compile/roundhouse-spinel-conduit-pg-20261004/reproduce/run-gate.sh: line 91: 80658 Terminated: 15          ( while sleep 2; do
+    for c in $(docker ps -q --filter "name=agentmvc-one-shot-$(basename "$ws")-");
+    do
+        docker inspect -f '{{range .Mounts}}{{if eq .Type "volume"}}{{println .Name}}{{end}}{{end}}' "$c" 2> /dev/null;
+    done >> "$volumes";
+done )
+removed volume a2ddeeace8183d40753e892f61bc0d024d2706eab6d9efed43df704a39e91552
+check-production.sh exit 0

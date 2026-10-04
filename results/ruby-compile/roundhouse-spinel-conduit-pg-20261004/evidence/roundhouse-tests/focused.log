@@ -1,0 +1,148 @@
+   Compiling roundhouse v2026.9.18 (/work/app/src/roundhouse)
+warning: unused variable: `parenthesized`
+   --> src/lower/enumerable_ext.rs:203:53
+    |
+203 |     let ExprNode::Send { recv, method, args, block, parenthesized } = &mut *expr.node else {
+    |                                                     ^^^^^^^^^^^^^ help: try ignoring the field: `parenthesized: _`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: `roundhouse` (lib) generated 1 warning (run `cargo fix --lib -p roundhouse` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.14s
+     Running tests/api_mode.rs (target/debug/deps/api_mode-3ef76c5e256a38f4)
+
+running 2 tests
+test dispatch_has_a_complete_table_without_a_root ... ok
+test json_handlers_and_nested_params_are_lowered ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/app_without_root_route.rs (target/debug/deps/app_without_root_route-685a152ba895c32b)
+
+running 2 tests
+test an_app_without_a_root_route_never_calls_route_table_root ... ok
+test an_app_with_a_root_route_keeps_it_first_in_the_table ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.55s
+
+     Running tests/boot_hooks.rs (target/debug/deps/boot_hooks-7f35ce643e34e1c1)
+
+running 2 tests
+test boot_hooks_reject_unlowered_registration_forms ... ok
+test boot_hooks_emit_and_run_in_registration_order ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running tests/db_pg_placeholders.rs (target/debug/deps/db_pg_placeholders-852f34c3fb0bc224)
+
+running 1 test
+test postgres_placeholders_preserve_sql_literals_comments_and_utf8 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/integer_limit.rs (target/debug/deps/integer_limit-771c39cd0d4b8637)
+
+running 1 test
+test the_roda_migration_declares_an_eight_byte_integer_as_bignum ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/integer_query_predicates.rs (target/debug/deps/integer_query_predicates-c0933e58f70d1f1e)
+
+running 2 tests
+test integer_storage_widths_are_emitted_from_schema ... ok
+test integer_query_runtime_matches_rails_boundaries_and_prefix_casts ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/qualified_constant_reads.rs (target/debug/deps/qualified_constant_reads-324345cddd32fd4d)
+
+running 7 tests
+test a_qualified_class_read_is_the_class_not_a_same_named_constant ... ok
+test a_qualified_constant_read_still_resolves_through_its_owner ... ok
+test an_absolute_class_uses_the_same_registry_identity_as_a_bare_class ... ok
+test an_absolute_nested_constant_keeps_its_root_and_resolves_its_owner ... ok
+test a_bare_model_read_uses_its_source_declaration ... ok
+test source_references_use_ruby_lexical_nesting_not_the_body_self_class ... ok
+test the_owner_is_resolved_the_way_ruby_resolves_it ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/rails_surface.rs (target/debug/deps/rails_surface-b6c386f3a26cbd6b)
+
+running 9 tests
+test array_to_set_demands_its_bundled_library_without_a_set_constant ... ok
+test singleton_ivar_initializers_are_eager_and_keep_source_order ... ok
+test find_each_on_class_roots_on_relation ... ok
+test bang_find_create_saves_with_bang_even_inside_rescue ... ok
+test association_scope_keeps_owner_predicate_for_pluck_and_update ... ok
+test uniqueness_retains_error_attribute_and_type_and_excludes_persisted_self ... ok
+test security_facade_is_shipped_and_demand_loaded ... ok
+test or_scope_branches_start_from_independent_copies ... ok
+test left_joins_resolves_associations_and_projection_rows_are_retained ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests/runtime_preload_scope_free.rs (target/debug/deps/runtime_preload_scope_free-26c99bcfa586b9ec)
+
+running 9 tests
+test plain_has_many_still_batches_on_spinel ... ignored, requires the Spinel toolchain
+test polymorphic_has_many_keeps_its_owner_type_on_spinel ... ignored, requires the Spinel toolchain
+test runtime_includes_without_named_scopes_batches_belongs_to_on_spinel ... ignored, requires the Spinel toolchain
+test scoped_has_many_keeps_its_filter_on_spinel ... ignored, requires the Spinel toolchain
+test nullable_belongs_to_preloading_runs_on_ruby ... ok
+test runtime_includes_without_named_scopes_batches_belongs_to ... ok
+test plain_has_many_still_batches ... ok
+test polymorphic_has_many_keeps_its_owner_type ... ok
+test scoped_has_many_keeps_its_filter ... ok
+
+test result: ok. 5 passed; 0 failed; 4 ignored; 0 measured; 0 filtered out; finished in 0.60s
+
+     Running tests/scope_body_left_joins.rs (target/debug/deps/scope_body_left_joins-a5263abb2d4832ee)
+
+running 1 test
+test the_bare_left_joins_scope_threads_the_relation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/secure_password_lowering.rs (target/debug/deps/secure_password_lowering-262588109a9d4c99)
+
+running 5 tests
+test supplied_nil_password_routes_through_writer ... ok
+test secure_password_renders_on_the_ruby_tree ... ok
+test secure_password_synthesizes_authenticate_and_accessors ... ok
+test custom_authenticate_wins_over_synthesis ... ok
+test secure_password_override_super_retains_generated_writer ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/spinel_raw_websocket.rs (target/debug/deps/spinel_raw_websocket-67772dcb9887fe5a)
+
+running 1 test
+test raw_websocket_closes_wake_and_retire_the_connection ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests/stdlib_constant_execution.rs (target/debug/deps/stdlib_constant_execution-3b4713b1cd127e0e)
+
+running 1 test
+test struct_mutex_and_json_error_constants_execute_after_emission ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s
+
+     Running tests/structure_sql.rs (target/debug/deps/structure_sql-8abf66e95ba16e83)
+
+running 10 tests
+test unrecognized_statement_heads_are_ledgered_once_per_head ... ok
+test other_meta_commands_and_literals_are_left_alone ... ok
+test composite_primary_and_foreign_keys_are_ledgered_not_narrowed ... ok
+test composite_key_and_view_gaps_bucket_by_reason_not_by_table ... ok
+test pg_dump_restrict_lines_are_not_statements ... ok
+test a_partial_index_keeps_its_predicate ... ok
+test attached_partition_children_are_not_modeled_as_separate_tables ... ok
+test ingests_tables_columns_indexes_fk_and_pk ... ok
+test strict_mode_aborts_on_the_first_gap ... ok
+test ingest_app_types_model_attributes_from_structure_sql_when_schema_rb_is_absent ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

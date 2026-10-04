@@ -1,0 +1,451 @@
+ 1:  2d5e775c =  1:  de10d33f 00-interval.patch
+ 2:  64a42285 !  2:  db6cea07 10-api-mode-json.patch
+    @@ runtime/ruby/action_dispatch/router.rb: module ActionDispatch
+     +        if route.verb.to_s == "ANY" || route.verb.to_s == method_upcase || (method_upcase == "HEAD" && route.verb.to_s == "GET")
+                params = match_parts(route.pattern_parts, path_parts, route.int_params, format)
+                unless params.nil?
+    -             return MatchResult.new(route.controller, route.action, params, route.req_format)
+    +             return ActionDispatch::Router::MatchResult.new(route.controller, route.action, params, route.req_format)
+     
+      ## runtime/ruby/active_record/base.rb ##
+     @@ runtime/ruby/active_record/base.rb: module ActiveRecord
+    @@ runtime/ruby/active_support_ext.rbs: module ActiveSupport
+     +end
+     
+      ## runtime/spinel/scaffold/main.rb ##
+    -@@ runtime/spinel/scaffold/main.rb: module Main
+    -   # the profile, because /u allocates enough per request to trigger several
+    -   # collections and every one of them re-marked the table.
+    -   def self.route_table
+    --    @route_table ||= [RouteTable.root] + RouteTable.table + ActiveStorage::Routes.table
+    -+    @route_table ||= RouteTable.all + ActiveStorage::Routes.table
+    -   end
+    - 
+    -   # Tep::Server callback. Routes, runs the controller, copies
+     @@ runtime/spinel/scaffold/main.rb: module Main
+          fmt_name = "js" if request_format == :js
+          request_obj.format = fmt_name
+    @@ runtime/spinel/scaffold/main.rb: module Main
+          # Headers the action set beyond those two — a `Content-Disposition`
+          # on a download, the Cache-Control a blob route asks for. A nil
+     
+    - ## runtime/spinel/scaffold/ruby_overlay/main.rb ##
+    -@@ runtime/spinel/scaffold/ruby_overlay/main.rb: module Main
+    -   # hygiene, not a measured win. (Benign race under Puma threads: both
+    -   # winners compute the same array.)
+    -   def self.route_table
+    --    @route_table ||= [RouteTable.root] + RouteTable.table + ActiveStorage::Routes.table
+    -+    @route_table ||= RouteTable.all + ActiveStorage::Routes.table
+    -   end
+    - 
+    -   def self.dispatch_core(env, stdin)
+    -
+      ## runtime/spinel/tep/net.rb ##
+     @@ runtime/spinel/tep/net.rb: module Sock
+        ffi_func :sp_net_accept,                [:int],             :int
+    @@ runtime/spinel/tep/server_threaded.rb: module Tep
+      
+              res = Response.new
+     
+    - ## runtime/spinel/test/test_helper.rb ##
+    -@@ runtime/spinel/test/test_helper.rb: module RequestDispatch
+    -     require_relative "../app/controllers/articles_controller"
+    -     require_relative "../app/controllers/comments_controller"
+    -     ActionView::ViewHelpers.reset_slots!
+    --    # `[RouteTable.root] + RouteTable.table`, exactly as both production
+    -+    # `RouteTable.all`, exactly as both production
+    -     # dispatchers compose it: `root "c#a"` is kept as its own constant
+    -     # (it is the only literal-pattern entry) and the table walk stays
+    -     # flat. The harness searched `table` alone, so `get "/"` — the one
+    -@@ runtime/spinel/test/test_helper.rb: module RequestDispatch
+    -     # its non-segment options into one.
+    -     match_path, _, query = path.partition("?")
+    -     matched = ActionDispatch::Router.match(
+    --      method, match_path, [RouteTable.root] + RouteTable.table + ActiveStorage::Routes.table
+    -+      method, match_path, RouteTable.all + ActiveStorage::Routes.table
+    -     )
+    -     raise "No route matches #{method} #{path}" if matched.nil?
+    -     controller = case matched.controller
+    -
+      ## src/analyze/registry/activemodel.rs ##
+     @@ src/analyze/registry/activemodel.rs: pub(in crate::analyze) fn register(classes: &mut HashMap<ClassId, ClassInfo>) {
+              ("messages_for", str_arr()),
+    @@ src/lower/errors_index.rs: fn rewrite_messages(expr: &mut Expr, diags: &mut Vec<
+      fn ledger_messages(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
+     
+      ## src/lower/model_to_library/mod.rs ##
+    -@@ src/lower/model_to_library/mod.rs: fn build_class_info(
+    +@@ src/lower/model_to_library/mod.rs: pub(crate) fn build_class_info(
+              "errors",
+              fn_sig(vec![], Ty::Array { elem: Box::new(Ty::Str) }),
+          );
+    @@ src/lower/model_to_library/validations.rs: pub(super) fn push_validate_method(me
+                      );
+                      check.inherit_span(span);
+                      stmts.push(check);
+    +@@ src/lower/model_to_library/validations.rs: fn secure_password_checks(model: &Model) -> Vec<Expr> {
+    +             ExprNode::Send { recv: Some(e), method: Symbol::from("!"), args: vec![], block: None, parenthesized: false },
+    +         );
+    +         let present = |e: Expr| not(blank(e));
+    +-        out.push(if_with_nil_else(blank(digest), errors_push(format!("{human} can't be blank"))));
+    ++        out.push(if_with_nil_else(blank(digest), errors_push(&attr, format!("{human} can't be blank"))));
+    +         out.push(if_with_nil_else(
+    +             bool_op(
+    +                 BoolOpKind::And,
+    +@@ src/lower/model_to_library/validations.rs: fn secure_password_checks(model: &Model) -> Vec<Expr> {
+    +                     ExprNode::Lit { value: Literal::Int { value: 72 } },
+    +                 )]),
+    +             ),
+    +-            errors_push(format!("{human} is too long")),
+    ++            errors_push(&attr, format!("{human} is too long")),
+    +         ));
+    +         out.push(if_with_nil_else(
+    +             bool_op(
+    +@@ src/lower/model_to_library/validations.rs: fn secure_password_checks(model: &Model) -> Vec<Expr> {
+    +                 bool_op(BoolOpKind::And, present(plain.clone()), not(send(confirmation.clone(), "nil?", vec![]))),
+    +                 send(confirmation, "!=", vec![plain]),
+    +             ),
+    +-            errors_push(format!("{human} confirmation doesn't match {human}")),
+    ++            errors_push(&Symbol::from(format!("{}_confirmation", attr.as_str())), format!("{human} confirmation doesn't match {human}")),
+    +         ));
+    +     }
+    +     out
+     @@ src/lower/model_to_library/validations.rs: fn push_active_model_validation_surface(methods: &mut Vec<MethodDef>, model: &Mo
+          };
+          let span = model.span;
+    @@ src/lower/model_to_library/validations.rs: fn errors_push(msg: String) -> Expr {
+      
+      fn if_with_nil_else(cond: Expr, then_branch: Expr) -> Expr {
+     
+    - ## src/lower/routes_to_library/mod.rs ##
+    -@@ src/lower/routes_to_library/mod.rs: pub fn lower_routes_to_dispatch_functions(app: &App) -> Vec<LibraryFunction> {
+    -         is_async: false,
+    -     });
+    - 
+    -+    // Complete declaration-ordered dispatch, including an optional root.
+    -+    out.push(LibraryFunction {
+    -+        module_path: module_path.clone(),
+    -+        name: Symbol::from("all"),
+    -+        params: Vec::new(),
+    -+        body: with_ty(Expr::new(Span::synthetic(), ExprNode::Array {
+    -+            elements: flat.iter().map(|r| build_route_new(r, &route_class_id, &route_ty)).collect(),
+    -+            style: ArrayStyle::Brackets,
+    -+        }), Ty::Array { elem: Box::new(route_ty.clone()) }),
+    -+        signature: Some(fn_sig(vec![], Ty::Array { elem: Box::new(route_ty.clone()) })),
+    -+        effects: EffectSet::default(),
+    -+        is_async: false,
+    -+    });
+    -+
+    -     if let Some(r) = root_routes.first() {
+    -         let root_body = build_route_new(r, &route_class_id, &route_ty);
+    -         out.push(LibraryFunction {
+    -
+      ## tests/api_mode.rs (new) ##
+     @@
+     +//! Viewless API controllers use the same lowering in actions, callbacks,
+    @@ tests/api_mode.rs (new)
+     +fn dispatch_has_a_complete_table_without_a_root() {
+     +    let emitted = files();
+     +    let routes = &emitted.iter().find(|f| f.path.ends_with("routes.rb")).unwrap().content;
+    -+    assert!(routes.contains("def self.all"), "{routes}");
+    ++    assert!(routes.contains("def self.table"), "{routes}");
+     +    assert!(!routes.contains("def self.root"), "{routes}");
+     +    assert!(routes.contains("\"ANY\", \"/*unmatched\""), "{routes}");
+     +}
+ 3:  edd3619f =  3:  c891aef6 20-raw-websocket.patch
+ 4:  34e64f51 !  4:  d8ac6e18 30-jobs-boot.patch
+    @@ src/ingest/boot_hooks.rs (new)
+     +}
+     
+      ## src/ingest/mod.rs ##
+    -@@
+    - mod alba;
+    +@@ src/ingest/mod.rs: mod class_configuration;
+      pub mod allow_browser;
+      pub mod app;
+    + mod concern_accessors;
+     +mod boot_hooks;
+      pub mod controller;
+      pub mod expr;
+ 5:  13cddaca !  5:  93d3cdb8 50-postgresql-lane.patch
+    @@ runtime/ruby/active_record/connection.rbs: module ActiveRecord
+     +    def self.where: (?untyped condition, *untyped args) -> Relation
+          def self.all: () -> Relation
+          def self.none: () -> Relation
+    -     def _note_hydrated: () -> void
+    +     def self.page: (?untyped num) -> Relation
+     
+      ## runtime/ruby/active_record/relation.rb ##
+     @@ runtime/ruby/active_record/relation.rb: module ActiveRecord
+    @@ src/emit/ruby/library.rs: pub(crate) fn apply_scope_lowering(lcs: &mut [LibraryC
+              && assoc_class_methods.is_empty()
+              && !wants_assoc_lookup
+              // An app with no scopes at all can still declare an association
+    -@@ src/emit/ruby/library.rs: pub(crate) fn apply_preload_lowering(lcs: &mut [LibraryClass], app: &App) {
+    -     // runtime. real-blog (`includes` but no scopes) and tiny-blog
+    -     // (scopes but no `includes`) both stay byte-identical.
+    -     let scopes = crate::lower::scope_chain::build_scope_registry(&app.models);
+    --    if !crate::lower::scope_chain::any_scopes(&scopes) || !app_mentions_includes(app) {
+    -+    if !crate::postgresql_enabled() && (!crate::lower::scope_chain::any_scopes(&scopes) || !app_mentions_includes(app)) {
+    -         return;
+    -     }
+    - 
+     
+      ## src/emit/shared/schema_sql.rs ##
+     @@ src/emit/shared/schema_sql.rs: fn sqlite_type(ct: &ColumnType) -> &'static str {
+    @@ src/ingest/model.rs: fn ty_of_column(t: &ColumnType) -> Ty {
+     
+      ## src/ingest/schema.rs ##
+     @@ src/ingest/schema.rs: fn table_from_create_table(
+    -     let mut indexes: Vec<Index> = Vec::new();
+    -     if has_id {
+    -         let id_limit = hash_limit.unwrap_or(outer_limit);
+    --        let opts = ColumnOpts { nullable: Some(false), default: None, limit: id_limit };
+    -+        let opts = ColumnOpts { nullable: Some(false), default: None, limit: id_limit, array: false };
+    -         // `serial` and `bigserial` are the integer keys Postgres fills
+    -         // from a sequence: Rails' PostgreSQL adapter makes `id: :integer`
+    -         // a `serial`, and dumps it as `id: :serial`. An integer key with
+    +             Some("integer") if !id_default => (Some("integer"), None),
+    +             other => (other, id_limit),
+    +         };
+    +-        let opts = ColumnOpts { nullable: Some(false), default: None, limit: key_limit };
+    ++        let opts = ColumnOpts { nullable: Some(false), default: None, limit: key_limit, array: false };
+    +         let key = match key_type {
+    +             None | Some("bigint") | Some("primary_key") => Ok(Column {
+    +                 name: Symbol::from(id_name.as_str()),
+     @@ src/ingest/schema.rs: struct ColumnOpts {
+          nullable: Option<bool>,
+          default: Option<String>,
+    @@ src/ingest/schema.rs: mod tests {
+              let schema = fold(&[r#"
+     
+      ## src/ingest/structure_sql.rs ##
+    -@@ src/ingest/structure_sql.rs: use crate::{Symbol, TableRef};
+    - use super::{IngestError, IngestResult};
+    - 
+    - pub fn ingest_structure_sql(source: &[u8], file: &str) -> IngestResult<Schema> {
+    --    let text = String::from_utf8_lossy(source).into_owned();
+    -+    let text = String::from_utf8_lossy(source).lines().filter(|line| !line.starts_with("\\restrict ") && !line.starts_with("\\unrestrict ")).collect::<Vec<_>>().join("\n");
+    -     super::sources::register(file, &text);
+    - 
+    -     let mut schema = Schema::default();
+     @@ src/ingest/structure_sql.rs: fn resolve_column_type(type_phrase: &str, enum_types: &HashSet<String>) -> Optio
+              base = base[dot + 1..].to_string();
+          }
+    @@ src/lower/model_to_library/adapter_emit.rs: fn synth_adapter_reload(owner: &Clas
+      
+          // if Db.step?(stmt) ; @<col> = Db.column_<int|text>(stmt, i) ; ... ; mark_persisted! ; end
+     @@ src/lower/model_to_library/adapter_emit.rs: fn synth_adapter_reload(owner: &ClassId, table: &Table) -> MethodDef {
+    - 
+    -     MethodDef {
+    +         unsupported_formals: None,
+    +         has_anonymous_block: false,
+              name_span: crate::span::Span::synthetic(),
+     -        name: Symbol::from("_adapter_reload"),
+     +        name: Symbol::from(if locked { "_adapter_reload_lock" } else { "_adapter_reload" }),
+    @@ src/naming.rs: pub(crate) fn is_sqlite_keyword(name: &str) -> bool {
+      ## src/project.rs ##
+     @@ src/project.rs: pub fn target_files(
+          }
+    -     let files = match target {
+    +     let files = crate::timings::phase(format_args!("emit {}: assemble", target.as_str()), || match target {
+              BuildTarget::Blog => blog_files(fixture),
+    --        BuildTarget::Spinel => spinel_files(app, fixture).and_then(spin_shape),
+    -+        BuildTarget::Spinel => spinel_files(app, fixture).and_then(|files| postgresql_files(files, fixture)).and_then(spin_shape),
+    +-        BuildTarget::Spinel => spinel_files(app, fixture).and_then(|(files, _)| spin_shape(files)),
+    ++        BuildTarget::Spinel => spinel_files(app, fixture).and_then(|(files, _)| postgresql_files(files, fixture)).and_then(spin_shape),
+              // The ruby family gets the bundled-library requires too: the
+              // table used to live inside `spin_shape` and so reached only
+              // the spinel tree, which cost campfire two test files on a
+    @@ src/project.rs: pub fn target_files(
+      }
+      
+      /// Targets whose archives ship the Playwright e2e suite under `e2e/`
+    -@@ src/project.rs: fn spinel_files(app: &App, fixture: &Path) -> Result<Vec<(String, String)>, Stri
+    +@@ src/project.rs: fn spinel_files(app: &App, fixture: &Path) -> Result<(Vec<(String, String)>, Vec
+          )?;
+      
+          crate::runtime_files::walk_flat("runtime/spinel", &["rb"], "runtime/", &mut files)?;
+ 6:  893296d5 !  6:  111491be 60-rails-surface.patch
+    @@ src/emit/ruby/library.rs: fn require_path_for_body_const(
+          }
+     
+      ## src/ingest/library_class.rs ##
+    -@@ src/ingest/library_class.rs: fn walk_decl_body<'pr>(
+    +@@ src/ingest/library_class.rs: fn walk_decl_body_with_visibility<'pr>(
+                  constants.push((name, value));
+                  continue;
+              }
+    @@ src/lower/model_to_library/schema.rs: fn synth_instantiate(owner: &ClassId, fire
+          // this is the one caller that holds the raw row, so it can first
+          // note the columns the query did not select. Rails answers
+     @@ src/lower/model_to_library/schema.rs: fn synth_index_read(owner: &ClassId, table: &Table, model: &Model) -> MethodDef
+    -     // stored text, same as `attributes`. JSON columns are the exception: a
+    +     // JSON columns are another exception: a
+          // `has_json` declaration builds its typed Hash from the flat readers; a
+          // schema-less column decodes through `JsonColumn.load`.
+     -    let arms: Vec<crate::expr::Arm> = table
+    @@ src/lower/model_to_library/validations.rs: fn errors_push(attr: &Symbol, msg: St
+          ])
+     
+      ## src/lower/scope_chain.rs ##
+    -@@ src/lower/scope_chain.rs: fn is_relation_chain_method(name: &str) -> bool {
+    -             | "having"
+    -             | "joins"
+    -             | "left_outer_joins"
+    -+            | "left_joins"
+    -             | "select"
+    -             | "distinct"
+    -             | "includes"
+     @@ src/lower/scope_chain.rs: impl Ctx<'_> {
+          }
+      }
+    @@ src/lower/scope_chain.rs: fn is_relation_terminal(name: &str, args: &[Expr], blo
+              ),
+          }
+      }
+    -@@ src/lower/scope_chain.rs: fn lower_relation_args(
+    - ) -> Vec<Symbol> {
+    -     let mut aliases: Vec<Symbol> = Vec::new();
+    -     match method.as_str() {
+    --        "joins" | "left_outer_joins" => {
+    -+        "joins" | "left_outer_joins" | "left_joins" => {
+    -             let kind = if method.as_str() == "joins" { "INNER JOIN" } else { "LEFT OUTER JOIN" };
+    -             for a in args {
+    -                 if let Some(sql) = join_spec_sql(model, a, kind, ctx) {
+     @@ src/lower/scope_chain.rs: fn lower_relation_args(
+              // are `find_by`'s — a list that names some of them renames
+              // `user:` to `user_id:` on one spelling and emits the
+    @@ src/lower/scope_chain.rs: mod tests {
+                  "receiver should be Story const, got {:?}",
+     
+      ## src/project.rs ##
+    -@@ src/project.rs: fn spinel_files(app: &App, fixture: &Path) -> Result<Vec<(String, String)>, Stri
+    +@@ src/project.rs: fn spinel_files(app: &App, fixture: &Path) -> Result<(Vec<(String, String)>, Vec
+              "inflector_ext",
+              "json_builder",
+              "active_support_ext",
+    @@ tests/relation_class_method_scope.rs: fn a_querying_body_roots_on_the_threaded_r
+          );
+      }
+     
+    - ## tests/runtime_src_integration.rs ##
+    -@@ tests/runtime_src_integration.rs: fn every_runtime_method_body_concretely_typed() {
+    -     // error messages once @table holds the SQL spelling. These are
+    -     // three additional gradual sites through the existing untyped
+    -     // model contract, not new untyped signatures or relaxed Bar A.
+    --    const CEILING: usize = 510;
+    -+    // Local series: patches 10-50 add six sites (as on the v4 base, 507 -> 513),
+    -+    // and Rails surface support (patch 60) adds 16 Relation sites at the
+    -+    // polymorphic model/condition boundary (spawn, create scopes and
+    -+    // find_or_create_by!) plus one Base adapter-projection cell: 510 -> 533.
+    -+    const CEILING: usize = 533;
+    + ## tests/scope_body_left_joins.rs ##
+    +@@ tests/scope_body_left_joins.rs: fn the_bare_left_joins_scope_threads_the_relation() {
+    +         .unwrap_or_else(|| panic!("{src}"));
+    +     let body = &src[at..src[at..].find("\n  end").map(|i| at + i).unwrap_or(src.len())];
+    +     assert!(
+    +-        body.contains("__rel.left_joins("),
+    +-        "left_joins must chain onto the threaded relation:\n{body}"
+    ++        body.contains("__rel.spawn.left_joins("),
+    ++        "left_joins must chain onto a copy of the threaded relation:\n{body}"
+    +     );
+          assert!(
+    -         total_gradual <= CEILING,
+    -         "{total_gradual} Ty::Untyped sites exceeds ceiling of {CEILING}",
+    +         body.contains("LEFT OUTER JOIN sessions"),
+ 7:  ef44ed4e !  7:  2a0c8010 61-secure-password-super-and-nil.patch
+    @@ Commit message
+         61-secure-password-super-and-nil.patch
+     
+      ## src/lower/model_to_library/mod.rs ##
+    -@@ src/lower/model_to_library/mod.rs: fn build_methods(
+    +@@ src/lower/model_to_library/mod.rs: pub(crate) fn build_methods(
+          // rationale as the macros above (a hand-written method wins).
+          crate::lower::attached::push_attached_methods(&mut methods, model);
+          push_user_methods(&mut methods, model);
+ 8:  83a8e4ae =  8:  f67f6dd4 70-linear-pg-placeholder-rewrite.patch
+ 9:  5a49c609 =  9:  725a9ffe 71-record-lock-and-error-predicate.patch
+10:  cb7f78bc = 10:  4d2650cc 72-pg-async-cache.patch
+11:  7670f2ab ! 11:  54229c56 74-integer-query-range.patch
+    @@ runtime/ruby/active_record/base.rbs: module ActiveModel
+        # dispatch through. Phantom RBS-only class — no Ruby source body,
+        # each target ships its own concrete implementation (Rust trait +
+     @@ runtime/ruby/active_record/base.rbs: module ActiveRecord
+    -     def self._table_sql: () -> String
+    -     def self.primary_key: () -> String
+    +     def self._cast_primary_key: (Integer | String id) -> (Integer | String | nil)
+    +     def self._string_primary_key: () -> bool
+          def self.schema_columns: () -> Array[Symbol]
+     +    def self.schema_integer_limits: () -> Hash[String, Integer]
+          def self.schema_time_columns: () -> Array[Symbol]
+    @@ runtime/ruby/active_record/relation.rb: module ActiveRecord
+            @wheres.pop
+            found
+     @@ runtime/ruby/active_record/relation.rb: module ActiveRecord
+    -     # raise for the same reason — an exception a caller rescues must not
+          # leave the relation altered.
+          def find(id)
+    --      @wheres << "#{@table}.id = #{ActiveRecord.adapter.escape_value(id)}"
+    +       return find_ids(id) if id.is_a?(Array)
+    +-      key = @model._cast_primary_key(id)
+    +       prior_limit = @limit
+    +-      @wheres << "#{@table}.#{@model.primary_key} = #{ActiveRecord.adapter.escape_value(key)}"
+     +      @wheres << column_predicate(@model.primary_key, id)
+    -       record = first
+    -       @wheres.pop
+    -       if record.nil?
+    +       begin
+    +         @limit = 1
+    +         rows = load_records
+     @@ runtime/ruby/active_record/relation.rb: module ActiveRecord
+          # `hidden_stories.user_id`, not `user_id`, after `joins(:hidings)`.
+          def column_predicate(col, val)
+    @@ src/lower/arel/visitor.rs: mod tests {
+          #[test]
+     
+      ## src/lower/model_to_library/mod.rs ##
+    -@@ src/lower/model_to_library/mod.rs: fn build_methods(
+    +@@ src/lower/model_to_library/mod.rs: pub(crate) fn build_methods(
+              let writable_fields =
+                  permitted_fields.map(|fields| writable_permit_fields(model, table, fields));
+              let permitted_fields = writable_fields.as_deref();
+    @@ src/lower/model_to_library/schema.rs: pub(super) fn push_schema_methods(
+     +    }
+     +    let limits_ty = Ty::Hash { key: Box::new(Ty::Str), value: Box::new(Ty::Int) };
+     +    methods.push(MethodDef {
+    ++        visibility: crate::dialect::MethodVisibility::Public,
+    ++        unsupported_formals: None,
+    ++        has_anonymous_block: false,
+     +        name_span: Span::synthetic(),
+     +        name: Symbol::from("schema_integer_limits"),
+     +        receiver: MethodReceiver::Class,
+    @@ src/lower/model_to_library/schema.rs: pub(super) fn push_schema_methods(
+     +        block_param: None,
+     +    });
+     +
+    -     // def self.schema_time_columns — the temporal subset of the above.
+    -     // JSON serialization is the consumer: Rails renders a temporal
+    +     // def self.schema_time_columns — the timestamp subset of the above.
+    +     // JSON serialization is the consumer: Rails renders a timestamp
+          // attribute as ISO8601-with-offset while every other column renders
+     
+      ## tests/integer_query_predicates.rb (new) ##
+    @@ tests/integer_query_predicates.rs (new)
+     +    let result = Command::new("ruby").arg("tests/integer_query_predicates.rb").output().expect("Ruby is available");
+     +    assert!(result.status.success(), "{}\n{}", String::from_utf8_lossy(&result.stdout), String::from_utf8_lossy(&result.stderr));
+     +}
+    -
+    - ## tests/runtime_src_integration.rs ##
+    -@@ tests/runtime_src_integration.rs: fn every_runtime_method_body_concretely_typed() {
+    -     // and Rails surface support (patch 60) adds 16 Relation sites at the
+    -     // polymorphic model/condition boundary (spawn, create scopes and
+    -     // find_or_create_by!) plus one Base adapter-projection cell: 510 -> 533.
+    --    const CEILING: usize = 533;
+    -+    // Integer query serialization (patch 74) adds 19 more: 533 -> 552,
+    -+    // measured on the full series.
+    -+    const CEILING: usize = 552;
+    -     assert!(
+    -         total_gradual <= CEILING,
+    -         "{total_gradual} Ty::Untyped sites exceeds ceiling of {CEILING}",
+ -:  -------- > 12:  4c13f4b2 75-stdlib-constant-resolution.patch

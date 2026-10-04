@@ -1,0 +1,39 @@
+warning: unused variable: `parenthesized`
+   --> src/lower/enumerable_ext.rs:203:53
+    |
+203 |     let ExprNode::Send { recv, method, args, block, parenthesized } = &mut *expr.node else {
+    |                                                     ^^^^^^^^^^^^^ help: try ignoring the field: `parenthesized: _`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: `roundhouse` (lib) generated 1 warning (run `cargo fix --lib -p roundhouse` to apply 1 suggestion)
+   Compiling roundhouse v2026.9.18 (/work/app/src/roundhouse)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.39s
+     Running tests/stdlib_constant_execution.rs (target/debug/deps/stdlib_constant_execution-3b4713b1cd127e0e)
+
+running 1 test
+test struct_mutex_and_json_error_constants_execute_after_emission ... FAILED
+
+failures:
+
+---- struct_mutex_and_json_error_constants_execute_after_emission stdout ----
+roundhouse: treeshake (ruby): dropped 67 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+
+thread 'struct_mutex_and_json_error_constants_execute_after_emission' (4041653) panicked at tests/support/emit_and_run.rs:262:9:
+analysis and emit are clean but the emitted program failed: `ruby -e <script>` in $TMPDIR/roundhouse-emit-and-run-78346-1/emitted
+
+=== stdout ===
+
+=== stderr ===
+$TMPDIR/roundhouse-emit-and-run-78346-1/emitted/app/models/registry.rb:6:in 'Registry.entry': roundhouse: constant not supported (all targets) (RuntimeError)
+	from -e:4:in '<main>'
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    struct_mutex_and_json_error_constants_execute_after_emission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+
+error: test failed, to rerun pass `--test stdlib_constant_execution`

@@ -1,0 +1,146 @@
+diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+index f49b5abc..199d57e4 100644
+--- a/runtime/ruby/active_record/base.rb
++++ b/runtime/ruby/active_record/base.rb
+@@ -179,6 +179,10 @@ module ActiveRecord
+       self[name.to_sym]
+     end
+ 
++    def errors_of_kind?(attribute, error_type)
++      errors_entries.any? { |entry| entry.attribute == attribute && entry.type == error_type }
++    end
++
+     def errors_entries
+       @validation_entries
+     end
+diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+index 75443e7d..7b4f4ba1 100644
+--- a/runtime/ruby/active_record/base.rbs
++++ b/runtime/ruby/active_record/base.rbs
+@@ -82,6 +82,7 @@ module ActiveRecord
+     def _note_projection: (Hash[String, untyped] row) -> nil
+     def _projection_attribute: (String name) -> untyped
+     def read_attribute: (String name) -> untyped
++    def errors_of_kind?: (Symbol attribute, Symbol error_type) -> bool
+     def errors_entries: () -> Array[ActiveModel::Error]
+     def record_validation_message: (Symbol field, String message, ?Symbol error_type) -> Array[String]
+     EMPTY_ATTRS: Hash[Symbol, untyped]
+diff --git a/src/analyze/mod.rs b/src/analyze/mod.rs
+index 920c2015..ac6f5771 100644
+--- a/src/analyze/mod.rs
++++ b/src/analyze/mod.rs
+@@ -587,6 +587,9 @@ impl Analyzer {
+                 ("record_timestamps=", Ty::Bool),
+                 ("attributes=", Ty::Untyped),
+                 ("assign_attributes", Ty::Untyped),
++                // Implemented by the Ruby-family connection reopen; returns
++                // the caller's block value, as transaction does.
++                ("with_lock", Ty::Untyped),
+                 ("update_column", Ty::Bool),
+                 ("update_columns", Ty::Bool),
+                 ("saved_changes", Ty::Untyped),
+diff --git a/src/analyze/registry/activemodel.rs b/src/analyze/registry/activemodel.rs
+index f6f94845..55fc8eee 100644
+--- a/src/analyze/registry/activemodel.rs
++++ b/src/analyze/registry/activemodel.rs
+@@ -71,6 +71,7 @@ pub(in crate::analyze) fn register(classes: &mut HashMap<ClassId, ClassInfo>) {
+         ("none?", Ty::Bool),
+         ("empty?", Ty::Bool),
+         ("include?", Ty::Bool),
++        ("of_kind?", Ty::Bool),
+         ("full_messages", str_arr()),
+         // `errors[:title]` returns an Array<String> of messages for that attribute.
+         ("[]", str_arr()),
+diff --git a/src/lower/errors_index.rs b/src/lower/errors_index.rs
+index f00e6a67..3274c05a 100644
+--- a/src/lower/errors_index.rs
++++ b/src/lower/errors_index.rs
+@@ -145,6 +145,23 @@ fn rewrite_messages(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
+ }
+ 
+ fn rewrite(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
++    // The retained structured entries support Rails' symbolic error predicate.
++    // String-message predicates are a different contract and remain unclaimed.
++    if let ExprNode::Send { recv: Some(r), method, args, block: None, .. } = &*expr.node {
++        if method.as_str() == "of_kind?" && is_errors_read(r) && args.len() == 2
++            && args.iter().all(|a| matches!(&*a.node, ExprNode::Lit { value: Literal::Sym { .. } }))
++        {
++            let ExprNode::Send { recv, .. } = &*r.node else { unreachable!() };
++            *expr.node = ExprNode::Send {
++                recv: recv.clone(), method: Symbol::from("errors_of_kind?"), args: args.clone(),
++                block: None, parenthesized: true,
++            };
++            expr.ty = Some(Ty::Bool);
++        } else if method.as_str() == "of_kind?" && is_errors_read(r) {
++            diags.push(Diagnostic::unsupported(expr.span, None, "errors.of_kind?",
++                "only two literal Symbol arguments are implemented"));
++        }
++    }
+     if let ExprNode::Send { recv: Some(r), method, block: Some(_), .. } = &mut *expr.node {
+         if matches!(method.as_str(), "any?" | "each" | "map") && is_errors_read(r) {
+             if let ExprNode::Send { method, .. } = &mut *r.node { *method = Symbol::from("errors_entries"); }
+diff --git a/tests/compile_contract_surfaces.rs b/tests/compile_contract_surfaces.rs
+new file mode 100644
+index 00000000..6fab5cf0
+--- /dev/null
++++ b/tests/compile_contract_surfaces.rs
+@@ -0,0 +1,59 @@
++//! Small framework surfaces exercised by the integrated native application gate.
++use std::collections::HashMap;
++use std::path::PathBuf;
++use roundhouse::{App, emit::{ruby, EmittedFile}, ingest::ingest_app_from_tree};
++
++fn app(controller: &str) -> App {
++    let tree: HashMap<PathBuf, Vec<u8>> = [
++        ("db/schema.rb", "ActiveRecord::Schema.define do; create_table 'records' do |t|; t.string 'name'; end; end"),
++        ("app/models/application_record.rb", "class ApplicationRecord < ActiveRecord::Base; primary_abstract_class; end"),
++        ("app/models/record.rb", "class Record < ApplicationRecord; validates :name, uniqueness: true; end"),
++        ("app/controllers/probes_controller.rb", controller),
++    ].into_iter().map(|(p, c)| (PathBuf::from(p), c.as_bytes().to_vec())).collect();
++    let mut app = ingest_app_from_tree(tree).unwrap();
++    roundhouse::session::analyze_and_lower(&mut app);
++    app
++}
++fn file(files: Vec<EmittedFile>, suffix: &str) -> String {
++    files.into_iter().find(|f| f.path.to_string_lossy().ends_with(suffix)).unwrap().content
++}
++#[test]
++fn record_with_lock_is_known_and_preserved() {
++    let app = app("class ProbesController < ApplicationController; def index; record = Record.first; record.with_lock { record.update!(name: 'updated') }; end; end");
++    let diagnostics = roundhouse::analyze::diagnose(&app);
++    let failures: Vec<_> = diagnostics.iter().filter(|d| d.message.contains("with_lock")).collect();
++    assert!(failures.is_empty(), "{failures:?}");
++    let src = file(ruby::emit_lowered_controllers(&app), "probes_controller.rb");
++    assert!(src.contains("record.with_lock"), "{src}");
++    let runtime = std::fs::read_to_string("runtime/ruby/active_record/connection.rb").unwrap();
++    assert!(runtime.contains("def with_lock") && runtime.contains("reload(lock: true)"));
++}
++#[test]
++fn symbolic_error_predicate_uses_structured_entries() {
++    let app = app("class ProbesController < ApplicationController; def index; record = Record.new(name: 'test'); record.save; render json: { taken: record.errors.of_kind?(:name, :taken), errors: record.errors.to_hash }; end; end");
++    let src = file(ruby::emit_lowered_controllers(&app), "probes_controller.rb");
++    assert!(src.contains("record.errors_of_kind?(:name, :taken)"), "{src}");
++    assert!(src.contains("record.errors_messages"), "{src}");
++    assert!(!src.contains(".of_kind?"), "{src}");
++    let errors: Vec<_> = roundhouse::analyze::diagnose(&app).into_iter()
++        .filter(|d| d.severity == roundhouse::diagnostic::Severity::Error).collect();
++    assert!(errors.is_empty(), "{errors:?}");
++}
++#[test]
++fn string_error_predicate_remains_unclaimed() {
++    let mut app = app("class ProbesController < ApplicationController; def index; record = Record.new; record.errors.of_kind?(:name, 'has already been taken'); end; end");
++    let diagnostics = roundhouse::lower::apply_errors_index_lowering(&mut app);
++    assert!(diagnostics.iter().any(|d| d.severity == roundhouse::diagnostic::Severity::Error
++        && d.message.contains("only two literal Symbol")), "{diagnostics:?}");
++    let src = file(ruby::emit_lowered_controllers(&app), "probes_controller.rb");
++    assert!(src.contains(".of_kind?(:name, \"has already been taken\")"), "{src}");
++}
++
++#[test]
++fn error_predicate_runtime_matches_attribute_and_type() {
++    let result = std::process::Command::new("ruby").args([
++        "-I", "runtime/ruby", "-e",
++        "require 'active_record/base'; r = ActiveRecord::Base.new; raise if r.errors_of_kind?(:name, :taken); r.record_validation_message(:name, 'has already been taken', :taken); raise unless r.errors_of_kind?(:name, :taken); raise if r.errors_of_kind?(:other, :taken); raise if r.errors_of_kind?(:name, :invalid)"
++    ]).output().expect("Ruby runtime execution");
++    assert!(result.status.success(), "{}", String::from_utf8_lossy(&result.stderr));
++}

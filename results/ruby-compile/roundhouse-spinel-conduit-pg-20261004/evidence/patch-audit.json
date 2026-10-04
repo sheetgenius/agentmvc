@@ -1,0 +1,108 @@
+{
+  "manifest_sha256": "2b395944ea25f8989ba9bea324514968caacedd86bf51f82e3a0b3c54556ea4f",
+  "trees": {
+    "roundhouse": "16ce7d31f32fcaea4c2f43ccd4ada25cdefbfe0b82caf31406a169e8cce87457",
+    "spinel": "d5a0ecbf6fd2bceed3074c71fb197de6fdca952fa390c0ae2be6b64ce42172b3"
+  },
+  "patches": [
+    {
+      "patch": "00-interval.patch",
+      "stat": "1 file changed, 10 insertions(+), 1 deletion(-)"
+    },
+    {
+      "patch": "10-api-mode-json.patch",
+      "stat": "24 files changed, 347 insertions(+), 61 deletions(-)"
+    },
+    {
+      "patch": "20-raw-websocket.patch",
+      "stat": "9 files changed, 357 insertions(+), 24 deletions(-)"
+    },
+    {
+      "patch": "30-jobs-boot.patch",
+      "stat": "11 files changed, 485 insertions(+), 36 deletions(-)"
+    },
+    {
+      "patch": "50-postgresql-lane.patch",
+      "stat": "24 files changed, 955 insertions(+), 29 deletions(-)"
+    },
+    {
+      "patch": "60-rails-surface.patch",
+      "stat": "20 files changed, 432 insertions(+), 30 deletions(-)"
+    },
+    {
+      "patch": "61-secure-password-super-and-nil.patch",
+      "stat": "4 files changed, 70 insertions(+), 2 deletions(-)"
+    },
+    {
+      "patch": "70-linear-pg-placeholder-rewrite.patch",
+      "stat": "3 files changed, 94 insertions(+), 46 deletions(-)"
+    },
+    {
+      "patch": "71-record-lock-and-error-predicate.patch",
+      "stat": "6 files changed, 85 insertions(+)"
+    },
+    {
+      "patch": "72-pg-async-cache.patch",
+      "stat": "1 file changed, 194 insertions(+), 31 deletions(-)"
+    },
+    {
+      "patch": "74-integer-query-range.patch",
+      "stat": "11 files changed, 247 insertions(+), 38 deletions(-)"
+    },
+    {
+      "patch": "75-stdlib-constant-resolution.patch",
+      "stat": "4 files changed, 46 insertions(+), 5 deletions(-)"
+    }
+  ],
+  "total": "83 files changed, 3243 insertions(+), 224 deletions(-)",
+  "upstream_pins": {
+    "roundhouse": "ac1fa43e3d7fce8cae4dd31a4694ea6b10093ceb",
+    "spinel": "b7d04a903c909ee6681c6b203ded8830841d114e",
+    "observed_at": "2026-10-04",
+    "agentmvc_base": "4b1dd11"
+  },
+  "retired": [
+    {
+      "patch": "10-api-mode-json.patch",
+      "upstream_pr": 304,
+      "commit": "bc4acba151cb48b4002e8de3b04f7daecffaf4ca",
+      "removed": "RouteTable.all synthesis and three runtime callers; API-mode test now uses the upstream table."
+    },
+    {
+      "patch": "50-postgresql-lane.patch",
+      "upstream_pr": 297,
+      "commit": "dad9b5843fe957742a50f35f9aab66e7fb31d1e6",
+      "removed": "Local pg_dump restrict/unrestrict line filter."
+    },
+    {
+      "patch": "50-postgresql-lane.patch",
+      "upstream_pr": 376,
+      "commit": "554873332c2c9e94485bad1c4a74febc5efc4c57",
+      "removed": "PostgreSQL override for preload lowering admission."
+    },
+    {
+      "patch": "60-rails-surface.patch",
+      "upstream_pr": 384,
+      "commit": "53a2e14a38f9f65e498fb3cd94cae87313c1077b",
+      "removed": "left_joins aliases; upstream test adapted to the remaining local relation-copy semantics."
+    },
+    {
+      "patch": "60-rails-surface.patch, 74-integer-query-range.patch",
+      "upstream_pr": null,
+      "removed": "Local runtime typing ceiling increases; upstream ceiling remains 521, and the local runtime still fails at 559."
+    }
+  ],
+  "other_upstream": [
+    {
+      "pr": 299,
+      "commit": "1d53193d08cbf09c8e7e5e510b79ae219056d9ba",
+      "note": "Schema integer limit:8 is bigint upstream. No bigint hunk existed in v5, so this retires no local patch content."
+    }
+  ],
+  "new_patch": {
+    "patch": "75-stdlib-constant-resolution.patch",
+    "introducing_commit": "78169247c9156acf7d2abde58dbc75e0f27685c0",
+    "parent": "fc49a942",
+    "failure": "LiveRooms Room/Mutex reads and JSON::ParserError rescue constants emit unsupported raises. Minimal emitted-Ruby test passes at parent and fails at introducing commit; new registry entries restore execution. Non-Ruby targets retain capability errors."
+  }
+}
