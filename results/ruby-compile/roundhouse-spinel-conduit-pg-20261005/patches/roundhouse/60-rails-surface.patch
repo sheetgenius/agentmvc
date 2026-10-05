@@ -1,0 +1,932 @@
+diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+index ac6ca6f4..dc00b6fa 100644
+--- a/runtime/ruby/active_record/base.rb
++++ b/runtime/ruby/active_record/base.rb
+@@ -1,3 +1,22 @@
++module ActiveModel
++  class Error
++    def initialize(attribute, error_type, message)
++      @attribute = attribute
++      @type = error_type
++      @message = message
++    end
++    def attribute
++      @attribute
++    end
++    def type
++      @type
++    end
++    def message
++      @message
++    end
++  end
++end
++
+ require_relative "errors"
+ require "time"
+ 
+@@ -197,10 +216,30 @@ module ActiveRecord
+       @validation_messages
+     end
+ 
+-    def record_validation_message(field, message)
++    def _note_projection(row)
++      @projection_attributes = row
++      nil
++    end
++
++    def _projection_attribute(name)
++      row = @projection_attributes
++      return nil if row.nil?
++      row[name]
++    end
++
++    def read_attribute(name)
++      self[name.to_sym]
++    end
++
++    def errors_entries
++      @validation_entries
++    end
++
++    def record_validation_message(field, message, error_type = :invalid)
+       list = @validation_messages.fetch(field, [])
+       list.push(message)
+       @validation_messages.store(field, list)
++      @validation_entries.push(ActiveModel::Error.new(field, error_type, message))
+       @errors
+     end
+ 
+@@ -260,6 +299,7 @@ module ActiveRecord
+       # here: see the class comment on why the base holds no `@id`.
+       @errors = []
+       @validation_messages = {}
++      @validation_entries = []
+       @id_previously_changed = false
+       @persisted = false
+       @destroyed = false
+@@ -1042,6 +1082,7 @@ module ActiveRecord
+     def valid?
+       @errors = []
+       @validation_messages = {}
++      @validation_entries = []
+       validate
+       @errors.empty?
+     end
+diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+index eb05abbd..42f9d165 100644
+--- a/runtime/ruby/active_record/base.rbs
++++ b/runtime/ruby/active_record/base.rbs
+@@ -1,3 +1,15 @@
++module ActiveModel
++  class Error
++    @attribute: Symbol
++    @type: Symbol
++    @message: String
++    def initialize: (Symbol attribute, Symbol error_type, String message) -> void
++    def attribute: () -> Symbol
++    def type: () -> Symbol
++    def message: () -> String
++  end
++end
++
+ module ActiveRecord
+   # The 9-method adapter contract `Base.find` / `Base.create!` / etc.
+   # dispatch through. Phantom RBS-only class — no Ruby source body,
+@@ -69,7 +81,13 @@ module ActiveRecord
+   class Base
+     @validation_messages: Hash[Symbol, Array[String]]
+     def errors_messages: () -> Hash[Symbol, Array[String]]
+-    def record_validation_message: (Symbol field, String message) -> Array[String]
++    @validation_entries: Array[ActiveModel::Error]
++    @projection_attributes: Hash[String, untyped]?
++    def _note_projection: (Hash[String, untyped] row) -> nil
++    def _projection_attribute: (String name) -> untyped
++    def read_attribute: (String name) -> untyped
++    def errors_entries: () -> Array[ActiveModel::Error]
++    def record_validation_message: (Symbol field, String message, ?Symbol error_type) -> Array[String]
+     EMPTY_ATTRS: Hash[Symbol, untyped]
+     HYDRATE_ATTRS: Hash[Symbol, untyped]
+ 
+@@ -165,7 +183,7 @@ module ActiveRecord
+     # callers typed against `ActiveRecord::Base` (FormBuilder.text_
+     # field's `@model[field]`) compile under static targets like
+     # Crystal — the static type needs the method to exist.
+-    def []: (Symbol name) -> untyped
++    def []: ((Symbol | String) name) -> untyped
+     def []=: ((Symbol | String) name, untyped value) -> untyped
+     def has_attribute?: (Symbol name) -> bool
+     def _note_unloaded: (Hash[String, untyped] _row) -> void
+diff --git a/runtime/ruby/active_record/relation.rb b/runtime/ruby/active_record/relation.rb
+index 54657331..e74cb431 100644
+--- a/runtime/ruby/active_record/relation.rb
++++ b/runtime/ruby/active_record/relation.rb
+@@ -46,6 +46,27 @@ module ActiveRecord
+       @ctes = []
+     end
+ 
++    def spawn
++      Relation.new(@model).copy_query_state(@wheres.dup, @joins.dup, @orders.dup, @groups.dup, @havings.dup, @select_sql, @distinct, @limit, @offset, @includes.dup, @scope_attributes.dup, @from, @ctes.dup)
++    end
++
++    def copy_query_state(wheres, joins, orders, groups, havings, select_sql, distinct, limit, offset, includes, scope_attributes, from, ctes)
++      @wheres = wheres
++      @joins = joins
++      @orders = orders
++      @groups = groups
++      @havings = havings
++      @select_sql = select_sql
++      @distinct = distinct
++      @limit = limit
++      @offset = offset
++      @includes = includes
++      @scope_attributes = scope_attributes
++      @from = from
++      @ctes = ctes
++      self
++    end
++
+     # ---- chain methods (return self) --------------------------------
+ 
+     # `with_recursive(parents: [base, step])` — a recursive common table
+@@ -73,6 +94,13 @@ module ActiveRecord
+     # `where(hash)` / `where("raw sql")` / `where("a = ? AND b = ?", x, y)`.
+     def where(condition = nil, *args)
+       add_condition(condition, args, false)
++      if condition.is_a?(Hash)
++        condition.each do |key, value|
++          unless value.is_a?(Array) || value.is_a?(Hash) || value.is_a?(Relation)
++            @scope_attributes[key] = value
++          end
++        end
++      end
+       self
+     end
+ 
+@@ -82,9 +110,9 @@ module ActiveRecord
+     # Rails derives both from the same place — a relation's equality
+     # conditions filter reads (`where_values_hash`) and seed writes
+     # (`scope_for_create`), which is why `user.sessions.create!(…)`
+-    # comes back with `user_id` set without anybody naming it. Only the
+-    # compiler's association seed calls this, so the ordinary `where`
+-    # stays a pure filter and pays nothing for the extra bookkeeping.
++    # comes back with `user_id` set without anybody naming it. Ordinary
++    # `where` also records scalar equalities; this entry explicitly seeds
++    # the compiler's association-scoped class methods.
+     def where_scope(condition)
+       @scope_attributes = condition
+       add_condition(condition, [], false)
+@@ -1502,6 +1530,14 @@ module ActiveRecord
+       created
+     end
+ 
++    def find_or_create_by!(conditions)
++      record = find_by(conditions)
++      return record if !record.nil?
++      created = @model.new(scope_attributes.merge(conditions))
++      created.save!
++      created
++    end
++
+     # ---- SQL composition --------------------------------------------
+ 
+     def to_sql
+diff --git a/runtime/ruby/active_record/relation.rbs b/runtime/ruby/active_record/relation.rbs
+index 01d5e79d..64ac6c45 100644
+--- a/runtime/ruby/active_record/relation.rbs
++++ b/runtime/ruby/active_record/relation.rbs
+@@ -6,6 +6,9 @@ module ActiveRecord
+   class Relation
+     def initialize: (untyped model) -> void
+ 
++    def spawn: () -> Relation
++    def copy_query_state: (Array[String] wheres, Array[String] joins, Array[String] orders, Array[String] groups, Array[String] havings, String? select_sql, bool distinct, Integer? limit, Integer? offset, Array[Symbol] includes, Hash[Symbol, untyped] scope_attributes, String? from, Array[String] ctes) -> Relation
++
+     def where: (?untyped condition, *untyped args) -> Relation
+ 
+     @from: String?
+@@ -194,6 +197,7 @@ module ActiveRecord
+     def find_by: (untyped conditions) -> untyped
+     def find_by!: (untyped conditions) -> untyped
+     def first_or_initialize: () -> untyped
++    def find_or_create_by!: (Hash[Symbol, untyped] conditions) -> untyped
+     def find_or_create_by: (Hash[Symbol, untyped] conditions) -> untyped
+ 
+     def to_sql: () -> String
+diff --git a/runtime/ruby/security_utils.rb b/runtime/ruby/security_utils.rb
+new file mode 100644
+index 00000000..dab23c7b
+--- /dev/null
++++ b/runtime/ruby/security_utils.rb
+@@ -0,0 +1,8 @@
++require_relative "action_controller/message_verifier"
++module ActiveSupport
++  module SecurityUtils
++    def self.secure_compare(a, b)
++      ActionController::MessageVerifier.secure_compare(a, b)
++    end
++  end
++end
+diff --git a/runtime/ruby/security_utils.rbs b/runtime/ruby/security_utils.rbs
+new file mode 100644
+index 00000000..1b4246fb
+--- /dev/null
++++ b/runtime/ruby/security_utils.rbs
+@@ -0,0 +1,5 @@
++module ActiveSupport
++  module SecurityUtils
++    def self.secure_compare: (String a, String b) -> bool
++  end
++end
+diff --git a/src/emit/ruby/library.rs b/src/emit/ruby/library.rs
+index 5eba12a4..c9e9139c 100644
+--- a/src/emit/ruby/library.rs
++++ b/src/emit/ruby/library.rs
+@@ -6236,7 +6236,19 @@ fn emit_library_class_decl_inner(
+             open_header(&mut s);
+             render_constants(&mut s, &eager[*at..]);
+         }
+-        None => render_constants(&mut s, &eager),
++        None => {
++            // Constants and singleton-ivar initializers share source order.
++            let mut body_items: Vec<(u32, String)> = eager.iter().map(|&i| {
++                let (name, value) = &lc.constants[i];
++                (value.span.start, format!("{} = {}", name.as_str(), super::emit_expr(value)))
++            }).collect();
++            body_items.extend(lc.unknown_calls.iter().filter(|e| is_class_ivar_initializer(e))
++                .map(|e| (e.span.start, super::emit_expr(e))));
++            body_items.sort_by_key(|(offset, _)| *offset);
++            for (_, rendered) in body_items {
++                for line in rendered.lines() { writeln!(s, "{body_pad}{line}").unwrap(); }
++            }
++        },
+     }
+     if !eager.is_empty() && !lc.methods.is_empty() {
+         writeln!(s).unwrap();
+@@ -6249,6 +6261,7 @@ fn emit_library_class_decl_inner(
+     // call may reference one) and before the methods.
+     if replays_foreign_class_body(lc, app) {
+         for call in &lc.unknown_calls {
++            if split.is_none() && is_class_ivar_initializer(call) { continue; }
+             for line in super::emit_expr(call).lines() {
+                 if line.is_empty() {
+                     writeln!(s).unwrap();
+@@ -6262,6 +6275,12 @@ fn emit_library_class_decl_inner(
+         }
+     } else {
+         for call in &lc.unknown_calls {
++            if is_class_ivar_initializer(call) {
++                if split.is_some() {
++                    for line in super::emit_expr(call).lines() { writeln!(s, "{body_pad}{line}").unwrap(); }
++                }
++                continue;
++            }
+             report_dropped_class_body_call(lc, call);
+         }
+     }
+@@ -6528,6 +6547,10 @@ fn runtime_reopen_anchor(name: &str) -> Option<&'static str> {
+ ///
+ /// A dropped call is no longer silent either way — see
+ /// `report_dropped_class_body_call`.
++fn is_class_ivar_initializer(e: &Expr) -> bool {
++    matches!(&*e.node, ExprNode::Assign { target: crate::expr::LValue::Ivar { .. }, .. })
++}
++
+ fn replays_foreign_class_body(lc: &LibraryClass, app: &App) -> bool {
+     if lc.is_module {
+         return false;
+@@ -6844,6 +6867,9 @@ fn require_path_for_body_const(
+     // body to need this: `created_at: <%= 1.hour.ago %>` grounds to
+     // `ActiveSupport::Duration.hour(1)` and `test/fixtures/<x>.rb` is
+     // reached from the test harness, not from main.rb's require chain.
++    if joined == "ActiveSupport::SecurityUtils" {
++        return Some("runtime/security_utils".to_string());
++    }
+     if joined == "ActiveSupport::Duration" {
+         return Some("runtime/active_support_duration".to_string());
+     }
+diff --git a/src/ingest/library_class.rs b/src/ingest/library_class.rs
+index a44a9cea..c8b45ee9 100644
+--- a/src/ingest/library_class.rs
++++ b/src/ingest/library_class.rs
+@@ -1435,6 +1435,12 @@ fn walk_decl_body_with_visibility<'pr>(
+             constants.push((name, value));
+             continue;
+         }
++        // Singleton-instance storage executes eagerly while loading the class.
++        // Keep it in the class-body expression stream, including Hash.new blocks.
++        if stmt.as_instance_variable_write_node().is_some() {
++            unknown_calls.push(ingest_expr(&stmt, file)?);
++            continue;
++        }
+         // `@@X = nil` class-body initializer. The corpus pairs these with
+         // `cattr_accessor` (extras/keybase, github, twitter) — class-var
+         // reads in class-method bodies normalize to class-level ivars
+diff --git a/src/ingest/model.rs b/src/ingest/model.rs
+index bb884599..91e5da26 100644
+--- a/src/ingest/model.rs
++++ b/src/ingest/model.rs
+@@ -1855,6 +1855,7 @@ fn validation_rule_from_kv(
+         "presence" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Presence),
+         "absence" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Absence),
+         "length" => parse_length_rule(value),
++        "uniqueness" => parse_uniqueness_rule(value),
+         _ => None,
+     }
+ }
+@@ -1862,6 +1863,32 @@ fn validation_rule_from_kv(
+ /// `length: { minimum: N, maximum: M }`. Either bound may be absent;
+ /// the hash-value shape is the only one we accept today. The shorthand
+ /// `length: 5` (exact length) isn't in any fixture yet and drops.
++fn parse_uniqueness_rule(value: &ruby_prism::Node<'_>) -> Option<crate::dialect::ValidationRule> {
++    use super::util::bool_value;
++    if bool_value(value) == Some(true) {
++        return Some(crate::dialect::ValidationRule::Uniqueness { scope: vec![], case_sensitive: true });
++    }
++    let elements = if let Some(h) = value.as_hash_node() { h.elements() }
++        else if let Some(h) = value.as_keyword_hash_node() { h.elements() }
++        else { return None };
++    let mut scope = Vec::new();
++    let mut case_sensitive = true;
++    for element in elements.iter() {
++        let pair = element.as_assoc_node()?;
++        match symbol_value(&pair.key())?.as_str() {
++            "case_sensitive" => case_sensitive = bool_value(&pair.value())?,
++            "scope" => {
++                if let Some(name) = symbol_value(&pair.value()) { scope.push(Symbol::from(name.as_str())); }
++                else if let Some(names) = pair.value().as_array_node() {
++                    for n in names.elements().iter() { scope.push(Symbol::from(symbol_value(&n)?.as_str())); }
++                } else { return None }
++            }
++            _ => return None,
++        }
++    }
++    Some(crate::dialect::ValidationRule::Uniqueness { scope, case_sensitive })
++}
++
+ fn parse_length_rule(value: &ruby_prism::Node<'_>) -> Option<crate::dialect::ValidationRule> {
+     use super::util::integer_value;
+     use crate::dialect::ValidationRule;
+diff --git a/src/lower/assoc_attr_key.rs b/src/lower/assoc_attr_key.rs
+index 1c9e52d5..5e6dc0bb 100644
+--- a/src/lower/assoc_attr_key.rs
++++ b/src/lower/assoc_attr_key.rs
+@@ -169,12 +169,19 @@ fn rewrite_conditions(expr: &mut Expr, per_model: &ModelBelongsTo) {
+     ));
+     let Some(belongs) = per_model.get(&class) else { return };
+     let ExprNode::Hash { entries, .. } = &mut *args[0].node else { return };
+-    for (k, _) in entries.iter_mut() {
++    for (k, v) in entries.iter_mut() {
+         let ExprNode::Lit { value: Literal::Sym { value: key } } = &*k.node else { continue };
+         let Some(fk) = belongs.get(key) else { continue };
+         let mut new_key = Expr::new(k.span, ExprNode::Lit { value: Literal::Sym { value: fk.clone() } });
+         new_key.ty = Some(Ty::Sym);
+         *k = new_key;
++        if matches!(v.ty.as_ref().map(|t| t.peel_nilable()), Some(Ty::Class { .. })) {
++            let mut id_read = Expr::new(v.span, ExprNode::Send {
++                recv: Some(v.clone()), method: Symbol::from("id"), args: vec![], block: None, parenthesized: false,
++            });
++            id_read.ty = Some(Ty::Int);
++            *v = id_read;
++        }
+     }
+ }
+ 
+diff --git a/src/lower/errors_index.rs b/src/lower/errors_index.rs
+index 681c9d4c..f00e6a67 100644
+--- a/src/lower/errors_index.rs
++++ b/src/lower/errors_index.rs
+@@ -145,6 +145,12 @@ fn rewrite_messages(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
+ }
+ 
+ fn rewrite(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
++    if let ExprNode::Send { recv: Some(r), method, block: Some(_), .. } = &mut *expr.node {
++        if matches!(method.as_str(), "any?" | "each" | "map") && is_errors_read(r) {
++            if let ExprNode::Send { method, .. } = &mut *r.node { *method = Symbol::from("errors_entries"); }
++            r.ty = Some(Ty::Array { elem: Box::new(Ty::Class { id: crate::ident::ClassId(Symbol::from("ActiveModel::Error")), args: vec![] }) });
++        }
++    }
+     // Ground outer predicates before visiting their messages receiver.
+     rewrite_messages(expr, diags);
+     expr.node.for_each_child_mut(&mut |c| rewrite(c, diags));
+diff --git a/src/lower/first_or_create.rs b/src/lower/first_or_create.rs
+index e96a3647..0e2b4c8b 100644
+--- a/src/lower/first_or_create.rs
++++ b/src/lower/first_or_create.rs
+@@ -75,6 +75,26 @@ fn is_claimable_stmt(e: &Expr) -> bool {
+ }
+ 
+ fn rewrite(expr: &mut Expr, models: &ModelColumns) {
++    match &mut *expr.node {
++        ExprNode::BeginRescue { body, rescues, else_branch, ensure, .. } => {
++            for body in std::iter::once(body).chain(rescues.iter_mut().map(|r| &mut r.body))
++                .chain(else_branch.iter_mut()).chain(ensure.iter_mut()) {
++                if is_claimable_stmt(body) || scoped_statement_model(body, models).is_some() {
++                    let stmt = body.clone();
++                    *body = Expr::new(stmt.span, ExprNode::Seq { exprs: vec![stmt] });
++                }
++            }
++        }
++        ExprNode::If { then_branch, else_branch, .. } => {
++            for body in [then_branch, else_branch] {
++                if is_claimable_stmt(body) || scoped_statement_model(body, models).is_some() {
++                    let stmt = body.clone();
++                    *body = Expr::new(stmt.span, ExprNode::Seq { exprs: vec![stmt] });
++                }
++            }
++        }
++        _ => {}
++    }
+     expr.node.for_each_child_mut(&mut |child| rewrite(child, models));
+     let ExprNode::Seq { exprs } = &mut *expr.node else { return };
+     for e in exprs {
+@@ -138,6 +158,7 @@ fn as_where_first(e: &Expr) -> Expr {
+     let first_or = match method.as_str() {
+         "find_or_initialize_by" => "first_or_initialize",
+         "find_or_create_by" => "first_or_create",
++        "find_or_create_by!" => "first_or_create!",
+         _ => return e.clone(),
+     };
+     if args.len() != 1 || !matches!(&*model.node, ExprNode::Const { .. }) {
+@@ -192,13 +213,14 @@ fn seedable(v: &Expr) -> bool {
+ /// Does this Send match the claimable shape? Returns `Some(save)` —
+ /// whether the built record saves (`first_or_create`) or stays
+ /// unsaved (`first_or_initialize`).
+-fn claims(e: &Expr) -> Option<bool> {
++fn claims(e: &Expr) -> Option<&'static str> {
+     let ExprNode::Send { recv: Some(r), method, args, block: None, .. } = &*e.node else {
+         return None;
+     };
+     let save = match method.as_str() {
+-        "first_or_create" => true,
+-        "first_or_initialize" => false,
++        "first_or_create" => "save",
++        "first_or_create!" => "save!",
++        "first_or_initialize" => "",
+         _ => return None,
+     };
+     if !args.is_empty() {
+@@ -221,7 +243,7 @@ fn claims(e: &Expr) -> Option<bool> {
+     ok.then_some(save)
+ }
+ 
+-fn inline(e: &Expr, save: bool) -> Vec<Expr> {
++fn inline(e: &Expr, save: &str) -> Vec<Expr> {
+     let span = e.span;
+     let ExprNode::Send { recv: Some(r), .. } = &*e.node else { unreachable!() };
+     let ExprNode::Send { recv: Some(model), args: wargs, .. } = &*r.node else { unreachable!() };
+@@ -293,8 +315,8 @@ fn inline(e: &Expr, save: bool) -> Vec<Expr> {
+             },
+         ));
+     }
+-    if save {
+-        build.push(send(rec(()), "save"));
++    if !save.is_empty() {
++        build.push(send(rec(()), save));
+     }
+ 
+     let guard = Expr::new(
+diff --git a/src/lower/model_to_library/schema.rs b/src/lower/model_to_library/schema.rs
+index d40f2400..05b52710 100644
+--- a/src/lower/model_to_library/schema.rs
++++ b/src/lower/model_to_library/schema.rs
+@@ -1416,6 +1416,10 @@ fn synth_instantiate(owner: &ClassId, fire_after_initialize: bool) -> MethodDef
+             },
+         ),
+     ];
++    stmts.push(Expr::new(Span::synthetic(), ExprNode::Send {
++        recv: Some(var_ref(instance.clone())), method: Symbol::from("_note_projection"),
++        args: vec![var_ref(row.clone())], block: None, parenthesized: true,
++    }));
+     // The hook fires HERE for a row-hydrated record, not in `from_row`:
+     // this is the one caller that holds the raw row, so it can first
+     // note the columns the query did not select. Rails answers
+@@ -3004,7 +3008,7 @@ fn synth_index_read(owner: &ClassId, table: &Table, model: &Model) -> MethodDef
+     // JSON columns are another exception: a
+     // `has_json` declaration builds its typed Hash from the flat readers; a
+     // schema-less column decodes through `JsonColumn.load`.
+-    let arms: Vec<crate::expr::Arm> = table
++    let mut arms: Vec<crate::expr::Arm> = table
+         .columns
+         .iter()
+         .map(|c| crate::expr::Arm {
+@@ -3039,10 +3043,23 @@ fn synth_index_read(owner: &ClassId, table: &Table, model: &Model) -> MethodDef
+         })
+         .collect();
+ 
++    arms.push(crate::expr::Arm {
++        pattern: crate::expr::Pattern::Wildcard, guard: None,
++        body: Expr::new(Span::synthetic(), ExprNode::Send {
++            recv: None, method: Symbol::from("_projection_attribute"),
++            args: vec![Expr::new(Span::synthetic(), ExprNode::Send {
++                recv: Some(var_ref(name.clone())), method: Symbol::from("to_s"),
++                args: vec![], block: None, parenthesized: false,
++            })], block: None, parenthesized: false,
++        }),
++    });
+     let body = Expr::new(
+         Span::synthetic(),
+         ExprNode::Case {
+-            scrutinee: var_ref(name.clone()),
++            scrutinee: Expr::new(Span::synthetic(), ExprNode::Send {
++                recv: Some(var_ref(name.clone())), method: Symbol::from("to_sym"),
++                args: vec![], block: None, parenthesized: false,
++            }),
+             arms,
+         },
+     );
+@@ -3057,7 +3074,7 @@ fn synth_index_read(owner: &ClassId, table: &Table, model: &Model) -> MethodDef
+         params: vec![Param::positional(name.clone())],
+         body,
+         // Heterogeneous return (per-column type union); approximate as Untyped.
+-        signature: Some(fn_sig(vec![(name, Ty::Sym)], Ty::Untyped)),
++        signature: Some(fn_sig(vec![(name, Ty::Union { variants: vec![Ty::Sym, Ty::Str] })], Ty::Untyped)),
+         effects: EffectSet::default(),
+         enclosing_class: Some(owner.0.clone()),
+         kind: AccessorKind::Method,
+diff --git a/src/lower/model_to_library/validations.rs b/src/lower/model_to_library/validations.rs
+index 30ea16e2..16cba84e 100644
+--- a/src/lower/model_to_library/validations.rs
++++ b/src/lower/model_to_library/validations.rs
+@@ -63,6 +63,12 @@ pub(super) fn push_validate_method(methods: &mut Vec<MethodDef>, model: &Model)
+                 stmts.push(check);
+                 continue;
+             }
++            if let ValidationRule::Uniqueness { scope, case_sensitive } = rule {
++                let mut check = inline_uniqueness_check(model, &v.attribute, scope, *case_sensitive);
++                check.inherit_span(span);
++                stmts.push(check);
++                continue;
++            }
+             for mut check in validation_rule_to_calls(&v.attribute, rule, attr_ty) {
+                 // Each expanded check attributes to its `validates` line.
+                 check.inherit_span(span);
+@@ -327,6 +333,10 @@ fn push_active_model_validation_surface(methods: &mut Vec<MethodDef>, model: &Mo
+             target: crate::expr::LValue::Ivar { name: Symbol::from("validation_messages") },
+             value: Expr::new(span, ExprNode::Hash { entries: vec![], kwargs: false }),
+         }));
++        body_stmts.push(Expr::new(span, ExprNode::Assign {
++            target: crate::expr::LValue::Ivar { name: Symbol::from("validation_entries") },
++            value: Expr::new(span, ExprNode::Array { elements: vec![], style: ArrayStyle::default() }),
++        }));
+         body_stmts.extend(vec![
+             Expr::new(
+                 span,
+@@ -487,6 +497,37 @@ fn validation_rule_to_calls(attr: &Symbol, rule: &ValidationRule, attr_ty: Optio
+ /// of Rails' check — it can fail a save Rails would fail, never one
+ /// Rails would pass — and the id-presence half is the part that
+ /// catches the real error (an unset owner).
++fn inline_uniqueness_check(model: &Model, attr: &Symbol, scope: &[Symbol], case_sensitive: bool) -> Expr {
++    use crate::expr::LValue;
++    use crate::ident::VarId;
++    let span = Span::synthetic();
++    let mut predicate = if case_sensitive {
++        format!("{}.{} = ?", model.table.0.as_str(), attr.as_str())
++    } else {
++        format!("LOWER({}.{}) = LOWER(?)", model.table.0.as_str(), attr.as_str())
++    };
++    let mut values = vec![ivar(attr)];
++    for field in scope {
++        predicate.push_str(&format!(" AND {}.{} = ?", model.table.0.as_str(), field.as_str()));
++        values.push(ivar(field));
++    }
++    let mut args = vec![Expr::new(span, ExprNode::Lit { value: Literal::Str { value: predicate } })];
++    args.extend(values);
++    let name = Symbol::from(format!("__rh_unique_{}", attr.as_str()));
++    let rel = || Expr::new(span, ExprNode::Var { id: VarId(0), name: name.clone() });
++    let query = send(Expr::new(span, ExprNode::Const { path: model.name.0.as_str().split("::").map(Symbol::from).collect() }), "where", args);
++    let key = model.primary_key.as_ref().map(|s| s.as_str()).unwrap_or("id");
++    let exclude = send(rel(), "where", vec![
++        Expr::new(span, ExprNode::Lit { value: Literal::Str { value: format!("{}.{} <> ?", model.table.0.as_str(), key) } }),
++        Expr::new(span, ExprNode::Send { recv: None, method: Symbol::from(key), args: vec![], block: None, parenthesized: false }),
++    ]);
++    seq(vec![
++        Expr::new(span, ExprNode::Assign { target: LValue::Var { id: VarId(0), name: name.clone() }, value: query }),
++        if_with_nil_else(Expr::new(span, ExprNode::Send { recv: None, method: Symbol::from("persisted?"), args: vec![], block: None, parenthesized: false }), exclude),
++        if_with_nil_else(send(rel(), "exists?", vec![]), errors_push_typed(attr, format!("{} has already been taken", humanize(attr.as_str())), "taken")),
++    ])
++}
++
+ fn inline_belongs_to_check(
+     assoc_name: &Symbol,
+     foreign_key: &Symbol,
+@@ -1024,6 +1065,10 @@ fn is_a_check(value: &Expr, class_name: &str) -> Expr {
+ /// shape every existing validates_*_of helper produces inside the
+ /// Validations module).
+ fn errors_push(attr: &Symbol, msg: String) -> Expr {
++    errors_push_typed(attr, msg, "invalid")
++}
++
++fn errors_push_typed(attr: &Symbol, msg: String, error_type: &str) -> Expr {
+     // Keep the full-message accumulator stable, and retain the actual
+     // attribute separately. Never recover attributes by parsing human text.
+     let prefix = format!("{} ", humanize(attr.as_str()));
+@@ -1049,6 +1094,7 @@ fn errors_push(attr: &Symbol, msg: String) -> Expr {
+             args: vec![
+                 Expr::new(Span::synthetic(), ExprNode::Lit { value: Literal::Sym { value: attr.clone() } }),
+                 Expr::new(Span::synthetic(), ExprNode::Lit { value: Literal::Str { value: short } }),
++                Expr::new(Span::synthetic(), ExprNode::Lit { value: Literal::Sym { value: Symbol::from(error_type) } }),
+             ], block: None, parenthesized: true,
+         }),
+     ])
+diff --git a/src/lower/scope_chain.rs b/src/lower/scope_chain.rs
+index b1a7610a..2837cf1c 100644
+--- a/src/lower/scope_chain.rs
++++ b/src/lower/scope_chain.rs
+@@ -2040,6 +2040,13 @@ impl Ctx<'_> {
+     }
+ }
+ 
++fn scope_seed(span: crate::span::Span, rel: &Symbol) -> Expr {
++    syn(span, ExprNode::Send {
++        recv: Some(var_expr(span, rel)), method: Symbol::from("spawn"),
++        args: vec![], block: None, parenthesized: false,
++    })
++}
++
+ fn syn(span: crate::span::Span, node: ExprNode) -> Expr {
+     Expr::new(span, node)
+ }
+@@ -2052,6 +2059,18 @@ fn syn(span: crate::span::Span, node: ExprNode) -> Expr {
+ /// their own defaults (Ruby's behavior for the omitted call) before pushing
+ /// the relation, so `hottest` → `Story.hottest(nil, nil, __rel)` not
+ /// `Story.hottest(__rel)`. `leading` is the scope's user params (no `__rel`).
++// Zero-argument scopes have a typed, fixed-arity relation entry. Use it
++// for threaded calls too, rather than the optional/untyped primary slot.
++fn thread_scope_call(method: Symbol, args: Vec<Expr>, rel: Expr,
++    leading: Option<&Vec<Param>>, span: crate::span::Span) -> (Symbol, Vec<Expr>) {
++    if delegable_name(&method) && args.is_empty() && leading.is_some_and(|p| p.is_empty()) {
++        (scope_variant_name(&method, 0, &[]), vec![rel])
++    } else {
++        let args = thread_rel(args, rel, leading, span);
++        (method, args)
++    }
++}
++
+ fn thread_rel(mut args: Vec<Expr>, rel: Expr, leading: Option<&Vec<Param>>, span: crate::span::Span) -> Vec<Expr> {
+     // A trailing kwargs hash (`base(user, unmerged: unmerged)`) binds
+     // the scope's KEYWORD params; the relation is a positional and must
+@@ -2114,7 +2133,7 @@ fn thread_rel(mut args: Vec<Expr>, rel: Expr, leading: Option<&Vec<Param>>, span
+ /// `Push::Subscription.destroy_by(endpoint:, user_id:)` reached nothing
+ /// at all, with the analyzer saying so (`send_dispatch_failed: no known
+ /// method `destroy_by` on Class { Push::Subscription }`).
+-const CLASS_ROOT_TERMINALS: &[&str] = &["pluck", "ids", "destroy_by", "delete_by"];
++const CLASS_ROOT_TERMINALS: &[&str] = &["pluck", "ids", "destroy_by", "delete_by", "find_each", "delete_all", "update_all", "find_or_create_by!"];
+ 
+ /// Relation TERMINALS our runtime implements — a seeded association
+ /// chain may end in one (`@story.merged_stories.ids`). Deliberately
+@@ -2155,6 +2174,8 @@ fn is_relation_terminal(name: &str, args: &[Expr], block: Option<&Expr>) -> bool
+                 // `merge_scope_attributes`', because the query half needs
+                 // the same conditions anyway.
+                 | "find_or_create_by"
++                | "find_or_create_by!"
++                | "find_each"
+         ),
+     }
+ }
+@@ -2687,7 +2708,7 @@ fn lower_relation_args(
+         // are `find_by`'s — a list that names some of them renames
+         // `user:` to `user_id:` on one spelling and emits the
+         // nonexistent `memberships.user` column on the next.
+-        "where" | "not" | "find_by" | "find_by!" | "destroy_by" | "delete_by" | "exists?" => {
++        "where" | "not" | "find_by" | "find_by!" | "find_or_create_by" | "find_or_create_by!" | "destroy_by" | "delete_by" | "exists?" => {
+             // `where(connected_at: TTL.ago..)` — a RANGE value. Rails
+             // renders `>=` / `<=` / `<` / BETWEEN; the runtime's
+             // `column_predicate` has no Range arm and falls through to
+@@ -2741,6 +2762,14 @@ fn lower_relation_args(
+                     }
+                     let Some(fk) = ctx.assocs.belongs_to_fk(model, key) else { continue };
+                     *k.node = ExprNode::Lit { value: Literal::Sym { value: fk.clone() } };
++                    if matches!(v.ty.as_ref().map(|t| t.peel_nilable()), Some(crate::ty::Ty::Class { id, .. }) if ctx.models.contains(id)) {
++                        let mut id = syn(span, ExprNode::Send {
++                            recv: Some(v.clone()), method: Symbol::from("id"), args: vec![], block: None, parenthesized: false,
++                        });
++                        id.ty = Some(crate::ty::Ty::Int);
++                        *v = id;
++                        continue;
++                    }
+                     // The VALUE rides through unchanged. It used to be
+                     // narrowed to `v && v.id` for plain reads, but an
+                     // untyped scope param can carry a record OR a
+@@ -3036,12 +3065,12 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+                 // not `Model.all` (which would hit Base.all and return an
+                 // Array, breaking the chain). Replace with the rel param.
+                 if method.as_str() == "all" && args.is_empty() && block.is_none() {
+-                    *expr = var_expr(span, rel);
++                    *expr = scope_seed(span, rel);
+                     return Some(self_model.clone());
+                 }
+                 if ctx.scope_of(self_model, &method) {
+                     let leading = ctx.scope_params(self_model, &method);
+-                    let new_args = thread_rel(args, var_expr(span, rel), leading, span);
++                    let new_args = thread_rel(args, scope_seed(span, rel), leading, span);
+                     *expr = put(span, Some(const_expr(span, self_model)), method, new_args, block, true);
+                     return Some(self_model.clone());
+                 }
+@@ -3049,7 +3078,7 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+                     // Receiver is the bare `__rel` param — any `joins`
+                     // sits in a separate chain link handled below.
+                     let _ = lower_relation_args(self_model, &method, &mut args, ctx);
+-                    *expr = put(span, Some(var_expr(span, rel)), method, args, block, parenthesized);
++                    *expr = put(span, Some(scope_seed(span, rel)), method, args, block, parenthesized);
+                     return Some(self_model.clone());
+                 }
+                 // A TERMINAL ends on the threaded relation too — `count`
+@@ -3519,7 +3548,7 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+                             }
+                             if is_scope {
+                                 let leading = ctx.scope_params(&target, &method);
+-                                let new_args = thread_rel(args, seed, leading, span);
++                                let (method, new_args) = thread_scope_call(method, args, seed, leading, span);
+                                 *expr = put(
+                                     span,
+                                     Some(const_expr(span, &target)),
+@@ -3645,7 +3674,7 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+                 }
+                 if ctx.scope_of(&mr, &method) {
+                     let leading = ctx.scope_params(&mr, &method);
+-                    let new_args = thread_rel(args, r, leading, span);
++                    let (method, new_args) = thread_scope_call(method, args, r, leading, span);
+                     *expr = put(span, Some(const_expr(span, &mr)), method, new_args, block, true);
+                     return Some(mr);
+                 }
+@@ -4407,7 +4436,7 @@ mod tests {
+         let ExprNode::Send { recv: Some(r), method, args, .. } = &*expr.node else {
+             panic!("expected Send, got {:?}", expr.node);
+         };
+-        assert_eq!(method.as_str(), "not_deleted");
++        assert_eq!(method.as_str(), "__scope_not_deleted__0");
+         assert!(
+             matches!(&*r.node, ExprNode::Const { path } if path.last().unwrap().as_str() == "Story"),
+             "receiver should be Story const, got {:?}",
+diff --git a/src/project.rs b/src/project.rs
+index 926f4c26..cdf89e21 100644
+--- a/src/project.rs
++++ b/src/project.rs
+@@ -4020,6 +4020,7 @@ fn spinel_files(app: &App, fixture: &Path) -> Result<(Vec<(String, String)>, Vec
+         "inflector_ext",
+         "json_builder",
+         "active_support_ext",
++        "security_utils",
+         "params",
+         "action_text",
+         "active_storage",
+@@ -5724,7 +5725,7 @@ fn bundled_require_gaps(files: &[(String, String)]) -> Vec<(usize, String)> {
+         }
+         for (i, (path, content)) in files.iter().enumerate() {
+             if path.ends_with(".rb")
+-                && names_constant(content, konst)
++                && (names_constant(content, konst) || (konst == "Set" && content.contains(".to_set")))
+                 && !requires_feature(content, &require_line)
+             {
+                 gaps.push((i, require_line.clone()));
+diff --git a/tests/assoc_class_method_scope.rs b/tests/assoc_class_method_scope.rs
+index 13891089..491685f4 100644
+--- a/tests/assoc_class_method_scope.rs
++++ b/tests/assoc_class_method_scope.rs
+@@ -302,7 +302,7 @@ fn a_scope_call_in_argument_position_is_scoped_too() {
+         "page_around grows the parameter:\n{note}"
+     );
+     assert!(
+-        note.contains("Note.earlier(note, __rel) + [ note ] + Note.later(note, __rel)"),
++        note.contains("Note.earlier(note, __rel.spawn) + [ note ] + Note.later(note, __rel.spawn)"),
+         "both scope calls thread it, receiver AND argument:\n{note}"
+     );
+ }
+diff --git a/tests/rails_surface.rs b/tests/rails_surface.rs
+new file mode 100644
+index 00000000..6a51c7af
+--- /dev/null
++++ b/tests/rails_surface.rs
+@@ -0,0 +1,103 @@
++//! Rails surface regressions; the worker fixture additionally compiles and
++//! compares the same source against native Spinel and Rails.
++use std::collections::HashMap;
++use std::path::PathBuf;
++use roundhouse::{App, ingest::ingest_app_from_tree, emit::{ruby, EmittedFile}};
++
++fn app(model: &str, controller: &str) -> App {
++    let tree: HashMap<PathBuf, Vec<u8>> = [
++        ("db/schema.rb", r#"ActiveRecord::Schema.define do
++          create_table "users" do |t|; t.string "email"; t.string "username"; end
++          create_table "articles" do |t|; t.integer "author_id"; t.string "slug"; t.string "status"; end
++          create_table "comments" do |t|; t.integer "article_id"; end
++          create_table "follows", id: false do |t|
++            t.integer "follower_id"; t.integer "followed_id"
++            t.index ["follower_id", "followed_id"], unique: true
++          end
++        end"#),
++        ("app/models/user.rb", "class User < ApplicationRecord; end"),
++        ("app/models/comment.rb", "class Comment < ApplicationRecord; belongs_to :article; scope :active, -> { where(article_id: 1) }; end"),
++        ("app/models/article.rb", model),
++        ("app/models/follow.rb", "class Follow < ApplicationRecord; belongs_to :follower, class_name: 'User'; belongs_to :followed, class_name: 'User'; end"),
++        ("app/controllers/probes_controller.rb", controller),
++    ].into_iter().map(|(p,c)| (PathBuf::from(p), c.as_bytes().to_vec())).collect();
++    let mut app = ingest_app_from_tree(tree).unwrap();
++    roundhouse::session::analyze_and_lower(&mut app);
++    app
++}
++fn file(files: Vec<EmittedFile>, suffix: &str) -> String {
++    files.into_iter().find(|f| f.path.to_string_lossy().ends_with(suffix)).unwrap().content
++}
++#[test]
++fn singleton_ivar_initializers_are_eager_and_keep_source_order() {
++    let mut app = App::new();
++    app.library_classes = roundhouse::ingest::ingest_library_classes(
++        b"class Throttle; @lock = Mutex.new; @failures = Hash.new { |h,k| h[k] = [] }; @events = []; EVENTS = @events; @ready = @events.push(1); def self.fail!(key); @lock.synchronize { @failures[key].push(1) }; end; end", "throttle.rb").unwrap();
++    let src = file(ruby::emit_library(&app), "throttle.rb");
++    let positions: Vec<_> = ["@lock = Mutex.new", "@failures = Hash.new", "@events = []", "EVENTS = @events", "@ready = @events.push(1)"].iter().map(|s| src.find(s).unwrap()).collect();
++    assert!(positions.windows(2).all(|w| w[0] < w[1]), "{src}");
++}
++#[test]
++fn bang_find_create_saves_with_bang_even_inside_rescue() {
++    let app = app("class Article < ApplicationRecord; end", "class ProbesController < ApplicationController; def index; begin; follow = Follow.find_or_create_by!(follower: @user, followed: @other); rescue ActiveRecord::RecordInvalid; nil; end; end; end");
++    let src = file(ruby::emit_lowered_controllers(&app), "probes_controller.rb");
++    assert!(!src.contains(".find_or_create_by!"), "{src}");
++    assert!(src.contains("_rec.save!"), "{src}");
++    assert!(src.contains("_rec.follower = @user"), "{src}");
++    assert!(app.schema.tables[&roundhouse::Symbol::from("follows")].columns.iter().all(|c| !c.primary_key));
++}
++#[test]
++fn security_facade_is_shipped_and_demand_loaded() {
++    let app = app("class Article < ApplicationRecord; def compare; ActiveSupport::SecurityUtils.secure_compare('a','b'); end; end", "class ProbesController < ApplicationController; end");
++    let src = file(ruby::emit_lowered_models(&app), "article.rb");
++    assert!(src.contains("runtime/security_utils"), "{src}");
++    let facade = std::fs::read_to_string("runtime/ruby/security_utils.rb").unwrap();
++    assert!(facade.contains("ActionController::MessageVerifier.secure_compare(a, b)"));
++}
++#[test]
++fn uniqueness_retains_error_attribute_and_type_and_excludes_persisted_self() {
++    let app = app("class Article < ApplicationRecord; validates :slug, uniqueness: { case_sensitive: false }; end", "class ProbesController < ApplicationController; end");
++    assert!(matches!(app.models.iter().find(|m| m.name.0.as_str()=="Article").unwrap().validations().next().unwrap().rules[0], roundhouse::dialect::ValidationRule::Uniqueness { case_sensitive: false, .. }));
++    let src = file(ruby::emit_lowered_models(&app), "article.rb");
++    for text in ["LOWER(articles.slug) = LOWER(?)", "persisted?", "articles.id <> ?", "record_validation_message(:slug, \"has already been taken\", :taken)"] {
++        assert!(src.contains(text), "missing {text}: {src}");
++    }
++}
++#[test]
++fn find_each_on_class_roots_on_relation() {
++    let app = app("class Article < ApplicationRecord; end", "class ProbesController < ApplicationController; def index; Article.find_each { |a| a.id }; end; end");
++    let src = file(ruby::emit_lowered_controllers(&app), "probes_controller.rb");
++    assert!(src.contains("ActiveRecord::Relation.new(Article).find_each"), "{src}");
++}
++#[test]
++fn association_scope_keeps_owner_predicate_for_pluck_and_update() {
++    let app = app("class Article < ApplicationRecord; has_many :comments; end", "class ProbesController < ApplicationController; def index; @article.comments.active.pluck(:id); @article.comments.active.update_all(article_id: 2); end; end");
++    let src = file(ruby::emit_lowered_controllers(&app), "probes_controller.rb");
++    assert!(src.contains("Comment.__scope_active__0(ActiveRecord::Relation.new(Comment).where(article_id: @article.id)"), "{src}");
++    assert!(src.contains(".pluck(:id)") && src.contains(".update_all("), "{src}");
++}
++#[test]
++fn or_scope_branches_start_from_independent_copies() {
++    let app = app("class Article < ApplicationRecord; scope :visible_to, ->(user) { where(status: 'published').or(where(author_id: user&.id)) }; end", "class ProbesController < ApplicationController; end");
++    let src=file(ruby::emit_lowered_models(&app), "article.rb");
++    assert!(src.contains("__rel.spawn.where(status: \"published\").or(__rel.spawn.where(author_id:"), "{src}");
++}
++#[test]
++fn left_joins_resolves_associations_and_projection_rows_are_retained() {
++    let app = app("class Article < ApplicationRecord; has_many :comments; end", "class ProbesController < ApplicationController; def index; Article.left_joins(:comments).select('articles.*, COUNT(comments.id) AS total').group('articles.id'); end; end");
++    let src=file(ruby::emit_lowered_controllers(&app), "probes_controller.rb");
++    assert!(src.contains("LEFT OUTER JOIN comments ON comments.article_id = articles.id"), "{src}");
++    let model=file(ruby::emit_lowered_models(&app), "article.rb");
++    assert!(model.contains("instance._note_projection(row)"), "{model}");
++    assert!(model.contains("_projection_attribute name.to_s"), "{model}");
++}
++
++#[test]
++fn array_to_set_demands_its_bundled_library_without_a_set_constant() {
++    let files = vec![("probe.rb".into(), "[1, 2, 2].to_set".into())];
++    let gaps = roundhouse::project::missing_bundled_requires(&files);
++    assert_eq!(gaps.len(), 1, "{gaps:?}");
++    assert!(gaps[0].contains("set"));
++    let files = vec![("probe.rb".into(), "require \"set\"\n[1,2].to_set".into())];
++    assert!(roundhouse::project::missing_bundled_requires(&files).is_empty());
++}
+diff --git a/tests/relation_class_method_scope.rs b/tests/relation_class_method_scope.rs
+index b0bc325a..4f465ec4 100644
+--- a/tests/relation_class_method_scope.rs
++++ b/tests/relation_class_method_scope.rs
+@@ -122,7 +122,7 @@ fn a_querying_body_roots_on_the_threaded_relation() {
+         panic!("User.named emitted:\n{src}");
+     });
+     assert!(
+-        named.contains("__rel.where"),
++        named.contains("__rel.spawn.where"),
+         "`where(name: name)` runs against the threaded relation:\n{named}"
+     );
+ }
+diff --git a/tests/scope_body_left_joins.rs b/tests/scope_body_left_joins.rs
+index 09427542..89d7ad3d 100644
+--- a/tests/scope_body_left_joins.rs
++++ b/tests/scope_body_left_joins.rs
+@@ -69,8 +69,8 @@ fn the_bare_left_joins_scope_threads_the_relation() {
+         .unwrap_or_else(|| panic!("{src}"));
+     let body = &src[at..src[at..].find("\n  end").map(|i| at + i).unwrap_or(src.len())];
+     assert!(
+-        body.contains("__rel.left_joins("),
+-        "left_joins must chain onto the threaded relation:\n{body}"
++        body.contains("__rel.spawn.left_joins("),
++        "left_joins must chain onto a copy of the threaded relation:\n{body}"
+     );
+     assert!(
+         body.contains("LEFT OUTER JOIN sessions"),

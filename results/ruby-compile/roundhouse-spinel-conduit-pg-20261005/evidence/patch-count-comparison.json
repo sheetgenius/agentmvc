@@ -1,0 +1,284 @@
+{
+  "condition": "compiled-conduit-v7-20261005",
+  "validation": {
+    "compiled_production_gate": "pass",
+    "variant_rails_gate": "pass",
+    "v6_source_control": "pass",
+    "focused_tests_passed": 72,
+    "focused_tests_ignored": 5,
+    "relation_finder_tests_passed": 6,
+    "runtime_typing": "fully-typed-body check passes; concrete-type check fails 574/537, upstream passes both"
+  },
+  "counting": "git apply --numstat per patch; totals across patches count overlapping changes more than once",
+  "patches": [
+    {
+      "id": "00",
+      "title": "GoodJob interval schema",
+      "file": "00-interval.patch",
+      "v6": {
+        "added": 10,
+        "removed": 1,
+        "files": 1
+      },
+      "v7": {
+        "added": 10,
+        "removed": 1,
+        "files": 1
+      },
+      "status": "kept",
+      "upstream": []
+    },
+    {
+      "id": "10",
+      "title": "API controllers, JSON, request headers and errors",
+      "file": "10-api-mode-json.patch",
+      "v6": {
+        "added": 347,
+        "removed": 61,
+        "files": 24
+      },
+      "v7": {
+        "added": 335,
+        "removed": 60,
+        "files": 23
+      },
+      "status": "trimmed",
+      "upstream": [
+        {
+          "pr": 338,
+          "commit": "01cf474b04a46b675ddfca8ce3f38e9fe8623fe8",
+          "retires": "ActionController::API subclass; retain the nosniff default in the typed Base initializer"
+        },
+        {
+          "commit": "804cfee31008226da7b000dabf66468df9207e3a",
+          "retires": "ANY route dispatch"
+        },
+        {
+          "commit": "365b5c994f420ce3ebbe83d736c1b0c4cc0bead2",
+          "retires": "HEAD fallback route dispatch; upstream preserves explicit HEAD precedence"
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "title": "Raw Faye WebSockets",
+      "file": "20-raw-websocket.patch",
+      "v6": {
+        "added": 357,
+        "removed": 24,
+        "files": 9
+      },
+      "v7": {
+        "added": 350,
+        "removed": 17,
+        "files": 9
+      },
+      "status": "trimmed",
+      "upstream": [
+        {
+          "commit": "6623399c275af1542185536deb0d182a11f2ecba",
+          "retires": "Threaded connection fd cleanup and WebSocket driver ensure/retire structure"
+        }
+      ]
+    },
+    {
+      "id": "30",
+      "title": "Boot hooks and job drain",
+      "file": "30-jobs-boot.patch",
+      "v6": {
+        "added": 485,
+        "removed": 36,
+        "files": 11
+      },
+      "v7": {
+        "added": 485,
+        "removed": 36,
+        "files": 11
+      },
+      "status": "rebased",
+      "upstream": []
+    },
+    {
+      "id": "50",
+      "title": "PostgreSQL runtime, schema and codecs",
+      "file": "50-postgresql-lane.patch",
+      "v6": {
+        "added": 955,
+        "removed": 29,
+        "files": 24
+      },
+      "v7": {
+        "added": 955,
+        "removed": 29,
+        "files": 24
+      },
+      "status": "rebased",
+      "upstream": []
+    },
+    {
+      "id": "60",
+      "title": "Rails runtime and lowering surfaces",
+      "file": "60-rails-surface.patch",
+      "v6": {
+        "added": 432,
+        "removed": 30,
+        "files": 20
+      },
+      "v7": {
+        "added": 432,
+        "removed": 30,
+        "files": 20
+      },
+      "status": "rebased",
+      "upstream": []
+    },
+    {
+      "id": "61",
+      "title": "Secure-password writer super and supplied nil",
+      "file": "61-secure-password-super-and-nil.patch",
+      "v6": {
+        "added": 70,
+        "removed": 2,
+        "files": 4
+      },
+      "v7": {
+        "added": 18,
+        "removed": 2,
+        "files": 2
+      },
+      "status": "trimmed",
+      "upstream": [
+        {
+          "pr": 289,
+          "commit": "7910a309d4563bdcada1eb77bb59babf8d683e7c",
+          "retires": "Password-writer super lowering and its old shape test; supplied-nil writer dispatch remains"
+        }
+      ]
+    },
+    {
+      "id": "70",
+      "title": "Linear PostgreSQL placeholder rewrite",
+      "file": "70-linear-pg-placeholder-rewrite.patch",
+      "v6": {
+        "added": 94,
+        "removed": 46,
+        "files": 3
+      },
+      "v7": {
+        "added": 94,
+        "removed": 46,
+        "files": 3
+      },
+      "status": "kept",
+      "upstream": []
+    },
+    {
+      "id": "71",
+      "title": "Record locks and error predicates",
+      "file": "71-record-lock-and-error-predicate.patch",
+      "v6": {
+        "added": 85,
+        "removed": 0,
+        "files": 6
+      },
+      "v7": {
+        "added": 85,
+        "removed": 0,
+        "files": 6
+      },
+      "status": "rebased",
+      "upstream": []
+    },
+    {
+      "id": "72",
+      "title": "Async PostgreSQL and statement cache",
+      "file": "72-pg-async-cache.patch",
+      "v6": {
+        "added": 194,
+        "removed": 31,
+        "files": 1
+      },
+      "v7": {
+        "added": 194,
+        "removed": 31,
+        "files": 1
+      },
+      "status": "kept",
+      "upstream": []
+    },
+    {
+      "id": "74",
+      "title": "Integer query serialization and bounds",
+      "file": "74-integer-query-range.patch",
+      "v6": {
+        "added": 247,
+        "removed": 38,
+        "files": 11
+      },
+      "v7": {
+        "added": 247,
+        "removed": 38,
+        "files": 11
+      },
+      "status": "rebased",
+      "upstream": []
+    },
+    {
+      "id": "75",
+      "title": "Standard-library constant resolution",
+      "file": "75-stdlib-constant-resolution.patch",
+      "v6": {
+        "added": 46,
+        "removed": 5,
+        "files": 4
+      },
+      "v7": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "status": "retired",
+      "upstream": [
+        {
+          "pr": 427,
+          "commit": "444932b1e9b22f91fb602de4f27a91add2b5f758",
+          "retires": "Entire patch, including regression tests"
+        }
+      ]
+    }
+  ],
+  "patch_totals": {
+    "v6": {
+      "added": 3322,
+      "removed": 303
+    },
+    "v7": {
+      "added": 3205,
+      "removed": 290
+    }
+  },
+  "roundhouse_patch_count": {
+    "v6": 12,
+    "v7": 11
+  },
+  "spinel_patch_count": {
+    "v6": 0,
+    "v7": 0
+  },
+  "net_roundhouse_delta": {
+    "v6": {
+      "files": 83,
+      "added": 3243,
+      "removed": 224
+    },
+    "v7": {
+      "files": 78,
+      "added": 3126,
+      "removed": 211
+    }
+  },
+  "pins": {
+    "roundhouse": "2b2deff730b21ae9978dee27b99c0ac6f18727bc",
+    "spinel": "c1d108abe42fdbebff336a06295ceb004dacf72e"
+  }
+}

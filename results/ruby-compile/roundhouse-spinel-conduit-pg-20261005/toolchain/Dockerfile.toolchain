@@ -1,0 +1,38 @@
+# syntax=docker/dockerfile:1
+# Toolchain for compile variant v7: Roundhouse main 2b2deff7 + patches/series (11), Spinel master c1d108abe unpatched.
+# Source exports are frozen by ../reproduce/prepare-toolchain.sh; see patches/SHA256SUMS. Spinel is built before
+# Roundhouse so that a Roundhouse patch change does not rebuild Spinel.
+FROM rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546 AS builder
+ENV DEBIAN_FRONTEND=noninteractive CC=clang CARGO_BUILD_JOBS=8 MAKEFLAGS=-j8
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    clang make git pkg-config libsqlite3-dev sqlite3 libjemalloc-dev \
+    libpq-dev postgresql-client curl ca-certificates libssl-dev libcrypt-dev \
+    ruby file time && rm -rf /var/lib/apt/lists/*
+COPY vendor/spinel /src/spinel
+WORKDIR /src/spinel
+RUN make deps -j8 && make -j8 CC=clang && make install -j8 CC=clang
+COPY vendor/roundhouse /src/roundhouse
+WORKDIR /src/roundhouse
+RUN --mount=type=cache,id=v7-cargo-registry,target=/usr/local/cargo/registry \
+    --mount=type=cache,id=v7-cargo-git,target=/usr/local/cargo/git \
+    --mount=type=cache,id=v7-cargo-target,target=/src/roundhouse/target \
+    ROUNDHOUSE_COMMIT=$(echo 2b2deff730b21ae9978dee27b99c0ac6f18727bc | cut -c1-8) cargo build --locked --release --bin roundhouse -j8 \
+    && install -m755 target/release/roundhouse /usr/local/bin/roundhouse
+RUN roundhouse --version && spinel --version && spin --version
+
+FROM rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546
+ENV DEBIAN_FRONTEND=noninteractive CC=clang CARGO_BUILD_JOBS=8 MAKEFLAGS=-j8
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    clang make git pkg-config libsqlite3-dev sqlite3 libjemalloc-dev \
+    libpq-dev postgresql-client curl ca-certificates libssl-dev libcrypt-dev \
+    ruby file time && rm -rf /var/lib/apt/lists/*
+COPY --from=builder /usr/local/lib/spinel /usr/local/lib/spinel
+COPY --from=builder /usr/local/bin/roundhouse /usr/local/bin/roundhouse
+COPY patches /usr/local/share/roundhouse-patches
+RUN ln -s /usr/local/lib/spinel/spinel /usr/local/bin/spinel \
+    && ln -s /usr/local/lib/spinel/spin /usr/local/bin/spin
+LABEL org.opencontainers.image.title="conduit-v7-toolchain" \
+    roundhouse.commit="2b2deff730b21ae9978dee27b99c0ac6f18727bc" \
+    roundhouse.patches="/usr/local/share/roundhouse-patches/SHA256SUMS" \
+    spinel.commit="c1d108abe42fdbebff336a06295ceb004dacf72e"
+WORKDIR /work

@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+"""Resource naming and diagnostic capture for the unchanged production gate.
+
+The host scripts hard-code agentmvc-one-shot-* and leave helper containers
+unnamed. Change only Docker resource names; forward the real CLI's output
+and exit status without interpreting them. Save logs before gate cleanup.
+"""
+import os
+from pathlib import Path
+import subprocess
+import sys
+import uuid
+
+args = [arg.replace("agentmvc-one-shot-browser:", "conduit-v7-browser:").replace("agentmvc-one-shot-", "conduit-v7-gate-") for arg in sys.argv[1:]]
+if args and args[0] == "run" and not any(arg == "--name" or arg.startswith("--name=") for arg in args):
+    args[1:1] = ["--name", "conduit-v7-helper-" + uuid.uuid4().hex[:12]]
+real = os.environ["CONDUIT_V7_DOCKER_REAL"]
+capture = os.environ.get("CONDUIT_V7_CAPTURE_DIR")
+if capture and args and args[0] == "rm":
+    for name in args[1:]:
+        if name.startswith("conduit-v7-gate-") and name.endswith(("-app", "-db")):
+            try:
+                result = subprocess.run([real, "logs", name], capture_output=True, timeout=15)
+                if result.returncode == 0:
+                    Path(capture).mkdir(parents=True, exist_ok=True)
+                    (Path(capture) / (name + ".log")).write_bytes(result.stdout + result.stderr)
+            except (OSError, subprocess.TimeoutExpired):
+                pass
+os.execv(real, [real, *args])

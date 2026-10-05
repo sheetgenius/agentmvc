@@ -5,7 +5,7 @@
   "unknown": "null means not recorded or no matching published link; it never means equality with another null.",
   "classification": "Role, series, protocol and missing stack labels use repository paths; model, reasoning and CLI come only from the run record.",
   "counts_by_role": {
-    "diagnostic": 5,
+    "diagnostic": 6,
     "measured-coding": 65,
     "preflight": 15,
     "reader": 12,
@@ -3941,6 +3941,49 @@
       "reasoning": null,
       "cli": null,
       "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v6-upstream-heads",
+      "track": null,
+      "started": null,
+      "coding_exit": null,
+      "prompt": {
+        "sha256": null,
+        "path": null
+      },
+      "fixture": {
+        "sha256": null,
+        "path": null,
+        "base_sha256": null,
+        "effective_sha256": null,
+        "effective_record": null
+      },
+      "source": {
+        "sha256": null,
+        "path": null,
+        "manifest": null,
+        "inventory": null
+      },
+      "images": {
+        "toolchain": null,
+        "browser": null
+      },
+      "parent": {
+        "session": null,
+        "source_sha256": null
+      },
+      "gates": [],
+      "evidence": []
+    },
+    {
+      "record": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261005/run.json",
+      "results": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261005",
+      "role": "diagnostic",
+      "series": "ruby-compile",
+      "protocol": "diagnostic",
+      "stack": null,
+      "phase": null,
+      "model": null,
+      "reasoning": null,
+      "cli": null,
+      "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v7-upstream-heads",
       "track": null,
       "started": null,
       "coding_exit": null,
