@@ -1,0 +1,32 @@
+== patches: assemble the flat set and verify SHA256SUMS
+series: OK
+00-interval.patch: OK
+10-api-mode-json.patch: OK
+20-raw-websocket.patch: OK
+30-jobs-boot.patch: OK
+50-postgresql-lane.patch: OK
+60-rails-surface.patch: OK
+61-secure-password-super-and-nil.patch: OK
+70-linear-pg-placeholder-rewrite.patch: OK
+71-record-lock-and-error-predicate.patch: OK
+72-pg-async-cache.patch: OK
+74-integer-query-range.patch: OK
+manifest sha256 241f8d692ce546614272c7261d9d7f5d15da525be67b4b08a11b958935be8c04 OK
+== roundhouse 2b2deff730b21ae9978dee27b99c0ac6f18727bc + series
+applying 00-interval.patch
+applying 10-api-mode-json.patch
+applying 20-raw-websocket.patch
+applying 30-jobs-boot.patch
+applying 50-postgresql-lane.patch
+applying 60-rails-surface.patch
+applying 61-secure-password-super-and-nil.patch
+applying 70-linear-pg-placeholder-rewrite.patch
+applying 71-record-lock-and-error-predicate.patch
+applying 72-pg-async-cache.patch
+applying 74-integer-query-range.patch
+ 78 files changed, 3126 insertions(+), 211 deletions(-)
+== spinel c1d108abe42fdbebff336a06295ceb004dacf72e (no local patches)
+== export vendor trees (without .git)
+vendor/roundhouse tree sha256 36255a47cdf6683af29d6c03d155ef589879df2d4a15c0120c04e19947102af3 OK
+vendor/spinel tree sha256 c0d012a10eed79af115242fcd7f4785b5697ee52f02f135fe099c1a195e5ac3e OK
+context: /work/app/build/reproduction-final/toolchain-context

@@ -17,7 +17,7 @@ For `tools/lane_demo.sh`, `DEMO_BACKEND_PORT` and `DEMO_FRONTEND_PORT` change th
 
 ## Reproduce a published result
 
-Each result page links the source, prompt, checks and benchmark it used, as far as they were published; some early runs have no published source snapshot ([details](cohorts.md#what-is-indexed)). The [compiled Conduit package](../results/ruby-compile/roundhouse-spinel-conduit-pg-20260930/README.md#reproduce) is self-contained: scripts rebuild the patched toolchains from pinned upstream commits, build the image and rerun the unmodified production gate.
+Each result page links the source, prompt, checks and benchmark it used, as far as they were published; some early runs have no published source snapshot ([details](cohorts.md#what-is-indexed)). The [compiled Conduit package](../results/ruby-compile/roundhouse-spinel-conduit-pg-20261005/README.md#reproduce) is self-contained: scripts rebuild the patched toolchains from pinned upstream commits, build the image and rerun the unmodified production gate.
 
 Set up once:
 

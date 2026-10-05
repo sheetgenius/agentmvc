@@ -1,0 +1,1274 @@
+--- v6/10-api-mode-json.patch
++++ v7/10-api-mode-json.patch
+@@ -1,8 +1,16 @@
+ diff --git a/runtime/ruby/action_controller/base.rb b/runtime/ruby/action_controller/base.rb
+-index 9e555d4c..e8811a55 100644
++index 9e555d4c..c3d262a9 100644
+ --- a/runtime/ruby/action_controller/base.rb
+ +++ b/runtime/ruby/action_controller/base.rb
+-@@ -329,6 +329,11 @@ module ActionController
++@@ -131,6 +131,7 @@ module ActionController
++       @accepts_any_format = false
++       @content_type = "text/html; charset=utf-8"
++       @headers = {}
+++      @headers.store("X-Content-Type-Options", "nosniff")
++       @performed = false
++       # Set unconditionally, not on first `expires_in`: an ivar a strict
++       # target never sees assigned has no type to infer, and the readers
++@@ -329,6 +330,11 @@ module ActionController
+        nil
+      end
+  
+@@ -14,7 +22,7 @@
+      def headers
+        @headers
+      end
+-@@ -346,9 +351,7 @@ module ActionController
++@@ -346,9 +352,7 @@ module ActionController
+        nil
+      end
+  
+@@ -25,7 +33,7 @@
+      #
+      # RAISES on a symbol the table doesn't carry, as Rails does
+      # ("Invalid HTTP status"). It used to answer 200, which turned a
+-@@ -358,8 +361,19 @@ module ActionController
++@@ -358,8 +362,10 @@ module ActionController
+      # perfectly ordinary 200. With the table now ported whole, a miss
+      # means the app named a status no HTTP registry has.
+      def resolve_status(s)
+@@ -35,18 +43,9 @@
+      end
+    end
+ +
+-+  # API controllers share the buffered request/response contract.
+-+  class API < Base
+-+    def initialize
+-+      super
+-+      # Rails' default response header also covers rescue responses,
+-+      # independently of successful-action callbacks.
+-+      @headers.store("X-Content-Type-Options", "nosniff")
+-+    end
+-+  end
+  end
+ diff --git a/runtime/ruby/action_controller/base.rbs b/runtime/ruby/action_controller/base.rbs
+-index 59e87c7b..b4e4f517 100644
++index 59e87c7b..f9b86002 100644
+ --- a/runtime/ruby/action_controller/base.rbs
+ +++ b/runtime/ruby/action_controller/base.rbs
+ @@ -63,13 +63,10 @@ module ActionController
+@@ -80,7 +79,7 @@
+      def response: () -> Base
+      def fresh_when: (untyped subject) -> void
+      def stale?: (?etag: untyped) -> bool
+-@@ -94,12 +91,14 @@ module ActionController
++@@ -94,12 +91,11 @@ module ActionController
+      def expires_in: (Integer seconds, ?public: bool, ?stale_while_revalidate: Integer) -> void
+      def cache_control_max_age: () -> Integer
+      def cache_control_public: () -> bool
+@@ -94,9 +93,6 @@
+ -    def resolve_status: (Symbol s) -> Integer
+ +    # Integer codes pass through; Symbols look up STATUS_CODES.
+ +    def resolve_status: (Symbol | Integer s) -> Integer
+-+  end
+-+  class API < Base
+-+    def initialize: () -> void
+    end
+  end
+ diff --git a/runtime/ruby/action_controller/parameter_missing.rb b/runtime/ruby/action_controller/parameter_missing.rb
+@@ -213,24 +209,11 @@
+      @remote_ip: String
+      @path: String
+      @query_string: String
+-diff --git a/runtime/ruby/action_dispatch/router.rb b/runtime/ruby/action_dispatch/router.rb
+-index 819f85d7..c3c37051 100644
+---- a/runtime/ruby/action_dispatch/router.rb
+-+++ b/runtime/ruby/action_dispatch/router.rb
+-@@ -173,7 +173,7 @@ module ActionDispatch
+-       i = 0
+-       while i < table.length
+-         route = table[i]
+--        if route.verb.to_s == method_upcase
+-+        if route.verb.to_s == "ANY" || route.verb.to_s == method_upcase || (method_upcase == "HEAD" && route.verb.to_s == "GET")
+-           params = match_parts(route.pattern_parts, path_parts, route.int_params, format)
+-           unless params.nil?
+-             return ActionDispatch::Router::MatchResult.new(route.controller, route.action, params, route.req_format)
+ diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+-index 3b0eba74..bf68abe7 100644
++index b1209673..3bbb543e 100644
+ --- a/runtime/ruby/active_record/base.rb
+ +++ b/runtime/ruby/active_record/base.rb
+-@@ -140,6 +140,18 @@ module ActiveRecord
++@@ -192,6 +192,18 @@ module ActiveRecord
+      # AND compiler-hostile for typed targets (Rust struct types
+      # `@errors` as `Vec<String>`, not `Option<Vec<String>>`; `.nil?`
+      # on a Vec doesn't exist).
+@@ -249,7 +232,7 @@
+      def errors
+        @errors
+      end
+-@@ -195,6 +207,7 @@ module ActiveRecord
++@@ -247,6 +259,7 @@ module ActiveRecord
+        # (`self.id = (attrs[:id] || 0)` — `|| ""` for a string key), not
+        # here: see the class comment on why the base holds no `@id`.
+        @errors = []
+@@ -257,7 +240,7 @@
+        @id_previously_changed = false
+        @persisted = false
+        @destroyed = false
+-@@ -967,6 +980,7 @@ module ActiveRecord
++@@ -1019,6 +1032,7 @@ module ActiveRecord
+  
+      def valid?
+        @errors = []
+@@ -266,10 +249,10 @@
+        @errors.empty?
+      end
+ diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+-index 9b912b0c..2deb7fd8 100644
++index f45821cc..0be0d282 100644
+ --- a/runtime/ruby/active_record/base.rbs
+ +++ b/runtime/ruby/active_record/base.rbs
+-@@ -63,6 +63,9 @@ module ActiveRecord
++@@ -67,6 +67,9 @@ module ActiveRecord
+    # accessors, attributes hash, and `[]/[]=` indexers; Base supplies
+    # the shared CRUD + lifecycle protocol.
+    class Base
+@@ -379,7 +362,7 @@
+    # spinel exposes a native monotonic clock (Process.clock_gettime →
+    # sp_process_clock_gettime / CLOCK_MONOTONIC). Float seconds → µs Int.
+ diff --git a/runtime/spinel/tep/server.rb b/runtime/spinel/tep/server.rb
+-index 58c1c088..1479aee1 100644
++index 0c60c9cb..7e0b6049 100644
+ --- a/runtime/spinel/tep/server.rb
+ +++ b/runtime/spinel/tep/server.rb
+ @@ -12,6 +12,8 @@ module Tep
+@@ -389,10 +372,10 @@
+ +    if status == 409; return "Conflict"; end
+ +    if status == 422; return "Unprocessable Content"; end
+      if status == 404; return "Not Found"; end
++     if status == 413; return "Content Too Large"; end
+      if status == 500; return "Internal Server Error"; end
+-     "OK"
+-@@ -162,6 +164,7 @@ module Tep
+-         send_simple(client, 400, "bad request")
++@@ -169,6 +171,7 @@ module Tep
++         send_simple(client, refusal, refusal == 413 ? "request body too large" : "bad request")
+          return false
+        end
+ +      req.remote_host = Sock.sphttp_remote_host(client)
+@@ -400,10 +383,10 @@
+        res = Response.new
+        begin
+ diff --git a/runtime/spinel/tep/server_scheduled.rb b/runtime/spinel/tep/server_scheduled.rb
+-index f2d3ab9d..748282bb 100644
++index 26c51952..654a6c46 100644
+ --- a/runtime/spinel/tep/server_scheduled.rb
+ +++ b/runtime/spinel/tep/server_scheduled.rb
+-@@ -205,6 +205,7 @@ module Tep
++@@ -213,6 +213,7 @@ module Tep
+            return false
+          end
+  
+@@ -412,10 +395,10 @@
+  
+          res = Response.new
+ diff --git a/runtime/spinel/tep/server_threaded.rb b/runtime/spinel/tep/server_threaded.rb
+-index ea542037..670796f6 100644
++index 6c52a324..c9212694 100644
+ --- a/runtime/spinel/tep/server_threaded.rb
+ +++ b/runtime/spinel/tep/server_threaded.rb
+-@@ -183,6 +183,7 @@ module Tep
++@@ -212,6 +212,7 @@ module Tep
+            return false
+          end
+  
+@@ -436,7 +419,7 @@
+          ("each", error_ty.clone()),
+          // `errors << "message"` is the transpiled-shape idiom for adding
+ diff --git a/src/lower/controller_to_library/mod.rs b/src/lower/controller_to_library/mod.rs
+-index b2870ca6..ca63214c 100644
++index 63f9cdd5..27f638f8 100644
+ --- a/src/lower/controller_to_library/mod.rs
+ +++ b/src/lower/controller_to_library/mod.rs
+ @@ -1242,9 +1242,7 @@ fn build_methods(
+@@ -462,13 +445,13 @@
+ +        dispatcher.body = lower_action_body(
+ +            &dispatcher.body, controller, "process_action", &privs, &params_privs,
+ +            false, params_specs, &[], view_ivars, partials, format_breadth,
+-+            &shadows, route_id_segments, false, None, None, &[],
+++            &shadows, route_id_segments, false, false, None, None, &[],
+ +        ).0;
+ +        methods.insert(dispatcher_at, dispatcher);
+      }
+      // The empty set for both non-public loops below: `is_public: false`
+      // already suppresses the implicit render, so there is never one to
+-@@ -2148,13 +2153,13 @@ fn insert_baseline_controller_methods(info: &mut crate::analyze::ClassInfo) {
++@@ -2154,13 +2159,13 @@ fn insert_baseline_controller_methods(info: &mut crate::analyze::ClassInfo) {
+  }
+  
+  /// `rescue_from <Class>[, <Class>] { … }` / `rescue_from <Class>, with:
+@@ -485,7 +468,7 @@
+  /// `synthesize_process_action` reverses it into Ruby's source-order
+  /// `rescue` matching.
+  ///
+-@@ -2178,6 +2183,8 @@ fn collect_rescue_handlers(
++@@ -2184,6 +2189,8 @@ fn collect_rescue_handlers(
+      let mut out: Vec<RescueHandler> = Vec::new();
+      let mut chain: Vec<&Controller> = vec![controller];
+      chain.extend(ancestor_chain(controller, all_controllers));
+--- v6/20-raw-websocket.patch
++++ v7/20-raw-websocket.patch
+@@ -177,22 +177,10 @@
+ +  ffi_func :shutdown, [:int, :int], :int
+ +end
+ diff --git a/runtime/spinel/tep/server_threaded.rb b/runtime/spinel/tep/server_threaded.rb
+-index 670796f6..c13ee194 100644
++index c9212694..5d29bedd 100644
+ --- a/runtime/spinel/tep/server_threaded.rb
+ +++ b/runtime/spinel/tep/server_threaded.rb
+-@@ -165,9 +165,10 @@ module Tep
+-         while keep_going
+-           keep_going = Tep::Server::Threaded.handle_one(client, io)
+-         end
+-+        0
+-+      ensure
+-         io.close
+-         Sock.sphttp_close(client)
+--        0
+-       end
+- 
+-       # Process exactly one request on `client`. Returns true to keep the
+-@@ -203,7 +204,7 @@ module Tep
++@@ -232,7 +232,7 @@ module Tep
+  
+          # Streaming responses use chunked Connection: close (same
+          # simplification as the prefork server).
+@@ -201,28 +189,17 @@
+          Tep::Server::Threaded.write_response(client, io, req, res, keep_alive)
+          keep_alive
+        end
+-@@ -248,12 +249,13 @@ module Tep
+-           Sock.sphttp_write_str(client, head)
+-           res.ws_driver.set_fd(client)
+-           conn = Tep::WebSocket::Connection.new(res.ws_driver, io)
+--          conn.run
+--          # The recv loop is done with the socket. Retire the driver
+--          # BEFORE the caller closes the fd: from here no ping thread or
+--          # broadcast can write to a number the kernel is about to hand
+--          # to the next accept (Tep::WebSocket::Driver#write_frame).
+--          res.ws_driver.retire
+-+          begin
+-+            conn.run
++@@ -286,6 +286,8 @@ module Tep
++           # into whatever socket reuses that number.
++           begin
++             conn.run
+ +          rescue StandardError => e
+ +            Tep.log_dispatch_error(req.verb, req.path, e)
+-+          ensure
+-+            res.ws_driver.retire
+-+          end
+-           return 0
+-         end
+- 
++           ensure
++             res.ws_driver.retire
++           end
+ diff --git a/runtime/spinel/tep/websocket/connection.rb b/runtime/spinel/tep/websocket/connection.rb
+-index 1db5f55e..749762be 100644
++index e98bc840..5c633605 100644
+ --- a/runtime/spinel/tep/websocket/connection.rb
+ +++ b/runtime/spinel/tep/websocket/connection.rb
+ @@ -57,19 +57,18 @@ module Tep
+@@ -247,11 +224,11 @@
+              return 0
+            end
+            inbuf = inbuf + chunk
+-@@ -87,10 +86,10 @@ module Tep
+-             end
+-             if r.outcome == "close"
+-               @driver.close(r.close_code, "protocol error")
+--              Connection.dispatch_close(@driver, r.close_code, "protocol error")
++@@ -97,10 +96,10 @@ module Tep
++                 reason = "message too big"
++               end
++               @driver.close(r.close_code, reason)
++-              Connection.dispatch_close(@driver, r.close_code, reason)
+                return 0
+              end
+              Connection.dispatch_frame(@driver, r.frame)
+@@ -259,7 +236,7 @@
+              if r.consumed >= inbuf.bytesize
+                inbuf = +""
+                break
+-@@ -99,6 +98,9 @@ module Tep
++@@ -109,6 +108,9 @@ module Tep
+            end
+          end
+          0
+@@ -269,7 +246,7 @@
+        end
+  
+        # Route a parsed frame to the right handler.
+-@@ -128,7 +130,6 @@ module Tep
++@@ -138,7 +140,6 @@ module Tep
+            end
+            # Echo the close back (§5.5.1) then dispatch.
+            driver.close(code == 0 ? Tep::WebSocket::CLOSE_NORMAL : code, reason)
+@@ -277,7 +254,7 @@
+          end
+          0
+        end
+-@@ -164,14 +165,12 @@ module Tep
++@@ -174,14 +175,12 @@ module Tep
+          evt = Tep::WebSocket::Event.new
+          evt.code = code
+          evt.reason = reason
+--- v6/30-jobs-boot.patch
++++ v7/30-jobs-boot.patch
+@@ -301,7 +301,7 @@
+  end
+  
+ diff --git a/src/ingest/app.rs b/src/ingest/app.rs
+-index 0d3795a4..8e906b86 100644
++index e2df4ee8..97334e62 100644
+ --- a/src/ingest/app.rs
+ +++ b/src/ingest/app.rs
+ @@ -1047,6 +1047,44 @@ end
+@@ -349,7 +349,7 @@
+      // Top-level constants an initializer defines that are not mixins —
+      // kept or dropped after every app file is read (see
+      // `keep_initializer_defined`).
+-@@ -5514,7 +5552,7 @@ fn extract_config_assignments(source: &[u8], file: &str) -> Vec<(Vec<String>, St
++@@ -5520,7 +5558,7 @@ fn extract_config_assignments(source: &[u8], file: &str) -> Vec<(Vec<String>, St
+  /// reads back the same way, as a plain method on `Rails::Application`.
+  /// `config_reader` flattens the read side identically, so the two halves
+  /// meet at the same name.
+@@ -533,10 +533,10 @@
+ +    Ok(hooks)
+ +}
+ diff --git a/src/ingest/mod.rs b/src/ingest/mod.rs
+-index 88842a06..754792c0 100644
++index 04c1618b..3299e1fe 100644
+ --- a/src/ingest/mod.rs
+ +++ b/src/ingest/mod.rs
+-@@ -20,6 +20,7 @@ mod class_configuration;
++@@ -21,6 +21,7 @@ mod class_configuration;
+  pub mod allow_browser;
+  pub mod app;
+  mod concern_accessors;
+--- v6/50-postgresql-lane.patch
++++ v7/50-postgresql-lane.patch
+@@ -1,8 +1,8 @@
+ diff --git a/docs/guide/spinel.md b/docs/guide/spinel.md
+-index 3acf4274..4aa6328a 100644
++index 81adbd0d..f3724362 100644
+ --- a/docs/guide/spinel.md
+ +++ b/docs/guide/spinel.md
+-@@ -226,3 +226,34 @@ on, jemalloc, and Puma's default configuration — on the same machine:
++@@ -236,3 +236,34 @@ on, jemalloc, and Puma's default configuration — on the same machine:
+  Read that page rather than a number quoted here; it changes with
+  every Spinel release and the methodology is written beside the
+  charts.
+@@ -38,10 +38,10 @@
+ +
+ +Without the emission environment variable, SQLite remains the default.
+ diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+-index bf68abe7..0e3c17f3 100644
++index 3bbb543e..ac6ca6f4 100644
+ --- a/runtime/ruby/active_record/base.rb
+ +++ b/runtime/ruby/active_record/base.rb
+-@@ -642,7 +642,8 @@ module ActiveRecord
++@@ -694,7 +694,8 @@ module ActiveRecord
+        if was_new
+          before_create
+          fill_timestamps(true)
+@@ -51,7 +51,7 @@
+          @persisted = true
+          __track_saved_changes(was_new)
+          after_create
+-@@ -900,7 +901,7 @@ module ActiveRecord
++@@ -952,7 +953,7 @@ module ActiveRecord
+      # requires either an `assign_from_instance` lowering or an
+      # `[]=`-based field copy that subclasses override (today's Item
+      # subclass in base_test doesn't override `[]`/`[]=`). Deferred.
+@@ -60,7 +60,7 @@
+        # Delegates to the lowerer-emitted (or Base default) per-model
+        # `_adapter_reload` instance primitive, which re-reads the row
+        # by `@id` and writes column values back into self (preserving
+-@@ -908,10 +909,18 @@ module ActiveRecord
++@@ -960,10 +961,18 @@ module ActiveRecord
+        # async profiles emit `await _adapter_reload(this)` cleanly
+        # rather than awaiting the receiver Send. Returns self on
+        # success, self unchanged when the row has been deleted.
+@@ -81,10 +81,10 @@
+  
+      # Fired by the synthesized `initialize` tail and the hydration
+ diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+-index 2deb7fd8..33f558c2 100644
++index 0be0d282..eb05abbd 100644
+ --- a/runtime/ruby/active_record/base.rbs
+ +++ b/runtime/ruby/active_record/base.rbs
+-@@ -221,7 +221,8 @@ module ActiveRecord
++@@ -225,7 +225,8 @@ module ActiveRecord
+      def save!: () -> Base
+      def destroy: () -> Base
+      def destroy!: () -> Base
+@@ -145,10 +145,10 @@
+      def self.none: () -> Relation
+      def self.page: (?untyped num) -> Relation
+ diff --git a/runtime/ruby/active_record/relation.rb b/runtime/ruby/active_record/relation.rb
+-index e250e30e..a2a96d04 100644
++index 7c31a266..54657331 100644
+ --- a/runtime/ruby/active_record/relation.rb
+ +++ b/runtime/ruby/active_record/relation.rb
+-@@ -1505,7 +1505,7 @@ module ActiveRecord
++@@ -1597,7 +1597,7 @@ module ActiveRecord
+          # (`where(comment: comments)`, lobsters Vote.comments_flags);
+          # scalar elements escape as-is.
+          ids = val.map { |x| x.is_a?(Base) ? x.id : x }
+@@ -911,7 +911,7 @@
+              // A test class nests under the class it tests
+              // (`class User … class BotTest`), which shadows exactly as
+ diff --git a/src/emit/ruby/library.rs b/src/emit/ruby/library.rs
+-index c4d4c4b3..615f99f5 100644
++index 1850b3b8..5eba12a4 100644
+ --- a/src/emit/ruby/library.rs
+ +++ b/src/emit/ruby/library.rs
+ @@ -1114,7 +1114,11 @@ pub(crate) fn apply_scope_lowering(lcs: &mut [LibraryClass], app: &App) {
+@@ -950,10 +950,10 @@
+      }
+  }
+ diff --git a/src/ingest/model.rs b/src/ingest/model.rs
+-index cb548e45..b62ce995 100644
++index e38c6423..bb884599 100644
+ --- a/src/ingest/model.rs
+ +++ b/src/ingest/model.rs
+-@@ -2136,6 +2136,8 @@ fn ty_of_column(t: &ColumnType) -> Ty {
++@@ -2283,6 +2283,8 @@ fn ty_of_column(t: &ColumnType) -> Ty {
+          // type. A `has_json` declaration adds its stronger per-key schema
+          // separately in `lower::has_json`.
+          ColumnType::Json => Ty::Untyped,
+@@ -1117,10 +1117,10 @@
+  }
+  
+ diff --git a/src/lower/arel/visitor.rs b/src/lower/arel/visitor.rs
+-index ff83d8b3..ad22006b 100644
++index c2d8f949..ce50cdd7 100644
+ --- a/src/lower/arel/visitor.rs
+ +++ b/src/lower/arel/visitor.rs
+-@@ -434,7 +434,7 @@ fn emit_pluck(sel: &Select, table: &Table, col: &super::ir::ColRef, param: bool)
++@@ -571,7 +571,7 @@ fn emit_pluck(sel: &Select, table: &Table, col: &super::ir::ColRef, param: bool)
+          .unwrap_or_else(|| {
+              panic!(
+                  "Arel visitor: pluck column {} not in table {}",
+@@ -1129,7 +1129,7 @@
+                  table.name.as_str(),
+              )
+          });
+-@@ -528,7 +528,7 @@ fn emit_group_count(
++@@ -665,7 +665,7 @@ fn emit_group_count(
+          .unwrap_or_else(|| {
+              panic!(
+                  "Arel visitor: group column {} not in table {}",
+@@ -1138,7 +1138,7 @@
+                  table.name.as_str(),
+              )
+          });
+-@@ -649,7 +649,7 @@ fn emit_exists(sel: &Select, table: &Table, param: bool) -> Expr {
++@@ -786,7 +786,7 @@ fn emit_exists(sel: &Select, table: &Table, param: bool) -> Expr {
+  // ---------------------------------------------------------------------------
+  
+  fn visit_insert(ins: &Insert, schema: &Schema) -> Expr {
+@@ -1147,7 +1147,7 @@
+      let db = ClassId(Symbol::from(DB_MOD));
+  
+      let cols_csv = ins
+-@@ -672,6 +672,12 @@ fn visit_insert(ins: &Insert, schema: &Schema) -> Expr {
++@@ -809,6 +809,12 @@ fn visit_insert(ins: &Insert, schema: &Schema) -> Expr {
+      }
+      segments.push(lit_str(")".to_string()));
+  
+@@ -1160,7 +1160,7 @@
+      let exec_call = db_call(&db, "exec", vec![concat_chain(segments)]);
+      if !ins.returns_rowid {
+          return exec_call;
+-@@ -723,7 +729,7 @@ fn visit_delete(del: &Delete, schema: &Schema) -> Expr {
++@@ -860,7 +866,7 @@ fn visit_delete(del: &Delete, schema: &Schema) -> Expr {
+      // postgres / other backends would skip this branch in their own
+      // visitor.
+      let has_primary_key = table.columns.iter().any(|c| c.primary_key);
+@@ -1169,7 +1169,7 @@
+          let reset = db_call(
+              &db,
+              "exec",
+-@@ -865,7 +871,7 @@ fn push_value_segment(segments: &mut Vec<Expr>, val: &Value, param: bool, binds:
++@@ -1002,7 +1008,7 @@ fn push_value_segment(segments: &mut Vec<Expr>, val: &Value, param: bool, binds:
+      match val {
+          Value::LiteralInt(n) => segments.push(lit_str(n.to_string())),
+          Value::LiteralStr(s) => segments.push(lit_str(format!("'{}'", s.replace('\'', "''")))),
+@@ -1178,7 +1178,7 @@
+          Value::LiteralNull => segments.push(lit_str("NULL".into())),
+          // A nullable value can't ride the placeholder path — there is
+          // no `bind_null` — so it always renders inline.
+-@@ -894,12 +900,16 @@ fn escape_value(db: &ClassId, val: &Value) -> Expr {
++@@ -1031,12 +1037,16 @@ fn escape_value(db: &ClassId, val: &Value) -> Expr {
+                  ValueType::StrOpt => "escape_string_opt",
+                  ValueType::FloatOpt => "escape_float_opt",
+                  ValueType::BoolOpt => "escape_bool_opt",
+@@ -1350,7 +1350,7 @@
+ +    }
+ +}
+ diff --git a/src/project.rs b/src/project.rs
+-index d41952a2..f628f907 100644
++index bbd34068..926f4c26 100644
+ --- a/src/project.rs
+ +++ b/src/project.rs
+ @@ -1070,7 +1070,7 @@ pub fn target_files(
+@@ -1379,7 +1379,7 @@
+  }
+  
+  /// Targets whose archives ship the Playwright e2e suite under `e2e/`
+-@@ -3753,6 +3761,7 @@ fn spinel_files(app: &App, fixture: &Path) -> Result<(Vec<(String, String)>, Vec
++@@ -3754,6 +3762,7 @@ fn spinel_files(app: &App, fixture: &Path) -> Result<(Vec<(String, String)>, Vec
+      )?;
+  
+      crate::runtime_files::walk_flat("runtime/spinel", &["rb"], "runtime/", &mut files)?;
+@@ -1387,7 +1387,7 @@
+  
+      // Temporal-intrinsics sidecar — the flat walk above picks only .rb,
+      // and spinel's strict unresolved-call gate needs `parse_db_time`'s
+-@@ -7895,3 +7904,43 @@ mod tests {
++@@ -7915,3 +7924,43 @@ mod tests {
+          );
+      }
+  }
+--- v6/60-rails-surface.patch
++++ v7/60-rails-surface.patch
+@@ -1,5 +1,5 @@
+ diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+-index 0e3c17f3..f49b5abc 100644
++index ac6ca6f4..dc00b6fa 100644
+ --- a/runtime/ruby/active_record/base.rb
+ +++ b/runtime/ruby/active_record/base.rb
+ @@ -1,3 +1,22 @@
+@@ -25,7 +25,7 @@
+  require_relative "errors"
+  require "time"
+  
+-@@ -145,10 +164,30 @@ module ActiveRecord
++@@ -197,10 +216,30 @@ module ActiveRecord
+        @validation_messages
+      end
+  
+@@ -57,7 +57,7 @@
+        @errors
+      end
+  
+-@@ -208,6 +247,7 @@ module ActiveRecord
++@@ -260,6 +299,7 @@ module ActiveRecord
+        # here: see the class comment on why the base holds no `@id`.
+        @errors = []
+        @validation_messages = {}
+@@ -65,7 +65,7 @@
+        @id_previously_changed = false
+        @persisted = false
+        @destroyed = false
+-@@ -990,6 +1030,7 @@ module ActiveRecord
++@@ -1042,6 +1082,7 @@ module ActiveRecord
+      def valid?
+        @errors = []
+        @validation_messages = {}
+@@ -74,7 +74,7 @@
+        @errors.empty?
+      end
+ diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+-index 33f558c2..75443e7d 100644
++index eb05abbd..42f9d165 100644
+ --- a/runtime/ruby/active_record/base.rbs
+ +++ b/runtime/ruby/active_record/base.rbs
+ @@ -1,3 +1,15 @@
+@@ -93,7 +93,7 @@
+  module ActiveRecord
+    # The 9-method adapter contract `Base.find` / `Base.create!` / etc.
+    # dispatch through. Phantom RBS-only class — no Ruby source body,
+-@@ -65,7 +77,13 @@ module ActiveRecord
++@@ -69,7 +81,13 @@ module ActiveRecord
+    class Base
+      @validation_messages: Hash[Symbol, Array[String]]
+      def errors_messages: () -> Hash[Symbol, Array[String]]
+@@ -108,7 +108,7 @@
+      EMPTY_ATTRS: Hash[Symbol, untyped]
+      HYDRATE_ATTRS: Hash[Symbol, untyped]
+  
+-@@ -161,7 +179,7 @@ module ActiveRecord
++@@ -165,7 +183,7 @@ module ActiveRecord
+      # callers typed against `ActiveRecord::Base` (FormBuilder.text_
+      # field's `@model[field]`) compile under static targets like
+      # Crystal — the static type needs the method to exist.
+@@ -118,7 +118,7 @@
+      def has_attribute?: (Symbol name) -> bool
+      def _note_unloaded: (Hash[String, untyped] _row) -> void
+ diff --git a/runtime/ruby/active_record/relation.rb b/runtime/ruby/active_record/relation.rb
+-index a2a96d04..56668e1a 100644
++index 54657331..e74cb431 100644
+ --- a/runtime/ruby/active_record/relation.rb
+ +++ b/runtime/ruby/active_record/relation.rb
+ @@ -46,6 +46,27 @@ module ActiveRecord
+@@ -176,7 +176,7 @@
+      def where_scope(condition)
+        @scope_attributes = condition
+        add_condition(condition, [], false)
+-@@ -1410,6 +1438,14 @@ module ActiveRecord
++@@ -1502,6 +1530,14 @@ module ActiveRecord
+        created
+      end
+  
+@@ -192,7 +192,7 @@
+  
+      def to_sql
+ diff --git a/runtime/ruby/active_record/relation.rbs b/runtime/ruby/active_record/relation.rbs
+-index 5d22c4c7..541d72c3 100644
++index 01d5e79d..64ac6c45 100644
+ --- a/runtime/ruby/active_record/relation.rbs
+ +++ b/runtime/ruby/active_record/relation.rbs
+ @@ -6,6 +6,9 @@ module ActiveRecord
+@@ -205,7 +205,7 @@
+      def where: (?untyped condition, *untyped args) -> Relation
+  
+      @from: String?
+-@@ -191,6 +194,7 @@ module ActiveRecord
++@@ -194,6 +197,7 @@ module ActiveRecord
+      def find_by: (untyped conditions) -> untyped
+      def find_by!: (untyped conditions) -> untyped
+      def first_or_initialize: () -> untyped
+@@ -239,10 +239,10 @@
+ +  end
+ +end
+ diff --git a/src/emit/ruby/library.rs b/src/emit/ruby/library.rs
+-index 615f99f5..80c06b55 100644
++index 5eba12a4..c9e9139c 100644
+ --- a/src/emit/ruby/library.rs
+ +++ b/src/emit/ruby/library.rs
+-@@ -6219,7 +6219,19 @@ fn emit_library_class_decl_inner(
++@@ -6236,7 +6236,19 @@ fn emit_library_class_decl_inner(
+              open_header(&mut s);
+              render_constants(&mut s, &eager[*at..]);
+          }
+@@ -263,7 +263,7 @@
+      }
+      if !eager.is_empty() && !lc.methods.is_empty() {
+          writeln!(s).unwrap();
+-@@ -6232,6 +6244,7 @@ fn emit_library_class_decl_inner(
++@@ -6249,6 +6261,7 @@ fn emit_library_class_decl_inner(
+      // call may reference one) and before the methods.
+      if replays_foreign_class_body(lc, app) {
+          for call in &lc.unknown_calls {
+@@ -271,7 +271,7 @@
+              for line in super::emit_expr(call).lines() {
+                  if line.is_empty() {
+                      writeln!(s).unwrap();
+-@@ -6245,6 +6258,12 @@ fn emit_library_class_decl_inner(
++@@ -6262,6 +6275,12 @@ fn emit_library_class_decl_inner(
+          }
+      } else {
+          for call in &lc.unknown_calls {
+@@ -284,7 +284,7 @@
+              report_dropped_class_body_call(lc, call);
+          }
+      }
+-@@ -6511,6 +6530,10 @@ fn runtime_reopen_anchor(name: &str) -> Option<&'static str> {
++@@ -6528,6 +6547,10 @@ fn runtime_reopen_anchor(name: &str) -> Option<&'static str> {
+  ///
+  /// A dropped call is no longer silent either way — see
+  /// `report_dropped_class_body_call`.
+@@ -295,7 +295,7 @@
+  fn replays_foreign_class_body(lc: &LibraryClass, app: &App) -> bool {
+      if lc.is_module {
+          return false;
+-@@ -6827,6 +6850,9 @@ fn require_path_for_body_const(
++@@ -6844,6 +6867,9 @@ fn require_path_for_body_const(
+      // body to need this: `created_at: <%= 1.hour.ago %>` grounds to
+      // `ActiveSupport::Duration.hour(1)` and `test/fixtures/<x>.rb` is
+      // reached from the test harness, not from main.rb's require chain.
+@@ -306,7 +306,7 @@
+          return Some("runtime/active_support_duration".to_string());
+      }
+ diff --git a/src/ingest/library_class.rs b/src/ingest/library_class.rs
+-index b4218ec7..1ffd841b 100644
++index a44a9cea..c8b45ee9 100644
+ --- a/src/ingest/library_class.rs
+ +++ b/src/ingest/library_class.rs
+ @@ -1435,6 +1435,12 @@ fn walk_decl_body_with_visibility<'pr>(
+@@ -323,10 +323,10 @@
+          // `cattr_accessor` (extras/keybase, github, twitter) — class-var
+          // reads in class-method bodies normalize to class-level ivars
+ diff --git a/src/ingest/model.rs b/src/ingest/model.rs
+-index b62ce995..09c6a1b7 100644
++index bb884599..91e5da26 100644
+ --- a/src/ingest/model.rs
+ +++ b/src/ingest/model.rs
+-@@ -1712,6 +1712,7 @@ fn validation_rule_from_kv(
++@@ -1855,6 +1855,7 @@ fn validation_rule_from_kv(
+          "presence" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Presence),
+          "absence" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Absence),
+          "length" => parse_length_rule(value),
+@@ -334,7 +334,7 @@
+          _ => None,
+      }
+  }
+-@@ -1719,6 +1720,32 @@ fn validation_rule_from_kv(
++@@ -1862,6 +1863,32 @@ fn validation_rule_from_kv(
+  /// `length: { minimum: N, maximum: M }`. Either bound may be absent;
+  /// the hash-value shape is the only one we accept today. The shorthand
+  /// `length: 5` (exact length) isn't in any fixture yet and drops.
+@@ -630,10 +630,10 @@
+          }),
+      ])
+ diff --git a/src/lower/scope_chain.rs b/src/lower/scope_chain.rs
+-index 3e339793..3d7f5fd7 100644
++index b1a7610a..2837cf1c 100644
+ --- a/src/lower/scope_chain.rs
+ +++ b/src/lower/scope_chain.rs
+-@@ -2073,6 +2073,13 @@ impl Ctx<'_> {
++@@ -2040,6 +2040,13 @@ impl Ctx<'_> {
+      }
+  }
+  
+@@ -647,7 +647,7 @@
+  fn syn(span: crate::span::Span, node: ExprNode) -> Expr {
+      Expr::new(span, node)
+  }
+-@@ -2085,6 +2092,18 @@ fn syn(span: crate::span::Span, node: ExprNode) -> Expr {
++@@ -2052,6 +2059,18 @@ fn syn(span: crate::span::Span, node: ExprNode) -> Expr {
+  /// their own defaults (Ruby's behavior for the omitted call) before pushing
+  /// the relation, so `hottest` → `Story.hottest(nil, nil, __rel)` not
+  /// `Story.hottest(__rel)`. `leading` is the scope's user params (no `__rel`).
+@@ -666,7 +666,7 @@
+  fn thread_rel(mut args: Vec<Expr>, rel: Expr, leading: Option<&Vec<Param>>, span: crate::span::Span) -> Vec<Expr> {
+      // A trailing kwargs hash (`base(user, unmerged: unmerged)`) binds
+      // the scope's KEYWORD params; the relation is a positional and must
+-@@ -2147,7 +2166,7 @@ fn thread_rel(mut args: Vec<Expr>, rel: Expr, leading: Option<&Vec<Param>>, span
++@@ -2114,7 +2133,7 @@ fn thread_rel(mut args: Vec<Expr>, rel: Expr, leading: Option<&Vec<Param>>, span
+  /// `Push::Subscription.destroy_by(endpoint:, user_id:)` reached nothing
+  /// at all, with the analyzer saying so (`send_dispatch_failed: no known
+  /// method `destroy_by` on Class { Push::Subscription }`).
+@@ -675,7 +675,7 @@
+  
+  /// Relation TERMINALS our runtime implements — a seeded association
+  /// chain may end in one (`@story.merged_stories.ids`). Deliberately
+-@@ -2188,6 +2207,8 @@ fn is_relation_terminal(name: &str, args: &[Expr], block: Option<&Expr>) -> bool
++@@ -2155,6 +2174,8 @@ fn is_relation_terminal(name: &str, args: &[Expr], block: Option<&Expr>) -> bool
+                  // `merge_scope_attributes`', because the query half needs
+                  // the same conditions anyway.
+                  | "find_or_create_by"
+@@ -684,7 +684,7 @@
+          ),
+      }
+  }
+-@@ -2720,7 +2741,7 @@ fn lower_relation_args(
++@@ -2687,7 +2708,7 @@ fn lower_relation_args(
+          // are `find_by`'s — a list that names some of them renames
+          // `user:` to `user_id:` on one spelling and emits the
+          // nonexistent `memberships.user` column on the next.
+@@ -693,7 +693,7 @@
+              // `where(connected_at: TTL.ago..)` — a RANGE value. Rails
+              // renders `>=` / `<=` / `<` / BETWEEN; the runtime's
+              // `column_predicate` has no Range arm and falls through to
+-@@ -2774,6 +2795,14 @@ fn lower_relation_args(
++@@ -2741,6 +2762,14 @@ fn lower_relation_args(
+                      }
+                      let Some(fk) = ctx.assocs.belongs_to_fk(model, key) else { continue };
+                      *k.node = ExprNode::Lit { value: Literal::Sym { value: fk.clone() } };
+@@ -708,7 +708,7 @@
+                      // The VALUE rides through unchanged. It used to be
+                      // narrowed to `v && v.id` for plain reads, but an
+                      // untyped scope param can carry a record OR a
+-@@ -3069,12 +3098,12 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
++@@ -3036,12 +3065,12 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+                  // not `Model.all` (which would hit Base.all and return an
+                  // Array, breaking the chain). Replace with the rel param.
+                  if method.as_str() == "all" && args.is_empty() && block.is_none() {
+@@ -723,7 +723,7 @@
+                      *expr = put(span, Some(const_expr(span, self_model)), method, new_args, block, true);
+                      return Some(self_model.clone());
+                  }
+-@@ -3082,7 +3111,7 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
++@@ -3049,7 +3078,7 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+                      // Receiver is the bare `__rel` param — any `joins`
+                      // sits in a separate chain link handled below.
+                      let _ = lower_relation_args(self_model, &method, &mut args, ctx);
+@@ -732,7 +732,7 @@
+                      return Some(self_model.clone());
+                  }
+                  // A TERMINAL ends on the threaded relation too — `count`
+-@@ -3552,7 +3581,7 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
++@@ -3519,7 +3548,7 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+                              }
+                              if is_scope {
+                                  let leading = ctx.scope_params(&target, &method);
+@@ -741,7 +741,7 @@
+                                  *expr = put(
+                                      span,
+                                      Some(const_expr(span, &target)),
+-@@ -3678,7 +3707,7 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
++@@ -3645,7 +3674,7 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+                  }
+                  if ctx.scope_of(&mr, &method) {
+                      let leading = ctx.scope_params(&mr, &method);
+@@ -750,7 +750,7 @@
+                      *expr = put(span, Some(const_expr(span, &mr)), method, new_args, block, true);
+                      return Some(mr);
+                  }
+-@@ -4440,7 +4469,7 @@ mod tests {
++@@ -4407,7 +4436,7 @@ mod tests {
+          let ExprNode::Send { recv: Some(r), method, args, .. } = &*expr.node else {
+              panic!("expected Send, got {:?}", expr.node);
+          };
+@@ -760,10 +760,10 @@
+              matches!(&*r.node, ExprNode::Const { path } if path.last().unwrap().as_str() == "Story"),
+              "receiver should be Story const, got {:?}",
+ diff --git a/src/project.rs b/src/project.rs
+-index f628f907..1c6608fd 100644
++index 926f4c26..cdf89e21 100644
+ --- a/src/project.rs
+ +++ b/src/project.rs
+-@@ -4019,6 +4019,7 @@ fn spinel_files(app: &App, fixture: &Path) -> Result<(Vec<(String, String)>, Vec
++@@ -4020,6 +4020,7 @@ fn spinel_files(app: &App, fixture: &Path) -> Result<(Vec<(String, String)>, Vec
+          "inflector_ext",
+          "json_builder",
+          "active_support_ext",
+@@ -771,7 +771,7 @@
+          "params",
+          "action_text",
+          "active_storage",
+-@@ -5708,7 +5709,7 @@ fn bundled_require_gaps(files: &[(String, String)]) -> Vec<(usize, String)> {
++@@ -5724,7 +5725,7 @@ fn bundled_require_gaps(files: &[(String, String)]) -> Vec<(usize, String)> {
+          }
+          for (i, (path, content)) in files.iter().enumerate() {
+              if path.ends_with(".rb")
+--- v6/61-secure-password-super-and-nil.patch
++++ v7/61-secure-password-super-and-nil.patch
+@@ -1,15 +1,3 @@
+-diff --git a/src/lower/model_to_library/mod.rs b/src/lower/model_to_library/mod.rs
+-index 7bb4bbcd..867f96d8 100644
+---- a/src/lower/model_to_library/mod.rs
+-+++ b/src/lower/model_to_library/mod.rs
+-@@ -1061,6 +1061,7 @@ pub(crate) fn build_methods(
+-     // rationale as the macros above (a hand-written method wins).
+-     crate::lower::attached::push_attached_methods(&mut methods, model);
+-     push_user_methods(&mut methods, model);
+-+    crate::lower::secure_password:[redacted] methods, model);
+-     push_dom_prefix_method(&mut methods, model);
+-     // AFTER push_user_methods, unlike the macros above: its skip guard
+-     // reads the accumulated list, so a model's own `to_param` (already
+ diff --git a/src/lower/model_to_library/schema.rs b/src/lower/model_to_library/schema.rs
+ index 05b52710..e4c7199c 100644
+ --- a/src/lower/model_to_library/schema.rs
+@@ -39,73 +27,14 @@
+      }
+  
+      stmts.push(Expr::new(
+-diff --git a/src/lower/secure_password.rs b/src/lower/secure_password.rs
+-index e4df796e..c2d7c88b 100644
+---- a/src/lower/secure_password.rs
+-+++ b/src/lower/secure_password.rs
+-@@ -469,3 +469,40 @@ fn plaintext_writer_body(attr: &Symbol, digest: &Symbol) -> Expr {
+-     });
+-     sp_expr(ExprNode::Seq { exprs: vec![store_plain, guarded_digest] })
+- }
+-+
+-+
+-+/// A model override calls the macro's generated module method via super.
+-+/// Flatten that one inherited writer into a private lowering helper instead
+-+/// of letting super dispatch to ActiveRecord::Base (which has no such writer).
+-+pub(crate) fn lower_secure_password_super(methods: &mut Vec<MethodDef>, model: &Model) {
+-+    let Some(attr) = secure_password_attr(&model.body) else { return; };
+-+    let writer = Symbol::from(format!("{}=", attr.as_str()));
+-+    let helper = Symbol::from(format!("__rh_secure_{}_writer", attr.as_str()));
+-+    let mut rewritten = false;
+-+    for method in methods.iter_mut() {
+-+        if method.name != writer { continue; }
+-+        let forwarded: Vec<Expr> = method.params.iter().map(|p| sp_expr(ExprNode::Var {
+-+            id: VarId(0), name: p.name.clone(),
+-+        })).collect();
+-+        fn rewrite(e: &mut Expr, helper: &Symbol, forwarded: &[Expr]) -> bool {
+-+            if let ExprNode::Super { args } = &*e.node {
+-+                let args = args.clone().unwrap_or_else(|| forwarded.to_vec());
+-+                e.node = Box::new(ExprNode::Send {
+-+                    recv: None, method: helper.clone(), args, block: None, parenthesized: true,
+-+                });
+-+                return true;
+-+            }
+-+            let mut changed = false;
+-+            e.node.for_each_child_mut(&mut |c| changed |= rewrite(c, helper, forwarded));
+-+            changed
+-+        }
+-+        rewritten |= rewrite(&mut method.body, &helper, &forwarded);
+-+    }
+-+    if rewritten {
+-+        let plain = Symbol::from("unencrypted_password");
+-+        let digest = Symbol::from(format!("{}_digest", attr.as_str()));
+-+        push_synth_instance_method(methods, model, helper,
+-+            vec![Param::positional(plain.clone())], plaintext_writer_body(&attr, &digest),
+-+            Some(fn_sig(vec![(plain, Ty::Str)], Ty::Nil)), AccessorKind::Method, true);
+-+    }
+-+}
+ diff --git a/tests/secure_password_lowering.rs b/tests/secure_password_lowering.rs
+-index c41e7969..a2ace9f7 100644
++index cdc09003..2bfe2aa3 100644
+ --- a/tests/secure_password_lowering.rs
+ +++ b/tests/secure_password_lowering.rs
+-@@ -91,3 +91,26 @@ fn secure_password_renders_on_the_ruby_tree() {
+-         "writer must render the digest store: {user_src}",
+-     );
++@@ -321,3 +321,12 @@ fn a_rewritten_writer_adds_no_diagnostic() {
++         .collect();
++     assert!(unresolved.is_empty(), "{unresolved:#?}");
+  }
+-+
+-+#[test]
+-+fn secure_password_override_super_retains_generated_writer() {
+-+    for call in ["super", "super(value)"] {
+-+        let app = app_with(&format!(
+-+            "class User < ApplicationRecord\n  has_secure_password\n  def password=[redacted]\n    @supplied = true\n    {call}\n  end\nend\n"
+-+        ));
+-+        let files = roundhouse::emit::ruby::emit_lowered_models(&app);
+-+        let source = &files.iter().find(|f| f.path.to_string_lossy().ends_with("models/user.rb")).unwrap().content;
+-+        assert!(source.contains("__rh_secure_password_writer(value)"), "{source}");
+-+        assert!(source.contains("@supplied = true"), "{source}");
+-+        assert!(source.contains("BCrypt::Password.create(unencrypted_password)"), "{source}");
+-+    }
+-+}
+ +
+ +#[test]
+ +fn supplied_nil_password_routes_through_writer() {
+--- v6/71-record-lock-and-error-predicate.patch
++++ v7/71-record-lock-and-error-predicate.patch
+@@ -1,8 +1,8 @@
+ diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+-index f49b5abc..199d57e4 100644
++index dc00b6fa..ad00b893 100644
+ --- a/runtime/ruby/active_record/base.rb
+ +++ b/runtime/ruby/active_record/base.rb
+-@@ -179,6 +179,10 @@ module ActiveRecord
++@@ -231,6 +231,10 @@ module ActiveRecord
+        self[name.to_sym]
+      end
+  
+@@ -14,10 +14,10 @@
+        @validation_entries
+      end
+ diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+-index 75443e7d..7b4f4ba1 100644
++index 42f9d165..cd6578ef 100644
+ --- a/runtime/ruby/active_record/base.rbs
+ +++ b/runtime/ruby/active_record/base.rbs
+-@@ -82,6 +82,7 @@ module ActiveRecord
++@@ -86,6 +86,7 @@ module ActiveRecord
+      def _note_projection: (Hash[String, untyped] row) -> nil
+      def _projection_attribute: (String name) -> untyped
+      def read_attribute: (String name) -> untyped
+@@ -26,10 +26,10 @@
+      def record_validation_message: (Symbol field, String message, ?Symbol error_type) -> Array[String]
+      EMPTY_ATTRS: Hash[Symbol, untyped]
+ diff --git a/src/analyze/mod.rs b/src/analyze/mod.rs
+-index 920c2015..ac6f5771 100644
++index 7238e209..4d8053cf 100644
+ --- a/src/analyze/mod.rs
+ +++ b/src/analyze/mod.rs
+-@@ -587,6 +587,9 @@ impl Analyzer {
++@@ -588,6 +588,9 @@ impl Analyzer {
+                  ("record_timestamps=", Ty::Bool),
+                  ("attributes=", Ty::Untyped),
+                  ("assign_attributes", Ty::Untyped),
+--- v6/74-integer-query-range.patch
++++ v7/74-integer-query-range.patch
+@@ -1,9 +1,9 @@
+ diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+-index 199d57e4..453b9780 100644
++index ad00b893..2af5abaa 100644
+ --- a/runtime/ruby/active_record/base.rb
+ +++ b/runtime/ruby/active_record/base.rb
+-@@ -107,6 +107,44 @@ module ActiveRecord
+-     found == -1 ? nil : labels[found]
++@@ -159,6 +159,44 @@ module ActiveRecord
++     lo
+    end
+  
+ +  # Integer query serialization, before any machine-integer conversion.
+@@ -47,7 +47,7 @@
+    # Base class for all models. Designed to contain *zero* metaprogramming:
+    # subclasses provide their own `attributes`, `[]`, `[]=`, `update`, and
+    # `initialize`-from-attrs methods (typically by writing them out per
+-@@ -308,6 +346,10 @@ module ActiveRecord
++@@ -360,6 +398,10 @@ module ActiveRecord
+      # legitimately has none, and the lowering emits the (possibly empty)
+      # list for every schema-backed model. `_as_json_only` reads it to
+      # decide which values need Rails' ISO8601 JSON form.
+@@ -59,7 +59,7 @@
+        []
+      end
+ diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+-index 7b4f4ba1..e52624e4 100644
++index cd6578ef..e2db7efd 100644
+ --- a/runtime/ruby/active_record/base.rbs
+ +++ b/runtime/ruby/active_record/base.rbs
+ @@ -11,6 +11,8 @@ module ActiveModel
+@@ -71,7 +71,7 @@
+    # The 9-method adapter contract `Base.find` / `Base.create!` / etc.
+    # dispatch through. Phantom RBS-only class — no Ruby source body,
+    # each target ships its own concrete implementation (Rust trait +
+-@@ -132,6 +134,7 @@ module ActiveRecord
++@@ -136,6 +138,7 @@ module ActiveRecord
+      def self._cast_primary_key: (Integer | String id) -> (Integer | String | nil)
+      def self._string_primary_key: () -> bool
+      def self.schema_columns: () -> Array[Symbol]
+@@ -112,10 +112,10 @@
+      def self.all: () -> Relation
+      def self.none: () -> Relation
+ diff --git a/runtime/ruby/active_record/relation.rb b/runtime/ruby/active_record/relation.rb
+-index 56668e1a..38532374 100644
++index e74cb431..b2f407ca 100644
+ --- a/runtime/ruby/active_record/relation.rb
+ +++ b/runtime/ruby/active_record/relation.rb
+-@@ -1118,18 +1118,15 @@ module ActiveRecord
++@@ -1210,18 +1210,15 @@ module ActiveRecord
+        ok
+      end
+  
+@@ -138,7 +138,7 @@
+        found = count > 0
+        @wheres.pop
+        found
+-@@ -1304,9 +1301,8 @@ module ActiveRecord
++@@ -1396,9 +1393,8 @@ module ActiveRecord
+      # leave the relation altered.
+      def find(id)
+        return find_ids(id) if id.is_a?(Array)
+@@ -149,7 +149,7 @@
+        begin
+          @limit = 1
+          rows = load_records
+-@@ -1527,6 +1523,11 @@ module ActiveRecord
++@@ -1619,6 +1615,11 @@ module ActiveRecord
+      # `hidden_stories.user_id`, not `user_id`, after `joins(:hidings)`.
+      def column_predicate(col, val)
+        qcol = col.include?(".") ? col : "#{@table}.#{col}"
+@@ -161,7 +161,7 @@
+        if val.is_a?(Relation)
+          # A relation value is Rails' subquery form —
+          # `where(story_id: Tagging.where(...).select(:story_id))` →
+-@@ -1556,6 +1557,40 @@ module ActiveRecord
++@@ -1648,6 +1649,40 @@ module ActiveRecord
+        end
+      end
+  
+@@ -203,10 +203,10 @@
+      # order. A fragment with no `?` returns unchanged. Each `sub` rewrites
+      # the leftmost remaining `?`, so iterating the args consumes them in
+ diff --git a/runtime/ruby/active_record/relation.rbs b/runtime/ruby/active_record/relation.rbs
+-index 541d72c3..35809067 100644
++index 64ac6c45..9fd6c788 100644
+ --- a/runtime/ruby/active_record/relation.rbs
+ +++ b/runtime/ruby/active_record/relation.rbs
+-@@ -158,7 +158,7 @@ module ActiveRecord
++@@ -161,7 +161,7 @@ module ActiveRecord
+      def one?: () -> bool
+      def many?: () -> bool
+      def all?: () { (untyped) -> bool } -> bool
+@@ -215,7 +215,7 @@
+      def length: () -> Integer
+      def size: () -> Integer
+      def delete_all: () -> Integer
+-@@ -202,6 +202,8 @@ module ActiveRecord
++@@ -205,6 +205,8 @@ module ActiveRecord
+      def select_sql_with: (String default_cols) -> String
+      def count_sql: () -> String
+      def hash_conditions: (untyped hash) -> String
+@@ -225,10 +225,10 @@
+      def substitute_binds: (String sql, Array[untyped] args) -> String
+      def escape_list: (Array[untyped] vals) -> String
+ diff --git a/src/lower/arel/visitor.rs b/src/lower/arel/visitor.rs
+-index ad22006b..ec9322d2 100644
++index ce50cdd7..44048901 100644
+ --- a/src/lower/arel/visitor.rs
+ +++ b/src/lower/arel/visitor.rs
+-@@ -818,7 +818,7 @@ fn push_order_segment(segments: &mut Vec<Expr>, orders: &[super::ir::Order], tab
++@@ -955,7 +955,7 @@ fn push_order_segment(segments: &mut Vec<Expr>, orders: &[super::ir::Order], tab
+  fn push_where_segments(
+      segments: &mut Vec<Expr>,
+      preds: Option<&Predicate>,
+@@ -237,7 +237,7 @@
+      param: bool,
+      binds: &mut Vec<Bind>,
+  ) {
+-@@ -826,12 +826,13 @@ fn push_where_segments(
++@@ -963,12 +963,13 @@ fn push_where_segments(
+          return;
+      };
+      segments.push(lit_str(" WHERE ".to_string()));
+@@ -252,7 +252,7 @@
+      param: bool,
+      binds: &mut Vec<Bind>,
+  ) {
+-@@ -843,19 +844,39 @@ fn push_predicate_segments(
++@@ -980,19 +981,39 @@ fn push_predicate_segments(
+              segments.push(lit_str(format!("{} IS NULL", crate::naming::sql_ident(col.column.as_str()))));
+          }
+          Predicate::Eq(col, val) => {
+@@ -296,7 +296,7 @@
+              segments.push(lit_str(")".to_string()));
+          }
+      }
+-@@ -1555,7 +1576,7 @@ mod tests {
++@@ -1692,7 +1713,7 @@ mod tests {
+      }
+  
+      #[test]
+@@ -305,7 +305,7 @@
+          let (schema, owner) = fixture_schema();
+          let sel = Select {
+              single_record: true,
+-@@ -1573,27 +1594,19 @@ mod tests {
++@@ -1710,27 +1731,19 @@ mod tests {
+          let table = &schema.tables[&Symbol::from("articles")];
+          let body = emit_single_hydrate(&sel, table, &owner, true);
+  
+@@ -341,7 +341,7 @@
+          let (schema, owner) = fixture_schema();
+          let sel = Select {
+              single_record: true,
+-@@ -1623,7 +1636,7 @@ mod tests {
++@@ -1760,7 +1773,7 @@ mod tests {
+      }
+  
+      #[test]
+@@ -350,7 +350,7 @@
+          let (schema, _) = fixture_schema();
+          let sel = Select {
+              single_record: false,
+-@@ -1641,8 +1654,8 @@ mod tests {
++@@ -1778,8 +1791,8 @@ mod tests {
+          let table = &schema.tables[&Symbol::from("articles")];
+          let body = emit_count(&sel, table, true);
+          let sql = prepare_sql(&body);
+@@ -362,7 +362,7 @@
+  
+      #[test]
+ diff --git a/src/lower/model_to_library/mod.rs b/src/lower/model_to_library/mod.rs
+-index 867f96d8..61925fdf 100644
++index 7bb4bbcd..aaaff01c 100644
+ --- a/src/lower/model_to_library/mod.rs
+ +++ b/src/lower/model_to_library/mod.rs
+ @@ -957,7 +957,7 @@ pub(crate) fn build_methods(
+--- v6/75-stdlib-constant-resolution.patch
++++ v7/75-stdlib-constant-resolution.patch
+@@ -1,106 +0,0 @@
+-diff --git a/src/analyze/registry/stdlib.rs b/src/analyze/registry/stdlib.rs
+-index 52264976..294fd38c 100644
+---- a/src/analyze/registry/stdlib.rs
+-+++ b/src/analyze/registry/stdlib.rs
+-@@ -409,7 +409,7 @@ pub(in crate::analyze) fn register(classes: &mut HashMap<ClassId, ClassInfo>) {
+-         // Both CRuby's bundled libraries and Spinel's uri/net packages
+-         // define these exception classes; emitted requires load them.
+-         "URI::InvalidURIError", "Net::OpenTimeout", "Net::ReadTimeout",
+--        "OpenSSL::OpenSSLError",
+-+        "OpenSSL::OpenSSLError", "JSON::ParserError",
+-     ] {
+-         register_stdlib_class(classes, exc, &[], &[
+-             ("message", Ty::Str),
+-@@ -521,6 +521,12 @@ pub(in crate::analyze) fn register(classes: &mut HashMap<ClassId, ClassInfo>) {
+-     // JSON dispatch is already intrinsic in BodyTyper and the emitters;
+-     // a source-backed reference must also recognize its exact namespace.
+-     register_stdlib_class(classes, "JSON", &[], &[]);
+-+    // Ruby and Spinel provide both core classes. The existing constructor
+-+    // rule carries Struct.new's value into an assigned constant, so reads
+-+    // of that constant and Mutex.new retain their source expressions.
+-+    // Do not invent member or synchronization return types here.
+-+    register_stdlib_class(classes, "Struct", &[], &[]);
+-+    register_stdlib_class(classes, "Mutex", &[], &[]);
+-     // `Array.wrap` is folded by `lower::enumerable_ext` before emit.
+-     // Registered so the analyzer does not report it as unknown. The
+-     // element type is not known from a scalar argument.
+-diff --git a/src/project.rs b/src/project.rs
+-index 1c6608fd..09e6630b 100644
+---- a/src/project.rs
+-+++ b/src/project.rs
+-@@ -3608,7 +3608,8 @@ fn report_unsupported_bundled_constants(app: &App, target: BuildTarget) {
+-                 if matches!(id.0.as_str(),
+-                     "URI::HTTP" | "URI::InvalidURIError" | "Net::OpenTimeout" | "Net::ReadTimeout"
+-                     | "Net::HTTPRedirection" | "Net::HTTPOK" | "StringIO" | "OpenSSL::OpenSSLError"
+--                    | "Rails::HTML5::SafeListSanitizer" | "JSON")
+-+                    | "Rails::HTML5::SafeListSanitizer" | "JSON" | "JSON::ParserError"
+-+                    | "Struct" | "Mutex")
+-                     // Nokogiri does not supply HTML5 on JRuby. The
+-                     // other bundled values remain available there.
+-                     && (target != "jruby" || id.0.as_str() == "Rails::HTML5::SafeListSanitizer")
+-diff --git a/tests/emitted_require_graph.rs b/tests/emitted_require_graph.rs
+-index a0d28791..3fe68177 100644
+---- a/tests/emitted_require_graph.rs
+-+++ b/tests/emitted_require_graph.rs
+-@@ -180,7 +180,7 @@ fn bundled_class_constants_are_ledgered_only_on_targets_without_them() {
+-   def index
+-     [URI::HTTP, URI::InvalidURIError, Net::OpenTimeout, Net::ReadTimeout,
+-      Net::HTTPRedirection, Net::HTTPOK, StringIO, OpenSSL::OpenSSLError,
+--     Rails::HTML5::SafeListSanitizer, JSON]
+-+     Rails::HTML5::SafeListSanitizer, JSON, JSON::ParserError, Struct, Mutex]
+-   end
+- end
+- "#),
+-@@ -212,10 +212,10 @@ end
+-             assert_eq!(gaps[0].severity, roundhouse::diagnostic::Severity::Error);
+-             assert!(!gaps[0].span.is_synthetic(), "{gaps:?}");
+-         } else {
+--            assert_eq!(gaps.len(), 10, "{target:?}: {gaps:?}");
+-+            assert_eq!(gaps.len(), 13, "{target:?}: {gaps:?}");
+-             for name in ["URI::HTTP", "URI::InvalidURIError", "Net::OpenTimeout", "Net::ReadTimeout",
+-                 "Net::HTTPRedirection", "Net::HTTPOK", "StringIO", "OpenSSL::OpenSSLError",
+--                "Rails::HTML5::SafeListSanitizer", "JSON"] {
+-+                "Rails::HTML5::SafeListSanitizer", "JSON", "JSON::ParserError", "Struct", "Mutex"] {
+-                 let gap = gaps.iter().find(|d| d.message.contains(name)).expect(name);
+-                 assert_eq!(gap.severity, roundhouse::diagnostic::Severity::Error);
+-                 assert!(!gap.span.is_synthetic(), "{gap:?}");
+-diff --git a/tests/stdlib_constant_execution.rs b/tests/stdlib_constant_execution.rs
+-new file mode 100644
+-index 00000000..04234e7f
+---- /dev/null
+-+++ b/tests/stdlib_constant_execution.rs
+-@@ -0,0 +1,34 @@
+-+//! Ruby and Spinel supply these constants; resolving source names must
+-+//! preserve the constructors and rescue classes in emitted Ruby.
+-+#[path = "support/emit_and_run.rs"]
+-+mod emit_and_run;
+-+
+-+#[test]
+-+fn struct_mutex_and_json_error_constants_execute_after_emission() {
+-+    emit_and_run::empty_app()
+-+        .write("db/schema.rb", "ActiveRecord::Schema.define do\n  create_table :items do |t|\n    t.string :name\n  end\nend\n")
+-+        .write("app/controllers/application_controller.rb", "class ApplicationController < ActionController::Base\nend\n")
+-+        .write("config/routes.rb", "Rails.application.routes.draw do\nend\n")
+-+        .write("app/services/registry.rb", r#"require "json"
+-+class Registry
+-+  Entry = Struct.new(:lock, :members)
+-+  def self.entry
+-+    Entry.new(Mutex.new, {})
+-+  end
+-+  def self.parse(text)
+-+    JSON.parse(text)
+-+  rescue JSON::ParserError
+-+    nil
+-+  end
+-+end
+-+"#)
+-+        .run_ruby(r#"
+-+entry = Registry.entry
+-+entry.lock.synchronize { entry.members["member"] = 7 }
+-+raise "struct or mutex lost" unless entry.members == { "member" => 7 }
+-+raise "valid JSON changed" unless Registry.parse('{"ok":true}') == { "ok" => true }
+-+raise "JSON rescue lost" unless Registry.parse('{') == nil
+-+puts "stdlib constant execution passed"
+-+"#)
+-+        .assert_passes();
+-+}

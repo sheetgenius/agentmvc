@@ -1,0 +1,124 @@
+{
+  "condition": "compiled-conduit-v7-20261005",
+  "pins": {
+    "roundhouse": "2b2deff730b21ae9978dee27b99c0ac6f18727bc",
+    "spinel": "c1d108abe42fdbebff336a06295ceb004dacf72e",
+    "observed_at": "2026-10-05T09:05:22.573266+00:00",
+    "agentmvc_base": "2b1527d",
+    "condition": "compiled-conduit-v7-20261005"
+  },
+  "net_roundhouse_delta": {
+    "files": 78,
+    "added": 3126,
+    "removed": 211
+  },
+  "notes": {
+    "00": "Interval schema remains absent upstream; GoodJob interval columns require it.",
+    "10": "Use the upstream API class from #338 unchanged. The nosniff default moves into the typed Base initializer. Retire ANY/HEAD dispatch for 804cfee3 and 365b5c99. Preserve 413/body-size checks and adapt dispatcher lowering to the new can_respond_via_helper argument from #362. JSON, headers and validation-error maps remain local.",
+    "20": "Drop connection cleanup and WebSocket ensure/retire covered by 6623399c. Retain rescue logging and Faye facade/driver lifecycle. Preserve upstream inbound frame cap (8976de1c) and message-too-big close reason (a7c40e29).",
+    "30": "Boot-hook ingestion and job drain are still absent upstream. Context rebase preserves upstream ActiveJob loading order.",
+    "50": "PostgreSQL libpq runtime, schema/array/bytea support still local. No PostgreSQL runtime exists at this upstream pin.",
+    "60": "Class-state initialization, relation copies/create attributes, projection reads, uniqueness, secure comparison and bang find/create remain local. #431 changes src/lower/arel/mod.rs receiver preservation; it replaces no original patch-60 hunk. #369 improves scope-free query demand but does not supply the added runtime/lowering paths.",
+    "61": "Drop local super helper, invocation and obsolete helper-name test in favor of #289. Keep constructor/update dispatch through virtual writers when an explicit nil key is present; upstream guards still skip nil.",
+    "70": "Linear PostgreSQL placeholder rewriter remains local; depends on patch 50.",
+    "71": "Analysis of with_lock and symbolic error predicates remain local; depend on errors state in patches 10/60 and PostgreSQL locking in 50.",
+    "72": "Async libpq and prepared statement cache remain local; depends on patches 50/70.",
+    "74": "Integer serialization/bounds, false predicates for out-of-range values and no-primary-key finders remain local. Place integer helper beside the new upstream lower_bound helper, preserving it. #431 addresses finder receiver preservation, not integer serialization.",
+    "75": "All original hunks reverse-apply cleanly at the pinned head: #427 supplies the entire fix and its execution test."
+  },
+  "validation": {
+    "compiled_production_gate": "pass",
+    "variant_rails_gate": "pass",
+    "v6_source_control": "pass",
+    "focused_tests_passed": 72,
+    "focused_tests_ignored": 5,
+    "relation_finder_tests_passed": 6,
+    "runtime_typing": "fully-typed-body check passes; concrete-type check fails 574/537, upstream passes both"
+  },
+  "other_upstream": [
+    {
+      "pr": 431,
+      "commit": "053cad3715fe0361d32455f717ae7693945e1621",
+      "retired_hunks": 0
+    },
+    {
+      "pr": 369,
+      "commit": "bbe7c5a106e956fa209866c7313ac66e0df3105a",
+      "retired_hunks": 0
+    },
+    {
+      "pr": 375,
+      "commit": "4acac43782a050067d50915bb185180ad5ccffbc",
+      "retired_hunks": 0,
+      "note": "Primitive inline JSON encoding; fallback JsonRender facade is still required for other values."
+    }
+  ],
+  "retired_v6_hunks": [
+    {
+      "patch": "10",
+      "hunks": [
+        "H03 (API class wrapper)",
+        "H06 (API class wrapper)",
+        "H13 (ANY/HEAD routing)"
+      ],
+      "coverage": [
+        "#338",
+        "804cfee3",
+        "365b5c99"
+      ],
+      "retained": "nosniff default in Base initializer; integer statuses, headers and errors remain"
+    },
+    {
+      "patch": "20",
+      "hunks": [
+        "H06 (fd cleanup)",
+        "H08 (begin/ensure/retire structure)"
+      ],
+      "coverage": [
+        "6623399c"
+      ],
+      "retained": "rescue/log_dispatch_error and raw Faye lifecycle"
+    },
+    {
+      "patch": "61",
+      "hunks": [
+        "H01",
+        "H04",
+        "H05 (first 14 added lines)"
+      ],
+      "coverage": [
+        "#289"
+      ],
+      "retained": "H02/H03 supplied-nil virtual writers and the constructor test"
+    },
+    {
+      "patch": "75",
+      "hunks": [
+        "H01",
+        "H02",
+        "H03",
+        "H04",
+        "H05",
+        "H06"
+      ],
+      "coverage": [
+        "#427"
+      ],
+      "retained": null
+    }
+  ],
+  "manifest": {
+    "manifest": "241f8d692ce546614272c7261d9d7f5d15da525be67b4b08a11b958935be8c04",
+    "trees": {
+      "roundhouse": "36255a47cdf6683af29d6c03d155ef589879df2d4a15c0120c04e19947102af3",
+      "spinel": "c0d012a10eed79af115242fcd7f4785b5697ee52f02f135fe099c1a195e5ac3e"
+    },
+    "pins": {
+      "roundhouse": "2b2deff730b21ae9978dee27b99c0ac6f18727bc",
+      "spinel": "c1d108abe42fdbebff336a06295ceb004dacf72e",
+      "observed_at": "2026-10-05T09:05:22.573266+00:00",
+      "agentmvc_base": "2b1527d",
+      "condition": "compiled-conduit-v7-20261005"
+    }
+  }
+}

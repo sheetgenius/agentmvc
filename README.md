@@ -14,7 +14,7 @@ It began at [BitterClip](https://bitterclip.com), a Rails product with about thr
 
 **The same setup can produce wildly different apps.** Three agents with the same model, prompt and framework (Haskell's IHP) all passed every check. Their article lists ran about 21, 64 and 2,081 SQL queries per request, and served roughly 372, 52 and 1 requests per second. [IHP results](results/one-shot-ihp/README.md)
 
-**Compiled Rails ran 2–5× faster while passing the same production checks.** We compiled the Rails app to a native binary with [Roundhouse](https://github.com/rubys/roundhouse) and Matz's [Spinel](https://github.com/matz/spinel). On the same two CPUs, the benchmarked build's per-workload median throughput was 2.0–5.4× that of Rails running two Puma workers ([benchmark](results/ruby-compile/roundhouse-spinel-conduit-pg-20260930/README.md#benchmark)). This is an experiment: it needs a modified copy of the app (+184/−46 lines) and local compiler patches on current upstream heads: 12 to Roundhouse (one repairs a new upstream regression) and none to Spinel. A few documented behavior differences sit outside the checks. The speed figure comes from the v4 benchmark; the v6 rebuild re-checked correctness only. [Write-up and limits](results/ruby-compile/roundhouse-spinel-conduit-pg-20261004/README.md)
+**Compiled Rails ran 2–5× faster while passing the same production checks.** We compiled the Rails app to a native binary with [Roundhouse](https://github.com/rubys/roundhouse) and Matz's [Spinel](https://github.com/matz/spinel). On the same two CPUs, the benchmarked build's per-workload median throughput was 2.0–5.4× that of Rails running two Puma workers ([benchmark](results/ruby-compile/roundhouse-spinel-conduit-pg-20260930/README.md#benchmark)). This is an experiment: it needs a modified copy of the app (+180/−44 lines) and local compiler patches on current upstream heads: 11 to Roundhouse and none to Spinel. A few documented behavior differences sit outside the checks. The speed figure comes from the v4 benchmark; the v7 rebuild re-checked correctness only. [Write-up and limits](results/ruby-compile/roundhouse-spinel-conduit-pg-20261005/README.md)
 
 ## How to read these results
 
@@ -31,7 +31,7 @@ The rows from Ruby through Clojure link to reviewed versions, which pass every r
 | Language | Framework | Code or results |
 | --- | --- | --- |
 | Ruby | Rails 8.1 | [one session](results/one-shot-v2-rails-expert/pilot-1/reference-1/source/) |
-| Ruby, compiled | Rails via Roundhouse + Spinel | [experimental compile variant](results/ruby-compile/roundhouse-spinel-conduit-pg-20261004/variant/source/) |
+| Ruby, compiled | Rails via Roundhouse + Spinel | [experimental compile variant](results/ruby-compile/roundhouse-spinel-conduit-pg-20261005/variant/source/) |
 | Elixir | Phoenix 1.8 | [one session](results/one-shot-v2-phoenix-expert/reference-2/source/) |
 | TypeScript | AdonisJS 7 | [one session](results/one-shot-v2-typescript-expert/expert-1/reference-1/source/) |
 | Go | chi + Bun | [one session](results/one-shot-v2-go-expert/pilot-1/reference-1/source/) · [eight steps](results/lanes/go/8-live-editing/reference-1/source/) |
