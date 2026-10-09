@@ -72,4 +72,4 @@ Two useful experiments answer different questions:
 
 Preserve existing result roots and their failed attempts. Record the new cohort's model and conditions in its own launch/run metadata. The [baseline refresh assessment](baseline-refresh.md) identifies the proposed prompt and harness work; neither document launches a GPT-6.1 run.
 
-[Experiment v3](experiment-v3.md) proposes the next cohort. It changes the contract to two instances, splits each stack's guidance into a neutral environment and an optional practitioner brief, and runs both arms on the same new fixture. Its results form a new baseline and are not pooled with the conditions above.
+[Experiment v3](experiment-v3.md) proposes the next cohort. It changes the contract to two instances with semantic search on pgvector, gives each stack a neutral environment file, and runs one one-shot build per stack. Practitioner briefs, new models and prompt changes follow as separate conditions on the same fixture. Its results form a new baseline and are not pooled with the conditions above.

@@ -1,6 +1,6 @@
 # Practitioner briefs
 
-A practitioner brief is short, stack-specific guidance from someone who knows the stack well. The agent receives it alongside the shared, stack-neutral prompt. Briefs are how a stack's community can show how they would prompt a model to build good software in their stack, and [experiment v3](../docs/experiment-v3.md) measures what each brief changes by running every stack with and without one.
+A practitioner brief is short, stack-specific guidance from someone who knows the stack well. The agent receives it alongside the shared, stack-neutral prompt. Briefs are how a stack's community can show how they would prompt a model to build good software in their stack, and once a stack's brief is reviewed, [experiment v3](../docs/experiment-v3.md) runs it as its own condition beside that stack's build without one.
 
 ## Rules
 
@@ -8,7 +8,7 @@ A practitioner brief is short, stack-specific guidance from someone who knows th
 - **At most 500 words** across those six sections. The title and the closing "About this brief" section don't count.
 - **Guidance only.** Commands, ports, versions and other toolchain facts belong in the stack's neutral environment file, which has the same sections for every stack; see [ENVIRONMENT-TEMPLATE.md](ENVIRONMENT-TEMPLATE.md).
 - **Instructions, not solutions.** No application code for this product and no fenced code blocks. Naming APIs, libraries, options and commands is fine.
-- **Stack knowledge, not test cases.** Say how the stack behaves and what to do about it, such as a library default that drops unknown fields. Don't restate a reviewer probe's case or an earlier build's failing input. Experiment v3 compares the arms on held-out checks that brief authors don't see.
+- **Stack knowledge, not test cases.** Say how the stack behaves and what to do about it, such as a library default that drops unknown fields. Don't restate a reviewer probe's case or an earlier build's failing input. Brief conditions are also scored on held-out checks that brief authors don't see.
 - **Verified.** Every API, option or command a brief names must exist in the pinned versions. Check installed source or the official docs, and say which versions you checked.
 - **Practitioner-written and reviewed.** Someone who works in the stack writes it, and a second practitioner reviews it.
 - **Frozen before use.** A brief is hashed with the other inputs before any measured run. Changing it afterwards creates a new brief version and a new condition.

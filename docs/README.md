@@ -15,7 +15,7 @@
 
 ## What's next
 
-- [Experiment v3](experiment-v3.md): the proposed next experiment, with a two-instance contract, practitioner briefs tested in six stacks, and fresh agents changing an existing app.
+- [Experiment v3](experiment-v3.md): the proposed next experiment: one-shot builds, one run per stack, of a two-instance Conduit with semantic search on pgvector.
 - [Baseline refresh](baseline-refresh.md): prompt and harness fixes to make before the next measured runs.
 - [Semantic-density workshop](semantic-density-workshop.md): the design notes behind the later experiments.
 

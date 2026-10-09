@@ -44,11 +44,11 @@ To run one locally with Docker and Node.js, try `tools/lane_demo.sh go one-shot-
 
 ## Get involved
 
-- **Write a practitioner brief.** Show how you'd guide an agent in your stack, in at most 500 words. The next experiment runs each stack with and without its brief. [Briefs](briefs/README.md)
+- **Write a practitioner brief.** Show how you'd guide an agent in your stack, in at most 500 words. Once a brief is reviewed, it runs as its own condition beside the stack's build without one. [Briefs](briefs/README.md)
 - **Improve a reviewed version.** Make it clearer, faster or more idiomatic, and show the before and after. [Contributing](CONTRIBUTING.md)
 - **Add a stack or reproduce a run.** The runners freeze every input and check every result independently. [Running AgentMVC](docs/running.md)
 
-The next experiment, [v3](docs/experiment-v3.md), is a proposal: a two-instance deployment, practitioner briefs tested in six stacks, and fresh agents asked to change an existing app rather than build a new one.
+The next experiment, [v3](docs/experiment-v3.md), is a proposal: one-shot builds, one run per stack, of a Conduit that runs as two instances on one PostgreSQL and adds semantic search with pgvector.
 
 ## Dig deeper
 
