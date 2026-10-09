@@ -1,0 +1,1475 @@
+diff --git a/docs/guide/spinel.md b/docs/guide/spinel.md
+index e2e7e76a..131a8274 100644
+--- a/docs/guide/spinel.md
++++ b/docs/guide/spinel.md
+@@ -244,3 +244,34 @@ on, jemalloc, and Puma's default configuration — on the same machine:
+ Read that page rather than a number quoted here; it changes with
+ every Spinel release and the methodology is written beside the
+ charts.
++
++## PostgreSQL (experimental)
++
++Select the libpq backend at emission time:
++
++```sh
++RH_DATABASE_ADAPTER=postgresql roundhouse --target spinel -o out/pg /path/to/app
++cd out/pg
++spin build
++DATABASE_URL=postgresql://user:password@localhost/app ./build/bin/<app>
++# Use a separate PostgreSQL database for destructive model test resets:
++DATABASE_URL=postgresql://user:password@localhost/app_test spin test
++```
++
++The app must ship `db/structure.sql` (a schema-only pg_dump, preferably
++`--no-owner --no-privileges`). Ship `db/schema.rb` as well for type inference,
++or use structure.sql alone. On boot, the binary acquires a transaction advisory
++lock and loads the dump only when the public schema has no tables. It does not
++run pending migrations on an existing schema. The load is transactional and
++concurrent boots serialize. psql's `\restrict`/`\unrestrict` controls are removed
++from the emitted dump; other psql commands are unsupported.
++
++Install libpq headers to build (`libpq-dev`) and libpq to run (`libpq5`).
++`DATABASE_POOL_SIZE` controls the pool (default 8); request leases and
++transactions pin a connection. UTC, ISO date style, and standard string
++literals are set on every connection. Integer/UUID inserts use RETURNING.
++Text arrays (one dimension, non-null elements) and JSONB are encoded/decoded,
++and `with_lock` joins/opens a transaction and reloads with FOR UPDATE. Nested
++transactions join; savepoints and `requires_new` are not implemented.
++
++Without the emission environment variable, SQLite remains the default.
+diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+index c9a436eb..54605697 100644
+--- a/runtime/ruby/active_record/base.rb
++++ b/runtime/ruby/active_record/base.rb
+@@ -707,7 +707,8 @@ module ActiveRecord
+       if was_new
+         before_create
+         fill_timestamps(true)
+-        self.id = _adapter_insert
++        inserted_key = _adapter_insert
++        self.id = inserted_key if self.class.schema_columns.include?(self.class.primary_key.to_sym)
+         @persisted = true
+         __track_saved_changes(was_new)
+         after_create
+@@ -965,7 +966,7 @@ module ActiveRecord
+     # requires either an `assign_from_instance` lowering or an
+     # `[]=`-based field copy that subclasses override (today's Item
+     # subclass in base_test doesn't override `[]`/`[]=`). Deferred.
+-    def reload
++    def reload(lock: false)
+       # Delegates to the lowerer-emitted (or Base default) per-model
+       # `_adapter_reload` instance primitive, which re-reads the row
+       # by `@id` and writes column values back into self (preserving
+@@ -973,7 +974,11 @@ module ActiveRecord
+       # async profiles emit `await _adapter_reload(this)` cleanly
+       # rather than awaiting the receiver Send. Returns self on
+       # success, self unchanged when the row has been deleted.
+-      _adapter_reload
++      if lock
++        _adapter_reload_lock
++      else
++        _adapter_reload
++      end
+       self
+     end
+ 
+@@ -989,7 +994,7 @@ module ActiveRecord
+     # String locking clause (`lock!("FOR UPDATE NOWAIT")`) — but
+     # doesn't need either under SQLite; both are accepted and ignored.
+     def lock!(lock = true)
+-      reload
++      reload(lock: lock != false)
+     end
+ 
+     # `#with_lock` (`ActiveRecord::Locking::Pessimistic#with_lock`) —
+@@ -1022,6 +1027,10 @@ module ActiveRecord
+       end
+     end
+ 
++    def _adapter_reload_lock
++      _adapter_reload
++    end
++
+     # ---- Lifecycle hooks (no-ops; subclasses override) --------------
+ 
+     # Fired by the synthesized `initialize` tail and the hydration
+diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+index 7762af06..b25b5cb4 100644
+--- a/runtime/ruby/active_record/base.rbs
++++ b/runtime/ruby/active_record/base.rbs
+@@ -232,7 +232,7 @@ module ActiveRecord
+     def save!: () -> Base
+     def destroy: () -> Base
+     def destroy!: () -> Base
+-    def reload: () -> Base
++    def reload: (?lock: bool) -> Base
+     # `lock!` reloads (see the note on the body); `with_lock` runs the
+     # block in a transaction and answers its value, same gradual
+     # `untyped` escape as `self.transaction` in connection.rbs. The
+@@ -241,6 +241,7 @@ module ActiveRecord
+     # NOWAIT"`); both are accepted and ignored under SQLite.
+     def lock!: (?(bool | String) lock) -> Base
+     def with_lock: (*untyped args) { () -> untyped } -> untyped
++    def _adapter_reload_lock: () -> Base?
+     # `touch` is no-arg on purpose; see the note on the body.
+     def touch: () -> bool
+ 
+diff --git a/runtime/ruby/active_record/connection.rb b/runtime/ruby/active_record/connection.rb
+index 4a45e4b0..8b1cae62 100644
+--- a/runtime/ruby/active_record/connection.rb
++++ b/runtime/ruby/active_record/connection.rb
+@@ -593,8 +593,8 @@ module ActiveRecord
+     # (no Relation class in their tables); this file is walked only
+     # into the ruby-family trees. Lowered call-sites don't land here —
+     # they drive a Relation or `_adapter_*` directly.
+-    def self.where(conditions)
+-      ActiveRecord::Relation.new(self).where(conditions.to_h)
++    def self.where(condition = nil, *args)
++      ActiveRecord::Relation.new(self).where(condition, *args)
+     end
+ 
+     # Model Hash finders use the relation's NULL / IN predicates too.
+@@ -635,6 +635,11 @@ module ActiveRecord
+       !any?
+     end
+ 
++    # Class-side projection remains a relation for subquery predicates.
++    def self.select(*specs)
++      ActiveRecord::Relation.new(self).select(*specs)
++    end
++
+     # Rails-shape `none` fallback, same story as `where`/`all` above:
+     # an empty Relation off the class. lobsters' `Search` reaches it
+     # through a class-valued method (`searched_model.none`), which no
+diff --git a/runtime/ruby/active_record/connection.rbs b/runtime/ruby/active_record/connection.rbs
+index d91c690f..adfd8619 100644
+--- a/runtime/ruby/active_record/connection.rbs
++++ b/runtime/ruby/active_record/connection.rbs
+@@ -66,10 +66,12 @@ module ActiveRecord
+     def self.exists?: (Integer | Float | String | nil id) -> bool
+     def self._exists_primary_key_input: (Integer | Float | String | nil id) -> bool
+     # Ruby-family overrides of base.rb's Array / COUNT fallbacks.
+-    def self.where: (Hash[Symbol, untyped] conditions) -> Relation
+     def self.find_by: (Hash[String | Symbol, untyped] conditions) -> Base?
+     def self.find_sole_by: (Hash[String | Symbol, untyped] conditions) -> Base
+     def self.sole: () -> Base
++    # Ruby-family overrides of base.rb's Array-returning fallbacks.
++    def self.select: (*untyped specs) -> Relation
++    def self.where: (?untyped condition, *untyped args) -> Relation
+     def self.all: () -> Relation
+     def self.none: () -> Relation
+     def self.page: (?(Integer | String | nil) num) -> Relation
+diff --git a/runtime/ruby/active_record/relation.rb b/runtime/ruby/active_record/relation.rb
+index d18a2b5a..b2dbb03a 100644
+--- a/runtime/ruby/active_record/relation.rb
++++ b/runtime/ruby/active_record/relation.rb
+@@ -2044,7 +2044,7 @@ module ActiveRecord
+         # (`where(comment: comments)`, lobsters Vote.comments_flags);
+         # scalar elements escape as-is.
+         ids = val.map { |x| x.is_a?(Base) ? x.id : x }
+-        "#{qcol} IN (#{escape_list(ids)})"
++        ids.empty? ? "1=0" : "#{qcol} IN (#{escape_list(ids)})"
+       elsif val.nil?
+         "#{qcol} IS NULL"
+       elsif val.is_a?(Base)
+diff --git a/runtime/spinel/db_libpq.rb b/runtime/spinel/db_libpq.rb
+new file mode 100644
+index 00000000..7d79f4bd
+--- /dev/null
++++ b/runtime/spinel/db_libpq.rb
+@@ -0,0 +1,732 @@
++# PostgreSQL implementation of Roundhouse's module Db contract.
++# Compile with Spinel 813def1f; links libpq directly. DATABASE_URL is conninfo.
++# Text wire format: arrays/jsonb/uuid stay strings; bool and numeric OIDs decode.
++# The only carried C helpers own a const char** parameter vector; they copy
++# strings because the Spinel FFI guarantees Ruby string lifetime for one call.
++require "json"
++require_relative "active_support_time_parsing"
++
++module PG
++  ffi_lib "pq"
++  ffi_const :CONNECTION_OK, 0
++  ffi_const :COMMAND_OK, 1
++  ffi_const :TUPLES_OK, 2
++  ffi_const :SQLSTATE, 67 # PG_DIAG_SQLSTATE = 'C'
++  ffi_func :PQconnectdb, [:str], :ptr, blocking: true
++  ffi_func :PQstatus, [:ptr], :int
++  ffi_func :PQerrorMessage, [:ptr], :str
++  ffi_func :PQfinish, [:ptr], :void
++  ffi_func :PQexec, [:ptr, :str], :ptr, blocking: true
++  ffi_func :PQprepare, [:ptr, :str, :str, :int, :ptr], :ptr, blocking: true
++  ffi_func :PQdescribePrepared, [:ptr, :str], :ptr, blocking: true
++  ffi_func :PQexecPrepared, [:ptr, :str, :int, :ptr, :ptr, :ptr, :int], :ptr, blocking: true
++  ffi_func :PQresultStatus, [:ptr], :int
++  ffi_func :PQresultErrorMessage, [:ptr], :str
++  ffi_func :PQresultErrorField, [:ptr, :int], :str
++  ffi_func :PQclear, [:ptr], :void
++  ffi_func :PQntuples, [:ptr], :int
++  ffi_func :PQnfields, [:ptr], :int
++  ffi_func :PQnparams, [:ptr], :int
++  ffi_func :PQfname, [:ptr, :int], :str
++  ffi_func :PQftype, [:ptr, :int], :uint32
++  ffi_func :PQgetisnull, [:ptr, :int, :int], :int
++  ffi_func :PQgetvalue, [:ptr, :int, :int], :str
++  ffi_func :PQcmdTuples, [:ptr], :str
++  ffi_func :PQtransactionStatus, [:ptr], :int
++  ffi_func :PQescapeLiteral, [:ptr, :str, :size_t], :ptr
++  ffi_func :PQfreemem, [:ptr], :void
++  ffi_source <<~C
++    #include <stdlib.h>
++    #include <string.h>
++    const char *rh_pg_string(void *p) { return (const char *)p; }
++    void *rh_pg_params_new(int n) { return calloc(n ? n : 1, sizeof(char *)); }
++    int rh_pg_params_set(void *p, int n, int i, const char *s) {
++      if (i < 1 || i > n) return -1;
++      char **v = (char **)p;
++      char *copy = s ? strdup(s) : NULL;
++      if (s && !copy) return -2;
++      free(v[i-1]); v[i-1] = copy; return 0;
++    }
++    void rh_pg_params_free(void *p, int n) {
++      if (!p) return;
++      char **v = (char **)p;
++      for (int i=0; i<n; i++) free(v[i]);
++      free(v);
++    }
++  C
++  ffi_func :rh_pg_string, [:ptr], :str
++  ffi_func :rh_pg_params_new, [:int], :ptr
++  ffi_func :rh_pg_params_set, [:ptr, :int, :int, :str], :int
++  ffi_func :rh_pg_params_free, [:ptr, :int], :void
++end
++
++class DbConn
++  def initialize(conninfo)
++    @dbh = PG.PQconnectdb(conninfo)
++    raise "PQconnectdb: allocation failed" if @dbh.nil?
++    if PG.PQstatus(@dbh) != PG::CONNECTION_OK
++      # Avoid including conninfo/password in errors.
++      message = PG.PQerrorMessage(@dbh)
++      PG.PQfinish(@dbh)
++      raise "PQconnectdb: " + message
++    end
++    @serial = 0
++    @changes = 0
++    @sqlstate = ""
++    r = PG.PQexec(@dbh, "SET standard_conforming_strings = on; SET timezone = 'UTC'; SET datestyle = 'ISO, YMD'; SET client_min_messages = warning")
++    Db.check_result(self, r)
++    PG.PQclear(r)
++  end
++  def dbh
++    @dbh
++  end
++  def next_name
++    @serial += 1
++    "rh_pg_" + @serial.to_s
++  end
++  def changes
++    @changes
++  end
++  def set_changes(n)
++    @changes = n
++  end
++  def sqlstate
++    @sqlstate
++  end
++  def set_sqlstate(s)
++    @sqlstate = s
++  end
++  def close
++    PG.PQfinish(@dbh)
++  end
++end
++
++# Owns both server prepared statement and PGresult cursor. Result metadata is
++# available immediately from PQdescribePrepared, before bind/step (select_rows
++# relies on this). Unlike SQLite, PGresult materializes all rows at first step.
++class PgStmt
++  def initialize(conn, name, description)
++    @conn = conn
++    @name = name
++    @result = description
++    @nparams = PG.PQnparams(description)
++    @params = PG.rh_pg_params_new(@nparams)
++    raise "parameter allocation failed" if @params.nil?
++    @row = -1
++    @executed = false
++    @closed = false
++  end
++  def conn
++    @conn
++  end
++  def result
++    @result
++  end
++  def row
++    @row
++  end
++  def bind(idx, text)
++    raise "bind after execution/finalize" if @executed || @closed
++    rc = PG.rh_pg_params_set(@params, @nparams, idx, text)
++    raise "invalid parameter index/allocation" if rc != 0
++    nil
++  end
++  def advance
++    raise "step after finalize" if @closed
++    if !@executed
++      r = PG.PQexecPrepared(@conn.dbh, @name, @nparams, @params, nil, nil, 0)
++      Db.check_result(@conn, r)
++      PG.PQclear(@result)
++      @result = r
++      @executed = true
++      @conn.set_changes(PG.PQcmdTuples(r).to_i)
++    end
++    @row += 1
++    @row < PG.PQntuples(@result)
++  end
++  def close
++    return nil if @closed
++    PG.PQclear(@result)
++    PG.rh_pg_params_free(@params, @nparams)
++    # DEALLOCATE errors during an aborted transaction must not mask the
++    # original error; rollback on lease release will recover the connection.
++    r = PG.PQexec(@conn.dbh, "DEALLOCATE " + @name)
++    PG.PQclear(r) if !r.nil?
++    @closed = true
++    nil
++  end
++end
++
++class DbPool
++  def initialize(conninfo, n)
++    @conns = []
++    @free = []
++    @lock = Mutex.new
++    @cv = ConditionVariable.new
++    i = 0
++    while i < n
++      @conns.push(DbConn.new(conninfo))
++      @free.push(i)
++      i += 1
++    end
++  end
++  def lease
++    idx = 0
++    @lock.synchronize do
++      @cv.wait(@lock) while @free.empty?
++      idx = @free.delete_at(@free.length - 1)
++    end
++    idx
++  end
++  def release(idx)
++    @lock.synchronize do
++      @free.push(idx)
++      @cv.signal
++    end
++    nil
++  end
++  def available
++    n = 0
++    @lock.synchronize { n = @free.length }
++    n
++  end
++  def conn(idx)
++    @conns[idx]
++  end
++  def first
++    @conns[0]
++  end
++  def close_all
++    @conns.each { |c| c.close }
++  end
++end
++
++module Db
++  # The shared dispatcher calls SQLite's read-snapshot and WAL hooks.
++  # PostgreSQL keeps its normal READ COMMITTED/autocommit policy here;
++  # its server owns checkpointing. Application transactions still use
++  # transaction_begin/transaction_end below.
++  def self.read_snapshot_begin
++    nil
++  end
++  def self.read_snapshot_end
++    nil
++  end
++  def self.checkpoint_in_background!
++    nil
++  end
++
++  @pools = nil
++  @query_log = nil
++  @prepare_lock = Mutex.new
++
++  def self.configure(conninfo, pool_size: 8)
++    close
++    n = pool_size
++    ev = ENV["DATABASE_POOL_SIZE"]
++    n = ev.to_i if !ev.nil? && !ev.empty?
++    raise "pool_size must be positive" if n < 1
++    stripes = n / 4
++    stripes = 1 if stripes < 1
++    stripes = 8 if stripes > 8
++    @pools = []
++    per = n / stripes
++    i = 0
++    while i < stripes
++      @pools.push(DbPool.new(conninfo, per + (i < n % stripes ? 1 : 0)))
++      i += 1
++    end
++    @assign_lock = Mutex.new
++    @next_pool = 0
++    Thread.current[:db_pool] = nil
++  end
++  def self.pool_for_thread
++    pi = Thread.current[:db_pool]
++    return @pools[pi] if !pi.nil?
++    n = 0
++    @assign_lock.synchronize do
++      n = @next_pool
++      @next_pool += 1
++    end
++    pi = n % @pools.length
++    Thread.current[:db_pool] = pi
++    @pools[pi]
++  end
++  def self.current_conn
++    c = Thread.current[:db_conn]
++    return c if !c.nil?
++    @pools[0].first
++  end
++  def self.in_lease?
++    !Thread.current[:db_conn].nil?
++  end
++  def self.with_connection
++    return yield if in_lease?
++    pool = pool_for_thread
++    idx = pool.lease
++    conn = pool.conn(idx)
++    Thread.current[:db_conn] = conn
++    begin
++      result = yield
++    ensure
++      # libpq connections in INTRANS/INERROR cannot go back to a free pool.
++      if PG.PQtransactionStatus(conn.dbh) != 0
++        r = PG.PQexec(conn.dbh, "ROLLBACK")
++        PG.PQclear(r) if !r.nil?
++      end
++      Thread.current[:db_conn] = nil
++      pool.release(idx)
++    end
++    result
++  end
++  def self.close
++    return nil if @pools.nil?
++    @pools.each { |p| p.close_all }
++    @pools = nil
++    Thread.current[:db_pool] = nil
++    nil
++  end
++  def self.prepare_lock
++    @prepare_lock
++  end
++  # Cache hooks keep the external API; this prototype does not replay rows or
++  # cache prepared statements. Every finalize releases its server statement.
++  def self.query_cache_begin
++    nil
++  end
++  def self.query_cache_end
++    nil
++  end
++  def self.seed_from_file(path)
++    raise "SQLite page backup is unavailable; import PostgreSQL SQL with psql"
++  end
++  def self.capture_sql
++    prev = @query_log
++    log = []
++    @query_log = log
++    begin
++      yield
++    ensure
++      @query_log = prev
++    end
++    log
++  end
++  def self.record_query(sql)
++    @query_log.push(sql) if !@query_log.nil?
++    $stderr.puts("  SQL " + sql) if ENV.fetch("RH_SQL_TRACE", "") != ""
++  end
++  def self.sql_trace?
++    ENV.fetch("RH_SQL_TRACE", "") != ""
++  end
++  def self.check_result(conn, r)
++    raise "libpq returned NULL" if r.nil?
++    status = PG.PQresultStatus(r)
++    if status != PG::COMMAND_OK && status != PG::TUPLES_OK
++      code = PG.PQresultErrorField(r, PG::SQLSTATE)
++      message = PG.PQresultErrorMessage(r)
++      conn.set_sqlstate(code.nil? ? "" : code)
++      PG.PQclear(r)
++      raise ActiveRecord::RecordNotUnique, "SQLSTATE " + conn.sqlstate + ": " + message if conn.sqlstate == "23505"
++      raise "SQLSTATE " + conn.sqlstate + ": " + message
++    end
++    conn.set_sqlstate("")
++    nil
++  end
++  def self.last_error_sqlstate
++    current_conn.sqlstate
++  end
++  def self.unique_violation?(message)
++    message.include?("23505")
++  end
++  def self.exec(sql)
++    record_query(sql)
++    c = current_conn
++    r = PG.PQexec(c.dbh, sql)
++    check_result(c, r)
++    c.set_changes(PG.PQcmdTuples(r).to_i)
++    PG.PQclear(r)
++    nil
++  end
++
++  # Rewrite anonymous binds outside SQL literals, quoted identifiers, dollar
++  # strings and comments. E'...' backslash escapes and nested /* */ are handled.
++  # '?' jsonb operators are ambiguous with the legacy API: write native $n
++  # parameters and use prepare_native for queries containing ?/?|/?& operators.
++  def self.rewrite_placeholders(sql, literals = [])
++    out = ""
++    i = 0
++    n = 0
++    quote = ""
++    dollar = ""
++    line_comment = false
++    depth = 0
++    escape_quote = false
++    while i < sql.length
++      c = sql[i, 1]
++      pair = sql[i, 2]
++      if line_comment
++        out += c
++        line_comment = false if c == "\n"
++      elsif depth > 0
++        if pair == "/*"
++          depth += 1
++          out += pair
++          i += 1
++        elsif pair == "*/"
++          depth -= 1
++          out += pair
++          i += 1
++        else
++          out += c
++        end
++      elsif dollar != ""
++        if sql[i, dollar.length] == dollar
++          out += dollar
++          i += dollar.length - 1
++          dollar = ""
++        else
++          out += c
++        end
++      elsif quote != ""
++        out += c
++        if escape_quote && c == "\\"
++          i += 1
++          out += sql[i, 1].to_s
++        elsif c == quote
++          if sql[i + 1, 1] == quote
++            out += quote
++            i += 1
++          else
++            quote = ""
++          end
++        end
++      elsif pair == "--"
++        line_comment = true
++        out += pair
++        i += 1
++      elsif pair == "/*"
++        depth = 1
++        out += pair
++        i += 1
++      elsif c == "'" || c == '"'
++        quote = c
++        prev = i > 0 ? sql[i - 1, 1] : ""
++        escape_quote = c == "'" && (prev == "E" || prev == "e")
++        out += c
++      elsif c == "$"
++        rest = sql[i, sql.length - i]
++        tag = rest.match(/\A\$(?:[A-Za-z_][A-Za-z_0-9]*)?\$/)
++        if !tag.nil?
++          dollar = tag[0]
++          out += dollar
++          i += dollar.length - 1
++        else
++          out += c
++        end
++      elsif c == "?"
++        n += 1
++        out += literals.empty? ? "$" + n.to_s : literals[n - 1].to_s
++      else
++        out += c
++      end
++      i += 1
++    end
++    out
++  end
++  def self.interpolate(sql, literals)
++    rewrite_placeholders(sql, literals)
++  end
++  def self.prepare(sql)
++    prepare_native(rewrite_placeholders(sql))
++  end
++  def self.prepare_native(sql)
++    record_query(sql)
++    c = current_conn
++    name = c.next_name
++    r = PG.PQprepare(c.dbh, name, sql, 0, nil)
++    check_result(c, r)
++    PG.PQclear(r)
++    description = PG.PQdescribePrepared(c.dbh, name)
++    check_result(c, description)
++    PgStmt.new(c, name, description)
++  end
++  def self.step?(stmt)
++    stmt.advance
++  end
++  def self.finalize(stmt)
++    stmt.close
++  end
++  def self.bind_int(stmt, idx, value)
++    stmt.bind(idx, value.to_i.to_s)
++  end
++  def self.bind_text(stmt, idx, value)
++    raise "PostgreSQL text cannot contain NUL" if value.include?("\0")
++    stmt.bind(idx, value)
++  end
++  def self.bind_bool(stmt, idx, value)
++    stmt.bind(idx, value ? "true" : "false")
++  end
++  def self.bind_null(stmt, idx)
++    stmt.bind(idx, nil)
++  end
++  def self.bind_float(stmt, idx, value)
++    stmt.bind(idx, value.to_f.to_s)
++  end
++  def self.column_null?(stmt, i)
++    PG.PQgetisnull(stmt.result, stmt.row, i) != 0
++  end
++  def self.column_text(stmt, i)
++    return "" if column_null?(stmt, i)
++    text = PG.PQgetvalue(stmt.result, stmt.row, i)
++    oid = PG.PQftype(stmt.result, i)
++    if oid == 1114 || oid == 1184
++      fraction = text.length > 19 && text[19, 1] == "." ? text[20, 6].to_s.split("+")[0].to_s : ""
++      text = text[0, 19] + "." + (fraction + "000000")[0, 6]
++    end
++    text
++  end
++  def self.column_int(stmt, i)
++    column_text(stmt, i).to_i
++  end
++  def self.column_float(stmt, i)
++    column_text(stmt, i).to_f
++  end
++  def self.column_bool(stmt, i)
++    s = column_text(stmt, i)
++    s == "t" || s == "true" || s == "1"
++  end
++  def self.column_int_opt(stmt, i)
++    column_null?(stmt, i) ? nil : column_int(stmt, i)
++  end
++  def self.column_float_opt(stmt, i)
++    column_null?(stmt, i) ? nil : column_float(stmt, i)
++  end
++  def self.column_text_opt(stmt, i)
++    column_null?(stmt, i) ? nil : column_text(stmt, i)
++  end
++  def self.column_bool_opt(stmt, i)
++    column_null?(stmt, i) ? nil : column_bool(stmt, i)
++  end
++  def self.column_value(stmt, i)
++    return nil if column_null?(stmt, i)
++    oid = PG.PQftype(stmt.result, i)
++    return column_bool(stmt, i) if oid == 16
++    return column_int(stmt, i) if oid == 20 || oid == 21 || oid == 23 || oid == 26
++    return column_float(stmt, i) if oid == 700 || oid == 701
++    return column_array(stmt, i) if oid == 1009
++    return column_json(stmt, i) if oid == 114 || oid == 3802
++    # NUMERIC (1700) stays a string to preserve decimal precision. Arrays,
++    # jsonb, uuid, timestamp, bytea text require schema-aware decoding above Db.
++    column_text(stmt, i)
++  end
++  def self.column_count(stmt)
++    PG.PQnfields(stmt.result)
++  end
++  def self.column_name(stmt, i)
++    PG.PQfname(stmt.result, i)
++  end
++  def self.changes
++    current_conn.changes
++  end
++  # Legacy integer-id compatibility only: session-local lastval(), unchanged
++  # by SELECT. Triggers can choose a different sequence; UUIDs have none.
++  # Lowered inserts use RETURNING; this is only the legacy facade fallback.
++  def self.last_insert_rowid
++    c = current_conn
++    r = PG.PQexec(c.dbh, "SELECT lastval()")
++    check_result(c, r)
++    n = PG.PQgetvalue(r, 0, 0).to_i
++    PG.PQclear(r)
++    n
++  end
++  def self.escape_string(s)
++    text = s.to_s
++    raise "PostgreSQL text cannot contain NUL" if text.include?("\0")
++    ptr = PG.PQescapeLiteral(current_conn.dbh, text, text.bytesize)
++    raise "PQescapeLiteral failed" if ptr.nil?
++    # :str duplicates foreign bytes into a GC string before freeing libpq's
++    # allocation. No process-global scratch buffer, including across threads.
++    quoted = PG.rh_pg_string(ptr)
++    PG.PQfreemem(ptr)
++    quoted
++  end
++  def self.escape_int(n)
++    n.to_i.to_s
++  end
++  def self.escape_bool(b)
++    b ? "TRUE" : "FALSE"
++  end
++  def self.escape_string_opt(s)
++    s.nil? ? "NULL" : escape_string(s)
++  end
++  def self.escape_int_opt(n)
++    n.nil? ? "NULL" : escape_int(n)
++  end
++  def self.escape_float_opt(f)
++    f.nil? ? "NULL" : f.to_f.to_s
++  end
++  def self.escape_bool_opt(b)
++    b.nil? ? "NULL" : escape_bool(b)
++  end
++  def self.escape_int_list(ids)
++    ids.empty? ? "NULL" : ids.map { |i| i.to_i.to_s }.join(", ")
++  end
++  # Explicit lifecycle lets framework yield directly, avoiding nested forwarding.
++  def self.transaction_begin
++    pool = pool_for_thread
++    idx = -1
++    if !in_lease?
++      idx = pool.lease
++      Thread.current[:db_conn] = pool.conn(idx)
++    end
++    outermost = PG.PQtransactionStatus(current_conn.dbh) == 0
++    exec("BEGIN") if outermost
++    PgTransaction.new(pool, idx, outermost)
++  end
++  def self.transaction_end(tx, commit)
++    begin
++      exec(commit ? "COMMIT" : "ROLLBACK") if tx.outermost
++    ensure
++      if tx.idx >= 0
++        conn = current_conn
++        if PG.PQtransactionStatus(conn.dbh) != 0
++          r = PG.PQexec(conn.dbh, "ROLLBACK")
++          PG.PQclear(r) if !r.nil?
++        end
++        Thread.current[:db_conn] = nil
++        tx.pool.release(tx.idx)
++      end
++    end
++    nil
++  end
++  def self.transaction
++    tx = transaction_begin
++    commit = false
++    begin
++      result = yield
++      commit = true
++    ensure
++      transaction_end(tx, commit)
++    end
++    result
++  end
++
++end
++
++module Db
++  def self.prepare_schema(path)
++    transaction do
++      exec("SELECT pg_advisory_xact_lock(7421930501)")
++      stmt = prepare("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE'")
++      step?(stmt)
++      count = column_int(stmt, 0)
++      finalize(stmt)
++      if count == 0
++        exec(File.read(path))
++        exec("SET search_path = public")
++      end
++    end
++    nil
++  end
++  def self.insert_returning_int(sql)
++    stmt = prepare(sql)
++    begin
++      raise "INSERT returned no primary key" unless step?(stmt)
++      id = column_int(stmt, 0)
++    ensure
++      finalize(stmt)
++    end
++    id
++  end
++  def self.insert_returning_text(sql)
++    stmt = prepare(sql)
++    begin
++      raise "INSERT returned no primary key" unless step?(stmt)
++      id = column_text(stmt, 0)
++    ensure
++      finalize(stmt)
++    end
++    id
++  end
++  def self.prepare_locked(sql)
++    prepare(sql + " FOR UPDATE")
++  end
++  def self.column_array(stmt, i)
++    decode_array(column_text(stmt, i))
++  end
++  def self.column_array_opt(stmt, i)
++    column_null?(stmt, i) ? nil : column_array(stmt, i)
++  end
++  # One-dimensional, non-null text[]; quoted wire elements preserve NULL text.
++  def self.decode_array(text)
++    values = []
++    return values if text == "{}" || text == ""
++    value = ""
++    quoted = false
++    escaped = false
++    i = 1
++    while i < text.length - 1
++      c = text[i, 1]
++      if escaped
++        value += c
++        escaped = false
++      elsif c == "\\"
++        escaped = true
++      elsif c == '"'
++        quoted = !quoted
++      elsif c == "," && !quoted
++        values.push(value)
++        value = ""
++      else
++        value += c
++      end
++      i += 1
++    end
++    values.push(value)
++    values
++  end
++  def self.encode_array(values)
++    encoded = values.map do |v|
++      out = '"'
++      v.each_char do |c|
++        out += "\\" if c == "\\" || c == '"'
++        out += c
++      end
++      out + '"'
++    end
++    "{" + encoded.join(",") + "}"
++  end
++  def self.escape_array(values)
++    escape_string(encode_array(values)) + "::text[]"
++  end
++  def self.escape_array_opt(values)
++    values.nil? ? "NULL" : escape_array(values)
++  end
++  def self.column_json(stmt, i)
++    JSON.parse(column_text(stmt, i))
++  end
++  def self.column_json_opt(stmt, i)
++    column_null?(stmt, i) ? nil : column_json(stmt, i)
++  end
++  def self.escape_json(value)
++    escape_string(JSON.generate(value)) + "::jsonb"
++  end
++  def self.escape_json_opt(value)
++    value.nil? ? "NULL" : escape_json(value)
++  end
++end
++
++class PgTransaction
++  attr_reader :pool, :idx, :outermost
++  def initialize(pool, idx, outermost)
++    @pool = pool
++    @idx = idx
++    @outermost = outermost
++  end
++end
++
++module Db
++  def self.quote_identifier(name)
++    '"' + name.gsub('"', '""') + '"'
++  end
++end
+diff --git a/src/emit/roda.rs b/src/emit/roda.rs
+index 1de702ac..ad77dfcb 100644
+--- a/src/emit/roda.rs
++++ b/src/emit/roda.rs
+@@ -232,6 +232,7 @@ fn sequel_column_type(ty: &ColumnType) -> (&'static str, &'static str) {
+         // No 1:1 Sequel generic type; store as text and note the source type.
+         ColumnType::Json => ("String", ", text: true # was json"),
+         ColumnType::Jsonb => ("String", ", text: true # was jsonb"),
++        ColumnType::TextArray => ("String", ", text: true # was text[]"),
+         ColumnType::Uuid => ("String", ", fixed: true, size: 36 # was uuid"),
+         ColumnType::Reference { .. } => ("Integer", " # was t.references"),
+     }
+diff --git a/src/emit/ruby.rs b/src/emit/ruby.rs
+index 131cb89a..7bd620ae 100644
+--- a/src/emit/ruby.rs
++++ b/src/emit/ruby.rs
+@@ -1053,6 +1053,11 @@ pub fn emit_spinel(app: &App) -> Vec<EmittedFile> {
+             // lowering, which is what turns the `M.where` it writes
+             // into a seeded Relation. See the module.
+             crate::lower::records_to_relation_arg::rewrite_test_classes(&mut test_lcs, app);
++            for lc in &mut test_lcs {
++                for method in &mut lc.methods {
++                    crate::lower::group_count::rewrite(&mut method.body);
++                }
++            }
+             library::apply_scope_lowering(&mut test_lcs, app);
+             // A test class nests under the class it tests
+             // (`class User … class BotTest`), which shadows exactly as
+diff --git a/src/emit/ruby/library.rs b/src/emit/ruby/library.rs
+index 14a334d9..d356c446 100644
+--- a/src/emit/ruby/library.rs
++++ b/src/emit/ruby/library.rs
+@@ -1257,7 +1257,11 @@ pub(crate) fn apply_scope_lowering(lcs: &mut [LibraryClass], app: &App) {
+             || crate::lower::scope_chain::mentions_assoc_constructor(body, &assocs)
+             || crate::lower::scope_chain::mentions_assoc_alias(body, &assocs);
+     });
++    // The caller may be emitting test classes; their chains are not in app hooks.
++    let wants_model_chain = lcs.iter().flat_map(|lc| &lc.methods).any(|m|
++        crate::lower::scope_chain::mentions_model_chain_start(&m.body, &models));
+     if !crate::lower::scope_chain::any_scopes(&scopes)
++        && !wants_model_chain
+         && assoc_class_methods.is_empty()
+         && !wants_assoc_lookup
+         // An app with no scopes at all can still declare an association
+diff --git a/src/emit/shared/schema_sql.rs b/src/emit/shared/schema_sql.rs
+index 113dee00..0ec94608 100644
+--- a/src/emit/shared/schema_sql.rs
++++ b/src/emit/shared/schema_sql.rs
+@@ -449,6 +449,7 @@ fn sqlite_type(ct: &ColumnType) -> &'static str {
+         | ColumnType::Date
+         | ColumnType::DateTime
+         | ColumnType::Time
++        | ColumnType::TextArray
+         | ColumnType::Json
+         | ColumnType::Jsonb
+         | ColumnType::Uuid => "TEXT",
+@@ -483,6 +484,7 @@ fn postgres_type(ct: &ColumnType) -> String {
+         ColumnType::Binary => "bytea".into(),
+         ColumnType::Json => "json".into(),
+         ColumnType::Jsonb => "jsonb".into(),
++        ColumnType::TextArray => "text[]".into(),
+         ColumnType::Uuid => "uuid".into(),
+     }
+ }
+diff --git a/src/ingest/model.rs b/src/ingest/model.rs
+index 44793037..ae740fbc 100644
+--- a/src/ingest/model.rs
++++ b/src/ingest/model.rs
+@@ -2874,6 +2874,7 @@ fn ty_of_column(t: &ColumnType) -> Ty {
+         // type. A `has_json` declaration adds its stronger per-key schema
+         // separately in `lower::has_json`.
+         ColumnType::Json | ColumnType::Jsonb => Ty::Untyped,
++        ColumnType::TextArray => Ty::Array { elem: Box::new(Ty::Str) },
+         ColumnType::Uuid => Ty::Str,
+         ColumnType::Reference { .. } => Ty::Int,
+     }
+diff --git a/src/ingest/schema.rs b/src/ingest/schema.rs
+index 50f2cc2e..225e720d 100644
+--- a/src/ingest/schema.rs
++++ b/src/ingest/schema.rs
+@@ -1478,6 +1478,7 @@ fn column_with_type(
+         "bigint" => ColumnType::BigInt,
+         "float" => ColumnType::Float,
+         "decimal" | "numeric" => ColumnType::Decimal { precision: None, scale: None },
++        "text" | "string" if opts.array && crate::postgresql_enabled() => ColumnType::TextArray,
+         "string" | "inet" | "cidr" | "macaddr" | "enum" | "interval" => ColumnType::String { limit: opts.limit },
+         "text" | "citext" => ColumnType::Text,
+         "boolean" => ColumnType::Boolean,
+@@ -1660,6 +1661,31 @@ mod tests {
+             .collect()
+     }
+ 
++    #[test]
++    fn postgresql_array_and_jsonb_are_schema_facts() {
++        let schema = ingest_schema(br#"
++          ActiveRecord::Schema.define do
++            create_table :articles do |t|
++              t.text :tags, array: true, null: false
++              t.jsonb :snapshot
++            end
++          end
++        "#, "db/schema.rb").unwrap();
++        let table = &schema.tables[&Symbol::from("articles")];
++        let tags = &table.columns[1];
++        let snapshot = &table.columns[2];
++        if crate::postgresql_enabled() {
++            assert_eq!(tags.col_type, ColumnType::TextArray);
++            assert_eq!(snapshot.col_type, ColumnType::Jsonb);
++            assert_eq!(crate::lower::model_to_library::ty_of_column(&tags.col_type), crate::ty::Ty::Array { elem: Box::new(crate::ty::Ty::Str) });
++            assert_eq!(crate::lower::model_to_library::schema::column_read_method_for(tags), "column_array");
++            assert_eq!(crate::lower::model_to_library::schema::column_read_method_for(snapshot), "column_json_opt");
++        } else {
++            assert_eq!(tags.col_type, ColumnType::Text);
++            assert_eq!(snapshot.col_type, ColumnType::Jsonb);
++        }
++    }
++
+     #[test]
+     fn create_table_with_symbols_and_timestamps() {
+         let schema = fold(&[r#"
+diff --git a/src/ingest/structure_sql.rs b/src/ingest/structure_sql.rs
+index f94782af..15ef5a72 100644
+--- a/src/ingest/structure_sql.rs
++++ b/src/ingest/structure_sql.rs
+@@ -501,6 +501,7 @@ fn resolve_column_type(type_phrase: &str, enum_types: &HashSet<String>) -> Optio
+         base = base[dot + 1..].to_string();
+     }
+     if is_array {
++        if crate::postgresql_enabled() && matches!(base.as_str(), "text" | "character varying" | "varchar") { return Some(ColumnType::TextArray); }
+         // `text[]`, `bigint[]`, … — no array notion on `ColumnType`;
+         // ledgered by the caller rather than silently scalarized.
+         return None;
+@@ -1556,6 +1557,19 @@ fn strip_parens_capture_nums(phrase: &str) -> (String, Option<i64>, Option<i64>)
+ mod tests {
+     use super::*;
+ 
++    #[test]
++    fn postgresql_sql_dump_controls_and_codecs() {
++        let source = b"\\restrict test\nCREATE TABLE public.exports (id bigint PRIMARY KEY, tags text[], snapshot jsonb);\n\\unrestrict test\n";
++        if crate::postgresql_enabled() {
++            let schema = ingest_structure_sql(source, "db/structure.sql").unwrap();
++            let columns = &schema.tables[&Symbol::from("exports")].columns;
++            assert_eq!(columns[1].col_type, ColumnType::TextArray);
++            assert_eq!(columns[2].col_type, ColumnType::Jsonb);
++        } else {
++            assert!(ingest_structure_sql(source, "db/structure.sql").is_err());
++        }
++    }
++
+     #[test]
+     fn top_level_split_respects_dollar_quoted_function_body() {
+         let sql = "CREATE FUNCTION f() LANGUAGE plpgsql AS $$ BEGIN INSERT INTO x; END; $$; SELECT 1;";
+diff --git a/src/lib.rs b/src/lib.rs
+index a96c6e3b..278fd219 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -93,3 +93,8 @@ pub use ide::{Position, Reference, TypeAt};
+ pub use schema::{Column, ColumnType, ForeignKey, Index, ReferentialAction, Schema, Table};
+ pub use span::{FileId, Span};
+ pub use ty::{Param, ParamKind, Row, Ty};
++
++/// Explicit opt-in for the experimental Spinel PostgreSQL lane.
++pub fn postgresql_enabled() -> bool {
++    std::env::var("RH_DATABASE_ADAPTER").is_ok_and(|v| v == "postgresql")
++}
+diff --git a/src/lower/arel/ir.rs b/src/lower/arel/ir.rs
+index 8341dc2d..68b14a09 100644
+--- a/src/lower/arel/ir.rs
++++ b/src/lower/arel/ir.rs
+@@ -268,14 +268,25 @@ pub enum ValueType {
+     StrOpt,
+     FloatOpt,
+     BoolOpt,
++    Array,
++    ArrayOpt,
++    Json,
++    JsonOpt,
+ }
+ 
+ impl ValueType {
+     /// True for the nullable variants. Optional binds and inline escapes
+     /// both preserve nil as SQL NULL.
+     pub fn is_nullable(self) -> bool {
+-        matches!(self, ValueType::IntOpt | ValueType::StrOpt | ValueType::FloatOpt | ValueType::BoolOpt)
++        matches!(self, ValueType::IntOpt | ValueType::StrOpt | ValueType::FloatOpt | ValueType::BoolOpt | ValueType::ArrayOpt | ValueType::JsonOpt)
+     }
++
++    /// PostgreSQL arrays and JSON use schema-aware inline serializers.
++    pub fn supports_bind(self) -> bool {
++        matches!(self, ValueType::Int | ValueType::Str | ValueType::Bool
++            | ValueType::IntOpt | ValueType::StrOpt | ValueType::BoolOpt)
++    }
++
+ }
+ 
+ /// `ORDER BY <col> ASC|DESC`. Reserved; no current call site builds
+diff --git a/src/lower/arel/ruby_values.rs b/src/lower/arel/ruby_values.rs
+index 853c599a..a817cc94 100644
+--- a/src/lower/arel/ruby_values.rs
++++ b/src/lower/arel/ruby_values.rs
+@@ -39,6 +39,8 @@ fn normalize_predicate(predicate: &mut Predicate, schema: &Schema) {
+                     ValueType::Str | ValueType::StrOpt => ValueType::StrOpt,
+                     ValueType::Bool | ValueType::BoolOpt => ValueType::BoolOpt,
+                     ValueType::FloatOpt => ValueType::FloatOpt,
++                    ValueType::Array | ValueType::ArrayOpt => ValueType::ArrayOpt,
++                    ValueType::Json | ValueType::JsonOpt => ValueType::JsonOpt,
+                 };
+                 if nullable_column {
+                     *predicate = Predicate::NullableEq(col.clone(), Value::Runtime { expr: expr.clone(), ty: *ty });
+@@ -97,6 +99,7 @@ fn serialized_value_expr(expr: &Expr, column: &ColumnType, nullable: bool) -> Ex
+         | ColumnType::Binary
+         | ColumnType::Json
+         | ColumnType::Jsonb
++        | ColumnType::TextArray
+         | ColumnType::Uuid => return expr.clone(),
+     };
+     crate::lower::typing::with_ty(converted, text_ty)
+diff --git a/src/lower/arel/visitor.rs b/src/lower/arel/visitor.rs
+index f72bb6b7..16af1328 100644
+--- a/src/lower/arel/visitor.rs
++++ b/src/lower/arel/visitor.rs
+@@ -153,7 +153,7 @@ fn emit_bind_calls(stmt: &Symbol, binds: &[Bind], read_id: usize) -> Vec<Expr> {
+             ValueType::IntOpt => "bind_int_opt",
+             ValueType::StrOpt => "bind_text_opt",
+             ValueType::BoolOpt => "bind_bool_opt",
+-            ValueType::FloatOpt => unreachable!("unserialized float in bind path"),
++            ValueType::FloatOpt | ValueType::Array | ValueType::ArrayOpt | ValueType::Json | ValueType::JsonOpt => unreachable!("inline-only value in bind path"),
+         };
+         let position = if shaped {
+             var_ref(&bind_local("position", i, read_id))
+@@ -698,7 +698,7 @@ fn emit_pluck(sel: &Select, table: &Table, col: &super::ir::ColRef, param: bool)
+         .unwrap_or_else(|| {
+             panic!(
+                 "Arel visitor: pluck column {} not in table {}",
+-                col.column.as_str(),
++                crate::naming::sql_ident(col.column.as_str()),
+                 table.name.as_str(),
+             )
+         });
+@@ -793,7 +793,7 @@ fn emit_group_count(
+         .unwrap_or_else(|| {
+             panic!(
+                 "Arel visitor: group column {} not in table {}",
+-                col.column.as_str(),
++                crate::naming::sql_ident(col.column.as_str()),
+                 table.name.as_str(),
+             )
+         });
+@@ -920,6 +920,13 @@ fn visit_insert(ins: &Insert, schema: &Schema) -> Expr {
+     let db = ClassId(Symbol::from(DB_MOD));
+     let sql = insert_sql(ins, schema);
+     let exec_call = db_call(&db, "exec", vec![sql]);
++    if crate::postgresql_enabled() && ins.returns_rowid {
++        let table = lookup_table(schema, &ins.table.0);
++        let key = table.columns.iter().find(|c| c.primary_key).expect("returning key");
++        let sql = concat_chain(vec![insert_sql(ins, schema), lit_str(format!(" RETURNING {}", crate::naming::sql_ident(key.name.as_str())))]);
++        let method = if matches!(key.col_type, crate::schema::ColumnType::Integer | crate::schema::ColumnType::BigInt) { "insert_returning_int" } else { "insert_returning_text" };
++        return db_call(&db, method, vec![sql]);
++    }
+     if !ins.returns_rowid {
+         return exec_call;
+     }
+@@ -1005,7 +1012,7 @@ fn visit_delete(del: &Delete, schema: &Schema) -> Expr {
+     // postgres / other backends would skip this branch in their own
+     // visitor.
+     let has_primary_key = table.columns.iter().any(|c| c.primary_key);
+-    if del.conditions.is_none() && has_primary_key {
++    if del.conditions.is_none() && has_primary_key && !crate::postgresql_enabled() {
+         let reset = db_call(
+             &db,
+             "exec",
+@@ -1131,7 +1138,7 @@ fn push_predicate_segments(
+             binds.push(Bind {
+                 expr: expr.clone(), ty: *ty,
+                 nullable_column: Some(crate::naming::sql_ident(col.column.as_str())),
+-                parameterized: param && *ty != ValueType::FloatOpt,
++                parameterized: param && ty.supports_bind(),
+             });
+         }
+         Predicate::NullableEq(_, _) => unreachable!("only runtime predicates select a shape"),
+@@ -1164,10 +1171,10 @@ fn push_value_segment(segments: &mut Vec<Expr>, val: &Value, param: bool, binds:
+     match val {
+         Value::LiteralInt(n) => segments.push(lit_str(n.to_string())),
+         Value::LiteralStr(s) => segments.push(lit_str(format!("'{}'", s.replace('\'', "''")))),
+-        Value::LiteralBool(b) => segments.push(lit_str(if *b { "1".into() } else { "0".into() })),
++        Value::LiteralBool(b) => segments.push(lit_str(if crate::postgresql_enabled() { if *b { "TRUE".into() } else { "FALSE".into() } } else { if *b { "1".into() } else { "0".into() } })),
+         Value::LiteralNull => segments.push(lit_str("NULL".into())),
+         // One optional bind still occupies exactly one placeholder.
+-        Value::Runtime { expr, ty } if param && *ty != ValueType::FloatOpt => {
++        Value::Runtime { expr, ty } if param && ty.supports_bind() => {
+             segments.push(lit_str("?".to_string()));
+             binds.push(Bind { expr: expr.clone(), ty: *ty, nullable_column: None, parameterized: true });
+         }
+@@ -1192,12 +1199,16 @@ fn escape_value(db: &ClassId, val: &Value) -> Expr {
+                 ValueType::StrOpt => "escape_string_opt",
+                 ValueType::FloatOpt => "escape_float_opt",
+                 ValueType::BoolOpt => "escape_bool_opt",
++                ValueType::Array => "escape_array",
++                ValueType::ArrayOpt => "escape_array_opt",
++                ValueType::Json => "escape_json",
++                ValueType::JsonOpt => "escape_json_opt",
+             };
+             db_call(db, method, vec![expr.clone()])
+         }
+         Value::LiteralInt(n) => lit_str(n.to_string()),
+         Value::LiteralStr(s) => lit_str(format!("'{}'", s.replace('\'', "''"))),
+-        Value::LiteralBool(b) => lit_str(if *b { "1".into() } else { "0".into() }),
++        Value::LiteralBool(b) => lit_str(if crate::postgresql_enabled() { if *b { "TRUE".into() } else { "FALSE".into() } } else { if *b { "1".into() } else { "0".into() } }),
+         Value::LiteralNull => lit_str("NULL".into()),
+     }
+ }
+diff --git a/src/lower/group_count.rs b/src/lower/group_count.rs
+index d4149b38..ab18dd5e 100644
+--- a/src/lower/group_count.rs
++++ b/src/lower/group_count.rs
+@@ -118,7 +118,7 @@ pub fn group_in_relation_chain(expr: &Expr) -> Option<GroupedCount<'_>> {
+     }
+ }
+ 
+-fn rewrite(expr: &mut Expr) {
++pub(crate) fn rewrite(expr: &mut Expr) {
+     expr.node.for_each_child_mut(&mut rewrite);
+     rewrite_node(expr);
+ }
+diff --git a/src/lower/model_to_library/adapter_emit/mod.rs b/src/lower/model_to_library/adapter_emit/mod.rs
+index bf4c28f9..5a2f000b 100644
+--- a/src/lower/model_to_library/adapter_emit/mod.rs
++++ b/src/lower/model_to_library/adapter_emit/mod.rs
+@@ -69,7 +69,8 @@ pub(super) fn push_adapter_methods(
+     methods.push(synth_adapter_exists_by_id(owner, table, schema));
+     methods.push(synth_adapter_truncate(owner, table, schema));
+     methods.push(synth_delete_all(owner, table));
+-    methods.push(synth_adapter_reload(owner, table));
++    methods.push(synth_adapter_reload(owner, table, false));
++    methods.push(synth_adapter_reload(owner, table, true));
+     methods.push(synth_columns_sql(owner, table));
+     methods.push(synth_hydrate_all(owner));
+ }
+@@ -312,7 +313,7 @@ fn synth_adapter_insert(owner: &ClassId, table: &Table, schema: &Schema) -> Meth
+     // about it (#90).
+     let key = key_column(table);
+     let supplied_key =
+-        key.filter(|c| !matches!(c.col_type, ColumnType::Integer | ColumnType::BigInt));
++        key.filter(|c| !matches!(c.col_type, ColumnType::Integer | ColumnType::BigInt) && !(crate::postgresql_enabled() && matches!(c.col_type, ColumnType::Uuid)));
+ 
+     // SQL column names are the PUBLIC names; the value reads the STORAGE
+     // ivar (`@col_raw` for temporal — stored ISO-8601 text goes to disk).
+@@ -332,7 +333,7 @@ fn synth_adapter_insert(owner: &ClassId, table: &Table, schema: &Schema) -> Meth
+     let insert = Insert {
+         table: TableRef(table.name.clone()),
+         assignments,
+-        returns_rowid: supplied_key.is_none(),
++        returns_rowid: supplied_key.is_none() && (!crate::postgresql_enabled() || key.is_some()),
+     };
+     let op = ArelOp::Insert(insert.clone());
+     let generated: Vec<&crate::schema::Column> =
+@@ -348,6 +349,7 @@ fn synth_adapter_insert(owner: &ClassId, table: &Table, schema: &Schema) -> Meth
+             exprs.push(mint);
+         }
+         exprs.push(SqliteVisitor.visit(&op, schema, owner));
++        if crate::postgresql_enabled() && key.is_none() { exprs.push(arel_lit_int(0)); }
+         if let Some(k) = supplied_key {
+             exprs.push(ivar_ref(&k.name));
+         }
+@@ -793,7 +795,7 @@ fn synth_adapter_truncate(owner: &ClassId, table: &Table, schema: &Schema) -> Me
+         name: Symbol::from("_adapter_truncate"),
+         receiver: MethodReceiver::Class,
+         params: vec![],
+-        body: SqliteVisitor.visit(&op, schema, owner),
++        body: if crate::postgresql_enabled() { arel_db_call(&ClassId(Symbol::from("Db")), "exec", vec![arel_lit_str(format!("TRUNCATE {} RESTART IDENTITY CASCADE", crate::naming::sql_ident(table.name.as_str())))]) } else { SqliteVisitor.visit(&op, schema, owner) },
+         signature: Some(fn_sig(vec![], Ty::Nil)),
+         effects: EffectSet::default(),
+         enclosing_class: Some(owner.0.clone()),
+@@ -827,7 +829,7 @@ fn synth_adapter_truncate(owner: &ClassId, table: &Table, schema: &Schema) -> Me
+ /// reload needs to write into self. Generalizing the visitor with
+ /// a "hydrate target = bare ivar / passed-in symbol" option is the
+ /// right cleanup once a second use surfaces.
+-fn synth_adapter_reload(owner: &ClassId, table: &Table) -> MethodDef {
++fn synth_adapter_reload(owner: &ClassId, table: &Table, locked: bool) -> MethodDef {
+     use crate::expr::{ExprNode, LValue, Literal};
+     use crate::span::Span;
+ 
+@@ -904,7 +906,7 @@ fn synth_adapter_reload(owner: &ClassId, table: &Table) -> MethodDef {
+     // stmt = Db.prepare(sql)
+     let stmt_assign = arel_assign(
+         &stmt,
+-        arel_db_call(&db, "prepare", vec![sql_concat]),
++        arel_db_call(&db, if locked && crate::postgresql_enabled() { "prepare_locked" } else { "prepare" }, vec![sql_concat]),
+     );
+ 
+     // if Db.step?(stmt) ; @<col> = Db.column_<int|text>(stmt, i) ; ... ; mark_persisted! ; end
+@@ -966,7 +968,7 @@ fn synth_adapter_reload(owner: &ClassId, table: &Table) -> MethodDef {
+         unsupported_formals: None,
+         has_anonymous_block: false,
+         name_span: crate::span::Span::synthetic(),
+-        name: Symbol::from("_adapter_reload"),
++        name: Symbol::from(if locked { "_adapter_reload_lock" } else { "_adapter_reload" }),
+         receiver: MethodReceiver::Instance,
+         params: vec![],
+         body,
+@@ -1248,6 +1250,8 @@ fn var_ref(name: &Symbol) -> Expr {
+ /// nothing. Temporal columns store ISO-8601 text, so they escape as
+ /// strings like any other text column.
+ fn value_type_for_column(col: &crate::schema::Column) -> ValueType {
++    if matches!(col.col_type, crate::schema::ColumnType::TextArray) { return if col.nullable { ValueType::ArrayOpt } else { ValueType::Array }; }
++    if matches!(col.col_type, crate::schema::ColumnType::Jsonb) { return if col.nullable { ValueType::JsonOpt } else { ValueType::Json }; }
+     let nullable = col.nullable && !col.primary_key;
+     match ty_of_column(&col.col_type) {
+         Ty::Int => {
+diff --git a/src/lower/model_to_library/mod.rs b/src/lower/model_to_library/mod.rs
+index 13c45857..0e982041 100644
+--- a/src/lower/model_to_library/mod.rs
++++ b/src/lower/model_to_library/mod.rs
+@@ -2440,7 +2440,9 @@ pub fn ty_of_column(t: &ColumnType) -> Ty {
+         // such a column STRUCTURE is a `has_json` declaration, and that
+         // is modeled as typed per-key accessors over this text
+         // (`lower::has_json`), not as a Hash the whole column decodes to.
+-        ColumnType::Json | ColumnType::Jsonb => Ty::Str,
++        ColumnType::Json => Ty::Str,
++        ColumnType::TextArray => Ty::Array { elem: Box::new(Ty::Str) },
++        ColumnType::Jsonb => Ty::Untyped,
+         ColumnType::Uuid => Ty::Str,
+         ColumnType::Reference { .. } => Ty::Int,
+     }
+diff --git a/src/lower/model_to_library/schema.rs b/src/lower/model_to_library/schema.rs
+index 313ca728..b4bdaf1e 100644
+--- a/src/lower/model_to_library/schema.rs
++++ b/src/lower/model_to_library/schema.rs
+@@ -2002,6 +2002,8 @@ fn column_read_method(col_ty: &Ty) -> &'static str {
+ /// match nothing. The primary key is never nullable in practice and is
+ /// excluded by `ty_of_column_slot`.
+ pub(crate) fn column_read_method_for(col: &Column) -> &'static str {
++    if matches!(col.col_type, crate::schema::ColumnType::TextArray) { return if col.nullable { "column_array_opt" } else { "column_array" }; }
++    if matches!(col.col_type, crate::schema::ColumnType::Jsonb) { return if col.nullable { "column_json_opt" } else { "column_json" }; }
+     let base = ty_of_column(&col.col_type);
+     if !matches!(super::ty_of_column_slot(col), Ty::Union { .. }) {
+         return column_read_method(&base);
+diff --git a/src/naming.rs b/src/naming.rs
+index 3e37b9ab..ca8a37b8 100644
+--- a/src/naming.rs
++++ b/src/naming.rs
+@@ -480,6 +480,9 @@ pub fn habtm_join_table(owner_class: &str, target_plural_sym: &str) -> String {
+ /// caller from separate identifiers: `legacy.entries` here is one name,
+ /// not a schema/table pair. Values and SQL expressions must not use this.
+ pub fn sql_ident(name: &str) -> String {
++    if crate::postgresql_enabled() {
++        return format!("\"{}\"", name.replace('"', "\"\""));
++    }
+     let mut chars = name.chars();
+     let bare = chars.next().is_some_and(|c| c.is_ascii_alphabetic() || c == '_')
+         && chars.all(|c| c.is_ascii_alphanumeric() || c == '_');
+@@ -513,3 +516,16 @@ pub(crate) fn is_sqlite_keyword(name: &str) -> bool {
+             | "vacuum" | "values" | "view" | "virtual" | "when" | "where" | "window" | "with" | "without"
+     )
+ }
++
++#[cfg(test)]
++mod postgresql_tests {
++    #[test]
++    fn postgresql_identifier_quoting() {
++        if crate::postgresql_enabled() {
++            assert_eq!(super::sql_ident("user"), "\"user\"");
++            assert_eq!(super::sql_ident("a\"b"), "\"a\"\"b\"");
++        } else {
++            assert_eq!(super::sql_ident("user"), "user");
++        }
++    }
++}
+diff --git a/src/project.rs b/src/project.rs
+index e6c67f4c..e65f127e 100644
+--- a/src/project.rs
++++ b/src/project.rs
+@@ -1636,7 +1636,7 @@ pub fn target_files(
+         BuildTarget::Blog => blog_files(fixture),
+         BuildTarget::Spinel => spinel_files_with_source_markers(app, fixture).and_then(|(mut files, _)| {
+             spinel_relation_model_handle(&mut files)?;
+-            spin_shape(files)
++            postgresql_files(files, fixture).and_then(spin_shape)
+         }),
+         // The ruby family gets the bundled-library requires too: the
+         // table used to live inside `spin_shape` and so reached only
+@@ -1710,7 +1710,15 @@ pub fn target_files(
+         let files = ensure_static_assets(files, target);
+         ensure_e2e(files, target)
+     };
+-    Ok(ensure_readme(files, target))
++    let mut files = ensure_readme(files, target);
++    if target == BuildTarget::Spinel && crate::postgresql_enabled() {
++        for (path, content) in &mut files {
++            if path == "README.md" {
++                *content = "# PostgreSQL Spinel application\n\nEmitted with RH_DATABASE_ADAPTER=postgresql. Build requires Spinel, a C compiler, libpq-dev and libjemalloc-dev.\n\n```sh\nspin build\nDATABASE_URL=postgresql://user:password@host/app ./build/bin/blog\n# Destructive tests: use a separate, disposable database.\nDATABASE_URL=postgresql://user:password@host/app_test spin test\n```\n\nShip db/structure.sql with the executable. Boot loads it transactionally only when the public schema has no tables, under an advisory lock. Existing schemas are not migrated. DATABASE_POOL_SIZE defaults to 8. The runtime libraries are libpq and jemalloc. SQLite remains the compiler's default when the emission variable is omitted.\n".into();
++            }
++        }
++    }
++    Ok(files)
+ }
+ 
+ /// Targets whose archives ship the Playwright e2e suite under `e2e/`
+@@ -4636,6 +4644,7 @@ fn spinel_files(app: &App, fixture: &Path) -> Result<(Vec<(String, String)>, Vec
+     )?;
+ 
+     crate::runtime_files::walk_flat("runtime/spinel", &["rb"], "runtime/", &mut files)?;
++    files.retain(|(p, _)| p != "runtime/db_pg.rb");
+ 
+     let needs_date = app_uses_date(app);
+ 
+@@ -9156,3 +9165,44 @@ mod tests {
+         );
+     }
+ }
++
++/// Install the selected backend before spin reshapes tests and writes requires.
++fn postgresql_files(mut files: Vec<(String, String)>, fixture: &Path) -> Result<Vec<(String, String)>, String> {
++    if !crate::postgresql_enabled() { return Ok(files); }
++    let ddl = std::fs::read_to_string(fixture.join("db/structure.sql"))
++        .map_err(|e| format!("PostgreSQL requires db/structure.sql: {e}"))?;
++    for (path, content) in &mut files {
++        if path == "runtime/db.rb" {
++            *content = crate::runtime_files::read_to_string("runtime/spinel/db_libpq.rb")?;
++        } else if path == "main.rb" {
++            *content = content.replace("path = Main.default_db_path", "path = ENV.fetch(\"DATABASE_URL\")")
++                .replace("Schema.statements.each { |sql| SqliteAdapter.execute_ddl(sql) }", "Db.prepare_schema(\"db/structure.sql\")");
++        } else if path == "test/test_helper.rb" {
++            *content = content.replace("Db.configure(_test_db_path)", "Db.configure(ENV.fetch(\"DATABASE_URL\"))")
++                .replace("Schema.statements.each { |sql| Db.exec(sql) }", "Db.prepare_schema(\"db/structure.sql\")");
++        } else if path == "runtime/active_record/connection.rb" {
++            let start = content.find("    def self.transaction").ok_or("transaction anchor moved")?;
++            let end = content[start..].find("\n    # `Model.update_counters").ok_or("transaction end moved")? + start;
++            content.replace_range(start..end, "    def self.transaction(isolation: nil, requires_new: nil, joinable: true)\n      tx = Db.transaction_begin\n      commit = false\n      begin\n        result = yield\n        commit = true\n      ensure\n        Db.transaction_end(tx, commit)\n      end\n      result\n    end\n");
++            *content = content.replace("\"SQLite\"", "\"PostgreSQL\"")
++                .replace("        \"1\"", "        \"TRUE\"")
++                .replace("        \"0\"", "        \"FALSE\"");
++        } else if path == "runtime/active_record/base.rb" {
++            let start = content.find("    def with_lock(").ok_or("with_lock anchor moved")?;
++            let end = content[start..].find("    def _adapter_reload_lock\n").ok_or("with_lock end moved")? + start;
++            content.replace_range(start..end, "    def with_lock(*args)\n      raise \"Locking a record with unsaved changes is not supported\" if persisted? && !changes_to_save.empty?\n      tx = Db.transaction_begin\n      commit = false\n      begin\n        reload(lock: true)\n        result = yield\n        commit = true\n      ensure\n        Db.transaction_end(tx, commit)\n      end\n      result\n    end\n\n");
++        } else if path == "runtime/active_support_ext.rb" {
++            *content = content.replace("zone.nil? ? t.getlocal : t.getlocal(zone.offset_at(t.to_i))", "if zone.nil?\n      ENV.fetch(\"TZ\", \"UTC\") == \"UTC\" ? t.getutc : t.getlocal\n    elsif zone.name == \"UTC\" || zone.name == \"Etc/UTC\"\n      t.getutc\n    else\n      t.getlocal(zone.offset_at(t.to_i))\n    end");
++        } else if path == "runtime/active_record/relation.rb" {
++            let start = content.find("    def substitute_binds(sql, args)\n").ok_or("bind anchor moved")?;
++            let end = content[start..].find("\n    def escape_list").ok_or("bind end moved")? + start;
++            content.replace_range(start..end, "    def substitute_binds(sql, args)\n      Db.interpolate(sql, args.map { |a| ActiveRecord.adapter.escape_value(a) })\n    end\n");
++            *content = content.replace("qcol = col.include?(\".\") ? col : \"#{@table}.#{col}\"", "qcol = col.include?(\".\") ? col.split(\".\").map { |part| Db.quote_identifier(part) }.join(\".\") : @table + \".\" + Db.quote_identifier(col)");
++        } else if path == "runtime/sqlite_adapter.rb" {
++            *content = content.replace("      \"1\"", "      \"TRUE\"").replace("      \"0\"", "      \"FALSE\"")
++                .replace("Db.exec(\"DELETE FROM sqlite_sequence WHERE name = #{Db.escape_string(table)}\")", "nil");
++        }
++    }
++    files.push(("db/structure.sql".into(), ddl.lines().filter(|l| !l.starts_with("\\restrict ") && !l.starts_with("\\unrestrict ")).collect::<Vec<_>>().join("\n")));
++    Ok(files)
++}
+diff --git a/src/schema.rs b/src/schema.rs
+index 261487de..41c3e15b 100644
+--- a/src/schema.rs
++++ b/src/schema.rs
+@@ -112,6 +112,7 @@ pub enum ColumnType {
+     /// `t.json` — retained separately from PostgreSQL `jsonb` for faithful
+     /// schema round-trips; shared model storage remains serialized text.
+     Json,
++    TextArray,
+     /// `t.jsonb` — distinct from `t.json` for faithful PostgreSQL schema
+     /// round-trips. Both JSON variants share serialized-text model storage.
+     Jsonb,

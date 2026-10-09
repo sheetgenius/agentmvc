@@ -1,0 +1,30 @@
+== patches: assemble the flat set and verify SHA256SUMS
+00-interval.patch: OK
+10-api-mode-json.patch: OK
+20-raw-websocket.patch: OK
+30-jobs-boot.patch: OK
+50-postgresql-lane.patch: OK
+60-rails-surface.patch: OK
+71-record-lock-and-error-predicate.patch: OK
+74-integer-query-range.patch: OK
+80-gradual-return-stabilization.patch: OK
+81-reload-receiver-type.patch: OK
+series: OK
+manifest sha256 2fce0ce9ff067966d7295f71206b6d7b3592da558b663352ed785fca93aa1777 OK
+== roundhouse ea4d3e682c86d817b2617b5862ed9a14d634f7eb + series
+applying 00-interval.patch
+applying 10-api-mode-json.patch
+applying 20-raw-websocket.patch
+applying 30-jobs-boot.patch
+applying 50-postgresql-lane.patch
+applying 60-rails-surface.patch
+applying 71-record-lock-and-error-predicate.patch
+applying 74-integer-query-range.patch
+applying 80-gradual-return-stabilization.patch
+applying 81-reload-receiver-type.patch
+ 74 files changed, 2874 insertions(+), 223 deletions(-)
+== spinel f85f04b3abef4b0540406948c56db7a51a420122 (no local patches)
+== export vendor trees (without .git)
+vendor/roundhouse tree sha256 98a0841e6237677184707d459f71feba923a6be70c87b21533498d0ed31ebf5c OK
+vendor/spinel tree sha256 cb4aee8b0d77b52a0cb52bff16a6202a70ea2858d94871a7d275366761f61f90 OK
+context: /work/app/build/verify-context/toolchain-context

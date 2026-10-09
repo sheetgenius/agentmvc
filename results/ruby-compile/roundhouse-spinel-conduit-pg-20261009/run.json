@@ -1,0 +1,523 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v8-upstream-heads-ruby4",
+  "date": "2026-10-09",
+  "previous": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261005 (v7; unchanged)",
+  "benchmark_reference": "results/ruby-compile/roundhouse-spinel-conduit-pg-20260930 (v4)",
+  "ruby": {
+    "variant": "4.0.7",
+    "toolchain": "4.0.7",
+    "frozen_rails_reference": "3.3.2",
+    "gemfile_changes": [],
+    "lockfile_changes": []
+  },
+  "source": {
+    "reference": "results/one-shot-v2-rails-expert/pilot-1/reference-1/source",
+    "base_variant": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261005/variant/source (v7)",
+    "variant": "variant/source (compile variant v8)",
+    "ledger": "variant/source/COMPILE-VARIANT.md",
+    "gated_files_sha256": "reproduce/gated-source.sha256 (75 files, excluding ledger)",
+    "app_delta_vs_reference": {
+      "files": 16,
+      "added": 180,
+      "removed": 44,
+      "per_file": [
+        {
+          "path": "app/controllers/application_controller.rb",
+          "added": 65,
+          "removed": 10
+        },
+        {
+          "path": "app/controllers/articles_controller.rb",
+          "added": 8,
+          "removed": 8
+        },
+        {
+          "path": "app/controllers/comments_controller.rb",
+          "added": 4,
+          "removed": 4
+        },
+        {
+          "path": "app/controllers/exports_controller.rb",
+          "added": 2,
+          "removed": 1
+        },
+        {
+          "path": "app/controllers/profiles_controller.rb",
+          "added": 1,
+          "removed": 1
+        },
+        {
+          "path": "app/controllers/shares_controller.rb",
+          "added": 9,
+          "removed": 7
+        },
+        {
+          "path": "app/controllers/tags_controller.rb",
+          "added": 2,
+          "removed": 1
+        },
+        {
+          "path": "app/controllers/users_controller.rb",
+          "added": 6,
+          "removed": 6
+        },
+        {
+          "path": "app/jobs/export_articles_job.rb",
+          "added": 2,
+          "removed": 1
+        },
+        {
+          "path": "app/models/article_export.rb",
+          "added": 2,
+          "removed": 1
+        },
+        {
+          "path": "app/models/user.rb",
+          "added": 6,
+          "removed": 1
+        },
+        {
+          "path": "app/services/article_commit.rb",
+          "added": 4,
+          "removed": 2
+        },
+        {
+          "path": "app/services/json_cast.rb",
+          "added": 9,
+          "removed": 0
+        },
+        {
+          "path": "app/services/login_throttle.rb",
+          "added": 2,
+          "removed": 1
+        },
+        {
+          "path": "app/services/token_codec.rb",
+          "added": 52,
+          "removed": 0
+        },
+        {
+          "path": "config/initializers/recover_exports.rb",
+          "added": 6,
+          "removed": 0
+        }
+      ]
+    },
+    "v7_control": "evidence/source-control.json"
+  },
+  "toolchain": {
+    "roundhouse_base": "ea4d3e682c86d817b2617b5862ed9a14d634f7eb",
+    "roundhouse_patches": "patches/roundhouse/series (10)",
+    "roundhouse_delta": {
+      "added": 2874,
+      "removed": 223,
+      "files": 74
+    },
+    "spinel_base": "f85f04b3abef4b0540406948c56db7a51a420122",
+    "spinel_patches": [],
+    "heads_observed_at": "2026-10-09T15:05:42.165667+00:00",
+    "manifest_sha256": "2fce0ce9ff067966d7295f71206b6d7b3592da558b663352ed785fca93aa1777",
+    "toolchain_image": "conduit-v8b-toolchain:2fce0ce9ff06",
+    "toolchain_image_id": "sha256:dc70ee9c3b0774af0838e19071171a5d5e0af77941b3214d7cc8b217098b75c1",
+    "vendor_tree_sha256": {
+      "roundhouse": "98a0841e6237677184707d459f71feba923a6be70c87b21533498d0ed31ebf5c",
+      "spinel": "cb4aee8b0d77b52a0cb52bff16a6202a70ea2858d94871a7d275366761f61f90"
+    },
+    "versions": "roundhouse 2026.9.18 (ea4d3e68); spinel 2026.09.12+7503 (f85f04b3a)",
+    "workers": "ENV SPINEL_WORKERS=4",
+    "flags": "Ruby 4.0.7; Rust 1.98.1; RH_DATABASE_ADAPTER=postgresql; strict emit; spin build -- --cc=clang --jobs=8"
+  },
+  "images": {
+    "toolchain": {
+      "tag": "conduit-v8b-toolchain:2fce0ce9ff06",
+      "id": "sha256:dc70ee9c3b0774af0838e19071171a5d5e0af77941b3214d7cc8b217098b75c1",
+      "bytes": 2031341372
+    },
+    "compiled": {
+      "tag": "conduit-v8b-app:compiled",
+      "id": "sha256:4b22f791dd53dfc6dd73a0790fa0b6600cab0b1dbf225f53eb8709d181eebce2",
+      "bytes": 119539350,
+      "server_sha256": "ca980c520d45f7eea4925f08f904b094c58730f0835fd13cbb34be89aa3846c7"
+    },
+    "variant_rails": {
+      "tag": "conduit-v8b-app:cruby",
+      "id": "sha256:72778a80baa6c9e56e9cbb3a82a1a693c3f709f30b82523f1e0fdde479821d97",
+      "bytes": 318022552
+    },
+    "reference_rails": {
+      "tag": "conduit-v8b-rails:reference-1",
+      "id": "sha256:8a2edfaf12265695fb81f63a421eff0800c7eaaf8fcef2fab190fd94298d1d13",
+      "bytes": 324043802
+    },
+    "v7": {
+      "tag": "conduit-v8b-baseline:v7",
+      "id": "sha256:1f06d57a08e6833dddfa3cde678ed6d36d28ce77d8fa9a75a1aa43ae271ded1c",
+      "bytes": 119209704
+    }
+  },
+  "gates": {
+    "compiled_production_gate": {
+      "exit": 0,
+      "log": "evidence/gates/compiled-v8-production-gate.log",
+      "source_manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+      "patch_manifest_sha256": "2fce0ce9ff067966d7295f71206b6d7b3592da558b663352ed785fca93aa1777"
+    },
+    "variant_rails_production_gate": {
+      "exit": 0,
+      "log": "evidence/gates/variant-v8-on-rails-production-gate.log",
+      "source_manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+      "patch_manifest_sha256": "2fce0ce9ff067966d7295f71206b6d7b3592da558b663352ed785fca93aa1777"
+    },
+    "control_v7_source_on_v8_toolchain": {
+      "exit": 0,
+      "log": "evidence/gates/control-v7-source-on-v8-toolchain-production-gate.log",
+      "source_manifest_sha256": "5ec740cce16e56ddaecd8d5fe5189a5e89057478170ed826a544d8ee6282b0df",
+      "patch_manifest_sha256": "2fce0ce9ff067966d7295f71206b6d7b3592da558b663352ed785fca93aa1777"
+    },
+    "common_http_probe": {
+      "contract": "21/21",
+      "quality": "3/3",
+      "file": "evidence/compiled-v8-common-http-probe.json"
+    },
+    "boot_recovery": {
+      "final": {
+        "condition": "supplemental-pending-export-boot-20261009",
+        "label": "final10",
+        "image": "conduit-v8b-app:compiled",
+        "expected": "done",
+        "procedure": "Seed a durable pending export before starting the compiled server; send no enqueue request.",
+        "image_id": "sha256:4b22f791dd53dfc6dd73a0790fa0b6600cab0b1dbf225f53eb8709d181eebce2",
+        "before": "pending",
+        "after": "done",
+        "articles": "\"[]\"",
+        "completed": "t",
+        "server_sha256": "ca980c520d45f7eea4925f08f904b094c58730f0835fd13cbb34be89aa3846c7",
+        "pass": true
+      },
+      "no_patch_30": {
+        "condition": "supplemental-pending-export-boot-20261009",
+        "label": "no30",
+        "image": "conduit-v8b-recovery:no30",
+        "expected": "pending",
+        "procedure": "Seed a durable pending export before starting the compiled server; send no enqueue request.",
+        "image_id": "sha256:114542dfeb941acdc17b2818519d7f2198aa6063c8e1fae6263ae98ff7f7bcda",
+        "before": "pending",
+        "after": "pending",
+        "articles": "",
+        "completed": "f",
+        "server_sha256": "f55560dd4f16ce977da6d9f830a2b0df3a78c294b4cdfd6b84acd4803e9ce9ec",
+        "pass": true
+      },
+      "dir": "evidence/recovery"
+    },
+    "patch10_public_http": {
+      "passed": 15,
+      "total": 15,
+      "file": "evidence/patch10/patch10-http.json"
+    },
+    "workaround_reverts": {
+      "accepted": [],
+      "trials": [
+        {
+          "name": "author",
+          "exit": 1,
+          "source_manifest_sha256": "1722dfac366afdaa9a9101b051862b6a3ffc95673e69e08b54ab9d3458c8f903",
+          "result": "Strict analysis rejects association on Article"
+        },
+        {
+          "name": "throttle",
+          "exit": 4,
+          "source_manifest_sha256": "162effa5fc79434f555cdbb92ff25db99be7e683f835540e807867c2696404c5",
+          "result": "Login returns 500 instead of 401; Array reject! dispatch is missing"
+        }
+      ],
+      "dir": "evidence/gates/reverts"
+    },
+    "roundhouse_tests": {
+      "focused_suites": 15,
+      "focused_passed": 68,
+      "focused_ignored": 11,
+      "return_unit_passed": 18,
+      "sqlite_visitor_passed": 18,
+      "postgresql_full_visitor": {
+        "passed": 12,
+        "failed": 6,
+        "note": "SQLite-specific SQL/IR assertions remain visible"
+      },
+      "runtime_typing": {
+        "fully_typed": "pass",
+        "concrete": {
+          "passed": false,
+          "sites": 330,
+          "ceiling": 316
+        },
+        "upstream": {
+          "fully_typed": "pass",
+          "concrete": "pass",
+          "sites": 316
+        }
+      },
+      "default_suite": {
+        "passed": false,
+        "stop": "library tests (test --lib)",
+        "passed_tests": 1040,
+        "failed_tests": 41,
+        "ignored": 1,
+        "reason": "generated real-blog fixture absent; same 41 library failures on unpatched heads",
+        "upstream_failed_tests": 41
+      },
+      "dir": "evidence/roundhouse-tests"
+    },
+    "linux_reload_reproduction": {
+      "exit": 0,
+      "log": "evidence/reload/native-linux.log"
+    },
+    "patch_ablation": {
+      "trials": [
+        {
+          "patch": "70",
+          "condition": "diagnostic-ablation-no70-20261009",
+          "exit": 0,
+          "toolchain_tag": "conduit-v8b-toolchain:no70-a03f96ed",
+          "patch_manifest_sha256": "a03f96ed48987c708fd72f86835d58966ff64f579d5d50e7ab33e8679a168457",
+          "combined_patch_sha256": "303b53b14f8135665b45d0fc2519cf2ef01b036a3b7acca278781f3b2fe198b0",
+          "source_manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+          "log": "ablation-no70.log"
+        },
+        {
+          "patch": "72",
+          "condition": "diagnostic-ablation-no72-20261009",
+          "exit": 0,
+          "toolchain_tag": "conduit-v8b-toolchain:no72-2d7c7a0d",
+          "patch_manifest_sha256": "2d7c7a0d5e051be25295e92ba6dcdce1f22c4d9fba9f9c122e69916a8f863243",
+          "combined_patch_sha256": "929aee8e0920a6442180399f83d1dc7778bf4b16480e70c2392b2f22a91b2de5",
+          "source_manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+          "log": "ablation-no72.log"
+        },
+        {
+          "patch": "80",
+          "condition": "diagnostic-ablation-no80-20261009",
+          "exit": 1,
+          "toolchain_tag": "conduit-v8b-toolchain:no80-e5de6184",
+          "patch_manifest_sha256": "e5de61843242094388a571644f3b5c7872af730ab5e70f90caa89186bdaa6cfa",
+          "combined_patch_sha256": "4d9722620384ba2302b6745c8c782b474a1a44b1da536820e68fb2d3dffba948",
+          "source_manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+          "log": "ablation-no80.log"
+        },
+        {
+          "patch": "00",
+          "condition": "diagnostic-ablation-no00-20261009",
+          "exit": 1,
+          "toolchain_tag": "conduit-v8b-toolchain:no00-1ffdf521",
+          "patch_manifest_sha256": "1ffdf5219ecbd87a16b03fea9d5ff9770de6fc1e86d4be6ff184a4989c2e9a6c",
+          "combined_patch_sha256": "86382afd0b0f20bd2895034e5baff13ed4232db4ad8ccbc5ac2c766bdcded203",
+          "source_manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+          "log": "ablation-no00.log"
+        },
+        {
+          "patch": "20",
+          "condition": "diagnostic-ablation-no20-20261009",
+          "exit": 1,
+          "toolchain_tag": "conduit-v8b-toolchain:no20-3fd6c04e",
+          "patch_manifest_sha256": "3fd6c04e024855d697fa013711f99b860e3f581bf49b915fc4d8bcebff15e5c4",
+          "combined_patch_sha256": "1aaada7065f826698ccfe7529c1eaf019586e5bfc2dbce52dadef4c47f182215",
+          "source_manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+          "log": "ablation-no20.log"
+        },
+        {
+          "patch": "30",
+          "condition": "diagnostic-ablation-no30-20261009",
+          "exit": 0,
+          "toolchain_tag": "conduit-v8b-toolchain:no30-438af8cf",
+          "patch_manifest_sha256": "438af8cff96d4c29d661e7bc041b7cb8c5c0f3b4065b4b895b4cb489f4b7dabc",
+          "combined_patch_sha256": "c58112d6146519e5eff97310b75e7e9eee8347bc24615565b03070c09f780d88",
+          "source_manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+          "log": "ablation-no30.log"
+        },
+        {
+          "patch": "71",
+          "condition": "diagnostic-ablation-no71-20261009",
+          "exit": 1,
+          "toolchain_tag": "conduit-v8b-toolchain:no71-46470d7c",
+          "patch_manifest_sha256": "46470d7cc0c29a75d5397f123066e4045f6da25d829abc27a7c29895b24e4514",
+          "combined_patch_sha256": "fc04eca2539b1caad46cde5f1fc6c0d4748ddd3c5f049e01f0efce476af58884",
+          "source_manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+          "log": "ablation-no71.log"
+        },
+        {
+          "patch": "74",
+          "condition": "diagnostic-ablation-no74-20261009",
+          "exit": 4,
+          "toolchain_tag": "conduit-v8b-toolchain:no74-4ee9c6e2",
+          "patch_manifest_sha256": "4ee9c6e2e0c8a19b610fac29712719bdc8987efdc6836159346e4fb1fb9b0e16",
+          "combined_patch_sha256": "3a2f2b487a40311cf35b8bf2be19843581d83d5dd04e24e8aa3c6db795d1b801",
+          "source_manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+          "log": "ablation-no74.log"
+        },
+        {
+          "patch": "81",
+          "condition": "diagnostic-ablation-no81-20261009",
+          "exit": 1,
+          "toolchain_tag": "conduit-v8b-toolchain:no81-83a3bfa3",
+          "patch_manifest_sha256": "83a3bfa3416e64667c84963f4b388c09eea1bca904aee9e7810e55abfae75cca",
+          "combined_patch_sha256": "697c212813d6408130b847bfc0fe7c6b109e315dafe5910ce68c1ad7f2fab53a",
+          "source_manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+          "log": "ablation-no81.log"
+        }
+      ],
+      "dependency_groups": [
+        {
+          "patch": "no50-selection",
+          "condition": "diagnostic-group-ablation-20261009",
+          "exit": 1,
+          "removed": [
+            "PostgreSQL backend selection during project emission"
+          ],
+          "accepted_patch_manifest_sha256": "2fce0ce9ff067966d7295f71206b6d7b3592da558b663352ed785fca93aa1777",
+          "trial_patch_manifest_sha256": "6fa9027d4f27e9e7cc6d555b7ad5676c910f979edd7c240b686bcd1cf11ab2a2",
+          "combined_patch_sha256": "a7e084b3f09cfcd5e80c5c5fb31c4c4466a1b998b1335aa8cdbe36ae38598d55",
+          "toolchain_tag": "conduit-v8b-toolchain:no50-selection-6fa9027d",
+          "log": "ablation-no50-selection.log"
+        },
+        {
+          "patch": "no60-independent",
+          "condition": "diagnostic-group-ablation-20261009",
+          "exit": 1,
+          "removed": [
+            "runtime/ruby/active_record/relation.rb",
+            "runtime/ruby/active_record/relation.rbs",
+            "src/ingest/model.rs",
+            "src/lower/assoc_attr_key.rs",
+            "src/lower/first_or_create.rs",
+            "src/lower/model_to_library/schema.rs",
+            "src/lower/model_to_library/validations.rs",
+            "src/lower/scope_chain.rs",
+            "src/project.rs",
+            "tests/assoc_class_method_scope.rs",
+            "tests/rails_surface.rs",
+            "tests/relation_class_method_scope.rs",
+            "tests/scope_body_left_joins.rs"
+          ],
+          "accepted_patch_manifest_sha256": "2fce0ce9ff067966d7295f71206b6d7b3592da558b663352ed785fca93aa1777",
+          "trial_patch_manifest_sha256": "be4867701679a1192575f1d84dd155507d4cd39f744c4c477431ebbaca5107b2",
+          "combined_patch_sha256": "27e2d6c279b71171b19aa75c9cd62c4edc04d4d0fbff288a3d4205432fb8430d",
+          "toolchain_tag": "conduit-v8b-toolchain:no60-independent-be486770",
+          "log": "ablation-no60-independent.log"
+        }
+      ],
+      "dir": "evidence/patch-ablation"
+    }
+  },
+  "edge_comparison": {
+    "recorded_responses": 166,
+    "setup_requests": 25,
+    "total_script_requests": 191,
+    "readiness_requests": "additional, excluded",
+    "v8_vs_v7_differences": 0,
+    "v8_vs_rails_reference_differences": 7,
+    "v7_vs_rails_reference_differences": 7,
+    "dir": "evidence/edge",
+    "summary": "evidence/edge/summary.json"
+  },
+  "timing": {
+    "run": false,
+    "reason": "Shared host; no throughput claims. v4 remains the benchmark reference."
+  },
+  "upstream_merged": {
+    "roundhouse": [
+      492,
+      493,
+      498,
+      442,
+      441,
+      494,
+      438,
+      648,
+      671
+    ],
+    "note": "Patch 61 retired by upstream. Patches 10, 60, 71 and 74 trimmed; PostgreSQL schema duplicates removed from 50. #466 and #467 framing is preserved. Patches 70 and 72 removed after gating, with no upstream coverage credited. Patch 30 retains boot recovery and drops queue refinements.",
+    "evidence": "evidence/patch-count-comparison.json"
+  },
+  "new_repairs": {
+    "81": {
+      "introducing_commit": "c523d7807941aa8f1224a24820443fa2898eb593",
+      "parent": "8fda5b888e69147829d66e8e0536d2aba7b71849",
+      "failure": "reload loses the concrete model receiver",
+      "evidence": "evidence/reload/introduction.json"
+    }
+  },
+  "upstream_risks": {
+    "pin": "f85f04b3abef4b0540406948c56db7a51a420122",
+    "patches": 0,
+    "probes": {
+      "7833": {
+        "exit": 0,
+        "log": "spinel-7833.log"
+      },
+      "7834": {
+        "exit": 0,
+        "log": "spinel-7834.log"
+      }
+    }
+  },
+  "reproduction": {
+    "fresh_upstream_clones": true,
+    "agentmvc_base": "286af4fce066fe47dc68b68e294c73ef695dc46c",
+    "vendor_digests_match": true,
+    "compiled_image_reproduced": true,
+    "production_gate_exit": 0,
+    "dir": "evidence/reproduction"
+  },
+  "owned_size": {
+    "rules": "tools/measure.py, stacks/rails-expert/stack.json, scaffold baseline",
+    "reference-1": {
+      "tokens": 12654,
+      "lines": 1283,
+      "code_lines": 1008,
+      "owned_tokens": 6085,
+      "owned_lines": 657,
+      "files_created": 23,
+      "files_changed": 3
+    },
+    "v7_incl_structure_sql": {
+      "tokens": 19395,
+      "lines": 1965,
+      "code_lines": 1388,
+      "owned_tokens": 10231,
+      "owned_lines": 1037,
+      "files_created": 27,
+      "files_changed": 3
+    },
+    "v7_excl_structure_sql": {
+      "tokens": 13884,
+      "lines": 1408,
+      "code_lines": 1112,
+      "owned_tokens": 6958,
+      "owned_lines": 761,
+      "files_created": 26,
+      "files_changed": 3
+    },
+    "v8_incl_structure_sql": {
+      "tokens": 19395,
+      "lines": 1965,
+      "code_lines": 1388,
+      "owned_tokens": 10231,
+      "owned_lines": 1037,
+      "files_created": 27,
+      "files_changed": 3
+    },
+    "v8_excl_structure_sql": {
+      "tokens": 13884,
+      "lines": 1408,
+      "code_lines": 1112,
+      "owned_tokens": 6958,
+      "owned_lines": 761,
+      "files_created": 26,
+      "files_changed": 3
+    }
+  },
+  "repository_checks": {
+    "passed": true,
+    "dir": "evidence/repository-checks"
+  }
+}

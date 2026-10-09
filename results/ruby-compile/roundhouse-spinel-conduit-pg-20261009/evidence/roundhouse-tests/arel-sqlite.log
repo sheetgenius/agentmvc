@@ -1,0 +1,25 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running unittests src/lib.rs (/work/app/build/cargo-target/debug/deps/roundhouse-ade61decbfdea4eb)
+
+running 18 tests
+test lower::arel::visitor::tests::ordering_preserves_existing_qualified_terms ... ok
+test lower::arel::visitor::tests::delete_emits_single_exec ... ok
+test lower::arel::visitor::tests::insert_emits_exec_then_last_insert_rowid ... ok
+test lower::arel::visitor::tests::delete_no_conditions_is_truncate ... ok
+test lower::arel::visitor::tests::select_exists_emits_bool_from_step ... ok
+test lower::arel::visitor::tests::insert_without_assignments_uses_default_values ... ok
+test lower::arel::visitor::tests::select_all_no_limit_emits_array_hydrate ... ok
+test lower::arel::visitor::tests::select_marked_single_record_emits_single_hydrate ... ok
+test lower::arel::visitor::tests::select_count_emits_int_scalar ... ok
+test lower::arel::visitor::tests::limit_one_without_single_record_emits_array_hydrate ... ok
+test lower::arel::visitor::tests::select_with_order_emits_order_by_segment ... ok
+test lower::arel::visitor::tests::select_with_two_orders_emits_csv_order_by ... ok
+test lower::arel::visitor::tests::select_where_predicate_with_runtime_value_round_trips ... ok
+test lower::arel::visitor::tests::update_emits_single_exec ... ok
+test lower::arel::visitor::tests::param_off_keeps_integer_serialization_inline ... ok
+test lower::arel::visitor::tests::param_on_string_value_binds_text ... ok
+test lower::arel::visitor::tests::integer_count_serializes_before_prepare ... ok
+test lower::arel::visitor::tests::integer_predicate_serializes_before_prepare_even_with_param_binds ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 1064 filtered out; finished in 0.00s
+

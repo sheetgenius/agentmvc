@@ -1,0 +1,1136 @@
+{
+  "base_roundhouse": "ea4d3e682c86d817b2617b5862ed9a14d634f7eb",
+  "v7": {
+    "added": 335,
+    "removed": 60,
+    "files": 23
+  },
+  "now": {
+    "added": 333,
+    "removed": 60,
+    "files": 23
+  },
+  "retired": [
+    {
+      "file": "runtime/spinel/tep/server.rb",
+      "lines": [
+        "    if status == 409; return \"Conflict\"; end",
+        "    if status == 422; return \"Unprocessable Content\"; end"
+      ],
+      "pr": 498,
+      "commit": "a3a7f5a6f17ef90c276c5c30ff51da153c78a324",
+      "evidence": "Upstream response reason table, integrated production gate and edge requests."
+    }
+  ],
+  "preserved_upstream": [
+    {
+      "pr": 466,
+      "merge": "dbf99aa",
+      "effect": "Reject contradictory or malformed Content-Length framing."
+    },
+    {
+      "pr": 467,
+      "commit": "6610d160",
+      "effect": "Refuse incomplete request body before controller dispatch."
+    }
+  ],
+  "interpretation": "The integrated gate proves the combined retained patch. Public emitted/runtime probes isolate the named behavior. Supplemental branches are labelled; they are not claimed as independently required by the frozen gate. RBS/registration/reset hunks are dependencies of their group. Formatting and comments do not add a separate feature.",
+  "public_code": "All public examples were written fresh with generic Rails controllers/models. No application source was copied.",
+  "hunks": [
+    {
+      "id": "10.01",
+      "file": "runtime/ruby/action_controller/base.rb",
+      "hunk": "@@ -391,6 +391,7 @@ module ActionController",
+      "old_start": 391,
+      "new_start": 391,
+      "group": "response",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/nosniff.rb",
+      "failure": "Initialize the default nosniff header; without it the production security response lacks X-Content-Type-Options.",
+      "coverage": [
+        "security/hurl/s12_nosniff_header.hurl",
+        "API rescue responses",
+        "common HTTP response quality"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.02",
+      "file": "runtime/ruby/action_controller/base.rb",
+      "hunk": "@@ -638,6 +639,11 @@ module ActionController",
+      "old_start": 638,
+      "new_start": 639,
+      "group": "response",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/response_headers.rb",
+      "failure": "Provide response.set_header used by after_action; otherwise dispatch is missing.",
+      "coverage": [
+        "security/hurl/s12_nosniff_header.hurl",
+        "API rescue responses",
+        "common HTTP response quality"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.03",
+      "file": "runtime/ruby/action_controller/base.rb",
+      "hunk": "@@ -721,9 +727,7 @@ module ActionController",
+      "old_start": 721,
+      "new_start": 727,
+      "group": "response",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/numeric_status.rb",
+      "failure": "Update the status-contract comment; no separate runtime behavior.",
+      "coverage": [
+        "security/hurl/s12_nosniff_header.hurl",
+        "API rescue responses",
+        "common HTTP response quality"
+      ],
+      "role": "comment; zero independent runtime effect"
+    },
+    {
+      "id": "10.04",
+      "file": "runtime/ruby/action_controller/base.rb",
+      "hunk": "@@ -733,8 +737,10 @@ module ActionController",
+      "old_start": 733,
+      "new_start": 737,
+      "group": "response",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/numeric_status.rb",
+      "failure": "Pass integer codes through resolve_status; otherwise a dynamic 202 raises Invalid HTTP status.",
+      "coverage": [
+        "security/hurl/s12_nosniff_header.hurl",
+        "API rescue responses",
+        "common HTTP response quality"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.05",
+      "file": "runtime/ruby/action_controller/base.rbs",
+      "hunk": "@@ -104,13 +104,10 @@ module ActionController",
+      "old_start": 104,
+      "new_start": 104,
+      "group": "response",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/numeric_status.rb",
+      "failure": "Admit integer render status in RBS; signature dependency of integer statuses.",
+      "coverage": [
+        "security/hurl/s12_nosniff_header.hurl",
+        "API rescue responses",
+        "common HTTP response quality"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.06",
+      "file": "runtime/ruby/action_controller/base.rbs",
+      "hunk": "@@ -121,12 +118,12 @@ module ActionController",
+      "old_start": 121,
+      "new_start": 118,
+      "group": "response",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/numeric_status.rb",
+      "failure": "Admit integer redirect_to/head status in RBS; signature dependency of integer statuses.",
+      "coverage": [
+        "security/hurl/s12_nosniff_header.hurl",
+        "API rescue responses",
+        "common HTTP response quality"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.07",
+      "file": "runtime/ruby/action_controller/base.rbs",
+      "hunk": "@@ -135,6 +132,7 @@ module ActionController",
+      "old_start": 135,
+      "new_start": 132,
+      "group": "response",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/response_headers.rb",
+      "failure": "Register the set_header signature; otherwise analysis/emission cannot type the callback.",
+      "coverage": [
+        "security/hurl/s12_nosniff_header.hurl",
+        "API rescue responses",
+        "common HTTP response quality"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.08",
+      "file": "runtime/ruby/action_controller/base.rbs",
+      "hunk": "@@ -145,9 +143,7 @@ module ActionController",
+      "old_start": 145,
+      "new_start": 143,
+      "group": "response",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/numeric_status.rb",
+      "failure": "Give resolve_status its Symbol-or-Integer input; signature dependency of the runtime branch.",
+      "coverage": [
+        "security/hurl/s12_nosniff_header.hurl",
+        "API rescue responses",
+        "common HTTP response quality"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.09",
+      "file": "runtime/ruby/action_controller/parameter_missing.rb",
+      "hunk": "@@ -64,3 +64,16 @@ module AbstractController",
+      "old_start": 64,
+      "new_start": 64,
+      "group": "exceptions",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/exception_classes.rb",
+      "failure": "Define BadRequest and Parameters::ParseError; otherwise current-head constant resolution fails.",
+      "coverage": [
+        "security/hurl/s07_malformed_json.hurl",
+        "security/hurl/s08_wrong_types.hurl"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.10",
+      "file": "runtime/ruby/action_controller/parameter_missing.rbs",
+      "hunk": "@@ -22,3 +22,16 @@ module AbstractController",
+      "old_start": 22,
+      "new_start": 22,
+      "group": "exceptions",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/exception_classes.rb",
+      "failure": "Register those exception classes in RBS; compile-time dependency of the definitions.",
+      "coverage": [
+        "security/hurl/s07_malformed_json.hurl",
+        "security/hurl/s08_wrong_types.hurl"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.11",
+      "file": "runtime/ruby/action_dispatch/request.rb",
+      "hunk": "@@ -113,6 +113,21 @@ module ActionDispatch",
+      "old_start": 113,
+      "new_start": 113,
+      "group": "request",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/request_headers.rb",
+      "failure": "Store and retrieve headers using lowercase keys; missing RequestHeaders or case-sensitive lookup breaks authentication.",
+      "coverage": [
+        "API authenticated user/article/comment/share requests"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.12",
+      "file": "runtime/ruby/action_dispatch/request.rb",
+      "hunk": "@@ -145,6 +160,7 @@ module ActionDispatch",
+      "old_start": 145,
+      "new_start": 160,
+      "group": "request",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/request_headers.rb",
+      "failure": "Initialize per-request header storage; dependency preventing an unset header object.",
+      "coverage": [
+        "API authenticated user/article/comment/share requests"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.13",
+      "file": "runtime/ruby/action_dispatch/request.rb",
+      "hunk": "@@ -208,6 +224,15 @@ module ActionDispatch",
+      "old_start": 208,
+      "new_start": 224,
+      "group": "request",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/request_headers.rb",
+      "failure": "Expose headers and the HTTP_AUTHORIZATION environment value; bearer-token lookup otherwise has no method.",
+      "coverage": [
+        "API authenticated user/article/comment/share requests"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.14",
+      "file": "runtime/ruby/action_dispatch/request.rbs",
+      "hunk": "@@ -22,7 +22,17 @@ module ActionDispatch",
+      "old_start": 22,
+      "new_start": 22,
+      "group": "request",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/request_headers.rb",
+      "failure": "Pin RequestHeaders storage/method signatures and Request accessors; dependency of native request exposure.",
+      "coverage": [
+        "API authenticated user/article/comment/share requests"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.15",
+      "file": "runtime/ruby/active_record/base.rb",
+      "hunk": "@@ -192,6 +192,18 @@ module ActiveRecord",
+      "old_start": 192,
+      "new_start": 192,
+      "group": "errors",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/attribute_errors.rb",
+      "failure": "Retain short messages under the original attribute, apart from the full-message array; to_hash otherwise loses its keys.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.16",
+      "file": "runtime/ruby/active_record/base.rb",
+      "hunk": "@@ -247,6 +259,7 @@ module ActiveRecord",
+      "old_start": 247,
+      "new_start": 259,
+      "group": "errors",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/attribute_errors.rb",
+      "failure": "Initialize the message Hash on each record; dependency of message accumulation.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.17",
+      "file": "runtime/ruby/active_record/base.rb",
+      "hunk": "@@ -1077,6 +1090,7 @@ module ActiveRecord",
+      "old_start": 1077,
+      "new_start": 1090,
+      "group": "errors",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/validation_reset.rb",
+      "failure": "Reset keyed messages on every valid? call; otherwise a corrected record retains stale errors.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.18",
+      "file": "runtime/ruby/active_record/base.rbs",
+      "hunk": "@@ -67,6 +67,9 @@ module ActiveRecord",
+      "old_start": 67,
+      "new_start": 67,
+      "group": "errors",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/attribute_errors.rb",
+      "failure": "Declare keyed message storage and writer/reader signatures; dependency of the lowering.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.19",
+      "file": "runtime/ruby/active_support_ext.rb",
+      "hunk": "@@ -761,7 +761,12 @@ module ActiveSupport",
+      "old_start": 761,
+      "new_start": 761,
+      "group": "time",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/utc_timestamp.rb",
+      "failure": "UTC presentation produces +00:00 instead of Rails Z.",
+      "coverage": [
+        "runtime_probe.rb:utc_presentation"
+      ],
+      "scope": "Supplemental Rails parity; the frozen timestamp assertions do not independently isolate this suffix.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.20",
+      "file": "runtime/ruby/active_support_ext.rb",
+      "hunk": "@@ -808,3 +813,13 @@ module ActiveSupport",
+      "old_start": 808,
+      "new_start": 813,
+      "group": "json",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/callback_json.rb",
+      "failure": "Provide the native JSON encoder used in callback/rescue lowering; otherwise the helper cannot dispatch.",
+      "coverage": [
+        "API JSON error responses",
+        "api_mode.rs"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.21",
+      "file": "runtime/ruby/active_support_ext.rbs",
+      "hunk": "@@ -107,3 +107,9 @@ module ActiveSupport",
+      "old_start": 107,
+      "new_start": 107,
+      "group": "json",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/callback_json.rb",
+      "failure": "Declare the encoder signature; dependency of the helper.",
+      "coverage": [
+        "API JSON error responses",
+        "api_mode.rs"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.22",
+      "file": "runtime/spinel/scaffold/main.rb",
+      "hunk": "@@ -425,6 +425,8 @@ module Main",
+      "old_start": 425,
+      "new_start": 425,
+      "group": "request",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/request_headers.rb",
+      "failure": "Copy parsed wire headers and authorization into the Rails request object; accessors alone otherwise return empty values.",
+      "coverage": [
+        "API authenticated user/article/comment/share requests"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.23",
+      "file": "runtime/spinel/scaffold/main.rb",
+      "hunk": "@@ -553,8 +555,10 @@ module Main",
+      "old_start": 553,
+      "new_start": 555,
+      "group": "wire",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/empty_response.rb",
+      "failure": "Add JSON charset and omit Content-Type on 204/304; otherwise the HTTP envelope differs from Rails.",
+      "coverage": [
+        "common HTTP response quality",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)"
+      ],
+      "scope": "The 204/304 branch is supplemental parity coverage; the production gate does not isolate 304.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.24",
+      "file": "runtime/spinel/tep/net.rb",
+      "hunk": "@@ -20,6 +20,7 @@ module Sock",
+      "old_start": 20,
+      "new_start": 20,
+      "group": "peer",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/remote_ip.rb",
+      "failure": "Expose Spinel socket peer lookup through FFI; dependency of remote_ip.",
+      "coverage": [
+        "security/hurl/s13_login_rate_limit.hurl",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)"
+      ],
+      "scope": "Single-client production traffic checks throttling, not isolation between distinct peers.",
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.25",
+      "file": "runtime/spinel/tep/net.rb",
+      "hunk": "@@ -62,6 +63,14 @@ module Sock",
+      "old_start": 62,
+      "new_start": 63,
+      "group": "peer",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/remote_ip.rb",
+      "failure": "Read the numeric accepted-socket address; otherwise every peer remains an empty string.",
+      "coverage": [
+        "security/hurl/s13_login_rate_limit.hurl",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)"
+      ],
+      "scope": "Single-client production traffic checks throttling, not isolation between distinct peers.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.26",
+      "file": "runtime/spinel/tep/server.rb",
+      "hunk": "@@ -171,6 +171,7 @@ module Tep",
+      "old_start": 171,
+      "new_start": 171,
+      "group": "peer",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/remote_ip.rb",
+      "failure": "Propagate the accepted peer in the plain Tep server before dispatch; otherwise that backend loses remote_ip.",
+      "coverage": [
+        "Source inspection: shared peer propagation; no independent plain/scheduled server execution in this condition."
+      ],
+      "scope": "The frozen Conduit gate and native public HTTP probe instantiate the threaded server, covered by hunk 10.28. This counterpart is retained for the same request API on the other emitted server implementations, not claimed as independently required by the frozen gate.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.27",
+      "file": "runtime/spinel/tep/server_scheduled.rb",
+      "hunk": "@@ -213,6 +213,7 @@ module Tep",
+      "old_start": 213,
+      "new_start": 213,
+      "group": "peer",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/remote_ip.rb",
+      "failure": "Propagate the accepted peer in the scheduled Tep server before dispatch; otherwise that backend loses remote_ip.",
+      "coverage": [
+        "Source inspection: shared peer propagation; no independent plain/scheduled server execution in this condition."
+      ],
+      "scope": "The frozen Conduit gate and native public HTTP probe instantiate the threaded server, covered by hunk 10.28. This counterpart is retained for the same request API on the other emitted server implementations, not claimed as independently required by the frozen gate.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.28",
+      "file": "runtime/spinel/tep/server_threaded.rb",
+      "hunk": "@@ -212,6 +212,7 @@ module Tep",
+      "old_start": 212,
+      "new_start": 212,
+      "group": "peer",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/remote_ip.rb",
+      "failure": "Propagate the accepted peer in the threaded Tep server before dispatch; otherwise that backend loses remote_ip.",
+      "coverage": [
+        "security/hurl/s13_login_rate_limit.hurl",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)",
+        "patch10-http.json (native generic API probe)"
+      ],
+      "scope": "Single-client production traffic checks throttling, not isolation between distinct peers.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.29",
+      "file": "src/analyze/registry/activemodel.rs",
+      "hunk": "@@ -77,6 +77,7 @@ pub(in crate::analyze) fn register(classes: &mut HashMap<ClassId, ClassInfo>) {",
+      "old_start": 77,
+      "new_start": 77,
+      "group": "errors",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/attribute_errors.rb",
+      "failure": "Register errors.to_hash with a keyed Hash return; otherwise public API analysis rejects the projection.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.30",
+      "file": "src/lower/controller_to_library/mod.rs",
+      "hunk": "@@ -1349,9 +1349,7 @@ fn build_methods(",
+      "old_start": 1349,
+      "new_start": 1349,
+      "group": "dispatcher",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/callback_json.rb",
+      "failure": "Retain the synthesized dispatcher so the normal render pipeline can run over callback/rescue bodies.",
+      "coverage": [
+        "API error responses",
+        "api_mode.rs"
+      ],
+      "scope": "Subclass precedence also has a fresh public shape regression; the frozen app does not independently exercise overlapping subclass handlers.",
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.31",
+      "file": "src/lower/controller_to_library/mod.rs",
+      "hunk": "@@ -1361,8 +1359,15 @@ fn build_methods(",
+      "old_start": 1361,
+      "new_start": 1359,
+      "group": "dispatcher",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/callback_json.rb",
+      "failure": "Lower callback/rescue render(json:) to the same positional encoded body as actions; otherwise native JSON responses cannot dispatch correctly.",
+      "coverage": [
+        "API error responses",
+        "api_mode.rs"
+      ],
+      "scope": "Subclass precedence also has a fresh public shape regression; the frozen app does not independently exercise overlapping subclass handlers.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.32",
+      "file": "src/lower/controller_to_library/mod.rs",
+      "hunk": "@@ -2439,13 +2444,13 @@ fn insert_baseline_controller_methods(info: &mut crate::analyze::ClassInfo) {",
+      "old_start": 2439,
+      "new_start": 2444,
+      "group": "dispatcher",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/rescue_priority.rb",
+      "failure": "Correct the rescue-order documentation; no separate runtime behavior.",
+      "coverage": [
+        "API error responses",
+        "api_mode.rs"
+      ],
+      "scope": "Subclass precedence also has a fresh public shape regression; the frozen app does not independently exercise overlapping subclass handlers.",
+      "role": "comment; zero independent runtime effect"
+    },
+    {
+      "id": "10.33",
+      "file": "src/lower/controller_to_library/mod.rs",
+      "hunk": "@@ -2469,6 +2474,8 @@ fn collect_rescue_handlers(",
+      "old_start": 2469,
+      "new_start": 2474,
+      "group": "dispatcher",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/rescue_priority.rb",
+      "failure": "Reverse the ancestor chain before collecting handlers; otherwise an inherited handler wins over the subclass.",
+      "coverage": [
+        "API error responses",
+        "api_mode.rs"
+      ],
+      "scope": "Subclass precedence also has a fresh public shape regression; the frozen app does not independently exercise overlapping subclass handlers.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.34",
+      "file": "src/lower/errors_add.rs",
+      "hunk": "@@ -145,6 +145,41 @@ fn rewrite_errors_add(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {",
+      "old_start": 145,
+      "new_start": 145,
+      "group": "errors",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/dynamic_errors.rb",
+      "failure": "Evaluate a dynamic error receiver and message once despite retaining two projections; otherwise side effects run twice.",
+      "coverage": [
+        "API keyed validation errors",
+        "patch10-dynamic-error-execution-final.log"
+      ],
+      "scope": "Single evaluation has supplemental emitted execution coverage; the frozen app does not isolate a side-effecting owner expression.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.35",
+      "file": "src/lower/errors_add.rs",
+      "hunk": "@@ -184,13 +219,19 @@ fn rewrite_errors_add(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {",
+      "old_start": 184,
+      "new_start": 219,
+      "group": "errors",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/dynamic_errors.rb",
+      "failure": "Append the full message and also retain its original attribute and short message; otherwise errors.to_hash loses custom errors.",
+      "coverage": [
+        "API keyed validation errors",
+        "patch10-dynamic-error-execution-final.log"
+      ],
+      "scope": "Single evaluation has supplemental emitted execution coverage; the frozen app does not isolate a side-effecting owner expression.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.36",
+      "file": "src/lower/errors_index.rs",
+      "hunk": "@@ -145,9 +145,23 @@ fn rewrite_messages(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {",
+      "old_start": 145,
+      "new_start": 145,
+      "group": "errors",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/attribute_errors.rb",
+      "failure": "Ground outer predicates first and lower whole errors.messages/to_hash to keyed storage; otherwise unsupported residue or Array-only errors remain.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.37",
+      "file": "src/lower/model_to_library/mod.rs",
+      "hunk": "@@ -1848,6 +1848,11 @@ fn build_class_info_with_finder_inputs(",
+      "old_start": 1848,
+      "new_start": 1848,
+      "group": "errors",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/attribute_errors.rb",
+      "failure": "Register keyed message methods on lowered models; dependency preventing post-lowering dispatch errors.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.38",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -57,7 +57,7 @@ pub(super) fn push_validate_method(methods: &mut Vec<MethodDef>, model: &Model)",
+      "old_start": 57,
+      "new_start": 57,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/association_errors.rb",
+      "failure": "Pass the association attribute to the shared error helper for explicit association-presence validation.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl",
+        "patch10-public-execution.log",
+        "patch10-validator-execution-final.log: five passing public execution cases"
+      ],
+      "role": "runtime/lowering or regression test",
+      "scope": "Supplemental public execution; this exact declaration is not present in the frozen application. Shared-helper callsites must remain consistent."
+    },
+    {
+      "id": "10.39",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -149,7 +149,7 @@ fn secure_password_checks(model: &Model) -> Vec<Expr> {",
+      "old_start": 149,
+      "new_start": 149,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/secure_password_errors.rb",
+      "failure": "Retain the password attribute for missing-digest validation.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl",
+        "patch10-public-execution.log"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.40",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -159,7 +159,7 @@ fn secure_password_checks(model: &Model) -> Vec<Expr> {",
+      "old_start": 159,
+      "new_start": 159,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/secure_password_errors.rb",
+      "failure": "Retain the password attribute for the 72-byte length validation.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl",
+        "patch10-public-execution.log",
+        "patch10-validator-execution-final.log: five passing public execution cases"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.41",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -167,7 +167,7 @@ fn secure_password_checks(model: &Model) -> Vec<Expr> {",
+      "old_start": 167,
+      "new_start": 167,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/secure_password_errors.rb",
+      "failure": "Retain password_confirmation separately from password for a mismatched confirmation.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl",
+        "patch10-public-execution.log",
+        "patch10-validator-execution-final.log: five passing public execution cases"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.42",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -279,6 +279,20 @@ fn push_active_model_validation_surface(methods: &mut Vec<MethodDef>, model: &Mo",
+      "old_start": 279,
+      "new_start": 279,
+      "group": "tableless",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "public-app/app/models/signup_form.rb",
+      "failure": "An ActiveModel form has no Base superclass to supply keyed-message storage and reset.",
+      "coverage": [
+        "patch10-public-execution.log"
+      ],
+      "scope": "Supplemental Rails parity; no tableless validation form exists in this frozen gate.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.43",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -309,6 +323,10 @@ fn push_active_model_validation_surface(methods: &mut Vec<MethodDef>, model: &Mo",
+      "old_start": 309,
+      "new_start": 323,
+      "group": "tableless",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "public-app/app/models/signup_form.rb",
+      "failure": "An ActiveModel form has no Base superclass to supply keyed-message storage and reset.",
+      "coverage": [
+        "patch10-public-execution.log"
+      ],
+      "scope": "Supplemental Rails parity; no tableless validation form exists in this frozen gate.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.44",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -487,7 +505,7 @@ fn inline_belongs_to_check(",
+      "old_start": 487,
+      "new_start": 505,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/association_errors.rb",
+      "failure": "Retain the association attribute for the implicit required-belongs_to check.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl",
+        "patch10-public-execution.log"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.45",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -550,7 +568,7 @@ fn inline_presence_check(attr: &Symbol, attr_ty: Option<&Ty>) -> Expr {",
+      "old_start": 550,
+      "new_start": 568,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/attribute_errors.rb",
+      "failure": "Pass the attribute for array/string optional presence; callsite dependency of the keyed helper.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl",
+        "patch10-public-execution.log",
+        "patch10-validator-execution-final.log: five passing public execution cases"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.46",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -606,7 +624,7 @@ fn inline_presence_check(attr: &Symbol, attr_ty: Option<&Ty>) -> Expr {",
+      "old_start": 606,
+      "new_start": 624,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/attribute_errors.rb",
+      "failure": "Pass the attribute for other presence checks; callsite dependency of the keyed helper.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl",
+        "patch10-public-execution.log",
+        "patch10-validator-execution-final.log: five passing public execution cases"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.47",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -645,7 +663,7 @@ fn inline_absence_check(attr: &Symbol) -> Expr {",
+      "old_start": 645,
+      "new_start": 663,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/absence_errors.rb",
+      "failure": "Pass the attribute for absence validation; callsite dependency of the keyed helper.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl",
+        "patch10-public-execution.log",
+        "patch10-validator-execution-final.log: five passing public execution cases"
+      ],
+      "role": "signature, initialization or shared-helper dependency",
+      "scope": "Supplemental public execution; this exact declaration is not present in the frozen application. Shared-helper callsites must remain consistent."
+    },
+    {
+      "id": "10.48",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -679,7 +697,7 @@ fn inline_inclusion_check(attr: &Symbol, values: &[Literal]) -> Expr {",
+      "old_start": 679,
+      "new_start": 697,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/inclusion_errors.rb",
+      "failure": "Pass the attribute to the inclusion IR helper; mechanical dependency of the shared helper signature.",
+      "coverage": [
+        "patch10-validator-execution-final.log: source-ingestion gap remains",
+        "validation-ingestion-provenance.json"
+      ],
+      "role": "signature, initialization or shared-helper dependency",
+      "scope": "Mechanical callsite adaptation to the attribute-aware helper. Source ingestion ignores inclusion, format and numericality on this pin (also on v7 and the Oct 7 template). Fresh public execution fails before these IR checks can be generated; no claim of frozen-gate coverage for that kind."
+    },
+    {
+      "id": "10.49",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -710,7 +728,7 @@ fn inline_format_check(attr: &Symbol, pattern: &str) -> Expr {",
+      "old_start": 710,
+      "new_start": 728,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/format_errors.rb",
+      "failure": "Pass the attribute to the format IR helper; mechanical dependency of the shared helper signature.",
+      "coverage": [
+        "patch10-validator-execution-final.log: source-ingestion gap remains",
+        "validation-ingestion-provenance.json"
+      ],
+      "role": "signature, initialization or shared-helper dependency",
+      "scope": "Mechanical callsite adaptation to the attribute-aware helper. Source ingestion ignores inclusion, format and numericality on this pin (also on v7 and the Oct 7 template). Fresh public execution fails before these IR checks can be generated; no claim of frozen-gate coverage for that kind."
+    },
+    {
+      "id": "10.50",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -806,7 +824,7 @@ fn inline_length_check(",
+      "old_start": 806,
+      "new_start": 824,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/length_errors.rb",
+      "failure": "Retain the attribute for the minimum-length error.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl",
+        "patch10-public-execution.log",
+        "patch10-validator-execution-final.log: five passing public execution cases"
+      ],
+      "role": "runtime/lowering or regression test",
+      "scope": "Supplemental public execution; this exact declaration is not present in the frozen application. Shared-helper callsites must remain consistent."
+    },
+    {
+      "id": "10.51",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -825,7 +843,7 @@ fn inline_length_check(",
+      "old_start": 825,
+      "new_start": 843,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/length_errors.rb",
+      "failure": "Retain the attribute for the maximum-length error.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl",
+        "patch10-public-execution.log",
+        "patch10-validator-execution-final.log: five passing public execution cases"
+      ],
+      "role": "runtime/lowering or regression test",
+      "scope": "Supplemental public execution; this exact declaration is not present in the frozen application. Shared-helper callsites must remain consistent."
+    },
+    {
+      "id": "10.52",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -877,7 +895,7 @@ fn inline_numericality_check(",
+      "old_start": 877,
+      "new_start": 895,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/numericality_errors.rb",
+      "failure": "Pass the attribute for the not-a-number IR branch; mechanical dependency of the shared helper signature.",
+      "coverage": [
+        "patch10-validator-execution-final.log: source-ingestion gap remains",
+        "validation-ingestion-provenance.json"
+      ],
+      "role": "signature, initialization or shared-helper dependency",
+      "scope": "Mechanical callsite adaptation to the attribute-aware helper. Source ingestion ignores inclusion, format and numericality on this pin (also on v7 and the Oct 7 template). Fresh public execution fails before these IR checks can be generated; no claim of frozen-gate coverage for that kind."
+    },
+    {
+      "id": "10.53",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -895,7 +913,7 @@ fn inline_numericality_check(",
+      "old_start": 895,
+      "new_start": 913,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/numericality_errors.rb",
+      "failure": "Pass the attribute for the greater-than IR branch; mechanical dependency of the shared helper signature.",
+      "coverage": [
+        "patch10-validator-execution-final.log: source-ingestion gap remains",
+        "validation-ingestion-provenance.json"
+      ],
+      "role": "signature, initialization or shared-helper dependency",
+      "scope": "Mechanical callsite adaptation to the attribute-aware helper. Source ingestion ignores inclusion, format and numericality on this pin (also on v7 and the Oct 7 template). Fresh public execution fails before these IR checks can be generated; no claim of frozen-gate coverage for that kind."
+    },
+    {
+      "id": "10.54",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -911,7 +929,7 @@ fn inline_numericality_check(",
+      "old_start": 911,
+      "new_start": 929,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/numericality_errors.rb",
+      "failure": "Pass the attribute for the less-than IR branch; mechanical dependency of the shared helper signature.",
+      "coverage": [
+        "patch10-validator-execution-final.log: source-ingestion gap remains",
+        "validation-ingestion-provenance.json"
+      ],
+      "role": "signature, initialization or shared-helper dependency",
+      "scope": "Mechanical callsite adaptation to the attribute-aware helper. Source ingestion ignores inclusion, format and numericality on this pin (also on v7 and the Oct 7 template). Fresh public execution fails before these IR checks can be generated; no claim of frozen-gate coverage for that kind."
+    },
+    {
+      "id": "10.55",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -926,7 +944,7 @@ fn inline_numericality_check(",
+      "old_start": 926,
+      "new_start": 944,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/numericality_errors.rb",
+      "failure": "Pass the attribute for the integer-only IR branch; mechanical dependency of the shared helper signature.",
+      "coverage": [
+        "patch10-validator-execution-final.log: source-ingestion gap remains",
+        "validation-ingestion-provenance.json"
+      ],
+      "role": "signature, initialization or shared-helper dependency",
+      "scope": "Mechanical callsite adaptation to the attribute-aware helper. Source ingestion ignores inclusion, format and numericality on this pin (also on v7 and the Oct 7 template). Fresh public execution fails before these IR checks can be generated; no claim of frozen-gate coverage for that kind."
+    },
+    {
+      "id": "10.56",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -1005,7 +1023,11 @@ fn is_a_check(value: &Expr, class_name: &str) -> Expr {",
+      "old_start": 1005,
+      "new_start": 1023,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/attribute_errors.rb",
+      "failure": "Accept an attribute and remove its humanized prefix from the short message; shared helper dependency of all message-retaining checks.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl",
+        "patch10-public-execution.log",
+        "patch10-validator-execution-final.log: five passing public execution cases"
+      ],
+      "role": "signature, initialization or shared-helper dependency"
+    },
+    {
+      "id": "10.57",
+      "file": "src/lower/model_to_library/validations.rs",
+      "hunk": "@@ -1020,7 +1042,16 @@ fn errors_push(msg: String) -> Expr {",
+      "old_start": 1020,
+      "new_start": 1042,
+      "group": "validators",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/attribute_errors.rb",
+      "failure": "Append full and keyed short messages together; otherwise generated validations populate only the full-message Array.",
+      "coverage": [
+        "api/hurl/errors_articles.hurl",
+        "api/hurl/errors_comments.hurl",
+        "api/hurl/errors_users.hurl",
+        "patch10-public-execution.log",
+        "patch10-validator-execution-final.log: five passing public execution cases"
+      ],
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.58",
+      "file": "tests/api_mode.rs",
+      "hunk": "@@ -0,0 +1,55 @@",
+      "old_start": 0,
+      "new_start": 1,
+      "group": "tests",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "public-app/app/controllers/widgets_controller.rb",
+      "failure": "Regression coverage for JSON dispatch order and retained error attributes.",
+      "coverage": [
+        "api_mode.rs",
+        "errors_index_lowering.rs"
+      ],
+      "scope": "Tests support the runtime hunks; they are not additional compiler behavior.",
+      "role": "runtime/lowering or regression test"
+    },
+    {
+      "id": "10.59",
+      "file": "tests/errors_index_lowering.rs",
+      "hunk": "@@ -202,19 +202,21 @@ end",
+      "old_start": 202,
+      "new_start": 202,
+      "group": "tests",
+      "status": "kept",
+      "upstream_covering_commit": null,
+      "repro": "snippets/attribute_errors.rb",
+      "failure": "Regression coverage for errors.messages and foreign-record errors.to_hash using retained attribute keys.",
+      "coverage": [
+        "api_mode.rs",
+        "errors_index_lowering.rs"
+      ],
+      "scope": "Tests support the runtime hunks; they are not additional compiler behavior.",
+      "role": "runtime/lowering or regression test"
+    }
+  ],
+  "public_validator_limit": {
+    "passing_cases": 5,
+    "failing_cases": 4,
+    "failure": "Source ingestion ignores inclusion, format and numericality; the same four admitted declarations have no generated checks.",
+    "present_in_v7_and_template": true,
+    "evidence": [
+      "patch10-validator-execution-final.log",
+      "validation-ingestion-provenance.json"
+    ]
+  }
+}

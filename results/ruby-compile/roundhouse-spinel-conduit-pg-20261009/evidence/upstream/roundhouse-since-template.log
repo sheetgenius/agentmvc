@@ -1,0 +1,471 @@
+ea4d3e682c86d817b2617b5862ed9a14d634f7eb Pin campfire at 32b4144: the Rails main bump, on the ruby lane 418 of 419
+b531d10bd5a18863ad114a91750c2ac6c5e29cca Merge pull request #492 from bunnykong/secure-password-nil-writer
+561ade09ae15535c47726fbd9e6df51e0f230f3c Merge pull request #493 from bunnykong/integer-query-exists-hash
+a28539b6a8811a5157023babb549a4779f3996cd Merge pull request #696 from dai199/relation-to-sql
+1d0f746848b0971364dbd08195eb8705f00e92c2 Merge pull request #697 from rubys/claude/campfire-main-fixes
+584a70d144cf62d70e32da4aeeede0faf8d691a4 Merge pull request #689 from eddygarcas/not-found-parity
+ebad842a190e93c8a06cb8fcea3623e7f93a9cf3 Seed a super-calling action's view with the overridden action's ivars; raise the campfire floor
+e6798c936717073a8ef83853752ec12b883ad40c Merge rubys/main into secure-password-nil-writer
+61503a01da88141c4ef720fd535afe7bab2390c9 docs/ci: campfire-latest also runs for unknown changed inputs on non-PR runs
+a0ccd6294e9f6d53efcd08cecee9ca423dab1235 Merge remote-tracking branch 'origin/main' into claude/campfire-main-fixes
+c9d125a80cbae70227bcdbde407d06e18ea1395f CI: pin campfire to 2393f01, the last upstream main inside the subset
+08bf49940f7cffd537191496a10878c53600a9c6 A relation's to_sql answers a String
+69c612ceafa295a0255438e7f2f89e441b0fbb80 Merge pull request #690 from rubys/claude/anonymous-rest
+7129967a3c61a5524545434d9ea43eeeba5cc77b Raise "without an ID" for Relation#find(nil)
+96854279dc02f39f68b54fcf1506e39610499008 Merge pull request #673 from dai199/as-json-gem-receivers
+62257444848c9f39d7e741750869278551fa9bb5 Analyze: an action override calling `super` keeps the overridden action's ivars
+305e3538f200cf29f26dcba1f1722c09933010b8 Type RecordNotFound#id to admit a Float
+06f952769c63841d0d5a2887dca3a7db1f18c5c0 Merge rubys/main into integer-query-exists-hash
+b13d54e9495efc73f3c1f93ef507be22949e3cf5 Count an alias of a public action as defined
+842130cc8fb661ef03357399d9f2bb78b03b1581 Merge remote-tracking branch 'origin/claude/anonymous-rest' into claude/campfire-main-fixes
+36e87a8cb21af79db994cb1125ab562d91518f4d Merge pull request #692 from rubys/claude/assoc-pluck-type
+5dbd9fd59325d2ae83d147603a451b3d47414096 Merge remote-tracking branch 'origin/main' into claude/anonymous-rest
+145e5c164980913e0d490196f6cc089fa15de8e4 Merge remote-tracking branch 'origin/main' into claude/anonymous-rest
+759afaa0eb2b4f40ca0833a1e4e123b64fc9ef84 Merge pull request #691 from rubys/claude/kwrest-sidecar-448
+4d207432e76a7e2952ee45031e038d2c0579fc2d Merge pull request #685 from rubys/claude/campfire-controller-surface
+03fd623150df93678fa5801e4c8034d39a4cd81b forwarding: a nested def's bare `*` does not forward the outer rest
+f1cd73a13dc46d1d537e3fb3b6fa038e896a2582 Run the not-found Spinel checks in the Spinel lane only
+c19524c7143deea17aa8122d381a8ca59bca6f99 Merge pull request #674 from dai199/param-rows-by-side
+b2e88c35e6ef73abc228f8df68ceaaa8f7ce150b assoc_pluck: keep pluck's type on the rewritten `map` projection
+9d4300f5d8f0110aeb6e4408059b4df6d7885581 Merge remote-tracking branch 'origin/main' into claude/campfire-controller-surface
+22f2288dd8d5d51572cdc98f4d828d7f2458fab3 Merge pull request #680 from eddygarcas/concern-block-filter-macros
+a1636b7d695336667b8746460034d8f459d6d266 Merge remote-tracking branch 'origin/main' into pr448-merge
+a47f2b16a6cdccb735a17af93c9f1f49f16b8e8a Merge pull request #686 from rubys/claude/campfire-small-gaps
+ad6dc2703c00fc6ba08891f46c3b5073983898eb Ingest: bind an unforwarded anonymous rest (`def f(*)`) to a generated name
+ceba9950cf65aea49ebd74d7d785766cb0dac9ea Word RecordNotFound messages as Rails 8.1 does
+88d2338eab1368698f49cdaab3f35f65468c770f Give ActiveRecord::RecordNotFound Rails' model, primary_key and id
+262fac3b2f58734ee43c802255174db496595c9d Merge pull request #684 from rubys/claude/campfire-latest
+fcfb45dc30f9b877a2c7d57e9ac0ae8823366863 is_response_terminal: count self.render/self.redirect_to, not a nil body
+7a4258fe625a0430b713af029c5e8d3fda6bd3c7 ActionDispatch::Request#optional_port for campfire main's default_url_options
+2bd951ee1e8a49ca68e3c6bc845a45c565d39fd5 A block-filter concern macro refuses a shadowed block parameter
+4d972764a275749227bf5b932faa1662fb49c164 campfire-latest: keep it out of PR plans; tell an unknown survey from zero gaps
+bc845579a2eaa1f6ad01d2678fa62957e8ddce04 Controller response surface for campfire main: response_body, media_type, render_to_string
+1d0bac1a67f72475d9b6c0bec3e61a87cab4ad42 An inherited def is found on the call's own side
+c6b357d09a635e2fe77e1269d7501df35827ac56 Answer 404 for a routed action the controller does not define
+9fbdad2bbd236dda63a36f1d8067679d46edf8db CI: advisory campfire-latest lane; fail the strict-emit ceiling on an ingest abort
+321853954c660c6c60e851228e02b6563755ac44 Merge pull request #683 from rubys/claude/awesome-lovelace-zc5rri
+d1d32b6e4e905df7467d2ce01670a4552b134e9b The fixpoint canaries read parameter rows by side
+9551e9c5058a282389934fbf17a839e6a31bca94 A class method and an instance method of one name get their own parameter rows
+2df44e178762aa7104fd7dca63a6e5c60e2534b3 Merge rubys/main into integer-query-exists-hash
+186118ed6bd1917f8de7b06220e63cd66134fc73 Make emit_and_run's ruby -e scripts locale-independent; document local Ruby setup
+305104198b63a87209b99898c8c6cc70e15a9fec Merge rubys/main into secure-password-nil-writer
+0245b2ba6a45c7dbd4f5f22142114986c862d74d A block-filter concern macro refuses options it can't represent
+0ddf54dbea4110a074be0d2da6d2d55d8747cc73 Merge pull request #671 from eddygarcas/ar-lock
+7e868dca1ae95ec78e8cc84c1bf7657b5d65eb31 Merge pull request #678 from rubys/claude/awesome-lovelace-zc5rri
+4a5a5f0c520cc0ec7c1747e7cf46c3bb9b7a30e2 Raise the spinel-blog runtime untyped ceiling to 529 for with_lock's option pass-through (#671)
+d68ddc14cc2352058784131c5d0f64408f42a564 A concern macro that wraps a block filter expands into that filter
+8e64e7099ae19381c545665bf91cdd774e1b03f9 Merge branch 'main' into ar-lock
+6f20594aa60b8648c8ec4c341f0dfea28d7899fd with_lock(*args) matches Rails 8.1's options-Hash shape (#671)
+875a4736d101bd0e4cd1270711b3d3d6fd04a7de lock! accepts Rails' String locking-clause form (#671)
+a8410348b97a671e81e29f2910dcd27b207aa448 Mint STI GlobalIDs from the type column and confirm subclass lookups
+90400b8878d74218177ff41a1885653f2bab5f88 Merge pull request #677 from rubys/claude/ruby-next-ci-lane
+cec4525230279ad908f85ac695ace24df34fe4dd Merge pull request #595 from fc-anjos/fix/integer-floor-div-mod
+d042ee9e04f8cc390798b9298b96b41c09f889ee Merge pull request #676 from eddygarcas/ctorkw-unresolved-include
+88663aabd04afe028dcbdca77ceaed17242ba308 Return the affected-row count from Model.delete_all
+0673a058e6236c04d01a3f4ac7d18690936eb982 Campfire runtime support: plain text, controller response, STI broadcasts
+087a5bcb479f6651885b1fd435e0a60baebab32e Merge pull request #672 from eddygarcas/emit-syntax-mastodon
+8cb4ee303bf180826de466e9668a021682d11c76 Run the CRuby runtime gates on the next MRI line in their own job
+b7f68ba0b41ce91e16299e5029d21cb835ed6df5 Merge main into fix/integer-floor-div-mod
+ec100a1ac91de7e4e7635c65b05b8127d424eec7 Keep Class.new keywords verbatim when no source constructor can be reached
+58e0e2f640cc8f6fe5ff746fdf7fc5a8e46e80da Merge pull request #603 from fc-anjos/fix/core-method-passthrough
+bedf661d9d70840110eb3a801c8f3120da4b4ef0 Merge pull request #601 from fc-anjos/fix/library-class-dropped
+8a17a9751463874670bbaf8971155fe0b77c532c Restore the escaped forms in payload_json's comment
+ca8186b6f1e98035fc75761352e228aebe0057cd Merge pull request #607 from fc-anjos/fix/assert-equal-array-to-a
+f18a9ed86f213020b3d8108323c07abd58931390 Merge pull request #621 from ljachymczyk/broadcast-json
+b7db989831ca11f62c7d2190ec88963c0d2a134d Merge pull request #609 from fc-anjos/fix/unary-minus-receiver-parens
+b2c64b64e4f6e506a99d8760a876daae8b071dc0 Merge pull request #467 from bunnykong/tep-incomplete-body
+dbf99aa49c88fa5ba0ee0a692c42db081fa2bc45 Merge pull request #466 from bunnykong/tep-content-length-conflict
+f2df304582579651b001a525b7173bb7b734b533 Merge pull request #655 from alextakitani/tep-scheduler-slot-reuse
+a46703cd64ab0dfcb8f8c3a02454ba344a774de5 Merge pull request #657 from bunnykong/fixpoint-s0-canaries
+9e73dd1bbe7c2716df9e0a68d0d9995bdf0330e3 Merge pull request #636 from ljachymczyk/r22-io-constants
+448ba9805a113cfc6c691e5113958be55f289ddd Merge main into fix/integer-floor-div-mod
+44b1802703cd40a4b4f99961c22efdd814bbeb8a Merge remote-tracking branch 'rubys/main' into fix/core-method-passthrough
+f4923fe00a61c13621807bb8de6251be53f939d9 Merge remote-tracking branch 'rubys/main' into cursor/pr601-thermos-d305
+d7efdbb0cbbf08a4b3dbe3a11f0e783e414ca595 Merge pull request #605 from fc-anjos/fix/native-semantics-mismatch
+04ec5f7236847e00fec1d972745b96cd5a50d83f An Object extension on a refused constant's result is not refused again
+d0db4f3a541b3f62bcb94b2a01a8e790265f1550 Fix Spinel shellwords PolyArray C compile break
+123f8febed66accb7082ae115340b58870b493d8 Array set ops: Python eql?-ish membership; Rust same-elem only
+71b18af4d5f03c6deb6bcd4a618c845a767174e3 Model ActiveRecord::Locking::Pessimistic#lock! / #with_lock (#644)
+b2417dab3e0706bb2eefdfe868e948b58f24ed3f Thermos: Str-whitelist Python join; classify gsub once
+d3365fdc695f7db1975498ad41c1a7f482da0c69 Array set ops: classify hetero Array/Array; Rust native infix for Unknown
+4a806e85cf722e24a64eca6aef39b6586437b98b Merge remote-tracking branch 'rubys/main' into cursor/pr601-thermos-d305
+aca3320799a9ac65fe29452b87a9e278b6f9baeb Merge remote-tracking branch 'rubys/main' into fix/core-method-passthrough
+427d38cb1c72772b88434fc92819b7a277b21420 Merge remote-tracking branch 'rubys/main' into cursor/pr-605-native-semantics-b464
+f0491734d49b417da9b2fbd63a1a0be9eb5d78a9 A serializer's `as_json` is attributed to the serializer gem
+e6dd87beedc8779baa9079d3ec60df614805d1c7 Merge main into fix/integer-floor-div-mod
+4449ede3321ef29c532eff601cb083f4ece58b64 Merge branch 'main' into r22-io-constants
+8c1762c2198f0d37c55d8c7bc16599c8aa238297 Merge pull request #654 from alextakitani/tep-send-simple-bytesize
+6d5f474b577239fe6c3e5ebc99066bdeedd2ccf7 Merge main into tep-send-simple-bytesize
+12665d182dbbfb5996936e3198d007598998ac7b Treat nil/nilable &callback as no block for presence
+0a87dc19fea16d54bf179dfdc4d9aaac26cbbf8a Merge branch 'main' into r22-io-constants
+57aa1d2ad6f52b34b1c6b4a952b5d59290720b43 Merge main into fix/integer-floor-div-mod
+cc39404f262b157870f7c83c29d7b036d7171767 A defined?-guarded closure ivar is one view param, not two
+bb8b7fa6635c345a047faf11a64b621a367427b9 A relation-taking class method with a rest param takes __rel by keyword
+fc2d7c2bed5796b7418e9d2aa1d44e83700207a8 A permit list with no scalar keys reads as nil, not an armless case
+18bd2ca7c3f8ee7969549b421da59d28d73869b2 Merge pull request #631 from ljachymczyk/params-wrapper
+b698ffa1c451430c9d880079a8954356c1e5828a Merge remote-tracking branch 'rubys/main' into cursor/pr601-thermos-d305
+9fe2e11851a36b9974915f9a2aa087ddf31ecd57 Treat only Var block forwards as block presence
+b893a370f657ae27265eb865eb2d807313317e77 Merge remote-tracking branch 'refs/remotes/upstream/main' into pr636-work
+fdd448714fe4f2fb70eea975402cd9df5480fcd8 Merge branch 'main' into params-wrapper
+69744e109d393947ce39bad49526dc7141ca0cc8 Merge main into fix/integer-floor-div-mod
+4a00cb4f7d83f09e3cca7efefe1861559b65d234 Merge main into tep-send-simple-bytesize
+fefe61c02b4b71899ae2aab71abfde2267abd729 ParamsWrapper app default requires an exact :json format entry
+cbfe69b608788cd14c8fbbb2dc892cf8c44306be Merge pull request #599 from fc-anjos/fix/rust-case-range-arms
+0e3e4095fb91523b34e43bccf62b680419c51a38 Merge remote-tracking branch 'rubys/main' into cursor/pr601-thermos-d305
+68ec02e010668a37e9db03d864da936fdc5736c0 Merge main into tep-send-simple-bytesize
+bf41e2408f7dcd77ad363d09bf5826b753feb093 TS floor_int_mod: pass operands as IIFE args
+235d1e33f6b128579c519ed99a0da249c77bafed Type PTY.spawn with a forwarded block as nil
+fbf9ada1b0eef41758e158ca153f9a8a7625edd5 Merge remote-tracking branch 'refs/remotes/upstream/main' into pr599-work
+6ef83dd81bc97d22ae1b8daaa7499e6764ef056d Merge main into fix/integer-floor-div-mod
+8fe0423bdeeca2a645b96fe8e1e1af88a5d73977 Merge pull request #597 from fc-anjos/fix/python-re-import
+7e482953dbc8f1ff1261b0324982d5fea8aea7a7 Thermos + CodeRabbit: ParamsWrapper lodgement and fail-closed defaults
+3d098ba6f3e795ad5bbf6915d8ac57108560deb6 Harden IO/process constants after Thermos review
+56d9a189e39d83550c6b0f7a741c788d604fd212 Merge branch 'main' into r22-io-constants
+daef3bc54eefb847cc5969420095d4b0c7845c01 Merge branch 'main' into params-wrapper
+d4b1a73d34fa70b38baffb1c33d9bf91ab9e2bd8 Pin send_simple bytesize probe and tighten comment
+cdb97efb5411052e41d9e1d8797943827c51e58b Merge main into fix/integer-floor-div-mod
+b75d01296c175e5800526c1bc02608ba3d2c5b17 Merge remote-tracking branch 'refs/remotes/upstream/main' into pr599-work
+b69046127264918a2822c2880c8aa5b633f53753 Merge remote-tracking branch 'rubys/main' into cursor/pr601-thermos-d305
+13805dd45fe74987928da4f15fbed8f84ef8e4f2 Merge branch 'main' into fix/python-re-import
+addf3fb74f753e2074900a4a1b691e7429a7e67e Merge pull request #665 from dchuk/codex/guarded-route-diagnostics
+c4b005b0b96dfa8c6cc8c364c449ae1810b47661 Treat explicit Object superclass as plain Ruby terminal
+7e4abdba59704eb673a047b7978b95a136ba2c43 Test: pin 7 % -3 rem-vs-divisor floor form
+8daa5c953a0f4dc68ef76311b05cef79f24d94ee Merge main into tep-send-simple-bytesize
+63cc8c5b47ea273997e75b27ca03fcf4c66a3a83 Thermos: fail-closed denylist for unemitted library classes
+5df7c5d66c6d7218c471c090b8cd8758f7a4c17e Thermos: IntFloor classifiers, TS helpers, FloorOp
+b67b4f463eaeb6acfe643ad356340c98f34059c9 Rust Case: single try_emit_case_pattern, reuse emit_and_run
+7822c10d4ca381c2d786a246ad5b54ee0fcbc80c Merge remote-tracking branch 'rubys/main' into cursor/pr601-thermos-d305
+4bf8f7ac0f8c661465b7ef80be3c5fc9595ade36 Python overlay: import re via exact needles in all writers
+c4e76e59d449f19961b3d410fcc97db5954207e7 Merge main into fix/integer-floor-div-mod
+dccbedf7f651561be86f11841af7c4b0f20af655 Align engine-mount Devise refuse list with host auth guards
+1744142fd61bb0a35806627d0b037da9d5552f36 Merge branch 'main' into codex/guarded-route-diagnostics
+4330dfa0e19ebcd83e8bf6cb58db3e6e162e1d40 Merge remote-tracking branch 'refs/remotes/upstream/main' into pr599-work
+d4f4076142d31f6e5c3ddc732d1ef9e725b2ae17 Merge pull request #632 from thomasklemm/fix/keyword-args-388-290
+6ea738e5fc008b1cb3f3cb27c3197bb8aa9eba8e Merge pull request #635 from thomasklemm/hillclimb-delegate-associations-20261008
+d48b7b579fade5884b41ad564faef68a9835cf6b Merge pull request #667 from eddygarcas/params-expect-merge-forms
+25c18ee3d78480cec47c8afc44d222ec0bc20dbb reverse_merge under an explicit `return` lowers like the bare tail
+81c0d7ecc45b593b86311fe6f7441ed9f25c39d5 Document route ingest helper contracts
+5471e32a52e3815fad4a9019a4af36588bac5fae Document auth route ingestion test contracts
+e0ad241e24506c0f943017678f1a4c93df2caed1 Test complete Devise guard diagnostics
+356b4e3c2a89345cc407b810093e9c97a28e6467 `merge!` on a params source converts through `to_attrs`, like `merge`
+40132f23ce326986f00215b059c93dc3c771b934 `reverse_merge` on a permit chain assigns its defaults on the typed record
+e25950a08078cd46ddf07768e04aa97d3d85456e `params.expect(r: :f)` is `params.expect(r: [:f])`
+9b2dd5e9720705ca3cf4e9d4f21e5f0e998cdfba Merge pull request #664 from eddygarcas/net-http-start-followup
+e293773c5525f29487bbc965be486caaf28ba4ad Fail closed on unsupported Devise route guards
+dcd595b78e8b9844d5a928faba4ae2b9c34ead31 tests/spinel_net_http_start.rs: assert the driver exited cleanly before reading its output
+fc798234c43e1ca00890981daeabe751827adf43 Spinel runtime: lazy Net::HTTP#start raises IOError on an already-open session
+891e930672109d0b33ee9c5348cf33481d407f52 Merge pull request #660 from dai199/initializer-declarations
+d506159d675e913c8592833ecb9ca04e8535fdd6 A rooted `::X` reaches the parsed reference check
+ec0d099de143562e1006810b4c4e8ba9a5543059 Initializer declarations count only what runs: code references and unconditional assignments
+10377cae477c4b138dbe816a5c137d7e89e551f1 Merge pull request #553 from ljachymczyk/params-expect-missing
+fd491506eea974418da1917809e8fdca58cfe9a4 A read of a constant an initializer assigns is a coverage note
+571b2b089566d0502000c4c36127ef417db691eb An initializer class the app reads through `[]` is the app's
+54a8b7bc9c72082b80117db3823a5d0b145be2c7 Merge pull request #512 from namespaceMarcello/test/run-probe-scripts-through-bash
+11830c91a2dcdcab52d67c6fa58c054177b7c35f Merge pull request #659 from dchuk/codex/postgres-generated-integers
+b3b6506b7374900c4f7d6aa5791aec9262da1859 Support exact PostgreSQL int4 generated-column results
+8a67905ab690be64406c0eafc0632efa0accef5e Merge pull request #658 from dchuk/codex/postgres-generated-json-extraction
+75ed42ad54e1d4ea30198b2f49b8e932278ef7be Fix canary counters and canonical filter fingerprints
+d8e3997aeb4165f2917b5d2a9f347b6bc9ad7e6e Support typed PostgreSQL JSON extraction in generated DDL
+730990d6c32c5945b282e468b860ca8e31617e83 Merge remote-tracking branch 'upstream/main' into thomasklemm/hillclimb-delegate-associations-20261008
+c19589ece50c61ead3df42eab0127cbbc256d5cd Defer shared model concern delegates safely
+9f967aabd9edfd9d4bdd82d179c67f3eb279a1a8 Merge pull request #653 from dchuk/fix/postgres-generated-expressions
+9ed3522adcbf76ac349dfc1b0c43c7ce33d6aeb1 Document generated-expression ingestion and regression helpers
+279a99030b4719a84c01762659ace01875309645 Preserve shared concern delegate expansion
+de85c6ffe6517b14978bd13421d04e343eee0df4 Tep's scheduler reuses a dead fiber slot instead of growing the arrays
+ab65c34f5e8bc987d1aa51f26d583cc65a677de0 Tep's send_simple frames its message in bytes
+90b38163dac0173de0874050b5ab30d004e3f8f7 Support bounded PostgreSQL text casts in generated-column DDL
+363f9ba4557b19c1a1326381be59a30bb288a83c Preserve standalone module delegate lowering
+dd2a24c7190f3a72b170115b2ce8e5bd42250587 Merge remote-tracking branch 'upstream/main' into thomasklemm/hillclimb-delegate-associations-20261008
+bc45f9ef81de733b874974dc3fe4f252be1b1c1c Merge pull request #648 from dchuk/fix/preserve-postgres-json-type
+fadd4bf47ee5559fbf5429b1237fa4febef60bfc Ignore class-side calls when validating instance delegates
+7ccce61c808e40c5774d0c0ffcae9b0cd4bc65ff Document JSON type-fidelity regression contracts
+07f4183f97e59ad6c3506744f42c03b06fcf9af6 Merge remote-tracking branch 'upstream/main' into thomasklemm/hillclimb-delegate-associations-20261008
+454458a6f0d95056d842242db8560a95bab7d2b8 Limit delegate source-order overrides to model methods
+80283c968a563f97197faa295b9210934a169765 Preserve PostgreSQL json and jsonb source types
+6b86aa620df3a22a288062f472d69461a906e3ee Merge pull request #640 from MatheusRich/rails-application-routes
+d19b170061b20a5f399a3a1e1149bca6046bd2ad Merge remote-tracking branch 'upstream/main' into thomasklemm/hillclimb-delegate-associations-20261008
+198a4b05b265af584422f442ba98cf7b680952ac Merge pull request #639 from eddygarcas/net-http-start-block
+4e24b221b6a5322dced4afc554dc23acaed2f353 Add opt-in canaries for the whole-program fixpoint
+5b1e8cac17f0380d5664b11e6a6267a0494f75fe Use canonical model methods for delegate targets
+6ee14280fb8465ec74ab6f43cd5af6533aeef6e9 refactor: split delegate declaration eligibility
+3242435c880a2ff39a8d239a0a3795ad39cc3783 Merge remote-tracking branch 'upstream/main' into thomasklemm/hillclimb-delegate-associations-20261008
+8b6d9a14fdeb702ce012d710c1b8a4bc8ce1b3cd Honor Ruby include precedence for delegated methods
+a3acfb459a7133ac3c3062b3e4d0eb5e6c52c35a Merge pull request #633 from eddygarcas/relation-sole
+51cc9aefb5420b234c02839486969a2acd69d723 Return Rails controller paths from recognize_path on the ruby target
+4dab82747ac7d990b1e7e4e3846678104cfa605b Read the recognize_path argument as Rails does on the ruby target
+ff481c08dc4adc54f64175122859bd9ec583161a The lazy Net::HTTP#start keeps CRuby's block form
+ecafe0d3d15b44f07aa88b57ae0c455af350a2cf Merge upstream main into fix/keyword-args-388-290
+3a8bf16730f45825fe2e06311bd5c7e1d7be52b4 Merge pull request #629 from dchuk/fix/stored-generated-columns
+a61c5f192fd292c566d3cdbb9a3f4a74e9c5a0e1 Keep class method forwarding signatures intact
+bb28838492c3543b68f9c6df0150450fac2152ad Hydrate generated columns from INSERT RETURNING
+dbf31623f00df86246ecc1974d63375fa5875a8b Fix delegate source ordering and concern precedence
+39699f9b6af759f64351c8f6b77e5c4922f72efa Relation#sole and find_sole_by, with Rails' RecordNotFound / SoleRecordExceeded
+0b028bc882d6db69783920808a29427149ed42f4 Harden constructor lookup edge cases
+554ab045c54db7e900a33a5bfa44c6eb9c5cf0c7 Merge branch 'main' of https://github.com/rubys/roundhouse into fix/keyword-args-388-290
+68ec833a5b72ae7da013025eeb4ab82f917d8e18 Preserve visibility for synthesized delegates
+3ca70cfc979439a0a54a07abe5ff1b4644e222b7 Harden constructor keyword lookup analysis
+7e863ae85d1ad5844fc074f68b13b3584cb5dcb7 Preserve classes during surveyed delegate refusals
+ad38b293ba6a604f56cbde46c82b13e5d1149377 Merge remote-tracking branch 'upstream/main' into thomasklemm/hillclimb-delegate-associations-20261008
+a8f37e720a23ec3e02779376440626e228ee3c00 Validate generated-column defaults before schema mutation
+71a4c50b8c60f3048792a376b9237b8ba78ee3ea Merge pull request #634 from dai199/array-to-h-pairs
+75c5bf9217a237d0d567bc8a0df6cb2f22b861ab A Hash ivar widened by an index write is bounded too
+7305949a5e6fc5d6fc43c26b9a0bb8e48d56b1da Merge pull request #630 from dai199/instance-side-dispatch
+4dbfa53bd2c35ffe4cafbb4c083b43ae477a2cec The instance side holds through unions, ancestors, instance_eval and actions
+f04af5d0bc0289a980bc9b0d44fbddfa5cac2076 Hill climb: delegate through model associations
+0317eaf567a568599c83b4f8d96b5a555377308c Array set ops: evaluate operands once; Python dedupe handles unhashable elements
+782619fae7e4633d483325f811bb56d2861714c0 Array `&` and `|` are set operations, not native infix, on typed targets
+d1b0ea7bbe22250e61c606011b23c4e8f8f56c00 Preserve generated-column metadata during migration folding
+a0a7f9d48ad74dca7c465def5208ce9409196c52 Share constructor analysis in keyword lowering
+7b7faa049d49a36a29a3a1ed6f01c92c780d9836 Merge remote-tracking branch 'refs/remotes/upstream/main' into fix/keyword-args-388-290
+943f6f5b0cdb05e8a1873f2c957b5a8b98225ec1 Handle safe keyword arguments to Class.new
+f98e2fa19dd651063414c8542843bae440b9d10d A harvested ivar type is bounded like a return or a parameter
+ef605dd0316352b7441b13fdc1ab434932c63ac2 `pairs.to_h` without a block reads each element as a [key, value] pair
+ee3d3f9b497b2043ecc03c8a384a649b83f6577b Keep ordinary type options out of generated-column detection
+6b64336021d3dc064edbb3b14118602862292547 Merge pull request #465 from bunnykong/tep-transfer-encoding
+5d2947cad2b6379911d62a61c880bcad228c5548 A call on an instance answers the instance method of its name
+85b16d73f7cf03897f49f75876f9ca8049dbb49f Merge pull request #624 from eddygarcas/relation-scope-receiver
+05a722e79846eb90ac6eceef3e5dacb4a5ce04a6 Preserve generated text columns through schema and model persistence
+5e4eb16c8e03138d87c8e081f5d9a875ec00f62f A JSON request body is wrapped under the controller's model name, as Rails' ParamsWrapper does
+52ab21a81243e392c12501eb87cca246aedaa26c IO and process constants resolve as Ruby has them: Errno, EOFError, File::NULL, Encoding, Shellwords, PTY
+9003d5d430cb759341ca33e545500da7fe9dd867 Merge pull request #611: params_merge Attrs inference
+ddfb7f24189990e47c5d2128a1cd6159e0ffd8ae Require Hash assignments on every path
+1c3616722e98ba99a076e8ad280ffa055f362204 Scope names refine a relation only on the model that declares them (#569 follow-up)
+fa1f5bb94f8c68dbc4549cbf55c82a6ff1837e37 Merge remote-tracking branch 'upstream/main' into cursor/params-merge-cwa-attrs-03cb
+f43693bf8acfe4ed5317c0e96c387958d57c18e5 Merge pull request #622 from eddygarcas/jbuilder-partial-locals
+c240221a440041e3eadff07cfc696f96870e706b Account for all writes when inferring hash locals
+397c264319de450b68074d3461130953d6006fcd Fix attribute-hash inference for safe callers
+95f7c07248b0447f4bd262a47c364166d6d0d0b9 Merge remote-tracking branch 'upstream/main' into cursor/params-merge-cwa-attrs-03cb
+c156fb908eebd6f1ce916ebdb04258e0f90c9afb jbuilder: a partial reads its renderer's instance variables (#540)
+089b0b3a843a5b15c05c6eff9a92418810178d78 Merge pull request #585 from eddygarcas/spinel-pg-db
+6cbf0def636e32139447d8d2164db1f8b4b41c9b Cable broadcasts are written as Rails writes them: every value as JSON, HTML characters escaped
+fbaab0b0035637b324294df20d153be54d2087f9 Add Ractor-unsafety ledger for campfire's CRuby emit
+8ecbc76479ad8fd02aafb5e0151750052eb8fb2b jbuilder: a partial's locals are the names its callers pass (#539)
+da097c15630c5f1f28ace28f1624c4357e3860d1 Spinel PostgreSQL Db: sharded pool, named statements cached per connection
+bb9e3f60ff3ababe6e2bebae85547f382fa666cd Spinel PostgreSQL Db: exec_returning, one connection per transaction, SQLSTATE mapping
+076bcc1aad4089915dd65d1764bee5206de0135b Db.exec_returning in the Ruby-family contract, on the SQLite shims
+067aa4cfbced8687ba5a0c9216cec497cb659a76 Merge pull request #618 from dchuk/fix/literal-engine-mount
+050dd88c0ef12c9b0ae6c9774ac796df1f1b7959 Merge upstream/main; move the strong-params native tests into their own module
+99bb97df5f4c4b99b5be26f4a615282baff013b3 Load engine helper sources only after mount admission
+6f0ac3823c205ec37f1db6d28453733abc132d0a Compose literal isolated PATH engine routes
+37afd986f6c6d40297df8766a760ed256233a159 Merge pull request #614 from dchuk/fix/anonymous-keyword-forwarding
+323f2562dea83ba933c797dcf9c70e923e9e83a3 Index anonymous keyword packets forwarded through super
+48c5f4bb186400f872af88988af73127daca9f98 Check packet destinations against emitted model contracts
+194f26cfaaada2a654e5f65949012f396706a275 Merge pull request #615 from dchuk/fix/postgres-index-access-methods
+bf42c7e61055dbf4737cb7af7634f86f97769277 Preserve PostgreSQL index access methods
+961837c9cb2c8a81542e67f07d3145a97f59a967 Support anonymous keyword forwarding to Spinel
+8369c64583b684f4136d3f79047e92e9af59e583 params_merge: Hash ctor arm requires self receiver
+07ce8255138625fbe5f38302397e179d5c428c5d Rename Relation last(n)/first(n) through skip_preloading! (#610)
+c68ce2f376eb9557a085bf4a71ddfcf06018cde9 Thermos: document hash ctors; pin opaque local still poisons
+c5393663373720321411450d3f90cdb84804c71f Fix assoc create_with_attachment! when tests pass attributes local
+33117203e77131d84a13230a21a3906e7247feb2 Test assoc create_with_attachment! through Concern splice
+d07c5353492bc44606c01e727b547da44bcfd10c TypeScript array ==: recurse into nested arrays, tolerate non-array operands
+6a8cb1223b47e9bcf0728145886910b328f21d75 Test that a custom -@ receiver keeps its unary send
+755cf79b992faea8ffa3fcf9113aa6dc70c49b4a Rust Case diagnostic points at the unsupported when arm
+9660b0f00284253cf7893a048b310d357d93134a Guard i64::MIN % -1 in Rust and avoid rounding in TypeScript Int % Int
+bca5b7c763161f82f025574cb4ed94b8955e41ac TS gsub with an empty literal pattern steps by code point
+6245dcaf2c4d617c9a424be69328d5801403048b Merge pull request #592 from rubys/cursor/ci-apt-libvips-cache-ddc1
+32bc2d898be09f6e780769f62966054d76d776d3 Merge pull request #593 from rubys/cursor/ci-libvips42-apt-timeout-8d7d
+7c89e210a6fb27706ce13531a3b865cce0143b63 Merge pull request #589 from thomasklemm/cursor/fixpoint-bound-followups-5a67
+75fafaf0ea0390304bffac634d826e7d287c7bc3 ci: skip apt archive save when harvest fails
+bb54239f35b47e0e6727d45f0993282517a29597 Merge branch 'main' into cursor/fixpoint-bound-followups-5a67
+014fd2f2fa09f458afdcce85d7bb2a85f857133b ci: raise campfire-compare job timeout to 55m
+88d0f97eba9c08e7cc131671c05378e7d32efcee Merge pull request #580 from dchuk/fix/controller-identity-ci
+d2955d103d8da9abec059dc378888fd161bf7c7c ci: raise remaining libvips42 apt step timeouts to 20m
+5e15a5c4aeecafa0863d7206d18bb49b45c8686d ci: treat apt archive harvest failures as warnings
+dc3966d562f8a02a7205b18e00cb0a9724b2b41f Merge rubys/main into cursor/fixpoint-bound-followups-5a67
+b0f3d301b9fb92a54ff108b511a8ad76df91b2cd ci: give ci:spinel focus a spinel browse archive
+74005e033b701c52c8551782255b5fcd782bb99f ci: cache host libvips-dev apt .deb archives
+b3c9b93d7d3c9f67041bcb3d6ea0fb32b1e21d25 Refresh full validation after upstream package setup fix
+da252426f7931a9a9e21cccdf47af5598d9e5273 Merge pull request #590 from rubys/cursor/campfire-smoke-apt-timeout-8d7d
+7221a8a2b0db3f44130464d23db9cb82dc3b3077 ci: raise campfire-spinel-build/db job timeouts to 60m
+9133e6ee1762cfac3b86a47b36b7e769983bf7d0 Describe Untyped as the emitters render it in the analyze pipeline doc
+7d3d038bf6251b47a6d8aa23040f6b92e312b53b Merge remote-tracking branch 'rubys/main' into cursor/campfire-smoke-apt-timeout-8d7d
+c8f5e511d16f5112695289b86705aaa14309c23e Merge pull request #326 from calmacleod/codex/fix-rbs-block-signatures
+f374002aad940da52b4397f8de95fa9c07e6cde9 ci: give libvips-dev apt installs a 20m step budget
+0d467e0c7757f8c3570c88a11287607c760eb7fa Spinel Db shim over spinel-pg, with a live gated test
+d6976d02a98e9696b0d40baf3e74f222b1c060e2 Name the case/when erasure in the Rust gap; point to it from the pipeline doc
+7e4cb9231dbb7d4008a88e1c0660f3ac4eedc0a2 Check that the fixpoint settles, wherever the round cap falls
+2532ec86909b1294e0c3992f25111732abe22fe0 Give the fixpoint round report its own module
+4706b8fc78cdab2d946d0717060e91683ef1b04f bench-report: log-scale the dividend chart across campfire's eight routes
+fa53a1a533588f6a5722975534750f4bbb5bb7a6 bench-campfire: scrape a full page when the list leads with a POST
+9f04198bbce287cf0b4da961b02e48a6dfc974c3 Harden Action Cable e2e for JRuby smoke retries
+9698889bca0b218b865e22415435f6e361bb8557 Pin where the bounded fixpoint settles, not only its sizes
+b28fd03194ffa373a4a5a0d53343072c69f008d6 Record the Rust gap for recursive walks instead of a strict-target claim
+3d1115d507b213c2cd4585e61407f27b23010472 Refresh CI after upstream verifier contract fix
+cfaab92e4b45f1ea0bda5d5c82884eb7083caa5b Merge rubys/main into codex/fix-rbs-block-signatures
+f4fe586bbc77da3674c414e679548ba9a63e0e0f bench-campfire: cold start before the post-write restage
+6a2e4c493a09308980bfc8be497b89f989419102 Merge pull request #588 from rubys/cursor/full-ci-unit1-browser-smoke-8d7d
+cd005ae26ceff247a7f340357ab0975b67fdaeb1 Merge rubys/main into cursor/full-ci-unit1-browser-smoke-8d7d
+4be268165cdabbf36f83fe3ecb40645f5911404b CI: coalesce Campfire Spinel GC walks, rename Spinel jobs, tighten timeouts (#587)
+263bdbef19b799267177513431c5ff7f034735de ci: align Playwright install budget with shared 30m smoke jobs
+00ca5194e4a2fcfa98cb7e709d970b705b4bbc07 ci: split Playwright deps install from browser download
+69749b39edcef03803d7fed821c99ab9f0665389 rh verify: expect path-owned extras on smoke_extra
+97f264a7212d2afb27f550377eb20f0925e9e1e9 Refresh full CI against current upstream main
+6408b815e76f7aec4184066a2a40d7b20f2b68d9 Merge pull request #583 from rubys/cursor/wal-checkpoint-harden-6c87
+89770afb71cb982392be50159345f93e3accbf46 Merge pull request #568 from namespaceMarcello/fix/partial-local-assigns-ivar-duplicate
+007d02fecead31ff182a17c615b4850af83fd8a6 Merge pull request #536 from eddygarcas/emit-runtime-followups
+2f7a333939ff95b61815b09189ffcb3bed9768c1 CI focus labels: two-gate ledger, jruby/spinel focus, fork docs (#582)
+9c1c0a13132cb1af0c4f22bea278f4a42fd2b192 Merge pull request #584 from thomasklemm/cursor/bounded-recursive-types-49bd
+41ae61158b418b3a99c59d2ae125920133bce2a1 Only borrow opposite-side blocks from return seeds
+abe687b62783b26bfdfa0e8d6c2a8d1b49dec71c A leaf union wider than the node bound reads untyped
+c2b3c30cf4dd2f0804f4e4c61850bfca5d30db82 Prefer block-bearing Fn when class/instance tables disagree
+390780f49f03624dbb746d9a3ff5826808ed3400 Merge pull request #329 from calmacleod/codex/fix-container-narrowing
+c6d7c21c33035a55498b709906ea41b79c37ac7b Merge pull request #442 from bunnykong/class-instance-state
+48e567dc841bfe0048115b2aec38865f0a50ce85 CRuby checkpoint warn: contain raising warning sinks
+e0c81f48253483f4cf3393b1a17926369030ae3d Name the corpora's largest carried type correctly in the bound's doc
+76507a1964083462753f6a3bc94aa7f705577e7a Merge remote-tracking branch 'rubys/main' into cursor/pr-442-class-instance-state-4ab4
+113fc8534b3b3ce1c99134720a9c70ca40af39c9 A Spinel statement-cache miss no longer scans every cached statement (#535)
+d674eec296d022f64bb6963f40d7c28d18ab52bb Require actual execution of the selected Rust identity test
+7e653d0a31bf2a67af05d890dd3cd2022054e26c Merge pull request #420 from tobi/contrib/build-manifest-root-20261004
+b7cb60620444a0fde7548a215a03c3a6fdb51f91 Fill non-block locals into sparse typing overlays
+8e5d57f07638e009b4d30db9f3d3114d65ed5d08 CRuby checkpoint tests: ensure-kill leader; private warn helper
+6d54021ec20f02d8aa2c20d8bdca91d2c408abd4 CRuby checkpoint_loop: warn after open retry and after flock release
+87d558fda44636adb649ddd2aebdc9cc55f2e7d4 CRuby Db: close inherited checkpoint flock on configure
+c54da8e9e5b5e22a1df782196cf5bfab498c2351 CRuby Db: rate-limit checkpoint warns; flock takeover test
+55838f32583184818dc62ea5b43f55666929ba07 Merge remote-tracking branch 'upstream/main' into pr326-work
+2f04b3029100cb967610b89144cf9f3541d929f6 Receiver-aware RBS block-signature lookup
+79d13c7432e396ce2ddd6d66920e337edfe23809 Merge rubys/main into emit-runtime-followups
+751be3c274c464e0a6e34b6eac376c62be0e84a3 Thermos CQ: rewrite request.format once on process_action body
+870efe19c0e3bccb4b67702204e5fe81ae01192a Merge remote-tracking branch 'upstream/main' into pr326-work
+9a2dbb324dc81d8a0dd29a322c9ba142b120d42f Name local block-contract typing overlay
+b253fe50b33918529d6c6d7a816b378613f9bb7a Merge rubys/main into emit-runtime-followups
+c33e88a24469a9022ab1a3f60f4e25c1eaf77ee9 The bounded recursive walks run once emitted
+abaf0b24f383e6ce68380878e1dd40a8fe5fcefe ci: retrigger with ci:spinel on synchronize
+ce18b6e7e8686965e9f28bd6db75523a22970cfc Narrowing: drop duplicate Array/Hash intersect arm
+f32322a3896f03eae9b9accd8ba14ead2fb27fe9 Merge pull request #551 from dai199/class-side-call-sites
+b9c30293b17457e3ead2b53b4a5f105a042871a3 Pin #518's recursive shapes in a watched regression test
+b7908523b225ed766360d02b19e91bc1303b9023 A type the fixpoint carries between rounds stays bounded (#518)
+a018ea72266c237fbfea4c66f8da39f2910c351d Merge upstream main and resolve RBS block signature conflicts
+e8c89358bfc00d8b434d58ac45c58b9887d411d9 Merge pull request #498 from bunnykong/tep-status-reasons
+501579240be1f38ac292fca63fcb407e9fd6476e Merge pull request #497 from bunnykong/stdlib-constants-more
+4350dc98d85c709ca94f5e129eb6a99b31d7aee3 A protect_from_forgery if:/unless: lambda's request.format.<pred>? now reaches the same rewrite action bodies get
+c523d7807941aa8f1224a24820443fa2898eb593 save!/destroy/destroy!/reload seed the runtime's Base type, not the record's class
+8fda5b888e69147829d66e8e0536d2aba7b71849 Merge pull request #569 from eddygarcas/relation-chain-scopes
+3450b5e897dc41a0950a806d920f25b96e6ddcff Merge pull request #565 from eddygarcas/rbs-determinism
+338d523faa5ee16308852b547daedee1e2f87623 Exercise controller identity values in native Rust CI
+471d69329796c1cbd11f1380cab9fbe301b6ed95 Drop inert CARGO_MANIFEST_DIR rerun-if-env-changed
+1c79df2a0abd5263ca1c2344efc7d007da136162 Pin model mattr seeds on partitioned Ruby emit
+b3daf2b9aebba806b56e53398b6399a4b8c1f89e Merge remote-tracking branch 'rubys/main' into cursor/pr-442-class-instance-state-4ab4
+8e028283a02de94f8b757eb77afd821dc9852b37 bench-campfire: stage the spinel tree's assets; readable route labels
+5707f4d0085bd3ca0c1d2ba45c9aaaa531578549 Merge upstream main into container narrowing fix
+027071a87774601f9b10e981d57b6fc689622b8c Clarify class-side call-site docs and DRY the Hash fixture
+942acf2be09a5f9eb4ed75430e550420db001895 Merge rubys/main into class-instance-state
+63a2496442339df4d5a348a604123c2c0e7352b8 Make build_commit shared-target tests hermetic to Git env
+a962c81a8bff0ae2eafe7f6f0d4416a5b58183fb Restore collect_extra_params docs; drop incomplete closure pre-filter
+566ce3a1fb1d94753e531aa76f4df89ecad4d0e9 Skip x.class call sites when an instance method shares the name
+1f1d2ffbad3f0c7064adadb2857ddd8934f10f22 Merge branch 'main' into contrib/build-manifest-root-20261004
+9567b7a41e176c6d107ae5db863254ef94e4ea57 Merge remote-tracking branch 'rubys/main' into class-side-call-sites
+aeab478b1e1770e84bdb4c9ba1fb3ac1e204bdb8 Merge branch 'main' into fix/partial-local-assigns-ivar-duplicate
+9525cfbea42a69da84daebc945a953e95bd5fed0 Keep Rust controller identities as instance methods (#577)
+99682d6b4d2b142953fa2b5e5d8774bb528453a2 CI summary: archive-results report is not a hard gate (#578)
+2a387f3a7593f4ef6bff5110c00c46ec9768a1fe Merge pull request #576 from rubys/cursor/markdown-uploads-activestorage-abd0
+2f00285890b46aed1d79aa1dd5aad538cdb727f4 bench-campfire: a tobi lane, and fresh emit trees
+574fea2cd9fa893adcc401a32108b024b14f44b7 CRuby rake assets stages the app's own assets at their Propshaft paths
+bcb5c45cfb8c6342d8f557a039ab9f4fe9225a69 Merge pull request #574 from rubys/cursor/mattr-subclass-shared-5998
+817de7d15bd4e9d082568e1e75d67c717f793309 bench-campfire: rails/ruby/spinel per route by default
+23bfeaf2094f22b462a7fe1a93950e817610bdbb Fix late on_load splice duplication; type AttachedMany
+6158c46ccfcdb1c20de4988af4609011493340fe Guard nil mattr/cattr seeds on subclass redeclaration
+83ddf57059853d243f5f04100dd940f7f977b489 Report plain Ruby classes the non-TypeScript emitters drop
+05760e5fa93dee29d257be2e5b5488d5ce4ff4bc TS sort/gsub and Python join follow Ruby, not the same-named native
+66de7f7b6bcb8580cbdb2c73efadfc87490ea7be Python overlay imports `re` when a lowered body uses it
+57aad7679fc245b0b582e4a552dc9a5510f3765c `assert_equal [..], Model.call`: type the call, compare TS arrays by element
+c8ce48dd5faf745965904c1ad4f9a707c5596377 Unary minus lowers to `x * -1`; negative and infix receivers keep parens
+3a79891a9fc61d2de9298f41c1803adcc0ac6562 Rust reports non-literal `when` arms: a range or class arm became `_`
+a9e39fc9c68836c608ea068599c7bd58844cdbe3 Floor Int / Int and Int % Int on typescript, python and rust
+d9112a53828549f6135b345544e7774cdc4367a0 Ratchet Writebook inventory after Markdown upload surface
+d6a27360cffd3a58697faeb614e5ac0e2ba81e44 Register Attachment#url for check; honest Many writable surface
+44c32c16fa367f7c025d5f4463721feec0f6a71e Make bang update! Seq value the receiver (SelfType)
+0267bb36fe4f70f6a90b1337516db53988b50508 Add emit_and_run and unit tests for Attachment / many / locate_signed
+2675f8472657ca7015c60bbe0067617c494b6b86 Carry on_load(:active_storage_attachment) model includes
+f73e97ca652d6cd829f814fdab370a2df351d155 Claim has_many_attached with AttachedMany proxy
+cd05c8681e1586fb583e58deb261bff2bada4cac Synthesize ActiveStorage::Attachment when its table exists
+11b9a915f2647d83c8c07f1d6bea0bb4e0eb0c24 Fix locate_signed for: kwarg (Ruby reserved word)
+b1b0cd4169a85bf315ea57f9ade96b847ab5a462 Add GlobalID.locate_signed mint, locate, and per-model entry points
+3e1a67749b1c1a459fe25edce4526d7721b2bd40 Reject survey-nested mattr defaults that recovered to nil
+dd26cd5971de26188671081523f60ac426f2b760 Merge rubys/main into cursor/mattr-subclass-shared-5998
+5db153f962228ac1d6fd765cd7e295531998e290 Merge pull request #573 from rubys/cursor/controller-name-span-6424
+3505fd582412cd21b292ab27d1c7186a48acb579 Fix controller_name span provenance; strict model mattr defaults
+d98f43759e1848beb7e0bc2ff58167cddf0cf873 Assert that a view render passes the caller's local to the closure
+705db33aa648b6425a2cd7c3d7129ebebeac528c Attribute controller_name literals to controller source spans
+0bcbf351362c76c3b9484ee50edf32d1e8cdfcdf Merge rubys/main into cursor/mattr-subclass-shared-5998
+1dd6a02bad9f1df6fee444c1f075f1e62f42f1f7 Library mattr defaults use strict ingest in survey mode
+73fa8f95d12035b807a717e751bfc030c32118d5 Reject malformed Hash predicate identifiers
+4306dc8a90b0165597f14356e86dfd1cea07a50e Permit rooted JSON generation rescues on Spinel
+b3ccfa83cb772b990b9629c6c23425c38ecf096b Queue and other stdlib constants resolve again in emitted Ruby
+d12f550274a6d0eb6ca91e0dd5ab1f3b7e8f6502 Assert that a controller's same-named local wins over the ivar
+407a333268249ec0e006de50c21fa42d90206d01 Move the strong-params emit-and-run tests into their own module
+8f1940f29d6957ed16ce7c25249e325684e51f58 Group throwing Swift calls used as right operands (#552)
+85bdee79f2537eba1e586d28e17be13aa54d32d7 expect's refusal accepts a nested key by the value its filter takes
+2243b70cd572dbbe0ae451b22639cc88b9fda360 require.permit refuses a blank resource as Rails' blank? does
+3f85fa0b38a25a4f49ed3d8b595f688a642cdf1d A missing or malformed strong-params resource answers 400, as Rails does, on the ruby family
+6c5ae658d3142c1380678f84307f43b9797c15c0 Seed library mattr/cattr defaults onto shared @@ storage
+8e08f2d1fc8c0757c6bfedb289a1589dc7dc6684 A reserved-word `locals:` key adds no duplicate partial param
+e81973fcc764e3d681674d8f1040675b84793523 Fix ClassMethods mattr seeds; keep shared @@ ingest pins
+8d308a57a8cab55016b055f50dc5083014902670 mattr/cattr use Rails-shared @@ class-variable storage
+b499e8e623f65b4f0ad49d10d572c77d076f27df Stateful reopened classes reject repeated Spinel methods
+211ccb92340c7ba9fcfef94c616e4c9f44480b84 Merge pull request #563 from rubys/cursor/campfire-preview-config-1b3c
+0264ca7515804778ddf3eae7876ea7dba07616f3 Class initializers run once with Concern methods available
+a2363e5eccd9ae458ad64d4df33e07d830a622bd Aliases appear at their declaration in stateful Ruby bodies
+514a35bb9d51befa4d31f0843a7d185b4c18779f Compound class and module ivar writes initialize in source order
+6a90ec007251e5f9b614ee87161d51e56b36834f Class instance variables initialize in emitted Ruby
+7eef3e915d9746dff2abb41f67f38a32bd94c779 Supplied nil reaches secure-password virtual writers
+a849d6f354a7fc0bf39eebba9916cdafaf6d95f3 Apply Hash conditions to scoped existence probes
+ae342e48d1eb3b4feb78b917fb531076e6ab30a4 Keep app scopes and dynamic finders on the relation receiver (#558)
+a07a5275568115f713c885f85f53544c06ccbbb9 CodeRabbit: clear video_args when a later assignment is Unsupported
+aa057d35513db5d916f69052de3364102f9cbbac A partial that reads `local_assigns[:x]` and `@x` takes one `x`
+ad0297aa0f6ae22bafa334cb81446d0b3518d9f9 CodeRabbit: -vf token boundary; single-quote escapes; reject computed argv
+46948740e77cf5f46433deb461384d9a9e76e5aa Merge upstream/main into campfire-preview-config
+b28b17b68d1fc879c506765cdc18142518544494 Merge pull request #561 from rubys/cursor/campfire-stdlib-residuals-1b3c
+5b8cdfbcdad83a0278b7b68ed20c71c9086dbb66 CodeRabbit: single-quoted args; harden previewer map scan
+e86a9627866eb0e41c909cc0c87402fca8676576 Thermos: one video_preview_arguments; peel vf at reader
+9ceef3aaf9eef7d8dcae6fc8bdb9a663d4d4449a Restore unit-aware Process.clock_gettime; align loaded? unions
+8eb6a79da27f32bb30d0c9f1b5cd86f772626bae Lift Campfire video preview config onto ActiveStorage
+ac3937d03bb57cf5a153a2a42ad5a072d5f6baad Fix Soft Bar B for Timeout.timeout Spinel port
+01cac19154659506f07f62f1e295ae29156791bb Type assoc.loaded? and allow extend-module super(...)
+57aa132e162f4d2cf1373524c16333db4f31eedc Accept the environment argument of recognize_path on the ruby target
+8b76dd84ff7de653ef16c0e8f27f56a7010b4431 Make Rails.application.routes.recognize_path work on the ruby target
+842cc446c74c8f55d1396e3adfc689f6f2c75ab7 Register IO/Timeout/Process for Campfire tip residuals
+d6468ecd431b5135e8dcb1e7452078e5094ba479 Merge pull request #557 from rubys/cursor/time-limited-video-previewer-3339
+98dba6b07c4507489d0119872c06da60faac1e3c Match Rails: ActiveStorage::PreviewError < Error
+477e95a75f77330a30a2123361be67fd046e3e6e Add ActiveStorage::Previewer::VideoPreviewer for Campfire boot
+0ce21ab0dfc529d921dc40e8a55dc48ee5ef3018 Merge pull request #555 from rubys/cursor/controller-view-ivar-typing-d561
+5f18fd1b520934a7192e5a43f4c6fe7fe3a0269a Merge pull request #513 from MatheusRich/map-routing-error-to-404
+7436e3a637fc83500c1b80ea398c8981906542a4 Merge remote-tracking branch 'origin/main' into cursor/controller-view-ivar-typing-d561
+cb6452986cee1e6f1b6377dea2923a71216897cc Merge pull request #554 from rubys/cursor/activestorage-attach-hash-8250
+411f425b99baa26304ad84e5352e6f5988cc8c1f Publish Full validation Pages even if main advances
+75d95bb108ec299d8d50f39bc2619ff8531a48f1 RBS for AS remove/demodulize/singularize; exact-arity ivar folds
+eb3e8cabd44d534d5acd151a0b483f410a21e0cf Bind attach io before filename/content_type
+9e7e24faea5cbcac4bd3a3278970374211602985 Ledger test inner-class superclass ruby-family consts
+fe62a51fd42f179f091127307d056958cfc6a9fe RBS for ActionController::Base#controller_name/path
+fd353078bfaecf7d01098681ca7457e3d46dd34e Merge remote-tracking branch 'origin/main' into cursor/controller-view-ivar-typing-d561
+09c1da8ebca9c33452e1b4fbdbd1a0dbcb1c0bbb Merge origin/main into attach Hash branch
+d0d30e0dd657dc24bf5b17ed3f394a88976bda0f Address CodeRabbit on attach Hash contract
+ba2eedebb59e1ce11a2b219a33b081d255ad2f64 Stamp subclass-hook MissingTemplate with render span
+843b7d13e6cda3758ef867499ef6670fd93d0c7b Preserve controller parent_span; collapse availability helpers
+207d73305bed2500ff1e01e9f3ca8c3d56f6bea7 Thermos: fail-closed inflection drift; one Phase-A harvest
+4def2fba73eb15499650b9ff21ad8d2739128915 Fix compile break and MissingTemplate ledger test
+fcbc9facc63e637d062f4abc8029c66995103f7c Merge rubys/roundhouse main into map-routing-error-to-404
+3cbac778b73b683de1893117e301707b05df5078 Merge remote-tracking branch 'origin/main' into cursor/controller-view-ivar-typing-d561
+93cfbb9d937e34b774235d87e413eac2da5ec0d8 Controller→view ivars from folded instance_variable_set
+1c1d99a9657c77e55565339c1d6b981b7636310b Attach Hash: refuse extra keys; nil content_type; rename local
+1940aaf62cb94ff4b8da552ad034475bacecebcf ActiveStorage attach accepts Hash/io: and yielded bags
+f24817be807fe4c56b7a78d8fc56fd403f5b59d1 Ledger superclass and lowers-added ruby-family exception consts
+bf7ad01ac8f1c37098f02fe880ce973054260285 A call through `x.class` does not feed the instance method of that name
+e6a488ff2fe24a32278041fe607ea6780ecd3dc2 Make a module parameter's call-site join order-independent (#209)
+5831ec12ea1c8fee884db127a8a93583b42f8489 Split ruby-family runtime constant ledger from bundled_constant
+3438458eeea6ded8278984c38d4e0c97f62cdb96 Pin Spinel dispatcher rescue of RoutingError
+81b8592ce3d96d3887d8b7f20efb20e7f0664873 Merge rubys/roundhouse main into map-routing-error-to-404
+4cec61e73c45ac3e766b1cb4c5099d6b26e8964b Answer 404 for ActionController::RoutingError
+00b086185ecb6d620d215e6fa9e1012cdfa5298d Run the ROUNDHOUSE_BIN probe scripts through bash, not exec
+1809dc1c801eb9288091685a0701757c6f232807 Declare scalar-return kwrest sidecars as keyword rest
+8b3020d0592f9b81d6430b47d2fe8f4f8637f01f Merge remote-tracking branch 'origin/main' into issue-388
+a3a7f5a6f17ef90c276c5c30ff51da153c78a324 Tep uses registered reasons for conflicts and validation errors
+03863df2ce21a71b9a952cfcab587b07eed5434b Merge upstream main into the container narrowing fix
+78a375ce7e04ba45a95934987779769493eecff7 Requests with invalid Content-Length get 400 and close
+45767ea75afdfaf949969253b2fdeec98c812a5b Requests with Transfer-Encoding get 400 and close
+6610d160ad1111bcb0a8db109c9331bf76a3c237 Incomplete request bodies close before app dispatch
+2fff182c1e5a9a07c0a4192477904c21ae3e6977 Document the kwrest-beside-keyword tests
+7b6a3bc16b3ce7b4cc52ddab326545cdc80cb609 A model **kwrest beside a keyword stays a keyword rest
+19f02de2d387af8a3433a55658e60aaa519f1d84 Read the executing manifest root when Cargo reuses a build script
+0e17cd7e54a6757f04002ceb4765a8fef10ee427 Preserve Array and Hash members during type narrowing
+12f99a8741139a057c00dae7eeae5a9b23035511 Preserve RBS block contracts during runtime typing

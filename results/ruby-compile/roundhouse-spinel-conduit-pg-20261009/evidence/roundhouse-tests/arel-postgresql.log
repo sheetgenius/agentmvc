@@ -1,0 +1,64 @@
+   Compiling roundhouse v2026.9.18 (/work/app/src/roundhouse)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.98s
+     Running unittests src/lib.rs (/work/app/build/cargo-target/debug/deps/roundhouse-ade61decbfdea4eb)
+
+running 18 tests
+
+thread 'lower::arel::visitor::tests::insert_without_assignments_uses_default_values' (63025124) panicked at src/lower/arel/visitor.rs:1673:13:
+assertion failed: matches!(args[0].node.as_ref(), ExprNode::Lit
+    { value: Literal::Str { value } } if value ==
+    "INSERT INTO articles DEFAULT VALUES")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'lower::arel::visitor::tests::delete_no_conditions_is_truncate' (63025122) panicked at src/lower/arel/visitor.rs:1728:9:
+assertion `left == right` failed
+  left: "send"
+ right: "seq"
+
+thread 'lower::arel::visitor::tests::insert_emits_exec_then_last_insert_rowid' (63025123) panicked at src/lower/arel/visitor.rs:1646:9:
+assertion `left == right` failed
+  left: "send"
+ right: "seq"
+test lower::arel::visitor::tests::delete_emits_single_exec ... ok
+test lower::arel::visitor::tests::update_emits_single_exec ... ok
+test lower::arel::visitor::tests::ordering_preserves_existing_qualified_terms ... ok
+
+thread 'lower::arel::visitor::tests::select_with_order_emits_order_by_segment' (63025136) panicked at src/lower/arel/visitor.rs:1781:9:
+expected ORDER BY in:
+SELECT "id", "title" FROM "articles" ORDER BY "title" DESC
+
+thread 'lower::arel::visitor::tests::select_with_two_orders_emits_csv_order_by' (63025137) panicked at src/lower/arel/visitor.rs:1829:9:
+expected CSV ORDER BY in:
+SELECT "id", "title" FROM "articles" ORDER BY "title" ASC, "id" DESC
+test lower::arel::visitor::tests::limit_one_without_single_record_emits_array_hydrate ... ok
+
+thread 'lower::arel::visitor::tests::param_on_string_value_binds_text' (63025130) panicked at src/lower/arel/visitor.rs:2026:9:
+assertion failed: prepare_sql(&body).contains("WHERE title = ?")
+test lower::arel::visitor::tests::select_marked_single_record_emits_single_hydrate ... ok
+test lower::arel::visitor::tests::select_count_emits_int_scalar ... ok
+test lower::arel::visitor::tests::select_where_predicate_with_runtime_value_round_trips ... ok
+test lower::arel::visitor::tests::select_exists_emits_bool_from_step ... ok
+test lower::arel::visitor::tests::select_all_no_limit_emits_array_hydrate ... ok
+test lower::arel::visitor::tests::param_on_string_value_binds_text ... FAILED
+test lower::arel::visitor::tests::select_with_order_emits_order_by_segment ... FAILED
+test lower::arel::visitor::tests::insert_emits_exec_then_last_insert_rowid ... FAILED
+test lower::arel::visitor::tests::delete_no_conditions_is_truncate ... FAILED
+test lower::arel::visitor::tests::select_with_two_orders_emits_csv_order_by ... FAILED
+test lower::arel::visitor::tests::insert_without_assignments_uses_default_values ... FAILED
+test lower::arel::visitor::tests::param_off_keeps_integer_serialization_inline ... ok
+test lower::arel::visitor::tests::integer_count_serializes_before_prepare ... ok
+test lower::arel::visitor::tests::integer_predicate_serializes_before_prepare_even_with_param_binds ... ok
+
+failures:
+
+failures:
+    lower::arel::visitor::tests::delete_no_conditions_is_truncate
+    lower::arel::visitor::tests::insert_emits_exec_then_last_insert_rowid
+    lower::arel::visitor::tests::insert_without_assignments_uses_default_values
+    lower::arel::visitor::tests::param_on_string_value_binds_text
+    lower::arel::visitor::tests::select_with_order_emits_order_by_segment
+    lower::arel::visitor::tests::select_with_two_orders_emits_csv_order_by
+
+test result: FAILED. 12 passed; 6 failed; 0 ignored; 0 measured; 1064 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `--lib`

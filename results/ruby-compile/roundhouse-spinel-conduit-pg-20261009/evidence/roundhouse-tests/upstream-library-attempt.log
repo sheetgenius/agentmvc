@@ -1,0 +1,1482 @@
+   Compiling roundhouse v2026.9.18 (/work/app/build/upstream-current)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 16s
+     Running unittests src/lib.rs (/work/app/build/cause-target/debug/deps/roundhouse-ade61decbfdea4eb)
+
+running 1077 tests
+test adapter::tests::sqlite_async_does_not_suspend_non_db_effects ... ok
+test adapter::tests::sqlite_returns_unknown_for_non_ar_methods ... ok
+test adapter::tests::sqlite_async_suspends_db_effects ... ok
+test adapter::tests::custom_adapter_can_refuse_everything ... ok
+test adapter::tests::sqlite_sync_suspends_nothing ... ok
+test adapter::tests::sync_and_async_share_ar_classification ... ok
+test adapter::tests::sqlite_classifies_writes ... ok
+test adapter::tests::sqlite_classifies_reads ... ok
+test analyze::async_color::tests::marking_is_idempotent ... ok
+test analyze::async_color::tests::missing_adapter_class_is_a_no_op ... ok
+test analyze::async_color::tests::async_adapter_marks_seed_methods ... ok
+test analyze::async_color::tests::empty_seed_list_marks_nothing ... ok
+test analyze::async_color::tests::propagate_is_idempotent_when_nothing_to_mark ... ok
+test analyze::async_color::tests::sync_adapter_marks_nothing ... ok
+test analyze::async_color::tests::restricts_to_named_class_only ... ok
+test analyze::async_color::tests::propagate_global_propagates_class_to_function_caller ... ok
+test analyze::async_color::tests::propagate_with_externs_marks_callers_of_extern_names ... ok
+test analyze::async_color::tests::no_sync_slot_violations_when_method_is_plain ... ok
+test analyze::async_color::tests::propagate_is_transitive ... ok
+test analyze::async_color::tests::propagate_marks_direct_caller ... ok
+test analyze::async_color::tests::propagate_global_cross_vec_chain_converges ... ok
+test analyze::async_color::tests::end_to_end_seed_then_propagate ... ok
+test analyze::async_color::tests::propagate_global_marks_libraryfunctions_calling_externs ... ok
+test analyze::async_color::tests::propagate_global_propagates_function_to_class_caller ... ok
+test analyze::async_color::tests::propagate_walks_into_if_branches ... ok
+test analyze::async_color::tests::block_bodies_color_enclosing_method ... ok
+test analyze::async_color::tests::inheritance_pass_marks_parent_method_when_subclass_async ... ok
+test analyze::async_color::tests::sync_slot_violation_on_attribute_reader ... ok
+test analyze::async_color::tests::sync_slot_violation_on_attribute_writer ... ok
+test analyze::async_color::tests::sync_slot_violation_on_constructor ... ok
+test analyze::async_color::tests::propagate_with_externs_empty_is_equivalent_to_propagate ... ok
+test analyze::attribution::generated_methods::state_machines::tests::native_generator_rules_match_pinned_gems ... ignored, requires pinned native gems listed in tests/gem_generated_surface_probe.rb
+test analyze::attribution::tests::conventional_paths_walk_up_the_view_dirs ... ok
+test analyze::attribution::tests::no_gaps_is_a_noop ... ok
+test analyze::attribution::generated_methods::generator_and_provider_registries_cover_the_same_dsls ... ok
+test analyze::block_refine::tests::existing_typed_block_sig_not_overwritten ... ok
+test analyze::block_refine::tests::forwarder_without_known_callee_unchanged ... ok
+test analyze::attribution::tests::untainted_file_keeps_severity ... ok
+test analyze::attribution::generated_methods::state_machines::tests::aasm_namespace ... ok
+test analyze::attribution::generated_methods::state_machines::tests::aasm_states_and_events ... ok
+test analyze::block_refine::tests::forwarder_picks_up_callee_block_sig ... ok
+test analyze::attribution::generated_methods::state_machines::tests::state_machine_namespace_and_default_attribute ... ok
+test analyze::attribution::generated_methods::state_machines::tests::state_machine_states_from_transitions ... ok
+test analyze::attribution::generated_methods::state_machines::tests::concern_blocks_and_non_declarations ... ok
+test analyze::body::tests::array_map_returns_block_body_type ... ok
+test analyze::body::tests::array_select_preserves_element_type ... ok
+test analyze::attribution::tests::unknown_gem_constant_keeps_its_error_and_idempotent_context ... ok
+test analyze::body::tests::array_flat_map_flattens_one_level ... ok
+test analyze::body::tests::array_plus_onto_an_unknown_element_takes_the_argument_element ... ok
+test analyze::body::tests::array_accumulator_element_refined_by_shovel ... ok
+test analyze::body::tests::array_accumulator_seed_literal_retro_stamped ... ok
+test analyze::body::tests::assignment_in_condition_binds_then_narrows ... ok
+test analyze::body::tests::case_match_array_pattern_with_constant_binds_untyped ... ok
+test analyze::body::tests::compatible_add_leaves_diagnostic_empty ... ok
+test analyze::body::tests::case_match_hash_pattern_binds_value_omission_key_from_hash_value_ty ... ok
+test analyze::body::tests::compatible_sub_leaves_diagnostic_empty ... ok
+test analyze::body::tests::compatible_compare_leaves_diagnostic_empty ... ok
+test analyze::body::tests::end_to_end_if_nil_narrows_through_analyzer ... ok
+test analyze::body::tests::concrete_value_shapes_are_truthy_for_boolean_operators ... ok
+test analyze::body::tests::const_class_ref_keeps_class_object_without_registry_entry ... ok
+test analyze::body::tests::explicit_equality_to_nil_narrows ... ok
+test analyze::body::tests::explicit_inequality_to_nil_narrows_inversely ... ok
+test analyze::body::tests::is_a_user_class_narrows_to_class_ty ... ok
+test analyze::body::tests::ivar_narrowing ... ok
+test analyze::body::tests::if_nil_narrows_variable_removing_nil_in_else_branch ... ok
+test analyze::body::tests::incompatible_add_annotates_diagnostic_on_send ... ok
+test analyze::body::tests::incompatible_compare_annotates_diagnostic_on_send ... ok
+test analyze::body::tests::hash_transform_values_changes_value_type ... ok
+test analyze::body::tests::incompatible_sub_annotates_diagnostic_on_send ... ok
+test analyze::body::tests::kernel_array_does_not_capture_inherited_or_included_app_methods ... ok
+test analyze::body::tests::kernel_array_keeps_the_argument_element_type ... ok
+test analyze::body::tests::map_without_block_falls_back_to_input_elem ... ok
+test analyze::body::tests::if_nil_narrows_variable_to_nil_in_then_branch ... ok
+test analyze::body::tests::hash_accumulator_refined_by_nested_index_write ... ok
+test analyze::body::tests::hash_map_returns_array_of_block_ret ... ok
+test analyze::body::tests::is_a_string_narrows_to_str ... ok
+test analyze::body::tests::incompatible_mul_annotates_diagnostic_on_send ... ok
+test analyze::body::tests::incompatible_div_annotates_diagnostic_on_send ... ok
+test analyze::body::tests::missing_binding_is_a_noop ... ok
+test analyze::body::tests::narrowing_writes_back_to_var_ty_in_else_branch ... ok
+test analyze::body::tests::narrowing_writes_back_to_var_ty_inside_assign_in_else_branch ... ok
+test analyze::body::tests::nil_arms_of_concrete_value_unions_remain_falsy ... ok
+test analyze::body::tests::non_narrowing_condition_returns_none ... ok
+test analyze::body::tests::nilable_hash_write_leaves_seed_placeholder ... ok
+test analyze::body::tests::not_nil_is_inverse ... ok
+test analyze::body::tests::union_of_bool_int_nil_is_structural_not_debug_order ... ok
+test analyze::body::tests::union_of_bottom_is_identity ... ok
+test analyze::body::tests::nil_seeded_local_refined_by_nested_write ... ok
+test analyze::body::tests::union_of_is_idempotent ... ok
+test analyze::body::tests::union_of_relations_has_no_cross_model_subtyping ... ok
+test analyze::body::tests::union_of_merges_container_spines_through_unions ... ok
+test analyze::body::tests::union_of_is_commutative ... ok
+test analyze::fixpoint_bound::tests::an_ivar_harvested_from_a_write_is_bounded ... ok
+test analyze::fixpoint_bound::tests::the_early_exit_check_agrees_with_the_full_measure ... ok
+test analyze::fixpoint_bound::tests::nesting_past_the_depth_bound_is_cut_to_untyped ... ok
+test analyze::fixpoint_bound::tests::a_type_within_both_bounds_is_unchanged ... ok
+test analyze::fixpoint_check::tests::moved_counts_changed_added_and_removed_entries ... ok
+test analyze::fixpoint_check::tests::type_hash_ignores_arm_order_and_variable_ids ... ok
+test analyze::body::tests::union_of_absorbs_existing_variants ... ok
+test analyze::fixpoint_check::tests::type_hash_tells_containers_apart ... ok
+test analyze::fixpoint_check::tests::untyped_is_found_at_any_depth ... ok
+test analyze::harvest_return::tests::a_nested_union_of_unknown_arms_is_not_informative ... ok
+test analyze::harvest_return::tests::distinct_concrete_cores_do_not_stabilize ... ok
+test analyze::harvest_return::tests::configuration_versus_configuration_or_untyped_stabilizes_to_configuration ... ok
+test analyze::harvest_return::tests::insert_distinct_cores_last_write_wins ... ok
+test analyze::harvest_return::tests::insert_gradual_first_write_then_same_core_concrete_narrows ... ok
+test analyze::harvest_return::tests::insert_gradual_nil_is_sticky_against_bare_nil ... ok
+test analyze::harvest_return::tests::insert_keeps_known_return_against_bare_untyped ... ok
+test analyze::harvest_return::tests::insert_keeps_known_return_against_untyped_only_union ... ok
+test analyze::forwarding::constructor::tests::relative_constructor_receiver_keeps_lexical_suffix_candidates ... ok
+test analyze::harvest_return::tests::insert_preserves_first_write_of_gradual_union ... ok
+test analyze::fixpoint_bound::tests::rounds_that_unroll_a_recursive_type_reach_a_fixed_point ... ok
+test analyze::harvest_return::tests::insert_recursive_return_flattened_into_a_union_is_cut ... ok
+test analyze::harvest_return::tests::insert_preserves_rbs_fn ... ok
+test analyze::harvest_return::tests::insert_recursive_return_that_nests_its_previous_round_keeps_the_previous ... ok
+test analyze::harvest_return::tests::insert_stabilizes_configuration_versus_noisy ... ok
+test analyze::harvest_return::tests::insert_scalar_previous_return_is_not_a_recursion_witness ... ok
+test analyze::harvest_return::tests::nil_versus_nil_or_untyped_keeps_gradual_nil ... ok
+test analyze::harvest_return::tests::insert_recursive_return_nested_in_a_record_keeps_the_previous ... ok
+test analyze::harvest_return::tests::var_nil_versus_untyped_nil_keeps_gradual_nil ... ok
+test analyze::keyword_splat_tests::a_merged_splat_joins_the_literal_keys_and_fills_the_rest ... ok
+test analyze::typed_store_tests::ignores_unknown_items_without_typed_store ... ok
+test analyze::typed_store_tests::method_return_fallback_is_clobber_safe ... ok
+test builder::tests::attribute_escape_covers_quotes_and_newlines ... ok
+test analyze::typed_store_tests::registers_string_and_boolean_accessors ... ok
+test analyze::typed_store_tests::registers_any_and_array_columns ... ok
+test builder::tests::nesting_indents_two_per_level_and_self_closes ... ok
+test builder::tests::runtime_values_go_through_the_builder_escapes ... ok
+test catalog::tests::builder_reads_are_classified ... ok
+test builder::tests::ruby_around_elements_is_copied_with_its_body_compiled ... ok
+test catalog::tests::catalog_covers_expected_read_methods ... ok
+test catalog::tests::catalog_covers_expected_write_methods ... ok
+test catalog::tests::catalog_entries_are_unique_per_name_and_receiver ... ok
+test catalog::tests::relation_context_mirrors_send_rs_relation_branch ... ok
+test catalog::tests::terminal_reads_are_classified ... ok
+test catalog::tests::query_builder_methods_are_all_cataloged ... ok
+test catalog::tests::per_model_accessors_are_cataloged ... ok
+test catalog::tests::writes_are_not_chainable ... ok
+test diagnostic::tests::display_renders_incompatible_binop ... ok
+test diagnostic::tests::display_renders_ivar_unresolved ... ok
+test diagnostic::tests::parse_constructor_is_error_with_prism_message ... ok
+test diagnostic::tests::display_renders_send_dispatch_failed ... ok
+test analyze::body::tests::union_of_is_associative ... ok
+test diagnostic::tests::stub_text_names_the_actual_kind ... ok
+test diagnostic::tests::unsupported_constructor_target_agnostic_no_detail ... ok
+test diagnostic::tests::unsupported_constructor_targeted_with_detail ... ok
+test diagnostic::tests::unsupported_text_is_shared_canonical_form ... ok
+test emit::csharp::naming::tests::pascal_of_camel_matches_pascal ... ok
+test emit::csharp::naming::tests::suffix_disambiguation_is_injective ... ok
+test emit::diagnostics::tests::nested_scopes_isolate ... ok
+test emit::diagnostics::tests::push_outside_scope_is_a_noop ... ok
+test emit::diagnostics::tests::scope_collects_pushed_diagnostics ... ok
+test analyze::body::const_resolution::tests::missing_documents_and_missing_source_answers_are_not_generated_ir ... ok
+test emit::diagnostics::tests::stub_style_per_target_matches_existing_raise_equivalents ... ok
+test emit::elixir::expr::tests::array_join_and_string_tr ... ok
+test emit::elixir::expr::tests::block_calls_map_to_enum ... ok
+test emit::elixir::expr::tests::accumulating_block_lowers_to_reduce ... ok
+test emit::elixir::expr::tests::declared_const_array_mutators_share_process_dict ... ok
+test emit::elixir::expr::tests::cross_file_const_resolution_accumulates ... ok
+test emit::elixir::expr::tests::declared_constant_is_attr_but_module_ref_is_not ... ok
+test emit::elixir::expr::tests::field_type_registry_drives_field_read_dispatch ... ok
+test emit::elixir::expr::tests::container_query_methods_dispatch_on_type ... ok
+test emit::elixir::expr::tests::name_reflection_resolves_to_class_string ... ok
+test emit::elixir::expr::tests::hash_methods_map_to_elixir_map ... ok
+test emit::elixir::expr::tests::hash_sym_keys_quote_non_bare_atoms ... ok
+test emit::elixir::expr::tests::method_on_typed_local_dispatches_via_struct ... ok
+test emit::elixir::expr::tests::hash_int_key_index_put_uses_map_put ... ok
+test emit::elixir::expr::tests::module_ivar_state_maps_to_process_dictionary ... ok
+test emit::elixir::expr::tests::kwargs_hash_spreads_into_defaulted_positionals ... ok
+test emit::elixir::expr::tests::nested_if_accumulator_detected_and_threaded ... ok
+test emit::elixir::expr::tests::operator_dispatch_by_operand_type ... ok
+test emit::elixir::expr::tests::param_type_registry_types_view_partial_record ... ok
+test emit::elixir::expr::tests::qualified_cross_module_call_spreads_kwargs ... ok
+test emit::elixir::expr::tests::raise_maps_ruby_exception_classes ... ok
+test emit::elixir::expr::tests::next_in_block_skips_to_accumulator_in_reduce ... ok
+test emit::elixir::expr::tests::record_param_in_module_fn_keeps_receiver ... ok
+test emit::elixir::expr::tests::self_class_routes_to_same_module ... ok
+test emit::elixir::expr::tests::string_builder_append_in_if_branch_lifts_to_rebind ... ok
+test emit::elixir::expr::tests::string_builder_append_in_block_threads_through_reduce ... ok
+test emit::elixir::expr::tests::pure_instance_method_self_call_drops_record ... ok
+test emit::elixir::expr::tests::string_include_is_string_contains ... ok
+test emit::elixir::expr::tests::string_rooted_plus_chain_emits_concat ... ok
+test emit::elixir::expr::tests::time_now_utc_iso8601_maps_to_datetime ... ok
+test emit::elixir::expr::tests::to_h_is_identity ... ok
+test emit::elixir::expr::tests::unary_bang_negates ... ok
+test emit::elixir::expr::tests::zero_arg_bareword_call_gets_parens ... ok
+test emit::elixir::library::tests::elixir_fn_name_rewrites_mid_pred_before_loop_suffix ... ok
+test emit::elixir::library::tests::references_var_counts_bareword_param_read ... ok
+test emit::elixir::library::tests::references_var_ignores_string_literal_tokens ... ok
+test emit::go::expr::predicate_naming_tests::call_path_affixes_field_path_strips ... ok
+test emit::go::imports::tests::add_dedupes_and_sorts ... ok
+test emit::go::imports::tests::empty_by_default ... ok
+test emit::go::library::predicate_naming_tests::bare_fn_predicate_affixes ... ok
+test emit::go::paths::tests::flat_layout_preserved ... ok
+test emit::go::paths::tests::package_for_class_pins_flat_layout_invariant ... ok
+test emit::go::paths::tests::package_v2_for_overlay_main_for_binary ... ok
+test emit::kotlin::naming::tests::suffix_disambiguation_is_injective ... ok
+test emit::roda::tests::block_var_naming ... ok
+test emit::roda::tests::matcher_picks_integer_for_ids_only ... ok
+test emit::roda::tests::pass_through_admits_plain_ruby_and_refuses_rails_vocabulary ... ok
+test emit::roda::tests::constraint_distinguished_routes_emit_guard_not_duplicate ... ok
+test emit::roda::tests::trie_renests_blog_routes_without_duplicates ... ok
+test emit::roda::views::tests::dom_id_rewrites ... ok
+test emit::roda::views::tests::error_api_rewrites ... ok
+test emit::roda::views::tests::split_args_respects_nesting ... ok
+test emit::ruby::expr::tests::a_command_call_with_an_if_argument_is_parenthesized ... ok
+test emit::ruby::expr::tests::a_rescue_modifier_operand_keeps_its_parens ... ok
+test emit::ruby::expr::tests::and_nested_under_or_is_not_parenthesized ... ok
+test emit::ruby::expr::tests::assignment_operand_of_an_operator_is_parenthesized ... ok
+test emit::ruby::expr::tests::bool_op_receiver_is_parenthesized ... ok
+test emit::ruby::expr::tests::command_send_receiver_is_parenthesized ... ok
+test emit::ruby::expr::tests::a_mutable_string_literal_keeps_its_plus ... ok
+test emit::ruby::expr::tests::modifier_if_in_statement_position_is_not_parenthesized ... ok
+test emit::ruby::expr::tests::modifier_if_in_arg_position_is_parenthesized ... ok
+test emit::ruby::expr::tests::modifier_if_as_hash_value_is_parenthesized ... ok
+test emit::ruby::expr::tests::if_else_value_receiver_is_parenthesized ... ok
+test emit::ruby::expr::tests::command_with_block_in_arg_position_is_parenthesized ... ok
+test emit::ruby::expr::tests::or_nested_under_and_is_parenthesized ... ok
+test analyze::attribution::tests::same_file_gap_downgrades_to_info_with_cause ... ok
+test emit::ruby::expr::tests::plain_receiver_is_not_parenthesized ... ok
+test emit::ruby::expr::tests::same_operator_chain_stays_paren_free ... ok
+test emit::ruby::expr::tests::self_index_read_emits_bracket ... ok
+test emit::ruby::expr::tests::self_index_write_emits_bracket_assign ... ok
+test emit::ruby::expr::tests::synthesized_prefix_not_operand_stays_bare ... ok
+test emit::ruby::expr::tests::synthesized_raise_operand_of_a_bool_op_is_parenthesized ... ok
+test emit::ruby::library::insert_rel_param_tests::non_rest_method_keeps_the_untyped_positional_default ... ok
+test emit::ruby::library::insert_rel_param_tests::rest_and_kwrest_method_gets_rel_ahead_of_the_kwrest ... ok
+test emit::ruby::library::insert_rel_param_tests::rest_param_method_gets_rel_as_a_typed_keyword_in_params_and_signature ... ok
+test emit::ruby::method_sig_tests::emit_method_renders_optional_default_and_block_param ... ok
+test emit::ruby::rbs::tests::keyword_rest_renders_values_not_a_nested_hash ... ok
+test emit::ruby::shake::tests::borrowed_definition_names_preserve_writer_and_signature_boundaries ... ok
+test emit::ruby::shake::tests::borrowed_tokens_preserve_suffixes_operator_boundaries_and_line_deduplication ... ok
+test emit::ruby::library::module_adapter_preserves_parameter_declaration_facts ... ok
+test emit::ruby::expr::tests::open_ended_operand_of_a_symbol_bool_op_keeps_its_parens ... ok
+test emit::ruby::shake::tests::definition_exclusion_keeps_prior_roots_and_other_calls_on_the_same_line ... ok
+test emit::ruby::shake::tests::cascading_drops_preserve_the_ten_pass_snapshot_limit ... ok
+test emit::ruby::shake::tests::rewritten_files_are_rescanned_until_orphans_and_their_signatures_disappear ... ok
+test emit::ruby::shake::tests::rewritten_sidecars_stop_rooting_orphans_on_later_passes ... ok
+test emit::ruby::shake::tests::stable_roots_exclude_definitions_and_are_recomputed_for_each_invocation ... ok
+test emit::ruby::source_markers::tests::finish_drops_superseded_and_trailing_markers ... ok
+test emit::ruby::source_markers::tests::finish_leaves_files_without_markers_alone ... ok
+test emit::ruby::source_markers::tests::finish_moves_to_column_zero_and_drops_repeats ... ok
+test emit::rust::decide::str_color::tests::coercion_for_borrowed_to_owned_is_to_owned ... ok
+test emit::rust::decide::str_color::tests::coercion_for_owned_to_borrowed_is_borrow ... ok
+test emit::rust::decide::str_color::tests::coercion_for_same_color_is_none ... ok
+test emit::rust::decide::str_color::tests::coercion_for_static_to_owned_is_to_owned ... ok
+test emit::rust::decide::str_color::tests::if_branch_borrowed_var_vs_interp_gets_to_owned ... ok
+test emit::rust::decide::str_color::tests::if_branch_literal_vs_send_gets_to_owned ... ok
+test emit::rust::decide::str_color::tests::if_branch_matching_literals_need_no_coercion ... ok
+test emit::rust::decide::str_color::tests::ivar_assign_string_literal_gets_to_owned ... ok
+test emit::rust::decide::str_color::tests::ivar_passed_to_borrow_param_gets_borrow ... ok
+test emit::rust::decide::str_color::tests::ivar_returned_from_string_fn_needs_no_coercion ... ok
+test emit::rust::decide::str_color::tests::literal_passed_to_borrow_param_needs_no_coercion ... ok
+test emit::rust::decide::str_color::tests::literal_returned_from_string_fn_gets_to_owned ... ok
+test emit::rust::decide::str_color::tests::registry_picks_up_str_param_as_borrowed ... ok
+test emit::rust::decide::str_color::tests::registry_picks_up_str_return_as_owned ... ok
+test emit::rust::expr::util::predicate_naming_tests::suffix_disambiguation_is_injective ... ok
+test emit::rust::expr::control::tests::or_operand_inside_and_is_parenthesized ... ok
+test emit::rust::expr::control::tests::equal_or_tighter_precedence_operands_get_no_parens ... ok
+test emit::rust::library::op_assign_tests::op_assign_emits_the_assignment ... ok
+test emit::rust::library::numeric_unary_emit_tests::negation_is_arithmetic_and_negative_receivers_keep_parens ... ok
+test emit::rust::library::value_union_emit_tests::fetch_nil_at_string_param_materializes_owned_value ... ok
+test emit::rust::library::value_union_emit_tests::value_shaped_interpolation_uses_ruby_to_s ... ok
+test emit::rust::library::value_union_emit_tests::union_param_string_arg_wraps_as_value ... ok
+test emit::rust::method::tests::block_forwarding_var_in_send_block_slot_emits_bare_identifier ... ok
+test emit::rust::method::tests::block_refine_propagates_callee_sig_to_forwarder_emit ... ok
+test emit::rust::method::tests::instance_method_with_block_param_no_yield_emits_placeholder ... ok
+test emit::rust::method::tests::module_method_with_block_param_emits_box_fnonce_placeholder ... ok
+test emit::rust::method::tests::module_method_without_block_param_unchanged ... ok
+test emit::rust::ty::tests::heterogeneous_nilable_union_is_value_shaped ... ok
+test emit::rust::ty::tests::option_string_is_not_value_shaped ... ok
+test emit::rust::ty::tests::string_or_array_union_is_value_shaped ... ok
+test emit::rust::ty::tests::string_symbol_union_is_not_value_shaped ... ok
+test emit::shared::add::tests::array_plus_array_different_elem_is_concat ... ok
+test emit::shared::add::tests::array_plus_array_matching_elem_is_array_concat ... ok
+test emit::shared::add::tests::float_plus_float_is_numeric ... ok
+test emit::shared::add::tests::float_plus_int_is_numeric_promote ... ok
+test emit::shared::add::tests::hash_plus_hash_is_incompatible ... ok
+test emit::shared::add::tests::int_plus_float_is_numeric_promote ... ok
+test emit::shared::add::tests::int_plus_int_is_numeric ... ok
+test emit::shared::add::tests::int_plus_str_is_incompatible ... ok
+test emit::shared::add::tests::relation_plus_array_is_array_concat ... ok
+test emit::go::library::predicate_naming_tests::action_controller_go_emit_typechecks_hotspots ... ok
+test emit::shared::add::tests::str_plus_str_is_string_concat ... ok
+test emit::shared::add::tests::ty_var_counts_as_unknown ... ok
+test emit::shared::add::tests::unknown_lhs_is_unknown ... ok
+test emit::shared::add::tests::unknown_rhs_is_unknown ... ok
+test emit::shared::add::tests::untyped_operand_is_unknown_not_incompatible ... ok
+test emit::shared::cmp::tests::array_vs_array_is_incompatible_for_now ... ok
+test emit::shared::cmp::tests::bool_vs_bool_is_incompatible ... ok
+test emit::shared::cmp::tests::class_vs_class_is_subclass_check ... ok
+test emit::shared::cmp::tests::date_vs_date_is_not_incompatible ... ok
+test emit::shared::cmp::tests::int_vs_float_is_numeric_promote ... ok
+test emit::shared::cmp::tests::int_vs_int_is_same_type ... ok
+test emit::shared::cmp::tests::int_vs_str_is_incompatible ... ok
+test emit::shared::cmp::tests::str_vs_str_is_same_type ... ok
+test emit::shared::cmp::tests::nullable_time_vs_time_is_incompatible ... ok
+test emit::shared::cmp::tests::sym_vs_sym_is_same_type ... ok
+test emit::shared::cmp::tests::time_vs_time_is_not_incompatible ... ok
+test analyze::rbs_ingestion_tests::analyzer_rbs_signatures_overlay_the_hardcoded_catalog ... ok
+test emit::shared::cmp::tests::unknown_lhs_is_unknown ... ok
+test emit::shared::cmp::tests::unknown_rhs_is_unknown ... ok
+test emit::shared::div_pow::tests::array_over_array_is_incompatible ... ok
+test emit::shared::div_pow::tests::float_over_float_is_numeric ... ok
+test emit::shared::div_pow::tests::float_over_int_is_numeric_promote ... ok
+test emit::shared::div_pow::tests::int_over_float_is_numeric_promote ... ok
+test emit::shared::div_pow::tests::int_over_int_is_int_floor ... ok
+test emit::shared::div_pow::tests::int_over_str_is_incompatible ... ok
+test emit::shared::div_pow::tests::str_over_str_is_incompatible ... ok
+test emit::shared::div_pow::tests::unknown_lhs_is_unknown ... ok
+test emit::shared::div_pow::tests::unknown_rhs_is_unknown ... ok
+test emit::shared::eq::tests::lhs_nil_is_nil_check_with_rhs_subject ... ok
+test emit::shared::eq::tests::missing_type_falls_back_to_same_type ... ok
+test emit::shared::eq::tests::nil_equals_nil_is_same_type ... ok
+test emit::shared::eq::tests::one_typed_one_untyped_falls_back_to_same_type ... ok
+test emit::shared::eq::tests::rhs_nil_is_nil_check_with_lhs_subject ... ok
+test emit::shared::eq::tests::same_type_ints ... ok
+test emit::shared::eq::tests::same_type_strings ... ok
+test emit::shared::modulo::tests::array_mod_array_is_incompatible ... ok
+test emit::shared::modulo::tests::float_mod_float_is_numeric ... ok
+test emit::shared::modulo::tests::hash_mod_hash_is_incompatible ... ok
+test emit::shared::modulo::tests::int_mod_float_is_numeric_promote ... ok
+test emit::shared::modulo::tests::int_mod_int_is_int_floor ... ok
+test emit::shared::modulo::tests::int_mod_str_is_incompatible ... ok
+test emit::rust::library::value_union_emit_tests::action_controller_runtime_emit_typechecks_hotspots ... ok
+test emit::shared::modulo::tests::str_mod_array_is_string_format ... ok
+test emit::shared::modulo::tests::str_mod_int_is_string_format ... ok
+test emit::shared::modulo::tests::unknown_lhs_is_unknown ... ok
+test emit::shared::modulo::tests::unknown_rhs_is_unknown ... ok
+test emit::shared::mul::tests::array_times_int_is_array_repeat ... ok
+test emit::shared::mul::tests::array_times_str_is_array_join ... ok
+test emit::shared::mul::tests::bool_times_bool_is_incompatible ... ok
+test emit::shared::mul::tests::float_times_float_is_numeric ... ok
+test emit::shared::mul::tests::hash_times_hash_is_incompatible ... ok
+test emit::shared::mul::tests::int_times_float_is_numeric_promote ... ok
+test emit::shared::mul::tests::int_times_int_is_numeric ... ok
+test emit::shared::mul::tests::int_times_str_is_incompatible ... ok
+test emit::shared::mul::tests::str_times_int_is_string_repeat ... ok
+test emit::shared::mul::tests::unknown_lhs_is_unknown ... ok
+test emit::shared::mul::tests::unknown_rhs_is_unknown ... ok
+test emit::shared::operand::tests::concrete_types_are_not_gradual ... ok
+test emit::shared::operand::tests::missing_var_and_untyped_are_gradual ... ok
+test emit::shared::operand::tests::union_is_gradual_iff_an_arm_is ... ok
+test emit::shared::regex_literal::tests::already_escaped_slash_is_left_alone ... ok
+test emit::shared::regex_literal::tests::bare_slash_is_escaped ... ok
+test emit::shared::regex_literal::tests::character_class_with_a_slash_survives ... ok
+test emit::shared::regex_literal::tests::escaped_backslash_does_not_shield_the_next_slash ... ok
+test emit::shared::schema_sql::tests::a_virtual_table_has_no_postgres_ddl ... ok
+test emit::shared::schema_sql::tests::a_dynamic_index_method_is_an_ingest_error ... ok
+test emit::shared::schema_sql::tests::postgres_keys_follow_rails_defaults ... ok
+test emit::shared::schema_sql::tests::a_partial_index_keeps_its_predicate ... ok
+test emit::shared::schema_sql::tests::postgres_preserves_btree_gin_and_custom_index_methods ... ok
+test emit::shared::schema_sql::tests::postgres_quotes_every_identifier ... ok
+test emit::shared::schema_sql::tests::postgres_renders_an_eight_byte_integer_as_bigint ... ok
+test emit::shared::schema_sql::tests::postgres_renders_rails_column_types_and_the_default_key ... ok
+test emit::shared::schema_sql::tests::postgres_types_follow_rails_postgresql_adapter ... ok
+test emit::shared::schema_sql::tests::schema_rb_folds_method_names_and_rejects_sql_quoting ... ok
+test emit::shared::schema_sql::tests::sqlite_is_the_default_dialect ... ok
+test emit::shared::set_op::tests::array_and_array_different_elem_is_intersect ... ok
+test emit::shared::schema_sql::tests::sqlite_reads_alike_only_the_shared_predicate_syntax ... ok
+test emit::shared::set_op::tests::array_and_array_is_intersect ... ok
+test emit::rust::library::value_union_emit_tests::verified_request_session_nil_uses_is_none ... ok
+test emit::shared::set_op::tests::int_bitwise_is_unknown ... ok
+test emit::shared::set_op::tests::array_or_array_different_elem_is_union ... ok
+test emit::shared::set_op::tests::array_or_array_is_union ... ok
+test emit::shared::sub::tests::array_minus_array_different_elem_is_a_difference ... ok
+test emit::shared::sub::tests::first_class_time_variant_minus_is_not_incompatible ... ok
+test emit::shared::sub::tests::int_minus_int_is_numeric ... ok
+test emit::rust::library::value_union_emit_tests::optional_value_attr_nil_check_uses_is_null ... ok
+test emit::shared::sub::tests::array_minus_array_matching_elem_is_array_difference ... ok
+test emit::shared::sub::tests::float_minus_float_is_numeric ... ok
+test emit::shared::sub::tests::hash_minus_hash_is_incompatible ... ok
+test emit::shared::sub::tests::int_minus_float_is_numeric_promote ... ok
+test analyze::fixpoint_bound::tests::bounding_is_idempotent_so_a_cut_type_is_a_fixed_point ... ok
+test analyze::rbs_ingestion_tests::analyzer_applies_rbs_signatures_to_user_class ... ok
+test emit::rust::library::value_union_emit_tests::form_with_stringifies_method_before_override_input ... ok
+test emit::shared::sub::tests::int_minus_str_is_incompatible ... ok
+test emit::shared::sub::tests::str_minus_str_is_incompatible ... ok
+test emit::shared::sub::tests::set_lhs_is_unknown_but_array_minus_set_is_incompatible ... ok
+test emit::shared::sub::tests::time_minus_time_is_not_incompatible ... ok
+test emit::shared::sub::tests::unknown_lhs_is_unknown ... ok
+test emit::shared::sub::tests::unknown_rhs_is_unknown ... ok
+test emit::swift::naming::tests::suffix_disambiguation_is_injective ... ok
+test emit::typescript::expr::async_hof_tests::each_with_async_block_rewrites_to_for_of ... ok
+test emit::typescript::expr::async_hof_tests::any_returns_boolean ... ok
+test emit::shared::utf8_chr::tests::utf8_character_does_not_drop_effectful_forwarded_operands ... ok
+test emit::typescript::expr::array_eq_tests::array_equality_compares_elements ... ok
+test emit::shared::utf8_chr::tests::utf8_constructor_guards_whole_calls_on_every_target ... ok
+test emit::typescript::expr::async_hof_tests::filter_with_async_predicate_rewrites_correctly ... ok
+test emit::typescript::expr::async_hof_tests::find_returns_first_match ... ok
+test emit::swift::route_errors::tests::router_bridge_qualifies_only_its_own_implicit_sends ... ok
+test emit::typescript::expr::async_hof_tests::map_with_async_block_pushes_into_accumulator ... ok
+test emit::swift::route_errors::tests::router_bridge_preserves_operands_and_unrelated_exceptions ... ok
+test emit::typescript::expr::async_hof_tests::no_rewrite_when_block_has_no_async ... ok
+test emit::typescript::expr::async_hof_tests::reduce_threads_accumulator ... ok
+test emit::typescript::expr::async_hof_tests::sync_profile_no_rewrites ... ok
+test emit::typescript::expr::async_hof_tests::reject_with_async_predicate_negates ... ok
+test emit::typescript::expr::range_slice_tests::exclusive_range_to_neg_one_unchanged ... ok
+test emit::typescript::expr::range_slice_tests::inclusive_range_to_neg_one_emits_open_ended_slice ... ok
+test emit::typescript::expr::range_slice_tests::inclusive_range_to_neg_two_keeps_plus_one_shift ... ok
+test emit::typescript::expr::range_slice_tests::inclusive_range_to_positive_end_keeps_plus_one_shift ... ok
+test emit::typescript::printer::tests::arrow_forms ... ok
+test emit::typescript::expr::range_slice_tests::open_ended_range_emits_single_arg_slice ... ok
+test emit::typescript::printer::tests::binary_parens_follow_precedence ... ok
+test emit::typescript::printer::tests::else_if_chains_flat ... ok
+test emit::rust::library::value_union_emit_tests::optional_value_attr_to_s_uses_ufcs ... ok
+test emit::typescript::printer::tests::left_assoc_same_prec_right_child_parens ... ok
+test emit::typescript::printer::tests::mappings_record_generated_positions ... ok
+test emit::typescript::printer::tests::member_of_ternary_parenthesizes ... ok
+test emit::typescript::printer::tests::multi_statement_blocks_expand ... ok
+test emit::typescript::printer::tests::negative_literal_receiver_is_parenthesized ... ok
+test emit::typescript::printer::tests::new_callee_call_parenthesizes ... ok
+test emit::typescript::printer::tests::nullish_refuses_bare_logical_children ... ok
+test emit::typescript::printer::tests::single_statement_blocks_inline ... ok
+test emit::typescript::printer::tests::string_and_template_escaping ... ok
+test emit::typescript::printer::tests::switch_cases_inline_with_break ... ok
+test emit::typescript::printer::tests::unary_of_binary_parenthesizes ... ok
+test emit::typescript::printer::tests::trial_render_does_not_leak_mappings ... ok
+test emit::typescript::sourcemap::tests::same_generated_position_keeps_innermost_mark ... ok
+test emit::typescript::sourcemap::tests::second_source_file_gets_its_own_index ... ok
+test emit::typescript::sourcemap::tests::synthetic_and_out_of_range_spans_are_skipped ... ok
+test emit::typescript::sourcemap::tests::serializes_deltas_per_line_and_resets_gen_col ... ok
+test emit::typescript::sourcemap::tests::vlq_encodes_known_values ... ok
+test erb::tests::a_method_named_ending_is_not_an_end_tag ... ok
+test erb::tests::case_arms_split_across_tags_stay_parseable ... ok
+test erb::tests::code_tag_alone_on_a_line_leaves_no_whitespace ... ok
+test erb::tests::comment_merged_chunk_covers_both_template_runs ... ok
+test erb::tests::detects_block_expr ... ok
+test erb::tests::end_with_a_modifier_on_a_passthrough_block_stays_a_plain_end ... ok
+test erb::tests::end_with_a_trailing_modifier_still_closes_its_block ... ok
+test erb::tests::glue_offsets_snap_to_the_preceding_segment_end ... ok
+test erb::tests::interpolation_like_hashes_inside_literals_are_not_comments ... ok
+test erb::tests::mid_line_code_tag_keeps_its_whitespace ... ok
+test erb::tests::nested_output_and_passthrough_close_in_order ... ok
+test erb::tests::output_block_tag_compiles_with_matching_end ... ok
+test erb::tests::output_interpolation ... ok
+test erb::tests::output_tag_keeps_indent_but_honors_tail_dash ... ok
+test erb::tests::passthrough_block_end_stays_plain ... ok
+test erb::tests::prism_identifies_comment_prefixes_that_resemble_interpolation ... ok
+test erb::tests::static_text_only ... ok
+test erb::tests::string_literal_keeps_interpolation_code_verbatim ... ok
+test erb::tests::tag_code_maps_exactly ... ok
+test erb::tests::text_chunk_endpoints_map_to_template_chunk ... ok
+test erb::tests::translate_offset_is_monotonic ... ok
+test erb::tests::trim_marker_tags_strip_to_plain_code ... ok
+test expr::tests::inherit_span_fills_synthetic_nodes ... ok
+test expr::tests::inherit_span_keeps_real_spans_and_uses_them_for_descendants ... ok
+test expr::tests::inherit_span_with_synthetic_enclosing_is_a_no_op ... ok
+test gems::tests::a_gem_parked_under_a_framework_namespace_owns_its_base ... ok
+test gems::tests::census_classifies_and_summarizes ... ok
+test gems::tests::graphql_owns_the_graphql_namespace ... ok
+test gems::tests::families_and_namespaces ... ok
+test gems::tests::lock_path_remotes_reads_only_path_sources ... ok
+test gems::tests::parses_specs_and_dependencies ... ok
+test guide::tests::releases_links_back_into_the_guide ... ok
+test haml::tests::bare_hash_expression_attrs_pass_through ... ok
+test haml::tests::attribute_hash_via_render_attrs ... ok
+test haml::tests::class_shortcut_folds_into_attr_hash ... ok
+test guide::tests::guide_links_become_site_pages_and_the_rest_go_to_github ... ok
+test haml::tests::comment_is_dropped ... ok
+test haml::tests::hash_interpolation_line_is_text_not_id ... ok
+test haml::tests::if_else_middle_marker_keeps_block_open ... ok
+test guide::tests::the_title_moves_to_the_header_and_tables_render ... ok
+test haml::tests::inline_output_and_id ... ok
+test haml::tests::inline_output_multiline_continuation_joins ... ok
+test haml::tests::nesting_closes_on_dedent ... ok
+test haml::tests::output_do_block_closes_with_end_to_s ... ok
+test haml::tests::plain_tag_and_class_shortcut ... ok
+test haml::tests::program_has_buf_prologue_and_epilogue ... ok
+test haml::tests::ruby_filter_emits_body_as_code ... ok
+test haml::tests::silent_block_closes_with_end ... ok
+test haml::tests::trailing_ruby_comment_does_not_break_closer ... ok
+test haml::tests::void_and_self_close_have_no_close_tag ... ok
+test ide::tests::can_be_nil_only_for_provable_nil ... ok
+test ide::tests::gap_report_attributes_ingest_gap_files_as_tool_coverage ... FAILED
+test ide::tests::def_headers_hover_and_reference ... FAILED
+test ide::tests::complete_at_offers_members_kwargs_and_ivars ... FAILED
+test ide::tests::gap_report_complete_when_every_hop_resolves ... FAILED
+test ide::tests::members_of_enumerates_columns_associations_and_finders ... FAILED
+test ide::tests::nil_verdict_is_three_valued ... ok
+test ide::tests::position_clamps_inside_a_multibyte_char ... ok
+test ide::tests::position_clamps_past_end ... ok
+test ide::tests::position_is_utf16_aware ... ok
+test ide::tests::position_round_trips_through_byte_offsets ... ok
+test ide::tests::query_real_blog_end_to_end ... FAILED
+test ide::tests::references_empty_off_a_variable ... FAILED
+test ide::tests::references_local_is_body_scoped ... FAILED
+test ide::tests::references_finds_ivar_across_controller_actions ... FAILED
+test ide::tests::render_ty_collapses_nilable_union_to_question_mark ... ok
+test ide::tests::references_method_is_type_directed ... FAILED
+test ide::tests::related_files_walks_the_render_graph ... FAILED
+test ide::tests::render_ty_uses_ruby_facing_names ... ok
+test ide::tests::traceroute_composes_route_filters_action_view_layout ... FAILED
+test ide::tests::traceroute_hops_stay_clean_when_the_chain_preloads ... FAILED
+test guide::tests::every_checked_in_page_renders ... ok
+test analyze::fixpoint_bound::tests::a_type_over_the_node_bound_is_cut_shallower_until_it_fits ... ok
+test ide::tests::unresolved_variable_renders_untyped ... ok
+test ingest::channel_callbacks::channel_name_tests::channel_name_matches_action_cable ... ok
+test ingest::delegate::tests::a_concern_method_call_with_arguments_declines_model_delegate_expansion ... ok
+test ingest::delegate::tests::a_delegated_getter_and_setter_pair_both_synthesize ... ok
+test ingest::delegate::tests::a_model_accessor_collision_is_left_unexpanded ... ok
+test ingest::delegate::tests::a_module_shared_with_models_stays_deferred_for_all_consumers ... ok
+test ingest::delegate::tests::a_prefixed_delegate_is_checked_against_its_generated_name ... ok
+test ingest::delegate::tests::a_self_call_with_arguments_declines_a_zero_argument_delegate ... ok
+test ingest::delegate::tests::a_setter_name_is_exempt_from_the_called_with_arguments_guard ... ok
+test ingest::delegate::tests::allow_nil_true_is_left_unexpanded ... ok
+test ingest::delegate::tests::an_invalid_explicit_prefix_is_left_unexpanded ... ok
+test ingest::delegate::tests::prefix_true_composes_with_the_setter_name_too ... ok
+test ingest::delegate::tests::ruby_source_fragments_in_delegate_symbols_are_left_unexpanded ... ok
+test ingest::delegate::tests::standalone_module_delegates_are_still_expanded ... ok
+test ingest::delegate::tests::the_last_delegate_for_a_name_wins ... ok
+test ingest::delegate::tests::variable_arity_bracket_assign_is_left_unexpanded ... ok
+test ingest::model::singleton_visibility_tests::a_real_statement_in_a_singleton_block_still_refuses ... ok
+test analyze::rbs_ingestion_tests::analyzer_with_no_rbs_signatures_is_unchanged ... ok
+test ingest::model::singleton_visibility_tests::a_visibility_marker_in_a_singleton_block_is_resolved_not_refused ... ok
+test ingest::prism::tests::clean_source_records_nothing ... ok
+test ingest::prism::tests::push_outside_scope_is_a_noop ... ok
+test ingest::prism::tests::syntax_error_is_recorded_as_a_parse_diagnostic ... ok
+test ingest::prism::tests::silent_program_ingest_reserves_enclosing_block_parameters ... ok
+test ingest::rate_limit::tests::a_custom_store_is_not_dropped ... ok
+test ingest::rate_limit::tests::a_shared_scope_replaces_the_controller_path_in_the_cache_key ... ok
+test ingest::rate_limit::tests::an_unknown_option_leaves_the_macro_in_place ... ok
+test ide::tests::traceroute_marks_gated_out_filters_and_resolves_routes ... FAILED
+test ingest::rate_limit::tests::defaults_and_the_key_name_follow_rails ... ok
+test ide::tests::type_at_reaches_class_body_dsl ... FAILED
+test ingest::rate_limit::tests::if_unless_and_by_lambda_are_kept ... ok
+test ingest::rate_limit::tests::the_store_form_expands_to_a_filter_and_a_method ... ok
+test ingest::schema::tests::an_eight_byte_integer_is_a_bigint ... ok
+test ingest::routes::lazy_helper_source_tests::helper_sources_stay_unloaded_without_an_accepted_mount ... ok
+test ingest::routes::lazy_helper_source_tests::accepted_mounts_share_one_helper_snapshot_and_keep_source_spans ... ok
+test ingest::schema::tests::a_column_a_predicate_names_is_not_renamed_or_removed ... ok
+test ingest::schema::tests::backfill_ruby_is_ignored ... ok
+test ingest::schema::tests::drop_and_rename_table ... ok
+test ingest::schema::tests::incremental_verbs_fold_in_order ... ok
+test ingest::schema::tests::create_table_with_symbols_and_timestamps ... ok
+test ingest::schema::tests::migration_index_options_keep_predicate_and_access_method ... ok
+test ingest::schema::tests::schema_rb_string_form_still_parses ... ok
+test ingest::schema::tests::unsupported_verb_errors_with_guidance ... ok
+test ingest::schema::tests::up_method_used_when_no_change_down_ignored ... ok
+test ingest::sources::rubydex_snapshot_tests::rubydex_snapshot_preserves_ids_through_generated_passes ... ok
+test ingest::sources::tests::a_bracketed_label_is_refused_a_real_id ... ok
+test ingest::sources::tests::generated_names_follow_the_live_parse_and_clear_on_drain ... ok
+test ingest::sources::tests::ids_are_one_based_drain_clears ... ok
+test ingest::sources::rubydex_snapshot_tests::rubydex_snapshot_rejects_late_real_source_in_release_too ... ok
+test ingest::sources::tests::line_at_counts_newlines_up_to_the_offset ... ok
+test ingest::sources::tests::parsed_line_indices_follow_live_inputs_and_clear_on_drain ... ok
+test ingest::sources::tests::refusing_a_bracketed_label_does_not_disturb_real_ids ... ok
+test ingest::sources::tests::register_is_idempotent_by_path_and_first_text_wins ... ok
+test ingest::sources::tests::snapshot_does_not_clear_or_reset_ids ... ok
+test ingest::sources::tests::source_readers_follow_fresh_ids_after_drain ... ok
+test ingest::sources::tests::unregistered_path_is_the_synthetic_sentinel ... ok
+test ingest::structure_sql::tests::read_ident_strips_schema_qualifier ... ok
+test ingest::structure_sql::tests::read_ident_keeps_dot_inside_single_quoted_segment ... ok
+test ingest::structure_sql::tests::resolve_column_type_maps_a_registered_enum_to_string ... ok
+test ingest::structure_sql::tests::strip_parens_capture_nums_extracts_precision_and_scale ... ok
+test ingest::structure_sql::tests::resolve_column_type_maps_the_core_postgres_types ... ok
+test ingest::structure_sql::tests::strip_parens_capture_nums_handles_mid_phrase_group ... ok
+test ingest::structure_sql::tests::structure_sql_index_methods_are_single_identifiers ... ok
+test ingest::structure_sql::tests::structure_sql_rejects_a_schema_qualified_index_method ... ok
+test ingest::structure_sql::tests::top_level_split_respects_dollar_quoted_function_body ... ok
+test ingest::structure_sql::tests::top_level_split_respects_string_literals ... ok
+test ingest::survey::tests::bucket_key_cuts_on_a_character_boundary ... ok
+test ingest::test::tests::a_support_class_inside_a_module_is_not_a_test ... ok
+test ingest::test::tests::a_test_class_inside_a_module_keeps_its_namespace ... ok
+test ingest::test::tests::single_class_wrapper_still_answers_the_first ... ok
+test ingest::test::tests::the_fallback_test_class_is_a_top_level_class ... ok
+test ingest::test::tests::every_test_class_in_a_file_is_its_own_module ... ok
+test ingest::test::tests::tests_macro_names_the_subject ... ok
+test ingest::view::tests::strict_locals_absent_returns_none ... ok
+test ingest::view::tests::strict_locals_colonless_entry_is_skipped_not_fatal ... ok
+test ingest::view::tests::ingest_template_is_engine_agnostic ... ok
+test ingest::view::tests::strict_locals_default_literals_int_float_array_sym ... ok
+test ingest::view::tests::strict_locals_paren_scan_bounded_to_comment ... ok
+test ingest::view::tests::strict_locals_parses_required_and_defaulted ... ok
+test ingest::view::tests::view_engine_dispatch ... ok
+test lower::arel::build::tests::does_not_recognize_find_intentionally ... ok
+test lower::arel::build::tests::does_not_recognize_order_with_dynamic_direction ... ok
+test lower::arel::build::tests::does_not_recognize_unknown_class ... ok
+test lower::arel::build::tests::does_not_recognize_unknown_method ... ok
+test lower::arel::build::tests::does_not_recognize_where_with_unknown_column ... ok
+test lower::arel::build::tests::does_not_recognize_where_without_kwargs ... ok
+test lower::arel::build::tests::recognizes_all ... ok
+test lower::arel::build::tests::recognizes_all_then_limit_chain ... ok
+test analyze::fixpoint_check::tests::stats_are_per_analyze ... ok
+test lower::arel::build::tests::recognizes_all_then_order_chain ... ok
+test lower::arel::build::tests::recognizes_belongs_to_find_by ... ok
+test lower::arel::build::tests::recognizes_count ... ok
+test lower::arel::build::tests::recognizes_exists_with_id ... ok
+test lower::arel::build::tests::recognizes_has_many_proxy_where ... ok
+test lower::arel::build::tests::recognizes_includes_then_order_chain ... ok
+test lower::arel::build::tests::recognizes_multi_kwarg_where_as_and_chain ... ok
+test lower::arel::tests::direct_assign_seq_still_hoists_unchanged ... ok
+test lower::arel::tests::empty_value_seq_replacement_is_a_change ... ok
+test lower::arel::build::tests::recognizes_where_then_order_then_limit_chain ... ok
+test lower::arel::tests::hoists_query_seq_nested_in_call_arg ... ok
+test lower::arel::visitor::tests::delete_emits_single_exec ... ok
+test lower::arel::visitor::tests::delete_no_conditions_is_truncate ... ok
+test lower::arel::visitor::tests::insert_emits_exec_then_last_insert_rowid ... ok
+test lower::arel::visitor::tests::insert_without_assignments_uses_default_values ... ok
+test lower::arel::visitor::tests::limit_one_without_single_record_emits_array_hydrate ... ok
+test lower::arel::visitor::tests::ordering_preserves_existing_qualified_terms ... ok
+test lower::arel::visitor::tests::param_on_count_with_where_binds ... ok
+test lower::arel::visitor::tests::param_on_single_hydrate_emits_placeholder_and_bind ... ok
+test lower::arel::visitor::tests::param_off_keeps_inline_escape ... ok
+test lower::arel::visitor::tests::select_all_no_limit_emits_array_hydrate ... ok
+test lower::arel::visitor::tests::param_on_string_value_binds_text ... ok
+test lower::arel::visitor::tests::select_count_emits_int_scalar ... ok
+test lower::arel::visitor::tests::select_exists_emits_bool_from_step ... ok
+test lower::arel::visitor::tests::select_marked_single_record_emits_single_hydrate ... ok
+test lower::arel::visitor::tests::select_where_predicate_with_runtime_value_round_trips ... ok
+test lower::arel::visitor::tests::select_with_two_orders_emits_csv_order_by ... ok
+test lower::arel::visitor::tests::select_with_order_emits_order_by_segment ... ok
+test lower::arel::visitor::tests::update_emits_single_exec ... ok
+test lower::attached_url::tests::other_arguments_are_left_alone ... ok
+test lower::attached_url::tests::if_branches_are_rewritten_separately ... ok
+test lower::attached_url::tests::reader_in_image_tag_asks_for_its_url ... ok
+test lower::attached_url::tests::variant_chain_in_url_for_asks_for_its_url ... ok
+test lower::broadcasts::tests::model_without_broadcasts_lowers_to_empty ... FAILED
+test lower::broadcasts::tests::real_blog_article_broadcasts_to_prepend ... FAILED
+test lower::broadcasts::tests::real_blog_comment_has_broadcasts_to_and_commit_hooks ... FAILED
+test lower::cable_test_case::tests::a_test_whose_channel_is_not_in_the_tree_is_reported_and_left ... ok
+test lower::cable_test_case::tests::a_bare_subscribe_and_the_tests_macro ... ok
+test lower::chain::tests::single_modifier_collects_one_layer ... ok
+test lower::chain::tests::stops_at_non_query_builder_send ... ok
+test lower::chain::tests::two_modifiers_collect_in_order ... ok
+test lower::column_ops::tests::leaves_an_explicit_receiver_alone ... ok
+test lower::cable_test_case::tests::subscribe_with_keywords_names_the_channel_and_strings_the_values ... ok
+test lower::cable_test_case::tests::signed_stream_name_is_spelled_from_the_streamables_in_any_test ... ok
+test lower::column_ops::tests::leaves_the_no_arg_form_alone ... ok
+test lower::column_ops::tests::rewrites_a_statement_touch_with_a_column ... ok
+test lower::column_ops::tests::rewrites_increment_with_touch_and_declines_without ... ok
+test lower::current_set::tests::a_non_keyword_argument_is_reported_and_left ... ok
+test lower::current_set::tests::another_receivers_set_is_untouched ... ok
+test lower::current_set::tests::one_attribute_saves_assigns_and_restores_in_an_ensure ... ok
+test lower::each_with_index::tests::collapses_each_with_index_without_offset ... ok
+test lower::each_with_index::tests::injects_offset_binding_for_nonzero_start ... ok
+test lower::current_set::tests::two_attributes_save_before_either_is_written ... ok
+test lower::each_with_index::tests::leaves_method_ref_block_with_offset_alone ... ok
+test lower::each_with_index::tests::leaves_map_with_index_alone ... ok
+test lower::each_with_index::tests::leaves_rest_param_block_with_offset_alone ... ok
+test lower::each_with_index::tests::offset_temp_avoids_existing_local_name ... ok
+test lower::enumerable_ext::tests::first_n_on_an_array_is_untouched ... ok
+test lower::enumerable_ext::tests::first_n_on_an_array_or_untyped_union_reads_through_to_a ... ok
+test lower::enumerable_ext::tests::many_on_a_nilable_array_union_is_untouched ... ok
+test lower::enumerable_ext::tests::many_on_an_array_grounds_to_the_module_function ... ok
+test lower::enumerable_ext::tests::many_on_an_array_or_untyped_union_is_a_size_test ... ok
+test lower::enumerable_ext::tests::to_sentence_maps_a_named_connector_into_its_slot ... ok
+test analyze::body::const_resolution::tests::prepared_answers_reject_same_count_source_changes_and_reordering ... ok
+test lower::enumerable_ext::tests::to_sentence_passes_the_default_connectors ... ok
+test lower::forwarding::tests::distinct_classes_with_the_same_short_name_are_ambiguous ... ok
+test lower::enumerable_ext::tests::to_sentence_with_an_unknown_option_is_untouched ... ok
+test lower::enumerable_ext::tests::to_sentence_on_an_untyped_block_map_grounds ... ok
+test lower::forwarding::tests::repeated_fragments_are_not_short_name_collisions ... ok
+test lower::functionalize::local_accumulation::tests::shovel_on_local_becomes_append_rebind ... ok
+test lower::functionalize::local_accumulation::tests::attr_setter_on_local_becomes_struct_update ... ok
+test lower::functionalize::local_accumulation::tests::block_index_put_threads_through_reduce ... ok
+test lower::functionalize::local_accumulation::tests::local_mutations_become_rebinds ... ok
+test lower::functionalize::local_accumulation::tests::index_put_on_a_struct_routes_to_its_setter ... ok
+test lower::functionalize::local_accumulation::tests::string_builder_hints_emit_iolist_and_param_resolves ... ok
+test lower::functionalize::mutation_to_struct_return::tests::class_method_captures_record_returning_call_on_local ... ok
+test lower::functionalize::mutation_to_struct_return::tests::class_method_destructures_dual_dispatch ... ok
+test lower::functionalize::mutation_to_struct_return::tests::case_index_read_and_write_thread_record ... ok
+test lower::functionalize::mutation_to_struct_return::tests::constructor_drops_super_and_threads_attr_writers ... ok
+test lower::functionalize::mutation_to_struct_return::tests::delegating_save_inherits_dual_from_its_extracted_half ... ok
+test lower::functionalize::mutation_to_struct_return::tests::errors_shovel_threads_struct_append ... ok
+test lower::functionalize::mutation_to_struct_return::tests::controller_field_dual_call_destructures_and_writes_back ... ok
+test lower::functionalize::mutation_to_struct_return::tests::dual_call_in_bool_cond_lifts_to_destructure ... ok
+test lower::functionalize::mutation_to_struct_return::tests::dual_return_threads_record_returning_call_and_wraps_tuple ... ok
+test lower::functionalize::mutation_to_struct_return::tests::if_elsif_chain_reassignment_threads ... ok
+test lower::functionalize::mutation_to_struct_return::tests::index_operator_def_and_self_call_route_to_get ... ok
+test lower::functionalize::mutation_to_struct_return::tests::instance_method_with_while_bails ... ok
+test lower::functionalize::mutation_to_struct_return::tests::ivar_shovel_classifies_as_record_mutation ... ok
+test lower::functionalize::mutation_to_struct_return::tests::local_shovel_does_not_classify_as_record_mutation ... ok
+test ide::tests::gap_report_prices_unresolved_gem_boundary ... ok
+test lower::functionalize::mutation_to_struct_return::tests::pure_instance_method_takes_underscore_record ... ok
+test lower::functionalize::mutation_to_struct_return::tests::nested_ivar_index_assign_threads_via_map_put ... ok
+test lower::functionalize::mutation_to_struct_return::tests::mutator_threads_record_and_returns_it ... ok
+test lower::functionalize::mutation_to_struct_return::tests::non_flat_constructor_threads_a_seeded_record ... ok
+test lower::functionalize::mutation_to_struct_return::tests::return_self_guard_threads_not_stubbed ... ok
+test lower::functionalize::mutation_to_struct_return::tests::tail_dual_self_call_propagates_dual_and_returns_the_tuple ... ok
+test lower::functionalize::mutation_to_struct_return::tests::nested_ivar_attr_assign_threads_via_struct_update ... ok
+test lower::functionalize::mutation_to_struct_return::tests::yielding_method_takes_block_fn_and_returns_record ... ok
+test lower::functionalize::while_to_recursion::tests::canonical_counter_loop_splits_into_entry_and_helper ... ok
+test lower::functionalize::while_to_recursion::tests::carried_accumulator_threads ... ok
+test lower::functionalize::while_to_recursion::tests::counterless_cursor_drain_lowers_to_recursion ... ok
+test lower::functionalize::while_to_recursion::tests::instance_loop_with_yield_threads_record_and_block_fn ... ok
+test lower::functionalize::while_to_recursion::tests::instance_method_loop_threads_record ... ok
+test lower::functionalize::while_to_recursion::tests::constructor_with_guard_and_populate_loop_threads_record ... ok
+test lower::functionalize::while_to_recursion::tests::instance_receiver_loop_transforms ... ok
+test lower::functionalize::while_to_recursion::tests::list_receiver_uses_enum_and_kernel_length ... ok
+test lower::functionalize::while_to_recursion::tests::method_without_loop_is_unchanged ... ok
+test lower::mocha::tests::a_bare_stubs_lowers_to_the_rows_default ... ok
+test lower::functionalize::while_to_recursion::tests::noncarried_index_write_bails ... ok
+test lower::functionalize::while_to_recursion::tests::transformed_loop_emits_valid_elixir_shape ... ok
+test lower::functionalize::while_to_recursion::tests::pre_loop_guard_and_accumulator_are_handled ... ok
+test ide::tests::traceroute_annotates_hops_with_missing_preload_findings ... ok
+test ide::tests::traceroute_decides_verb_only_guards_from_the_route ... ok
+test lower::mocha::tests::a_chain_the_table_cannot_serve_travels_to_the_bridge_as_data ... ok
+test lower::mocha::tests::a_keyed_returns_still_lowers_to_the_typed_slot ... ok
+test lower::mocha::tests::a_keyed_returns_with_several_values_files_a_sequence ... ok
+test lower::mocha::tests::a_matcher_and_a_constant_travel_by_name ... ok
+test lower::mocha::tests::a_mock_graph_returned_from_a_row_stub_lowers_to_the_paths_slot ... ok
+test lower::mocha::tests::a_mock_graph_the_path_does_not_spell_is_left_as_written ... ok
+test lower::mocha::tests::a_send_that_is_not_a_chain_is_left_alone ... ok
+test lower::mocha::tests::a_singleton_reached_through_a_constants_reader_is_a_head ... ok
+test lower::mocha::tests::a_socket_expectation_that_throws_carries_the_tag_by_name ... ok
+test lower::mocha::tests::a_socket_expectation_with_a_block_and_never_files_a_count_on_the_seam ... ok
+test lower::mocha::tests::a_with_block_predicate_rides_on_the_where_slot ... ok
+test lower::mocha::tests::an_any_instance_stub_that_raises_files_by_name_and_records_the_class ... ok
+test lower::mocha::tests::an_object_head_without_an_app_class_is_left_as_written ... ok
+test lower::mocha::tests::an_app_method_chain_with_a_returns_goes_on_to_the_bridge ... ok
+test lower::mocha::tests::expects_with_a_count_files_the_count ... ok
+test lower::mocha::tests::expects_times_raises_files_the_count_and_the_class_name ... ok
+test lower::mocha::tests::an_expects_on_an_app_instance_parks_a_stub_on_the_object ... ok
+test lower::mocha::tests::raises_and_has_entry_are_served_where_the_row_has_a_slot ... ok
+test lower::model_associations::tests::cycle_and_tree_edges_split_correctly ... ok
+test lower::model_associations::tests::no_associations ... ok
+test lower::model_associations::tests::self_referential_association_is_registry ... ok
+test lower::model_associations::tests::three_model_cycle_marks_all_edges_registry ... ok
+test lower::model_associations::tests::simple_article_comment_cycle_is_registry ... ok
+test lower::model_associations::tests::tree_associations_only_are_direct ... ok
+test lower::model_associations::tests::unknown_target_stays_direct_polymorphic_like ... ok
+test ide::tests::same_named_templates_union_their_render_edges ... ok
+test lower::model_to_library::accessor_surface::tests::selected_blog_ownership_matches_complete_materialization ... FAILED
+test lower::model_to_library::tests::integer_key_cast_registry_keeps_application_constants ... ok
+test lower::body_root_tests::surveys_and_rewrites_visit_each_owned_root_once_in_order ... ok
+test ide::tests::candidate_signature_synthesizes_from_inferred_types ... ok
+test lower::model_to_library::tests::raw_container_and_fn_body_types_are_excluded ... ok
+test lower::model_to_library::tests::class_info_keeps_precise_parent_helper_return ... ok
+test lower::model_to_library::validations::tests::absence_emits_must_be_blank_error ... ok
+test lower::model_to_library::validations::tests::belongs_to_inline_emits_must_exist_error ... ok
+test lower::model_to_library::validations::tests::format_emits_invalid_error ... ok
+test lower::model_to_library::validations::tests::inclusion_emits_not_included_error ... ok
+test lower::model_to_library::validations::tests::length_max_only_emits_too_long ... ok
+test lower::model_to_library::validations::tests::length_min_and_max_emits_both_in_order ... ok
+test lower::model_to_library::validations::tests::length_min_only_emits_too_short ... ok
+test lower::model_to_library::validations::tests::numericality_bare_emits_nan_only ... ok
+test lower::model_to_library::validations::tests::numericality_float_bounds_format_without_trailing_zero ... ok
+test lower::model_to_library::validations::tests::numericality_with_gt_lt_and_only_integer_emits_all_messages ... ok
+test lower::model_to_library::validations::tests::polymorphic_belongs_to_checks_the_id_but_names_no_class ... ok
+test lower::model_to_library::validations::tests::presence_array_typed_attr_drops_is_a_string_branch ... ok
+test lower::model_to_library::validations::tests::presence_emits_blank_error ... ok
+test lower::model_to_library::validations::tests::presence_str_typed_attr_drops_is_a_array_branch ... ok
+test lower::pass_order_tests::post_analyze_pass_names_are_unique ... ok
+test lower::pass_order_tests::post_analyze_pass_order_is_sound_topologically ... ok
+test lower::route_helper_receiver::tests::a_method_the_module_defines_itself_stays_bare ... ok
+test lower::route_helper_receiver::tests::a_helper_module_definition_shadows_the_route_of_the_same_name ... ok
+test lower::route_helper_receiver::tests::an_app_route_helper_is_qualified_in_a_library_class ... ok
+test lower::route_helper_receiver::tests::a_view_helper_that_is_not_a_route_is_left_alone ... ok
+test lower::route_helper_receiver::tests::engine_mounted_helper_is_qualified_in_a_library_class ... ok
+test lower::model_to_library::tests::explicit_signature_precedes_raw_body_type ... ok
+test lower::route_helper_receiver::tests::the_url_spelling_is_left_for_the_host_prefix_pass ... ok
+test lower::routes::tests::bare_verb_in_resources_keeps_parent_id ... ok
+test lower::routes::tests::collection_route_has_no_id_segment ... ok
+test lower::routes::tests::inline_optional_format_is_dropped ... ok
+test lower::routes::tests::member_route_nests_under_id ... ok
+test lower::routes::tests::constraint_regex_survives_flatten_for_converter ... ok
+test lower::routes::tests::member_route_structured_path_still_nests ... ok
+test lower::routes::tests::optional_trailing_segment_expands_both_ways ... ok
+test ide::tests::traceroute_orders_concern_filters_by_registration_and_keeps_block_filters ... ok
+test lower::routes::tests::path_without_optional_group_is_unchanged ... ok
+test lower::routes::tests::top_level_route_is_unnested ... ok
+test lower::scope_chain::tests::a_range_condition_becomes_comparisons ... ok
+test lower::scope_chain::tests::an_array_of_alternatives_becomes_an_or ... ok
+test lower::scope_chain::tests::an_array_with_a_scalar_member_declines ... ok
+test lower::scope_chain::tests::a_bare_non_assoc_read_is_left_alone ... ok
+test lower::scope_chain::tests::joins_nested_array_value_expands_each_hop ... ok
+test lower::scope_chain::tests::joins_nested_hash_expands_both_hops ... ok
+test lower::scope_chain::tests::joins_nested_hash_with_an_unknown_inner_hop_is_left_untouched ... ok
+test lower::scope_chain::tests::joins_sym_expands_to_join_sql ... ok
+test lower::scope_chain::tests::joins_unknown_assoc_left_untouched ... ok
+test lower::scope_chain::tests::left_outer_joins_nested_hash_is_outer_at_every_hop ... ok
+test lower::scope_chain::tests::left_outer_joins_uses_left_outer_prefix ... ok
+test lower::scope_chain::tests::bare_assoc_constructor_resolves_through_instance_self ... ok
+test lower::scope_chain::tests::registry_skips_unresolvable_through ... ok
+test lower::scope_chain::tests::registry_resolves_has_many_through_join_tails ... ok
+test lower::scope_chain::tests::nested_hash_where_key_aliases_the_join_like_rails ... ok
+test lower::scope_chain::tests::thread_rel_keeps_a_kwargs_tail_positional_when_the_callee_takes_no_keywords ... ok
+test lower::scope_chain::tests::registry_through_source_rename_resolves_by_target_class ... ok
+test lower::scope_chain::tests::thread_rel_no_padding_when_all_supplied ... ok
+test lower::scope_chain::tests::thread_rel_pads_with_the_params_own_default ... ok
+test lower::scope_chain::tests::thread_rel_pads_omitted_optional_leading_params ... ok
+test lower::scope_chain::tests::thread_rel_rest_callee_merges_into_an_existing_kwargs_tail ... ok
+test lower::scope_chain::tests::thread_rel_rest_callee_with_supplied_args_appends_the_keyword ... ok
+test lower::scope_chain::tests::thread_rel_rest_callee_zero_args_threads_as_a_keyword_with_no_nil_pad ... ok
+test lower::scope_chain::tests::thread_rel_scopeless_just_appends ... ok
+test lower::scope_chain::tests::thread_rel_splits_a_kwargs_tail_when_the_callee_declares_keywords ... ok
+test lower::scope_chain::tests::where_belongs_to_key_maps_collection_typed_value_to_ids ... ok
+test lower::scope_chain::tests::where_belongs_to_key_renames_and_passes_untyped_value_through ... ok
+test lower::scope_chain::tests::where_belongs_to_key_with_nil_value_renames_only ... ok
+test lower::scope_chain::tests::where_non_assoc_key_untouched ... ok
+test lower::signed_id::tests::a_namespaced_model_underscores_to_a_path ... ok
+test lower::signed_id::tests::declines_an_option_it_does_not_reproduce ... ok
+test lower::scope_chain::tests::var_assoc_read_scope_chain_seeds_relation ... ok
+test lower::signed_id::tests::expires_in_reaches_the_runtime_as_seconds ... ok
+test lower::signed_id::tests::find_signed_pairs_with_find_by_and_the_bang_with_find ... ok
+test lower::signed_id::tests::folds_the_model_name_into_the_purpose ... ok
+test lower::signed_id::tests::leaves_an_explicit_receiver_alone ... ok
+test lower::tag_builder::tests::a_bare_record_array_is_the_plain_helper ... ok
+test lower::tag_builder::tests::a_lone_kwsplat_merge_chain_is_attributes_not_content ... ok
+test lower::status_literal::tests::table_is_the_runtimes ... ok
+test lower::tag_builder::tests::a_nested_merge_chain_is_still_attributes ... ok
+test lower::tag_builder::tests::a_plain_merge_of_two_variables_is_not_the_desugar ... ok
+test lower::tag_builder::tests::a_prefixed_polymorphic_array_becomes_its_route_helper ... ok
+test lower::tag_builder::tests::a_routeless_subclass_folds_into_the_base_arm ... ok
+test lower::tag_builder::tests::it_declines_rather_than_inventing_a_helper ... ok
+test lower::tag_builder::tests::an_sti_base_dispatches_on_its_subclass_stems ... ok
+test lower::test_module_to_library::inline_assertions::array_literal_tests::a_scalar_actual_is_left_alone ... ok
+test lower::test_module_to_library::inline_assertions::array_literal_tests::an_array_literal_against_an_untyped_call_asks_for_to_a ... ok
+test lower::to_sgid::tests::a_sgid_kept_as_an_object_is_reported ... ok
+test lower::to_sgid::tests::a_fixture_records_attachable_sgid_spelled_out_becomes_the_runtime_mint ... ok
+test lower::to_sgid::tests::another_purpose_is_reported_and_left ... ok
+test lower::to_sgid::tests::to_gid_on_a_setup_bound_ivar_becomes_the_runtime_uri ... ok
+test lower::to_sgid::tests::to_gid_on_an_unknown_receiver_is_reported_and_left ... ok
+test lower::view::tests::classifies_content_for_getter ... ok
+test lower::view::tests::classifies_content_for_setter ... ok
+test lower::view::tests::classifies_csrf_meta_tags ... ok
+test lower::view::tests::dom_id_arity_distinguishes_prefix ... ok
+test lower::view::tests::errors_field_predicate_none ... ok
+test lower::view::tests::errors_field_predicate_any ... ok
+test lower::view::tests::form_builder_method_aliases ... ok
+test lower::view::tests::link_to_three_arg_captures_opts ... ok
+test lower::view::tests::nested_element_direct_local ... ok
+test lower::view::tests::nested_element_association ... ok
+test lower::view::tests::nested_form_child_bare_local ... ok
+test lower::view::tests::nested_form_child_class_new ... ok
+test lower::view::tests::render_bare_ivar_is_collection_unless_options_ivar ... ok
+test lower::view::tests::render_bare_string_is_a_named_partial ... ok
+test lower::view::tests::render_options_ivar_still_wins_over_the_record_arm ... ok
+test lower::view::tests::render_partial_dynamic_name_classifies_as_dynamic_named ... ok
+test lower::view::tests::render_partial_dynamic_name_with_collection_is_unsupported ... ok
+test lower::view::tests::render_partial_literal_name_stays_named_not_dynamic ... ok
+test lower::view::tests::render_plural_ivar_is_still_a_collection ... ok
+test lower::view::tests::render_singular_ivar_is_a_record_render ... ok
+test lower::view::tests::unknown_method_returns_none ... ok
+test lower::view::tests::url_arg_literal ... ok
+test lower::view::tests::url_arg_path_helper ... ok
+test lower::view::tests::url_arg_record_ref_respects_is_local ... ok
+test lower::view_test_case::tests::a_view_call_binds_the_module_that_defines_it ... ok
+test lower::view_test_case::tests::a_view_call_no_helper_defines_is_reported_and_left ... ok
+test lower::view_test_case::tests::another_parents_test_is_untouched ... ok
+test lower::view_test_case::tests::a_bare_call_binds_the_namesake_or_an_included_helper ... ok
+test lower::view_to_library::form_builder::button_open_parts_tests::a_caller_type_keeps_rails_slot_rather_than_its_own_position ... ok
+test lower::view_to_library::form_builder::button_open_parts_tests::a_caller_name_replaces_the_default_instead_of_duplicating_it ... ok
+test lower::view_to_library::form_builder::button_open_parts_tests::the_defaults_lead_when_the_caller_names_neither ... ok
+test lower::view_to_library::form_with::tests::a_blockless_form_with_emits_no_closing_tag ... ok
+test lower::view_to_library::form_with::tests::a_model_form_with_is_declined_rather_than_guessed ... ok
+test lower::view_to_library::form_with::tests::a_blockless_form_with_emits_the_open_tag_and_the_hidden_inputs ... ok
+test lower::view_to_library::form_with::tests::form_url_bare_non_record_still_defers_to_the_runtime_url_for ... ok
+test lower::view_to_library::form_with::tests::form_url_bare_record_named_anything_else_still_resolves_at_compile_time ... ok
+test lower::view_to_library::form_with::tests::form_url_bare_record_named_like_its_model_resolves_at_compile_time ... ok
+test lower::view_to_library::tests::a_hyphenated_view_directory_yields_a_valid_constant_and_local ... ok
+test lower::view_to_library::form_with::tests::form_url_bare_record_without_to_param_passes_id ... ok
+test lower::view_to_library::tests::arg_name_index_is_plural ... ok
+test lower::view_to_library::tests::arg_name_partial_is_singular ... ok
+test lower::view_to_library::tests::arg_name_show_is_singular ... ok
+test lower::view_to_library::tests::module_id_for_articles_dir ... ok
+test lower::view_to_library::turbo_drive::tests::an_unrelated_helper_is_not_claimed ... ok
+test lower::view_to_library::turbo_drive::tests::refreshes_with_declines_a_value_outside_turbos_set ... ok
+test lower::view_to_library::turbo_drive::tests::refreshes_with_defaults_to_replace_and_reset ... ok
+test lower::view_to_library::turbo_drive::tests::refreshes_with_honors_both_options ... ok
+test lower::view_to_library::turbo_drive::tests::the_no_arg_directives_deposit_their_meta_tag ... ok
+test lower::view_to_library::turbo_frames::tests::a_join_over_several_runtime_pieces_declines ... ok
+test lower::view_to_library::turbo_frames::tests::a_literal_id_folds_into_the_tag ... ok
+test lower::view_to_library::turbo_frames::tests::a_literal_nil_src_renders_no_attribute ... ok
+test lower::view_to_library::turbo_frames::tests::a_single_computed_id_renders_as_a_string ... ok
+test lower::view_to_library::turbo_frames::tests::a_record_plus_prefix_becomes_dom_id ... ok
+test lower::view_to_library::turbo_frames::tests::the_callers_attributes_come_before_id_src_and_target ... ok
+test lower::view_to_library::walker::tests::a_helper_that_shares_a_model_name_is_not_a_record ... ok
+test lower::view_to_library::walker::tests::a_form_wrapper_declines_an_argument_it_cannot_move ... ok
+test lower::view_to_library::walker::tests::a_form_wrapper_helper_is_spliced_to_the_call_it_wraps ... ok
+test lower::view_to_library::walker::tests::a_modifier_if_render_reaches_the_partial_classifier ... ok
+test lower::view_to_library::walker::tests::a_two_branch_conditional_is_not_treated_as_a_modifier ... ok
+test lower::view_to_library::walker::tests::a_modifier_unless_render_reaches_the_partial_classifier_too ... ok
+test lower::view_to_library::walker::tests::an_ordinary_read_is_still_escaped ... ok
+test lower::view_to_library::walker::tests::auto_escape_explicit_to_s_is_not_doubled ... ok
+test lower::view_to_library::walker::tests::an_ungroundable_key_renders_transparently ... ok
+test lower::view_to_library::walker::tests::an_inline_helper_block_body_is_not_escaped ... ok
+test lower::view_to_library::walker::tests::auto_escape_recoerces_with_to_s ... ok
+test lower::view_to_library::walker::tests::auto_escape_string_literal_stays_foldable ... ok
+test lower::view_to_library::walker::tests::form_block_body_lowers_to_capture_accumulator ... ok
+test lower::view_to_library::walker::tests::cache_block_reads_renders_and_writes ... ok
+test lower::view_to_library::walker::tests::button_to_block_form_inlines_like_its_positional_twin ... ok
+test lower::view_to_library::walker::tests::form_tag_block_inline_expands_to_form_statements ... ok
+test lower::view_to_library::walker::tests::interpolating_a_marked_value_skips_the_escape ... ok
+test lower::view_to_library::walker::tests::interpolating_a_recorded_producer_skips_the_escape ... ok
+test lower::view_to_library::walker::tests::link_to_block_form_inlines_to_an_anchor ... ok
+test lower::view_to_library::walker::tests::the_body_renders_into_its_own_accumulator_not_the_page ... ok
+test lower::webmock::tests::a_body_matcher_becomes_stub_matching_with_the_json_generated_at_the_site ... ok
+test lower::webmock::tests::a_body_matcher_followed_by_to_return_keeps_both ... ok
+test lower::webmock::tests::any_other_with_matcher_is_left_alone ... ok
+test lower::webmock::tests::defaults_when_only_status_is_given ... ok
+test lower::webmock::tests::leaves_what_it_does_not_understand_alone ... ok
+test lower::webmock::tests::lowers_disable_net_connect_and_reset ... ok
+test lower::webmock::tests::reads_a_file_fixture_body ... ok
+test lower::webmock::tests::rewrites_to_return_with_normalised_headers ... ok
+test lsp::tests::gate_keeps_errors_syntax_errors_and_n_plus_one_by_default ... ok
+test lsp::tests::code_lens_traces_each_action_over_the_protocol ... FAILED
+test lsp::tests::completion_over_the_protocol ... FAILED
+test lsp::tests::hover_reports_inferred_type_over_the_protocol ... FAILED
+test lsp::tests::kwarg_call_dot_finds_the_enclosing_call ... ok
+test lsp::tests::word_start_scans_idents_ivars_and_qualified_constants ... ok
+test mcp::tests::diagnostics_reports_the_missing_preload_coverage_triple ... FAILED
+test mcp::tests::diagnostics_filters_by_severity_code_and_limit ... FAILED
+test mcp::tests::diagnostics_real_blog_has_no_errors ... FAILED
+test mcp::tests::initialize_reports_server_info_and_echoes_version ... FAILED
+test mcp::tests::notification_without_id_gets_no_response ... FAILED
+test mcp::tests::diagnostics_surfaces_uningested_view_templates ... FAILED
+test mcp::tests::references_lists_ivar_uses ... FAILED
+test mcp::tests::related_files_follows_analyzed_edges_from_a_relative_path ... FAILED
+test mcp::tests::tools_list_advertises_every_tool ... FAILED
+test mcp::tests::trace_targets_lists_routes_and_narrows_by_controller ... FAILED
+test mcp::tests::traceroute_attributes_a_helper_n_plus_one_to_the_action ... FAILED
+test mcp::tests::traceroute_ends_a_redirecting_action_in_a_response_hop ... FAILED
+test mcp::tests::traceroute_misses_politely ... FAILED
+test mcp::tests::traceroute_returns_the_structured_chain_with_coverage ... FAILED
+test mcp::tests::type_at_resolves_a_string_in_class_body_dsl ... FAILED
+test mcp::tests::unknown_gem_surface_is_attributed_not_accused ... FAILED
+test mcp::tests::wont_lower_lowers_datetime_cleanly_and_bad_target_is_an_error ... FAILED
+test profile::tests::async_adapters_declare_seed_methods ... ok
+test profile::tests::browser_with_indexeddb_is_valid ... ok
+test profile::tests::cloudflare_workers_with_d1_is_valid ... ok
+test profile::tests::d1_outside_workers_is_rejected ... ok
+test profile::tests::indexeddb_on_node_is_rejected ... ok
+test profile::tests::node_async_adapter_suspends_db ... ok
+test profile::tests::node_async_is_valid ... ok
+test profile::tests::node_sync_adapter_is_sync_sqlite ... ok
+test profile::tests::node_sync_is_valid ... ok
+test profile::tests::sharedworker_shim_on_non_typescript_is_rejected ... ok
+test profile::tests::sync_sqlite_in_browser_is_rejected ... ok
+test profile::tests::sync_sqlite_in_sharedworker_is_rejected ... ok
+test profile::tests::sync_sqlite_in_workers_is_rejected ... ok
+test profile::tests::worker_adapter_suspends_db ... ok
+test profile::tests::worker_is_valid ... ok
+test profile::tests::workers_shim_on_non_typescript_is_rejected ... ok
+test project::tests::a_stale_seed_file_is_replaced_not_preserved ... FAILED
+test project::tests::a_route_table_without_a_root_route_leaves_route_table_root_out ... ok
+test project::tests::asset_list_gem_rules_and_bundle_agree ... ok
+test project::tests::archive_playwright_matches_the_prewarmed_version ... ok
+test lower::model_to_library::tests::scalar_array_body_type_is_registered_but_not_an_untyped_one ... ok
+test project::tests::cable_connection_factory_is_generated_from_the_app ... ok
+test project::tests::content_layout_dispatch_is_generated_when_the_app_ships_one ... ok
+test project::tests::controller_paths_land_only_in_the_routes_file ... ok
+test project::tests::current_attributes_reset_lands_in_both_dispatchers ... ok
+test project::tests::lane_test_class_knows_every_harness_parent ... ok
+test project::tests::move_rewrites_bare_and_relative_requires ... ok
+test project::tests::seed_sql_is_generated_from_the_apps_own_seeds ... FAILED
+test project::tests::spin_shape_requires_the_bundled_libraries_the_app_names ... ok
+test project::tests::spin_shape_reshapes_the_tree ... ok
+test project::tests::spin_shape_swaps_bcrypt_facade_for_the_package ... ok
+test project::tests::spin_shape_swaps_rqrcode_facade_for_the_package ... ok
+test project::tests::spin_shape_swaps_the_image_processor_for_ruby_vips_when_variants_are_declared ... ok
+test lower::model_to_library::tests::semantic_relation_seed_precedes_raw_body_fallback ... ok
+test project::tests::bundled_constant_gate_covers_auxiliary_emitted_roots ... ok
+test project::tests::an_app_without_seeds_ships_its_schema_and_no_rows ... ok
+test lower::model_to_library::tests::inferred_record_return_keeps_positional_hash_and_keyword_call_shapes ... ok
+test lower::model_to_library::accessor_surface::tests::selected_materialization_keeps_production_arel_and_unfolding ... ok
+test project::tests::spinel_tree_marks_app_source_lines ... ok
+test project::tests::spinel_tree_keeps_one_declaration_per_runtime_method ... ok
+test project::tests::strip_cable_from_config_ru_removes_all_three_seams ... ok
+test project::tests::the_shim_helper_never_demands_a_test_gem_for_itself ... ok
+test project::tests::the_spinel_tree_performs_its_module_mixins_as_a_reopen ... ok
+test project::tests::stylesheet_list_tracks_the_app_and_tailwind_is_conditional ... ok
+test project::tests::vpath_relative_paths ... ok
+test project::tests::trim_gemfile_drops_assets_and_websocket_blocks ... ok
+test rbs::tests::a_qualified_declaration_keeps_its_namespace ... ok
+test rbs::tests::a_qualified_declaration_nests_further ... ok
+test rbs::tests::a_self_type_nested_in_a_container_parses_too ... ok
+test rbs::tests::abstract_annotation_marks_method ... ok
+test rbs::tests::app_ivars_group_by_class_without_at_prefix ... ok
+test rbs::tests::app_ivars_harvest_self_at_class_instance_variables ... ok
+test rbs::tests::app_sigs_already_qualified_ref_stays_qualified ... ok
+test rbs::tests::app_sigs_array_of_bare_class_qualifies ... ok
+test rbs::tests::app_sigs_bare_class_ref_in_param_qualifies ... ok
+test rbs::tests::app_sigs_bare_self_class_ref_qualifies_to_enclosing_module ... ok
+test rbs::tests::app_sigs_empty_source_is_empty_result ... ok
+test rbs::tests::app_sigs_group_methods_by_class ... ok
+test rbs::tests::app_sigs_method_signatures_are_ty_fn ... ok
+test rbs::tests::app_sigs_module_methods ... ok
+test rbs::tests::app_sigs_namespace_nested_classes ... ok
+test rbs::tests::app_sigs_nested_module_qualifies_to_innermost_path ... ok
+test rbs::tests::app_sigs_optional_bare_class_qualifies ... ok
+test rbs::tests::app_sigs_sibling_class_ref_qualifies_to_shared_module ... ok
+test rbs::tests::app_sigs_top_level_class_ref_stays_unqualified ... ok
+test rbs::tests::array_and_hash ... ok
+test rbs::tests::base_types ... ok
+test rbs::tests::effects_default_to_pure ... ok
+test rbs::tests::empty_return_voids_to_nil ... ok
+test rbs::tests::generic_user_class_keeps_args ... ok
+test rbs::tests::includes_capture_each_class_includes ... ok
+test rbs::tests::includes_empty_when_no_include_present ... ok
+test rbs::tests::instance_parses_as_the_self_type ... ok
+test rbs::tests::multiple_methods_preserved_in_order ... ok
+test rbs::tests::multiple_overloads_are_rejected ... ok
+test rbs::tests::optional_maps_to_union_with_nil ... ok
+test rbs::tests::parameter_names_preserved_when_present ... ok
+test rbs::tests::parse_errors_surface ... ok
+test rbs::tests::pluralize_signature ... ok
+test rbs::tests::print_method_signature_refuses_bare_value_types ... ok
+test rbs::tests::print_ty_covers_the_parseable_surface ... ok
+test rbs::tests::printed_namespaced_module_sidecar_round_trips ... ok
+test rbs::tests::printed_sidecar_round_trips_through_the_parser ... ok
+test rbs::tests::self_reads_on_an_instance_member_and_not_on_a_singleton_one ... ok
+test rbs::tests::tuple_types ... ok
+test rbs::tests::union_types ... ok
+test rbs::tests::unnamed_parameters_get_positional_placeholders ... ok
+test rbs::tests::user_class_becomes_class_id ... ok
+test runtime_files::tests::every_typed_cache_seam_method_exists_on_all_three_stores ... ok
+test runtime_files::tests::the_table_is_sorted_and_answers_lookups ... ok
+test runtime_files::tests::walks_mirror_the_disk_rules ... ok
+test runtime_src::tests::anonymous_splat_and_block_skipped ... ok
+test runtime_src::tests::attr_accessor_lowers_to_getter_and_setter ... ok
+test runtime_src::tests::arity_mismatch_errors ... ok
+test runtime_src::tests::attr_reader_lowers_to_getter ... ok
+test runtime_src::tests::attr_accessor_multi_arg_lowers_per_attr ... ok
+test runtime_src::tests::attr_writer_lowers_to_setter ... ok
+test runtime_src::tests::block_forwarding_ingests_as_var_in_send_block_slot ... ok
+test runtime_src::tests::block_params_collected ... ok
+test runtime_src::tests::def_without_params_or_body ... ok
+test runtime_src::tests::class_nested_def_is_found ... ok
+test runtime_src::tests::empty_ruby_and_empty_rbs_yields_empty ... ok
+test runtime_src::tests::body_typer_populates_literal_and_interp_types ... ok
+test runtime_src::tests::integer_literal_body_roundtrips ... ok
+test runtime_src::tests::keyword_params_collected ... ok
+test runtime_src::tests::body_typer_populates_param_refs_with_signature_types ... ok
+test runtime_src::tests::mixed_param_kinds_in_source_order ... ok
+test runtime_src::tests::marrying_attaches_signature ... ok
+test runtime_src::tests::multi_statement_body_is_sequenced ... ok
+test runtime_src::tests::multi_method_marrying_preserves_ruby_order ... ok
+test runtime_src::tests::module_nested_def_is_found ... ok
+test runtime_src::tests::multiple_defs_in_order ... ok
+test runtime_src::tests::parse_error_surfaces ... ok
+test runtime_src::tests::optional_params_collected ... ok
+test runtime_src::tests::orphan_rbs_signature_errors ... ok
+test runtime_src::tests::rbs_parse_error_surfaces_through_marrying ... ok
+test runtime_src::tests::pluralize_body_has_conditional_shape ... ok
+test runtime_src::tests::ruby_parse_error_surfaces_through_marrying ... ok
+test runtime_src::tests::ruby_method_missing_signature_errors ... ok
+test runtime_src::tests::self_receiver_is_class_kind ... ok
+test runtime_src::tests::ruby_param_names_coexist_with_rbs_types ... ok
+test runtime_src::tests::splat_params_collected ... ok
+test slim::tests::attributes_quoted_ruby_and_wrapped ... ok
+test slim::tests::blank_before_wrapper ... ok
+test slim::tests::class_shortcut_merges_with_class_attr ... ok
+test runtime_src::tests::toplevel_def_is_found ... ok
+test slim::tests::code_blocks_close_by_indent_and_else_continues ... ok
+test slim::tests::doctype_and_ruby_engine ... ok
+test slim::tests::inline_nesting ... ok
+test slim::tests::inline_text_continues_on_deeper_lines ... ok
+test slim::tests::javascript_and_css_filters_wrap_text ... ok
+test slim::tests::multiline_wrapper_and_backslash_continuation ... ok
+test slim::tests::multiline_wrapper_on_inline_child ... ok
+test slim::tests::output_and_inline_output ... ok
+test slim::tests::output_block_closes_with_end_to_s ... ok
+test slim::tests::program_has_buf_prologue_and_epilogue ... ok
+test slim::tests::raw_attribute_value ... ok
+test slim::tests::tag_text_and_shortcuts ... ok
+test slim::tests::text_blocks_and_comments ... ok
+test span::tests::line_col_clamps_past_end ... ok
+test span::tests::line_col_counts_chars_not_bytes ... ok
+test span::tests::line_col_is_one_based_and_newline_aware ... ok
+test treeshake::tests::send_survey_preserves_opaque_queries_method_refs_and_existing_target_policy ... ok
+test runtime_src::tests::rbs_ivar_decls_stamp_empty_array_initializers ... ok
+test analyze::body::const_resolution::tests::prepared_answers_require_the_same_paths_text_and_file_order ... ok
+test project::tests::forwarded_proc_boundary_preserves_existing_block_shapes ... ok
+test lsp::tests::test_path_config_errors_are_published_and_clear_after_recovery ... ok
+test lower::model_to_library::accessor_surface::tests::occupied_names_match_independent_production_on_unmasked_controls ... ok
+test lower::model_to_library::accessor_surface::tests::slice_wide_route_ambiguity_helper_shadowing_and_constant_collisions_keep_ownership ... ok
+test project::tests::web_push_stub_reopen_delegates_to_the_loaded_gem ... ok
+test lower::model_to_library::accessor_surface::tests::literal_abstract_eligibility_obeys_the_last_declaration ... ok
+test project::tests::spinel_emit_rewrites_relation_base_handle_to_untyped ... ok
+test lower::model_to_library::accessor_surface::tests::selection_preserves_ancestor_storage_raw_helpers_and_unrelated_demand ... ok
+test analyze::fixpoint_check::tests::view_seed_filters_ignore_arm_order_and_variable_ids ... ok
+test analyze::fixpoint_bound::tests::a_leaf_union_wider_than_the_node_bound_is_untyped ... ok
+test emit::ruby::expr::tests::percent_symbol_arrays_preserve_decoded_values ... ok
+test emit::shared::utf8_chr::tests::utf8_character_emitted_rust_executes ... ok
+test emit::shared::utf8_chr::tests::percent_capture_helpers_emitted_rust_execute ... ok
+
+failures:
+
+---- ide::tests::gap_report_attributes_ingest_gap_files_as_tool_coverage stdout ----
+
+thread 'ide::tests::gap_report_attributes_ingest_gap_files_as_tool_coverage' (62787849) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::def_headers_hover_and_reference stdout ----
+
+thread 'ide::tests::def_headers_hover_and_reference' (62787848) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::complete_at_offers_members_kwargs_and_ivars stdout ----
+
+thread 'ide::tests::complete_at_offers_members_kwargs_and_ivars' (62787847) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- ide::tests::gap_report_complete_when_every_hop_resolves stdout ----
+
+thread 'ide::tests::gap_report_complete_when_every_hop_resolves' (62787850) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::members_of_enumerates_columns_associations_and_finders stdout ----
+
+thread 'ide::tests::members_of_enumerates_columns_associations_and_finders' (62787852) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::query_real_blog_end_to_end stdout ----
+
+thread 'ide::tests::query_real_blog_end_to_end' (62787859) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::references_empty_off_a_variable stdout ----
+
+thread 'ide::tests::references_empty_off_a_variable' (62787862) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::references_local_is_body_scoped stdout ----
+
+thread 'ide::tests::references_local_is_body_scoped' (62787864) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::references_finds_ivar_across_controller_actions stdout ----
+
+thread 'ide::tests::references_finds_ivar_across_controller_actions' (62787863) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::references_method_is_type_directed stdout ----
+
+thread 'ide::tests::references_method_is_type_directed' (62787865) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::related_files_walks_the_render_graph stdout ----
+
+thread 'ide::tests::related_files_walks_the_render_graph' (62787866) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::traceroute_composes_route_filters_action_view_layout stdout ----
+
+thread 'ide::tests::traceroute_composes_route_filters_action_view_layout' (62787894) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::traceroute_hops_stay_clean_when_the_chain_preloads stdout ----
+
+thread 'ide::tests::traceroute_hops_stay_clean_when_the_chain_preloads' (62787896) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::traceroute_marks_gated_out_filters_and_resolves_routes stdout ----
+
+thread 'ide::tests::traceroute_marks_gated_out_filters_and_resolves_routes' (62787920) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- ide::tests::type_at_reaches_class_body_dsl stdout ----
+
+thread 'ide::tests::type_at_reaches_class_body_dsl' (62787922) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- lower::broadcasts::tests::model_without_broadcasts_lowers_to_empty stdout ----
+
+thread 'lower::broadcasts::tests::model_without_broadcasts_lowers_to_empty' (62788115) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- lower::broadcasts::tests::real_blog_article_broadcasts_to_prepend stdout ----
+
+thread 'lower::broadcasts::tests::real_blog_article_broadcasts_to_prepend' (62788116) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- lower::broadcasts::tests::real_blog_comment_has_broadcasts_to_and_commit_hooks stdout ----
+
+thread 'lower::broadcasts::tests::real_blog_comment_has_broadcasts_to_and_commit_hooks' (62788117) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- lower::model_to_library::accessor_surface::tests::selected_blog_ownership_matches_complete_materialization stdout ----
+
+thread 'lower::model_to_library::accessor_surface::tests::selected_blog_ownership_matches_complete_materialization' (62788304) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- lsp::tests::code_lens_traces_each_action_over_the_protocol stdout ----
+
+thread 'lsp::tests::code_lens_traces_each_action_over_the_protocol' (62788689) panicked at src/lsp.rs:1451:54:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+
+---- lsp::tests::completion_over_the_protocol stdout ----
+
+thread 'lsp::tests::completion_over_the_protocol' (62788690) panicked at src/lsp.rs:1195:54:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+
+---- lsp::tests::hover_reports_inferred_type_over_the_protocol stdout ----
+
+thread 'lsp::tests::hover_reports_inferred_type_over_the_protocol' (62788692) panicked at src/lsp.rs:1306:26:
+real-blog should ingest: Io(Custom { kind: NotFound, error: "/work/app/build/upstream-current/fixtures/real-blog is not a directory" })
+
+---- mcp::tests::diagnostics_reports_the_missing_preload_coverage_triple stdout ----
+
+thread 'mcp::tests::diagnostics_reports_the_missing_preload_coverage_triple' (62788698) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::diagnostics_filters_by_severity_code_and_limit stdout ----
+
+thread 'mcp::tests::diagnostics_filters_by_severity_code_and_limit' (62788696) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::diagnostics_real_blog_has_no_errors stdout ----
+
+thread 'mcp::tests::diagnostics_real_blog_has_no_errors' (62788697) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::initialize_reports_server_info_and_echoes_version stdout ----
+
+thread 'mcp::tests::initialize_reports_server_info_and_echoes_version' (62788700) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::notification_without_id_gets_no_response stdout ----
+
+thread 'mcp::tests::notification_without_id_gets_no_response' (62788701) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::diagnostics_surfaces_uningested_view_templates stdout ----
+
+thread 'mcp::tests::diagnostics_surfaces_uningested_view_templates' (62788699) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::references_lists_ivar_uses stdout ----
+
+thread 'mcp::tests::references_lists_ivar_uses' (62788702) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::related_files_follows_analyzed_edges_from_a_relative_path stdout ----
+
+thread 'mcp::tests::related_files_follows_analyzed_edges_from_a_relative_path' (62788703) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::tools_list_advertises_every_tool stdout ----
+
+thread 'mcp::tests::tools_list_advertises_every_tool' (62788704) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::trace_targets_lists_routes_and_narrows_by_controller stdout ----
+
+thread 'mcp::tests::trace_targets_lists_routes_and_narrows_by_controller' (62788705) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::traceroute_attributes_a_helper_n_plus_one_to_the_action stdout ----
+
+thread 'mcp::tests::traceroute_attributes_a_helper_n_plus_one_to_the_action' (62788706) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::traceroute_ends_a_redirecting_action_in_a_response_hop stdout ----
+
+thread 'mcp::tests::traceroute_ends_a_redirecting_action_in_a_response_hop' (62788707) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::traceroute_misses_politely stdout ----
+
+thread 'mcp::tests::traceroute_misses_politely' (62788708) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::traceroute_returns_the_structured_chain_with_coverage stdout ----
+
+thread 'mcp::tests::traceroute_returns_the_structured_chain_with_coverage' (62788709) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::type_at_resolves_a_string_in_class_body_dsl stdout ----
+
+thread 'mcp::tests::type_at_resolves_a_string_in_class_body_dsl' (62788710) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::unknown_gem_surface_is_attributed_not_accused stdout ----
+
+thread 'mcp::tests::unknown_gem_surface_is_attributed_not_accused' (62788711) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- mcp::tests::wont_lower_lowers_datetime_cleanly_and_bad_target_is_an_error stdout ----
+
+thread 'mcp::tests::wont_lower_lowers_datetime_cleanly_and_bad_target_is_an_error' (62788712) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+
+---- project::tests::a_stale_seed_file_is_replaced_not_preserved stdout ----
+
+thread 'project::tests::a_stale_seed_file_is_replaced_not_preserved' (62788730) panicked at src/project.rs:8315:65:
+ingest: Io(Custom { kind: NotFound, error: "fixtures/real-blog is not a directory" })
+
+---- project::tests::seed_sql_is_generated_from_the_apps_own_seeds stdout ----
+
+thread 'project::tests::seed_sql_is_generated_from_the_apps_own_seeds' (62788774) panicked at src/project.rs:8315:65:
+ingest: Io(Custom { kind: NotFound, error: "fixtures/real-blog is not a directory" })
+
+
+failures:
+    ide::tests::complete_at_offers_members_kwargs_and_ivars
+    ide::tests::def_headers_hover_and_reference
+    ide::tests::gap_report_attributes_ingest_gap_files_as_tool_coverage
+    ide::tests::gap_report_complete_when_every_hop_resolves
+    ide::tests::members_of_enumerates_columns_associations_and_finders
+    ide::tests::query_real_blog_end_to_end
+    ide::tests::references_empty_off_a_variable
+    ide::tests::references_finds_ivar_across_controller_actions
+    ide::tests::references_local_is_body_scoped
+    ide::tests::references_method_is_type_directed
+    ide::tests::related_files_walks_the_render_graph
+    ide::tests::traceroute_composes_route_filters_action_view_layout
+    ide::tests::traceroute_hops_stay_clean_when_the_chain_preloads
+    ide::tests::traceroute_marks_gated_out_filters_and_resolves_routes
+    ide::tests::type_at_reaches_class_body_dsl
+    lower::broadcasts::tests::model_without_broadcasts_lowers_to_empty
+    lower::broadcasts::tests::real_blog_article_broadcasts_to_prepend
+    lower::broadcasts::tests::real_blog_comment_has_broadcasts_to_and_commit_hooks
+    lower::model_to_library::accessor_surface::tests::selected_blog_ownership_matches_complete_materialization
+    lsp::tests::code_lens_traces_each_action_over_the_protocol
+    lsp::tests::completion_over_the_protocol
+    lsp::tests::hover_reports_inferred_type_over_the_protocol
+    mcp::tests::diagnostics_filters_by_severity_code_and_limit
+    mcp::tests::diagnostics_real_blog_has_no_errors
+    mcp::tests::diagnostics_reports_the_missing_preload_coverage_triple
+    mcp::tests::diagnostics_surfaces_uningested_view_templates
+    mcp::tests::initialize_reports_server_info_and_echoes_version
+    mcp::tests::notification_without_id_gets_no_response
+    mcp::tests::references_lists_ivar_uses
+    mcp::tests::related_files_follows_analyzed_edges_from_a_relative_path
+    mcp::tests::tools_list_advertises_every_tool
+    mcp::tests::trace_targets_lists_routes_and_narrows_by_controller
+    mcp::tests::traceroute_attributes_a_helper_n_plus_one_to_the_action
+    mcp::tests::traceroute_ends_a_redirecting_action_in_a_response_hop
+    mcp::tests::traceroute_misses_politely
+    mcp::tests::traceroute_returns_the_structured_chain_with_coverage
+    mcp::tests::type_at_resolves_a_string_in_class_body_dsl
+    mcp::tests::unknown_gem_surface_is_attributed_not_accused
+    mcp::tests::wont_lower_lowers_datetime_cleanly_and_bad_target_is_an_error
+    project::tests::a_stale_seed_file_is_replaced_not_preserved
+    project::tests::seed_sql_is_generated_from_the_apps_own_seeds
+
+test result: FAILED. 1035 passed; 41 failed; 1 ignored; 0 measured; 0 filtered out; finished in 5.12s
+
+error: test failed, to rerun pass `--lib`

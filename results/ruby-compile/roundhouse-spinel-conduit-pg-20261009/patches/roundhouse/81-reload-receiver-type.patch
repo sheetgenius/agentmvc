@@ -1,0 +1,42 @@
+diff --git a/src/analyze/mod.rs b/src/analyze/mod.rs
+index 7fc82bfa..cc9e86ff 100644
+--- a/src/analyze/mod.rs
++++ b/src/analyze/mod.rs
+@@ -696,7 +696,10 @@ impl Analyzer {
+                     continue;
+                 }
+                 let Some(kind) = entry.return_kind else { continue };
+-                cls.instance_methods.insert(Symbol::from(entry.name), instantiate(kind));
++                // The shared Base sidecar is nominal; an inherited reload
++                // returns the concrete receiver, whose user methods remain available.
++                let ret = if entry.name == "reload" { self_ty.clone() } else { instantiate(kind) };
++                cls.instance_methods.insert(Symbol::from(entry.name), ret);
+             }
+             // AR instance methods not (yet) in the catalog: dirty-tracking
+             // snapshots, mass assignment, marked-for-destruction, and the
+diff --git a/tests/reload_receiver.rs b/tests/reload_receiver.rs
+new file mode 100644
+index 00000000..e5f74b65
+--- /dev/null
++++ b/tests/reload_receiver.rs
+@@ -0,0 +1,20 @@
++//! A reload returns its concrete receiver, retaining model-defined methods.
++#[path = "support/emit_and_run.rs"]
++mod emit_and_run;
++fn example() -> emit_and_run::Overlay {
++    emit_and_run::empty_app()
++        .write("db/schema.rb", "ActiveRecord::Schema.define do\n  create_table :widgets do |t|\n    t.string :name\n  end\nend\n")
++        .write("app/models/application_record.rb", "class ApplicationRecord < ActiveRecord::Base\n  primary_abstract_class\nend\n")
++        .write("app/models/widget.rb", "class Widget < ApplicationRecord\n  def label\n    name\n  end\n  def self.refreshed_label(id)\n    find(id).reload.label\n  end\nend\n")
++        .write("app/controllers/application_controller.rb", "class ApplicationController < ActionController::API\nend\n")
++        .write("config/routes.rb", "Rails.application.routes.draw do\nend\n")
++}
++#[test]
++fn reload_retains_receiver_type_and_runs() {
++    example().run_ruby("widget = Widget.create!(name: 'fresh')\nraise unless Widget.refreshed_label(widget.id) == 'fresh'\n").assert_passes();
++}
++#[test]
++#[ignore = "requires the native Spinel compiler"]
++fn reload_retains_receiver_type_natively() {
++    example().run_spinel("Db.configure(\":memory:\")\nDb.exec(\"CREATE TABLE widgets (id INTEGER PRIMARY KEY, name TEXT)\")\nwidget = Widget.create!(name: 'fresh')\nraise unless Widget.refreshed_label(widget.id) == 'fresh'\n").assert_passes();
++}

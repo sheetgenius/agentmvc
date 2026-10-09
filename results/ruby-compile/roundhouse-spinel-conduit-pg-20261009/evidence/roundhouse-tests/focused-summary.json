@@ -1,0 +1,121 @@
+{
+  "suites": [
+    {
+      "suite": "api_mode.rs",
+      "passed": 2,
+      "ignored": 0,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "assoc_loaded_lowering.rs",
+      "passed": 9,
+      "ignored": 0,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "boot_hooks.rs",
+      "passed": 2,
+      "ignored": 0,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "class_instance_state.rs",
+      "passed": 12,
+      "ignored": 2,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "class_instance_state_alias.rs",
+      "passed": 2,
+      "ignored": 0,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "compile_contract_surfaces.rs",
+      "passed": 4,
+      "ignored": 0,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "errors_index_lowering.rs",
+      "passed": 10,
+      "ignored": 0,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "harvest_return_oscillation.rs",
+      "passed": 1,
+      "ignored": 0,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "integer_query_predicates.rs",
+      "passed": 2,
+      "ignored": 0,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "library_class_inferred_signatures.rs",
+      "passed": 6,
+      "ignored": 0,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "pessimistic_locking.rs",
+      "passed": 1,
+      "ignored": 1,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "rails_surface.rs",
+      "passed": 8,
+      "ignored": 0,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "reload_receiver.rs",
+      "passed": 1,
+      "ignored": 1,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "secure_password_nil_writers.rs",
+      "passed": 7,
+      "ignored": 7,
+      "log": "focused-tests-accepted.log"
+    },
+    {
+      "suite": "spinel_raw_websocket.rs",
+      "passed": 1,
+      "ignored": 0,
+      "log": "focused-tests-accepted.log"
+    }
+  ],
+  "focused_passed": 68,
+  "focused_ignored": 11,
+  "focused_suites": 15,
+  "return_unit": 18,
+  "runtime_typing": {
+    "fully_typed": "pass",
+    "concrete": {
+      "passed": false,
+      "sites": 330,
+      "ceiling": 316
+    },
+    "upstream": {
+      "fully_typed": "pass",
+      "concrete": "pass",
+      "sites": 316
+    }
+  },
+  "default_suite": {
+    "passed": false,
+    "stop": "library tests (test --lib)",
+    "passed_tests": 1040,
+    "failed_tests": 41,
+    "ignored": 1,
+    "reason": "generated real-blog fixture absent; same 41 library failures on unpatched heads",
+    "upstream_failed_tests": 41
+  },
+  "condition": "final-ten-patch-series-20261009"
+}

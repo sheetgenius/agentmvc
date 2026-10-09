@@ -1,0 +1,42 @@
+{
+  "upstream_check": {
+    "exit": 1,
+    "log": "patch10-upstream-check.log"
+  },
+  "upstream_emit": {
+    "exit": 0,
+    "log": "patch10-upstream-emit.log"
+  },
+  "upstream_shapes": {
+    "callback_and_rescue_json_encoded": false,
+    "subclass_rescue_first": false,
+    "set_header_runtime": false,
+    "numeric_status_runtime": false,
+    "nosniff_default": false,
+    "request_headers_runtime": false,
+    "request_authorization_runtime": false,
+    "attribute_errors_runtime": false,
+    "validator_retains_attribute": false,
+    "tableless_retains_attribute": false
+  },
+  "patched_check": {
+    "exit": 0,
+    "log": "patch10-patched-check.log"
+  },
+  "patched_emit": {
+    "exit": 0,
+    "log": "patch10-patched-emit.log"
+  },
+  "patched_shapes": {
+    "callback_and_rescue_json_encoded": true,
+    "subclass_rescue_first": true,
+    "set_header_runtime": true,
+    "numeric_status_runtime": true,
+    "nosniff_default": true,
+    "request_headers_runtime": true,
+    "request_authorization_runtime": true,
+    "attribute_errors_runtime": true,
+    "validator_retains_attribute": true,
+    "tableless_retains_attribute": true
+  }
+}

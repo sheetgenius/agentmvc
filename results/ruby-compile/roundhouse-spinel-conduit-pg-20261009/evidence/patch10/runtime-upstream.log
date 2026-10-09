@@ -1,0 +1,53 @@
+{
+  "nosniff": {
+    "pass": false
+  },
+  "response_set_header": {
+    "pass": false,
+    "error": "NoMethodError",
+    "message": "undefined method 'set_header' for an instance of ActionController::Base"
+  },
+  "integer_status": {
+    "pass": false,
+    "error": "RuntimeError",
+    "message": "Invalid HTTP status: 202"
+  },
+  "bad_request_class": {
+    "pass": false,
+    "error": "NameError",
+    "message": "uninitialized constant ActionController::BadRequest"
+  },
+  "parse_error_class": {
+    "pass": false,
+    "error": "NameError",
+    "message": "uninitialized constant ActionDispatch::Http"
+  },
+  "case_insensitive_headers": {
+    "pass": false,
+    "error": "NoMethodError",
+    "message": "undefined method 'headers' for an instance of ActionDispatch::Request"
+  },
+  "authorization": {
+    "pass": false,
+    "error": "NoMethodError",
+    "message": "undefined method 'authorization' for an instance of ActionDispatch::Request"
+  },
+  "validation_message_storage": {
+    "pass": false,
+    "error": "NoMethodError",
+    "message": "undefined method 'record_validation_message' for an instance of ActiveRecord::Base"
+  },
+  "validation_message_reset": {
+    "pass": false,
+    "error": "NoMethodError",
+    "message": "undefined method 'record_validation_message' for an instance of ActiveRecord::Base"
+  },
+  "json_encoder": {
+    "pass": false,
+    "error": "NameError",
+    "message": "uninitialized constant ActionController::JsonRender"
+  },
+  "utc_presentation": {
+    "pass": false
+  }
+}

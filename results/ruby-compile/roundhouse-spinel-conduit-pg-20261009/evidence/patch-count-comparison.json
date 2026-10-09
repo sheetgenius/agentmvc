@@ -1,0 +1,472 @@
+{
+  "condition": "compiled-conduit-v8-20261009",
+  "status": "Accepted: compiled and Ruby 4.0.7 Rails gates, v7-source control and fresh-clone reproduction pass.",
+  "ruby": "4.0.7",
+  "pins": {
+    "roundhouse": "ea4d3e682c86d817b2617b5862ed9a14d634f7eb",
+    "spinel": "f85f04b3abef4b0540406948c56db7a51a420122",
+    "agentmvc": "286af4fce066fe47dc68b68e294c73ef695dc46c",
+    "pinned_at": "2026-10-09T15:05:42.165667+00:00",
+    "spinel_dist": "2026.09.12+7503"
+  },
+  "counting": "git apply --numstat per patch; overlapping edits count separately. Net integrated diff is reported separately.",
+  "patches": [
+    {
+      "id": "00",
+      "title": "GoodJob interval schema",
+      "file": "00-interval.patch",
+      "v7": {
+        "added": 10,
+        "removed": 1,
+        "files": 1
+      },
+      "status": "kept",
+      "upstream": [],
+      "validation": "Integrated production gate, v7-source control and fresh-clone production gate pass; per-patch removal results and focused suites are linked in the package.",
+      "oct7_template": {
+        "added": 10,
+        "removed": 1,
+        "files": 1
+      },
+      "now": {
+        "added": 10,
+        "removed": 1,
+        "files": 1
+      }
+    },
+    {
+      "id": "10",
+      "title": "API controllers, JSON, request headers and errors",
+      "file": "10-api-mode-json.patch",
+      "v7": {
+        "added": 335,
+        "removed": 60,
+        "files": 23
+      },
+      "status": "trimmed",
+      "upstream": [
+        {
+          "pr": 498,
+          "commit": "a3a7f5a6f17ef90c276c5c30ff51da153c78a324",
+          "retires": "HTTP reason phrases for 409 Conflict and 422 Unprocessable Content (2 lines)."
+        }
+      ],
+      "validation": "Integrated production gate, v7-source control and fresh-clone production gate pass; per-patch removal results and focused suites are linked in the package.",
+      "oct7_template": {
+        "added": 335,
+        "removed": 60,
+        "files": 23
+      },
+      "now": {
+        "added": 333,
+        "removed": 60,
+        "files": 23
+      }
+    },
+    {
+      "id": "20",
+      "title": "Raw Faye WebSockets",
+      "file": "20-raw-websocket.patch",
+      "v7": {
+        "added": 350,
+        "removed": 17,
+        "files": 9
+      },
+      "status": "rebased",
+      "upstream": [
+        {
+          "pr": 466,
+          "commit": "dbf99aa",
+          "effect": "Preserve stricter Content-Length framing; no local WebSocket hunk retired."
+        },
+        {
+          "pr": 467,
+          "commit": "6610d160",
+          "effect": "Preserve incomplete-body refusal before dispatch; no local WebSocket hunk retired."
+        }
+      ],
+      "validation": "Integrated production gate, v7-source control and fresh-clone production gate pass; per-patch removal results and focused suites are linked in the package.",
+      "oct7_template": {
+        "added": 350,
+        "removed": 17,
+        "files": 9
+      },
+      "now": {
+        "added": 350,
+        "removed": 17,
+        "files": 9
+      }
+    },
+    {
+      "id": "30",
+      "title": "Boot hooks and job drain",
+      "file": "30-jobs-boot.patch",
+      "v7": {
+        "added": 485,
+        "removed": 36,
+        "files": 11
+      },
+      "status": "trimmed",
+      "upstream": [],
+      "validation": "Integrated production gate, v7-source control and fresh-clone production gate pass; per-patch removal results and focused suites are linked in the package.",
+      "oct7_template": {
+        "added": 485,
+        "removed": 36,
+        "files": 11
+      },
+      "now": {
+        "added": 420,
+        "removed": 1,
+        "files": 8
+      },
+      "selection": "Keep boot-hook ingestion and invocation: without them a pre-existing pending export is not recovered. Drop queue/dequeue, adapter-state mutex and per-job connection-lease refinements; the fresh gate needs none of them. No upstream commit is credited for this gate-only trim.",
+      "evidence": [
+        "evidence/patch-ablation/no30.log",
+        "evidence/recovery/no30.json",
+        "evidence/recovery/initial12.json",
+        "evidence/recovery/final10.json"
+      ]
+    },
+    {
+      "id": "50",
+      "title": "PostgreSQL runtime, schema and codecs",
+      "file": "50-postgresql-lane.patch",
+      "v7": {
+        "added": 955,
+        "removed": 29,
+        "files": 24
+      },
+      "status": "rebased",
+      "upstream": [
+        {
+          "pr": 403,
+          "commit": "21df415dcefc8fd1f677e82c3ffa21ad79729a6f",
+          "effect": "No PostgreSQL hunk retired; adapt local enum extensions to the merged bound-value interface."
+        },
+        {
+          "commit": "04410d439c2782a5818e44f4a05ab1064e5a3655",
+          "effect": "Shared dispatcher and boot now call SQLite snapshot/checkpoint hooks; PostgreSQL supplies intentional no-ops."
+        },
+        {
+          "pr": 648,
+          "commit": "80283c968a563f97197faa295b9210934a169765",
+          "retires": "Local Jsonb enum and schema ingestion duplicates; upstream retains JSON/JSONB provenance."
+        },
+        {
+          "commit": "0d467e0c",
+          "effect": "Upstream spinel-pg shim remains unwired to project generation. Keep it intact and name the local, gate-selected libpq runtime db_libpq.rb."
+        },
+        {
+          "pr": 671,
+          "commit": "71b18af4",
+          "effect": "Use upstream public locking methods. Keep PostgreSQL-specific emitted transaction and reload-lock behavior."
+        }
+      ],
+      "validation": "Integrated production gate, v7-source control and fresh-clone production gate pass; per-patch removal results and focused suites are linked in the package.",
+      "oct7_template": {
+        "added": 984,
+        "removed": 33,
+        "files": 25
+      },
+      "now": {
+        "added": 967,
+        "removed": 29,
+        "files": 25
+      }
+    },
+    {
+      "id": "60",
+      "title": "Rails runtime and lowering surfaces",
+      "file": "60-rails-surface.patch",
+      "v7": {
+        "added": 432,
+        "removed": 30,
+        "files": 20
+      },
+      "status": "trimmed",
+      "upstream": [
+        {
+          "pr": 441,
+          "commit": "f8fa7108b6589c9cc57d32d0e393817a77693f40",
+          "retires": "SecurityUtils runtime and RBS, require discovery, shipping, old local shape test"
+        },
+        {
+          "commit": "65d690883e02880ecb8c14194f65d01a033c6314",
+          "retires": "Relation#spawn and copy_query_state bodies and signatures; current implementation further changed by 40710afc (#488)"
+        },
+        {
+          "pr": 442,
+          "commits": [
+            "6a90ec00",
+            "514a35bb",
+            "0264ca75"
+          ],
+          "retires": "Local eager class-instance-variable initializer relocation and emission ordering."
+        }
+      ],
+      "validation": "Integrated production gate, v7-source control and fresh-clone production gate pass; per-patch removal results and focused suites are linked in the package.",
+      "oct7_template": {
+        "added": 383,
+        "removed": 30,
+        "files": 18
+      },
+      "now": {
+        "added": 359,
+        "removed": 46,
+        "files": 16
+      }
+    },
+    {
+      "id": "61",
+      "title": "Secure-password writer super and supplied nil",
+      "file": "61-secure-password-super-and-nil.patch",
+      "v7": {
+        "added": 18,
+        "removed": 2,
+        "files": 2
+      },
+      "status": "retired",
+      "upstream": [
+        {
+          "pr": 492,
+          "commit": "7eef3e915d9746dff2abb41f67f38a32bd94c779",
+          "retires": "The complete supplied-nil writer dispatch and old test; upstream execution tests cover the behavior."
+        }
+      ],
+      "validation": "Upstream execution tests and integrated production gate pass.",
+      "oct7_template": {
+        "added": 18,
+        "removed": 2,
+        "files": 2
+      },
+      "now": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      }
+    },
+    {
+      "id": "70",
+      "title": "Linear PostgreSQL placeholder rewrite",
+      "file": "70-linear-pg-placeholder-rewrite.patch",
+      "v7": {
+        "added": 94,
+        "removed": 46,
+        "files": 3
+      },
+      "status": "retired",
+      "upstream": [],
+      "validation": "The isolated patch removal passes the complete production gate. Final combined removal passes all gates and comparisons.",
+      "oct7_template": {
+        "added": 94,
+        "removed": 46,
+        "files": 3
+      },
+      "now": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "selection": "Isolated removal passes the full fresh-production gate. Remove this optimization because the gate does not require it; no upstream coverage or throughput claim.",
+      "evidence": [
+        "evidence/patch-ablation/no70.log"
+      ]
+    },
+    {
+      "id": "71",
+      "title": "Record locks and error predicates",
+      "file": "71-record-lock-and-error-predicate.patch",
+      "v7": {
+        "added": 85,
+        "removed": 0,
+        "files": 6
+      },
+      "status": "trimmed",
+      "upstream": [
+        {
+          "pr": 671,
+          "commit": "71b18af4",
+          "retires": "Manual model-instance with_lock analysis registration (3 lines); remaining error predicates stay local."
+        }
+      ],
+      "validation": "Integrated production gate, v7-source control and fresh-clone production gate pass; per-patch removal results and focused suites are linked in the package.",
+      "oct7_template": {
+        "added": 85,
+        "removed": 0,
+        "files": 6
+      },
+      "now": {
+        "added": 82,
+        "removed": 0,
+        "files": 5
+      }
+    },
+    {
+      "id": "72",
+      "title": "Async PostgreSQL and statement cache",
+      "file": "72-pg-async-cache.patch",
+      "v7": {
+        "added": 194,
+        "removed": 31,
+        "files": 1
+      },
+      "status": "retired",
+      "upstream": [],
+      "validation": "The isolated patch removal passes the complete production gate. Final combined removal passes all gates and comparisons.",
+      "oct7_template": {
+        "added": 194,
+        "removed": 31,
+        "files": 1
+      },
+      "now": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "selection": "Isolated removal passes the full fresh-production gate. Remove this optimization because the gate does not require it; no upstream coverage or throughput claim.",
+      "evidence": [
+        "evidence/patch-ablation/no72.log"
+      ]
+    },
+    {
+      "id": "74",
+      "title": "Integer query serialization and bounds",
+      "file": "74-integer-query-range.patch",
+      "v7": {
+        "added": 247,
+        "removed": 38,
+        "files": 11
+      },
+      "status": "trimmed",
+      "upstream": [
+        {
+          "pr": 494,
+          "commit": "a184e2b76cddcff18078884143e95ca1b2b0cdb2",
+          "retires": "Model.find_by runtime facade and signature"
+        },
+        {
+          "pr": 438,
+          "commit": "74f61e168fe3bd26f119edecef9543dfd2289988",
+          "effect": "Existing scalar exists? request-key casting retained; local Hash support extends that entry point",
+          "retires": "Relation.find override; upstream schema-selected primary-key cast now supplies this behavior"
+        },
+        {
+          "pr": 493,
+          "commit": "561ade09",
+          "retires": "Scoped Relation.exists? Hash dispatch and its RBS union. Keep model-class Hash dispatch and schema-width bounds."
+        }
+      ],
+      "validation": "Integrated production gate, v7-source control and fresh-clone production gate pass; per-patch removal results and focused suites are linked in the package.",
+      "oct7_template": {
+        "added": 246,
+        "removed": 32,
+        "files": 11
+      },
+      "now": {
+        "added": 244,
+        "removed": 30,
+        "files": 11
+      }
+    },
+    {
+      "id": "80",
+      "title": "Preserve gradual return arms during stabilization",
+      "file": "80-gradual-return-stabilization.patch",
+      "v7": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "status": "new",
+      "upstream": [
+        {
+          "commit": "2bfebe6a809dd9666a6bce295dc8020eee39e680",
+          "effect": "Return stabilization can erase an unknown path when gradual harvests share a concrete core. Preserve the unknown arm instead."
+        }
+      ],
+      "validation": "Integrated production gate, v7-source control and fresh-clone production gate pass; per-patch removal results and focused suites are linked in the package.",
+      "oct7_template": {
+        "added": 87,
+        "removed": 40,
+        "files": 3
+      },
+      "now": {
+        "added": 87,
+        "removed": 40,
+        "files": 3
+      }
+    },
+    {
+      "id": "81",
+      "title": "Reload retains its concrete model receiver",
+      "file": "81-reload-receiver-type.patch",
+      "v7": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "oct7_template": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "now": {
+        "added": 24,
+        "removed": 1,
+        "files": 2
+      },
+      "status": "new",
+      "upstream": [
+        {
+          "commit": "c523d7807941aa8f1224a24820443fa2898eb593",
+          "effect": "Introduces the nominal Base reload return. Fresh Widget reproduction passes on parent 8fda5b88 and fails on this commit."
+        }
+      ],
+      "validation": "Integrated production gate, v7-source control and fresh-clone production gate pass; per-patch removal results and focused suites are linked in the package.",
+      "gap": "Inherited reload nominally returns ActiveRecord::Base, erasing model-defined methods. Assign its existing concrete receiver type during model registration."
+    }
+  ],
+  "roundhouse_patch_count": {
+    "v7": 11,
+    "oct7_template": 12,
+    "now": 10
+  },
+  "spinel_patch_count": {
+    "v7": 0,
+    "oct7_template": 0,
+    "now": 0
+  },
+  "patch_totals": {
+    "v7": {
+      "added": 3205,
+      "removed": 290
+    },
+    "oct7_template": {
+      "added": 3271,
+      "removed": 328
+    },
+    "now": {
+      "added": 2876,
+      "removed": 225
+    }
+  },
+  "roundhouse_net_delta": {
+    "added": 2874,
+    "removed": 223,
+    "files": 74
+  },
+  "manifest_sha256": "2fce0ce9ff067966d7295f71206b6d7b3592da558b663352ed785fca93aa1777",
+  "timing": {
+    "run": false,
+    "reason": "Shared Docker host; no throughput claims."
+  },
+  "validation": {
+    "compiled_gate": "Pass: 17 API files, live protocol, 4 browser tests and 13 security files.",
+    "rails_gate": "Same compile-variant source on Rails and Ruby 4.0.7 passes the unmodified production gate.",
+    "control": "Published v7 source on the current toolchain passes.",
+    "common_http": "21/21 contract, 3/3 quality.",
+    "fresh_clone": "Fresh public AgentMVC, Roundhouse and Spinel clones reproduce vendor digests, compiled image and production gate.",
+    "focused_tests": "68 passed, 11 ignored in 15 suites; 18 return unit tests separately.",
+    "timing": "Not run on shared host."
+  }
+}

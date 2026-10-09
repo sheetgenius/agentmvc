@@ -1,0 +1,99 @@
+Waiting for shared Docker lock: ~/co/agentmvc/.work/lane-docker.lock
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.73kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 1.1s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/ruby:4.0.7-slim-trixie
+#4 ...
+
+#5 [internal] load metadata for docker.io/library/rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546
+#5 DONE 1.7s
+
+#4 [internal] load metadata for docker.io/library/ruby:4.0.7-slim-trixie
+#4 DONE 3.5s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [builder  1/11] FROM docker.io/library/rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546
+#7 DONE 0.0s
+
+#8 [ruby407 1/1] FROM docker.io/library/ruby:4.0.7-slim-trixie@sha256:ba6a00593739f9cb66de80ad2e395a93a52a13635867ee32918ba0ec083b1ff6
+#8 resolve docker.io/library/ruby:4.0.7-slim-trixie@sha256:ba6a00593739f9cb66de80ad2e395a93a52a13635867ee32918ba0ec083b1ff6 0.0s done
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 29.58MB 0.5s done
+#9 DONE 0.5s
+
+#10 [builder  5/11] COPY vendor/spinel /src/spinel
+#10 CACHED
+
+#11 [builder  6/11] WORKDIR /src/spinel
+#11 CACHED
+
+#12 [builder  2/11] RUN apt-get update && apt-get install -y --no-install-recommends     clang make git pkg-config libsqlite3-dev sqlite3 libjemalloc-dev     libpq-dev postgresql-client curl ca-certificates libssl-dev libcrypt-dev     libyaml-0-2 libgmp10 file time && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [builder  3/11] COPY --from=ruby407 /usr/local/ /usr/local/
+#13 CACHED
+
+#14 [builder  4/11] RUN ruby --version
+#14 CACHED
+
+#15 [builder  7/11] RUN make deps -j8 && make -j8 CC=clang && make install -j8 CC=clang
+#15 CACHED
+
+#16 [builder  8/11] COPY vendor/roundhouse /src/roundhouse
+#16 DONE 0.6s
+
+#17 [builder  9/11] WORKDIR /src/roundhouse
+#17 DONE 0.1s
+
+#18 [builder 10/11] RUN --mount=type=cache,id=v8b-cargo-registry,target=/usr/local/cargo/registry     --mount=type=cache,id=v8b-cargo-git,target=/usr/local/cargo/git     --mount=type=cache,id=v8b-cargo-target,target=/src/roundhouse/target     ROUNDHOUSE_COMMIT=$(echo ea4d3e682c86d817b2617b5862ed9a14d634f7eb | cut -c1-8) cargo build --locked --release --bin roundhouse -j8     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse
+#18 0.162 info: syncing channel updates for 1.98.1-aarch64-unknown-linux-gnu
+#18 1.289 info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+#18 1.295 info: downloading 2 components
+#18 3.037    Compiling roundhouse v2026.9.18 (/src/roundhouse)
+#18 42.76     Finished `release` profile [optimized] target(s) in 39.79s
+#18 DONE 42.9s
+
+#19 [builder 11/11] RUN roundhouse --version && spinel --version && spin --version
+#19 0.115 roundhouse 2026.9.18 (ea4d3e68)
+#19 0.126 spinel 2026.09.12+7503 (f85f04b3a) [gcc 14.2.0 (cc)]
+#19 0.130 spin 2026.09.12+7503 (f85f04b3a) [gcc 14.2.0 (cc)]
+#19 DONE 0.2s
+
+#20 [stage-2 5/9] COPY --from=builder /usr/local/lib/spinel /usr/local/lib/spinel
+#20 CACHED
+
+#21 [stage-2 6/9] COPY --from=builder /usr/local/bin/roundhouse /usr/local/bin/roundhouse
+#21 DONE 0.0s
+
+#22 [stage-2 7/9] COPY patches /usr/local/share/roundhouse-patches
+#22 DONE 0.1s
+
+#23 [stage-2 8/9] RUN ln -s /usr/local/lib/spinel/spinel /usr/local/bin/spinel     && ln -s /usr/local/lib/spinel/spin /usr/local/bin/spin
+#23 DONE 0.1s
+
+#24 [stage-2 9/9] WORKDIR /work
+#24 DONE 0.1s
+
+#25 exporting to image
+#25 exporting layers 0.1s done
+#25 writing image sha256:dc70ee9c3b0774af0838e19071171a5d5e0af77941b3214d7cc8b217098b75c1 done
+#25 naming to docker.io/library/conduit-v8b-toolchain:2fce0ce9ff06 done
+#25 DONE 0.1s
+ruby 4.0.7 (2026-09-15 revision 229531a6cf) +PRISM [aarch64-linux]
+roundhouse 2026.9.18 (ea4d3e68)
+spinel 2026.09.12+7503 (f85f04b3a) [gcc 14.2.0 (cc)]
+spin 2026.09.12+7503 (f85f04b3a) [gcc 14.2.0 (cc)]

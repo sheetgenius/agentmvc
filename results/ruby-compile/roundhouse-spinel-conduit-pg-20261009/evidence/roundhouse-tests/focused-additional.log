@@ -1,0 +1,58 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.17s
+     Running tests/assoc_loaded_lowering.rs (/work/app/build/cargo-target/debug/deps/assoc_loaded_lowering-2274a360006c9f77)
+
+running 9 tests
+test assoc_loaded_two_hop_types_as_bool_under_check ... ok
+test association_target_collapses_inside_concern_module ... ok
+test association_target_collapses_to_reader ... ok
+test assoc_loaded_mixed_owner_union_residuals_under_check ... ok
+test assoc_loaded_rewrites_two_hop_to_flat_predicate ... ok
+test assoc_loaded_rewrites_implicit_self_two_hop ... ok
+test assoc_loaded_skips_untyped_explicit_receiver ... ok
+test assoc_loaded_skips_mixed_owner_union ... ok
+test association_target_skips_reader_on_unrelated_model ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/class_instance_state_alias.rs (/work/app/build/cargo-target/debug/deps/class_instance_state_alias-20476438d5b6b57f)
+
+running 2 tests
+test alias_method_spans_point_to_the_alias_declaration ... ok
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+test class_and_module_aliases_follow_their_declarations ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.16s
+
+     Running tests/harvest_return_oscillation.rs (/work/app/build/cargo-target/debug/deps/harvest_return_oscillation-7832bdbe8cfa1846)
+
+running 1 test
+test circular_config_load_keeps_known_consumers_and_a_gradual_cycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/library_class_inferred_signatures.rs (/work/app/build/cargo-target/debug/deps/library_class_inferred_signatures-3d306c22c8af9c78)
+
+running 6 tests
+test a_plain_class_is_not_untyped_end_to_end ... ok
+test a_union_with_a_gradual_arm_renders_as_untyped ... ok
+test a_return_travels_the_whole_chain ... ok
+test a_rest_slot_is_not_declared_from_its_first_vararg ... ok
+test initialize_is_left_alone ... ok
+test a_block_return_does_not_erase_an_unknown_room_tail ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/spinel_raw_websocket.rs (/work/app/build/cargo-target/debug/deps/spinel_raw_websocket-67772dcb9887fe5a)
+
+running 1 test
+test raw_websocket_closes_wake_and_retire_the_connection ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+

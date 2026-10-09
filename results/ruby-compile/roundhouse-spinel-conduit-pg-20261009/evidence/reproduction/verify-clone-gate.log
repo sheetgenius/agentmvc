@@ -1,0 +1,129 @@
+gate inputs: 72 files, sha256 a8999f01c936cc37fe182c314c7a9a602b62611c1a15dc8338e7853d30831710 (matches the published workspace)
+workspace: /work/app/build/verify-gate/conduit-v8b-ws-compiled
+log: /work/app/build/verify-gate/gate-compiled.log
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.12kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 0.5s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/debian:trixie-slim@sha256:020c0d20b9880058cbe785a9db107156c3c75c2ac944a6aa7ab59f2add76a7bd
+#4 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/conduit-v8b-toolchain:2fce0ce9ff06
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 210B done
+#6 DONE 0.0s
+
+#7 [toolchain 1/2] FROM docker.io/library/conduit-v8b-toolchain:2fce0ce9ff06
+#7 DONE 0.0s
+
+#8 [runtime 1/4] FROM docker.io/library/debian:trixie-slim@sha256:020c0d20b9880058cbe785a9db107156c3c75c2ac944a6aa7ab59f2add76a7bd
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 35.13kB done
+#9 DONE 0.0s
+
+#10 [build 3/5] RUN ulimit -v 12582912; /usr/bin/time -f "analysis peak_rss_kib=%M exit=%x" roundhouse check /src/app && /usr/bin/time -f "emission peak_rss_kib=%M exit=%x" roundhouse --target spinel -o /build /src/app
+#10 CACHED
+
+#11 [build 2/5] COPY . .
+#11 CACHED
+
+#12 [toolchain 2/2] RUN echo '2fce0ce9ff067966d7295f71206b6d7b3592da558b663352ed785fca93aa1777  /usr/local/share/roundhouse-patches/SHA256SUMS' | sha256sum -c -
+#12 CACHED
+
+#13 [build 1/5] WORKDIR /src/app
+#13 CACHED
+
+#14 [build 5/5] RUN spin build -- --cc=clang --jobs=8     && mkdir -p /runtime/static /runtime/public /runtime/db /runtime/config /runtime/storage     && set -- build/bin/* && test "$#" -eq 1 && test -x "$1"     && install -m755 "$1" /runtime/server && strip /runtime/server     && for dir in static public db config; do if [ -d "$dir" ]; then cp -a "$dir/." "/runtime/$dir/"; fi; done     && test -s /runtime/db/structure.sql && ldd /runtime/server
+#14 CACHED
+
+#15 [build 4/5] WORKDIR /build
+#15 CACHED
+
+#16 [runtime 2/4] RUN apt-get update -qq     && apt-get install --no-install-recommends -y libpq5 libjemalloc2 ca-certificates     && rm -rf /var/lib/apt/lists/*     && groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home --home-dir /app app
+#16 CACHED
+
+#17 [runtime 3/4] WORKDIR /app
+#17 CACHED
+
+#18 [runtime 4/4] COPY --from=build --chown=10001:10001 /runtime/ ./
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 writing image sha256:4b22f791dd53dfc6dd73a0790fa0b6600cab0b1dbf225f53eb8709d181eebce2 done
+#19 naming to docker.io/library/conduit-v8b-gate-conduit-v8b-ws-compiled-33916:latest done
+#19 DONE 0.0s
+Success api/hurl/articles.hurl (17 request(s) in 195 ms)
+Success api/hurl/auth.hurl (20 request(s) in 351 ms)
+Success api/hurl/comments.hurl (13 request(s) in 182 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 175 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 1826 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 337 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 170 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 171 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 178 ms)
+Success api/hurl/feed.hurl (12 request(s) in 348 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 172 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 330 ms)
+Success api/hurl/tags.hurl (4 request(s) in 168 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 353 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 347 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 624 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 361 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (37.6/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          6308 ms (0h:0m:6s:308ms)
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (610ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (426ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (308ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (382ms)
+
+  4 passed (2.0s)
+Success s01_jwt_alg_none.hurl (1 request(s) in 0 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 169 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 0 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 164 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 165 ms)
+Success s06_injection_filters.hurl (4 request(s) in 2 ms)
+Success s07_malformed_json.hurl (1 request(s) in 0 ms)
+Success s08_wrong_types.hurl (8 request(s) in 172 ms)
+Success s09_oversized_body.hurl (2 request(s) in 46012 ms)
+Success s10_unknown_route.hurl (1 request(s) in 0 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 323 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 2 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 3526 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (1.0/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          50544 ms (0h:0m:50s:544ms)
+
+/work/app/build/verify-clone/results/ruby-compile/roundhouse-spinel-conduit-pg-20261009/reproduce/run-gate.sh: line 92: 33915 Terminated: 15          ( while sleep 2; do
+    for c in $(docker ps -q --filter "name=agentmvc-one-shot-$(basename "$ws")-");
+    do
+        docker inspect -f '{{range .Mounts}}{{if eq .Type "volume"}}{{println .Name}}{{end}}{{end}}' "$c" 2> /dev/null;
+    done >> "$volumes";
+done )
+removed volume conduit-v8b-gate-conduit-v8b-ws-compiled-33916-db-data
+check-production.sh exit 0

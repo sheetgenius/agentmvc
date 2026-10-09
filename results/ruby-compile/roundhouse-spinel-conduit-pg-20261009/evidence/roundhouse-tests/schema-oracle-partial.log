@@ -1,0 +1,661 @@
+   Compiling roundhouse v2026.9.18 (/work/app/src/roundhouse)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.64s
+     Running tests/assoc_loaded_lowering.rs (/work/app/build/cargo-target/debug/deps/assoc_loaded_lowering-2274a360006c9f77)
+
+running 9 tests
+test assoc_loaded_two_hop_types_as_bool_under_check ... ok
+test assoc_loaded_mixed_owner_union_residuals_under_check ... ok
+test assoc_loaded_rewrites_two_hop_to_flat_predicate ... ok
+test association_target_collapses_inside_concern_module ... ok
+test assoc_loaded_rewrites_implicit_self_two_hop ... ok
+test assoc_loaded_skips_untyped_explicit_receiver ... ok
+test association_target_skips_reader_on_unrelated_model ... ok
+test association_target_collapses_to_reader ... ok
+test assoc_loaded_skips_mixed_owner_union ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/class_instance_state_alias.rs (/work/app/build/cargo-target/debug/deps/class_instance_state_alias-20476438d5b6b57f)
+
+running 2 tests
+test alias_method_spans_point_to_the_alias_declaration ... ok
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 68 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+test class_and_module_aliases_follow_their_declarations ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.97s
+
+     Running tests/harvest_return_oscillation.rs (/work/app/build/cargo-target/debug/deps/harvest_return_oscillation-7832bdbe8cfa1846)
+
+running 1 test
+test circular_config_load_keeps_known_consumers_and_a_gradual_cycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/library_class_inferred_signatures.rs (/work/app/build/cargo-target/debug/deps/library_class_inferred_signatures-3d306c22c8af9c78)
+
+running 6 tests
+test a_union_with_a_gradual_arm_renders_as_untyped ... ok
+test a_plain_class_is_not_untyped_end_to_end ... ok
+test a_block_return_does_not_erase_an_unknown_room_tail ... ok
+test a_return_travels_the_whole_chain ... ok
+test initialize_is_left_alone ... ok
+test a_rest_slot_is_not_declared_from_its_first_vararg ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/postgres_generated_integers.rs (/work/app/build/cargo-target/debug/deps/postgres_generated_integers-250b2ec5d97673d4)
+
+running 6 tests
+ROUNDHOUSE_POSTGRES_GENERATED_INT4_DDL_BEGIN
+CREATE TABLE IF NOT EXISTS "counters" (
+  "id" bigserial PRIMARY KEY,
+  "payload_json" json,
+  "payload_jsonb" jsonb,
+  "counter_text" text,
+  "label" character varying,
+  "case_name" character varying NOT NULL,
+  "from_json" integer GENERATED ALWAYS AS ((payload_json ->> 'counter'::text)::integer) STORED,
+  "from_jsonb" integer GENERATED ALWAYS AS (CAST((payload_jsonb ->> 'counter'::text) AS int4)) STORED,
+  "from_text" integer GENERATED ALWAYS AS (counter_text::integer) STORED
+);
+CREATE TABLE IF NOT EXISTS "required_counters" (
+  "id" bigserial PRIMARY KEY,
+  "payload_jsonb" jsonb,
+  "required_count" integer GENERATED ALWAYS AS ((payload_jsonb ->> 'counter'::text)::integer) STORED NOT NULL
+);
+ROUNDHOUSE_POSTGRES_GENERATED_INT4_DDL_END
+ROUNDHOUSE_POSTGRES_GENERATED_INT4_ORACLE_SQL_BEGIN
+-- Apply this after the exact emitted DDL captured from
+-- `postgres_generated_int4_ddl_oracle_fixture_emits_marked_sql`. The runner
+-- must wrap emitted DDL and these assertions in BEGIN/ROLLBACK on a disposable database.
+
+
+INSERT INTO "counters" (case_name, payload_json, payload_jsonb, counter_text) VALUES
+  ('zero', '{"counter":"0"}'::json, '{"counter":"0"}'::jsonb, '0'),
+  ('negative', '{"counter":"-17"}'::json, '{"counter":"-17"}'::jsonb, '-17'),
+  ('minimum', '{"counter":"-2147483648"}'::json, '{"counter":"-2147483648"}'::jsonb, '-2147483648'),
+  ('maximum', '{"counter":"2147483647"}'::json, '{"counter":"2147483647"}'::jsonb, '2147483647'),
+  ('number', '{"counter":42}'::json, '{"counter":42}'::jsonb, '42'),
+  ('sql_null', NULL, NULL, NULL),
+  ('json_null', 'null'::json, 'null'::jsonb, NULL),
+  ('key_null', '{"counter":null}'::json, '{"counter":null}'::jsonb, NULL),
+  ('missing', '{}'::json, '{}'::jsonb, NULL),
+  ('wrong_shape', '[]'::json, '[]'::jsonb, NULL),
+  ('recompute', '{"counter":"1"}'::json, '{"counter":"1"}'::jsonb, '1'),
+  ('error_probe', '{"counter":"1"}'::json, '{"counter":"1"}'::jsonb, '1');
+
+DO $roundhouse_int4_oracle$
+DECLARE
+  actual_state text;
+  source_name text;
+  bad_value text;
+  json_shape_expression text;
+  sql_statement text;
+  required_id bigint;
+  before_count bigint;
+BEGIN
+  IF (SELECT count(*) FROM "counters") IS DISTINCT FROM 12 THEN
+    RAISE EXCEPTION 'int4 oracle fixture rows are missing or duplicated';
+  END IF;
+
+  IF EXISTS (
+    SELECT 1
+      FROM (VALUES
+        ('zero', 0),
+        ('negative', -17),
+        ('minimum', -2147483648),
+        ('maximum', 2147483647),
+        ('number', 42)
+      ) AS expected(case_name, expected_value)
+      JOIN "counters" USING (case_name)
+     WHERE from_json IS DISTINCT FROM expected.expected_value
+        OR from_jsonb IS DISTINCT FROM expected.expected_value
+        OR from_text IS DISTINCT FROM expected.expected_value
+  ) THEN
+    RAISE EXCEPTION 'text-to-int4 generated values differ at valid values or endpoints';
+  END IF;
+
+  IF (SELECT pg_typeof(from_json)::text FROM "counters" WHERE case_name = 'minimum')
+       IS DISTINCT FROM 'integer'
+     OR (SELECT pg_typeof(from_jsonb)::text FROM "counters" WHERE case_name = 'minimum')
+       IS DISTINCT FROM 'integer'
+     OR (SELECT pg_typeof(from_text)::text FROM "counters" WHERE case_name = 'minimum')
+       IS DISTINCT FROM 'integer' THEN
+    RAISE EXCEPTION 'generated expression outputs are not PostgreSQL int4';
+  END IF;
+
+  IF (SELECT pg_typeof(payload_json)::text FROM "counters" WHERE case_name = 'zero')
+       IS DISTINCT FROM 'json'
+     OR (SELECT pg_typeof(payload_jsonb)::text FROM "counters" WHERE case_name = 'zero')
+       IS DISTINCT FROM 'jsonb' THEN
+    RAISE EXCEPTION 'source json/jsonb types were not retained in emitted DDL';
+  END IF;
+
+  IF (SELECT count(*) FROM "counters"
+       WHERE case_name IN ('sql_null', 'json_null', 'key_null', 'missing', 'wrong_shape'))
+       IS DISTINCT FROM 5 THEN
+    RAISE EXCEPTION 'nullable-shape fixture rows are missing';
+  END IF;
+  IF EXISTS (
+    SELECT 1 FROM "counters"
+     WHERE case_name IN ('sql_null', 'json_null', 'key_null', 'missing', 'wrong_shape')
+       AND (from_json IS NOT NULL OR from_jsonb IS NOT NULL OR from_text IS NOT NULL)
+  ) THEN
+    RAISE EXCEPTION 'SQL NULL, JSON null, missing key, and wrong shape must yield NULL';
+  END IF;
+
+  UPDATE "counters"
+     SET payload_json = '{"counter":"-37"}'::json,
+         payload_jsonb = '{"counter":"-37"}'::jsonb,
+         counter_text = '-37'
+   WHERE case_name = 'recompute';
+  IF (SELECT from_json FROM "counters" WHERE case_name = 'recompute') IS DISTINCT FROM -37
+     OR (SELECT from_jsonb FROM "counters" WHERE case_name = 'recompute') IS DISTINCT FROM -37
+     OR (SELECT from_text FROM "counters" WHERE case_name = 'recompute') IS DISTINCT FROM -37 THEN
+    RAISE EXCEPTION 'stored int4 generated values did not recompute on UPDATE';
+  END IF;
+
+  -- Invalid text fails through PostgreSQL's int4 input function. Exercise all
+  -- three source columns and ensure each failed UPDATE leaves its row intact.
+  FOREACH source_name IN ARRAY ARRAY['payload_json', 'payload_jsonb', 'counter_text'] LOOP
+    FOREACH bad_value IN ARRAY ARRAY['abc', '42x', '123e+5', '', 'true', '{}', '[]'] LOOP
+      IF source_name = 'payload_json' THEN
+        sql_statement := format(
+          'UPDATE "counters" SET "payload_json" = json_build_object(''counter'', %L)::json WHERE "case_name" = ''error_probe''',
+          bad_value
+        );
+      ELSIF source_name = 'payload_jsonb' THEN
+        sql_statement := format(
+          'UPDATE "counters" SET "payload_jsonb" = jsonb_build_object(''counter'', %L)::jsonb WHERE "case_name" = ''error_probe''',
+          bad_value
+        );
+      ELSE
+        sql_statement := format(
+          'UPDATE "counters" SET "counter_text" = %L WHERE "case_name" = ''error_probe''',
+          bad_value
+        );
+      END IF;
+
+      actual_state := NULL;
+      BEGIN
+        EXECUTE sql_statement;
+      EXCEPTION WHEN OTHERS THEN
+        GET STACKED DIAGNOSTICS actual_state = RETURNED_SQLSTATE;
+      END;
+      IF actual_state IS DISTINCT FROM '22P02' THEN
+        RAISE EXCEPTION 'invalid int4 text % from % returned SQLSTATE %, expected 22P02',
+          bad_value, source_name, actual_state;
+      END IF;
+      IF (SELECT payload_json ->> 'counter'::text FROM "counters" WHERE case_name = 'error_probe')
+           IS DISTINCT FROM '1'
+         OR (SELECT payload_jsonb ->> 'counter'::text FROM "counters" WHERE case_name = 'error_probe')
+           IS DISTINCT FROM '1'
+         OR (SELECT counter_text FROM "counters" WHERE case_name = 'error_probe')
+           IS DISTINCT FROM '1'
+         OR (SELECT from_json FROM "counters" WHERE case_name = 'error_probe') IS DISTINCT FROM 1
+         OR (SELECT from_jsonb FROM "counters" WHERE case_name = 'error_probe') IS DISTINCT FROM 1
+         OR (SELECT from_text FROM "counters" WHERE case_name = 'error_probe') IS DISTINCT FROM 1 THEN
+        RAISE EXCEPTION 'failed invalid-text UPDATE changed the source row or generated values';
+      END IF;
+    END LOOP;
+  END LOOP;
+
+  -- A JSON boolean/object/array under the selected key extracts as text, then
+  -- fails the int4 cast. Also cover each JSON storage type with actual shapes.
+  FOREACH source_name IN ARRAY ARRAY['payload_json', 'payload_jsonb'] LOOP
+    FOREACH json_shape_expression IN ARRAY ARRAY[
+      'json_build_object(''counter'', true)',
+      'json_build_object(''counter'', json_build_object(''n'', 1))',
+      'json_build_object(''counter'', json_build_array(1))'
+    ] LOOP
+      IF source_name = 'payload_json' THEN
+        sql_statement := format(
+          'UPDATE "counters" SET "payload_json" = %s::json WHERE "case_name" = ''error_probe''',
+          json_shape_expression
+        );
+      ELSE
+        sql_statement := format(
+          'UPDATE "counters" SET "payload_jsonb" = %s::jsonb WHERE "case_name" = ''error_probe''',
+          replace(json_shape_expression, 'json_build_', 'jsonb_build_')
+        );
+      END IF;
+      actual_state := NULL;
+      BEGIN
+        EXECUTE sql_statement;
+      EXCEPTION WHEN OTHERS THEN
+        GET STACKED DIAGNOSTICS actual_state = RETURNED_SQLSTATE;
+      END;
+      IF actual_state IS DISTINCT FROM '22P02' THEN
+        RAISE EXCEPTION 'JSON non-string scalar/container from % returned SQLSTATE %, expected 22P02',
+          source_name, actual_state;
+      END IF;
+      IF (SELECT from_json FROM "counters" WHERE case_name = 'error_probe') IS DISTINCT FROM 1
+         OR (SELECT from_jsonb FROM "counters" WHERE case_name = 'error_probe') IS DISTINCT FROM 1 THEN
+        RAISE EXCEPTION 'failed JSON-shape UPDATE changed generated values';
+      END IF;
+    END LOOP;
+  END LOOP;
+
+  FOREACH source_name IN ARRAY ARRAY['payload_json', 'payload_jsonb', 'counter_text'] LOOP
+    FOREACH bad_value IN ARRAY ARRAY['2147483648', '-2147483649'] LOOP
+      IF source_name = 'payload_json' THEN
+        sql_statement := format(
+          'UPDATE "counters" SET "payload_json" = json_build_object(''counter'', %L)::json WHERE "case_name" = ''error_probe''',
+          bad_value
+        );
+      ELSIF source_name = 'payload_jsonb' THEN
+        sql_statement := format(
+          'UPDATE "counters" SET "payload_jsonb" = jsonb_build_object(''counter'', %L)::jsonb WHERE "case_name" = ''error_probe''',
+          bad_value
+        );
+      ELSE
+        sql_statement := format(
+          'UPDATE "counters" SET "counter_text" = %L WHERE "case_name" = ''error_probe''',
+          bad_value
+        );
+      END IF;
+
+      actual_state := NULL;
+      BEGIN
+        EXECUTE sql_statement;
+      EXCEPTION WHEN OTHERS THEN
+        GET STACKED DIAGNOSTICS actual_state = RETURNED_SQLSTATE;
+      END;
+      IF actual_state IS DISTINCT FROM '22003' THEN
+        RAISE EXCEPTION 'out-of-range int4 text % from % returned SQLSTATE %, expected 22003',
+          bad_value, source_name, actual_state;
+      END IF;
+      IF (SELECT from_json FROM "counters" WHERE case_name = 'error_probe') IS DISTINCT FROM 1
+         OR (SELECT from_jsonb FROM "counters" WHERE case_name = 'error_probe') IS DISTINCT FROM 1
+         OR (SELECT from_text FROM "counters" WHERE case_name = 'error_probe') IS DISTINCT FROM 1 THEN
+        RAISE EXCEPTION 'failed out-of-range UPDATE changed generated values';
+      END IF;
+    END LOOP;
+  END LOOP;
+
+  SELECT count(*) INTO before_count FROM "counters";
+  actual_state := NULL;
+  BEGIN
+    INSERT INTO "counters" (case_name, payload_jsonb)
+      VALUES ('invalid_insert', '{"counter":"abc"}'::jsonb);
+  EXCEPTION WHEN OTHERS THEN
+    GET STACKED DIAGNOSTICS actual_state = RETURNED_SQLSTATE;
+  END;
+  IF actual_state IS DISTINCT FROM '22P02' THEN
+    RAISE EXCEPTION 'invalid-text insert returned SQLSTATE %, expected 22P02', actual_state;
+  END IF;
+  IF (SELECT count(*) FROM "counters") IS DISTINCT FROM before_count
+     OR EXISTS (SELECT 1 FROM "counters" WHERE case_name = 'invalid_insert') THEN
+    RAISE EXCEPTION 'failed invalid-text INSERT persisted a row';
+  END IF;
+
+  actual_state := NULL;
+  BEGIN
+    INSERT INTO "counters" (case_name, payload_jsonb)
+      VALUES ('range_insert', '{"counter":"2147483648"}'::jsonb);
+  EXCEPTION WHEN OTHERS THEN
+    GET STACKED DIAGNOSTICS actual_state = RETURNED_SQLSTATE;
+  END;
+  IF actual_state IS DISTINCT FROM '22003' THEN
+    RAISE EXCEPTION 'out-of-range insert returned SQLSTATE %, expected 22003', actual_state;
+  END IF;
+  IF (SELECT count(*) FROM "counters") IS DISTINCT FROM before_count
+     OR EXISTS (SELECT 1 FROM "counters" WHERE case_name = 'range_insert') THEN
+    RAISE EXCEPTION 'failed out-of-range INSERT persisted a row';
+  END IF;
+
+  INSERT INTO "required_counters" (payload_jsonb)
+    VALUES ('{"counter":"123"}'::jsonb)
+    RETURNING id INTO STRICT required_id;
+  IF (SELECT required_count FROM "required_counters" WHERE id = required_id) IS DISTINCT FROM 123
+     OR (SELECT pg_typeof(required_count)::text FROM "required_counters" WHERE id = required_id)
+       IS DISTINCT FROM 'integer' THEN
+    RAISE EXCEPTION 'NOT NULL generated int4 value was not stored with int4 type';
+  END IF;
+
+  SELECT count(*) INTO before_count FROM "required_counters";
+  actual_state := NULL;
+  BEGIN
+    INSERT INTO "required_counters" (payload_jsonb) VALUES ('{}'::jsonb);
+  EXCEPTION WHEN OTHERS THEN
+    GET STACKED DIAGNOSTICS actual_state = RETURNED_SQLSTATE;
+  END;
+  IF actual_state IS DISTINCT FROM '23502' THEN
+    RAISE EXCEPTION 'missing-key NOT NULL insert returned SQLSTATE %, expected 23502', actual_state;
+  END IF;
+  IF (SELECT count(*) FROM "required_counters") IS DISTINCT FROM before_count THEN
+    RAISE EXCEPTION 'failed NOT NULL insert persisted a row';
+  END IF;
+
+  actual_state := NULL;
+  BEGIN
+    UPDATE "required_counters" SET payload_jsonb = '{}'::jsonb WHERE id = required_id;
+  EXCEPTION WHEN OTHERS THEN
+    GET STACKED DIAGNOSTICS actual_state = RETURNED_SQLSTATE;
+  END;
+  IF actual_state IS DISTINCT FROM '23502' THEN
+    RAISE EXCEPTION 'missing-key NOT NULL update returned SQLSTATE %, expected 23502', actual_state;
+  END IF;
+  IF (SELECT payload_jsonb ->> 'counter'::text FROM "required_counters" WHERE id = required_id)
+       IS DISTINCT FROM '123'
+     OR (SELECT required_count FROM "required_counters" WHERE id = required_id) IS DISTINCT FROM 123 THEN
+    RAISE EXCEPTION 'failed NOT NULL UPDATE persisted its source or generated value';
+  END IF;
+END;
+$roundhouse_int4_oracle$;
+ROUNDHOUSE_POSTGRES_GENERATED_INT4_ORACLE_SQL_END
+test postgres_generated_int4_ddl_oracle_fixture_emits_marked_sql ... ok
+test structure_sql_preserves_int4_casts_and_rejects_ambiguous_source_widths ... ok
+test schema_rb_serde_and_postgres_ddl_preserve_int4_expressions_and_width_provenance ... ok
+test migrations_preserve_int4_sql_and_reject_invalid_candidate_mutations_atomically ... ok
+test portable_app_project_and_sqlite_paths_reject_generated_int4_casts ... ok
+test int4_parser_accepts_only_text_casts_with_postgres_integer_targets ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/postgres_generated_json.rs (/work/app/build/cargo-target/debug/deps/postgres_generated_json-934d664d1d6ce8bd)
+
+running 8 tests
+test structure_sql_preserves_json_types_and_extraction_source_sql ... ok
+test migration_folding_preserves_json_kinds_and_expression_source ... ok
+test schema_survey_and_migration_candidate_rejection_preserve_valid_state ... ok
+test postgres_json_extraction_retains_schema_serde_and_exact_ddl ... ok
+test portable_app_project_and_sqlite_paths_reject_postgres_json_extraction ... ok
+ROUNDHOUSE_POSTGRES_JSON_EXTRACTION_DDL_BEGIN
+CREATE TABLE IF NOT EXISTS "documents" (
+  "id" bigserial PRIMARY KEY,
+  "payload_json" json,
+  "payload_jsonb" jsonb,
+  "prefix" character varying,
+  "suffix" character varying,
+  "PayloadCase" json,
+  "dynamic_key" character varying,
+  "case_name" character varying NOT NULL,
+  "model_json" character varying GENERATED ALWAYS AS (payload_json ->> 'model'::text) STORED,
+  "model_jsonb" character varying GENERATED ALWAYS AS (payload_jsonb ->> 'model'::text) STORED,
+  "issue_first" character varying GENERATED ALWAYS AS ((payload_json -> 'issue'::text) ->> 0) STORED,
+  "issue_last_jsonb" character varying GENERATED ALWAYS AS (payload_jsonb -> 'issue'::text ->> -1) STORED,
+  "names_min_index_json" character varying GENERATED ALWAYS AS (payload_json -> 'names'::text ->> -2147483648) STORED,
+  "names_min_index_jsonb" character varying GENERATED ALWAYS AS (payload_jsonb -> 'names'::text ->> -2147483648) STORED,
+  "item_label" character varying GENERATED ALWAYS AS (payload_json -> 'items'::text -> 0 ->> 'label'::text) STORED,
+  "names_first" character varying GENERATED ALWAYS AS (payload_json -> 'names'::text ->> 0) STORED,
+  "names_last" character varying GENERATED ALWAYS AS (payload_json -> 'names'::text ->> -1) STORED,
+  "array_text_key" character varying GENERATED ALWAYS AS (payload_json -> 'names'::text ->> '0'::text) STORED,
+  "zero_key" character varying GENERATED ALWAYS AS (payload_json ->> '0'::text) STORED,
+  "zero_index" character varying GENERATED ALWAYS AS (payload_json ->> 0) STORED,
+  "customer_key" character varying GENERATED ALWAYS AS (payload_json ->> 'customer''s name'::text) STORED,
+  "unicode_key" character varying GENERATED ALWAYS AS (payload_json ->> '雪'::text) STORED,
+  "escaped_text" character varying GENERATED ALWAYS AS (payload_json ->> 'escaped'::text) STORED,
+  "boolean_text" character varying GENERATED ALWAYS AS (payload_json ->> 'truth'::text) STORED,
+  "number_text" character varying GENERATED ALWAYS AS (payload_json ->> 'count'::text) STORED,
+  "missing_text" character varying GENERATED ALWAYS AS (payload_json ->> 'missing'::text) STORED,
+  "wrong_selector_text" character varying GENERATED ALWAYS AS (payload_json ->> 0) STORED,
+  "text_selector_array" character varying GENERATED ALWAYS AS (payload_json -> 'names'::text ->> 'missing'::text) STORED,
+  "empty_negative_index" character varying GENERATED ALWAYS AS (payload_json -> 'empty'::text ->> -1) STORED,
+  "scalar_descent" character varying GENERATED ALWAYS AS (payload_json -> 'scalar'::text ->> 'child'::text) STORED,
+  "json_nested_text" character varying GENERATED ALWAYS AS (payload_json ->> 'nested'::text) STORED,
+  "jsonb_nested_text" character varying GENERATED ALWAYS AS (payload_jsonb ->> 'nested'::text) STORED
+);
+CREATE TABLE IF NOT EXISTS "required_documents" (
+  "id" bigserial PRIMARY KEY,
+  "payload_json" json,
+  "required_model" character varying GENERATED ALWAYS AS (payload_json ->> 'model'::text) STORED NOT NULL
+);
+ROUNDHOUSE_POSTGRES_JSON_EXTRACTION_DDL_END
+ROUNDHOUSE_POSTGRES_JSON_EXTRACTION_ORACLE_SQL_BEGIN
+-- Apply this after the actual emitted DDL captured from
+-- `postgres_json_extraction_ddl_oracle_fixture_emits_marked_sql`.
+-- The PostgreSQL runner wraps this oracle with a completion sentinel and uses
+-- a disposable database; the caller wraps execution in a transaction and rolls back all test rows.
+
+TRUNCATE TABLE "documents" RESTART IDENTITY;
+TRUNCATE TABLE "required_documents" RESTART IDENTITY;
+
+INSERT INTO "documents" (case_name, payload_json, payload_jsonb) VALUES
+(
+  'full',
+  $json${"model":"Ada \"Q\" \\ path 雪","issue":["Outage","retry"],"items":[{"label":"first"}],"names":["first","last"],"0":"zero-key","customer's name":"apostrophe-key","雪":"unicode-key","escaped":"quote \"double\" and slash \\ 雪","truth":true,"count":42,"nested":{ "b" : 1, "a" : 2, "b" : 3 },"empty":[],"scalar":"text","nil":null}$json$::json,
+  $json${"model":"Ada \"Q\" \\ path 雪","issue":["Outage","retry"],"items":[{"label":"first"}],"names":["first","last"],"0":"zero-key","customer's name":"apostrophe-key","雪":"unicode-key","escaped":"quote \"double\" and slash \\ 雪","truth":true,"count":42,"nested":{ "b" : 1, "a" : 2, "b" : 3 },"empty":[],"scalar":"text","nil":null}$json$::jsonb
+),
+(
+  'sql_null',
+  NULL,
+  NULL
+),
+(
+  'json_null',
+  'null'::json,
+  'null'::jsonb
+),
+(
+  'wrong_shape',
+  '{"model":[],"items":{"label":"not-an-array"},"names":[],"empty":[],"scalar":false}'::json,
+  '{"model":[],"items":{"label":"not-an-array"},"names":[],"empty":[],"scalar":false}'::jsonb
+),
+(
+  'missing',
+  '{}'::json,
+  '{}'::jsonb
+),
+(
+  'index_shape',
+  '{"items":[{"label":"only"}],"names":[]}'::json,
+  '{"items":[{"label":"only"}],"names":[]}'::jsonb
+);
+
+DO $roundhouse_json_oracle$
+DECLARE
+  full_id bigint;
+  required_id bigint;
+  before_count bigint;
+BEGIN
+  IF (SELECT count(DISTINCT case_name) FROM "documents") IS DISTINCT FROM 6 THEN
+    RAISE EXCEPTION 'oracle fixture rows are missing or duplicated';
+  END IF;
+  SELECT id INTO STRICT full_id
+    FROM "documents"
+    WHERE case_name = 'full';
+
+  IF (SELECT model_json FROM "documents" WHERE id = full_id)
+       IS DISTINCT FROM $expected$Ada "Q" \ path 雪$expected$ THEN
+    RAISE EXCEPTION 'json string extraction must decode escaped quotes, backslashes, and Unicode';
+  END IF;
+  IF (SELECT model_jsonb FROM "documents" WHERE id = full_id)
+       IS DISTINCT FROM $expected$Ada "Q" \ path 雪$expected$ THEN
+    RAISE EXCEPTION 'jsonb string extraction must match json scalar text';
+  END IF;
+  IF (SELECT issue_first FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'Outage' THEN
+    RAISE EXCEPTION 'nested -> followed by positive ->> index mismatch';
+  END IF;
+  IF (SELECT issue_last_jsonb FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'retry' THEN
+    RAISE EXCEPTION 'jsonb nested extraction with negative index mismatch';
+  END IF;
+  IF (SELECT item_label FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'first' THEN
+    RAISE EXCEPTION 'object/array/object extraction chain mismatch';
+  END IF;
+  IF (SELECT names_first FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'first' THEN
+    RAISE EXCEPTION 'positive array index mismatch';
+  END IF;
+  IF (SELECT names_last FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'last' THEN
+    RAISE EXCEPTION 'negative array index mismatch';
+  END IF;
+  IF (SELECT names_min_index_json FROM "documents" WHERE id = full_id) IS NOT NULL
+     OR (SELECT names_min_index_jsonb FROM "documents" WHERE id = full_id) IS NOT NULL THEN
+    RAISE EXCEPTION 'minimum signed int4 array index should be accepted and yield SQL NULL out of range';
+  END IF;
+  IF (SELECT zero_key FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'zero-key' THEN
+    RAISE EXCEPTION 'quoted numeric object key mismatch';
+  END IF;
+  IF (SELECT zero_index FROM "documents" WHERE id = full_id) IS NOT NULL THEN
+    RAISE EXCEPTION 'integer selector against an object must return SQL NULL';
+  END IF;
+  IF (SELECT array_text_key FROM "documents" WHERE id = full_id) IS NOT NULL THEN
+    RAISE EXCEPTION 'text selector against an array must return SQL NULL';
+  END IF;
+  IF (SELECT customer_key FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'apostrophe-key' THEN
+    RAISE EXCEPTION 'doubled SQL quote key mismatch';
+  END IF;
+  IF (SELECT unicode_key FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'unicode-key' THEN
+    RAISE EXCEPTION 'Unicode key mismatch';
+  END IF;
+  IF (SELECT escaped_text FROM "documents" WHERE id = full_id)
+       IS DISTINCT FROM $expected$quote "double" and slash \ 雪$expected$ THEN
+    RAISE EXCEPTION 'escaped JSON string did not produce decoded text';
+  END IF;
+  IF (SELECT boolean_text FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'true' THEN
+    RAISE EXCEPTION 'boolean JSON scalar must extract as lowercase text';
+  END IF;
+  IF (SELECT number_text FROM "documents" WHERE id = full_id) IS DISTINCT FROM '42' THEN
+    RAISE EXCEPTION 'numeric JSON scalar must extract as text';
+  END IF;
+  IF (SELECT json_nested_text FROM "documents" WHERE id = full_id)
+       IS DISTINCT FROM '{ "b" : 1, "a" : 2, "b" : 3 }' THEN
+    RAISE EXCEPTION 'json ->> object must retain whitespace and duplicate keys';
+  END IF;
+  IF (SELECT jsonb_nested_text FROM "documents" WHERE id = full_id)
+       IS DISTINCT FROM '{"a": 2, "b": 3}' THEN
+    RAISE EXCEPTION 'jsonb ->> object must normalize whitespace and duplicate keys';
+  END IF;
+  IF (SELECT pg_typeof(payload_json)::text FROM "documents" WHERE id = full_id)
+       IS DISTINCT FROM 'json'
+     OR (SELECT pg_typeof(payload_jsonb)::text FROM "documents" WHERE id = full_id)
+       IS DISTINCT FROM 'jsonb' THEN
+    RAISE EXCEPTION 'source json/jsonb types were not preserved by emitted DDL';
+  END IF;
+
+  IF (SELECT payload_json -> 'nil'::text IS NULL FROM "documents" WHERE id = full_id) THEN
+    RAISE EXCEPTION '-> on a found JSON null must return a JSON value, not SQL NULL';
+  END IF;
+  IF (SELECT (payload_json -> 'nil'::text)::text FROM "documents" WHERE id = full_id)
+       IS DISTINCT FROM 'null' THEN
+    RAISE EXCEPTION '-> must preserve a found JSON null';
+  END IF;
+  IF (SELECT payload_json ->> 'nil'::text FROM "documents" WHERE id = full_id) IS NOT NULL THEN
+    RAISE EXCEPTION '->> on JSON null must return SQL NULL';
+  END IF;
+  IF (SELECT payload_json ->> 'missing'::text FROM "documents" WHERE id = full_id) IS NOT NULL THEN
+    RAISE EXCEPTION 'missing JSON key must return SQL NULL';
+  END IF;
+  IF (SELECT (payload_jsonb -> 'nil'::text)::text FROM "documents" WHERE id = full_id)
+       IS DISTINCT FROM 'null' THEN
+    RAISE EXCEPTION 'jsonb -> must preserve a found JSON null';
+  END IF;
+  IF (SELECT payload_jsonb ->> 'nil'::text FROM "documents" WHERE id = full_id) IS NOT NULL THEN
+    RAISE EXCEPTION 'jsonb ->> on JSON null must return SQL NULL';
+  END IF;
+
+  IF (SELECT missing_text FROM "documents" WHERE case_name = 'sql_null') IS NOT NULL
+     OR (SELECT issue_first FROM "documents" WHERE case_name = 'sql_null') IS NOT NULL THEN
+    RAISE EXCEPTION 'SQL NULL source must propagate SQL NULL';
+  END IF;
+  IF (SELECT payload_json IS NULL FROM "documents" WHERE case_name = 'json_null') THEN
+    RAISE EXCEPTION 'JSON null source must remain distinct from SQL NULL';
+  END IF;
+  IF (SELECT model_json FROM "documents" WHERE case_name = 'json_null') IS NOT NULL THEN
+    RAISE EXCEPTION 'extraction from JSON null must return SQL NULL';
+  END IF;
+  IF (SELECT missing_text FROM "documents" WHERE case_name = 'missing') IS NOT NULL
+     OR (SELECT zero_index FROM "documents" WHERE case_name = 'missing') IS NOT NULL THEN
+    RAISE EXCEPTION 'missing keys and out-of-shape index access must return SQL NULL';
+  END IF;
+  IF (SELECT item_label FROM "documents" WHERE case_name = 'wrong_shape') IS NOT NULL
+     OR (SELECT names_last FROM "documents" WHERE case_name = 'wrong_shape') IS NOT NULL
+     OR (SELECT text_selector_array FROM "documents" WHERE case_name = 'wrong_shape') IS NOT NULL
+     OR (SELECT empty_negative_index FROM "documents" WHERE case_name = 'wrong_shape') IS NOT NULL
+     OR (SELECT scalar_descent FROM "documents" WHERE case_name = 'wrong_shape') IS NOT NULL THEN
+    RAISE EXCEPTION 'wrong structure, empty negative index, and scalar descent must return SQL NULL';
+  END IF;
+  IF (SELECT names_last FROM "documents" WHERE case_name = 'index_shape') IS NOT NULL THEN
+    RAISE EXCEPTION 'negative index on an empty array must return SQL NULL';
+  END IF;
+
+  UPDATE "documents"
+     SET payload_json = '{"model":"Updated","issue":["Changed"],"items":[{"label":"updated-item"}],"names":["new-first","new-last"]}'::json,
+         payload_jsonb = '{"model":"Updated","issue":["Changed"],"items":[{"label":"updated-item"}],"names":["new-first","new-last"]}'::jsonb
+   WHERE id = full_id;
+  IF (SELECT model_json FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'Updated'
+     OR (SELECT issue_first FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'Changed'
+     OR (SELECT item_label FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'updated-item'
+     OR (SELECT names_last FROM "documents" WHERE id = full_id) IS DISTINCT FROM 'new-last' THEN
+    RAISE EXCEPTION 'stored extraction columns did not recompute after UPDATE';
+  END IF;
+
+  INSERT INTO "required_documents" (payload_json)
+    VALUES ('{"model":"kept"}'::json)
+    RETURNING id INTO STRICT required_id;
+  IF (SELECT required_model FROM "required_documents" WHERE id = required_id)
+       IS DISTINCT FROM 'kept' THEN
+    RAISE EXCEPTION 'emitted NOT NULL generated column did not store its value';
+  END IF;
+
+  SELECT count(*) INTO before_count FROM "required_documents";
+  BEGIN
+    INSERT INTO "required_documents" (payload_json) VALUES ('{}'::json);
+    RAISE EXCEPTION 'NOT NULL generated output unexpectedly accepted a missing key';
+  EXCEPTION WHEN not_null_violation THEN
+    NULL;
+  END;
+  IF (SELECT count(*) FROM "required_documents") IS DISTINCT FROM before_count THEN
+    RAISE EXCEPTION 'failed NOT NULL insert persisted a row';
+  END IF;
+
+  BEGIN
+    UPDATE "required_documents" SET payload_json = '{}'::json WHERE id = required_id;
+    RAISE EXCEPTION 'NOT NULL generated output unexpectedly accepted a missing key on UPDATE';
+  EXCEPTION WHEN not_null_violation THEN
+    NULL;
+  END;
+  IF (SELECT required_model FROM "required_documents" WHERE id = required_id)
+       IS DISTINCT FROM 'kept'
+     OR (SELECT payload_json ->> 'model'::text FROM "required_documents" WHERE id = required_id)
+       IS DISTINCT FROM 'kept' THEN
+    RAISE EXCEPTION 'failed NOT NULL UPDATE did not roll back the source row';
+  END IF;
+END;
+$roundhouse_json_oracle$;
+ROUNDHOUSE_POSTGRES_JSON_EXTRACTION_ORACLE_SQL_END
+test postgres_json_extraction_ddl_oracle_fixture_emits_marked_sql ... ok
+test postgres_key_and_signed_index_selectors_obey_the_supported_int4_boundary ... ok
+test postgres_json_extraction_checks_types_provenance_and_operator_precedence ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/postgres_json_types.rs (/work/app/build/cargo-target/debug/deps/postgres_json_types-8ee278cfd9f8e33e)
+
+running 5 tests
+BEGIN_JSON_TYPES_POSTGRES_DDL
+CREATE TABLE IF NOT EXISTS "documents" (
+  "id" bigserial PRIMARY KEY,
+  "payload_json" json,
+  "payload_jsonb" jsonb
+);
+END_JSON_TYPES_POSTGRES_DDL
+
+thread 'json_and_jsonb_runtime_accessors_still_use_the_shared_text_json_boundary' (62642077) panicked at src/fixtures.rs:32:5:
+fixtures/real-blog is absent — it is generated, not checked in. From the repository root run:
+
+    bin/rh fixture   # ~60s; needs Ruby and `gem install rails`
+
+(see DEVELOPMENT.md, "Fixtures")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test migration_add_and_change_column_keep_json_and_jsonb_distinct ... ok
+test postgres_ddl_distinguishes_json_and_jsonb_while_sqlite_keeps_text_storage ... ok
+test structure_sql_preserves_json_and_jsonb_source_types ... ok
+test schema_rb_and_serde_preserve_json_and_jsonb_as_distinct_types ... ok
+test json_and_jsonb_runtime_accessors_still_use_the_shared_text_json_boundary ... FAILED
+
+failures:
+
+failures:
+    json_and_jsonb_runtime_accessors_still_use_the_shared_text_json_boundary
+
+test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--test postgres_json_types`

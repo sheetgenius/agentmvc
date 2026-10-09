@@ -1,0 +1,39 @@
+{
+  "python": "3.9 for python3 commands; package .venv for unit tests",
+  "checks": [
+    {
+      "name": "py-compile",
+      "command": "PYTHONPYCACHEPREFIX=<workspace>/build/python-cache python3 -m py_compile tools/*.py",
+      "exit": 0,
+      "log": "py-compile.log"
+    },
+    {
+      "name": "scrub",
+      "command": ".venv/bin/python -m unittest tools.test_scrub",
+      "exit": 0,
+      "passed_tests": 3,
+      "log": "scrub.log"
+    },
+    {
+      "name": "clojure-and-brief",
+      "command": "(cd tools && ../.venv/bin/python -m unittest test_clojure_artifacts test_clojure_lane test_brief_check)",
+      "exit": 0,
+      "passed_tests": 28,
+      "log": "clojure-and-brief.log"
+    },
+    {
+      "name": "brief-check",
+      "command": "python3 tools/brief_check.py briefs/seeds/*.md",
+      "exit": 0,
+      "log": "brief-check.log"
+    }
+  ],
+  "cohort_index": {
+    "command": "python3 tools/cohort_index.py --check",
+    "exit": 0,
+    "log": "cohort-index.log",
+    "regenerated": true
+  },
+  "initial_environment_issue": "Python 3.9 initially tried a system-configured cache outside the writable sandbox; the unchanged check passes with a workspace cache prefix.",
+  "rerun_at": "2026-10-09T18:18Z"
+}

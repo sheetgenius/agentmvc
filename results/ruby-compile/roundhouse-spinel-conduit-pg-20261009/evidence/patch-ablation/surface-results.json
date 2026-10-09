@@ -1,0 +1,40 @@
+[
+  {
+    "patch": "no50-selection",
+    "condition": "diagnostic-group-ablation-20261009",
+    "exit": 1,
+    "removed": [
+      "PostgreSQL backend selection during project emission"
+    ],
+    "accepted_patch_manifest_sha256": "2fce0ce9ff067966d7295f71206b6d7b3592da558b663352ed785fca93aa1777",
+    "trial_patch_manifest_sha256": "6fa9027d4f27e9e7cc6d555b7ad5676c910f979edd7c240b686bcd1cf11ab2a2",
+    "combined_patch_sha256": "a7e084b3f09cfcd5e80c5c5fb31c4c4466a1b998b1335aa8cdbe36ae38598d55",
+    "toolchain_tag": "conduit-v8b-toolchain:no50-selection-6fa9027d",
+    "log": "ablation-no50-selection.log"
+  },
+  {
+    "patch": "no60-independent",
+    "condition": "diagnostic-group-ablation-20261009",
+    "exit": 1,
+    "removed": [
+      "runtime/ruby/active_record/relation.rb",
+      "runtime/ruby/active_record/relation.rbs",
+      "src/ingest/model.rs",
+      "src/lower/assoc_attr_key.rs",
+      "src/lower/first_or_create.rs",
+      "src/lower/model_to_library/schema.rs",
+      "src/lower/model_to_library/validations.rs",
+      "src/lower/scope_chain.rs",
+      "src/project.rs",
+      "tests/assoc_class_method_scope.rs",
+      "tests/rails_surface.rs",
+      "tests/relation_class_method_scope.rs",
+      "tests/scope_body_left_joins.rs"
+    ],
+    "accepted_patch_manifest_sha256": "2fce0ce9ff067966d7295f71206b6d7b3592da558b663352ed785fca93aa1777",
+    "trial_patch_manifest_sha256": "be4867701679a1192575f1d84dd155507d4cd39f744c4c477431ebbaca5107b2",
+    "combined_patch_sha256": "27e2d6c279b71171b19aa75c9cd62c4edc04d4d0fbff288a3d4205432fb8430d",
+    "toolchain_tag": "conduit-v8b-toolchain:no60-independent-be486770",
+    "log": "ablation-no60-independent.log"
+  }
+]

@@ -1,0 +1,969 @@
+f85f04b3abef4b0540406948c56db7a51a420122 Merge PR #8198: docs: correct metaprogramming and defined? limitations
+98ddcbc1f058c1bab3531bc5186b1e29f65d81ff Merge PR #8196: ENV read copies are frozen, embedded NULs raise, and ENV[k] op= compiles
+824d874b9e7bf6d619ecfeb372a46cd8be0dade3 Merge PR #8195: ENV results preserve shared String identity without rejecting fresh values
+61b4d835ccec3ebb11808866cecf0d52a203b02b Merge PR #8194: Bind a parenthesized operand in order like a call
+41a5ac613e5e8c11ef814f69a5a6aa2d786c90a3 docs: correct metaprogramming and defined? limitations
+9e48ceb33f25c49c836350050ba5f0f26a6461dc An Array literal's to_h types the hash from every pair
+b791081037be4543d6eb124724fcc7615d0d65e3 Merge PR #8197: A nil step limit means no end, strip takes CRuby's selector sets, and a keyword hash to a case mapping is an invalid option
+cc7614ffb8039b1db9a54df64e0918c4bcd2ed8b Merge PR #8193: Dir.glob takes base: and answers paths relative to it
+0b18a73182529bef59c2fc36ccd3cbcd7d7c7c39 Merge PR #8192: Time.iso8601, xmlschema, httpdate, rfc2822 and rfc822 are refused at compile time
+857cced5f35f8b4c6269520b6d8ee874ef9d24b7 Merge PR #8191: File has the NOFOLLOW, NOCTTY, SYNC and DSYNC open flags
+27a33423a2cf3f852ec9ce2a233dcc4ee051cddc Merge PR #8190: A user index, rindex or find_index that takes keywords compiles on a receiver of more than one type
+0df3004c02bc4286eb4ccfe835645840add3b142 Merge PR #8189: A boxed Mutex answers lock, unlock, try_lock, locked? and owned?
+6d00a6e40cc3f75dcafc5065dcde3a45fea38d2f Merge PR #8188: IO#winsize= sets the terminal size on a boxed IO
+e54df336213a65a9d37d43542f5a18985ca67ff8 Merge PR #8186: Sums preserve block values and promoted Range totals
+6965b0b7757573d47f248ce275d98972fcedc092 Merge PR #8185: Shared String copies stay in place beside rebound or handle-passed operands
+df4e14737218476a2ce0a8fd7c0bb832e00b0a25 decisions-test names the nil_narrowing read by its line after the share header
+40d9b2677ad5620891acd608885fde9a0ffcbac8 A name the CRuby observations do not list keeps the family's pure default
+4f81049eaa2f8c0dd4a10c36b93ad6fb09ed9fb8 Dir's listing is a fresh String Array to the sharing check
+d6b3f4c6df1ca6465bf9e6bc505bce5300a97de0 A line iterator's block parameter held as a shared handle is declared as one
+21025a460e44d8d32decfa1a5966d29503c5e056 A gsub block parameter held as a shared handle takes a fresh String of the match
+7f7194a9c6175bcbf18cb173d960dc7a4868e9a4 Merge PR #8160: Builtin String-flow metadata is checked against CRuby identity observations
+893fce1e35580bc9944d7b572cddd72c418ea990 $! in an ensure is the exception unwinding through it
+7f8f225d6c1d5d6439b347437419d722f6f2628b An ensure runs when the exception leaves through the rescue clauses
+28baa4a6b0649773a3b52923c736f6448bae6da3 A nil step limit means no end, strip takes CRuby's selector sets, and a keyword hash to a case mapping is an invalid option
+3d59851f323564d779e3d452e516378d86edfdda Bind a parenthesized operand in order like a call
+d8c37c96e7183816a9f415530c487fa07750e01f A user index, rindex or find_index that takes keywords compiles on a receiver of more than one type
+7ca21c81df9576168a84629e8ca7f64b23ebd275 ENV[k] op=, ||= and &&= read, combine and store the variable
+6aa85231d401a1937ad85fa54ad6a417c4bd3215 Shared String copies stay in place beside rebound or handle-passed operands
+c5a9f54b9668654dfd08a067a6d9b435c1d21031 ENV names and values with an embedded NUL raise CRuby's ArgumentError
+7232a8021458c1a7362aae6da89ef29b977d5a21 Merge PR #8183: docs: Pathname() without its require is a NoMethodError
+e702f0127cdb36f63c35683912ecdc725c56fcf2 Merge PR #8181: Root a boxed receiver's splice value across its index operands
+31440aebeade3d110f7b306c4468d0ef2a650b6d Merge PR #8180: A block whose value is a call to a method that never returns or answers nothing yields the slot's nil instead of a void
+d8805e245ca140ee25ccaa9efb1a14a16643e910 Merge PR #8179: BER unpacking preserves arbitrary-size Integer values
+a304b10c59c51d8e887e2a46af7a686886074ba8 Merge PR #8178: Builtin singleton calls preserve valued breaks from their blocks
+ec5e5b2ad518bdce5c500fd7926c229975efd66d Merge PR #8175: A program that makes more than 8,192 Symbols at run time keeps them apart
+e30fe67b3199f337a4e903ce38e6bb9d2e06760b File has the NOFOLLOW, NOCTTY, SYNC and DSYNC open flags
+d4d4a367814b7491ad439ba5ae1102c2adeaa1bf The share-verify tool test starts its Ruby processes without gems
+d4ac8291ad7a3f1444861a4d5839f9235a6e49d2 Sums preserve block values and promoted Range totals
+a297d169eed5972bf22d8c404ca93cb682781ce4 ENV read copies are frozen and delete blocks retain their result types
+e0a5777f597a01263caac066de758d2eeb0b1d91 ENV results preserve shared String identity without rejecting fresh values
+f74d4809d8aab4f88177a607cf16b9fe4be90ff8 docs: Pathname() without its require is a NoMethodError
+03a7d03ec9c77c56fb2cb34de628d77a624481cf Root a boxed receiver's splice value across its index operands
+cd6f6a5b126d41a885324ccff491df31df51b688 A block whose value is a call to a method that never returns or answers nothing yields the slot's nil instead of a void
+fe90eee7f3a73f12483aa2e80b659ff21bd33560 Merge PR #8164: A method added to a builtin is not called on nil after &.
+40493cabb21ecdc9e59646e609c5375292223601 Merge PR #8158: String sharing checks compare return-channel facts with emitted paths
+8b53f5376a00ba749628540b272fa9525d69374b Merge PR #8152: Refuse a kept result of the String mutators that answer self without a bang
+35f5cc9351b022b5c3b8eb6fa4c37a51bf3cafe8 BER unpacking preserves arbitrary-size Integer values
+8163e8d20bfe57bea3c8c1fa89b1cb874e3f9f02 Builtin singleton calls preserve valued breaks from their blocks
+a3892bb0036656805b51316ea5c205d0cdf6b2d0 Merge PR #8177: pathname: add Kernel#Pathname()
+5d41601d0e949f87da8c1c0467d02aa8c675333e Merge PR #8176: Rewrite an autoload whose path is "#{__dir__}/x" as a require_relative
+87fed5a8c4821c15b5260021f997a3780f7f241b Merge PR #8168: A method added to a builtin runs its receiver before its arguments
+caf18b06777cae62b67f8710a4bb0567656e7229 A copy of a shared String is not taken for equal? or a poly dispatch
+1a1a74daa605636d7f133ede273cea12ed0a9b43 Merge PR #8157: A shared String's copy beside an allocating operand is rooted until its call
+96a1977a645c04e463e207575620c2a6517aafea String partitions reject nil and callable then blocks are refused
+77df96fce010f1f0a3f48574c95292f97d836248 A program that makes more than 8,192 Symbols at run time keeps them apart
+f1a045ee40c0bd052deff1042b2daf30d6dd7947 Merge PR #8174: Splatted Array fill arguments retain the fill object
+151efe72c00fd6ea8ce7c1dd48832c54e8cc25b0 Merge PR #8173: A splatted Hash default retains the expanded argument
+afb6b0faad67d101b571e12cec1d9086df12001b Merge PR #8172: Temporary map results carry their shared block values
+efe0aa5dbe9c28fdc12f9d0148e5c3d945050b74 Merge PR #8171: Nested Array pattern bindings retain their boxed element type
+81854b593f3be39bdbc5b9925d0153e511546346 Merge PR #8170: Multiple break values travel together through the loop result
+68892a8bb141287ff32591d1390136e8124a94e1 Merge PR #8169: Shallow Array copies retain their source element sharing facts
+27cd23d1db55bd0eb35a39d9bcaa91757b78eb69 Merge PR #8167: Kernel Array keeps shared String elements in boxed slots
+8847daefe1fae3db5d9a4a9a6c2605efa2bac503 Merge PR #8166: A Hash default setter returns the String handle it stores
+ed19f5d27e352fbfc0827e2c108146de1c5c2f31 Merge PR #8165: Builtin String value routes publish their handles at method returns
+5dfb62e959558b5f090d336dfe54ed3e8a66792d Merge PR #8163: A raise or throw passed as an argument runs the arguments before it and leaves the call, and a String's between? or clamp with a non-String bound raises CRuby's comparison error
+6ecd1d68792da033199cf511c808675085eaa630 Merge PR #8162: The shared-String known-failure list is empty
+a7a683964181d717fb9f5f6c47fcb96f00d853a6 Merge PR #8161: Array pack uses Ruby's argument counts and preserves large BER integers
+9b6bdf4d81fa848872c2a9df3cddc8ead1a30da9 Merge PR #8159: String return boundaries retain shared handles
+a9f3e6ea5bc3ccfe694a65af2e7606ac99df5a17 Merge PR #8156: Array sums preserve seed classes and native numeric loops
+17a50992354dab2b6f5dc8932bde08f4f13ca850 Merge PR #8155: User singleton overrides take precedence over builtin class methods
+4779b43979cb33ac0b6b36809957bc3034ae15c4 Merge PR #8154: The returned-argument route asks a call stored into an Array or a Hash
+5cfef1de94ee9ea5b56ce3efffe716d4a9eb8b91 Merge PR #8153: A boxed receiver's respond_to? answers its real builtin surface, not a stale subset
+59263630b5e739a5454d326ba98c857485ad3120 Merge PR #8151: The walk over an ivar's stored values finds the calls on it off the site index
+bdfeb63c2fc65d2e3da9b21a3af42aa2cfe973ae Merge PR #8150: An exception an ensure body dropped is not a later raise's cause
+e38bc84d62b5616d54de7160e5240e3bfc689557 Merge PR #8149: Whether a to_a result is mutated finds its local writes off an index
+79c3ec15dbd47a030ba9c564ce00ecb8978d152a Merge PR #8148: merge! and update take a Symbol-keyed Hash that is not a literal
+a0a95decedc19fe5a29998b8130b0d893c83add2 Merge PR #8147: A user object without #to_str as a boxed split or partition pattern says "expected Regexp" too
+0dd698427738950e78fcb845b20007d1122bb453 Sharing verification runs its own deduplicated corpus once
+f5c2f7db7eac1b40aee10c5ec810c95054b3becc Dir.glob takes base: and answers paths relative to it
+0e1e8d3134da95198da75bf37f445a2ba909ec8b A method added to a builtin runs its receiver before its arguments
+1d1b2c60581d46c6cddd942589e89671c2287034 A user Exception subclass with its own methods reaches the subclass-gated respond_to? accessors
+ce90b6dae73b811c2963264c71f737142c7ad8b1 Array sums preserve seed classes and linear concatenation paths
+31bc4017ffbdde7a12363748e200d33c75d95c27 A method added to a builtin is not called on nil after &.
+0a79d21114bfe596b437802fade0b15ef9fb1256 Splatted Array fill arguments retain the fill object
+49ebb55c084b1898ef272c5dc12d27daf60e70c5 A raise or throw passed as an argument runs the arguments before it and leaves the call, and a String's between? or clamp with a non-String bound raises CRuby's comparison error
+79d5d805914a63eb238651618f39e2951ebe6937 A boxed Mutex answers lock, unlock, try_lock, locked? and owned?
+4abb8df1e0eda42e373d1ed92805ebfdf98f26fd A splatted Hash default retains the expanded argument
+a4564dc939defa4c0ae37b9c43f4d7f65abf1817 Kernel Array keeps shared String elements in boxed slots
+4ae1d0c698bf53dab43d04da1b16f0579e607702 A Hash default setter returns the String handle it stores
+08388b2fd7ea41d3796acfcbcbc75a7ad0084703 Builtin String value routes publish their handles at method returns
+2894af4fc475dec3e0717e22a7d16d51d7f9c902 The returned-argument route asks a call stored into an Array or a Hash
+c2234a444cae3b8b978f7d064b443d58673fb676 Array pack preserves the full integer magnitude in BER output
+1b5278a6391d802a56ed10b0d0d8372a5e0c9915 Array pack raises when a consuming directive has no argument
+0cdc88dd39d434349b60933d3a3f01ed08a1dbac Array pack cursor stars count zero without consuming elements
+4513628b547886d1ea08895992e3a21e2061bcb9 Temporary map results carry their shared block values
+2235ee01e9f79bd79b3114a8d4179eff7a7088b9 Nested Array pattern bindings retain their boxed element type
+5108ebf3b07a57358a5d2a99aeb7f1d32add0ff5 Multiple break values travel together through the loop result
+685f0b39f15e3e9f5eeff81f31d53147289e9c76 Shallow Array copies retain their source element sharing facts
+be83a8681fe21ee6149dc8f5279b526d4fc042aa respond-to-audit passes --ref and skips gracefully without ruby, and guards a missing FAMILIES sample
+20ba713b865b521dad2b73c3f85e2bcdc266e6f5 zip reads a Range argument only as far as its receiver reaches
+f24734338e1b1bee2121688d6603e63a427d7d15 ruby/spec language manifest: four rows pass
+a2007013d445d6f2e5e0b94948d89289d97e6ac6 defined?(P::n) is nil when only a top-level n exists
+6697b6eb9f042be8e7546bd2782148e6e00e0797 Refuse a kept result of the String mutators that answer self without a bang
+d779fc7f4f7fb377dbf1c912ebb6f8678f2385c7 A class body's locals are its own, not the top level's
+0ad0074b413a418256ff24931fe701c155222cd6 The shared-String known-failure list is empty
+11842b3498297ed79f28cdc01f4ecf5558ae9831 Super to inherited builtin singleton methods is refused
+49eb22cf94bfd5a065a08c424bd21e92d07522cb A boxed Exception's per-subclass accessors answer by walking its real ancestor chain
+0870abedd37792724f700b0bc7fc749405fc5c52 User singleton overrides take precedence over builtin class methods
+8015fad14c73a8f4187486ba2a87534b6a250675 ruby/spec manifests measured with inlined fixtures
+92d09dcf58ee340034a41fa5c023cce470a49cdd An exception an ensure body dropped is not a later raise's cause
+67df1960fe21e3fd20d19473128186f3e2331baf The walk over an ivar's stored values finds the calls on it off the site index
+0b93d8f7eec862873bc9bd7a097e44dbe81250c4 A bare constant no scope reaches raises NameError when it runs
+c92cbd53d9be62126c01305c6a6bae62773de800 Drop format from String's table: it is Kernel's, not String's
+50e0852684201b71facd2e62ec0545c947dd0509 Time.iso8601, xmlschema, httpdate, rfc2822 and rfc822 are refused at compile time
+664e3817439d3282b0e4cfbec0c87abfb4f0cbea merge! and update take a Symbol-keyed Hash that is not a literal
+90cdc58ffb9c669030ebd378402e476f24c0874d Merge remote-tracking branch 'upstream/master' into pattern-arg-wording-obj
+53b7591d04201e1f52de8b8d8e6e0115bb249955 Builtin identity contracts carry shared state through their supported routes
+f241cd45eed68d31aab8b528c72f029a818efb44 Builtin share rows preserve CRuby identity without pure family defaults
+4957baec1aaff47e79a3b1dc47c290e57f3883d5 Builtin String-flow rows are checked against recorded CRuby observations
+b1c298f2012bb8b5cc758650f2b2811998eb7ac6 The ruby/spec extractor inlines each example's fixtures
+1c00f31a11bd3a294a70584b781566fe3ed0b115 Rescue values retain shared Strings beside fresh return arms
+b4cf5323cac92208fe9f1d19b16b96e545292e8d Return-channel checks use settled argument freshness
+11baccb0e585263fc66be1a0e96a47e7ba0cf16c Class-value String returns retain their published handles
+d47ef2c0434433c5be7c63a65c93cccb172ed7e6 Sharing checks distinguish handle boxes from plain String boxes
+ed06ed0f0e158adf19412dc46189c99e38784e19 Iterator row checks follow the families that derive sharing facts
+dc416098972e7ff484db41d14d8f5f30ec892faf The sharing verification target ratchets compiler disagreements
+b132a84b4f34c6b97f8d67eff45f43b5365b1810 A shared String's copy beside an allocating operand is rooted until its call
+3924376308c8681e294f616dc78b6bddc30059a5 String sharing checks compare return-channel decisions with emitted paths
+c5add05c5cca3dfa1cc4e8347c2ecb30e361f1ed A boxed receiver's respond_to? answers its real builtin surface, not a stale subset
+93d861ceebf00d64af88c9cc46e4d0b52c470ba5 Whether a to_a result is mutated finds its local writes off an index
+4337d93cfc9bbff8729d4eaffaa5674db838339b Merge PR #8146: A builtin with a fixed arity given a keyword hash counts it as one more argument and raises CRuby's ArgumentError
+6ef6b81425ad71980792ee6687ea0bbf8890597d The fixpoint skips a tree-only desugar pass the tree has not moved under
+d88a3f04539f783f2f56be0848374f9268f5f0f2 SP_SHADOW_GEN: the shadow schedule of a tree-version skip for the desugar passes
+8bc73a91e2ec6b168f9663dab42fd12b48a0d981 --timing reports each fixpoint pass, the re-narrow loop and the analysis phases
+d1a23b08a0038c412f704653762ee6b1fdfa2245 IO#winsize= sets the terminal size on a boxed IO
+c841aa1952bca3c2d3f27503ec1823985988cc59 A builtin with a fixed arity given a keyword hash counts it as one more argument and raises CRuby's ArgumentError
+4428f1c2f38679173ff33eff773349843028685d A user object without #to_str as a boxed split or partition pattern says "expected Regexp" too
+978e0dea55247bc7c4f51b716721bdad8a20d187 Merge PR #8145: An Array a call returns is held while its elements are boxed
+2c1e5b2defa92b97146a84cb7ae627cb1c12ce4b A --debug backtrace frame carries the line of its call on macOS too
+2d0d67234b66d2bde24e5619daa482b99f9a1a04 The byref and block-keeping tests skip a builtin value's call too
+a56bc27498bd366752c84ea5b50b7c3e9ed311a8 `r[k] ||= v` on a boxed object with no [] raises NoMethodError
+bb2dbd653072e495693e87eff7c918495ef70392 A store on a Hash lends nothing to a class's own appending []=
+e223bfa11477e4ad439cc7a4aa5967abbd72aa4e Merge PR #8143: A converted Hash merge never drops an entry the receiver cannot hold, and a conversion method taking only optional arguments is called with its defaults
+e254f45201bfb58fd8a9b6c53e82c096e28ed2b2 Merge PR #8142: The box of a Range handed to a Proc is held while the Proc runs
+41a8b5346fbce8d828a2666d52ec77c6119475e3 Merge PR #8141: An exception raised again never takes its own effect as its cause
+700ef2d7f8a511188028ed62392e0072eb3d98ea An Array a call returns is held while its elements are boxed
+3f65e8ef50479f9feafcc286bab6b62e446aa5fd A converted Hash merge never drops an entry the receiver cannot hold, and a conversion method taking only optional arguments is called with its defaults
+781b0201187f1fc8755e530425a386606a04b235 The box of a Range handed to a Proc is held while the Proc runs
+a4c8bfbd03fbbf3f77e8a449c769bb1a273cbf24 Merge PR #8139: A begin or catch read as a value is held until its expression reads it
+5f0a5dd304d62c782c7f7b6eb3650151edf4ad3a An exception raised again never takes its own effect as its cause
+fa03e24685a8421c2523738ea1794a8564ff3ab7 Merge PR #8140: A single yield site's membership call keeps its own kind beside an unrelated reopen
+8a0808593d3b64075202d818133e0862328ba956 Merge PR #8138: The walk back to a method's callers asks only the aliases that lead to it
+cb32b4202df2b415db96b82a609b0ebee6ffe41d Merge PR #8137: A boxed values_at builds when an index needs a statement of its own
+e45ae821f8a4935378d40a01aa9c92051e9464f4 initialize_copy takes its defaults and a boxed original in every class
+2486acd7520d9160ec908fd6892d3c3b498197db An Array subclass beside a reopen of Array is supported
+a539a651ae95ffb294ef97a06c47c049c4382de2 A begin or catch read as a value is held until its expression reads it
+de66d5c812749556187f364912530f5bd4843a2b Merge PR #8136: A safe-navigation step, sample or shuffle skips its keyword splat when the receiver is nil, and a String compared with an empty Array or Hash literal raises
+5c1841cae673e474f9094e932004457467012833 Merge PR #8135: A method called only through an alias of an alias is reachable
+993c5eda9aed8465888dbee9aaa07f0f8e51ca4d A single yield site's membership call keeps its own kind beside an unrelated reopen
+1a9d6148f871d00ebf57fac2db54154ddf2dec01 A boxed values_at builds when an index needs a statement of its own
+e9d9a1c8488264cddfc43e0fc4a033f879a85ec9 The walk back to a method's callers asks only the aliases that lead to it
+c8aa08b29f4aed41eeb3e6363706bcf3c82162ea A safe-navigation step, sample or shuffle skips its keyword splat when the receiver is nil, and a String compared with an empty Array or Hash literal raises
+9c57b440b908aa70123b11decfa26c657d8629af Merge PR #8134: A bad boxed pattern for split or partition says "expected Regexp", as CRuby does
+61084e853a62b339ea7098667cfa01c387e7a91f Merge PR #8131: Array#pack appends to its keyword buffer
+30ae920a428b9c39d362c54a50e33f30dbf83504 A method called only through an alias of an alias is reachable
+961718cc9971493321fd0bfbafa6d30606499678 A subclass of Hash is a Hash, with its own methods dispatched on it
+ad3ed0c2ec8c7c602a2afce6d985fd6ee8d24f01 The runtime sets up an embedded Hash of each kind
+70de0c3fc1a41791f8755de43fce2982f42b6890 limitations: an Array subclass's initialize_copy whose parameter is not typed as the class is refused
+bdd0b7fb001a684ced9f7aca7af64f0549592b58 A block handed on as `&b` reaches fetch, update and select! as the caller's
+7565ad80d6ec487d0ebdbb9d790f5bdc3402206b Merge PR #8132: An Array repeat keeps its receiver rooted while it counts, and merge! or update converts each to_hash operand in its turn with CRuby's errors
+716721c803f02a712db32ef1ab496b606ba01dde Merge PR #8130: File and FileTest path tests keep their String arguments unshared
+3d8fc1a5ead7eab28166045f2a546c1b7c339b5b Merge PR #8129: Fresh String handles use inline payloads when sharing is enabled
+5d0c3ca523ef787d4b3a2db81027d0079c041343 Merge PR #8128: Concrete String method results box a handle in both builds
+60ea8d8f2a58e6dec35c8463446c9a4800ed15fc Merge PR #8127: Polymorphic module arms use String return publication facts
+1c72b1fac66a02ae38b9c59ef461d1baefd80811 An Array repeat keeps its receiver rooted while it counts, and merge! or update converts each to_hash operand in its turn with CRuby's errors
+004768131ce49227802931ae3591213a305a61d3 Array#pack appends to its keyword buffer
+df4a6f3c46a1ca1828d689fcec079ab3f5fd2497 File and FileTest path tests keep their String arguments unshared
+646677e21c46210fba71582ade2435db93dbe501 Fresh String handles use inline payloads when sharing is enabled
+d2e53835d3d95c5a488465d1cbbed22a6f9875dd Concrete String method results box a handle in both builds
+145dcd800463467e6ab0085ccaa28ad0c01c60b1 String assignment results stay separate from receiver elements
+bfe25122aabbed61051e6dc057201a5556309c2a A bad boxed pattern for split or partition says "expected Regexp", as CRuby does
+9f320d1dc6124dc40318dbe3bc5623e8b2087ce4 Merge PR #8126: A keyword splat reaches step, sample and shuffle through a send, a boxed each_byte takes a forwarded or computed block, and a String compared with a Hash raises
+1478d41665e85cbe84206518eb3fcb3b721a91cf A dead return slot still classifies its tail, so its callee dies with it
+897d5b9adcc4241dbef90f7427267d491b1d0653 A keyword splat reaches step, sample and shuffle through a send, a boxed each_byte takes a forwarded or computed block, and a String compared with a Hash raises
+18af056cacb6db60ac037305c136ab1ef3a3d7ad Merge PR #8125: Close a handle on WASI without /dev/null
+3b6c26ef88b73251297dbad6bf662b65d29b0b0a Close a handle on WASI without /dev/null
+5ace9bbcf7d67dd0800a533d89ff928fbc9767be Builtin argument flow preserves polymorphic String handles
+7e7dfa8ca9b0308ca8e05861d71b3c151a332440 Transient polymorphic String returns avoid unused handles
+947c00409d8e4612f69f6877b35d2d2121da013d Polymorphic module arms use String return publication facts
+8e4f8e5d603dcae7292c976d6b697b6444696a22 Merge PR #8124: A typed receiver converts an object for merge!, update, Array#* and a boxed Range index of values_at as CRuby does
+abfc6d6f8db4265c6e8b77d4f0f72519a54fbd38 A typed receiver converts an object for merge!, update, Array#* and a boxed Range index of values_at as CRuby does
+68d40ff05fd49acac6f960c736a24250ab39281c A poly-typed sub/gsub with a regexp literal boxes its String answer
+c8e33a96e986e74da1fd810c90a44d6988994e23 Merge PR #8098: The gate builds its -O1 precompiled headers before either corpus leg
+5518e5934b3a87861e211cec50f56aaa0e9df0be Merge PR #8123: Unreachable sends leave method sharing facts unchanged
+b30d6712d1a5978e09e75ace4467d687823664bc Merge PR #8122: Sharing convergence remembers the types left by its promotions
+db4c57736a1283726f52511d60b516365d260339 Unreachable sends leave method sharing facts unchanged
+d33384f7c7ff833d55f89ce6d40fdd4486cd852c Sharing convergence remembers the types left by its promotions
+7741fbfc2e9b7488b7ec50c64ae914dae6b82ee2 Merge PR #8121: Open3.capture3, capture2 and capture2e honor chdir:
+9b94a0f508301aafa9e3f0d41db0ffe6344673eb Merge PR #8120: PTY.spawn honors chdir:
+ec42dcb4ea5b54dad3d718ba52a393177bfbf730 Merge PR #8119: Process.spawn takes an environment Hash before the command
+9b4ed5015c61123a860bacb3231dbab9483f0f6a Merge PR #8117: Sharing skips target lookups that iterator rows rule out
+e9b50b354f12b9a7c79e3d97e0c5b1d94dfa96b8 Merge PR #8116: Hash, Array and String of a nil that a slot holding an object can carry answer the empty value, not the object's conversion
+9b7bece3197195052372c65b095148906cab22ca Merge PR #8113: A Hash parameter its body reassigns boxed is not narrowed back every round
+a9d844aae3ad62b4027b0d9f767b87f3d19b07c9 Merge PR #8111: Bind block parameters the same way through `&.`
+07b07b8cf4e145c0c1603d4f625d030b099b6da7 Merge PR #8110: Kernel#Hash converts a boxed value through its #to_hash with CRuby's errors, and a #to_hash alias reaches a typed merge
+f913389e78c9c572d3a2154d25657dfcab997d7f Merge PR #8109: Mixed String return paths and marked readers retain their handles
+26174bb59e64ea27014b75f55246f2a86bd20214 Merge PR #8108: A redo out of a begin or rescue clause pops its frame and its exception
+78bb031558f2a9b8a0facc8936ce152a578b70ed Merge PR #8107: A block forwarded through a send reaches each_char, each_line and each_byte on every arm and on a boxed String
+fffb1864ade8686aceb75c1ad814f763d9f4e5b4 Merge PR #8106: Keep a block call on a boxed receiver out of the class-method gate
+7aa00ac126e7d8c6a46cc863a5115b036cdc11c8 Merge PR #8104: A String or Array repeat count from a to_int object converts, and an aliased to_hash reaches a boxed merge
+6c877a9d3a4c96a4fda9c698fc29cba08af14f9f Merge PR #8103: clone(freeze:) evaluates its receiver before the freeze value, and a safe-navigation clone skips it when the receiver is nil
+120e5cc401088a84ca6176e2cc569765272f553b Merge PR #8100: Constructor element routes and captured Methods preserve shared Strings
+930bf65a850ab4f4c624969da29b789ee56f87c0 Merge PR #8099: Exception#exception keeps its message when its receiver allocates
+4cc872b079bd69d1b6f6075d7fa8d75ebe5c8faa Merge PR #8096: A class's own == is not run on a nil receiver
+66c682fd291e2cf7398608d3dcf8aa9e99e45fbc string_to_i_overflow_raises: not-cruby marker on the first line
+1d814470c7a7cf7c08ccb2ac9076fcdd7d6797bc Merge PR #8105: Shared String routes preserve identity and output
+bcaa846d0b36c7f20abe5f13d054ee2d2357e6c5 Merge PR #8118 (resolved: its gc-minor registrations are test header markers)
+78812cb8b9e9ffca4f161b82394ba45c6df0515f string_range_fresh_ends: register under gc-stress (#8114's list), not gc-minor
+d2ce4f48bb910879cadc995afec711f6e618eb88 Merge PR #8115 (resolved: its defer-refusals spec is a test header marker)
+2fc8cbd5a3f0d8624396660f6153a0ad63f0abdb Merge PR #8114 (resolved: its gc-minor registration is a test header marker)
+13ed9084d4fb8b9ff92b476b794a842f34613b3e Merge PR #8112: A nil stored where Strings are changed in place stays nil under sharing
+816ab40936d5b9b2293d99e3e5cff6e2751af653 string_to_i_overflow_raises: mark not-cruby
+e96694b61abb9b74eb03ff9bc0afe25fc19de89e Merge PR #8101: Fetch blocks unbox shared String keys into their parameter slots
+f932b158dff19c9d500f1eb260e1f5858204afe1 known-failures: two share-mode tests pass now; plus@container route refuses under --share-strings (#6765)
+072e84193034e7af189f3b7680515ee310b9ac32 Merge branch 'pr8098' into fix8097
+fff0571a52aaedd49d59ec1e33ca6f15225b6ef5 pathname: add Kernel#Pathname()
+097d542006bbe523811cb843d8e322336ff1d6b2 Rewrite an autoload whose path is "#{__dir__}/x" as a require_relative
+efc7cddd36d2a5fb7072c1fea053ae960588e78d Object ivar dispatch tracks presence and bounds setter receivers
+02939d4e5bb929d94300fec379869c820f5b2751 Sharing skips target lookups that iterator rows rule out
+1b1b1e1e789473194e517733379bffbf63d5efee Hash, Array and String of a nil that a slot holding an object can carry answer the empty value, not the object's conversion
+f5209ec82cdbdead0c0da692e6c9453838f55244 Boxed Object methods access instance variables on their receivers
+64cb54a83d0e25feffeda91b6ce25a908d636745 A local as one end of a String Range takes no slot when the other end cannot reach it
+41fed9a8053dab505839a7851f8f02ec9cd9e106 A String or Array repeat count from a to_int object converts, and an aliased to_hash reaches a boxed merge
+154032225686ad228c2b9b95640976dc61877992 Time.parse's refusal is deferred under --defer-refusals like any other
+de34895aa632824262df37f050dfcb21b68d1fc5 Bind block parameters the same way through `&.`
+3a1da64e5fca96613a0b56da68156f1ca99ead2e Fresh runtime dispatch results enter shared String containers
+4f6223f438c6e88a85082a5f06680467463e46f9 A String Range that no name holds is kept until it is read
+57d041f4d4a648cf121700f41e9a299753ae397b The two ends of a String Range made on the spot are both kept, and made in order
+c748f9d089d75b642db27c81f7595a4d72279e02 The shared-String known failures match master after the optparse and nil-store merges
+c71fc69e60e45eea82cb29d34a0f7277c7bc5d05 Kernel#Hash converts a boxed value through its #to_hash with CRuby's errors, and a #to_hash alias reaches a typed merge
+4dd52c87b393f9c4ad2057e001d8e275f53bdfd7 Mixed String return paths and marked readers retain their handles
+ac3b3e6e52ec40f97c671b2fee1563a773b10446 A redo out of a begin or rescue clause pops its frame and its exception
+319808ff3f34c5d41922db56c67d768e574d4282 Fetch block fixtures use shared Strings in the minor-GC matrix
+1635dde6f9271a32ece9bcd826b75f1a37190ef9 Merge PR #8097: Tests register their extra runs in their own headers
+faaf00fe593f15cd67690a3bcde5739f26faf674 The gate builds its -O1 precompiled headers before either corpus leg
+4d4a0a98b6788d2ef86bf99388eec46a8484752c A block forwarded through a send reaches each_char, each_line and each_byte on every arm and on a boxed String
+0ebd9e4e70df9be075304c0a29fb7d195706ae46 Open3.capture3, capture2 and capture2e honor chdir:
+4ef11458712ae072faf4f253e31e5da99516a087 Keep a block call on a boxed receiver out of the class-method gate
+084d657c8b472121844cfd76ffaf86e76e0d228b One helper opens a redo label
+0cf717aec19b4e73f165c033cba60e9604191324 Demanded String readers keep their handle representation when boxed
+cbd47ff862f5fa41c805a0ecab31572c8e0dc75c PTY.spawn honors chdir:
+8a08289450a3bc5b09c718c4eaf1b51b0af50b0a clone(freeze:) evaluates its receiver before the freeze value, and a safe-navigation clone skips it when the receiver is nil
+a9243eb60b60b77d2a7d3ad45a728c264f8c41ea Process.spawn takes an environment Hash before the command
+9468bf216bd9b0ad447dfab0b4034d1cf0922abf Fetch blocks unbox shared String keys into their parameter slots
+667030c4fb5a551ceb353dee2de8c56b234faf4c Captured Method calls retain self under String sharing
+c9c94b4c9b1a743e33c92f717b7f71e1b27ba9df Boxed shared Strings preserve their bytes when puts writes them
+c9768ac20f2274969a0d4efb26eade8cb91cab17 The shared-String known failures match current master
+25563d68b3e70c7447331a86730fef3ae0500428 Struct members keep shared Strings through clamp and reader bangs
+178c2cf451e7147811bba73385444824adc133f1 String clamp keeps the selected operand's shared handle
+d013a5c102b5745281c2fc7555cde601a9cc445c Exception#exception keeps its message when its receiver allocates
+0975be95b104b8b79dd0cd91c583e56bbe6c8f09 Tests register their extra runs in their own headers
+34e162370e222dc147a811869994930ab645fc6d Boxed block parameter reads preserve their stored String handle
+58857c4dc88d7bc634d528fa415594dd86400672 Array fill constructors preserve their argument's shared String handle
+2cac234ccf8ec4641e6895d664879fc0cd4bb2be Loop result slots retain their demanded String handle
+d2fa980bf7f3faf06832f692727288d00b7c788b String reader bangs use the existing handle value path
+c4c54b0f26b60476e6b6d7963849d50e37e00d71 Raise reads String constants as messages
+bf847f637ec3a0b5bfd40dfa5c89182b795a83df Frozen String constants retain their shared identity
+84f5b5020ef8c519ed4eeca4b7483cd6249d8062 Merge PR #8095: The strncmp answers in the FFI rooting test are compared by sign, as C defines them
+62c0d06fe1da63cb57e4404a56d2710aa88bbafa Merge PR #8093: Avoid truncating long keyword Hash merges in polymorphic dispatch
+9046cad8cc5696d2394d756fb16ca48a8af45423 Shared String routes retain encoding changes
+757c3125a314e5713d6c3436c3f519f5ba6c0ee8 Merge PR #8092: A nil stored where Strings are changed in place stays nil
+ec2182e071d6f13da2dd788f45a7331345f1c840 Merge PR #8091: Keep the nil guard on a safe-navigation attr writer
+a18c2ca3ff1d37cf283d38e410096e2cdce6ea30 Merge branch 'pr8090' into fixe
+f42a5bfd6edf1b7bf51b57eee681d809cba7ca7b Merge branch 'pr8062' into fixe
+90fc4dca08828eccb6d81443a71f4de20173ea90 String ivar shims mutate their shadow before writing back
+a02d1deb03fb2f621ad2f27e1b6254ddb94e0a94 Proc arguments keep shared String value routes
+5cfa7cc95e07b1dab8852df09c2e8ad9e5b17757 Multiple assignment keeps String handles from nonlocal holders
+f3ea7fd788e5f358e6b7f2ed14265f6416807fc0 A class's own == is not run on a nil receiver
+d3220cc3d627d2785a66ce425ac352c900e20083 Emit polymorphic Hash merge defaults without a fixed buffer
+b80924f1306d08f056b2bbe03d0bf101e2ee8129 The strncmp answers in the FFI rooting test are compared by sign, as C defines them
+25a294dbec089ecfdd6700b540b10d5150d65878 Cover an op-assign through a nullable object receiver in the safe-nav writer test
+93005d9634ca5e88f5467f81249685671af7bc14 Merge PR #8094: Marked exception message reads use their existing handle route
+80c980ae1d0ef9c245e9bad6247a4634b2d4943d Merge PR #8091: Keep the nil guard on a safe-navigation attr writer
+7ed2347a1b1e72935266e2fccebb40e26100434a Merge PR #8089: Constructor and super parameters retain their container sources
+0f49d11cefcb4dc46887946fd91d64c2c59c0ca7 Merge PR #8088: String conversions retain their handles through begin results
+6c9c5bdd23473102bae99a6cb96ba654606d9af4 Merge PR #8087: An ensure body's exception stays with its fiber
+5476e91523868726b4452655ce0ebd859a8ec207 Drop the second copy of emit_boxed_sequence
+145150570b2ff80ac70c4548af51c23c4ebd3f15 Marked exception message reads use their existing handle route
+0014599cf27cd5e03825523bce1bda0caccc7f12 Merge branch 'pr8064' into fixd
+cb6fd7101760619a2a729a5bf64d4f2e87d2a06f Shared String receivers select reopened block methods
+dc8a165139d41ce3ba2f9d80080f5f3e065bc96e A nil stored where Strings are changed in place stays nil
+82d163dc29c8ec9e08f3505d37938d7fba1e87c0 Constructor and super parameters retain their container sources
+bff0361de37c7f2fef0e19a414940d13e5defd24 Positional Hash arguments retain their original sharing sources
+70b2161ad3cc246380df4a7c86f07f8e423f85ca String conversions retain their handles through begin results
+ed9861279d67eb8d758478a16822aeaae62538bc Merge PR #8086: Enumerator::Chain.new raises for a source with no #each, and survives a failed allocation
+2dd3d329d10450860e61aead9af5fa5b75b9b276 Conditional String block values keep their shared handles
+c17ede4fc50aa65cfe1f910ecf4cf06a556449f9 Merge branch 'pr8085' into fixc
+89860d85dfee08f0be5a0389b1838a958c78b78a Merge branch 'pr8081' into fixc
+d5d5e7eb379ced818386420ba5bff0fcae32c95f A Method wrapper shift requires the target's first parameter
+cf711325e5b2f676d741b421c5ebbfd38ee885fd Merge branch 'pr8062' into fixc
+59f211f1566817e80043978b4854205f337326fc Keep the nil guard on a safe-navigation attr writer
+ad1a168d0fb0c83b9c47e9a542cb73d34e7a9a88 An ensure body's exception stays with its fiber
+eca854fb87bc2107acc53bd4384e40f085d33d5f Enumerator::Chain.new raises for a source with no #each, and survives a failed allocation
+74fa6d7c2457efe42893df20601d236e89a92df8 Merge PR #8084: A C function's String argument stays rooted beside one that allocates
+10102f025ff277b80db09c5efacccc5ce4225ba5 Merge PR #8083: A lambda's local written inside a begin keeps the write after the rescue
+5d0845cc5b21213afcfd4f7c2df2be8c1d86ab07 Merge PR #8082: push as a statement on a boxed String or Integer raises NoMethodError
+5e3f2ed58aae0e2b83604795cd140116443484b9 Merge PR #8080: A conditional a method ends in that folds to a raise is run, not unboxed
+9fcb9c1ff846e977494d3ddf59ba36fd5bcc26ec Merge PR #8064: Shared String bindings retain their handles through blocks and stored results
+7c7e6396df75e7c674997aaf8a7c9c3db7b1e41d A boxed values_at index, merge argument and String or Array repeat count convert as CRuby converts them
+ce8b4068292b9f98d1741e76beeee68c82afa9e3 Boxed Class calls of Stat fields keep their existing fallback
+02fe596ad53a560f92709704eb74369575a893e0 Class-target checks skip names without class candidates
+515c0182b7036125a63df1f7ee0e69d6a64485be Boxed Class dispatch preserves existing fallback paths
+8561a956047408740f71fed7d41c98f1654a8a2c Boxed Class calls reach user methods with builtin names
+8db3593ec7ab4c313cd9f52ec070926260c57854 Conditional String block values keep their shared handles
+b0826cb5a8fee787d64dfdde8a2c6793ce031fe7 Merge branch 'master' into refuse-routes-b
+bbce5b9d1506f1ab4f22ac91ce38229c0b50edd4 The shared-String known failures include optparse's boolean switch type
+6c2cd67357ace32f40b261454844efe6dbe3dad7 A C function's String argument stays rooted beside one that allocates
+f45975627497ee9eab8567e5d87a7c1f6a6790eb The gate checks the corpus with String sharing enabled
+2810a235d119a398e0449ed9dec3f0b6c10f3e15 Merge PR #8078: A loop that tests after its body does not guard the body's first turn
+64fdce56d06ad14371e92eaf94965ca7dce2fcc5 Merge PR #8077: sub! and gsub! answer by their own match, not by an argument's
+573c4c361e0835858b54a23d45bca40a2bd77ab9 Merge PR #8076: A String Range answered by its walk keeps its ends across the walk
+009a41c9b7fb093114af1876aa49a12a7dd59ef2 Merge PR #8075: fetch and values_at on a boxed Array refuse an index that is no Integer
+bd9ba3443207ee1a50385269acfeeb96a504b20a Merge PR #8074: A fetch block's Symbol or String-literal key is unboxed into its slot
+c387dc014161069050c96ea587bd19f828ed30d3 Merge PR #8073: A fetch block's parameter is boxed where its type is not the key's
+b597f36b63f4c90b9cc825dcb183ac182fd843ad Merge PR #8072: The class of a rescued error keeps its name
+8c7b16eb3538538765aeed82c24adffb8a8964cd Merge PR #8071: A NoMethodError holds its receiver and arguments before it lists them
+a6d77ccd2042bffd35b9b40023ce336aa60ce2aa Merge PR #8070: A return in a Hash.new default block leaves the method
+a55ef2729279cdc99f02e28517cd3dd4dc990704 Merge PR #8069: A Symbol index on a boxed String or Symbol raises TypeError
+4f9aa1f9e77b61b558ce559e1626591b92234364 Merge PR #8068: A String made in place is kept alive while it becomes a new Symbol
+9b5ef2d1e06c7db5b9d4fd32b6839d743b56a4ba Merge PR #8067: A Symbol or String index on a boxed Array raises TypeError
+516acf4587c07b9c76bd9719a64f8dcd2fb61264 Merge PR #8066: A constant's rows are read unboxed only if no other name reaches them
+91cef7292804a689d78290813ac963b899981003 Merge PR #8065: A parenthesized sequence keeps its place when its tail converts an argument
+e3f8b799a3c4dcbd614056f8f0b96916b11ed4fa Merge PR #8055: Boxed String transforms evaluate their arguments in source order
+a7ed5ebc2aefa758bccc4dd7883e84d67f945902 A Hash parameter its body reassigns boxed is not narrowed back every round
+fc01fa4365ffab6daeaff80f39ea8d404692b45d A lambda's local written inside a begin keeps the write after the rescue
+f6b2744b27d8ae97c7aa08b9ce2f60dcebce9510 Merge PR #8079: A run-time keyword splat a builtin reads still raises on unknown keys, takes nil or a to_hash object, and clone evaluates its receiver first
+9d7f45d799436c9f5a6c32c46033a8346e2407c0 A POLY String parameter aliased through a returned argument or an attr writer is lifted
+1b1b1b39ad7dd7e8fdedfd5aba754cd3726e9b4d A conditional a method ends in that folds to a raise is run, not unboxed
+7453687a476104c54aa9741c2b0fef0495a99147 Shared field readers retain their handles through boxed values and raise
+772106aeb1d82281a7f90a1f436b7947d3f0e2e0 Receiver-returning handle calls retain the receiver's nil check
+3e8808775af58abb6a112bac42eb17319be19249 Boxed String sequences retain their final value's handle
+3742352c37d91344efd77bb41b2981d58127fc5f Insert and replace results retain their shared String receiver
+f6f394790f4045adfe5cda079f8116bf4da5a05a Boxed reader calls retain their shared String fields
+af16a9e4cdedc2dcd0b87b68894ce06eedb2fbc3 optparse: TrueClass and FalseClass switches read yes, true, + and no, false, -, nil
+464ff5cad0c864e4bf5db5fab124726b205dbffb Deferred String routes recognize existing handle expressions
+7d4627693eb7a84dea3b371338da87202daa24a5 Stored block parameters carry their shared String handles
+3197526591bd2f01c1600a8a30797473ce376e6e Parenthesized argument reads keep their place before later calls
+3263c0d7394def538a761aed60cfb9cfacd21900 Boxed String transforms hold plain arguments before later calls
+deb22ad0533e00b1abc54790a377fd7aa6a7a41e GC minor checks exercise sharing fixtures with shared Strings
+d6def83bc3c1d57f991536916d7d1a4ef8d27e5a A widening made for a superclass parameter is given back when that parameter settles boxed
+8843d5b237c4cb13ebdd87f700a97d579abc1cf9 A run-time keyword splat a builtin reads still raises on unknown keys, takes nil or a to_hash object, and clone evaluates its receiver first
+1ce5d9dd54f96aed7ead0c8d7ae4670ba3184e56 A loop that tests after its body does not guard the body's first turn
+9855f1f61ff82b885ee6486d5417d69af8858070 Merge PR #8063: Shared String calls retain their receivers and output buffers
+082bc79cd760ac992033a9920ac4f17c795c1752 Merge PR #8061: Net::HTTP has PATCH and the put, patch and delete shortcuts
+dacfd934cc1f6c14a521401537cbc7033e5bd6a1 Merge PR #8058: Narrow a tail write's poly slot as a seeded return is narrowed
+2f15e68bab728f1803e13c0278e52fba0c44355d Merge PR #8057: Net::HTTP answers the response classes an API client names
+a307aee9b1754c9438c521b8f94c610a1816d8ee Merge PR #8056: exit and exit! with a boxed true or false exit 0 or 1, and a boxed String or nil raises TypeError, as CRuby does
+5c94d47bdac5f2dd1171b2e6e8a0213141d02594 Merge branch 'pr8047' into fix8047
+e8920df24afece19115d3b79ae3daf9eb4ba38bd sub! and gsub! answer by their own match, not by an argument's
+c077a772394bc50e53bcf4255b4704978ee3aeb4 Shared field readers retain their handles through boxed values and raise
+7fa8db8d684c152e8d38c74a177b368d47c14cb1 Concat snapshots retain only roots that span an allocation
+7097eca86740b65920b726d21f40a34aaf470029 Receiver-returning handle calls retain the receiver's nil check
+3051c29250c40a1ee68638bdf848a2d9472322e4 Boxed String sequences retain their final value's handle
+e79444f0e3e6ccec940ad74c1cc1e765872574b1 Insert and replace results retain their shared String receiver
+bbf20a77638ccefac597924da537c826bec9e5d7 Boxed reader calls retain their shared String fields
+06b444ee92f156444d4b5469820d11ca6a0750e4 Deferred String routes recognize existing handle expressions
+e1aeb988feab4b72e75302891e641cf58942eb33 Stored block parameters carry their shared String handles
+aee209c2555c9a4fb709a6fabb3a838a7c4c4d96 The nil read-length regression keeps its Integer representation
+181939a4f6062123039303085464e688e9e760b8 The nonblocking fill helper keeps only roots that span GC allocation
+fe00064698d81bed878f43f4fe1e8894e2361671 Nonblocking read lengths retain their nil sentinel during conversion
+b5e03c47b1e51fb4292a78a5a33f53c857d75348 Read operands survive runtime argument conversions
+fbb8f31ddede1089702b217a567296c6ed04c7b5 A read buffer rebind check compares its existing byte representation
+c3e7117436d56d82948ba3c5653e740b205ff0e1 IO output buffers clear at EOF without boxing typed read operands
+4ec071d8676a1901032d040e4dd3b3541c50c559 Net::HTTP#put, #patch and #delete send what CRuby's do
+d22fb5bcd2461ad07dc000619bd9cce351efe9a2 Nonblocking reads retain their output buffer through every result
+c1d38a3763380cf88ee384fdd63fb2e131996c52 Bound builtin Methods capture their receiver's shared String handle
+2a33db4c7174446b3b2dcaf72ef295b8092c5abf Concat captures a shared receiver before its arguments rebind it
+4b84e5e48ce40b9a17da6fd0e890ab1de412a5da Value-position concat snapshots every argument before appending
+03592ea9db6804cd9010946ad41a97ef3f4d3442 Nonlocal String arguments use their resolved sharing route
+57edecf946e2582bf4d32d802b23f8ea98687910 Add Net::HTTP::Patch
+0e008fb7a57c0f681053cc376fbaba54d5c0c9c2 A String Range answered by its walk keeps its ends across the walk
+493af81f861699792e25641e9fa92c535c4e1fca Narrow a tail write's poly slot as a seeded return is narrowed
+6211c5d1af528aa4df9a2e3b142beea50fc8f13b Net::HTTP answers the response classes an API client names
+66fdebed3abd843593e161fa527f2051a7ca4167 exit and exit! with a boxed true or false exit 0 or 1, and a boxed String or nil raises TypeError, as CRuby does
+0e8befeb3691142729ede5b9fe595173fa38833c Merge PR #8054: A net/http request carries Accept and User-Agent by default
+0ebdbbd1029f76d4eb4c296d6d3f5dac8dd17749 Merge PR #8052: PTY.spawn leaves nothing open when it fails, keeps its descriptors off 0..2, and finds the program before fork
+063cec9b87390912809397647659aca67dc26313 Merge PR #8051: Bundled optparse refuses an empty String value and reads an empty Array item as nil
+3a11b9dedf3d21efee0e57267ceefc5bf44ac29c Merge PR #8049: Fiddle blocks use the rebound receiver's function table
+4cc72fbf9b2c1a606ab204180c0d9e9f124478f6 Merge PR #8048: Net::HTTP#finish raises IOError when no session is open
+e2692e3389e41fc65a0317891c438577a28f20cc Merge PR #8046: Class-value calls keep their arms and byte reads for shared String arguments
+07749a3b797e9675cf6e4b3b099c3aacd5f03f0d fetch and values_at on a boxed Array refuse an index that is no Integer
+6165e56f3704800e069e67fd7d7abdc2eef29d45 A net/http request carries Accept and User-Agent by default
+aec700a3e995a8941694db8f298c13f57995ee64 PTY.spawn leaves nothing open when it fails, keeps its descriptors off 0..2, and finds the program before fork
+a8654475a9fafcac99cc39ab270899d78e736890 Bundled optparse refuses an empty String value
+572d226e7dd879f9f31c77f07d957393b0c8a3aa Boxed instance-variable reads omit unreachable class arms
+cfd0ec130cf1d08b74dc4f79c0ea0c372118b0c6 Net::HTTP#finish raises IOError when no session is open
+169fa99b573aaf2b143c892da188815b4d4f168c Close net/http's own sessions through a private do_finish
+319ccd42a384f695da4716e9958af4e07620e46b A fetch block's Symbol or String-literal key is unboxed into its slot
+cf45171736efa13b9951893d0f0e306d2ecf22ff The refusal snapshot includes String block self mutations
+46466ffffc73ae5dd3939ab54354574cb1857b84 Builtin dispatch reads shared String arguments as bytes
+89065afaefd636d18ee47205586c10324cec32e0 A fetch block's parameter is boxed where its type is not the key's
+ef55b82dcd1e17137b0fd7e2d758f2cc1ba38327 Merge PR #8045: Shared String containers keep their elements' handles
+8bbd5a41f038095898c7b50407ca37d02d593b09 Merge PR #8044: Shared Strings pass through builtin conversions, IO calls and Find traversal
+4365d5515888b879523d888c71672dde32af2635 Merge PR #8043: A builtin taking chomp:, offset: or freeze: reads it from a run-time keyword splat or value
+8dd693dac93dc1f6c13d5caabae0c5483a6bdc32 Merge PR #8042: when *arr with a Regexp in arr sets $~, as a when arm does
+2246577a0ceb5a22a22f484e55faac9e11b496ff Merge PR #8041: Hand back a poly slot from a typed method's tail write
+e85377a32dab26850d06260cb4d0b0469574c686 A String returned as a method's parameter is refused when the variable passed in is a parameter the caller reads again
+34a6091dcde587371586f1c570ed2a7fad7d3d2f Retained literals keep their block parameters' existing String handles
+5f417e2d453a28b23e2e0915b8b5abcb70f815b8 A builtin taking chomp:, offset: or freeze: reads it from a run-time keyword splat or value
+0b98a7ddb5e4dd10d92e03d799c0f1292d88f76a String reopenings bind blocks through callable proc forms
+395d6a7a45b8f1727e2cf555dcd35f14bf98da16 A parenthesized sequence keeps its place when its tail converts an argument
+91c8ab112d7fb71f418eff814a632f33effe1fda Class-value calls keep arms for shared String arguments
+14b3f53d51a50a4a3c0b9e50ca8ebac1c0f8dc6b Fiddle blocks use the rebound receiver's function table
+b7b574eb6fa0adf1c762df8ce7f51ff74461206e Hand back a poly slot from a typed method's tail write
+957df0eba5ea0371d805c7b678ee91153dd7e589 Merge PR #8040: The reader-copy exception holds only for String's own query methods and dup
+6824d76e931e2c1bb8c3c422e981df41cabb46d3 Merge PR #8039: Enumerator::Chain.new builds a chain, and a chain answers is_a?(Enumerator::Chain)
+6ad30836dfaf94da1a949b4cb1e25c53a2e49659 Merge PR #8038: Shared String routes preserve identity through readers, fills and calls
+0d20d2a3da00259bb13c8f5e2f0566a089035e57 Merge PR #8032: String bang overrides retain their own results
+5f547bd4e03b7923a4791b6f3f72692e459052d1 when *arr with a Regexp in arr sets $~, as a when arm does
+6265b5ed04346f1a7a7336dd802cc81ad00dea1c Typed pointer Array errors name shared Strings as Strings
+128884d106b1019d1934224705c860124feed87b Narrowed String conversions retain their boxed separator handle
+1f76a613dfcd8eeaa8dff0e4e0e027d217423fa8 StringIO readline declares its fresh String result
+1e8341a4152393d992dcfe800bd8db46c31af9b0 Fresh object method results are wrapped from their byte representation
+b060e45c632be19afb74856a6cacaf0fff4c8508 Conditional attribute writes join their actual member's share facts
+c90521907a530f46b434b4a1cda02a1fc22e7c0f Boxed String snapshot holds follow the sharing rule
+c3fa52440a3462b671e10c013e28aaa392b80b04 Shared String Array ivars use the existing boxed element form
+b81a29394b7aac4c70367cc173cddab26d1585ab Retained String literals use the existing handle containers
+84d14fedd4eb5608aa6fe3f78ad6416c58354143 The reader-copy exception holds only for String's own query methods and dup
+ca326970e9cdbda3c26c96bb1669233874c17268 Boxed String padding keeps its shared argument through allocation
+dc6d13a01d09082f8fd9d154c4ef901409239d33 Boxed String transforms keep their operands through allocation
+deba00e720acea03982f570631f9b929c2505543 Captured byte snapshots keep their root without duplicating parameter roots
+ade533a8177cedfbe6b8fc82d8c8ce0ea8acca31 The sharing seal recognizes an ivar handle in a conditional arm
+db591c6a7a6b211f5567184b83e22b245c438915 String conversions carry their shared receiver into container stores
+5c1d4bdd054a440d91578806f9caa3e21474f605 Captured parameters survive allocation of their closure cells
+425c4319786be8cf77cce73d734ae95267641efb Boxed IO calls use their explicit String sharing facts
+8b7f5164d3e973ccef5e2e723a4380427e022874 Reverse iteration binds boxed elements to shared String slots
+8531ecca70ad14d9b5c7d99e39aad4d7463e9f5c String bang overrides retain their own results
+1420af73d940a7e15919cc9f381bc0768d55934a The class of a rescued error keeps its name
+ad92f977d5636846837f9d3d88a4b102cacfb519 Shared String call arguments reuse their existing GC roots
+fb0de073421ae20d25edfc76c086c269fc87cb8a Merge PR #8037: Fiddle importer calls use the calling receiver's function table
+5ef4fd22a0923fa648b831e84fedada1737ec6cc Merge PR #8036: Receiver-returning String calls preserve nil identity
+9de8a5a920201566298ceb405f3033f4786c23fe Merge PR #8033: URI.decode_www_form tags keys and values with its encoding argument
+8b9d898d0a2500f63132630ea0868753d6cd10b6 Merge branch 'pr8034' into fixb
+3403ccc0efc2bdb24114b6dc74285b90735724b5 merge(a, b, ...) with a side effect after the first argument is one sequence
+858667153703970245de5fbf08b7baaa1038076f Fiddle importer tables retain their String-keyed Hash representation
+e43c908dfa85b87b1405e30feb577f7380910ce9 push as a statement on a boxed String or Integer raises NoMethodError
+e388cb29c686fe2a286a90e767548cc40ff50914 Immediate object IDs use named runtime constants
+b8fe58d654192e59847af6cabeb48b55da5c3e4b A merge of several hashes evaluates the receiver and every argument before it merges any
+23d772d99d39958c3032e97ec0a117272e465be0 String forwarding keeps byte-only receiver ABIs
+e5da3fa1ff1f492dbeef1939f3060816406c732d A constant's rows are read unboxed only if no other name reaches them
+9a727c37c2bad2fc11efffb3a8e12b8e0c28ce8d Boxed calls read held String handles for plain String parameters
+14047434b90cb1a6801cdb11e59ff9754df3648f Array fills carry shared static String seeds
+83d7b2b46dd89fa46ca491c4f69411eb49416f5f Boxed calls retain shared String arguments in their storage form
+8c8483f052d1ec7fe0ca799bcd512e96a3a84b1f String-typed ivar reads box their shared storage
+2ef398524f7f2fd040d00e0e40191552937b1e88 Shared reader tails carry their String handles
+d28d0ccbf00905b9effe84fa8158cf04f77de86b URI.decode_www_form tags keys and values with its encoding argument
+61a5e54b4c533b4afcd541aa8026f5a9b14b4e4d rows_value_dropped finds a method's calls through the name index
+fa60b2fed0774d7cdad0a325a2f509c32c2c9338 Fiddle importer calls use the calling receiver's function table
+3c91a9085ea836468ae4793d6d558205e22e4a25 A NoMethodError holds its receiver and arguments before it lists them
+9b195da1b9eb54d677ea76005a93fd10e5086ef4 Receiver-returning String calls preserve nil identity
+055876d73fc31c2b293de3fcf2df4391d6958678 Enumerator::Chain.new builds a chain, and a chain answers is_a?(Enumerator::Chain)
+47225b489a3cd6fa16a965c42457bb520e239d61 Merge PR #8031: Hash transform blocks bind shared Strings through their handles
+3d2c664636c5ec6c5fd8f20e39ae0e68f13345e7 Merge PR #8030: Inherited String ivars share one handle layout across their descendants
+9c1b04d9eedad6ec20131808447f2e3e5756d0ec Merge PR #8029: Time.parse / Time.strptime are refused at compile time, not a runtime NoMethodError
+c648d7cccea36218fdfeb357c1ff5e70d118b9ac Merge PR #8028: A String read through a reader and rebound to a copy before the change compiles
+b514188ea43c6ba5273d5f39a53a5dd77a038d63 Merge PR #8027: Shared String operations retain their handles across identity, containers and IO
+f7080b508da458b146f72cd462a464502fbfca75 Merge PR #8026: Runtime String scans bind capture rows from dynamic patterns
+50d790a57e2705778eace64a596e5b4e1d6f6312 Merge PR #8025: Boxed Hash updates read shared keys and prepend retains its receiver
+f54279fd026e244040175d8d824e119d8a68f843 Merge PR #8024: FFI callbacks zero nil results while numeric arguments stay strict
+39aa03715b3ba12656a94c346d669c78925e7847 Merge PR #8023: Boxed String splits retain their fresh element fact
+31c38ebd687b3c990637c623a554f0b247833f14 Record the refusals of PR #8020's three reject tests
+488f898ab8e71aff4afd5a4a2fbfabce60c1fa91 Hash transform blocks bind shared Strings through their handles
+cbc7b2ca2bffae7d2612bcbffe6a1718a9048d6b Inherited String ivars share one handle layout across their descendants
+8c844aa943e5ea68ae4d5fcceca12fb59cf6a759 A return in a Hash.new default block leaves the method
+de7f29cbeddb5fd33e5a03e31bd45b55936edcb9 Default IO reads retain their existing buffer handles
+47ba3652113c4ae38bb85e5a84531e51e0abde97 A String read through a reader and rebound to a copy before the change compiles
+6ad5b1c5f9d9d443b35bf6d5c4da951c32f2ccad Runtime String scans bind capture rows from dynamic patterns
+028fb16bc946296f1fa1fd4b65a151c9c56e8047 Regenerate refusals.expected for the two new Time.parse reject tests
+63e64551c0ccce74663082f02bb87167c8ba749c String extension methods keep self's shared identity
+d567ab3d3db5ed18230cb61ee0bdd52e5fccee29 Merge branch 'pr8020' into fix8020
+ddbda6583fd3e1f496debed143da8fbb63a0997b FFI functions accept callback types as their return type
+50b3969f2adb7e783bf3e1cb985d3817deccdb23 String lookup recognizes boxed handles in both compiler modes
+15c74e7e7debd7622cf4cd0b84754915dd6650dd Shared IO output buffers retain identity and EOF regression coverage
+4fab5f34a73ad9740cb924c25b32915568299dbc Current sharing routes retain their regression coverage
+1fe2169b7af248dbcd75bc5ae402b794e32c05a2 String identity queries retain the handle of receiver-returning calls
+06f6700141657af5981b3194d87fff3b4c4e6672 A String fold can start with a fresh seed on its handle route
+251d0b0025c016c4995d017cdb4456feabdc990b Boxed unary plus retains its existing handle route through container stores
+ed78a43167f33874ab864f31240a0c99277351dd Boxed String needles compare by their contents in typed containers
+3a45b96af1f938777c2b76a6c4288a35681ccac7 Nested element reads preserve a boxed String's shared handle
+094b46a45b8478647c1a86a8843c8a5b1c520496 Receiver-returning String calls keep their handle in identity comparisons
+11432a9cde2c9fb9f0bc5d6ffb122a3dffcf0dcc Prepend results retain their shared String receiver
+26354bd24aab770f613285ef830f277ac39efe36 Boxed Hash updates and presence checks read shared String keys
+c05e8c9c5b1e13304f022d938a73b3cc51001df6 A Symbol index on a boxed String or Symbol raises TypeError
+33ac1fac2906c01596da6376d2a4ff1ae5b0c8dc The sharing suite covers nil numeric FFI conversions
+16bca08960d154b861cb96c38bf9f4cf1209059a Merge PR #8022: Shared Strings preserve forwarded results, constructor arms and scan captures
+407cfe5fb37f567d4b4eb48c0911b06c2c637d02 Merge PR #8021: Borrowed buffer returns preserve the caller's shared String
+198814a1acdcc160ad109bfed2ced906b8fcc58e Merge PR #8019: A boxed String key reads its shared handle in builtin lookups
+c33cee3a2088fce9081ee5391b08d8c72adeb5d4 Sharing-only return and constructor fixes preserve default C
+9bef76a3f9dffef0d57261759574d1a567c4c269 FFI bitmasks convert nil to no flags
+18633e4bc84ca3e7b38dd4f5e3b5b718b7cccc4b A shared ivar keeps its String identity when boxed
+2c623adbc2b1aa00e37042fa888dde5a57709457 FFI callbacks zero nil results while numeric arguments stay strict
+87e0842218f7244f4b555929903427c7ffcbd31d Time.parse's refusal is keyed on Time's own method chain, not any class
+1ef57ddbb3de8b42a20e597d6dea6d2bf4587da9 Time.parse / Time.strptime are refused at compile time, not a runtime NoMethodError
+766e0ace3bc9a7d96c694e28251a31f6b9fa9245 Boxed String splits retain their fresh element fact
+5e089e5dd6fab9e60c03a98c0110f8b9461822b4 A boxed String key reads its shared handle in builtin lookups
+81715690898f0b56a043d766c57ee2fec4154ae9 A String made in place is kept alive while it becomes a new Symbol
+70ff7a36b74328c9481e0382bb12a89a8e089c1c Merge PR #8018: A boxed to_s keeps its String receiver beside fresh user returns
+14d1765a21ea3ad26e991607a0d98d9e59ccf900 Merge PR #8017: A Regexp read out of an Array or Hash is a pattern for split, partition, start_with?, [] and case/when
+9f1fe38826a5102a9b8f1fafa4ec6b6a7bb54ff8 Merge PR #8016: PTY.spawn returns a synchronous writer and its test orders replies
+cf989157c75706e4feb034ca81cdff099dcb05de Merge PR #8015: URI.decode_www_form_component takes the encoding; force_encoding retags by a run-time Encoding
+93800b2d8513cf5d2424be6ec5421cef24852414 Merge PR #8014: Whether a to_a result is mutated is read off the call and variable-site indexes
+5a7184f3baeadeb700a25374d1e8cd746231b9be Merge PR #8013: Boxed receivers dispatch user <, >, <= and >= without coerce
+59e77004eb63472ce7dcb537d9421b46eb3f8845 A boxed to_s keeps its String receiver beside fresh user returns
+5e5ac2128ce5ea490dbd9c85a8d5604130d22ab3 Merge remote-tracking branch 'upstream/master' into boxed-regexp-arg
+c9fd09b31a047690e4b42181f047a275c36d12fe PTY.spawn returns a synchronous writer and its test orders replies
+84819b43f97c5ca49db793d5f02aefd3e94dddeb Merge remote-tracking branch 'upstream/master' into decode-www-form-enc
+44be34a43bc6f39129549b47a32eb22da0047dbd A Symbol or String index on a boxed Array raises TypeError
+e87cb0b76e0ad4a394d5e2fc379830014ed524a4 An each over a fresh String Array whose answer is read stores each mutated element back
+bf59c7ead5924ef242c230ae913670d52fa675e5 A String mutated through a fresh Array nothing reads back is not refused
+cfd1c145c95cd70f2d21754f175cd2ef3e00d7d8 A block-selected return keeps the String its block answers
+812fd780c54635099a17a7b012f8439645a7a0b8 Mixed buffer returns distinguish owned locals from borrowed Strings
+31296b3e7f146616fe6a370bfc6c9c043d15753b Boxed String scans bind capture rows through the String emitter
+531757083315010eec37b8e0da107280904e1d40 Forwarded calls retain the blockless return fact between inference rounds
+ada0f34c472b8c11a645e16c4268197b9c5ea07b Boxed receivers dispatch user <, >, <= and >= without coerce
+61b39d698e432ef86fcc030a03b4ac8b5fb452d9 Dynamic constructors accept shared String parameter representations
+4d834e073f401e36c070df26633e4b26d9ab54dd Blocking IO reads return the shared output buffer they fill
+32c579af17bd22233eed0742410031826327a2d7 Read the limit once; === leaves $~ to case/when and an explicit ===; s[str] answers a copy
+cb75f86c74ec87eaba9fcad84af750ee81f5595d A conditional ivar store preserves its selected shared String
+34e884f3c36efde6e5018e13d725962818b9c89d Whether a to_a result is mutated is read off the call and variable-site indexes
+726d378554e51782ff757d229beb1254485928e1 A store walk walks each expression, method return, ivar and local once
+6a448dd72b96fff3401b79c3cfeeb64c87ed1ad3 The walk back to a parameter's callers asks only the calls that can reach it
+9922a2c74ee1128162abf48b645575f0c8cc254d A return in a block lifted inside another lifted block leaves the method
+7c2e6297be033bb425e3af60896f18a9884ccd02 A Hash of nullable Integers compared across storage kinds reads the nil word as nil
+fc7ef4762800b37b70732e5910d1c1a05fa68382 Merge PR #8012: rubyspec-gate's expected-PASS list can be split into shards
+e7329cc3e1ef05c1055bd48966662aa1315a7a2c Merge branch 'pr8008' into fix8008
+fd9517f31f9845e5947f0c44b7807ec6b42fceaf A boxed shared String and a user constant take the computed encoding too
+ab0244b77068661b6ce5370b15ba7771815e3f03 A Regexp read out of an Array or Hash is a pattern for split, partition, start_with?, [] and case/when
+ad93444b202c91e4cd07a40d821d1a6948e80117 Shared-String tests build their bundled native dependencies
+239c4501e7dbfc81e6b7b6d6ba1af54add3e752c force_encoding retags by an Encoding known at run time; URI.decode_www_form_component takes the encoding
+106c96509a6aa542855faa3eb5c994a7bb3a4cd8 Merge PR #8010: The walk back to a parameter's callers follows each parameter once per walk
+f73f9ced39d2dabed8fd47bf304a3f4c93dbb17c Merge PR #8009: PTY.spawn runs a command on a new pseudo-terminal: a pty package
+9a7ad3ef063cdca194f74a16e831209b7340b633 Merge PR #8007: Rest and forwarded arguments keep shared Strings rooted, and reader stores pass the share check
+ca4a63919f4b2edb183c156eecd7d1391d6b791d Merge PR #8006: Bind a call's operands past the eighth in source order
+d95067ef23fe9966d8dada128ba8aa9efc65e79a Merge PR #8004: Array#pack's four typed entry points share one X/@ cursor helper
+96c20f872eebc1327001b94795bd8d11baf6aba9 Merge PR #8003: Raising conditional arms preserve shared String return handles
+12fe96ba304b04da7f6a2ec78ed4dc0e69c5c1a5 Merge PR #8002: A boxed IO beside a class that owns the name takes the builtin arm
+1f94946d4533d4d7d94e8b0f167ac6775f3a3d44 Merge PR #8001: merge!/update on a typed Hash merges an argument boxed at run time
+fc87d0c8a3ad96729e0613df98d62caa97d683dc Merge PR #8000: A program exception class's own method answers on a generic exception
+eabc6503f64a5ea82ceb2d716097b51c2f214559 Merge PR #7999: strftime on a boxed Time takes a format known only at run time
+1d7475a8946d24ca1022c20374c85c519832f6a2 Merge PR #7998: gets(sep, limit) through a splat takes the second argument as the limit
+b3765dcda33a80e692138c64abb3389e49e41eee Merge PR #7997: A boxed object's #inspect or #to_s answering a boxed String renders
+e4551e8936750ca5dde68d5f57723454f6279e2d Merge PR #7996: An aliased inspect or to_s answers p, puts and interpolation
+6471fcbfaddc4122f1d696ca1bc400fe5a287e6e Merge PR #7995: A writer through a boxed receiver answers the String a stored handle holds
+b7c76028990cad2e19d63583ef6804e0602af4dd win32.mk: link winpthreads
+9b651290f8ba90315206d71f19a162ecb8e64a63 win32.mk: target Windows 10 (_WIN32_WINNT 0x0A00)
+4f3dafb9c6e1f325d67e9cd6a8765bf95c8ad1d7 Merge branch 'pr7748' into fixwin
+6634a26959d77533a8eeec8849667e7984ffda1b Merge branch 'pr7746' into fixwin
+48d6afd25ee73b27b0ae44e0e4ca6d6e5be1c021 Merge branch 'pr7745' into fixwin
+1bcb9305f80dd3e1cca8ea00454459a7b1268427 Merge branch 'pr7744' into fixwin
+5d9841fa7a878adfc854c54be3a1f31e2478bf27 poly_store_appended: find the appended variables in one walk, not one per store
+f1d60bdbab94bcef1195084dd6f402938349f4d7 Merge branch 'pr7994' into fix7994
+87745e4c81f28347bb341054ebdb86ac344c07c5 Gathered rest demands exclude Strings reserved for post parameters
+819e369fcf8fd3509eb18910b72c8fed425f0a94 rubyspec-gate validates RUBYSPEC_SHARD before trusting it
+cedc96377339b390e0494903807e320902bdbac6 Keyword defaults retain freshness and Fiddle tests respect availability
+f350b4781a49e382bad06b1cb47cb8f21b476237 PTY.spawn runs a command on a new pseudo-terminal: a pty package
+58f816504eecb4c58f008d50376f26c4191466b5 Boxed fresh builtin results retain their freshness with user targets
+cb9abda0238cd1bf57e6b62381418967254996bd Shared String argument conversions stay rooted across calls
+cf07eda1b41cff39faa5ec5dc093ef20af3f2e24 The store test pins a seven-hop chain
+02f3d131c3c0b2412dec2ff0918fb4b0fdf036b3 The walk back to a parameter's callers follows each parameter once per walk
+72ddeb6ee5d704a092471f58fc1a382c9c46fc5d A method's boxed parameter iterated with a mutating block is left to its callers' walk
+584d38707e7ff106491bbef1d50cc9bdf2d4b83c Bind a call's operands past the eighth in source order
+f12f242b1ca47377b5e27fba00d03fde254e172b A class method's ivar and a class body's class variable match their stores
+c54d4c77dfaedf5dd88f6a62c4516e9360cfc2c8 Conditional arms distinguish returning overrides from parenthesized raises
+75d2fb80e4e0e7a82d75854599af5796f1f41275 Returned String parameters retain their call-site freshness
+adcf061eff613888add4da153f6ad2657c39b153 Fresh String returns share the settled method-tail analysis
+38da44408159bebf94b2478b856d990be456b3ab Boxed String mutator queries use the final parameter callers
+79ff17209667cac71b9551f91e690e077cae72c4 The share seal checks only containers left in the emitted tree
+dcde9280b770420b47b270d484e128b232a9cc50 Fresh builtin String results have explicit share rows
+6dda3a50599ddef47dbc429313c3d286a4721e41 Boxed String conditional arms preserve evaluation order and shared handles
+00f7bde698b4f53740672d0a7a5445297161db49 Array#pack's four typed entry points share one X/@ cursor helper
+d789fbbb69598c38eea3df44b1e01836364fcd30 rubyspec-gate's expected-PASS list can be split into shards
+933bd084c6cd062d8250936bf11edf8ca4e51bc9 The share seal and reader stores use the same handle route
+ed190cb6e6696e88d93445a8b91d6354aa83a380 Raising conditional arms preserve shared String return handles
+af1bc86202e0e2c2f7e69263062e1861ce47df56 Rest demand and argument holds respect their String representations
+9414a7d101e4f9d50ab88b5ed870dcd16b1ea34b Rest arguments before a splat keep their shared Strings
+ab427dcc05ed8dc88ab3ff9f9c4788005bc9a6a0 A POLY String stored into an ivar, class variable or global the program appends to is shared
+9c7ea3ce06f30a06ecfd4dfb9930a9de7d3aa092 Merge PR #7992: A String pushed into an Array a Hash hands out is shared with its iteration
+a3986b50a9d83303b4e448a43106f6b0b59c6121 Merge PR #7957: Shared literal and rest arguments keep String identity, and a fresh handle keeps the frozen mark
+2773fd6b3eec652d8628ead391eee266030f9ab9 Merge PR #7991: /re/ =~ x matches a shared-string handle in a poly operand as a String
+3c9a49bdf39960310066f24a571cfe79e68f0410 A Hash store through a box leaves a pinned return's literal alone
+c639710c29be1c589758d926b01194e2a46c9807 Merge PR #7990: The share seal checks every value route into a shared String
+7eff93403958c8e251d9be9bccfb6f717e5b1aec Merge PR #7989: Conditional and pattern call returns keep their shared String handles
+5f248618dcd8c78636c7af672bc7e6180591c159 Merge PR #7983
+0c7f5c2cb05ae0e970a2877a762ff08f3c17c982 ENV's reads and writes take share rows of their own
+3fb7de2352117b2c13ee82a74cfb7c639a6e011e A boxed receiver's call or [] counts as a proc's call only where the box may hold one
+a3686dfda69ac6d80e0416a4bbed5214bf58710c The share facts read File's, Dir's and Process's String arguments as kept by none
+29d781dc0a715d698e65ce13412eb2adea33fb7b The share seal's new-String sources have a test
+d72f7d2d9868f9918712eb6796cc51e42bfdb7e0 The share-flow statistics name each flow's file and node
+3539f2f9e828945092391a344a8fb166502bf3ba The share seal takes a call of a bounded callable answering new Strings as new
+a458fb869bbd24a0439df23b6db5be1222486b0f Pattern call returns keep their shared String handles
+b28916e7ef84b185d79eda7c8550ea1d43693bf0 The share seal takes a native binding's answered String as its handle
+ec32bb14e4743f98ade56a139bf41b147c75ea80 The share seal takes a conditional of new Strings and ENV's reads as new
+012506de1bbb2a1d1c19c876ac0ce51f674b49a2 StringIO's read answers a new String under --share-strings
+dd28a666f0a3ffa31246ccf1b87510be334d8efc A yield that runs only blocks answering new Strings answers a new String
+12684cc431afeebeba4eb24b068fee432253f43b A lambda a local holds and only calls answers its own value to the seal
+06e961aae39b2043db80b0c74951103234a38201 The flag-only String helpers ask the share rule before reading the node
+57cea32a2854b31199999c57bbc28aec618b64a8 The share seal lets a new String's copy through by where it comes from
+421061d74ef9bc149634da2d390b5301b387d2bd The share facts follow File's path functions and exceptions' messages
+7408335a89d71c4286d99f3d91d2209935deb405 A narrowed boxed local's read into a shared String slot lifts its box
+4420b9b1308f30506984c5c3d0e3a800e5d0dd6d A String's to_s in a box is the String itself
+9a1adeb8febed14c0f54fc6143990c86eada653b An operator write into a shared String slot hands on the slot's handle
+faaac11ef215b069105d7e52210a01c034043209 A String conditional, a chain or a narrowed mutator in a box keeps its handle
+e4d0c6ea075e7f642f094942a21095735c5aea6c An append chain over a route's value appends to the shared handle
+0e11f7fd0f27b2a4dfc93628fae7fcdb8fbc63d9 The share seal takes a chain over a reader call's handle as carried
+4604909981fb489feb3a7b574633918b5dc76310 The share seal checks every value route into a shared String
+3ab4539fcc9f317829fcfee0a89bde79f43baff8 Merge PR #7988: A method a program adds to Enumerable answers for an Array, a Hash and a Range
+8e177f4507de990396c4c88d40f8db8195ae452c Merge PR #7986: def_delegators ending in a trailing comma before its `)` is rewritten
+1d53b9fb64423960d6e41398187df21891c55bb4 Merge PR #7985: HTTPResponse#value raises unless the response is a 2xx
+d23eefa441c1dd58bfc8699ae8a9f89d0a3c3e6d Integer + - * / % on plain operands skip the nil test of their operands
+334359199a944d0e4d30c884078d5f5e83fed396 Conditional call returns keep their shared String handles
+b2bdc49a3616354e5777ba40d48860a29feaa6dc String conversion keeps the handle its user method returns
+3b5a8efefdedd0eb685dae4b815c527c9764d409 A String pushed into an Array a Hash hands out is shared with its iteration
+4e8a65bdc000e27c6620449abc6e57d0a8cd3251 Marshal.dump omits encoding metadata for binary Strings
+301916cc23afce26059f693725f0661aed9a267e Marshal.dump writes a boxed shared String as its String
+486e16fad59241fd71aa75e94c2c1baa67cb6729 A fresh String handle keeps every frozen mark of the String it wraps
+ef2a5448f305ce929a34e4f6351a416cb4e53a55 String conversion keeps a boxed String's shared handle
+c9665bbef667c4c8157ef313a512d08fc78c26ae Literal and rest arguments of user methods keep the Strings their readers share
+54b5a71c88cf90ed255475f00bdcd754024ed054 An Array read boxed out of a Hash value takes its elements' in-place mutations
+fbe9ca79ee5e8312bfb7221c32270336c9504bcc A method a program adds to Enumerable answers for an Array, a Hash and a Range
+636869c3e637ee04e552204cbaf492d842c17cbf HTTPResponse#value raises unless the response is a 2xx
+2363fd910f4de8f9924541735b10a230bc998047 Give net/http CRuby's HTTP error classes
+d76e6c8acb2e92f2af8406cab491a7bcef9afc70 Merge PR #7981: Bundled optparse completes abbreviated long switches as CRuby does
+c1cc8f2dafd21ec043bc4122b9633fbe86bc7805 Merge PR #7979: Thread#raise on a boxed Thread raises in that thread
+afad4a1f2b6fbeb9861ec118af5563197ac11cf4 Merge PR #7978: infer-test pins the kind list a fold leaves behind
+e6bbb29e35339c322445cd87e94b159d65794d1b Merge PR #7977: Net::HTTP#start with a block yields the session and closes it
+1f16996dfaebcb418261d1daf30c5cd4bbc53d4b Merge PR #7975: Identity reads of shared String call results keep the handle
+38fb857f54345829e35b904b84b4b3eda6906a34 Merge PR #7974: A boxed merge with several hashes folds each one, as CRuby's merge(*others) does
+d93b19d10a933e07c845f9584ed7cc177fb5204d A plain Integer is not tested for the nil sentinel
+9b7be2dade18d51fdc46d180119faf07987368a2 Bundled optparse converts Integer and Float values
+9abe281f40d8277f2fde347e2b7dd48d5f1cb27d Bundled optparse completes abbreviated long switches
+9c97dd8aba322a3341ac93285012244cac5774ed def_delegators ending in a trailing comma before its `)` is rewritten
+ace0dcdf3bb7be3371778594a3ced405860a4f29 infer-test pins the kind list a fold leaves behind
+171da0c8db9106ab2c283a0b0ca6250d7fe18014 Nullable String values keep nil's identity
+0521f7af4f32b60e67ea307f5dd0218815efca9c A writer through a boxed receiver answers the String a stored handle holds
+34cf0d1a843049bd8c06b2aedf99c26e352d6022 A native String parameter reached with a shared handle takes the String it holds
+806ecf5bfb8365cb5de611596d348dbd90285f7b Net::HTTP#start with a block yields the session and closes it
+13b63eb7f241623de6dc7e23e770f679822d825e Identity reads of shared String call results keep the handle
+3d629868df96c031ef56991d7df8ff5831406f84 Merge PR #7973: A push, insert or literal of more than 64 values has every value walked for its share handle
+65f60b68b14cb32699143496c20ca2b1e49c3082 Merge PR #7972: Exception#exception keeps an empty or frozen message, and a begin with an else answers by its else
+3415c76daccfe347db75e64906d92ab9ec037c6a Merge PR #7971: Integer() reads a leading 0 as octal whatever digit follows
+de87ffbc608b8be88bedd27e48436b9199f78ec7 Merge PR #7969: make optcarrot: give spinel the overflow mode the C is compiled for
+470010e253dd03bc19b28b834550887adafc9ffc Merge PR #7968: A tap block's parameter keeps the poly String Array the rule settled it in
+62cd277dbb523aa24e5ea430c0d26f921c882f44 Merge PR #7967: A node retyped in place is listed under its new kind
+c925e5d21cce04c47c3eabf400120987aa8320b3 A boxed merge with several hashes folds each one, as CRuby's merge(*others) does
+2e04842fb4de1b455d2474f5321561f27b4db892 make optcarrot: give spinel the overflow mode the C is compiled for
+c2fd7c17528de0a6aae55740718552a2cb10c758 A tap block's parameter keeps the poly String Array the rule settled it in
+303806dce7aec8c4f7efc53a7b25320fad9babc5 Integer() reads a leading 0 as octal whatever digit follows
+7741f09093656d5b52e8743c8ded6ac33feca23a A push, insert or literal of more than 64 values has every value walked for its share handle
+9bc42bce1a56eaba7786b59a319bbb94f2e08044 A begin with an else answers by its else, not its body
+6f237620549c31c3786ceb4a972fe80ef394438a Exception#exception keeps an empty or frozen message as new does
+5d762fb16716670f9ea30ee6333b7f410bbbbc67 Merge PR #7966: Under --share-strings an instance variable's insert, prepend and conditional writes keep a shared Array's handles
+281668adccfc882885db1ad3a61c40082327076c Merge PR #7965: Bundle CRuby's `find` as a pre-installed package
+e043e20ffce6ec41ab3ba91ef7f8e921e4d89c23 Merge PR #7963: A narrowed boxed String keeps its shared handle
+8330e40e6a217f2bdef07a048bee0d91fe3fc6ab Merge PR #7928: A shared String keeps its handle and frozen mark through tap, String(), inject, Array.new, a nil-answering method and an exception's message
+4b604966398fa2cafc319845eaf2d5550d5cfb57 An instance variable's insert, prepend and conditional writes keep a shared Array's handles
+9668b94c13694f9b883a871555cd071846515251 Point a program that names Find at require "find"
+6d8d2cd6689bf11150e9af950cfe85344770765d Build Find.find's blockless Enumerator with Enumerator.new
+64450fba3305318b76fce842f46249d977d71897 is_lazy_name takes a call with no name
+eefe574f4a223eb846d75c2388f194b2a74296a3 Carry ruby/find 0.2.0 into packages/find
+e3fff086bfdda1f8851f1a84d5db52b341d6268a A narrowed String box keeps its boxed mutation and identity paths
+6a592b8d9ac0255c8e1608878c48c878aa522c89 Narrowed String byte reads avoid allocating handles
+c594707bfb0fb4598da353626bfde1124b4255aa Merge PR #7964: Under --share-strings a String stored into a converted constant's, class variable's or instance variable's Array is its handle
+dd743271f6217d121789bdff9e8ef7439e0ce938 A node retyped in place is listed under its new kind
+ce235e7baa2dd720e638b07bd64e7ee9ff9c0a21 A narrowed boxed String keeps its shared handle
+bacc92b21e85d599a413794da542e762ec737356 A String stored into a converted constant's, class variable's or instance variable's Array is its handle
+7a0fecda41a2d6323851359e34ee851c610fe390 Raising a shared String element raises it as the message
+512fb1ebdc6dc023b2dfb34bcc85ea2117961dc5 An exception's message store is recorded, and its constructor roots its arguments
+b5c848cb36317a616f601f749c658709b8ac4132 A unary sign on true, false or a Symbol keeps its C type where it raises
+cecd979a9bef1088da2bb37473ac9947e5dd07a4 An exception's class name is no key of the frozen-name cache
+910c1847287bf79b097924f5d454abaf26544eb3 An empty literal raise message is frozen too
+2ce85b84d4435fcc8423308c682c3213b100972e An exception's literal message is frozen, and its message is one String
+f17a8d446acfef359f24dd83949c6fc50f130e60 inject with a shared String seed answers the seed's handle
+95996678dc8506e54d8aee1ce13bcf7c5bcb5993 A read of a frozen shared String is frozen in both builds
+cc955adfc5b5373781667958099a4fbc12fb2ae8 The share routes' name tests go through named helpers
+8634de83634a3d9e7829f03029a20d3c59d7349e An exception holds a shared String message as its handle
+c2c4eff3f6dec9b3616298f6d211405cd109cee5 String(s) and +s are identical to s when s holds the shared handle
+21225af914082c7c32f4f63ee35a5d3bf431158a Array.new(n, s) holds the shared handle when the rule shares s
+777aa4c6b4670608b758ec0beea49b5937118a22 The deep-return pickup takes a begin with a nil arm and a bare return
+844f2358599c0a172e406f59a8dea1b76db61271 A unary sign on a value with no +@ or -@ raises NoMethodError
+ac7da98d6140f6eb5c7b0bf490708bc836a20aa3 A tap, String() or read of a frozen shared String keeps its frozen mark
+548d4196def80708b1cae7c28c3dfb6e78a4df37 Merge PR #7962: Boxed Hash stores settle chained Hashes within a round and widen a global's Hash
+e0f0d2b27382685386e92709212ccf2c6ef82e73 Merge PR #7961: A boxed argument a builtin reads as an Integer converts as CRuby's implicit conversion does
+f5e98cbcfcfb2be4c6673da9eb1effe7cb45e648 A boxed argument a builtin reads as an Integer converts as CRuby's implicit conversion does
+bce327d014eeea4351b25f3f159f3701ad3f02c7 Merge PR #7960: A route's String is rooted only while something can allocate
+8a5997c591b652b048c70c1cf114abef94165118 Merge PR #7959: A forwarding method nothing calls is passed no block
+bf5612568534bda5d987052e32aee990c541f09f Merge PR #7958: io_winsize_set is not run on macOS
+c8e0abeffb5bed0d3539a571bc867a3f93e96719 Merge PR #7952: Grouped slices keep their source Strings under --share-strings
+72a6f27051458bac00342475cb71bc312a59f6ad Runs from slice_before and slice_after keep their source Strings under --share-strings
+2a197e56ecd69df8ee5e9be15848fea0ddc36744 A Hash store through a box widens the Hash a global holds
+ec985b80da42ff902cd73530fb8a63a6fd7f745d A widened boxed Hash reaches its dependent stores within the round
+2d7d23925bab35f5d3d4363a56079452a1714cbe sp_net_sock_host answers no name where the platform has no reverse lookup
+18c27aee1d24f0b23218d297db7170251d405467 Merge the winsize test fix
+b50f6de20e3e046de36f7c50d107168150d2b643 io_winsize_set prints the same on every OS
+5bac8d97f4b6445514c683a488f9ae081a48d5c1 A route's String is rooted only while something can allocate
+88676fffee880fb1651e79e0d14c0c61a08a61da Resolve the analyze.c conflict of #7955's merge
+6b71d39193408fb2bd090a3eaed66fe27a49fd64 Merge PR #7956: Under --share-strings an indexed iterator over a scan's or split's
+1485fe9599c75d1d0d818da6d260e2f239738f42 Merge PR #7955: Shared Strings keep their handles through patterns, Proc arguments
+6a996472d62791262ab6a3ca81cf7e536a5dcec8 Merge PR #7947: With --share-strings, Spinel builds its own tools
+9de99b3da8f50fa17f2675b18493a43c6de0baaf A forwarding method nothing calls is passed no block
+9a0ed84d3e6142f6e267173b9e23da1548199d0f optparse: the [no-] of a negatable switch is not an optional value's bracket
+6b70e1972774fd38d88a4e180aa30af28cf29c9c io_winsize_set is not run on macOS
+b9bd7163c5ab48e644a82d378188a9b28cf53df8 Merge PR #7938: Bundled optparse reads optional values as CRuby does
+7bbe1926489b01d218a106d698ffdface01918f4 Merge PR #7933: BasicSocket answers do_not_reverse_lookup, and addr takes a lookup argument
+4cb2d0f081de61aeaf5947ae08622d7fb650b4ea Merge PR #7930: A dynamic send forwarding a keyword splat reaches a builtin that takes keywords
+8419057baac376b0f2a745d4cf1dbccd737b6429 cident bounds each compile in time and memory
+be54f98834f1bf3957194615730a1e9951cbe4df Grouped slices keep their source Strings under --share-strings
+80e28dd295a737eeb0faffba021016a01be73c9c Merge PR #7954: A literal in a method nothing calls triggers no sharing refusal
+f51c79e95c24e5a87859c0e4aee642175fbea591 Merge PR #7953: A computed send reaches a top-level def from main or any object, respond_to? sees it with include_all, and public_send refuses it
+dddad14826ef861eb430ab7b9ce9ef8684b10dfc Merge PR #7951: ThreadGroup, spliced as a builtin when a program names it
+40dac224161b1c7840dedff0634653d24f5472ea Merge PR #7950: Dir.entries and Dir.children take the encoding keyword
+04ca898515fdc6dfd60550ce5740f7859dfc2919 Merge PR #7942: Hash stores through boxed receivers widen their original Hashes
+b48b6f595e30ecf8a7c758334c38a572c10758b1 Merge PR #7940: catch and throw preserve shared String aliases
+b533a1e9a5fa3932b904a51091f653fe616cc369 Merge PR #7931: The boxed-receiver walk visits repeated aliases once at each depth
+b22d1db2166a53583d7983ae459c4a26bea7202b Merge PR #7921: A call of a method that answers a shared String hands on its handle
+c8674013cbc07bc97626cbcf4b77817dd048d62d Merge PR #7912: An argument that hands on a shared String reaches an appending parameter as its handle
+87217d004f094faeb26cd832d36da5e9f02d0525 Merge PR #7909: A String mutator's name on a box counts only where a String can make it
+45d6692942c7770260b89785e868568e0dbb0208 io_winsize_set runs its pty half on Linux only
+d48bd39fb6f87220dbc6c649621b07c6b058108f Boxed Hash stores re-run the re-narrow until a round widens no Hash
+01b75d41f60dbf06856e8deb97ad43dd8c396194 A builtin's new String Array walked by an indexed iterator hands its block the handles
+b75edd6011d97bfe82f61231bc1f3ce371b7167e A class variable name holding a String and a String Array converts and checks both
+1095a779d5158d12371b883d096661764ececa89 A class method's call on its class picks up the handle beside another class's method of the name
+7722986d3eb2a4f222b80936cba9c5d3f6f7c236 A constant's or a class variable's String Array whose elements the share rule shares holds the handles
+9d79a36ee87f4a4e1144e25e7ef7e89b211de0e4 A fresh Array's elements count as unshared only for an each whose value is dropped
+3693839bd9f5e2e1d6767b06034dd2838e6ed01b A shared String's handle reaches a String key and an element-bound parameter as its String
+2faad3f9a68e6bbc6ca2ee849757b8420d3d39f0 Process.spawn and exec read a shared String's handle as its String
+7056d1b759a1f2892cb2e8ff770324a3a47f491f A method answering a handle on some paths and a fresh String on others hands it back
+1e93b08d6bb4fdcad902592772aaf9fcfc2f6b08 A fresh Array's elements reach an appending block as unshared Strings
+57189b235e1f92d8909e8c3445dfb26e8cc96f87 A boxed local stored into a container lifts its String into the shared handle
+85d42a16d860b602cc73432a8a0512a238e803af A local the share rule converts late refreshes its own reads too
+6dd1f3fa5d6bd513e80e87d45413c717388b98cf Merge master at 42557a3c0
+fb43af7a06b0e5981990ff5889bfacc5170e490c Reflective ivar reads carry shared String handles under the flag
+5b75648f993cd6b8ca3f86aa31286916bcdd7ed5 Pattern source containers carry the Strings their bindings share
+a51d447fc283020646b713b45bfd3415e15a6572 catch and throw preserve shared String aliases
+9c50b089992eeb62fffe3c63c3c147ac1dc4b128 An inject block's shared String goes into its boxed accumulator as the handle
+ee0d8dfdf1859cdc89277dbcd29c50f6c05dbd71 A call of a method that answers a shared String hands on its handle
+901c4ab4b5b7c16e62716cd1b63ff9d6684c4180 A method whose every return path reads a shared String says so
+c6a5acab542f43c85e5c9a1b5cde14e33d1addf1 +s tests every operand that may be nil
+83b3fb783e6d13825b1f41f359fe56118e38bd7e A route's String stays rooted while a mutator's arguments run
+18c82e380f83750f670bf2f719c351c894290621 A then block's next value joins its nil fact
+2da20260612bc2500bc96034cf07280461effdbd A shared String parameter an argument binds nil raises on its use, as a nil does
+8bfea15c6b9910b01a555e1fe00a1aa30d2cab2b Boxed Hash stores decide their widening from settled types
+2a26fa351c2d33a450bbaa9fa6cff46baf632097 Hash stores through boxed receivers widen their original Hashes
+f02cbc52517b5418c973b1ef48a9c82e4744c16a Uncalled methods' String literals cannot trigger sharing refusals
+09df636e3e90b09e5b8b7d11434e1c5ad9d358dd The boxed-receiver walk visits repeated aliases once at each depth
+3f806a9420d4766ddee4d720d07e0e15a1e746ed Proc arguments carry static String slots as their shared handles
+9f780434cb8505eb78ce8dcce23a8ca4122dbf56 Merge master into share-routes-args
+eb12d1604de1df5ff7888898112aeecd9ae2a79d A computed send reaches a top-level def from main or any object, respond_to? sees it with include_all, and public_send refuses it
+abf503309fcbd2c4ba2710ff19677f45d7117de5 A dynamic send forwarding a keyword splat reaches a builtin that takes no keywords
+f8b72ca603164af3d10b5f94c19249351611e48b A route's setbyte runs its arguments in order, and a yielded handle tail sets up inside the splice
+78c774428e5a15d6722b5354282f86b3a6446059 An --rbs String parameter takes the shared handle under --share-strings
+95a5e777ca8177d9ba5e97ec40f603250ca5846e A boxed object's #inspect or #to_s answering a boxed String renders
+04de98b03bbf7cde953ede43fcfcec08395cec68 Dir.entries and Dir.children take the encoding keyword
+42557a3c0e7c06e61d20a1f08a275bab7d5c6be3 Merge PR #7946: A method's &block tested in a Thread or Fiber body it starts is read
+d973034702fc1b9fb281b8289de5678a8f8c2c47 Merge PR #7944: Nested unary plus emits each String handle operand once
+5c8e204a3ecbbc73771436dab3cbf8c49c8d77e4 Merge PR #7943: A reopened builtin keys to its reopening only where that has the method
+46ae00976f8eaf61f8785d90864156a6182a9410 Merge PR #7941: A mixed Array's uniq and set operations match elements as CRuby's do
+1f54dcf6a9ce5db2aa2966417418546aa814ed2d Merge PR #7939: A yielding constructor cycle reaches Class#new and a module's yielding super
+3fda965b00888e986ba9c20514af5e7e8def9aa1 Merge PR #7937: Unary plus keeps a boxed String's identity under --share-strings
+71f7f202ba72bbed0bab93ea6c35328b56ba4b9c Merge PR #7935: A nil String argument stays nil through conditional assignment
+e8eeccd8c3dda6285f0c8ea95c5049c4c1a827b2 Merge PR #7934: Guarded patterns infer their bindings from the underlying pattern
+182f8bba6d005d5509ee2cd7ed5500c8f778f98b Merge PR #7932: The share probe numbers a random row by its place in the sample
+c3f83a4dd40ae891ca95d05d2a5ca9eb0425a3ce Merge PR #7930: A dynamic send forwarding a keyword splat reaches a builtin that takes no keywords
+b76bcfaead57e85b235c1b028d2d5bb394c1e3e3 Merge PR #7929: Klass === x tests a builtin's own values when the program reopens it
+4ad6e549a131b5a47f8d29bd282212ad0ec575ba Merge PR #7927: Bundle CRuby's `shellwords` as a pre-installed package
+fbc1bf652161ad1e95fea72bb36591dc86dbfa93 Merge PR #7926: Bundled optparse recognizes both forms of --[no-] switches
+e8bfaecd149ed36f329be36fbecf99ee3e0add06 Merge PR #7924: A spliced method's appended-to parameter keeps its String when the block reassigns the argument
+e40bbc4cd93de44da665bcc7d1ddf983afaefb14 Merge PR #7923: infer-test pins the C types an empty [] default gives
+2912dd0c1b22b19e3af095a4e1a7bda7e230e970 Merge PR #7922: Thread.start and Thread.fork are Thread.new
+a7381e226466eefdcd18c480cda136003e381240 Merge the macOS test fix and #7925 with the wasm guard
+5efe2aa874ccc142ccab9ac45093adae35774fcf Unary plus preserves boxed String aliases under the sharing flag
+a2d7398983d647c7d579365481b87d4a791902a2 Guarded patterns infer their bindings from the underlying pattern
+f283f7823fa89c9a91cf98c952dde53fc237d4ed IO#winsize= is NotImplementedError where the platform has no TIOCSWINSZ
+44d5cff35f02531876ab0113703809bb15c09b61 Merge PR #7925: IO#winsize= sets the terminal size, as io/console does
+40971f95dae4da783ad7b2cef08b77917ec33228 socket_boxed_connect_nonblock_sockopt does not count how many sockets are ready at once
+c0b38401a46b8e12dff607046b252b43dd5f926b The share probe numbers a random row by its place in the sample
+311bebb6ca51b9adba1fab534f4e4dadbbb81d0a A mixed Array's uniq and set operations match elements as CRuby's do
+68ceef8b3efd143c54ca9bf37c667762ab340e0a An aliased inspect or to_s answers p, puts and interpolation
+488957dc2d65b6377111af8682c281b0b845af71 A spliced method's appended-to parameter keeps its String when the block reassigns the argument
+a82c999340af520ce711088c9f47608a2bd2677a An instance variable argument a block's method or proc reassigns is not lent
+9d223d731b5de2781727ec2ae55b70c2367b13ff `+=` on a local holding a shared String handle raises String#+'s errors
+dd70c6aa5c18fbc3c1b560a96c54e2e8195e1207 strftime on a boxed Time takes a format known only at run time
+eb7367d999c8392dfea3ea17831e97048d2aae99 A constructor clone keeps its yielding module super target
+d25f62251f89800158da3d08f90f5dd2d839ee18 A class's own new runs its yielding initialize through Class#new
+4eb56ee971d3141b48bfa00f893a0f3cc0530d9a Bundled optparse reads optional values as CRuby does
+c1ee1a128a628770edc718573d93e6a53ac438be Merge PR #7916: A listening socket in a boxed slot answers to_io, accept and accept_nonblock
+d8555d1aeea145f265d4a7274693045416bd76b1 Merge PR #7912: An argument that hands on a shared String reaches an appending parameter
+620761fe952de9c21ebc874b8a7fb3ba8fed59e5 Merge PR #7911: A route's setbyte runs its arguments in order, and a yielded handle takes the cell
+455e4ead036e5c7c6afc511b01a42089ec68fde5 A shared String handle that holds nil raises NoMethodError on a mutator
+749af3af548aede61b57f891df68e52a95dc51dc A user-yielded block parameter keeps #7904's route when merged with the copy-carrying refusal
+034cd3da2a682aa542d4a670db1bad8b425ebea2 Merge PR #7904: The share facts follow object patterns, a user Enumerable's yields and blocks
+a5219f05647b3a19a584204f2126f21fb58d155a Merge PR #7903: A builtin call on nil or a boxed value runs its arguments before raising
+059607d85a60dec512eeba5256cb3ea2d07e017d A nil String argument stays nil through conditional assignment
+f5173cf66e32706e95dde6cb3e29424593afffb6 Merge PR #7917: A String Array the share rule converts after inference is a late widening
+d201d93d6d997be15c4bdd3fde65923c9594e9a3 Merge PR #7908
+107bb807f32c64bdb0fcc7c3ad9bbee45dc01d3e A program exception class's own method answers on a generic exception
+34ea92fe843dd1e83182a70ad17dd775b751804f Nested unary plus emits each String handle operand once
+19460a36bfef69f0bce8eb20fd11f6def1a8f49b Match --[no-] switch names with one scan
+c21e282ce5034de08554252a651722ba20b9f302 A dynamic send forwarding a keyword splat reaches a builtin that takes no keywords
+d2ba80c965553e8fd7ea8bf7378b8beee3b1560b File.open paths stay plain Strings under --share-strings
+8b39ee933601b9ff262bf7fa879e7f520bce7804 Bundle CRuby's `shellwords` as a pre-installed package
+910c521977d5780d397bee97bfdab18bd9c3f55c Bundled optparse recognizes both forms of --[no-] switches
+fc58d368fe56b71223c0275b58e6b4fcf4f6086f gets(sep, limit) through a splat takes the second argument as the limit
+93e8769dc5d34fa36b563298cbd8909d135c4b02 IO#winsize= sets the terminal size, as io/console does
+4b68ce7e7b69664dc176301047299f81a05d2fc5 infer-test pins the C types an empty [] default gives
+bc88efa61c58bdfdc9784258a5975628b7f8b51c Thread#raise on a boxed Thread raises in that thread
+45ca79042c0c2e4d2a9c8ed8f5169edad5adf398 A method's &block tested in a Thread or Fiber body it starts is read
+8dc5522541bb5bbe3ea10985da3344497e8ab6e7 Leave out share_strings_io_buffer_eof
+1eb7570a08e81c41732fa6f6e080ede8809fc58b is_index_assign is defined once
+6227dff375643587180e518c0c8e72b60469abda Merge PR #7918: A String-sharing probe carries a mutable String by every route to a second name
+060806226b811199fa2c2273b4109c7a931b1368 Merge PR #7915: A String argument a call's block reassigns keeps its String in the callee
+7748eb87c22ac17d75159f44cde4306a31ed61fa Merge PR #7914: $$ reads the process id
+116f7dbecce030071b484791c5e05f2cdd1289cc Merge PR #7913: An untyped conditional a method ends in is unboxed into its return type
+2b32279934fb415a9beb914861a3bc5b302d63c5 Merge PR #7910: A boxed Socket takes connect_nonblock, getsockopt, setsockopt
+5452c592d24c0d0107881629d30e648b47395391 Merge PR #7907: /re/ !~ x takes a nil or poly operand as /re/ =~ x does
+3992d850fc4f00f9d5d35c6be124968c1948aad4 Merge PR #7906: A Struct `[]=` through a box or by a computed key types the member
+cd3b2e97857fc36a8c38bee6cedd229ecd67d6ae Merge PR #7905: The boxed-receiver class walk asks name indexes instead of scanning the program
+42ebd5ba202177cc04dd4d6a81fce1500e0ba9a4 Merge PR #7902: Under --share-strings a global's Array or Hash holds its shared Strings as handles
+b6449ddee8135cdd0836f03bdd3396bf967c2610 Merge PR #7901: Hash#select and #reject keep a pair whose block answers 0 and drop one whose block answers nil, as CRuby does
+541490d91ae004b8b41d9a98f817fa8ebcab8074 Merge PR #7899: URI::RFC2396_Parser#pattern and URI::Generic#absolute?, as webrick reads them
+198d8f9bb3099a9a8cd4518419a4b70acd648b62 Merge PR #7898: A local follows the writes that widen after inference, in one place
+a3cb314dbe6acc0cad142b8bc80bc4df39eb3ef0 Merge PR #7897: A constant mapped from a literal table of Integer rows reads its rows unboxed
+c11cb950c4bc2db33ca538159c10c55bdcefef75 Merge PR #7896: Under --share-strings the String route refusals ask the share rule
+8a079cdb5d970baffeefa4683ccf40ad60347ad5 Merge PR #7895: Thread#raise given a class as a value raises that class
+88f9c836489c65ffbb6b1e303272298ec059613d Merge PR #7894: A method a demand reaches again is walked again only if its walk was cut
+4336ff0ac3bb85341485c6ba59b81696a296a5e8 Merge PR #7893: Raise NoMethodError for a nil element of a pointer Array that can hold one
+ba8cd66e9a26169be24041177f4d84fcd15aca86 Merge PR #7889: The division family's new method-name tests go through named helpers
+d4a73153b41975d72427e494d358b0899d96841a The share probe numbers its random cases as it numbers its covering ones
+0bad23c443672f54d185403c0618d47f1aef552f BasicSocket answers do_not_reverse_lookup, and addr takes a lookup flag
+63c9299563ff12d901c718c9ac70f3f44d95ccd8 A String Array the share rule converts after inference is a late widening
+440d3240d4b1bb9ba7f2ed5c942866d18a7928a0 Thread.start and Thread.fork are Thread.new
+c5ede1fd261a626691750efb2664fb21be897be7 Merge commit '101a1e952' into HEAD
+63931d879f44f73a971120bd5290e3ecf3b17f2d Enumerator.new's yielder parameter is no String to the mutator marks
+8d99e007a3b39154e93adcfba0dc02eab5b5d353 merge!/update on a typed Hash merges an argument boxed at run time
+4d7864139e96ec7db7cb0d83343eafb959a5d9c6 Klass === x tests a builtin's own values when the program reopens it
+101a1e952a88927965119ff0cd4c92da67e2d89f A chained write's targets take the literal's type in the re-join too
+d4351073aaf692afeff41d620f5eab3e3e6457ac A local follows the writes whose values widen after inference, in one place
+bb218278d57a29f2541f833f461799301d6ac717 infer_write_types joins each local write through a function of its own
+301da177ede904d4d5d7f47d8f219990e087d4ba The settled-row check names its operators through builtin_names
+307e4125f5d9b74764186ba980cf86e081dc592f A String-sharing probe carries a mutable String by every route to a second name
+2576079ceebdbb1295f10e81aa1bcae612a5d47a A boxed IO beside a class that owns the name takes the builtin arm
+980511d511013cf88f114ee5c2d381e39f0d8b2d The Struct `[]=` name tests go through the shared name predicates
+4941dbfe6f5294c1f3c6e85347b22b82bc648ba8 Under --share-strings a boxed Struct member holds a String as its handle
+bff97ea8eb8480460752eddc0dcd2ec774bacfa2 A Struct `[]=` leaves a String member's type, and types through an unbounded box only immediates
+60de74419d794928547bcac8e83fc6dc91d8ca3f A String stored into a Struct member by a multiple assignment stays refused without --share-strings
+414380b234fa32ce2878910d8274f5fa8cbac09e A multiple or operator assignment to a Struct member stores as `[]=` does
+459dfc73a2c3c6a7d3c674291904fe7f1c1c14ad A Struct `[]=` types only the Structs its box can hold, and shares a String handle
+6980580a36a8669827be7e640a954311aa240749 A String stored through a Struct `[]=` that copies it refuses under --share-strings
+166a995188873628015a104f384291494a96be41 A Struct `[]=` through a box or by a computed key types the member
+1f3c851d12efa38059c593280bbeadc63dbf0b84 The boxed-receiver class memo also resets when the tree is rewritten in place
+8c10b633e77efd4916acd452aea6445a4317d5ce A spliced method's read-only String parameter keeps the String it was given
+611f356c57f4a1640c07056a13f9b11ec0748678 A call whose block assigns a lent String argument shares it instead
+3d7e7cab42f6c1f916b38afc6a01897032118aae A constant's table binds its rows as Integer arrays only for settled rows
+439f9f39e5afd661dff085adb894802eeece1479 Under --share-strings a global's shared Array or Hash holds its Strings as handles
+7c4573d9195c51294f756f9020b70d067265b36d Under --share-strings the global Hash refusal asks the share rule
+680f526cd25b06f61c248bf77dca049a474d5fe4 The pickup's nil test leaves a call that reaches no method alone
+6a5b1837469563bd1d3fb30e0e612a56f86279b3 An untyped conditional a method ends in is unboxed into its return type
+016a1b94674b41d17e580dc5707ccbd1b8d544c7 A boxed receiver's slice(nil) holds its key boxed and answers as CRuby does
+ebf4926f782c941bd6e6eba9bc856d60a1ef5aaa An argument that hands on a shared String reaches an appending parameter as its handle
+74063e3a969fab8abc7fc3e27c42d373e6c182c8 The route refusals keep their messages in the functions that refuse
+e63ed9025af9a78fcbb6a541e413a2f56091533b A Hash block parameter that holds a String handle binds a handle of its own
+ccae7448b0df4ed98ebceebb43b61663812e3dc1 A table built in place runs its rows in source order
+baffd2c47dae309de29694bf98656a343f08c6ef A pattern's deconstruct that calls super shares the parts its parent answers
+563d7c12cc312661b1d0452ffa4a04480378f762 A method answering a typed String literal through `return` settles it boxed
+e9a82c9b16daf9fd35eaca567e4145564f21648a A String mutator's name on a box counts only where a String can make it
+6df3a455f0b23ed91a31fc9413b75653e11e0351 The share facts' and the native binding's name tests are named helpers
+0116b58106c6f7a56d09b78994846cdcf17ac4a2 The pickup's nil test counts the nils of the walk that admits the tail
+96bdce9a3c68c78fd9dde94c4caad26967e7a43a A reopened builtin keys to its reopening only where that has the method
+cfbc63f08642e7cd42371b531aa278afa6d7025e A StringIO under --share-strings reads and writes the String it is opened on
+306338ea4c6488c917ff904ccc1cd122cc1107b0 The share facts follow a user Enumerable's yields into its methods' answers
+db5a6bace041f65fdafeb96bef87ccbbe60cde79 The share facts read an object pattern's parts off its deconstruct
+44c89037782b2af37e2bb2d884d6f585250f5241 More arms that run every operand before they raise keep master's C
+8117a4e842f1ff2d21dd6bf1e958b35c84347edc Hash#select and #reject keep a pair whose block answers 0 and drop one whose block answers nil, as CRuby does
+572036d3cf9c0f670626be547b8b443d1af1b082 ThreadGroup, spliced as a builtin when a program names it
+5229ffe9a094560f3a587569b7a251e127e7a2fd A boxed operator's operands run in its runtime call, with no nil arm head
+5a317537186c61b47c6e9ed09b751a9c8cc6534c An arm reads the nil arm head's temp instead of holding its own copy
+d349343fe8a4fb54c73d8ab45922f4b385a1bbe0 An operand that ran first is held by its own temp, not copied again
+020764a2531fa06a59e2750b367b8d9e01c10df4 A builtin call on nil or a boxed value runs its arguments before raising
+0c2e4ef6861e0152489eaebef752eb2b5f037a81 The division family's new method-name tests go through named helpers
+8cdae47f58e924c600c8ed8a9e993ea39fbc680d A route's setbyte runs its arguments in order, and a yielded handle tail sets up inside the splice
+f45f39e9a62c31d53d4b4ef0750ae765ee09565f The boxed-receiver class walk asks name indexes instead of scanning the program
+02e9dc3cb3665259abd8a1da18cb1c878800a4dd An --rbs String parameter takes the shared handle under --share-strings
+746e8fba5c451e146e27f45c83454323b2d42602 A shared String handle that holds nil raises NoMethodError on a mutator
+4f21bc132f37930aaee90c6a6a10db262af089aa The constant-row check stops when its parent map cannot be allocated
+5d9c6ef7880f4ce11c345790860d02c82afc66d7 $$ reads the process id
+bc5e7562ebf18183aafa5cb82bcc9182be581d8e A listening socket in a boxed slot answers to_io, accept and accept_nonblock
+b001fb077192940b4d17f44cb407130fb12942e1 /re/ =~ x matches a shared-string handle in a poly operand as a String
+6c24c3e5218c2b22ed905352c4ca42f70bb4b161 share_strings_io_buffer_eof: the PR's test for the end-of-file buffer rule
+482918b3cfe76dbff5dd685569bd6e9277644aca Docs: native Windows, community-maintained
+6d0d5e2e4d6d1e4492c55d45b7652dd0c6735096 /re/ !~ x takes a nil or poly operand as /re/ =~ x does
+e4cf3387da328cc2b1310c331482a098c67c31ed The shim lifts only its own local's type
+c6f9e744bdae1abcbe56f09f829bdab554b8af01 A proc, thread or fiber made inside a shim's argument shares the local's real cell
+2a26b5172bd17831bd9209f7d913efa52c4e00ba A captured local's in-place String changes spell its cell, not lv_<name>
+a85cc4cf256444b738cbb749b872681ac7487046 Merge PR #7882: Spinel never finishes compiling a yielding initialize that builds its self
+40bb12f3322ecdcc204eb4352e460bbcb4e5b528 A method a demand reaches again is walked again only if its walk was cut
+759d120fd2078122a0f85913899e8c9c79023ac0 The route shim's swap takes the (empty) buffer of what it put ahead
+66487693c33009d3a394dff3870a9b5e0248f783 Merge PR #7892: select.with_index and reject.with_index test the block's value by Ruby's truthiness
+07698f166249a04465d5846e92795dbfff808d7b Merge PR #7890: A module a builtin's reopening includes answers is_a?, === and when
+f0b735cd572ec47243a5e8ee71b0e97879606914 Merge PR #7888: Root no argument temp copied from a local its statement cannot rebind
+86b3f216dac004ba17848cf143d3cd759b0d082f Merge PR #7886: readpartial, sysread and pread empty a boxed output buffer before the EOFError
+29dc15c7e758930ce41f20ca22dd35aefd8f538a Merge PR #7885: A method's dropped value and a << chain no longer share its String parameter
+6b3b23282915490061b8249034d5b1259ab9a163 Merge PR #7884: --share-strings lends no String parameter the default build passes by value
+378bd62f72e558ccece618b660be6fcadd27eaa4 Merge PR #7883: Division by a Rational floors the exact quotient on every receiver
+f64283665a30ff7ac3b69f7bcb0efc7f2697fdc9 Merge PR #7881: A route that answers the String it is handed carries the shared handle
+72d0af1bddc57d4d1f12d6da95def139bc5fc774 Merge PR #7880: A String's []= value runs before the String is cut
+a4867a2f3e6ce7c5ae58f57c17848f37c9895c63 Merge PR #7879: An Enumerable reopening keeps the builtins unless it names one itself
+422c34e01467bfc78fa2846df622d9e7acabb21b Merge PR #7878: The early-call refusal ahead of an alias looks only in the class's bodies
+52b18f8c0bba0fc345b6cc2a178e8b1d3b18f236 Merge PR #7877: A TCPSocket beside an SSLSocket takes setsockopt and an outbuf
+ddc21015ef34b135fa84a9ee6886a2ed4dcbb76b Merge PR #7876: case/when matches a Regexp that is no literal
+3fa76e9d78e367673ee502e8028beca0dd8e76d3 Merge PR #7875: A String-to-String Hash's read is no boxed handle
+63948239552faf89fd172ea782137bef1b9f2df4 A cycle of constructors through a class's own yielding new is found too
+3b53b54a2ab0cdf3c482dea5e9e3de0412404018 Build the compiler, the runtime and its programs on native Windows
+05669636ef460e82c65d84599c894f40255a6d01 Raise NoMethodError for a nil element of a pointer Array that can hold one
+91d57565a204420379d63577ed8fc887adc988bf URI::RFC2396_Parser#pattern and URI::Generic#absolute?, as webrick reads them
+7598c823857662226bf3c93a6517e367dbd171c1 Thread#raise given a class as a value raises that class
+f5dbac18c3ff6c00d46e7dbb2ad201672935f044 lib/win32: the POSIX surface MinGW-w64 leaves out
+6013623512ca7d5ae369a378fc7b6c206446f60b readpartial, sysread and pread empty a boxed output buffer before the EOFError
+262804b3b12dfa912376c6f06b58cfa6dcae4946 Integer divmod, modulo and remainder by a Rational answer exactly
+0ba0f83c798277a6a856e404fcec7e9284c5be1f Runtime: the seams a native Windows build needs
+13f5765ebeaadb4207b48caf6523703b45099ee0 A method's dropped value and a << chain no longer share its String parameter
+efc071d96c0b3cb482ad97a26853a54c48761b79 A module a builtin's reopening includes answers is_a?, === and when
+2720da6735b68fe1012b251ed17020d5c4b1a079 A cycle of constructors through a module or a yielding helper runs through the constructor too
+f8a1e7969fb193e4ce788fe9226825d9667de196 The share rule lends no String parameter the default build passes by value
+c3200df532a59ba9cedbf6e48ac268f316023dcb A String's []= value runs before the String is cut
+ba0ef5605446814305dc484cc29d9a0d14fa2803 select.with_index and reject.with_index test the block's value by Ruby's truthiness
+059334c0750f9ca21472f0811f33ccc660daf568 A route that answers the String it is handed carries the shared handle
+d19d8f7aeb56e5f438a6b3024e882307d4346053 A boxed Socket takes connect_nonblock, getsockopt, setsockopt
+4d3dcbd0f5a88c226db317801a87ae0c06c6211c Under --share-strings the String route refusals ask the share rule
+0a7e5a3310ccb7505abee66b479aedec6568c732 Root no argument temp copied from a local its statement cannot rebind
+cf073326474c1b75d54c94193ec9ef7bf0727cfc The early-call refusal ahead of an alias looks only in the class's bodies
+a1c149116114084fa378734b2e7808c13eaead75 An Enumerable reopening keeps the builtins unless it names one itself
+5f0c547d4172a3926de919b8a14a6bee7f05276f A constant mapped from a literal table of Integer rows reads its rows unboxed
+9274c732eaa204a5df31fbfd38e4efd097e99a2c Merge PR #7874: An untyped conditional arm is unboxed into a typed conditional's result
+7352eecf9c61a161281c112182556b04b16a3d92 A TCPSocket beside an SSLSocket takes setsockopt and an outbuf
+3ff7dfd3d9aa2eeaf5fd4eb15f1f67fbae9dfceb An untyped conditional arm is unboxed into a typed conditional's result
+2a26683771cb1cfaa829d6fd9285af30e55a5605 Merge PR #7873: A block forwarded with & is found through the calls that can reach it
+0d979722b9cbc7cacdf40aae67ae76f661310e94 system takes a splat, and Kernel.exec and Kernel.spawn are module functions
+2b9da7e54e114b7d61986c0939084dc7a17f8ed3 A block forwarded with & is found through the calls that can reach it
+e31802550cf976b74f2f46f287c29f2e9f46a769 case/when matches a Regexp that is no literal
+1df866be9c54bbb3ce28c7ddcb40c74b5bb694c8 Merge PR #7871: A read's outbuf keeps binary bytes past a NUL
+a785162aa79a3d3c2495d995ed12cf72bfd58c01 Merge PR #7872: The share facts follow break and next values, patterns, global aliases and builtin containers
+6f4f4b1b6b51bfe37c225ecc8579b9cd507fd5f6 An Array local follows a late widening of the call it is written
+bc38bb0e0d65ae13876ba09cf2f2b91c57c12809 An OpenStruct has no each_pair share row
+5c78f07e5906542d42b7af54634d22ed5d4e0c61 Merge PR #7870: A boxed element store keeps a receiver its key or value rebinds, and a boxed Range key reads its span as CRuby does
+4e04ef87e867cb501a37af45f5c92f058269c36f string_unpack_directives reads j/J at the pointer size on any build
+b1e6213ed67ae786b5302aeb4623235f2065d373 unpack reads j/J/p/P at the pointer size, as pack writes them
+c66ece5f0126c405f0009dba5618a43ef7a63557 A read's outbuf keeps binary bytes past a NUL
+c800d248e22bc23fbf8cc3c06e1c9533cd1cd31d A boxed element store keeps a receiver its key or value rebinds, and a boxed Range key reads its span as CRuby does
+e59fdce9551db2603150cd1c3936a2a53389d929 array_pack_native_ints compares native sizes with the pointer size
+f17909550873498ba60416ae1cb35aa262000bba Merge PR #7867: Array#pack writes i/I/j/J/p/P and the native l!/L!
+53788f027ac6a187d569d5491dfdb2c38bf310b7 A block parameter's source walk reads the calls of its scope from an index
+ca05d8f96f1573ff6c8c4b5789a71ea973dfe50a Array.new(a) is not followed, and a whole-String pattern binding takes the subject's handle
+6f23efc2f228edacd58d51c228e6fdadb0f43bf7 Array#pack writes i/I/j/J/p/P and the native l!/L!
+3af506c6f4375a67b04b3ce4ddc241f3094216fd Division by a Rational floors the exact quotient on every receiver
+a0391f7c2dcb698bdde572a2c6a796d78bb4b26c The share facts follow break and next values, patterns, global aliases and builtin containers
+46a12a7275e8d98912083ec570ba19bbb5680505 A cycle of constructors through other classes runs through the constructor too
+a3f3554b6998683bd3edb582fe21661c41116b0f Runtime: the seams a native Windows build needs
+74de7d48de02772b471c0c4341f63ebf89632205 lib/win32: the POSIX surface MinGW-w64 leaves out
+eb9b0281f3a8e61cfc89d24c697f2bc44c15c61f A yielding initialize that builds its own class runs the inner body through its constructor
+117906f6e74c5b8f33b3a00680dc3b604c76d856 A String-to-String Hash's read is no boxed handle

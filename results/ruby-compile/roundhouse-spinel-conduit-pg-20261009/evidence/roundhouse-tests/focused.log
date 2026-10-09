@@ -1,0 +1,171 @@
+   Compiling roundhouse v2026.9.18 (/work/app/src/roundhouse)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.62s
+     Running tests/api_mode.rs (/work/app/build/cargo-target/debug/deps/api_mode-3ef76c5e256a38f4)
+
+running 2 tests
+test dispatch_has_a_complete_table_without_a_root ... ok
+test json_handlers_and_nested_params_are_lowered ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/assoc_loaded_lowering.rs (/work/app/build/cargo-target/debug/deps/assoc_loaded_lowering-2274a360006c9f77)
+
+running 9 tests
+test assoc_loaded_mixed_owner_union_residuals_under_check ... ok
+test assoc_loaded_two_hop_types_as_bool_under_check ... ok
+test assoc_loaded_rewrites_two_hop_to_flat_predicate ... ok
+test association_target_collapses_inside_concern_module ... ok
+test assoc_loaded_skips_untyped_explicit_receiver ... ok
+test association_target_collapses_to_reader ... ok
+test assoc_loaded_skips_mixed_owner_union ... ok
+test association_target_skips_reader_on_unrelated_model ... ok
+test assoc_loaded_rewrites_implicit_self_two_hop ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/boot_hooks.rs (/work/app/build/cargo-target/debug/deps/boot_hooks-7f35ce643e34e1c1)
+
+running 2 tests
+test boot_hooks_reject_unlowered_registration_forms ... ok
+test boot_hooks_emit_and_run_in_registration_order ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running tests/class_instance_state.rs (/work/app/build/cargo-target/debug/deps/class_instance_state-8904455654e7e3ea)
+
+running 14 tests
+test class_instance_state_initializers_run_once_natively ... ignored, requires the native Spinel compiler
+test class_instance_state_runs_natively ... ignored, requires the native Spinel compiler
+test spinel_refuses_class_state_with_redefined_methods ... ok
+test spinel_refuses_class_state_with_redefined_methods_across_reopens ... ok
+test spinel_keeps_reopens_without_conflicting_state_methods ... ok
+test class_instance_state_preserves_method_order ... ok
+test module_instance_state_initializes_the_module_object ... ok
+test class_instance_state_retains_compound_writes ... ok
+test class_instance_state_orders_redefined_accessors ... ok
+test class_instance_state_preserves_subclass_accessors ... ok
+test class_instance_state_initializes_in_source_order ... ok
+test module_instance_state_retains_compound_writes ... ok
+test class_instance_state_initializers_run_once ... ok
+test class_instance_state_keeps_its_order_across_a_require_split ... ok
+
+test result: ok. 12 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.90s
+
+     Running tests/class_instance_state_alias.rs (/work/app/build/cargo-target/debug/deps/class_instance_state_alias-20476438d5b6b57f)
+
+running 2 tests
+test alias_method_spans_point_to_the_alias_declaration ... ok
+test class_and_module_aliases_follow_their_declarations ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.93s
+
+     Running tests/compile_contract_surfaces.rs (/work/app/build/cargo-target/debug/deps/compile_contract_surfaces-936b362bc8f3ad99)
+
+running 4 tests
+test string_error_predicate_remains_unclaimed ... ok
+test record_with_lock_is_known_and_preserved ... ok
+test symbolic_error_predicate_uses_structured_entries ... ok
+test error_predicate_runtime_matches_attribute_and_type ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/errors_index_lowering.rs (/work/app/build/cargo-target/debug/deps/errors_index_lowering-abfa363353434f1d)
+
+running 10 tests
+test foreign_receiver_keeps_its_receiver ... ok
+test messages_emptiness_is_the_accumulator_emptiness ... ok
+test self_receiver_grounds_to_the_prefix_strip ... ok
+test unrelated_index_receiver_is_untouched ... ok
+test multi_word_field_humanizes_like_the_bake ... ok
+test messages_key_asks_the_accumulator_for_the_field ... ok
+test messages_index_reads_like_errors_index ... ok
+test dynamic_field_declines_with_residue ... ok
+test whole_messages_and_to_hash_use_retained_attributes ... ok
+test base_declines_with_residue ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/harvest_return_oscillation.rs (/work/app/build/cargo-target/debug/deps/harvest_return_oscillation-7832bdbe8cfa1846)
+
+running 1 test
+test circular_config_load_keeps_known_consumers_and_a_gradual_cycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/integer_query_predicates.rs (/work/app/build/cargo-target/debug/deps/integer_query_predicates-c0933e58f70d1f1e)
+
+running 2 tests
+test integer_storage_widths_are_emitted_from_schema ... ok
+test integer_query_runtime_matches_rails_boundaries_and_prefix_casts ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/library_class_inferred_signatures.rs (/work/app/build/cargo-target/debug/deps/library_class_inferred_signatures-3d306c22c8af9c78)
+
+running 6 tests
+test a_plain_class_is_not_untyped_end_to_end ... ok
+test a_union_with_a_gradual_arm_renders_as_untyped ... ok
+test a_rest_slot_is_not_declared_from_its_first_vararg ... ok
+test a_block_return_does_not_erase_an_unknown_room_tail ... ok
+test initialize_is_left_alone ... ok
+test a_return_travels_the_whole_chain ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/pessimistic_locking.rs (/work/app/build/cargo-target/debug/deps/pessimistic_locking-91b3dd69d40433ee)
+
+running 2 tests
+test lock_and_with_lock_run_on_spinel ... ignored, requires the Spinel toolchain
+test lock_and_with_lock_run_on_ruby ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+     Running tests/rails_surface.rs (/work/app/build/cargo-target/debug/deps/rails_surface-b6c386f3a26cbd6b)
+
+running 8 tests
+test array_to_set_demands_its_bundled_library_without_a_set_constant ... ok
+test singleton_ivar_initializers_are_eager_and_keep_source_order ... ok
+test find_each_on_class_roots_on_relation ... ok
+test association_scope_keeps_owner_predicate_for_pluck_and_update ... ok
+test bang_find_create_saves_with_bang_even_inside_rescue ... ok
+test uniqueness_retains_error_attribute_and_type_and_excludes_persisted_self ... ok
+test or_scope_branches_start_from_independent_copies ... ok
+test left_joins_resolves_associations_and_projection_rows_are_retained ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/reload_receiver.rs (/work/app/build/cargo-target/debug/deps/reload_receiver-45f2f2c7dbe82a63)
+
+running 2 tests
+test reload_retains_receiver_type_natively ... ignored, requires the native Spinel compiler
+test reload_retains_receiver_type_and_runs ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.43s
+
+     Running tests/secure_password_nil_writers.rs (/work/app/build/cargo-target/debug/deps/secure_password_nil_writers-0bb376457e3473a8)
+
+running 14 tests
+test supplied_nil_confirmation_initialization_runs_on_spinel ... ignored, requires the Spinel toolchain
+test supplied_nil_confirmation_update_bang_runs_on_spinel ... ignored, requires the Spinel toolchain
+test supplied_nil_confirmation_update_runs_on_spinel ... ignored, requires the Spinel toolchain
+test supplied_nil_password_initialization_runs_on_spinel ... ignored, requires the Spinel toolchain
+test supplied_nil_password_update_bang_runs_on_spinel ... ignored, requires the Spinel toolchain
+test supplied_nil_password_update_runs_on_spinel ... ignored, requires the Spinel toolchain
+test unrelated_nil_handling_stays_unchanged_on_spinel ... ignored, requires the Spinel toolchain
+test supplied_nil_password_update_runs_on_ruby ... ok
+test supplied_nil_password_initialization_runs_on_ruby ... ok
+test supplied_nil_confirmation_update_runs_on_ruby ... ok
+test supplied_nil_password_update_bang_runs_on_ruby ... ok
+test supplied_nil_confirmation_update_bang_runs_on_ruby ... ok
+test supplied_nil_confirmation_initialization_runs_on_ruby ... ok
+test unrelated_nil_handling_stays_unchanged_on_ruby ... ok
+
+test result: ok. 7 passed; 0 failed; 7 ignored; 0 measured; 0 filtered out; finished in 0.71s
+
+     Running tests/spinel_raw_websocket.rs (/work/app/build/cargo-target/debug/deps/spinel_raw_websocket-67772dcb9887fe5a)
+
+running 1 test
+test raw_websocket_closes_wake_and_retire_the_connection ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+

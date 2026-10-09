@@ -1,0 +1,40 @@
+   Compiling roundhouse v2026.9.18 (/work/app/build/upstream-current)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 41.01s
+     Running tests/runtime_src_integration.rs (/work/app/build/cause-target/debug/deps/runtime_src_integration-262eae67de34c55d)
+
+running 2 tests
+framework runtime Bar B residual (Ty::Untyped sites): 316 across 29 files
+  active_record/relation.rb: 82
+  active_support_ext.rb: 44
+  active_record/connection.rb: 28
+  action_view/view_helpers.rb: 26
+  logger.rb: 23
+  active_record/base.rb: 10
+  action_text.rb: 10
+  action_dispatch/request.rb: 10
+  gem_facades.rb: 9
+  action_dispatch/session.rb: 8
+  rails.rb: 7
+  action_controller/cookies.rb: 7
+  active_record/errors.rb: 7
+  json_builder.rb: 7
+  tempfile.rb: 6
+  action_view/view_helpers_ext.rb: 6
+  action_controller/parameter_missing.rb: 4
+  timeout.rb: 3
+  nokogiri_facade.rb: 3
+  active_storage.rb: 3
+  active_job.rb: 2
+  mime.rb: 2
+  action_dispatch/flash.rb: 2
+  resolv.rb: 2
+  active_record/registry.rb: 1
+  active_record/connection_pool.rb: 1
+  inflector_ext.rb: 1
+  active_record/token_for.rb: 1
+  active_record/signed_id.rb: 1
+test every_runtime_method_body_concretely_typed ... ok
+test every_runtime_method_body_is_fully_typed ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.25s
+

@@ -1,0 +1,488 @@
+diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+index 8ec79385..f9235d14 100644
+--- a/runtime/ruby/active_record/base.rb
++++ b/runtime/ruby/active_record/base.rb
+@@ -159,6 +159,44 @@ module ActiveRecord
+     lo
+   end
+ 
++  # Integer query serialization, before any machine-integer conversion.
++  # Empty means out of range (a false predicate); NULL means a nonnumeric
++  # string. Keep those distinct: NOT(false) and NOT(col = NULL) differ.
++  def self.integer_query_value(text, limit)
++    value = text.lstrip
++    negative = value.start_with?("-")
++    value = value.sub(/\A[+-]/, "")
++    return "NULL" unless value.match?(/\A[0-9]/)
++    digits = ""
++    i = 0
++    while i < value.length
++      char = value[i, 1]
++      if char.match?(/\A[0-9]\z/)
++        digits = digits + char
++      elsif char == "_" && i + 1 < value.length && value[i + 1, 1].match?(/\A[0-9]\z/)
++        # Ruby to_i accepts a single underscore between digits.
++      else
++        break
++      end
++      i += 1
++    end
++    digits = digits.sub(/\A0+/, "")
++    digits = "0" if digits.empty?
++    bound = if limit == 4
++      negative ? "2147483648" : "2147483647"
++    else
++      negative ? "9223372036854775808" : "9223372036854775807"
++    end
++    return "" if digits.length > bound.length
++    return "" if digits.length == bound.length && digits > bound
++    negative && digits != "0" ? "-#{digits}" : digits
++  end
++
++  def self.integer_query_predicate(column, text, limit)
++    value = integer_query_value(text, limit)
++    value.empty? ? "1=0" : "#{column} = #{value}"
++  end
++
+   # Base class for all models. Designed to contain *zero* metaprogramming:
+   # subclasses provide their own `attributes`, `[]`, `[]=`, `update`, and
+   # `initialize`-from-attrs methods (typically by writing them out per
+@@ -360,6 +398,10 @@ module ActiveRecord
+     # legitimately has none, and the lowering emits the (possibly empty)
+     # list for every schema-backed model. `_as_json_only` reads it to
+     # decide which values need Rails' ISO8601 JSON form.
++    def self.schema_integer_limits
++      {}
++    end
++
+     def self.schema_time_columns
+       []
+     end
+diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+index 9806fbd0..701639fc 100644
+--- a/runtime/ruby/active_record/base.rbs
++++ b/runtime/ruby/active_record/base.rbs
+@@ -11,6 +11,8 @@ module ActiveModel
+ end
+ 
+ module ActiveRecord
++  def self.integer_query_value: (String text, Integer limit) -> String
++  def self.integer_query_predicate: (String column, String text, Integer limit) -> String
+   # The 9-method adapter contract `Base.find` / `Base.create!` / etc.
+   # dispatch through. Phantom RBS-only class — no Ruby source body,
+   # each target ships its own concrete implementation (Rust trait +
+@@ -136,6 +138,7 @@ module ActiveRecord
+     def self._cast_primary_key: (Integer | String id) -> (Integer | String | nil)
+     def self._string_primary_key: () -> bool
+     def self.schema_columns: () -> Array[Symbol]
++    def self.schema_integer_limits: () -> Hash[String, Integer]
+     def self.schema_time_columns: () -> Array[Symbol]
+     def self.schema_date_columns: () -> Array[Symbol]
+     def self.instantiate: (Hash[String, untyped] _row) -> Base
+diff --git a/runtime/ruby/active_record/connection.rb b/runtime/ruby/active_record/connection.rb
+index 8b1cae62..f83b558b 100644
+--- a/runtime/ruby/active_record/connection.rb
++++ b/runtime/ruby/active_record/connection.rb
+@@ -313,6 +313,7 @@ module ActiveRecord
+     # dispatch (same split as find) so Spinel never compiles String into
+     # an Integer adapter slot.
+     def self.exists?(id)
++      return ActiveRecord::Relation.new(self).exists?(id) if id.is_a?(Hash)
+       return false if id.nil?
+       _exists_primary_key_input(id)
+     end
+diff --git a/runtime/ruby/active_record/connection.rbs b/runtime/ruby/active_record/connection.rbs
+index adfd8619..740c04ee 100644
+--- a/runtime/ruby/active_record/connection.rbs
++++ b/runtime/ruby/active_record/connection.rbs
+@@ -63,7 +63,7 @@ module ActiveRecord
+     def update_column: (String | Symbol name, untyped value) -> bool
+     def _as_json_only: (Array[Symbol] only) -> Hash[String, untyped]
+     # Nil and uncastable request keys reject before the scalar adapter.
+-    def self.exists?: (Integer | Float | String | nil id) -> bool
++    def self.exists?: (Hash[String | Symbol, untyped] | Integer | Float | String | nil id) -> bool
+     def self._exists_primary_key_input: (Integer | Float | String | nil id) -> bool
+     # Ruby-family overrides of base.rb's Array / COUNT fallbacks.
+     def self.find_by: (Hash[String | Symbol, untyped] conditions) -> Base?
+diff --git a/runtime/ruby/active_record/relation.rb b/runtime/ruby/active_record/relation.rb
+index 5396fcb9..53d39754 100644
+--- a/runtime/ruby/active_record/relation.rb
++++ b/runtime/ruby/active_record/relation.rb
+@@ -1446,7 +1446,7 @@ module ActiveRecord
+       sql = if id.is_a?(Hash)
+         hash_conditions(id)
+       else
+-        "#{@table}.#{@model.primary_key} = #{ActiveRecord.adapter.escape_value(id)}"
++        column_predicate(@model.primary_key, id)
+       end
+       @wheres << sql unless sql.empty?
+       begin
+@@ -2045,6 +2045,11 @@ module ActiveRecord
+     def column_predicate(col, val)
+       col = sql_ident(col)
+       qcol = col.include?(".") ? col : "#{@table}.#{col}"
++      limits = @model.schema_integer_limits
++      limit = limits.fetch(col, 0)
++      if limit > 0 && !val.is_a?(Relation) && !val.nil?
++        return integer_column_predicate(qcol, val, limit)
++      end
+       if val.is_a?(Relation)
+         # A relation value is Rails' subquery form —
+         # `where(story_id: Tagging.where(...).select(:story_id))` →
+@@ -2074,6 +2079,40 @@ module ActiveRecord
+       end
+     end
+ 
++    def integer_value(val, limit)
++      scalar = val.is_a?(Base) ? val.id : val
++      text = if scalar == true
++        "1"
++      elsif scalar == false
++        "0"
++      elsif scalar.is_a?(Float)
++        scalar.to_i.to_s
++      else
++        scalar.to_s
++      end
++      ActiveRecord.integer_query_value(text, limit)
++    end
++
++    def integer_column_predicate(col, val, limit)
++      if val.is_a?(Array)
++        values = []
++        has_null = false
++        val.each do |item|
++          if item.nil?
++            has_null = true
++          else
++            value = integer_value(item, limit)
++            values << value unless value.empty?
++          end
++        end
++        sql = values.empty? ? "1=0" : "#{col} IN (#{values.join(", ")})"
++        has_null ? "(#{sql} OR #{col} IS NULL)" : sql
++      else
++        value = integer_value(val, limit)
++        value.empty? ? "1=0" : "#{col} = #{value}"
++      end
++    end
++
+     # For positional binds, split only the original `?` placeholders,
+     # keeping escaped values verbatim. Preserve trailing empty parts so
+     # missing binds leave their `?` intact. (`String#sub` used to search
+diff --git a/runtime/ruby/active_record/relation.rbs b/runtime/ruby/active_record/relation.rbs
+index 413446ed..be14d22e 100644
+--- a/runtime/ruby/active_record/relation.rbs
++++ b/runtime/ruby/active_record/relation.rbs
+@@ -268,6 +268,8 @@ module ActiveRecord
+     def distinct_count_columns: () -> String
+     def exists_sql: (Integer n) -> String
+     def hash_conditions: (Hash[String | Symbol, untyped] hash) -> String
++    def integer_value: (untyped val, Integer limit) -> String
++    def integer_column_predicate: (String col, untyped val, Integer limit) -> String
+     def column_predicate: (String col, Relation | Array[untyped] | Base | String | Integer | Float | bool | nil val) -> String
+     def substitute_binds: (String sql, Array[untyped] args) -> String
+     def substitute_named_binds: (String sql, Hash[Symbol, untyped] binds) -> String
+diff --git a/src/lower/arel/visitor.rs b/src/lower/arel/visitor.rs
+index 16af1328..0cb46cbd 100644
+--- a/src/lower/arel/visitor.rs
++++ b/src/lower/arel/visitor.rs
+@@ -1107,7 +1107,7 @@ fn push_order_segment(segments: &mut Vec<Expr>, orders: &[super::ir::Order], tab
+ fn push_where_segments(
+     segments: &mut Vec<Expr>,
+     preds: Option<&Predicate>,
+-    _table: &Table,
++    table: &Table,
+     param: bool,
+     binds: &mut Vec<Bind>,
+     read_id: usize,
+@@ -1116,12 +1116,13 @@ fn push_where_segments(
+         return;
+     };
+     segments.push(lit_str(" WHERE ".to_string()));
+-    push_predicate_segments(segments, pred, param, binds, read_id);
++    push_predicate_segments(segments, pred, table, param, binds, read_id);
+ }
+ 
+ fn push_predicate_segments(
+     segments: &mut Vec<Expr>,
+     pred: &Predicate,
++    table: &Table,
+     param: bool,
+     binds: &mut Vec<Bind>,
+     read_id: usize,
+@@ -1143,19 +1144,39 @@ fn push_predicate_segments(
+         }
+         Predicate::NullableEq(_, _) => unreachable!("only runtime predicates select a shape"),
+         Predicate::Eq(col, val) => {
++            let limit = table.columns.iter().find(|c| c.name == col.column).and_then(|c| {
++                match c.col_type {
++                    crate::schema::ColumnType::Integer => Some(4),
++                    crate::schema::ColumnType::BigInt | crate::schema::ColumnType::Reference { .. } => Some(8),
++                    _ => None,
++                }
++            });
++            if let Some(limit) = limit.filter(|_| crate::postgresql_enabled()) {
++                let text = match val {
++                    Value::Runtime { expr, .. } => send_to(expr.clone(), "to_s", vec![], false),
++                    Value::LiteralInt(n) => lit_str(n.to_string()),
++                    Value::LiteralStr(s) => lit_str(s.clone()),
++                    Value::LiteralBool(b) => lit_str(if *b { "1" } else { "0" }.into()),
++                    Value::LiteralNull => unreachable!(),
++                };
++                segments.push(db_call(&ClassId(Symbol::from("ActiveRecord")), "integer_query_predicate", vec![
++                    lit_str(crate::naming::sql_ident(col.column.as_str())), text, lit_int(limit),
++                ]));
++                return;
++            }
+             segments.push(lit_str(format!("{} = ", crate::naming::sql_ident(col.column.as_str()))));
+             push_value_segment(segments, val, param, binds);
+         }
+         Predicate::And(l, r) => {
+-            push_predicate_segments(segments, l, param, binds, read_id);
++            push_predicate_segments(segments, l, table, param, binds, read_id);
+             segments.push(lit_str(" AND ".to_string()));
+-            push_predicate_segments(segments, r, param, binds, read_id);
++            push_predicate_segments(segments, r, table, param, binds, read_id);
+         }
+         Predicate::Or(l, r) => {
+             segments.push(lit_str("(".to_string()));
+-            push_predicate_segments(segments, l, param, binds, read_id);
++            push_predicate_segments(segments, l, table, param, binds, read_id);
+             segments.push(lit_str(" OR ".to_string()));
+-            push_predicate_segments(segments, r, param, binds, read_id);
++            push_predicate_segments(segments, r, table, param, binds, read_id);
+             segments.push(lit_str(")".to_string()));
+         }
+     }
+@@ -1890,7 +1911,7 @@ mod tests {
+     }
+ 
+     #[test]
+-    fn param_on_single_hydrate_emits_placeholder_and_bind() {
++    fn integer_predicate_serializes_before_prepare_even_with_param_binds() {
+         let (schema, owner) = fixture_schema();
+         let sel = Select {
+             single_record: true,
+@@ -1908,27 +1929,24 @@ mod tests {
+         let table = &schema.tables[&Symbol::from("articles")];
+         let body = emit_single_hydrate(&sel, table, &owner, true);
+ 
+-        // SQL keys on the static shape — placeholder, no inline escape call.
++        // An integer serializer can turn the equality into 1=0. It must
++        // run before prepare, including under the experimental bind gate.
+         let sql = prepare_sql(&body);
+-        assert!(sql.contains("WHERE id = ?"), "expected placeholder WHERE; got:\n{sql}");
+-        assert!(!sql.contains("«expr»"), "no inline value segment expected; got:\n{sql}");
++        if !crate::postgresql_enabled() {
++            assert!(sql.contains("WHERE id = ?"), "got: {sql}");
++            assert!(db_stmt_calls(&body).iter().any(|(m, _)| m == "bind_int"));
++            return;
++        }
++        assert!(sql.contains("WHERE «expr»"), "got: {sql}");
++        let emitted = crate::emit::ruby::emit_expr(&body);
++        assert!(emitted.contains("ActiveRecord.integer_query_predicate(\"\\\"id\\\"\", id.to_s, 4)"), "{emitted}");
++        assert!(db_stmt_calls(&body).iter().all(|(m, _)| !m.starts_with("bind_")));
+ 
+-        // A `Db.bind_int(stmt, 1, id)` lands right after prepare.
+-        let calls = db_stmt_calls(&body);
+-        let bind = calls.iter().find(|(m, _)| m == "bind_int").expect("bind_int call");
+-        assert_eq!(bind.1.len(), 3, "bind_int(stmt, idx, expr)");
+-        assert!(
+-            matches!(bind.1[1].node.as_ref(), ExprNode::Lit { value: Literal::Int { value: 1 } }),
+-            "1-based bind index"
+-        );
+-        // And exactly one bind for one runtime value.
+-        assert_eq!(calls.iter().filter(|(m, _)| m.starts_with("bind_")).count(), 1);
+     }
+ 
+     #[test]
+-    fn param_off_keeps_inline_escape() {
+-        // Same op, gate OFF → the pre-existing inline-escape emit: no
+-        // `?`, no bind call (byte-identical to today).
++    fn param_off_keeps_integer_serialization_inline() {
++        // Gate OFF uses the same range-aware integer serializer.
+         let (schema, owner) = fixture_schema();
+         let sel = Select {
+             single_record: true,
+@@ -1958,7 +1976,7 @@ mod tests {
+     }
+ 
+     #[test]
+-    fn param_on_count_with_where_binds() {
++    fn integer_count_serializes_before_prepare() {
+         let (schema, _) = fixture_schema();
+         let sel = Select {
+             single_record: false,
+@@ -1976,8 +1994,13 @@ mod tests {
+         let table = &schema.tables[&Symbol::from("articles")];
+         let body = emit_count(&sel, table, true);
+         let sql = prepare_sql(&body);
+-        assert!(sql.contains("COUNT(*)") && sql.contains("WHERE id = ?"), "got:\n{sql}");
+-        assert!(db_stmt_calls(&body).iter().any(|(m, _)| m == "bind_int"), "expected bind_int");
++        if !crate::postgresql_enabled() {
++            assert!(sql.contains("COUNT(*)") && sql.contains("WHERE id = ?"), "got: {sql}");
++            assert!(db_stmt_calls(&body).iter().any(|(m, _)| m == "bind_int"));
++            return;
++        }
++        assert!(sql.contains("COUNT(*)") && sql.contains("WHERE «expr»"), "got:\n{sql}");
++        assert!(db_stmt_calls(&body).iter().all(|(m, _)| !m.starts_with("bind_")));
+     }
+ 
+     #[test]
+diff --git a/src/lower/model_to_library/mod.rs b/src/lower/model_to_library/mod.rs
+index 0e982041..e2d41f43 100644
+--- a/src/lower/model_to_library/mod.rs
++++ b/src/lower/model_to_library/mod.rs
+@@ -1105,7 +1105,7 @@ fn build_methods_with_finder_inputs(
+         let writable_fields =
+             permitted_fields.map(|fields| writable_permit_fields(model, table, fields));
+         let permitted_fields = writable_fields.as_deref();
+-        push_schema_methods(&mut methods, model, models, table);
++        push_schema_methods(&mut methods, model, models, table, schema);
+         // Per-model Level-3 adapter primitives (`_adapter_find_by_id`, etc.)
+         // — typed methods that go directly from SQL composition to typed
+         // model instances over the `Sqlite` primitive surface. See
+diff --git a/src/lower/model_to_library/schema.rs b/src/lower/model_to_library/schema.rs
+index bd3d8b5e..4347090e 100644
+--- a/src/lower/model_to_library/schema.rs
++++ b/src/lower/model_to_library/schema.rs
+@@ -5,7 +5,7 @@ use crate::dialect::{AccessorKind, Association, MethodDef, MethodReceiver, Model
+ use crate::effect::EffectSet;
+ use crate::expr::{ArrayStyle, BoolOpKind, BoolOpSurface, Expr, ExprNode, LValue, Literal};
+ use crate::ident::{ClassId, Symbol, VarId};
+-use crate::schema::{Column, Table};
++use crate::schema::{Column, ColumnType, Schema, Table};
+ use crate::span::Span;
+ use crate::ty::Ty;
+ 
+@@ -62,6 +62,7 @@ pub(super) fn push_schema_methods(
+     model: &Model,
+     models: &[Model],
+     table: &Table,
++    schema: &Schema,
+ ) {
+     let owner = &model.name;
+ 
+@@ -359,6 +360,42 @@ pub(super) fn push_schema_methods(
+         matches!(c.col_type, crate::schema::ColumnType::Date)
+     });
+ 
++    // Query serializers need the storage width, not the Ruby Integer type.
++    // Qualified entries cover hash conditions on joined tables; bare entries
++    // refer to this model's table. Foreign keys follow Rails' bigint default.
++    let mut entries = Vec::new();
++    for t in schema.tables.values() {
++        for c in &t.columns {
++            let limit = match c.col_type {
++                ColumnType::Integer => 4,
++                ColumnType::BigInt | ColumnType::Reference { .. } => 8,
++                _ => continue,
++            };
++            entries.push((lit_str(format!("{}.{}", t.name, c.name)), lit_int(limit)));
++            if t.name == table.name {
++                entries.push((lit_str(c.name.as_str().to_string()), lit_int(limit)));
++            }
++        }
++    }
++    let limits_ty = Ty::Hash { key: Box::new(Ty::Str), value: Box::new(Ty::Int) };
++    methods.push(MethodDef {
++        visibility: crate::dialect::MethodVisibility::Public,
++        unsupported_formals: None,
++        has_anonymous_block: false,
++        name_span: Span::synthetic(),
++        name: Symbol::from("schema_integer_limits"),
++        receiver: MethodReceiver::Class,
++        params: Vec::new(),
++        body: with_ty(Expr::new(Span::synthetic(), ExprNode::Hash { entries, kwargs: false }), limits_ty.clone()),
++        signature: Some(fn_sig(vec![], limits_ty)),
++        effects: EffectSet::default(),
++        enclosing_class: Some(owner.0.clone()),
++        kind: AccessorKind::Method,
++        is_async: false,
++        mutates_self: false,
++        block_param: None,
++        });
++
+     // def self.instantiate(row); instance = from_row(<Model>Row.from_raw(row)); instance.mark_persisted!; instance; end
+     //
+     // The adapter shim returns Hash[Symbol, untyped]; the framework Ruby
+diff --git a/tests/integer_query_predicates.rb b/tests/integer_query_predicates.rb
+new file mode 100644
+index 00000000..da768fff
+--- /dev/null
++++ b/tests/integer_query_predicates.rb
+@@ -0,0 +1,39 @@
++require_relative '../runtime/ruby/active_record/base'
++require_relative '../runtime/ruby/active_record/relation'
++class IntegerProbe < ActiveRecord::Base
++  def self.table_name; 'probes'; end
++  def self.primary_key; 'id'; end
++  def self.schema_integer_limits
++    { 'id' => 8, 'owner_id' => 8, 'number' => 4, 'probes.owner_id' => 8 }
++  end
++end
++
++def equal(expected, actual)
++  raise "expected #{expected.inspect}, got #{actual.inspect}" unless expected == actual
++end
++[4, 8].each do |width|
++  max = 2**(width * 8 - 1) - 1
++  min = -max - 1
++  [max, min, 0, 1].each { |n| equal(n.to_s, ActiveRecord.integer_query_value(n.to_s, width)) }
++  [max + 1, min - 1, 10**80, -(10**80)].each { |n| equal('', ActiveRecord.integer_query_value(n.to_s, width)) }
++  ['', 'junk', '+junk', '  -x'].each { |n| equal('NULL', ActiveRecord.integer_query_value(n, width)) }
++  { '  +1tail' => '1', '0junk' => '0', '-0000' => '0', '1_0' => '10', '1__0' => '1', '1.9' => '1', '+0001' => '1' }.each do |s, value|
++    equal(value, ActiveRecord.integer_query_value(s, width))
++  end
++end
++r = ActiveRecord::Relation.new(IntegerProbe)
++[:id, :owner_id, :number].each do |col|
++  equal('1=0', r.column_predicate(col.to_s, 10**80))
++  equal('1=0', r.column_predicate(col.to_s, -(10**80)))
++  equal("probes.#{col} = NULL", r.column_predicate(col.to_s, 'junk'))
++  equal("probes.#{col} = 1", r.column_predicate(col.to_s, ' +1tail'))
++  equal("probes.#{col} IS NULL", r.column_predicate(col.to_s, nil))
++  equal("probes.#{col} = 1", r.column_predicate(col.to_s, true))
++  equal("probes.#{col} = 0", r.column_predicate(col.to_s, false))
++  equal("probes.#{col} = 1", r.column_predicate(col.to_s, 1.9))
++end
++equal('1=0', r.column_predicate('number', 2147483648))
++equal('probes.owner_id = 2147483648', r.column_predicate('probes.owner_id', 2147483648))
++equal('(probes.owner_id IN (NULL, 1) OR probes.owner_id IS NULL)', r.column_predicate('owner_id', [nil, 'junk', '1', 10**80]))
++equal('1=0', r.column_predicate('id', [10**80]))
++puts 'integer query serialization: passed'
+diff --git a/tests/integer_query_predicates.rs b/tests/integer_query_predicates.rs
+new file mode 100644
+index 00000000..8dd93fff
+--- /dev/null
++++ b/tests/integer_query_predicates.rs
+@@ -0,0 +1,28 @@
++//! Rails integer query serialization must precede SQL execution.
++use std::{collections::HashMap, path::PathBuf, process::Command};
++use roundhouse::{emit::ruby, ingest::ingest_app_from_tree};
++
++#[test]
++fn integer_storage_widths_are_emitted_from_schema() {
++    let files = [
++        ("db/schema.rb", "ActiveRecord::Schema.define do\n create_table :widgets do |t|\n t.integer :number\n t.bigint :owner_id\n t.string :label\n end\nend\n"),
++        ("app/models/widget.rb", "class Widget < ApplicationRecord\nend\n"),
++    ];
++    let tree: HashMap<PathBuf, Vec<u8>> = files.into_iter().map(|(p, s)| (p.into(), s.as_bytes().to_vec())).collect();
++    let app = ingest_app_from_tree(tree).unwrap();
++    let model = &app.models[0];
++    let lowered = roundhouse::lower::model_to_library::lower_model_to_library_class(model, &app.schema);
++    let method = lowered.methods.iter().find(|m| m.name.as_str() == "schema_integer_limits").unwrap();
++    let source = ruby::emit_expr(&method.body);
++    assert!(source.contains("\"id\" => 8"), "{source}");
++    assert!(source.contains("\"number\" => 4"), "{source}");
++    assert!(source.contains("\"owner_id\" => 8"), "{source}");
++    assert!(source.contains("\"widgets.owner_id\" => 8"), "{source}");
++    assert!(!source.contains("label"), "{source}");
++}
++
++#[test]
++fn integer_query_runtime_matches_rails_boundaries_and_prefix_casts() {
++    let result = Command::new("ruby").arg("tests/integer_query_predicates.rb").output().expect("Ruby is available");
++    assert!(result.status.success(), "{}\n{}", String::from_utf8_lossy(&result.stdout), String::from_utf8_lossy(&result.stderr));
++}

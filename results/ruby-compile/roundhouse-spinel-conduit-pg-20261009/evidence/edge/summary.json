@@ -1,0 +1,93 @@
+{
+  "condition": "compiled-conduit-v8-20261009",
+  "recorded_responses": 166,
+  "setup_requests": 25,
+  "total_script_requests": 191,
+  "note": "Readiness requests excluded. Frozen Rails reference-1 remains Ruby 3.3.2. No throughput measurement.",
+  "comparisons": {
+    "v8_vs_v7": {
+      "differences": 0,
+      "cases": []
+    },
+    "v8_vs_rails": {
+      "differences": 7,
+      "cases": [
+        {
+          "name": "update_email_spaces",
+          "left_status": 200,
+          "right_status": 422
+        },
+        {
+          "name": "after_email_spaces",
+          "left_status": 200,
+          "right_status": 200
+        },
+        {
+          "name": "login_email_spaces_password123",
+          "left_status": 401,
+          "right_status": 200
+        },
+        {
+          "name": "update_password_null",
+          "left_status": 422,
+          "right_status": 422
+        },
+        {
+          "name": "update_password_number",
+          "left_status": 200,
+          "right_status": 500
+        },
+        {
+          "name": "login_password_number_password123",
+          "left_status": 401,
+          "right_status": 200
+        },
+        {
+          "name": "login_password_number_123456789",
+          "left_status": 200,
+          "right_status": 401
+        }
+      ]
+    },
+    "v7_vs_rails": {
+      "differences": 7,
+      "cases": [
+        {
+          "name": "update_email_spaces",
+          "left_status": 200,
+          "right_status": 422
+        },
+        {
+          "name": "after_email_spaces",
+          "left_status": 200,
+          "right_status": 200
+        },
+        {
+          "name": "login_email_spaces_password123",
+          "left_status": 401,
+          "right_status": 200
+        },
+        {
+          "name": "update_password_null",
+          "left_status": 422,
+          "right_status": 422
+        },
+        {
+          "name": "update_password_number",
+          "left_status": 200,
+          "right_status": 500
+        },
+        {
+          "name": "login_password_number_password123",
+          "left_status": 401,
+          "right_status": 200
+        },
+        {
+          "name": "login_password_number_123456789",
+          "left_status": 200,
+          "right_status": 401
+        }
+      ]
+    }
+  }
+}

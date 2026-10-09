@@ -1,0 +1,6 @@
+/work/app/build/repros/reload/app/controllers/widgets_controller.rb:3:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+/work/app/build/repros/reload/app/controllers/widgets_controller.rb:3:27: error[unsupported]: ActiveRecord::Base not supported (all targets): label lacks a shared runtime/lowering implementation
+/work/app/build/repros/reload/app/controllers/widgets_controller.rb:3:27: error[send_dispatch_failed]: no known method `label` on ActiveRecord::Base
+/work/app/build/repros/reload/app/controllers/widgets_controller.rb:3:39: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+
+roundhouse-check: /work/app/build/repros/reload — 0 parse error(s), 2 error(s), 2 warning(s), 0 gap-attributed note(s), 0 survey gap(s)

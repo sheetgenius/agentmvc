@@ -1,0 +1,72 @@
+   Compiling roundhouse v2026.9.18 (/work/app/src/roundhouse)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.35s
+     Running tests/conduit_v8b_public_validation_matrix.rs (/work/app/build/cargo-target/debug/deps/conduit_v8b_public_validation_matrix-2bb82c89edd219fd)
+
+running 9 tests
+roundhouse: treeshake (ruby): dropped 61 runtime defs + 10 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 62 runtime defs + 10 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 61 runtime defs + 10 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 62 runtime defs + 10 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 62 runtime defs + 10 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 61 runtime defs + 10 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 59 runtime defs + 10 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 62 runtime defs + 10 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: treeshake (ruby): dropped 61 runtime defs + 10 synthesized model defs (text-level, whole-tree name scan)
+
+thread 'inclusion_retains_attribute_and_short_message' (63585522) panicked at tests/support/emit_and_run.rs:290:9:
+analysis and emit are clean but the emitted program failed: `ruby -e <script>` in $TMPDIR/roundhouse-emit-and-run-60218-13/emitted
+
+=== stdout ===
+
+=== stderr ===
+-e:6:in '<main>': {} (RuntimeError)
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test inclusion_retains_attribute_and_short_message ... FAILED
+
+thread 'format_retains_attribute_and_short_message' (63585521) panicked at tests/support/emit_and_run.rs:290:9:
+analysis and emit are clean but the emitted program failed: `ruby -e <script>` in $TMPDIR/roundhouse-emit-and-run-60218-9/emitted
+
+=== stdout ===
+
+=== stderr ===
+-e:6:in '<main>': {} (RuntimeError)
+
+test format_retains_attribute_and_short_message ... FAILED
+
+thread 'numericality_integer_retains_attribute' (63585525) panicked at tests/support/emit_and_run.rs:290:9:
+analysis and emit are clean but the emitted program failed: `ruby -e <script>` in $TMPDIR/roundhouse-emit-and-run-60218-12/emitted
+
+=== stdout ===
+
+=== stderr ===
+-e:5:in '<main>': {} (RuntimeError)
+
+test numericality_integer_retains_attribute ... FAILED
+test absence_retains_attribute_and_short_message ... ok
+
+thread 'numericality_bounds_retain_attribute' (63585524) panicked at tests/support/emit_and_run.rs:290:9:
+analysis and emit are clean but the emitted program failed: `ruby -e <script>` in $TMPDIR/roundhouse-emit-and-run-60218-16/emitted
+
+=== stdout ===
+
+=== stderr ===
+-e:6:in '<main>': {} (RuntimeError)
+
+test numericality_bounds_retain_attribute ... FAILED
+test length_minimum_and_maximum_retain_attribute ... ok
+test required_association_and_association_presence_retain_attribute ... ok
+test presence_retains_attribute_and_short_message ... ok
+test secure_password_presence_and_confirmation_retain_attribute ... ok
+
+failures:
+
+failures:
+    format_retains_attribute_and_short_message
+    inclusion_retains_attribute_and_short_message
+    numericality_bounds_retain_attribute
+    numericality_integer_retains_attribute
+
+test result: FAILED. 5 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.78s
+
+error: test failed, to rerun pass `--test conduit_v8b_public_validation_matrix`

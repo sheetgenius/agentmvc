@@ -1,0 +1,170 @@
+{
+  "condition": "fresh-public-api-20261009",
+  "toolchain_tag": "conduit-v8b-toolchain:2fce0ce9ff06",
+  "checks": {
+    "integer_status": true,
+    "json_content_type": true,
+    "default_nosniff": true,
+    "callback_set_header": true,
+    "subclass_rescue_json": true,
+    "case_insensitive_request_headers": true,
+    "authorization": true,
+    "remote_ip": true,
+    "attribute_errors": true,
+    "tableless_errors": true,
+    "parse_error_json": true,
+    "bad_request_json": true,
+    "no_content_header": true,
+    "not_modified_header": true,
+    "before_action_json": true
+  },
+  "image": "conduit-v8b-api:patch10",
+  "source": "evidence/patch10/http-public-app",
+  "build_exit": 0,
+  "responses": {
+    "ok": {
+      "status": 202,
+      "body": {
+        "name": "ready"
+      },
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "x-content-type-options": "nosniff",
+        "x-mode": "api",
+        "connection": "close",
+        "content-length": "16"
+      }
+    },
+    "subclass": {
+      "status": 409,
+      "body": {
+        "error": "param is missing or the value is empty or invalid: widget"
+      },
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "x-content-type-options": "nosniff",
+        "connection": "close",
+        "content-length": "69"
+      }
+    },
+    "headers": {
+      "status": 200,
+      "body": {
+        "key": "fresh",
+        "authorization": "Token public-example",
+        "peer": "192.168.215.1"
+      },
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "x-content-type-options": "nosniff",
+        "x-mode": "api",
+        "connection": "close",
+        "content-length": "77"
+      }
+    },
+    "errors": {
+      "status": 200,
+      "body": {
+        "errors": {
+          "name": [
+            "can't be blank"
+          ],
+          "base": [
+            "reserved"
+          ]
+        }
+      },
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "x-content-type-options": "nosniff",
+        "x-mode": "api",
+        "connection": "close",
+        "content-length": "58"
+      }
+    },
+    "forms": {
+      "status": 200,
+      "body": {
+        "errors": {
+          "name": [
+            "can't be blank"
+          ]
+        }
+      },
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "x-content-type-options": "nosniff",
+        "x-mode": "api",
+        "connection": "close",
+        "content-length": "38"
+      }
+    },
+    "exceptions": {
+      "status": 400,
+      "body": {
+        "error": "invalid input"
+      },
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "x-content-type-options": "nosniff",
+        "connection": "close",
+        "content-length": "25"
+      }
+    },
+    "empty": {
+      "status": 204,
+      "body": null,
+      "headers": {
+        "x-content-type-options": "nosniff",
+        "x-mode": "api",
+        "connection": "close",
+        "content-length": "0"
+      }
+    },
+    "cached": {
+      "status": 304,
+      "body": null,
+      "headers": {
+        "x-content-type-options": "nosniff",
+        "x-mode": "api",
+        "connection": "close",
+        "content-length": "0"
+      }
+    },
+    "callbacks": {
+      "status": 409,
+      "body": {
+        "stage": "filter"
+      },
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "x-content-type-options": "nosniff",
+        "connection": "close",
+        "content-length": "18"
+      }
+    },
+    "numeric": {
+      "status": 202,
+      "body": null,
+      "headers": {
+        "x-content-type-options": "nosniff",
+        "x-mode": "api",
+        "connection": "close",
+        "content-length": "0"
+      }
+    },
+    "parse": {
+      "status": 400,
+      "body": {
+        "error": "invalid body"
+      },
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "x-content-type-options": "nosniff",
+        "connection": "close",
+        "content-length": "24"
+      }
+    }
+  },
+  "exit": 0
+}

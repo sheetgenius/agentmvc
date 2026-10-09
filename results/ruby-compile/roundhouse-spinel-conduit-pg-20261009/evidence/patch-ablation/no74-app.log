@@ -1,0 +1,5 @@
+conduit (spinel) listening on http://0.0.0.0:4451, pid 1
+  one green thread per connection; OS workers: 4 (SPINEL_WORKERS); processes: 1
+[conduit] 500 GET /api/user/exports/not-an-export -- RuntimeError: SQLSTATE 22P02: ERROR:  invalid input syntax for type bigint: "not-an-export"
+LINE 1: ..."article_exports" WHERE ("article_exports"."id" = 'not-an-ex...
+                                                             ^

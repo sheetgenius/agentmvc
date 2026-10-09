@@ -1,0 +1,959 @@
+ 1:  530482cb !  1:  06160777 00-interval.patch
+    @@ src/ingest/schema.rs: fn column_with_type(
+              "text" | "citext" => ColumnType::Text,
+              "boolean" => ColumnType::Boolean,
+              "date" => ColumnType::Date,
+    -@@ src/ingest/schema.rs: fn index_from_call(call: &ruby_prism::CallNode<'_>, table_name: &str) -> Option<
+    +@@ src/ingest/schema.rs: fn index_from_call(
+      mod tests {
+          use super::*;
+      
+ 2:  1ac4f5d6 !  2:  d03c4c6f 10-api-mode-json.patch
+    @@ runtime/ruby/action_controller/base.rbs: module ActionController
+      end
+     
+      ## runtime/ruby/action_controller/parameter_missing.rb ##
+    -@@ runtime/ruby/action_controller/parameter_missing.rb: module ActionController
+    -   class UnknownFormat < StandardError
+    +@@ runtime/ruby/action_controller/parameter_missing.rb: module AbstractController
+    +   class ActionNotFound < StandardError
+        end
+      end
+     +
+    @@ runtime/ruby/action_controller/parameter_missing.rb: module ActionController
+     +end
+     
+      ## runtime/ruby/action_controller/parameter_missing.rbs ##
+    -@@ runtime/ruby/action_controller/parameter_missing.rbs: module ActionController
+    -   class UnknownFormat < StandardError
+    +@@ runtime/ruby/action_controller/parameter_missing.rbs: module AbstractController
+    +   class ActionNotFound < StandardError
+        end
+      end
+     +
+    @@ runtime/ruby/action_dispatch/request.rb: module ActionDispatch
+          attr_accessor :remote_ip
+          attr_accessor :path
+     @@ runtime/ruby/action_dispatch/request.rb: module ActionDispatch
+    -       @body = +""
+            @body_io = nil
+            @env = {}
+    +       @request_parameters = {}
+     +      @http_headers = RequestHeaders.new
+            # `@params` too, and for a reason `@env` shows: `Request.for`
+            # COPIES into both (`params.each { |k, v| r.params[k] = v }`),
+    @@ runtime/ruby/active_support_ext.rb: module ActiveSupport
+      
+        def self.present_db(t)
+     @@ runtime/ruby/active_support_ext.rb: module ActiveSupport
+    -     out
+    +     sign + out + rest
+        end
+      end
+     +
+    @@ runtime/ruby/active_support_ext.rb: module ActiveSupport
+     
+      ## runtime/ruby/active_support_ext.rbs ##
+     @@ runtime/ruby/active_support_ext.rbs: module ActiveSupport
+    -   def self.humanize: (String? text) -> String
+    -   def self.titleize: (String? text) -> String
+    +   # — declared on active_support_inflections.rbs (Ruby/Spinel scaffold;
+    +   # strict targets literalize controller_name/path instead).
+      end
+     +
+     +module ActionController
+    @@ runtime/spinel/tep/net.rb: module Sock
+        # sp_process_clock_gettime / CLOCK_MONOTONIC). Float seconds → µs Int.
+     
+      ## runtime/spinel/tep/server.rb ##
+    -@@ runtime/spinel/tep/server.rb: module Tep
+    -     if status == 400; return "Bad Request"; end
+    -     if status == 401; return "Unauthorized"; end
+    -     if status == 403; return "Forbidden"; end
+    -+    if status == 409; return "Conflict"; end
+    -+    if status == 422; return "Unprocessable Content"; end
+    -     if status == 404; return "Not Found"; end
+    -     if status == 413; return "Content Too Large"; end
+    -     if status == 500; return "Internal Server Error"; end
+     @@ runtime/spinel/tep/server.rb: module Tep
+              send_simple(client, refusal, refusal == 413 ? "request body too large" : "bad request")
+              return false
+            end
+     +      req.remote_host = Sock.sphttp_remote_host(client)
+    -       req.consume_body(client)
+    +       return false unless req.consume_body(client)
+            res = Response.new
+            begin
+     
+    @@ runtime/spinel/tep/server_scheduled.rb: module Tep
+              end
+      
+     +        req.remote_host = Sock.sphttp_remote_host(client)
+    -         req.consume_body_via_scheduler(client)
+    +         return false unless req.consume_body_via_scheduler(client)
+      
+              res = Response.new
+     
+    @@ runtime/spinel/tep/server_threaded.rb: module Tep
+              end
+      
+     +        req.remote_host = Sock.sphttp_remote_host(client)
+    -         req.consume_body_via_io(io, client)
+    +         return false unless req.consume_body_via_io(io, client)
+      
+              res = Response.new
+     
+    @@ src/lower/controller_to_library/mod.rs: fn build_methods(
+                      &publics_inlined,
+                      &inherited,
+     @@ src/lower/controller_to_library/mod.rs: fn build_methods(
+    -                 &rescues,
+                      &wraps,
+                      reads,
+    +                 &missing,
+     -            ),
+     -        );
+     +            );
+ 3:  abef88ac =  3:  f3372256 20-raw-websocket.patch
+ 4:  943433d4 !  4:  13f9e6cc 30-jobs-boot.patch
+    @@ docs/guide/spinel-jobs.md (new)
+     +
+     +## Queue, transactions, and durability
+     +
+    -+Spinel uses one FIFO process-local queue and one serial job drain. Enqueue,
+    -+dequeue, pending-count, adapter suspension state, and drain registration use
+    -+one mutex. The mutex is released before executing a job, so slow jobs do not
+    -+hold up enqueue and a job may enqueue another job. Job execution uses a fresh
+    -+DB connection lease per job, clearing the query cache between jobs. A
+    -+`StandardError` logs `[job] a queued job raised: <message>` and the drain
+    ++Spinel retains the upstream FIFO process-local queue and serial drain.
+    ++Enqueue and pending-count use the queue mutex; drain removes each job under
+    ++that mutex and executes it after releasing the mutex. The server takes one
+    ++database connection lease around a drain, rather than one lease per job.
+    ++Adapter registration and suspension flags retain the upstream implementation.
+    ++A `StandardError` logs `[job] a queued job raised: <message>` and the drain
+     +continues. Jobs are neither automatically retried nor scheduled by priority,
+     +queue name, or delay. The existing 50 ms idle poll is retained.
+     +
+    @@ docs/guide/spinel-jobs.md (new)
+     +use a real transaction and row lock to serialize its completion check.
+     +There is no automatic retry of a failed pending export until another recovery
+     +runs, and no generic persistent ActiveJob adapter/GoodJob implementation is
+    -+claimed. All new queue and boot code is adapter-agnostic; PostgreSQL dialect,
+    ++claimed. The new boot code is adapter-agnostic; PostgreSQL dialect,
+     +row-locking, and snapshot codecs remain separate prerequisites for Conduit.
+     
+    - ## runtime/ruby/active_job.rb ##
+    -@@ runtime/ruby/active_job.rb: module ActiveJob
+    -     PENDING.length
+    -   end
+    - 
+    -+  # The parallel Spinel lane overrides this primitive under its queue
+    -+  # mutex. Execute outside that mutex: jobs can enqueue more work.
+    -+  def self.dequeue
+    -+    PENDING.shift
+    -+  end
+    -+
+    -+  def self.run_queued(work)
+    -+    begin
+    -+      work.call
+    -+      true
+    -+    rescue StandardError => e
+    -+      warn "[job] a queued job raised: " + e.message
+    -+      false
+    -+    end
+    -+  end
+    -+
+    -   # Run every job queued so far, FIFO, and answer how many ran.
+    -   #
+    -   # A RAISE IS ONE LOST JOB, NEVER A LOST DRAIN, and on the spinel lane
+    -@@ runtime/ruby/active_job.rb: module ActiveJob
+    -   # Rails' behaviour for an inline drain too.
+    -   def self.drain
+    -     ran = 0
+    --    while PENDING.length > 0
+    --      work = PENDING.shift
+    --      begin
+    --        work.call
+    --        ran = ran + 1
+    --      rescue StandardError => e
+    --        warn "[job] a queued job raised: " + e.message
+    --      end
+    -+    while true
+    -+      work = dequeue
+    -+      break if work.nil?
+    -+      ran = ran + 1 if run_queued(work)
+    -     end
+    -     ran
+    -   end
+    -
+    - ## runtime/ruby/active_job.rbs ##
+    -@@ runtime/ruby/active_job.rbs: module ActiveJob
+    -   def self.register_drain: () -> nil
+    -   def self.enqueue: (^() -> nil work) -> nil
+    -   def self.pending_count: () -> Integer
+    -+  def self.dequeue: () -> (^() -> nil)?
+    -+  def self.run_queued: (^() -> nil work) -> bool
+    -   def self.drain: () -> Integer
+    -   HELD_NAMES: Array[String]
+    -   HELD: Array[^() -> nil]
+    -
+      ## runtime/ruby/rails.rb ##
+     @@ runtime/ruby/rails.rb: module Rails
+        # real config methods aren't ingested, so they NameError rather than
+    @@ runtime/ruby/rails.rbs: module Rails
+        class Application
+     +    def run_after_initialize: () -> nil
+          def session_cookie_key: () -> String
+    +     def forgery_protection_verification_strategy: () -> String
+          def global_id_app: () -> String
+    -     def secret_key_base: [redacted] -> String
+     
+      ## runtime/spinel/scaffold/main.rb ##
+    -@@ runtime/spinel/scaffold/main.rb: module Main
+    -   # error ends the process rather than the request, a job that cannot
+    -   # work takes the server with it.
+    -   #
+    --  # ITS OWN DB LEASE, taken per drain rather than held. `Main.dispatch`
+    -+  # ITS OWN DB LEASE, taken per job rather than held. `Main.dispatch`
+    -   # wraps each request in `Db.with_connection`, and this fiber is not
+    -   # inside one — a job that touches a model on a borrowed handle would
+    -   # be using the connection of whatever request happened to be running.
+    --  # Taken around the whole drain rather than per job: the jobs in one
+    --  # pass are the ones a single request enqueued, and they are far more
+    --  # likely to touch the same rows than not.
+    -+  # Taking a fresh lease also clears the query cache between jobs, and
+    -+  # returns the connection even when a job raises.
+    -   #
+    --  # NOTHING IS RETRIED and nothing survives a restart. The queue is a
+    --  # process-local Array — that is the honest shape for a single-worker
+    --  # binary with no store, and it is the ledgered limit rather than an
+    --  # oversight (docs/pipeline/runtime.md). What it buys over running
+    --  # inline is that a job's latency and a job's failure both stop
+    --  # belonging to a request.
+    -+  # The queue is process-local, FIFO at dequeue, and does not retry.
+    -+  # Apps can persist pending work and recover it in after_initialize.
+    -+  # Enqueue does not defer until transaction commit: callers must enqueue
+    -+  # after committing their row (or use a correctly deferred callback).
+    -   def self.job_loop
+    -     while true
+    -       sleep(JOB_POLL_INTERVAL)
+    --      if ActiveJob.pending_count > 0
+    --        Db.with_connection { ActiveJob.drain }
+    -+      while true
+    -+        work = ActiveJob.dequeue
+    -+        break if work.nil?
+    -+        Db.with_connection { ActiveJob.run_queued(work) }
+    -       end
+    -     end
+    -     0
+     @@ runtime/spinel/scaffold/main.rb: Broadcasts.set_transport(Cable::Transport.new)
+      # reaches this line keeps the inline behaviour rather than dropping work
+      # into an Array nobody reads.
+    @@ runtime/spinel/scaffold/main.rb: Broadcasts.set_transport(Cable::Transport.new)
+        Main.job_loop
+      end
+     
+    - ## runtime/spinel/thread_state.rb ##
+    -@@ runtime/spinel/thread_state.rb: module ActiveJob
+    -   # never holds the queue against the requests still enqueueing.
+    -   QUEUE_LOCK = Mutex.new
+    - 
+    -+  def self.drain_registered
+    -+    registered = false
+    -+    QUEUE_LOCK.synchronize { registered = DRAINED.length > 0 }
+    -+    registered
+    -+  end
+    -+
+    -+  def self.register_drain
+    -+    QUEUE_LOCK.synchronize { DRAINED << "1" if DRAINED.empty? }
+    -+    nil
+    -+  end
+    -+
+    -+  def self.enqueue_only
+    -+    suspended = false
+    -+    QUEUE_LOCK.synchronize { suspended = ENQUEUE_ONLY.length > 0 }
+    -+    suspended
+    -+  end
+    -+
+    -+  def self.enqueue_without_running
+    -+    QUEUE_LOCK.synchronize { ENQUEUE_ONLY << "1" }
+    -+    nil
+    -+  end
+    -+
+    -+  def self.run_enqueued
+    -+    QUEUE_LOCK.synchronize { ENQUEUE_ONLY.pop }
+    -+    nil
+    -+  end
+    -+
+    -   def self.enqueue(work)
+    -     QUEUE_LOCK.synchronize do
+    -       PENDING << work
+    -@@ runtime/spinel/thread_state.rb: module ActiveJob
+    -     n
+    -   end
+    - 
+    --  def self.drain
+    --    ran = 0
+    --    while true
+    --      work = nil
+    --      QUEUE_LOCK.synchronize do
+    --        work = PENDING.shift if PENDING.length > 0
+    --      end
+    --      break if work.nil?
+    --      begin
+    --        work.call
+    --        ran = ran + 1
+    --      rescue StandardError => e
+    --        warn "[job] a queued job raised: " + e.message
+    --      end
+    -+  def self.dequeue
+    -+    work = nil
+    -+    QUEUE_LOCK.synchronize do
+    -+      work = PENDING.shift if PENDING.length > 0
+    -     end
+    --    ran
+    -+    work
+    -   end
+    - end
+    - 
+    -
+      ## src/ingest/app.rs ##
+     @@ src/ingest/app.rs: end
+              }
+ 5:  c323df4f !  5:  fd5e4861 50-postgresql-lane.patch
+    @@ runtime/ruby/active_record/base.rb: module ActiveRecord
+            self
+          end
+      
+    +@@ runtime/ruby/active_record/base.rb: module ActiveRecord
+    +     # String locking clause (`lock!("FOR UPDATE NOWAIT")`) — but
+    +     # doesn't need either under SQLite; both are accepted and ignored.
+    +     def lock!(lock = true)
+    +-      reload
+    ++      reload(lock: lock != false)
+    +     end
+    + 
+    +     # `#with_lock` (`ActiveRecord::Locking::Pessimistic#with_lock`) —
+    +@@ runtime/ruby/active_record/base.rb: module ActiveRecord
+    +       end
+    +     end
+    + 
+     +    def _adapter_reload_lock
+     +      _adapter_reload
+     +    end
+    @@ runtime/ruby/active_record/base.rbs: module ActiveRecord
+          def destroy!: () -> Base
+     -    def reload: () -> Base
+     +    def reload: (?lock: bool) -> Base
+    +     # `lock!` reloads (see the note on the body); `with_lock` runs the
+    +     # block in a transaction and answers its value, same gradual
+    +     # `untyped` escape as `self.transaction` in connection.rbs. The
+    +@@ runtime/ruby/active_record/base.rbs: module ActiveRecord
+    +     # NOWAIT"`); both are accepted and ignored under SQLite.
+    +     def lock!: (?(bool | String) lock) -> Base
+    +     def with_lock: (*untyped args) { () -> untyped } -> untyped
+     +    def _adapter_reload_lock: () -> Base?
+          # `touch` is no-arg on purpose; see the note on the body.
+          def touch: () -> bool
+    @@ runtime/ruby/active_record/connection.rb: module ActiveRecord
+     +    def self.select(*specs)
+     +      ActiveRecord::Relation.new(self).select(*specs)
+     +    end
+    -+
+    -+    def with_lock
+    -+      self.class.transaction do
+    -+        raise "Locking a record with unsaved changes is not supported" if persisted? && !changes_to_save.empty?
+    -+        reload(lock: true)
+    -+        yield
+    -+      end
+    -+    end
+     +
+          # Rails-shape `none` fallback, same story as `where`/`all` above:
+          # an empty Relation off the class. lobsters' `Search` reaches it
+    @@ runtime/ruby/active_record/connection.rbs: module ActiveRecord
+          # Ruby-family overrides of base.rb's Array / COUNT fallbacks.
+     -    def self.where: (Hash[Symbol, untyped] conditions) -> Relation
+          def self.find_by: (Hash[String | Symbol, untyped] conditions) -> Base?
+    +     def self.find_sole_by: (Hash[String | Symbol, untyped] conditions) -> Base
+    +     def self.sole: () -> Base
+     +    # Ruby-family overrides of base.rb's Array-returning fallbacks.
+     +    def self.select: (*untyped specs) -> Relation
+    -+    def with_lock: () { () -> untyped } -> untyped
+     +    def self.where: (?untyped condition, *untyped args) -> Relation
+          def self.all: () -> Relation
+          def self.none: () -> Relation
+    @@ runtime/ruby/active_record/relation.rb: module ActiveRecord
+              "#{qcol} IS NULL"
+            elsif val.is_a?(Base)
+     
+    - ## runtime/spinel/db_pg.rb (new) ##
+    + ## runtime/spinel/db_libpq.rb (new) ##
+     @@
+     +# PostgreSQL implementation of Roundhouse's module Db contract.
+     +# Compile with Spinel 813def1f; links libpq directly. DATABASE_URL is conninfo.
+    @@ runtime/spinel/db_pg.rb (new)
+     
+      ## src/emit/roda.rs ##
+     @@ src/emit/roda.rs: fn sequel_column_type(ty: &ColumnType) -> (&'static str, &'static str) {
+    -         ColumnType::Time => ("Time", ""),
+    -         ColumnType::Binary => ("File", ""),
+    -         // No 1:1 Sequel generic type; store as text and note it.
+    --        ColumnType::Json => ("String", ", text: true # was json"),
+    -+        ColumnType::TextArray | ColumnType::Jsonb | ColumnType::Json => ("String", ", text: true # was json"),
+    +         // No 1:1 Sequel generic type; store as text and note the source type.
+    +         ColumnType::Json => ("String", ", text: true # was json"),
+    +         ColumnType::Jsonb => ("String", ", text: true # was jsonb"),
+    ++        ColumnType::TextArray => ("String", ", text: true # was text[]"),
+              ColumnType::Uuid => ("String", ", fixed: true, size: 36 # was uuid"),
+              ColumnType::Reference { .. } => ("Integer", " # was t.references"),
+          }
+    @@ src/emit/shared/schema_sql.rs: fn sqlite_type(ct: &ColumnType) -> &'static str {
+              | ColumnType::DateTime
+              | ColumnType::Time
+     +        | ColumnType::TextArray
+    -+        | ColumnType::Jsonb
+              | ColumnType::Json
+    +         | ColumnType::Jsonb
+              | ColumnType::Uuid => "TEXT",
+    -         ColumnType::Reference { .. } => "INTEGER",
+     @@ src/emit/shared/schema_sql.rs: fn postgres_type(ct: &ColumnType) -> String {
+    -         ColumnType::DateTime => "timestamp(6) without time zone".into(),
+    -         ColumnType::Time => "time without time zone".into(),
+              ColumnType::Binary => "bytea".into(),
+    --        ColumnType::Json => "jsonb".into(),
+    -+        ColumnType::Json | ColumnType::Jsonb => "jsonb".into(),
+    +         ColumnType::Json => "json".into(),
+    +         ColumnType::Jsonb => "jsonb".into(),
+     +        ColumnType::TextArray => "text[]".into(),
+              ColumnType::Uuid => "uuid".into(),
+          }
+    @@ src/ingest/model.rs
+     @@ src/ingest/model.rs: fn ty_of_column(t: &ColumnType) -> Ty {
+              // type. A `has_json` declaration adds its stronger per-key schema
+              // separately in `lower::has_json`.
+    -         ColumnType::Json => Ty::Untyped,
+    +         ColumnType::Json | ColumnType::Jsonb => Ty::Untyped,
+     +        ColumnType::TextArray => Ty::Array { elem: Box::new(Ty::Str) },
+    -+        ColumnType::Jsonb => Ty::Untyped,
+              ColumnType::Uuid => Ty::Str,
+              ColumnType::Reference { .. } => Ty::Int,
+          }
+     
+      ## src/ingest/schema.rs ##
+    -@@ src/ingest/schema.rs: fn table_from_create_table(
+    -             Some("integer") if !id_default => (Some("integer"), None),
+    -             other => (other, id_limit),
+    -         };
+    --        let opts = ColumnOpts { nullable: Some(false), default: None, limit: key_limit };
+    -+        let opts = ColumnOpts { nullable: Some(false), default: None, limit: key_limit, array: false };
+    -         let key = match key_type {
+    -             None | Some("bigint") | Some("primary_key") => Ok(Column {
+    -                 name: Symbol::from(id_name.as_str()),
+    -@@ src/ingest/schema.rs: struct ColumnOpts {
+    -     nullable: Option<bool>,
+    -     default: Option<String>,
+    -     limit: Option<u32>,
+    -+    array: bool,
+    - }
+    - 
+    - // Not `string_value` alone: schema.rb dumps an integer, float or boolean default unquoted (`default: 0`, `default: true`).
+    -@@ src/ingest/schema.rs: fn parse_column_opts<'pr>(nodes: impl Iterator<Item = &'pr Node<'pr>>) -> Column
+    -             let value = &assoc.value();
+    -             match key.as_str() {
+    -                 "null" => opts.nullable = bool_value(value),
+    -+                "array" => opts.array = bool_value(value).unwrap_or(false),
+    -                 "default" => opts.default = default_value(value),
+    -                 "limit" => {
+    -                     if let Some(n) = integer_value(value) {
+     @@ src/ingest/schema.rs: fn column_with_type(
+              "bigint" => ColumnType::BigInt,
+              "float" => ColumnType::Float,
+    @@ src/ingest/schema.rs: fn column_with_type(
+              "string" | "inet" | "cidr" | "macaddr" | "enum" | "interval" => ColumnType::String { limit: opts.limit },
+              "text" | "citext" => ColumnType::Text,
+              "boolean" => ColumnType::Boolean,
+    -@@ src/ingest/schema.rs: fn column_with_type(
+    -         "datetime" | "timestamp" | "timestamptz" => ColumnType::DateTime,
+    -         "time" => ColumnType::Time,
+    -         "binary" => ColumnType::Binary,
+    -+        "jsonb" if crate::postgresql_enabled() => ColumnType::Jsonb,
+    -         "json" | "jsonb" => ColumnType::Json,
+    -         "uuid" => ColumnType::Uuid,
+    -         "references" | "belongs_to" => {
+     @@ src/ingest/schema.rs: mod tests {
+                  .collect()
+          }
+    @@ src/ingest/schema.rs: mod tests {
+     +            assert_eq!(crate::lower::model_to_library::schema::column_read_method_for(snapshot), "column_json_opt");
+     +        } else {
+     +            assert_eq!(tags.col_type, ColumnType::Text);
+    -+            assert_eq!(snapshot.col_type, ColumnType::Json);
+    ++            assert_eq!(snapshot.col_type, ColumnType::Jsonb);
+     +        }
+     +    }
+     +
+    @@ src/ingest/structure_sql.rs: fn resolve_column_type(type_phrase: &str, enum_type
+              // `text[]`, `bigint[]`, … — no array notion on `ColumnType`;
+              // ledgered by the caller rather than silently scalarized.
+              return None;
+    -@@ src/ingest/structure_sql.rs: fn resolve_column_type(type_phrase: &str, enum_types: &HashSet<String>) -> Optio
+    -         "numeric" | "decimal" => ColumnType::Decimal { precision: None, scale: None },
+    -         "double precision" | "real" | "float4" | "float8" | "float" => ColumnType::Float,
+    -         "bytea" => ColumnType::Binary,
+    -+        "jsonb" if crate::postgresql_enabled() => ColumnType::Jsonb,
+    -         "json" | "jsonb" => ColumnType::Json,
+    -         "uuid" => ColumnType::Uuid,
+    -         "inet" | "cidr" | "macaddr" | "macaddr8" => ColumnType::String { limit: None },
+     @@ src/ingest/structure_sql.rs: fn strip_parens_capture_nums(phrase: &str) -> (String, Option<i64>, Option<i64>)
+      mod tests {
+          use super::*;
+    @@ src/lower/arel/ruby_values.rs: fn normalize_predicate(predicate: &mut Predicate,
+                      if nullable_column {
+                          *predicate = Predicate::NullableEq(col.clone(), Value::Runtime { expr: expr.clone(), ty: *ty });
+     @@ src/lower/arel/ruby_values.rs: fn serialized_value_expr(expr: &Expr, column: &ColumnType, nullable: bool) -> Ex
+    -         }
+    -         ColumnType::Integer | ColumnType::BigInt | ColumnType::Reference { .. }
+    -         | ColumnType::Boolean | ColumnType::String { .. } | ColumnType::Text
+    --        | ColumnType::Binary | ColumnType::Json | ColumnType::Uuid => return expr.clone(),
+    -+        | ColumnType::Binary | ColumnType::Json | ColumnType::Jsonb | ColumnType::TextArray
+    -+        | ColumnType::Uuid => return expr.clone(),
+    +         | ColumnType::Binary
+    +         | ColumnType::Json
+    +         | ColumnType::Jsonb
+    ++        | ColumnType::TextArray
+    +         | ColumnType::Uuid => return expr.clone(),
+          };
+          crate::lower::typing::with_ty(converted, text_ty)
+    - }
+     
+      ## src/lower/arel/visitor.rs ##
+     @@ src/lower/arel/visitor.rs: fn emit_bind_calls(stmt: &Symbol, binds: &[Bind], read_id: usize) -> Vec<Expr> {
+    @@ src/lower/arel/visitor.rs: fn emit_group_count(
+                      table.name.as_str(),
+                  )
+              });
+    -@@ src/lower/arel/visitor.rs: fn emit_exists(sel: &Select, table: &Table, param: bool) -> Expr {
+    - // ---------------------------------------------------------------------------
+    - 
+    - fn visit_insert(ins: &Insert, schema: &Schema) -> Expr {
+    --    let _ = lookup_table(schema, &ins.table.0); // validates table exists; not consumed beyond that
+    -+    let table = lookup_table(schema, &ins.table.0);
+    -     let db = ClassId(Symbol::from(DB_MOD));
+    - 
+    -     let cols_csv = ins
+     @@ src/lower/arel/visitor.rs: fn visit_insert(ins: &Insert, schema: &Schema) -> Expr {
+    -     }
+    -     segments.push(lit_str(")".to_string()));
+    - 
+    +     let db = ClassId(Symbol::from(DB_MOD));
+    +     let sql = insert_sql(ins, schema);
+    +     let exec_call = db_call(&db, "exec", vec![sql]);
+     +    if crate::postgresql_enabled() && ins.returns_rowid {
+    ++        let table = lookup_table(schema, &ins.table.0);
+     +        let key = table.columns.iter().find(|c| c.primary_key).expect("returning key");
+    -+        segments.push(lit_str(format!(" RETURNING {}", crate::naming::sql_ident(key.name.as_str()))));
+    ++        let sql = concat_chain(vec![insert_sql(ins, schema), lit_str(format!(" RETURNING {}", crate::naming::sql_ident(key.name.as_str())))]);
+     +        let method = if matches!(key.col_type, crate::schema::ColumnType::Integer | crate::schema::ColumnType::BigInt) { "insert_returning_int" } else { "insert_returning_text" };
+    -+        return db_call(&db, method, vec![concat_chain(segments)]);
+    ++        return db_call(&db, method, vec![sql]);
+     +    }
+    -     let exec_call = db_call(&db, "exec", vec![concat_chain(segments)]);
+          if !ins.returns_rowid {
+              return exec_call;
+    +     }
+     @@ src/lower/arel/visitor.rs: fn visit_delete(del: &Delete, schema: &Schema) -> Expr {
+          // postgres / other backends would skip this branch in their own
+          // visitor.
+    @@ src/lower/model_to_library/adapter_emit/mod.rs: fn synth_adapter_insert(owner: &
+          // SQL column names are the PUBLIC names; the value reads the STORAGE
+          // ivar (`@col_raw` for temporal — stored ISO-8601 text goes to disk).
+     @@ src/lower/model_to_library/adapter_emit/mod.rs: fn synth_adapter_insert(owner: &ClassId, table: &Table, schema: &Schema) -> Meth
+    -     let op = ArelOp::Insert(Insert {
+    +     let insert = Insert {
+              table: TableRef(table.name.clone()),
+              assignments,
+     -        returns_rowid: supplied_key.is_none(),
+     +        returns_rowid: supplied_key.is_none() && (!crate::postgresql_enabled() || key.is_some()),
+    -     });
+    - 
+    -     let (body, ret_ty) = match supplied_key {
+    --        None => (SqliteVisitor.visit(&op, schema, owner), Ty::Int),
+    -+        None if crate::postgresql_enabled() && key.is_none() => (Expr::new(Span::synthetic(), ExprNode::Seq { exprs: vec![SqliteVisitor.visit(&op, schema, owner), arel_lit_int(0)] }), Ty::Int),
+    -+        None => (SqliteVisitor.visit(&op, schema, owner), key_ty(table)),
+    -         Some(k) => {
+    -             let key_ivar = || ivar_ref(&k.name);
+    -             let mut exprs = Vec::new();
+    +     };
+    +     let op = ArelOp::Insert(insert.clone());
+    +     let generated: Vec<&crate::schema::Column> =
+    +@@ src/lower/model_to_library/adapter_emit/mod.rs: fn synth_adapter_insert(owner: &ClassId, table: &Table, schema: &Schema) -> Meth
+    +             exprs.push(mint);
+    +         }
+    +         exprs.push(SqliteVisitor.visit(&op, schema, owner));
+    ++        if crate::postgresql_enabled() && key.is_none() { exprs.push(arel_lit_int(0)); }
+    +         if let Some(k) = supplied_key {
+    +             exprs.push(ivar_ref(&k.name));
+    +         }
+     @@ src/lower/model_to_library/adapter_emit/mod.rs: fn synth_adapter_truncate(owner: &ClassId, table: &Table, schema: &Schema) -> Me
+              name: Symbol::from("_adapter_truncate"),
+              receiver: MethodReceiver::Class,
+    @@ src/lower/model_to_library/adapter_emit/mod.rs: fn var_ref(name: &Symbol) -> Exp
+     
+      ## src/lower/model_to_library/mod.rs ##
+     @@ src/lower/model_to_library/mod.rs: pub fn ty_of_column(t: &ColumnType) -> Ty {
+    +         // such a column STRUCTURE is a `has_json` declaration, and that
+              // is modeled as typed per-key accessors over this text
+              // (`lower::has_json`), not as a Hash the whole column decodes to.
+    -         ColumnType::Json => Ty::Str,
+    +-        ColumnType::Json | ColumnType::Jsonb => Ty::Str,
+    ++        ColumnType::Json => Ty::Str,
+     +        ColumnType::TextArray => Ty::Array { elem: Box::new(Ty::Str) },
+     +        ColumnType::Jsonb => Ty::Untyped,
+              ColumnType::Uuid => Ty::Str,
+    @@ src/project.rs: mod tests {
+     +        .map_err(|e| format!("PostgreSQL requires db/structure.sql: {e}"))?;
+     +    for (path, content) in &mut files {
+     +        if path == "runtime/db.rb" {
+    -+            *content = crate::runtime_files::read_to_string("runtime/spinel/db_pg.rb")?;
+    ++            *content = crate::runtime_files::read_to_string("runtime/spinel/db_libpq.rb")?;
+     +        } else if path == "main.rb" {
+     +            *content = content.replace("path = Main.default_db_path", "path = ENV.fetch(\"DATABASE_URL\")")
+     +                .replace("Schema.statements.each { |sql| SqliteAdapter.execute_ddl(sql) }", "Db.prepare_schema(\"db/structure.sql\")");
+    @@ src/project.rs: mod tests {
+     +            *content = content.replace("Db.configure(_test_db_path)", "Db.configure(ENV.fetch(\"DATABASE_URL\"))")
+     +                .replace("Schema.statements.each { |sql| Db.exec(sql) }", "Db.prepare_schema(\"db/structure.sql\")");
+     +        } else if path == "runtime/active_record/connection.rb" {
+    -+            let start = content.find("    def self.transaction\n").ok_or("transaction anchor moved")?;
+    ++            let start = content.find("    def self.transaction").ok_or("transaction anchor moved")?;
+     +            let end = content[start..].find("\n    # `Model.update_counters").ok_or("transaction end moved")? + start;
+    -+            content.replace_range(start..end, "    def self.transaction\n      tx = Db.transaction_begin\n      commit = false\n      begin\n        result = yield\n        commit = true\n      ensure\n        Db.transaction_end(tx, commit)\n      end\n      result\n    end\n");
+    -+            let start = content.find("    def with_lock\n").ok_or("with_lock anchor moved")?;
+    -+            let end = content[start..].find("\n    # Rails-shape `none`").ok_or("with_lock end moved")? + start;
+    -+            content.replace_range(start..end, "    def with_lock\n      raise \"Locking a record with unsaved changes is not supported\" if persisted? && !changes_to_save.empty?\n      tx = Db.transaction_begin\n      commit = false\n      begin\n        reload(lock: true)\n        result = yield\n        commit = true\n      ensure\n        Db.transaction_end(tx, commit)\n      end\n      result\n    end\n");
+    ++            content.replace_range(start..end, "    def self.transaction(isolation: nil, requires_new: nil, joinable: true)\n      tx = Db.transaction_begin\n      commit = false\n      begin\n        result = yield\n        commit = true\n      ensure\n        Db.transaction_end(tx, commit)\n      end\n      result\n    end\n");
+     +            *content = content.replace("\"SQLite\"", "\"PostgreSQL\"")
+     +                .replace("        \"1\"", "        \"TRUE\"")
+     +                .replace("        \"0\"", "        \"FALSE\"");
+    ++        } else if path == "runtime/active_record/base.rb" {
+    ++            let start = content.find("    def with_lock(").ok_or("with_lock anchor moved")?;
+    ++            let end = content[start..].find("    def _adapter_reload_lock\n").ok_or("with_lock end moved")? + start;
+    ++            content.replace_range(start..end, "    def with_lock(*args)\n      raise \"Locking a record with unsaved changes is not supported\" if persisted? && !changes_to_save.empty?\n      tx = Db.transaction_begin\n      commit = false\n      begin\n        reload(lock: true)\n        result = yield\n        commit = true\n      ensure\n        Db.transaction_end(tx, commit)\n      end\n      result\n    end\n\n");
+     +        } else if path == "runtime/active_support_ext.rb" {
+     +            *content = content.replace("zone.nil? ? t.getlocal : t.getlocal(zone.offset_at(t.to_i))", "if zone.nil?\n      ENV.fetch(\"TZ\", \"UTC\") == \"UTC\" ? t.getutc : t.getlocal\n    elsif zone.name == \"UTC\" || zone.name == \"Etc/UTC\"\n      t.getutc\n    else\n      t.getlocal(zone.offset_at(t.to_i))\n    end");
+     +        } else if path == "runtime/active_record/relation.rb" {
+    @@ src/project.rs: mod tests {
+     
+      ## src/schema.rs ##
+     @@ src/schema.rs: pub enum ColumnType {
+    -     Time,
+    -     Binary,
+    +     /// `t.json` — retained separately from PostgreSQL `jsonb` for faithful
+    +     /// schema round-trips; shared model storage remains serialized text.
+          Json,
+     +    TextArray,
+    -+    Jsonb,
+    -     /// `t.uuid` — a Postgres `uuid` column. SQLite has no uuid type, so
+    -     /// storage is TEXT (the 36-char canonical form); typing is a String.
+    -     /// Not modeled as `String` at ingest so a schema round-trip and a
+    +     /// `t.jsonb` — distinct from `t.json` for faithful PostgreSQL schema
+    +     /// round-trips. Both JSON variants share serialized-text model storage.
+    +     Jsonb,
+ 6:  b1984fac !  6:  637699d2 60-rails-surface.patch
+    @@ runtime/ruby/active_record/relation.rb: module ActiveRecord
+     
+      ## runtime/ruby/active_record/relation.rbs ##
+     @@ runtime/ruby/active_record/relation.rbs: module ActiveRecord
+    -     def find_by: (Hash[Symbol, untyped] | String | nil conditions) -> Base?
+    -     def find_by!: (Hash[Symbol, untyped] | String | nil conditions) -> Base
+    +     def sole: () -> Base
+    +     def find_sole_by: (Hash[Symbol, untyped] | String | nil conditions) -> Base
+          def first_or_initialize: () -> Base
+     +    def find_or_create_by!: (Hash[Symbol, untyped] conditions) -> Base
+          def find_or_create_by: (Hash[Symbol, untyped] conditions) -> Base
+      
+          def to_sql: () -> String
+     
+    - ## src/emit/ruby/library.rs ##
+    -@@ src/emit/ruby/library.rs: fn emit_library_class_decl_inner(
+    -             open_header(&mut s);
+    -             render_constants(&mut s, &eager[*at..]);
+    -         }
+    --        None => render_constants(&mut s, &eager),
+    -+        None => {
+    -+            // Constants and singleton-ivar initializers share source order.
+    -+            let mut body_items: Vec<(u32, String)> = eager.iter().map(|&i| {
+    -+                let (name, value) = &lc.constants[i];
+    -+                (value.span.start, format!("{} = {}", name.as_str(), super::emit_expr(value)))
+    -+            }).collect();
+    -+            body_items.extend(lc.unknown_calls.iter().filter(|e| is_class_ivar_initializer(e))
+    -+                .map(|e| (e.span.start, super::emit_expr(e))));
+    -+            body_items.sort_by_key(|(offset, _)| *offset);
+    -+            for (_, rendered) in body_items {
+    -+                for line in rendered.lines() { writeln!(s, "{body_pad}{line}").unwrap(); }
+    -+            }
+    -+        },
+    -     }
+    -     if !eager.is_empty() && !lc.methods.is_empty() {
+    -         writeln!(s).unwrap();
+    -@@ src/emit/ruby/library.rs: fn emit_library_class_decl_inner(
+    -     // call may reference one) and before the methods.
+    -     if replays_foreign_class_body(lc, app) {
+    -         for call in &lc.unknown_calls {
+    -+            if split.is_none() && is_class_ivar_initializer(call) { continue; }
+    -             for line in super::emit_expr(call).lines() {
+    -                 if line.is_empty() {
+    -                     writeln!(s).unwrap();
+    -@@ src/emit/ruby/library.rs: fn emit_library_class_decl_inner(
+    -         }
+    -     } else {
+    -         for call in &lc.unknown_calls {
+    -+            if is_class_ivar_initializer(call) {
+    -+                if split.is_some() {
+    -+                    for line in super::emit_expr(call).lines() { writeln!(s, "{body_pad}{line}").unwrap(); }
+    -+                }
+    -+                continue;
+    -+            }
+    -             report_dropped_class_body_call(lc, call);
+    -         }
+    -     }
+    -@@ src/emit/ruby/library.rs: fn runtime_reopen_anchor(name: &str) -> Option<&'static str> {
+    - ///
+    - /// A dropped call is no longer silent either way — see
+    - /// `report_dropped_class_body_call`.
+    -+fn is_class_ivar_initializer(e: &Expr) -> bool {
+    -+    matches!(&*e.node, ExprNode::Assign { target: crate::expr::LValue::Ivar { .. }, .. })
+    -+}
+    -+
+    - fn replays_foreign_class_body(lc: &LibraryClass, app: &App) -> bool {
+    -     if lc.is_module {
+    -         return false;
+    -
+    - ## src/ingest/library_class.rs ##
+    -@@ src/ingest/library_class.rs: fn walk_decl_body_with_visibility<'pr>(
+    -             out.constants.push((name, value));
+    -             continue;
+    -         }
+    -+        // Singleton-instance storage executes eagerly while loading the class.
+    -+        // Keep it in the class-body expression stream, including Hash.new blocks.
+    -+        if stmt.as_instance_variable_write_node().is_some() {
+    -+            out.unknown_calls.push(ingest_expr(&stmt, file)?);
+    -+            continue;
+    -+        }
+    -         // Retain native nil initialization in source order. Only a declared
+    -         // cattr/mattr storage approximation may drop it, after the whole body
+    -         // has been walked. Non-nil initializers remain outside this slice.
+    -
+      ## src/ingest/model.rs ##
+     @@ src/ingest/model.rs: fn validation_rule_from_kv(
+              "presence" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Presence),
+    @@ src/lower/model_to_library/schema.rs: fn synth_index_read(owner: &ClassId, table
+              })
+              .collect();
+      
+    +-    // An armless `case` (no columns at all) is a Ruby syntax error.
+    +-    // `table.columns` is empty for a degenerate `create_table ..., id:
+    +-    // false do |t| end` — the column-list twin of the controller-side
+    +-    // `synth_index_read`'s bug when its permit list has no scalar keys
+    +-    // (`tests/params_all_non_scalar_keys.rs`). Same `Ty::Untyped`
+    +-    // signature either way.
+    +-    let body = if arms.is_empty() {
+    +-        nil_lit()
+    +-    } else {
+    +-        Expr::new(
+    +-            Span::synthetic(),
+    +-            ExprNode::Case {
+    +-                scrutinee: var_ref(name.clone()),
+    +-                arms,
+    +-            },
+    +-        )
+    +-    };
+     +    arms.push(crate::expr::Arm {
+     +        pattern: crate::expr::Pattern::Wildcard, guard: None,
+     +        body: Expr::new(Span::synthetic(), ExprNode::Send {
+    @@ src/lower/model_to_library/schema.rs: fn synth_index_read(owner: &ClassId, table
+     +            })], block: None, parenthesized: false,
+     +        }),
+     +    });
+    -     let body = Expr::new(
+    -         Span::synthetic(),
+    -         ExprNode::Case {
+    --            scrutinee: var_ref(name.clone()),
+    ++    let body = Expr::new(
+    ++        Span::synthetic(),
+    ++        ExprNode::Case {
+     +            scrutinee: Expr::new(Span::synthetic(), ExprNode::Send {
+     +                recv: Some(var_ref(name.clone())), method: Symbol::from("to_sym"),
+     +                args: vec![], block: None, parenthesized: false,
+     +            }),
+    -             arms,
+    -         },
+    -     );
+    ++            arms,
+    ++        },
+    ++    );
+    + 
+    +     MethodDef {
+    +         visibility: crate::dialect::MethodVisibility::Public,
+     @@ src/lower/model_to_library/schema.rs: fn synth_index_read(owner: &ClassId, table: &Table, model: &Model) -> MethodDef
+              params: vec![Param::positional(name.clone())],
+              body,
+    @@ src/lower/scope_chain.rs: fn syn(span: crate::span::Span, node: ExprNode) -> Exp
+     +}
+     +
+      fn thread_rel(mut args: Vec<Expr>, rel: Expr, leading: Option<&Vec<Param>>, span: crate::span::Span) -> Vec<Expr> {
+    -     // A trailing kwargs hash (`base(user, unmerged: unmerged)`) binds
+    -     // the scope's KEYWORD params; the relation is a positional and must
+    +     // A callee with a REST param (`*tags`) cannot take `__rel` as a
+    +     // trailing optional positional — an optional positional can't
+     @@ src/lower/scope_chain.rs: fn thread_rel(mut args: Vec<Expr>, rel: Expr, leading: Option<&Vec<Param>>, span
+      /// `Push::Subscription.destroy_by(endpoint:, user_id:)` reached nothing
+      /// at all, with the analyzer saying so (`send_dispatch_failed: no known
+    @@ src/lower/scope_chain.rs: fn lower_relation_args(
+              // are `find_by`'s — a list that names some of them renames
+              // `user:` to `user_id:` on one spelling and emits the
+              // nonexistent `memberships.user` column on the next.
+    --        "where" | "not" | "find_by" | "find_by!" | "destroy_by" | "delete_by" | "exists?" => {
+    -+        "where" | "not" | "find_by" | "find_by!" | "find_or_create_by" | "find_or_create_by!" | "destroy_by" | "delete_by" | "exists?" => {
+    +-        "where" | "not" | "find_by" | "find_by!" | "find_sole_by" | "destroy_by" | "delete_by"
+    +-        | "exists?" => {
+    ++        "where" | "not" | "find_by" | "find_by!" | "find_sole_by" | "find_or_create_by" | "find_or_create_by!" | "destroy_by" | "delete_by" | "exists?" => {
+                  // `where(connected_at: TTL.ago..)` — a RANGE value. Rails
+                  // renders `>=` / `<=` / `<` / BETWEEN; the runtime's
+                  // `column_predicate` has no Range arm and falls through to
+    @@ src/lower/scope_chain.rs: fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &m
+                      }
+                      if ctx.scope_of(self_model, &method) {
+                          let leading = ctx.scope_params(self_model, &method);
+    +                     let keeps = ctx.scope_keeps_relation(self_model, &method);
+     -                    let new_args = thread_rel(args, var_expr(span, rel), leading, span);
+     +                    let new_args = thread_rel(args, scope_seed(span, rel), leading, span);
+                          *expr = put(span, Some(const_expr(span, self_model)), method, new_args, block, true);
+    -                     return Some(self_model.clone());
+    +                     return keeps.then(|| self_model.clone());
+                      }
+     @@ src/lower/scope_chain.rs: fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+                          // Receiver is the bare `__rel` param — any `joins`
+    @@ src/lower/scope_chain.rs: fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &m
+                      }
+                      // A TERMINAL ends on the threaded relation too — `count`
+     @@ src/lower/scope_chain.rs: fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+    -                             }
+                                  if is_scope {
+                                      let leading = ctx.scope_params(&target, &method);
+    +                                 let keeps = ctx.scope_keeps_relation(&target, &method);
+     -                                let new_args = thread_rel(args, seed, leading, span);
+     +                                let (method, new_args) = thread_scope_call(method, args, seed, leading, span);
+                                      *expr = put(
+                                          span,
+                                          Some(const_expr(span, &target)),
+     @@ src/lower/scope_chain.rs: fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+    -                 }
+                      if ctx.scope_of(&mr, &method) {
+                          let leading = ctx.scope_params(&mr, &method);
+    +                     let keeps = ctx.scope_keeps_relation(&mr, &method);
+     -                    let new_args = thread_rel(args, r, leading, span);
+     +                    let (method, new_args) = thread_scope_call(method, args, r, leading, span);
+                          *expr = put(span, Some(const_expr(span, &mr)), method, new_args, block, true);
+    -                     return Some(mr);
+    +                     return keeps.then_some(mr);
+                      }
+     @@ src/lower/scope_chain.rs: mod tests {
+              let ExprNode::Send { recv: Some(r), method, args, .. } = &*expr.node else {
+ 7:  20f9041b <  -:  -------- 61-secure-password-super-and-nil.patch
+ 8:  0d19e89f <  -:  -------- 70-linear-pg-placeholder-rewrite.patch
+ 9:  1bb0a359 !  7:  920dc035 71-record-lock-and-error-predicate.patch
+    @@ runtime/ruby/active_record/base.rbs: module ActiveRecord
+          def record_validation_message: (Symbol field, String message, ?Symbol error_type) -> Array[String]
+          EMPTY_ATTRS: Hash[Symbol, untyped]
+     
+    - ## src/analyze/mod.rs ##
+    -@@ src/analyze/mod.rs: impl Analyzer {
+    -                 ("record_timestamps=", Ty::Bool),
+    -                 ("attributes=", Ty::Untyped),
+    -                 ("assign_attributes", Ty::Untyped),
+    -+                // Implemented by the Ruby-family connection reopen; returns
+    -+                // the caller's block value, as transaction does.
+    -+                ("with_lock", Ty::Untyped),
+    -                 ("update_column", Ty::Bool),
+    -                 ("update_columns", Ty::Bool),
+    -                 ("saved_changes", Ty::Untyped),
+    -
+      ## src/analyze/registry/activemodel.rs ##
+     @@ src/analyze/registry/activemodel.rs: pub(in crate::analyze) fn register(classes: &mut HashMap<ClassId, ClassInfo>) {
+              ("none?", Ty::Bool),
+    @@ tests/compile_contract_surfaces.rs (new)
+     +    assert!(failures.is_empty(), "{failures:?}");
+     +    let src = file(ruby::emit_lowered_controllers(&app), "probes_controller.rb");
+     +    assert!(src.contains("record.with_lock"), "{src}");
+    -+    let runtime = std::fs::read_to_string("runtime/ruby/active_record/connection.rb").unwrap();
+    -+    assert!(runtime.contains("def with_lock") && runtime.contains("reload(lock: true)"));
+    ++    let runtime = std::fs::read_to_string("runtime/ruby/active_record/base.rb").unwrap();
+    ++    assert!(runtime.contains("def with_lock") && runtime.contains("lock!(lock)"));
+     +}
+     +#[test]
+     +fn symbolic_error_predicate_uses_structured_entries() {
+10:  673bbbe2 <  -:  -------- 72-pg-async-cache.patch
+11:  2d45e256 !  8:  b11ec1ac 74-integer-query-range.patch
+    @@ runtime/ruby/active_record/connection.rbs: module ActiveRecord
+     
+      ## runtime/ruby/active_record/relation.rb ##
+     @@ runtime/ruby/active_record/relation.rb: module ActiveRecord
+    -       ok
+    -     end
+    - 
+    --    # `exists?` / `exists?(id)`. Hash/String forms are unsupported.
+    -+    # Hash conditions and scalar IDs share the schema-aware predicates.
+    -     # Integer? narrows by early return — rust2 does not narrow Option
+    -     # across `unless x.nil?`. Unloaded: exists_sql (SELECT 1 LIMIT 1).
+    -     def exists?(id = nil)
+    -@@ runtime/ruby/active_record/relation.rb: module ActiveRecord
+    -         return probe_existence(1) > 0
+    +       sql = if id.is_a?(Hash)
+    +         hash_conditions(id)
+    +       else
+    +-        "#{@table}.#{@model.primary_key} = #{ActiveRecord.adapter.escape_value(id)}"
+    ++        column_predicate(@model.primary_key, id)
+            end
+    -       own_lists
+    --      @wheres << "#{@table}.#{@model.primary_key} = #{ActiveRecord.adapter.escape_value(id)}"
+    -+      @wheres << (id.is_a?(Hash) ? hash_conditions(id) : column_predicate(@model.primary_key, id))
+    -       found = probe_existence(1) > 0
+    -       @wheres.pop
+    -       found
+    +       @wheres << sql unless sql.empty?
+    +       begin
+     @@ runtime/ruby/active_record/relation.rb: module ActiveRecord
+    -     # `hidden_stories.user_id`, not `user_id`, after `joins(:hidings)`.
+          def column_predicate(col, val)
+    +       col = sql_ident(col)
+            qcol = col.include?(".") ? col : "#{@table}.#{col}"
+     +      limits = @model.schema_integer_limits
+     +      limit = limits.fetch(col, 0)
+    @@ runtime/ruby/active_record/relation.rb: module ActiveRecord
+          # missing binds leave their `?` intact. (`String#sub` used to search
+     
+      ## runtime/ruby/active_record/relation.rbs ##
+    -@@ runtime/ruby/active_record/relation.rbs: module ActiveRecord
+    -     def one?: () -> bool
+    -     def many?: () -> bool
+    -     def all?: () { (Base) -> bool } -> bool
+    --    def exists?: (?Integer? id) -> bool
+    -+    def exists?: (?untyped id) -> bool
+    -     def probe_existence: (Integer n) -> Integer
+    -     def more_than?: (Integer n) -> bool
+    -     def length: () -> Integer
+     @@ runtime/ruby/active_record/relation.rbs: module ActiveRecord
+          def distinct_count_columns: () -> String
+          def exists_sql: (Integer n) -> String
+12:  7cfb872d !  9:  3effebff 80-gradual-return-stabilization.patch
+    @@ Metadata
+      ## Commit message ##
+         80-gradual-return-stabilization.patch
+     
+    -    Co-Authored-By: Claude Opus 5.5 <[redacted-email]>
+    -
+      ## src/analyze/harvest_return.rs ##
+     @@
+      //! Harvested method-return stabilization across fixpoint rounds.
+ -:  -------- > 10:  3e4d7fd6 81-reload-receiver-type.patch

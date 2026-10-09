@@ -1,0 +1,29 @@
+{
+  "ea4d3e68": {
+    "function": "fn validation_rule_from_kv(\n    key: &str,\n    value: &ruby_prism::Node<'_>,\n) -> Option<crate::dialect::ValidationRule> {\n    use super::util::bool_value;\n    use crate::dialect::ValidationRule;\n    match key {\n        \"presence\" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Presence),\n        \"absence\" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Absence),\n        \"length\" => parse_length_rule(value),\n        _ => None,\n    }\n}\n",
+    "supported_source_keys": [
+      "presence",
+      "absence",
+      "length",
+      "uniqueness"
+    ]
+  },
+  "6d3b9268": {
+    "function": "fn validation_rule_from_kv(\n    key: &str,\n    value: &ruby_prism::Node<'_>,\n) -> Option<crate::dialect::ValidationRule> {\n    use super::util::bool_value;\n    use crate::dialect::ValidationRule;\n    match key {\n        \"presence\" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Presence),\n        \"absence\" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Absence),\n        \"length\" => parse_length_rule(value),\n        _ => None,\n    }\n}\n",
+    "supported_source_keys": [
+      "presence",
+      "absence",
+      "length",
+      "uniqueness"
+    ]
+  },
+  "2b2deff7": {
+    "function": "fn validation_rule_from_kv(\n    key: &str,\n    value: &ruby_prism::Node<'_>,\n) -> Option<crate::dialect::ValidationRule> {\n    use super::util::bool_value;\n    use crate::dialect::ValidationRule;\n    match key {\n        \"presence\" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Presence),\n        \"absence\" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Absence),\n        \"length\" => parse_length_rule(value),\n        _ => None,\n    }\n}\n",
+    "supported_source_keys": [
+      "presence",
+      "absence",
+      "length",
+      "uniqueness"
+    ]
+  }
+}

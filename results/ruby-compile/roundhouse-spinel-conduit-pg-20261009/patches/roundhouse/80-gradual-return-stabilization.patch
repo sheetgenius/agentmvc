@@ -1,0 +1,232 @@
+diff --git a/src/analyze/harvest_return.rs b/src/analyze/harvest_return.rs
+index de66b00f..e6d109b7 100644
+--- a/src/analyze/harvest_return.rs
++++ b/src/analyze/harvest_return.rs
+@@ -1,28 +1,18 @@
+ //! Harvested method-return stabilization across fixpoint rounds.
+ //!
+-//! Circular accessors (`config` ↔ `Configuration.load!`) can thrash the
+-//! harvest table between a concrete type and `Concrete|Untyped` every
+-//! round and exhaust `FIXPOINT_CAP`. When an existing entry and a new
+-//! body type share the same concrete core (after dropping top-level
+-//! `Untyped`/`Var` arms), store that core. Nil-only cores keep sticky
+-//! `Nil|Untyped` — a full lattice join was tried and rejected because
+-//! `Untyped` then `Nil` collapsed Campfire URI helpers to bare `Nil`.
++//! Circular accessors can alternate between Concrete and Concrete|Unknown.
++//! Same-core returns converge by retaining any unknown arm. Convergence
++//! alone cannot prove that an unknown return path has the known path's
++//! representation; discarding it can emit an unsound AOT signature.
+ //!
+-//! First writes are stored as-is (including gradual unions). Any later
+-//! same-core pair collapses per stabilize (Nil sticky). A bare
+-//! `Untyped`/`Var` never replaces an already-informative return.
+-//! Distinct concrete cores still last-write (residual thrash for a
+-//! later call-graph pass).
++//! First writes stay gradual. Bare unknown returns do not wipe an
++//! informative entry, and distinct concrete cores still last-write.
+ 
+ use crate::ident::Symbol;
+ use crate::ty::Ty;
+ 
+ use super::body;
+ 
+-fn gradual_nil() -> Ty {
+-    body::union_of(Ty::Nil, Ty::Untyped)
+-}
+-
+ /// True when stripping top-level unknown arms leaves a usable core
+ /// (anything other than bare [`Ty::Untyped`]).
+ fn has_informative_core(ty: &Ty) -> bool {
+@@ -35,21 +25,16 @@ fn has_informative_core(ty: &Ty) -> bool {
+     }
+ }
+ 
+-/// If two harvested returns differ only by top-level `Untyped`/`Var`
+-/// arms, return the stable form to store. Non-Nil concrete cores keep
+-/// the stripped type (`Configuration|Untyped` → `Configuration`).
+-/// Nil-only cores keep `Nil|Untyped` when either side was gradual.
++/// Stabilize matching concrete cores without erasing an unknown arm.
++/// Keeping the gradual arm also prevents concrete/gradual oscillation.
+ fn stabilize_untyped_return_oscillation(existing: &Ty, new: &Ty) -> Option<Ty> {
+     let core_e = existing.clone().strip_unknown();
+     let core_n = new.clone().strip_unknown();
+     if core_e != core_n {
+         return None;
+     }
+-    if matches!(core_e, Ty::Nil) {
+-        if existing.has_unknown_arm() || new.has_unknown_arm() {
+-            return Some(gradual_nil());
+-        }
+-        return Some(core_e);
++    if existing.has_unknown_arm() || new.has_unknown_arm() {
++        return Some(body::union_of(core_e, Ty::Untyped));
+     }
+     Some(core_e)
+ }
+@@ -145,8 +130,8 @@ fn decide_harvested_return(existing: &Ty, new: Ty) -> HarvestWrite {
+ /// Conservative insertion into the harvested-return table.
+ ///
+ /// RBS-sourced `Ty::Fn` stays authoritative. Same-core returns that
+-/// differ only by unknown arms stabilize to the concrete core (Nil
+-/// cores stay gradual). An informative existing return is never
++/// differ only by unknown arms stabilize with a sticky gradual arm.
++/// An informative existing return is never
+ /// replaced by bare `Untyped`/`Var`. First writes are stored as-is,
+ /// including gradual unions.
+ pub(super) fn insert_inferred_return(
+@@ -174,6 +159,10 @@ mod tests {
+     use crate::ident::{ClassId, TyVar};
+     use std::collections::HashMap;
+ 
++    fn gradual_nil() -> Ty {
++        body::union_of(Ty::Nil, Ty::Untyped)
++    }
++
+     fn cfg() -> Ty {
+         Ty::Class {
+             id: ClassId(Symbol::from("Probe::Configuration")),
+@@ -182,15 +171,15 @@ mod tests {
+     }
+ 
+     #[test]
+-    fn configuration_versus_configuration_or_untyped_stabilizes_to_configuration() {
++    fn configuration_versus_configuration_or_untyped_stays_gradual() {
+         let concrete = cfg();
+         let noisy = body::union_of(cfg(), Ty::Untyped);
+         let stable = stabilize_untyped_return_oscillation(&concrete, &noisy)
+             .expect("same concrete core");
+-        assert_eq!(stable, concrete);
++        assert_eq!(stable, noisy);
+         let stable_rev = stabilize_untyped_return_oscillation(&noisy, &concrete)
+             .expect("order-independent");
+-        assert_eq!(stable_rev, concrete);
++        assert_eq!(stable_rev, noisy);
+     }
+ 
+     #[test]
+@@ -246,7 +235,7 @@ mod tests {
+         let mut table = HashMap::new();
+         insert_inferred_return(&mut table, &method, cfg());
+         insert_inferred_return(&mut table, &method, body::union_of(cfg(), Ty::Untyped));
+-        assert_eq!(table.get(&method), Some(&cfg()));
++        assert_eq!(table.get(&method), Some(&body::union_of(cfg(), Ty::Untyped)));
+     }
+ 
+     #[test]
+@@ -259,12 +248,28 @@ mod tests {
+     }
+ 
+     #[test]
+-    fn insert_gradual_first_write_then_same_core_concrete_narrows() {
++    fn insert_gradual_first_write_then_same_core_concrete_stays_gradual() {
+         let method = Symbol::from("config");
+         let mut table = HashMap::new();
+         insert_inferred_return(&mut table, &method, body::union_of(cfg(), Ty::Untyped));
+         insert_inferred_return(&mut table, &method, cfg());
+-        assert_eq!(table.get(&method), Some(&cfg()));
++        assert_eq!(table.get(&method), Some(&body::union_of(cfg(), Ty::Untyped)));
++    }
++
++    #[test]
++    fn two_gradual_returns_do_not_erase_an_unknown_return_path() {
++        let method = Symbol::from("join");
++        let core = body::union_of(Ty::Sym, Ty::Nil);
++        let mut table = HashMap::new();
++        insert_inferred_return(
++            &mut table, &method,
++            body::union_of(core.clone(), Ty::Var { var: TyVar(0) }),
++        );
++        let gradual = body::union_of(core, Ty::Untyped);
++        insert_inferred_return(&mut table, &method, gradual.clone());
++        assert_eq!(table.get(&method), Some(&gradual));
++        insert_inferred_return(&mut table, &method, gradual.clone());
++        assert_eq!(table.get(&method), Some(&gradual));
+     }
+ 
+     #[test]
+diff --git a/tests/harvest_return_oscillation.rs b/tests/harvest_return_oscillation.rs
+index f4cb2602..ac0cad86 100644
+--- a/tests/harvest_return_oscillation.rs
++++ b/tests/harvest_return_oscillation.rs
+@@ -44,7 +44,7 @@ end
+ "#;
+ 
+ #[test]
+-fn circular_config_load_emits_configuration_not_gradual_churn() {
++fn circular_config_load_keeps_known_consumers_and_a_gradual_cycle() {
+     let mut tree: HashMap<PathBuf, Vec<u8>> = HashMap::new();
+     tree.insert(
+         PathBuf::from("db/schema.rb"),
+@@ -59,16 +59,17 @@ fn circular_config_load_emits_configuration_not_gradual_churn() {
+         .map(|f| f.content)
+         .collect::<Vec<_>>()
+         .join("\n");
+-    // RBS collapses `T | untyped` to bare `untyped`, so checking for the
+-    // substring "Configuration | untyped" never fails. Pin the settled
+-    // signatures themselves — without stabilize, `config` ends as
+-    // `-> untyped` while the class name still matches a naive search.
++    // The cycle has no independent proof for its unknown return arm.
++    // Keeping that arm costs precision at config, but must not erase
++    // the known loader and consumer returns or invent a concrete type
++    // merely because two gradual harvests have the same known core.
+     assert!(
+-        rbs.contains("def self.config: () -> Probe::Configuration"),
+-        "expected Probe.config to settle on Probe::Configuration, got:\n{rbs}"
++        rbs.contains("def self.config: () -> untyped"),
++        "expected Probe.config to retain its gradual arm, got:\n{rbs}"
+     );
+     assert!(
+         rbs.contains("def self.load!: () -> Probe::Configuration"),
+         "expected Configuration.load! to settle on Probe::Configuration, got:\n{rbs}"
+     );
++    assert!(rbs.contains("def boot: () -> Probe::Configuration"), "{rbs}");
+ }
+diff --git a/tests/library_class_inferred_signatures.rs b/tests/library_class_inferred_signatures.rs
+index 90d8c09b..e5487b3d 100644
+--- a/tests/library_class_inferred_signatures.rs
++++ b/tests/library_class_inferred_signatures.rs
+@@ -163,3 +163,44 @@ fn a_union_with_a_gradual_arm_renders_as_untyped() {
+     assert!(!rbs.contains("String | untyped"), "{rbs}");
+     assert!(!rbs.contains("untyped?"), "{rbs}");
+ }
++
++// A non-local early return and an unknown tail must keep the tail's
++// gradual arm through later harvest rounds. Symbol? would tell the
++// compiled consumer to unbox an arbitrary room object as a Symbol.
++#[test]
++fn a_block_return_does_not_erase_an_unknown_room_tail() {
++    let rbs = sidecars(r#"
++class Rooms
++  Room = Struct.new(:lock, :members)
++
++  def self.room(id)
++    state = Rails.application.room_state
++    state[:lock].synchronize { state[:rooms][id] ||= Room.new(Mutex.new, {}) }
++  end
++
++  def self.join(id, socket)
++    room = room(id)
++    room.lock.synchronize do
++      return if socket.closed?
++      return :full if room.members.length >= 100
++      broadcast(room)
++    end
++    room
++  end
++
++  def self.broadcast(room)
++    room.members.each_key { |socket| socket.send("presence") }
++  end
++
++  def self.open(id, socket)
++    result = join(id, socket)
++    return if result == :full
++    broadcast(result)
++  end
++end
++"#);
++    let join = rbs.lines().find(|line| line.contains("def self.join:")).expect("join signature");
++    assert!(join.ends_with("-> untyped"), "{rbs}");
++    let broadcast = rbs.lines().find(|line| line.contains("def self.broadcast:")).expect("broadcast signature");
++    assert!(!broadcast.contains("Symbol room"), "{rbs}");
++}

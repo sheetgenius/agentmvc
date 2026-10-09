@@ -1,0 +1,25 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.28s
+     Running unittests src/lib.rs (/work/app/build/cargo-target/debug/deps/roundhouse-ade61decbfdea4eb)
+
+running 18 tests
+test analyze::harvest_return::tests::distinct_concrete_cores_do_not_stabilize ... ok
+test analyze::harvest_return::tests::a_nested_union_of_unknown_arms_is_not_informative ... ok
+test analyze::harvest_return::tests::configuration_versus_configuration_or_untyped_stays_gradual ... ok
+test analyze::harvest_return::tests::insert_distinct_cores_last_write_wins ... ok
+test analyze::harvest_return::tests::insert_keeps_known_return_against_bare_untyped ... ok
+test analyze::harvest_return::tests::insert_gradual_first_write_then_same_core_concrete_stays_gradual ... ok
+test analyze::harvest_return::tests::insert_keeps_known_return_against_untyped_only_union ... ok
+test analyze::harvest_return::tests::insert_gradual_nil_is_sticky_against_bare_nil ... ok
+test analyze::harvest_return::tests::insert_preserves_first_write_of_gradual_union ... ok
+test analyze::harvest_return::tests::insert_recursive_return_that_nests_its_previous_round_keeps_the_previous ... ok
+test analyze::harvest_return::tests::insert_scalar_previous_return_is_not_a_recursion_witness ... ok
+test analyze::harvest_return::tests::insert_recursive_return_flattened_into_a_union_is_cut ... ok
+test analyze::harvest_return::tests::insert_preserves_rbs_fn ... ok
+test analyze::harvest_return::tests::nil_versus_nil_or_untyped_keeps_gradual_nil ... ok
+test analyze::harvest_return::tests::insert_stabilizes_configuration_versus_noisy ... ok
+test analyze::harvest_return::tests::two_gradual_returns_do_not_erase_an_unknown_return_path ... ok
+test analyze::harvest_return::tests::var_nil_versus_untyped_nil_keeps_gradual_nil ... ok
+test analyze::harvest_return::tests::insert_recursive_return_nested_in_a_record_keeps_the_previous ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 1064 filtered out; finished in 0.00s
+

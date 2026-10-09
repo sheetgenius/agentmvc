@@ -1,0 +1,122 @@
+#!/usr/bin/env python3
+"""Resource naming, bounded container startup and gate diagnostic capture.
+
+The host scripts hard-code agentmvc-one-shot-* and leave helper containers
+unnamed. Keep application/test commands unchanged; forward the real CLI's output
+and exit status without interpreting them. Save logs before gate cleanup.
+"""
+import os
+import json
+import time
+from pathlib import Path
+import subprocess
+import sys
+import uuid
+
+if not os.environ.get("AGENTMVC_DOCKER_LOCK"):
+    sys.exit("Set AGENTMVC_DOCKER_LOCK to the shared host lock and run through reproduce/with-docker-lock.py.")
+
+args = [arg.replace("agentmvc-one-shot-browser:", "conduit-v8b-browser:").replace("agentmvc-one-shot-", "conduit-v8b-gate-") for arg in sys.argv[1:]]
+if args and args[0] == "run" and not any(arg == "--name" or arg.startswith("--name=") for arg in args):
+    args[1:1] = ["--name", "conduit-v8b-helper-" + uuid.uuid4().hex[:12]]
+real = os.environ["CONDUIT_V8B_DOCKER_REAL"]
+capture = os.environ.get("CONDUIT_V8B_CAPTURE_DIR")
+hang_file = Path(os.environ.get("CONDUIT_V8B_HANG_FILE", str(Path(__file__).resolve().parents[1] / "build/docker-start-hang.json")))
+if hang_file.exists():
+    sys.exit("Docker work stopped after a container startup exceeded 120 seconds; see " + str(hang_file))
+
+postgres = bool(args and args[0] == "run" and any(arg.startswith("postgres:17-alpine") for arg in args))
+if args and args[0] == "run":
+    name = args[args.index("--name") + 1]
+    if postgres:
+        args[1:1] = ["--mount", "type=volume,source=" + name + "-data,target=/var/lib/postgresql/data"]
+    for i, arg in enumerate(args):
+        alias = ("conduit-v8b-postgres:17" if arg.startswith("postgres:17-alpine") else
+                 "conduit-v8b-hurl:gate" if arg.startswith("ghcr.io/orange-opensource/hurl@") else None)
+        if alias:
+            if subprocess.run([real, "image", "inspect", alias], stdout=subprocess.DEVNULL,
+                              stderr=subprocess.DEVNULL).returncode:
+                subprocess.run([real, "build", "--progress=plain", "-t", alias, "-"],
+                               input="FROM " + arg + "\n", text=True, check=True)
+            args[i] = alias
+if capture and args and args[0] == "rm":
+    for name in args[1:]:
+        if name.startswith("conduit-v8b-gate-") and name.endswith(("-app", "-db")):
+            try:
+                result = subprocess.run([real, "logs", name], capture_output=True, timeout=15)
+                if result.returncode == 0:
+                    Path(capture).mkdir(parents=True, exist_ok=True)
+                    (Path(capture) / (name + ".log")).write_bytes(result.stdout + result.stderr)
+                if name.endswith("-app"):
+                    digest = subprocess.run([real, "exec", name, "sha256sum", "/app/server"],
+                                            capture_output=True, text=True, timeout=15)
+                    if digest.returncode == 0:
+                        image_id = subprocess.check_output([real, "inspect", "--format", "{{.Image}}", name],
+                                                           text=True, timeout=15).strip()
+                        (Path(capture) / (name + "-binary.json")).write_text(json.dumps({
+                            "container": name, "image_id": image_id,
+                            "server_sha256": digest.stdout.split()[0]
+                        }, indent=2) + "\n")
+            except (OSError, subprocess.TimeoutExpired):
+                pass
+if args and args[0] == "rm":
+    names = [arg for arg in args[1:] if not arg.startswith("-")]
+    if not names or any(not name.startswith("conduit-v8b-") for name in names):
+        sys.exit("refusing removal outside conduit-v8b- resources")
+    subprocess.run([real, "stop", "--time", "5", *names], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    args = ["rm", *names]
+if args and args[0] == "run":
+    name = args[args.index("--name") + 1]
+    if not name.startswith("conduit-v8b-"):
+        sys.exit("refusing container creation outside conduit-v8b- resources")
+    remove = "--rm" in args
+    detached = "-d" in args or "--detach" in args
+    create_args = ["create", *[arg for arg in args[1:] if arg not in ("--rm", "-d", "--detach")]]
+    deadline = time.monotonic() + 120
+    operation = "create"
+    try:
+        created = subprocess.run([real, *create_args], capture_output=True, text=True,
+                                 timeout=max(0.1, deadline - time.monotonic()))
+        if created.returncode:
+            sys.stdout.write(created.stdout)
+            sys.stderr.write(created.stderr)
+            sys.exit(created.returncode)
+        operation = "start"
+        started = subprocess.run([real, "start", name], capture_output=True, text=True,
+                                 timeout=max(0.1, deadline - time.monotonic()))
+        if started.returncode:
+            sys.stdout.write(started.stdout)
+            sys.stderr.write(started.stderr)
+            sys.exit(started.returncode)
+        if postgres:
+            # The entrypoint's temporary init server accepts Unix-socket
+            # probes before shutting down. TCP becomes ready only on the
+            # final server, avoiding a race in the unchanged host gate.
+            operation = "postgres TCP readiness"
+            while True:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise subprocess.TimeoutExpired([real, "exec", name, "pg_isready"], 120)
+                ready = subprocess.run([real, "exec", name, "pg_isready", "-h", "127.0.0.1",
+                                        "-U", "agentmvc", "-d", "agentmvc"],
+                                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                                       timeout=remaining)
+                if ready.returncode == 0:
+                    break
+                time.sleep(min(0.2, max(0, deadline - time.monotonic())))
+    except subprocess.TimeoutExpired:
+        hang_file.parent.mkdir(parents=True, exist_ok=True)
+        hang_file.write_text(json.dumps({"container": name, "operation": operation,
+                                        "startup_limit_seconds": 120}, indent=2) + "\n")
+        sys.exit("Container startup exceeded 120 seconds; Docker work stopped: " + name)
+    if detached:
+        sys.stdout.write(created.stdout)
+        sys.exit(0)
+    subprocess.call([real, "logs", "--follow", name])
+    result = subprocess.run([real, "inspect", "--format", "{{.State.ExitCode}}", name],
+                            capture_output=True, text=True, check=True)
+    status = int(result.stdout.strip())
+    if remove:
+        subprocess.run([real, "rm", name], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    sys.exit(status)
+os.execv(real, [real, *args])
