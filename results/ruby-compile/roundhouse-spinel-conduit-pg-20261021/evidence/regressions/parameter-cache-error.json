@@ -1,0 +1,15 @@
+{
+  "classification": "diagnostic build-cache environment error",
+  "attempt": "c-param-bisect-01",
+  "symptom": "Cached generated runtime_files.rs names assets absent from the selected historical source snapshot",
+  "repair": "Force fresh build-script and source mtimes before each archived-source diagnostic build; retain dependency cache only",
+  "excluded_from_attribution": [
+    "c-param-bisect-01",
+    "c-param-adjacent-build-01",
+    "c-param-adjacent-check-01",
+    "c-param-merge-check-01"
+  ],
+  "note": "Earlier adjacent pairs are retained as observations, but exact commit attribution will use the refreshed build setup. Canonical toolchain and passing gate are separate verified conditions.",
+  "confirmed": "Both historical pair logs compiled only the first condition; the second finished in 0.07\u20130.09 seconds and reused that binary. Fresh adjacent pair forces build.rs/src/runtime mtimes.",
+  "bisection": "R2 fresh midpoint results remain raw diagnostics; its assumed-good initial anchor was an excluded cached build, so stop it at a build boundary."
+}

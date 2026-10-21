@@ -1,0 +1,38 @@
+{
+  "classification": "existing conformance gap, also present on v8",
+  "current_spinel": "6ca6d451b97452d8a8b9dd8f6af51a391f060570",
+  "v8_spinel": "f85f04b3abef4b0540406948c56db7a51a420122",
+  "source": "current-unrepaired/a_111.rb",
+  "ruby_lines": 10,
+  "cruby_stdout": "\"ab\"\n",
+  "compiled_stdout": "\"a\"\n",
+  "inferred": "Box @data: Hash[String, untyped]; put: (Box, String) -> untyped",
+  "meaning": "Ruby preserves observable String mutation through the stored value; compiled output does not",
+  "new_patch": false,
+  "note": "Final standalone suite confirms this old mismatch with Spinel91 present.",
+  "final_repaired_toolchain": {
+    "source": "alias-original.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def put: (Box, String) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Box\n  @data: Hash[String, untyped]\n  def initialize: () -> Hash[String, untyped] # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "alias-original.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"a\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": false
+  }
+}

@@ -1,0 +1,106 @@
+class ArticleExport < ApplicationRecord
+  attr_reader id: Integer
+  attr_writer id: Integer
+  def id?: () -> bool
+  attr_reader articles: untyped
+  def _write_articles_json_raw: (String? value) -> nil
+  attr_writer articles: untyped
+  def articles?: () -> bool
+  def articles_previously_changed?: () -> bool
+  def saved_change_to_articles?: () -> bool
+  def articles_previously_was: () -> untyped
+  attr_reader completed_at: Time?
+  attr_reader completed_at_raw: String
+  def completed_at=: (Time? value) -> nil
+  attr_writer completed_at_raw: String?
+  def completed_at?: () -> bool
+  def completed_at_previously_changed?: () -> bool
+  def saved_change_to_completed_at?: () -> bool
+  def completed_at_previously_was: () -> untyped
+  attr_reader created_at: Time?
+  attr_reader created_at_raw: String
+  def created_at=: (Time value) -> nil
+  attr_writer created_at_raw: String
+  def created_at?: () -> bool
+  def created_at_previously_changed?: () -> bool
+  def saved_change_to_created_at?: () -> bool
+  def created_at_previously_was: () -> untyped
+  attr_reader status: String
+  attr_writer status: String
+  def status?: () -> bool
+  def status_previously_changed?: () -> bool
+  def saved_change_to_status?: () -> bool
+  def status_previously_was: () -> untyped
+  attr_reader updated_at: Time?
+  attr_reader updated_at_raw: String
+  def updated_at=: (Time value) -> nil
+  attr_writer updated_at_raw: String
+  def updated_at?: () -> bool
+  def updated_at_previously_changed?: () -> bool
+  def saved_change_to_updated_at?: () -> bool
+  def updated_at_previously_was: () -> untyped
+  attr_reader user_id: Integer
+  attr_writer user_id: Integer
+  def user_id?: () -> bool
+  def user_id_previously_changed?: () -> bool
+  def saved_change_to_user_id?: () -> bool
+  def user_id_previously_was: () -> untyped
+  def self.table_name: () -> String
+  def self._table_sql: () -> String
+  def self.schema_columns: () -> Array[Symbol]
+  def self.schema_time_columns: () -> Array[Symbol]
+  def self.schema_date_columns: () -> Array[Symbol]
+  def self.schema_boolean_columns: () -> Array[Symbol]
+  def self.schema_decimal_columns: () -> Array[Symbol]
+  def self.schema_integer_limits: () -> Hash[String, Integer]
+  def self.instantiate: (Hash[String, untyped] row) -> ArticleExport
+  def attributes_before_type_cast: () -> Hash[String, untyped]
+  def self.from_row: (ArticleExportRow row) -> ArticleExport
+  def self.from_stmt: (untyped stmt) -> ArticleExport
+  def initialize: (?Hash[Symbol, untyped] attrs) -> nil
+  def attributes: () -> Hash[String, untyped]
+  def []: ((Symbol | String) name) -> untyped
+  def []=: (Symbol name, (Integer | String) value) -> (Integer | String | nil)
+  def update: (Hash[Symbol, untyped] attrs) -> bool
+  def update!: (Hash[Symbol, untyped] attrs) -> ArticleExport
+  def fill_timestamps: (bool creating) -> nil
+  def self._find_primary_key_input: ((Integer | Float | String | nil) id) -> ArticleExport?
+  def self._exists_primary_key_input: ((Integer | Float | String | nil) id) -> bool
+  def self._adapter_find_by_id: (Integer id) -> ArticleExport?
+  def self._adapter_all: () -> Array[ArticleExport]
+  def self._adapter_last: () -> ArticleExport?
+  def _adapter_insert: () -> Integer
+  def _adapter_update: () -> nil
+  def _adapter_touch: () -> nil
+  def _adapter_delete: () -> nil
+  def self._adapter_count: () -> Integer
+  def self._adapter_any?: () -> bool
+  def self._adapter_exists_by_id?: (Integer id) -> bool
+  def self._adapter_truncate: () -> nil
+  def self.delete_all: () -> Integer
+  def _adapter_reload: () -> ArticleExport
+  def _adapter_reload_lock: () -> ArticleExport
+  def self._columns_sql: () -> String
+  def self._hydrate_all: (String sql) -> Array[ArticleExport]
+  def validate: () -> nil
+  def user: () -> User?
+  def user=: (User? value) -> nil
+  def user_loaded?: () -> bool
+  def self._association_names: () -> Array[Symbol]
+  def self.recover_pending!: () -> untyped
+  def dom_prefix: () -> String
+  def to_param: () -> String
+  def dom_record_key: () -> String
+  def cache_key: () -> String
+  def cache_key_with_version: () -> String
+  def reload: (?untyped options) -> ArticleExport
+  def lock!: (?(bool | String | nil) lock) -> ArticleExport
+  def to_gid_param: () -> untyped
+  def to_gid_uri: () -> untyped
+  def _autosave_user: () -> untyped
+  def before_validation: () -> untyped
+  def self._preload_batch_user: (untyped records) -> untyped
+  def _preload_user: (untyped rec) -> untyped
+  def self._preload_dispatch: (untyped records, untyped name, untyped nested) -> untyped
+  def self.preload_associations: (untyped records, untyped specs) -> untyped
+end

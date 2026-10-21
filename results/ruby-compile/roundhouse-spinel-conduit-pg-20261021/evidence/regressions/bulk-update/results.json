@@ -1,0 +1,98 @@
+[
+  {
+    "source": "current.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "UPDATE \"\"widgets\"\" SET value = 2 WHERE id = 1\n1\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote current.rbs\n"
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "current.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "UPDATE \"\"widgets\"\" SET value = 2 WHERE id = 1\n1\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "fixed.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "UPDATE \"widgets\" SET value = 2 WHERE id = 1\n1\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote fixed.rbs\n"
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "fixed.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "UPDATE \"widgets\" SET value = 2 WHERE id = 1\n1\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "introduced.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "UPDATE \"\"widgets\"\" SET value = 2 WHERE id = 1\n1\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote introduced.rbs\n"
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "introduced.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "UPDATE \"\"widgets\"\" SET value = 2 WHERE id = 1\n1\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "parent.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "UPDATE \"widgets\" SET value = 2 WHERE id = 1\n1\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote parent.rbs\n"
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "parent.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "UPDATE \"widgets\" SET value = 2 WHERE id = 1\n1\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  }
+]

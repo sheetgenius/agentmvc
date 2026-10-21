@@ -1,0 +1,37 @@
+{
+  "observed_utc": "2026-10-21T08:15:35.698518+00:00",
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v9-20261021-final",
+  "images": {
+    "toolchain": {
+      "tag": "conduit-v9-toolchain:62835d93aa0a",
+      "id": "sha256:9a356f7d8cfe279018039221d3a58b9c1a50ebe1743456f4d498193159bdff83",
+      "bytes": 2063577149
+    },
+    "compiled": {
+      "tag": "conduit-v9-app:compiled",
+      "id": "sha256:20362abfe7234658c54610ffc66c47975e68f2d7e8f097a193f06e4c6e05a8b3",
+      "bytes": 121130407,
+      "server_sha256": "a6197b9d72e05ad7302073e9bde5436841c0c778e0e841288495b8c66e589121"
+    },
+    "variant_rails": {
+      "tag": "conduit-v9-app:cruby",
+      "id": "sha256:fb1caafbf7cd7dbdd9e95697a5e52b7c4b7fcd6c2fdfb513d9df5b7289a327d6",
+      "bytes": 318022561
+    },
+    "reference_rails": {
+      "tag": "conduit-v9-rails:reference-1",
+      "id": "sha256:2c30f2cb0b4607172eb10cad1a0197b741561678797366a8eb3166f9bf8f05f5",
+      "bytes": 324043740
+    },
+    "postgres": {
+      "tag": "conduit-v9-postgres:17",
+      "id": "sha256:b05fab95d0492cb222fbb8cd0e07707c2f3f778518e85b5a2600de8bc2d1450e",
+      "bytes": 290942266
+    },
+    "browser": {
+      "tag": "conduit-v9-browser:1.63.0",
+      "id": "sha256:20ebb9d1f08225bf17a6b37df7ee4aff155a26fa9ba815263bff417bb882c037",
+      "bytes": 2517082188
+    }
+  }
+}

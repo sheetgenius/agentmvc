@@ -1,0 +1,2093 @@
+commit c967fe8ee2b31ff628c009e8ad0ad934820bbead
+Merge: 19d7f86d7 922b35182
+Author: Thomas Klemm <[redacted-email]>
+Date:   Mon Oct 19 14:03:29 2026 +0300
+
+    Merge pull request #405 from bunnykong/pr5-default-on
+    
+    Enable read binds by default on Spinel and expose cache diagnostics
+
+diff --git a/docs/pipeline/runtime.md b/docs/pipeline/runtime.md
+index cc8d0a063..8731f9c4d 100644
+--- a/docs/pipeline/runtime.md
++++ b/docs/pipeline/runtime.md
+@@ -186,6 +186,94 @@ The tradeoff: emitters and primitives stay in lockstep. If
+ helpers, the `runtime/ruby/action_view/` source) has to learn to call
+ it. Snapshot tests + toolchain tests catch drift.
+ 
++## Read bind capability
++
++`ROUNDHOUSE_PARAM_BINDS` is sampled once when assembling each target, then
++passed explicitly through lowering. The exhaustive `ParamBindCapability` policy
++separates driver support from the measured default:
++
++| Capability | Targets | Unset / other value | `=0` / `=1` |
++| --- | --- | --- | --- |
++| Default-on | Spinel | Binds | Inline / binds |
++| Opt-in | Ruby (CRuby), JRuby | Inline | Inline / binds |
++| Unsupported | All remaining targets | Inline | Inline / inline |
++
++Unsupported targets are Blog, Roda, Futamura, Crystal, Elixir, Go, Kotlin, Python, Rust,
++Swift, C#, TypeScript and TypeScript Worker. This includes every TypeScript
++profile: `node-sync`, libsql `node-async`, and `worker`. Empty or unrecognized
++values use the target default. An override never enables an unsupported shim.
++
++Spinel is default-on under the rollout policy. Lobsters statement counts favor
++binds with IN caching; a latency improvement over main is not established. CRuby binds improve
++nested reads, but repeated-query workloads lose SQL-only result replay and
++remain slower. JRuby has correctness coverage but lacks matched performance
++evidence. Both are opt-in until their workload measurements support a default
++change. Direct Ruby emitter APIs use the Ruby default; the Spinel-specific
++entry points use the Spinel default. Neither reads the environment; callers
++assembling a target resolve the override once.
++
++The override affects transpilation, not an already emitted server. It supports
++paired `=0`/`=1` measurements without changing the target capability. Compile-time
++literals, variable-arity IN lists, and writes keep their existing inline form.
++Ruby-family nullable equality selects its SQL shape at runtime: a present value
++uses `= ?` and reserves a bind slot; nil uses `IS NULL` without a slot. Inline
++mode uses `= value` / `IS NULL`. This preserves partial-index eligibility and
++LEFT JOIN reduction. At most seven nullable predicates may share cached bound
++shapes (128 combinations); larger combinations prepare transient statements.
++Variable-arity IN reads stay inline and cached by their complete SQL text, as
++on main. They do not opt into the nullable-shape overflow policy. Non-nullable columns
++keep `= ?`; nil passed to a typed integer bind remains SQL NULL, never zero.
++Enabling another target requires its selected driver/profile to implement
++`bind_int`, `bind_text`, `bind_bool`, and their `_opt` variants, with execution
++after binding and value serialization matching the inline writer.
++
++## Spinel statement-cache diagnostic
++
++Set `RH_STMT_STATS=1` before starting an emitted Spinel app to write cumulative
++per-connection summaries to stderr. A different nonempty value names a file to
++append to; unset, empty and `0` disable it. The destination and enabled flag are
++read once at boot. Changing the environment afterwards does not enable or disable
++the diagnostic. Disabled hooks are constant checks: no SQL tracking, counter
++updates, output, per-row work or diagnostic locking. Run diagnostics separately
++from timings.
++
++`Db.close` dumps after finalizing the pool. For an on-demand snapshot, stop request
++workers first and call `Db.dump_stmt_stats("phase")`; labels should contain no
++whitespace. Connection IDs are `shard:index`, local to the configured pool. A
++process that exits without closing its pool must explicitly request a snapshot.
++
++Each `RH_STMT_STATS` line reports:
++
++- `hits`, `misses` (successful native prepares), and `prepare_failures`.
++  Statement-cache hit rate is `hits / (hits + misses)`; replay hits do not reach
++  that cache. `misses` includes transient prepares and `transient_prepares` counts
++  that subset, including busy-hit readers and partial-replay promotions.
++- `entries`, `peak_entries`, and `distinct_sql` (distinct successfully
++  prepared SQL strings retained for that connection, including transient reads).
++  The connection keeps at most `STAT_SQL_CAP` (4096) of those strings.
++  `distinct_sql` is that retained count. `distinct_sql_capped=1` means further
++  distinct SQL was prepared and not stored, so the count is the cap rather than
++  the true total. Disabled diagnostics store nothing. SQL text and bind values
++  are not printed.
++- `trims` (boundaries exceeding CAP), `evictions` (cached statements dropped), and
++  `finalizations` (real SQLite finalizations, including transient release, failed
++  cleanup and pool close). Logical `Db.finalize` resets a cached statement and
++  does not count as a real finalization.
++- `qc_hits`, `qc_misses`, and `qc_bypasses` count request-replay decisions.
++  Bypasses include disabled request replay and SQL containing `?`. Bound reads
++  always execute against SQLite; SQL-only replay cannot distinguish bind values.
++- `executions`: SQLite `SQLITE_STMTSTATUS_RUN`, summed over live and finalized
++  cached and transient statements. It counts first native steps, including replay
++  promotions, rather than rows, prepares, replayed results or `Db.exec` writes.
++  The native counter is read only at snapshots or real finalization, including
++  before failed cleanup destroys a statement.
++
++Counters are cumulative; subtract snapshots to measure a phase. The native cache's
++128-entry cap is soft within a request, with least-recently-used trimming at lease
++boundaries after every outstanding cursor is released. Summing per-connection
++`distinct_sql` is not a count of globally unique SQL strings. A capped connection reports 4096, not the prepares it stopped storing. The diagnostic is
++implemented for compiled Spinel; CRuby and JRuby do not emit these summaries.
++
+ ## Emitter ↔ runtime contract
+ 
+ Ruby-family lowered equality reads select SQL from the runtime value: a
+diff --git a/runtime/spinel/db.rb b/runtime/spinel/db.rb
+index 1e811cf30..ed76c180b 100644
+--- a/runtime/spinel/db.rb
++++ b/runtime/spinel/db.rb
+@@ -102,6 +102,9 @@ module SQL
+   # which now runs only at pool shutdown (see DbConn#finalize_all).
+   ffi_func :sqlite3_reset,             [:ptr],                                :int
+   ffi_func :sqlite3_clear_bindings,    [:ptr],                                :int
++  # SQLITE_STMTSTATUS_RUN: first native steps, including replay promotions.
++  # Only the boot-time opt-in diagnostic reads this native counter.
++  ffi_func :sqlite3_stmt_status,       [:ptr, :int, :int],                     :int
+   # Placeholder binding (roundhouse#12, Path A.2). `bind_int64` binds a
+   # `?` param to an integer (int64 so lobsters-scale ids don't truncate);
+   # `bind_text` binds the full byte length, including embedded
+@@ -207,6 +210,15 @@ class Stmt
+     @cached = cached
+     @in_use = true
+     @closed = false
++    @stat_runs = 0
++  end
++
++  def cached
++    @cached
++  end
++
++  def stat_runs
++    @stat_runs
+   end
+ 
+   def sql
+@@ -240,6 +252,8 @@ class Stmt
+       @cached = false if rc != SQL::OK
+     end
+     if !@cached
++      # Read before finalize, which destroys the pointer even on failure.
++      @stat_runs = SQL.sqlite3_stmt_status(@ptr, 6, 0) if DbConn::STMT_STATS
+       close_rc = SQL.sqlite3_finalize(@ptr)
+       rc = close_rc if rc == SQL::OK
+       # sqlite3_finalize destroys the statement even when it reports the
+@@ -405,6 +419,11 @@ end
+ 
+ class DbConn
+   CAP = 128
++  # Distinct prepared SQL retained for RH_STMT_STATS. Past this, the snapshot
++  # keeps the cap and sets distinct_sql_capped instead of storing every string.
++  STAT_SQL_CAP = 4096
++  STMT_STATS_DEST = ENV.fetch("RH_STMT_STATS", "")
++  STMT_STATS = STMT_STATS_DEST != "" && STMT_STATS_DEST != "0"
+ 
+   def initialize(dbh)
+     @dbh = dbh
+@@ -439,6 +458,21 @@ class DbConn
+     @holds_permit = false
+     # wal_autocheckpoint=0 applied (Db.checkpoint_in_background!).
+     @manual_ckpt = false
++    @stat_hits = 0
++    @stat_misses = 0
++    @stat_failures = 0
++    @stat_peak = 0
++    @stat_trims = 0
++    @stat_evictions = 0
++    @stat_finalizations = 0
++    @stat_runs = 0
++    @stat_transient = 0
++    @stat_qc_hits = 0
++    @stat_qc_misses = 0
++    @stat_qc_bypasses = 0
++    @stat_sql = nil
++    @stat_sql_capped = false
++    @stat_sql = {} if STMT_STATS
+   end
+ 
+   def dbh
+@@ -527,6 +561,7 @@ class DbConn
+         if !e.in_use
+           # Only a successful release makes a statement idle; its cursor
+           # and bindings are already reset and cleared.
++          @stat_hits += 1 if STMT_STATS
+           e.checkout
+           @open.push(e)
+           return e.ptr
+@@ -579,11 +614,18 @@ class DbConn
+       st = rc == SQL::OK ? SQL.read_ptr(SQL.stmt_out) : 0
+     end
+     if rc != SQL::OK
++      @stat_failures += 1 if STMT_STATS
+       Db.raise_statement_error("Db.prepare failed (" + rc.to_s + "): " + SQL.sqlite3_errmsg(@dbh) + " — sql: " + sql, rc == SQL::BUSY)
+     end
+     entry = Stmt.new(sql, st, cached)
+     index_cached(entry) if cached
+     @open.push(entry)
++    if STMT_STATS
++      @stat_misses += 1
++      @stat_transient += 1 if !cached
++      remember_stat_sql(sql)
++      @stat_peak = @entries.length if @entries.length > @stat_peak
++    end
+     st
+   end
+ 
+@@ -597,6 +639,7 @@ class DbConn
+       e = @open[i]
+       if e.ptr == ptr
+         rc = e.release
++        stats_released(e) if STMT_STATS && e.closed
+         @open.delete_at(i)
+         if rc != SQL::OK
+           discard_closed
+@@ -616,6 +659,7 @@ class DbConn
+     i = 0
+     while i < @open.length
+       release_rc = @open[i].release
++      stats_released(@open[i]) if STMT_STATS && @open[i].closed
+       rc = release_rc if rc == SQL::OK
+       i += 1
+     end
+@@ -632,6 +676,7 @@ class DbConn
+     while i >= 0
+       if @entries[i].closed
+         unindex_cached(@entries[i])
++        @stat_evictions += 1 if STMT_STATS
+         @entries.delete_at(i)
+       end
+       i -= 1
+@@ -652,10 +697,15 @@ class DbConn
+     return nil if @entries.length <= CAP
+     keep = []
+     drop_before = @entries.length - CAP
++    @stat_trims += 1 if STMT_STATS
+     i = 0
+     while i < @entries.length
+       if i < drop_before && !@entries[i].in_use
+         unindex_cached(@entries[i])
++        if STMT_STATS
++          @stat_evictions += 1
++          stats_finalize(@entries[i].ptr)
++        end
+         SQL.sqlite3_finalize(@entries[i].ptr)
+       else
+         keep.push(@entries[i])
+@@ -723,9 +773,17 @@ class DbConn
+   # (recording its rows as they are stepped, when the cache is on).
+   # Returns 0 as "no replay" so `Db.prepare` can tell the two apart.
+   def qc_lookup(sql, preparable = true)
+-    return 0 if !@qc_on || sql.include?("?")
++    # SQL-only replay cannot distinguish values bound to the same shape.
++    if !@qc_on || sql.include?("?")
++      @stat_qc_bypasses += 1 if STMT_STATS
++      return 0
++    end
+     e = @qc_by_sql[sql]
+-    return 0 if e.nil?
++    if e.nil?
++      @stat_qc_misses += 1 if STMT_STATS
++      return 0
++    end
++    @stat_qc_hits += 1 if STMT_STATS
+     @qc_cursors.push(QcCursor.new(e, preparable))
+     @qc_cursors.length
+   end
+@@ -942,6 +1000,7 @@ class DbConn
+     ensure
+       i = 0
+       while i < @entries.length
++        stats_finalize(@entries[i].ptr) if STMT_STATS
+         SQL.sqlite3_finalize(@entries[i].ptr)
+         i += 1
+       end
+@@ -951,6 +1010,65 @@ class DbConn
+     end
+     nil
+   end
++
++  # Keep distinct SQL only while diagnostics are on, and only up to the cap.
++  def remember_stat_sql(sql)
++    return nil if @stat_sql[sql]
++    if @stat_sql.length >= STAT_SQL_CAP
++      @stat_sql_capped = true
++      return nil
++    end
++    @stat_sql[sql] = true
++    nil
++  end
++
++  # Stmt#release read this counter while a transient or failed cached
++  # pointer was still alive. It can now be collected without rereading it.
++  def stats_released(entry)
++    @stat_runs += entry.stat_runs
++    @stat_finalizations += 1
++    nil
++  end
++
++  def stats_finalize(ptr)
++    @stat_runs += SQL.sqlite3_stmt_status(ptr, 6, 0)
++    @stat_finalizations += 1
++    nil
++  end
++
++  # Snapshots are for an idle pool or the owning script's thread. They add
++  # no locks to a connection's exclusively leased request path.
++  def dump_stmt_stats(phase, connection)
++    return nil unless STMT_STATS
++    runs = @stat_runs
++    @entries.each { |entry| runs += SQL.sqlite3_stmt_status(entry.ptr, 6, 0) }
++    # Explicit transient reads outside a lease can remain live at snapshot.
++    @open.each do |entry|
++      runs += SQL.sqlite3_stmt_status(entry.ptr, 6, 0) if !entry.cached && !entry.closed
++    end
++    line = "RH_STMT_STATS phase=" + phase + " connection=" + connection +
++      " hits=" + @stat_hits.to_s + " misses=" + @stat_misses.to_s +
++      " prepare_failures=" + @stat_failures.to_s +
++      " entries=" + @entries.length.to_s + " peak_entries=" + @stat_peak.to_s +
++      " distinct_sql=" + @stat_sql.length.to_s +
++      " distinct_sql_capped=" + (@stat_sql_capped ? "1" : "0") +
++      " trims=" + @stat_trims.to_s + " evictions=" + @stat_evictions.to_s +
++      " finalizations=" + @stat_finalizations.to_s +
++      " transient_prepares=" + @stat_transient.to_s +
++      " qc_hits=" + @stat_qc_hits.to_s + " qc_misses=" + @stat_qc_misses.to_s +
++      " qc_bypasses=" + @stat_qc_bypasses.to_s +
++      " executions=" + runs.to_s
++    if STMT_STATS_DEST == "1"
++      $stderr.puts line
++    else
++      begin
++        File.open(STMT_STATS_DEST, "a") { |file| file.puts line }
++      rescue StandardError => e
++        $stderr.puts "RH_STMT_STATS write failed: " + e.message
++      end
++    end
++    nil
++  end
+ end
+ 
+ # Dedicated SQLite connection pool (roundhouse#12). A single-use object so
+@@ -1138,6 +1256,15 @@ class DbPool
+     end
+     raise error if !error.nil?
+   end
++
++  def dump_stmt_stats(phase, shard)
++    i = 0
++    while i < @conns.length
++      @conns[i].dump_stmt_stats(phase, shard.to_s + ":" + i.to_s)
++      i += 1
++    end
++    nil
++  end
+ end
+ 
+ # Temporal intrinsics (`ActiveSupport.parse_db_time` in the synthesized
+@@ -1491,6 +1618,7 @@ module Db
+       while i < @pools.length
+         begin
+           @pools[i].close_all
++          @pools[i].dump_stmt_stats("close", i) if DbConn::STMT_STATS
+         rescue StandardError => e
+           error = e if error.nil?
+         end
+@@ -1502,6 +1630,16 @@ module Db
+     raise error if !error.nil?
+   end
+ 
++  def self.dump_stmt_stats(phase = "snapshot")
++    return nil if !DbConn::STMT_STATS || @pools.nil?
++    i = 0
++    while i < @pools.length
++      @pools[i].dump_stmt_stats(phase, i)
++      i += 1
++    end
++    nil
++  end
++
+   # DDL + INSERT/UPDATE/DELETE. `sqlite3_exec` doesn't return rows;
+   # callers that want last_insert_rowid / changes consult those
+   # accessors immediately after.
+diff --git a/scripts/ci-plan.py b/scripts/ci-plan.py
+index c01479e12..7e681d51e 100755
+--- a/scripts/ci-plan.py
++++ b/scripts/ci-plan.py
+@@ -78,6 +78,7 @@ SPINEL_TESTS = [
+     "spinel_db_lease",
+     *PARAM_BIND_TESTS,
+     "spinel_stmt_cache_lru",
++    "stmt_stats",
+     "db_sqlite_concurrency",
+     "spinel_param_builder",
+     "spinel_net_http_start",
+@@ -492,6 +493,7 @@ def native_coverage(path):
+                     "spinel_db_lease",
+                     *PARAM_BIND_TESTS,
+                     "spinel_stmt_cache_lru",
++                    "stmt_stats",
+                     "db_sqlite_concurrency",
+                 )
+             )
+diff --git a/src/emit/ruby.rs b/src/emit/ruby.rs
+index 8cb28af8f..b295f4404 100644
+--- a/src/emit/ruby.rs
++++ b/src/emit/ruby.rs
+@@ -198,6 +198,16 @@ fn relax_from_stmt_handle(lc: &mut LibraryClass) {
+ pub(crate) fn materialize_models(
+     app: &App,
+     materialization: crate::lower::model_to_library::Materialization<'_>,
++) -> (Vec<LibraryClass>, crate::lower::controller_to_library::params::ParamsSpecs) {
++    materialize_models_with_param_binds(
++        app, materialization, crate::project::BuildTarget::Ruby.param_binds_enabled(None),
++    )
++}
++
++fn materialize_models_with_param_binds(
++    app: &App,
++    materialization: crate::lower::model_to_library::Materialization<'_>,
++    param_binds: bool,
+ ) -> (Vec<LibraryClass>, crate::lower::controller_to_library::params::ParamsSpecs) {
+     // Collect controller `permit(...)` declarations so the model lowerer
+     // can synthesize `from_params(p: <Resource>Params)` factories sized
+@@ -238,6 +248,7 @@ pub(crate) fn materialize_models(
+         materialization,
+         crate::lower::model_to_library::FinderInputs::Request,
+         true,
++        param_binds,
+         crate::lower::model_to_library::ErrorsReaders::CreatedOnFirstRead,
+     ).0;
+     (lcs, params_specs)
+@@ -248,14 +259,27 @@ pub fn emit_lowered_models(app: &App) -> Vec<EmittedFile> {
+     emit_model_classes(&lcs, app, &params_specs)
+ }
+ 
++fn emit_lowered_models_with_param_binds(app: &App, param_binds: bool) -> Vec<EmittedFile> {
++    let (lcs, params_specs) = lowered_model_lcs_with_param_binds(app, param_binds);
++    emit_model_classes(&lcs, app, &params_specs)
++}
++
+ /// The model classes `emit_lowered_models` writes, before rendering.
+ /// Shared with `emit::futamura::routes`, which walks what is emitted.
+ pub(crate) fn lowered_model_lcs(
+     app: &App,
+ ) -> (Vec<LibraryClass>, crate::lower::controller_to_library::params::ParamsSpecs) {
+-    let (mut lcs, params_specs) = materialize_models(
++    lowered_model_lcs_with_param_binds(app, crate::project::BuildTarget::Ruby.param_binds_enabled(None))
++}
++
++fn lowered_model_lcs_with_param_binds(
++    app: &App,
++    param_binds: bool,
++) -> (Vec<LibraryClass>, crate::lower::controller_to_library::params::ParamsSpecs) {
++    let (mut lcs, params_specs) = materialize_models_with_param_binds(
+         app,
+         crate::lower::model_to_library::Materialization::Emit,
++        param_binds,
+     );
+     library::preserve_record_receiver_returns(&mut lcs, app);
+     // The sqlite statement handle `Db.prepare` returns is a per-target
+@@ -502,13 +526,17 @@ pub fn emit_lowered_routes(app: &App) -> EmittedFile {
+ /// `app/models/<name>.rb` because they're plain holders, not request
+ /// handlers.
+ pub fn emit_lowered_controllers(app: &App) -> Vec<EmittedFile> {
++    emit_lowered_controllers_with_param_binds(app, crate::project::BuildTarget::Ruby.param_binds_enabled(None))
++}
++
++fn emit_lowered_controllers_with_param_binds(app: &App, param_binds: bool) -> Vec<EmittedFile> {
+     // RSS_ONLY: the spinel tree compiles these, so the inline-json arms
+     // stay out — they reference the CRuby-overlay JsonRender and don't
+     // type under the AOT compile (CI caught `render(JsonRender.encode
+     // (...))` as sp_RbVal-vs-char* in articles_controller). The rss arm
+     // reaches only the emitted `Views::<X>.rss` template and the shared
+     // `Rails.cache.fetch_str`, both of which this tree already carries.
+-    let mut lcs = lower_controllers_for_spinel(app, FormatBreadth::RSS_ONLY);
++    let mut lcs = lower_controllers_for_spinel(app, FormatBreadth::RSS_ONLY, param_binds);
+     library::apply_scope_lowering(&mut lcs, app);
+     library::apply_helper_lowering(&mut lcs, app);
+     // A record handed to a path helper becomes its slug here, not
+@@ -546,13 +574,24 @@ pub fn emit_lowered_controllers_with_layout(app: &App) -> Vec<EmittedFile> {
+     emit_lowered_controllers_from_lcs(&lcs, app)
+ }
+ 
++pub(crate) fn emit_lowered_controllers_with_layout_and_param_binds(
++    app: &App, param_binds: bool,
++) -> Vec<EmittedFile> {
++    let lcs = lowered_controller_lcs_with_layout_and_param_binds(app, param_binds);
++    emit_lowered_controllers_from_lcs(&lcs, app)
++}
++
+ /// The controller classes `emit_lowered_controllers_with_layout`
+ /// writes, before rendering. Shared with `emit::futamura::routes`.
+ pub(crate) fn lowered_controller_lcs_with_layout(app: &App) -> Vec<LibraryClass> {
++    lowered_controller_lcs_with_layout_and_param_binds(app, crate::project::BuildTarget::Ruby.param_binds_enabled(None))
++}
++
++fn lowered_controller_lcs_with_layout_and_param_binds(app: &App, param_binds: bool) -> Vec<LibraryClass> {
+     // FULL: the CRuby/JRuby trees ship the overlay (JsonRender) so the
+     // widened respond_to arms all resolve; these files dedupe last-wins
+     // over the spinel-shape ones.
+-    let mut lcs = lower_controllers_for_spinel(app, FormatBreadth::FULL);
++    let mut lcs = lower_controllers_for_spinel(app, FormatBreadth::FULL, param_binds);
+     library::apply_scope_lowering(&mut lcs, app);
+     library::apply_helper_lowering(&mut lcs, app);
+     // A record handed to a path helper becomes its slug here, not
+@@ -575,7 +614,7 @@ pub(crate) fn lowered_controller_lcs_with_layout(app: &App) -> Vec<LibraryClass>
+ /// controller lowerer's registry as extras — the Arel pass needs
+ /// them to resolve `Article.includes(...).order(...)` chain
+ /// receivers to a TableRef.
+-fn lower_controllers_for_spinel(app: &App, format_breadth: FormatBreadth) -> Vec<LibraryClass> {
++fn lower_controllers_for_spinel(app: &App, format_breadth: FormatBreadth, param_binds: bool) -> Vec<LibraryClass> {
+     // Use lower_models_with_registry (not lower_models_to_library_classes
+     // + class_info_from_library_class) because the former returns
+     // ClassInfo with `table` set — the Arel pass needs `info.table`
+@@ -608,6 +647,7 @@ fn lower_controllers_for_spinel(app: &App, format_breadth: FormatBreadth) -> Vec
+         model_extras,
+         crate::lower::controller_to_library::LowerControllerOptions {
+             ruby_read_values: true,
++            param_binds,
+             schema: Some(&app.schema),
+             views: &app.views,
+             library_classes: &app.library_classes,
+@@ -833,6 +873,11 @@ fn jbuilder_view_output_path(view_name: &str) -> PathBuf {
+ /// which would have CRuby double-run every test if combined with the
+ /// shim).
+ pub fn emit_spinel(app: &App) -> Vec<EmittedFile> {
++    emit_spinel_with_param_binds(app, crate::project::BuildTarget::Spinel.param_binds_enabled(None))
++}
++
++/// Ruby-family emit with the build target's resolved bind policy.
++pub(crate) fn emit_spinel_with_param_binds(app: &App, param_binds: bool) -> Vec<EmittedFile> {
+     let _indexes = library::install_lookup_indexes(app);
+     let mut files = Vec::new();
+     files.extend(emit_lowered_schema_pair(app));
+@@ -892,11 +937,11 @@ pub fn emit_spinel(app: &App) -> Vec<EmittedFile> {
+                 .to_string(),
+         }),
+     }
+-    files.extend(emit_lowered_models(app));
++    files.extend(emit_lowered_models_with_param_binds(app, param_binds));
+     if let Some(f) = library::emit_relation_scope_delegates(app) {
+         files.push(f);
+     }
+-    files.extend(emit_lowered_controllers(app));
++    files.extend(emit_lowered_controllers_with_param_binds(app, param_binds));
+     files.extend(emit_lowered_views(app));
+     files.extend(emit_lowered_jbuilder_views(app));
+ 
+diff --git a/src/lower/arel/mod.rs b/src/lower/arel/mod.rs
+index 00ff3ae69..9fe5a00d0 100644
+--- a/src/lower/arel/mod.rs
++++ b/src/lower/arel/mod.rs
+@@ -65,7 +65,7 @@ pub fn rewrite_arel_in_expr_with_assocs(
+     assocs: &[crate::lower::model_associations::AssociationEdge],
+ ) -> bool {
+     let no_scopes = std::collections::HashSet::new();
+-    rewrite_arel_in_expr_with_ruby_values(expr, schema, registry, assocs, false, &no_scopes)
++    rewrite_arel_in_expr_with_ruby_values(expr, schema, registry, assocs, false, &no_scopes, SqliteVisitor::default())
+ }
+ 
+ /// Ruby-family values preserve SQL NULL without changing strict-target emit.
+@@ -80,6 +80,7 @@ pub(crate) fn rewrite_arel_in_expr_with_ruby_values(
+     assocs: &[crate::lower::model_associations::AssociationEdge],
+     ruby_read_values: bool,
+     scopes: &std::collections::HashSet<crate::ident::Symbol>,
++    visitor: SqliteVisitor,
+ ) -> bool {
+     // Names (ivars/locals) the body later refines with relation-chain
+     // methods (`@moderations.where(...)` after `@moderations =
+@@ -89,7 +90,7 @@ pub(crate) fn rewrite_arel_in_expr_with_ruby_values(
+     let mut refined = RefinedNames::default();
+     collect_relation_refined_names(expr, scopes, &mut refined);
+     HOIST_TEMPORARIES.with(|c| c.set(0));
+-    let mut changed = rewrite_arel_inner(expr, schema, registry, assocs, &refined, ruby_read_values, scopes);
++    let mut changed = rewrite_arel_inner(expr, schema, registry, assocs, &refined, ruby_read_values, scopes, visitor);
+     // Both call sites hand us a METHOD BODY, and a body that is a
+     // single statement is not a `Seq` — so the hoist post-pass inside
+     // `rewrite_arel_inner`, which walks a Seq's statement list, had no
+@@ -408,6 +409,7 @@ fn rewrite_arel_inner(
+     refined: &RefinedNames,
+     ruby_read_values: bool,
+     scopes: &std::collections::HashSet<crate::ident::Symbol>,
++    visitor: SqliteVisitor,
+ ) -> bool {
+     if let ExprNode::Assign { target, value } = expr.node.as_ref() {
+         let name = match target {
+@@ -426,7 +428,7 @@ fn rewrite_arel_inner(
+             if ruby_read_values {
+                 ruby_values::normalize(&mut op, schema);
+             }
+-            let mut replacement = SqliteVisitor.visit(&op, schema, &owner);
++            let mut replacement = visitor.visit(&op, schema, &owner);
+             // The expansion replaces the recognized chain wholesale;
+             // its provenance is the chain call site. Subtrees the
+             // builder lifted out of the chain (predicate values, …)
+@@ -462,15 +464,15 @@ fn rewrite_arel_inner(
+         let ExprNode::Send { recv: Some(recv), args, .. } = &mut *expr.node else {
+             unreachable!("matched Send with recv above");
+         };
+-        changed |= rewrite_arel_spine_args(recv, schema, registry, assocs, refined, ruby_read_values, scopes);
++        changed |= rewrite_arel_spine_args(recv, schema, registry, assocs, refined, ruby_read_values, scopes, visitor);
+         for a in args {
+-            changed |= rewrite_arel_inner(a, schema, registry, assocs, refined, ruby_read_values, scopes);
++            changed |= rewrite_arel_inner(a, schema, registry, assocs, refined, ruby_read_values, scopes, visitor);
+         }
+         return changed;
+     }
+     let mut changed = false;
+     walk_subexprs_mut(expr, &mut |e| {
+-        changed |= rewrite_arel_inner(e, schema, registry, assocs, refined, ruby_read_values, scopes)
++        changed |= rewrite_arel_inner(e, schema, registry, assocs, refined, ruby_read_values, scopes, visitor)
+     });
+     // Post-pass: when an Arel rewrite landed a multi-stmt hydrate Seq
+     // in a *value* position — directly as an Assign value
+@@ -504,17 +506,18 @@ fn rewrite_arel_spine_args(
+     refined: &RefinedNames,
+     ruby_read_values: bool,
+     scopes: &std::collections::HashSet<crate::ident::Symbol>,
++    visitor: SqliteVisitor,
+ ) -> bool {
+     let mut changed = false;
+     if let ExprNode::Send { recv, args, block, .. } = &mut *expr.node {
+         if let Some(r) = recv {
+-            changed |= rewrite_arel_spine_args(r, schema, registry, assocs, refined, ruby_read_values, scopes);
++            changed |= rewrite_arel_spine_args(r, schema, registry, assocs, refined, ruby_read_values, scopes, visitor);
+         }
+         for a in args {
+-            changed |= rewrite_arel_inner(a, schema, registry, assocs, refined, ruby_read_values, scopes);
++            changed |= rewrite_arel_inner(a, schema, registry, assocs, refined, ruby_read_values, scopes, visitor);
+         }
+         if let Some(b) = block {
+-            changed |= rewrite_arel_inner(b, schema, registry, assocs, refined, ruby_read_values, scopes);
++            changed |= rewrite_arel_inner(b, schema, registry, assocs, refined, ruby_read_values, scopes, visitor);
+         }
+     }
+     changed
+diff --git a/src/lower/arel/visitor.rs b/src/lower/arel/visitor.rs
+index df527d8d1..d392b5c97 100644
+--- a/src/lower/arel/visitor.rs
++++ b/src/lower/arel/visitor.rs
+@@ -28,33 +28,6 @@ use super::ir::{
+ 
+ const DB_MOD: &str = "Db";
+ 
+-/// Prototype gate for placeholder-bind emit (roundhouse#12, the
+-/// "planned follow-on" the Db shims name). When
+-/// `ROUNDHOUSE_PARAM_BINDS=1`, the `Db.prepare` read paths
+-/// (single/multi hydrate, count, exists) render *runtime* WHERE values
+-/// as `?` placeholders plus `Db.bind_*` calls after prepare — so the
+-/// prepared-statement cache keys on the static query shape
+-/// (`WHERE id = ?`) instead of per-value (`WHERE id = 3`). Compile-time
+-/// literals stay inline (they're already part of the static shape).
+-///
+-/// Default OFF ⇒ byte-identical inline-escape emit for every target.
+-/// Only the spinel + cruby `Db` shims implement `bind_*` today; the
+-/// other targets gain it on real rollout, at which point this gate is
+-/// replaced by a per-target capability flag threaded from the driver.
+-/// Env-var gating is deliberate prototype scaffolding: it keeps the
+-/// change behind one switch so it can be measured on the spinel lane
+-/// without touching the other ten targets' shims.
+-///
+-/// Write paths (INSERT/UPDATE/DELETE) are intentionally NOT
+-/// parameterized: they go through `Db.exec` (`sqlite3_exec`), which
+-/// never populates the prepared-statement cache — so binding them buys
+-/// nothing here.
+-pub(crate) fn param_binds_enabled() -> bool {
+-    std::env::var("ROUNDHOUSE_PARAM_BINDS")
+-        .map(|v| v == "1")
+-        .unwrap_or(false)
+-}
+-
+ /// A typed pending bind. Nullable predicates also select an SQL fragment.
+ /// Their runtime branch reserves a position together with the `= ?` fragment;
+ /// position zero means `IS NULL` and no bind. The RHS is evaluated just once.
+@@ -188,7 +161,12 @@ pub trait ArelVisitor {
+ /// Visitor for the sqlite backend (CRuby `sqlite3-ruby` + spinel FFI
+ /// `libsqlite3`). Emits the same Expr shapes today's `adapter_emit`
+ /// produces.
+-pub struct SqliteVisitor;
++#[derive(Clone, Copy, Default)]
++pub struct SqliteVisitor {
++    /// The selected target's Db shim supports typed positional binds.
++    /// Only runtime read predicates are bound; literals and writes stay inline.
++    pub param_binds: bool,
++}
+ 
+ impl SqliteVisitor {
+     /// Execute an insert that returns selected columns from that same
+@@ -233,7 +211,7 @@ impl SqliteVisitor {
+ impl ArelVisitor for SqliteVisitor {
+     fn visit(&self, op: &ArelOp, schema: &Schema, owner: &ClassId) -> Expr {
+         match op {
+-            ArelOp::Select(s) => visit_select(s, schema, owner),
++            ArelOp::Select(s) => visit_select(s, schema, owner, self.param_binds),
+             ArelOp::Insert(i) => visit_insert(i, schema),
+             ArelOp::Update(u) => visit_update(u, schema),
+             ArelOp::Delete(d) => visit_delete(d, schema),
+@@ -245,12 +223,8 @@ impl ArelVisitor for SqliteVisitor {
+ // Select — four result shapes, dispatched by ColumnSpec + LimitSpec
+ // ---------------------------------------------------------------------------
+ 
+-fn visit_select(sel: &Select, schema: &Schema, owner: &ClassId) -> Expr {
++fn visit_select(sel: &Select, schema: &Schema, owner: &ClassId, param: bool) -> Expr {
+     let table = lookup_table(schema, &sel.table.0);
+-    // Read the placeholder-bind gate once per Select. All four prepare
+-    // paths honor it; a false value reproduces the inline-escape emit
+-    // byte-for-byte.
+-    let param = param_binds_enabled();
+     match &sel.columns {
+         ColumnSpec::Count => emit_count(sel, table, param),
+         ColumnSpec::Exists => emit_exists(sel, table, param),
+@@ -1492,7 +1466,7 @@ mod tests {
+             joins: vec![],
+             preloads: vec![],
+         });
+-        let body = SqliteVisitor.visit(&op, &schema, &owner);
++        let body = SqliteVisitor::default().visit(&op, &schema, &owner);
+         // stmt = prepare ; results = [] ; while step? { ... } ; finalize ; results
+         assert_eq!(outer_kind(&body), "seq");
+         assert_eq!(seq_len(&body), 5);
+@@ -1514,7 +1488,7 @@ mod tests {
+             joins: vec![],
+             preloads: vec![],
+         });
+-        let body = SqliteVisitor.visit(&op, &schema, &owner);
++        let body = SqliteVisitor::default().visit(&op, &schema, &owner);
+         // stmt = prepare ; result = nil ; if step? { ... } ; finalize ; result
+         assert_eq!(outer_kind(&body), "seq");
+         assert_eq!(seq_len(&body), 5);
+@@ -1538,7 +1512,7 @@ mod tests {
+             joins: vec![],
+             preloads: vec![],
+         });
+-        let body = SqliteVisitor.visit(&op, &schema, &owner);
++        let body = SqliteVisitor::default().visit(&op, &schema, &owner);
+         // Both shapes are 5 statements, so length proves nothing. What
+         // separates them is the accumulator: the array hydrate seeds
+         // `results = []`, the single hydrate `result = nil`.
+@@ -1567,7 +1541,7 @@ mod tests {
+             joins: vec![],
+             preloads: vec![],
+         });
+-        let body = SqliteVisitor.visit(&op, &schema, &owner);
++        let body = SqliteVisitor::default().visit(&op, &schema, &owner);
+         // stmt = prepare ; step? ; result = column_int ; finalize ; result
+         assert_eq!(outer_kind(&body), "seq");
+         assert_eq!(seq_len(&body), 5);
+@@ -1589,7 +1563,7 @@ mod tests {
+             joins: vec![],
+             preloads: vec![],
+         });
+-        let body = SqliteVisitor.visit(&op, &schema, &owner);
++        let body = SqliteVisitor::default().visit(&op, &schema, &owner);
+         // stmt = prepare ; result = step? ; finalize ; result
+         assert_eq!(outer_kind(&body), "seq");
+         assert_eq!(seq_len(&body), 4);
+@@ -1609,7 +1583,7 @@ mod tests {
+             }],
+             returns_rowid: true,
+         });
+-        let body = SqliteVisitor.visit(&op, &schema, &ClassId(Symbol::from("Article")));
++        let body = SqliteVisitor::default().visit(&op, &schema, &ClassId(Symbol::from("Article")));
+         // exec ; last_insert_rowid
+         assert_eq!(outer_kind(&body), "seq");
+         assert_eq!(seq_len(&body), 2);
+@@ -1624,7 +1598,7 @@ mod tests {
+                 assignments: vec![],
+                 returns_rowid,
+             });
+-            let body = SqliteVisitor.visit(&op, &schema, &owner);
++            let body = SqliteVisitor::default().visit(&op, &schema, &owner);
+             let exec = if returns_rowid {
+                 let ExprNode::Seq { exprs } = body.node.as_ref() else {
+                     panic!("insert must return the last row id");
+@@ -1661,7 +1635,7 @@ mod tests {
+                 Value::Runtime { expr: var_ref(&Symbol::from("id")), ty: ValueType::Int },
+             )),
+         });
+-        let body = SqliteVisitor.visit(&op, &schema, &ClassId(Symbol::from("Article")));
++        let body = SqliteVisitor::default().visit(&op, &schema, &ClassId(Symbol::from("Article")));
+         // single Db.exec(...) Send
+         assert_eq!(outer_kind(&body), "send");
+     }
+@@ -1676,7 +1650,7 @@ mod tests {
+                 Value::Runtime { expr: var_ref(&Symbol::from("id")), ty: ValueType::Int },
+             )),
+         });
+-        let body = SqliteVisitor.visit(&op, &schema, &ClassId(Symbol::from("Article")));
++        let body = SqliteVisitor::default().visit(&op, &schema, &ClassId(Symbol::from("Article")));
+         assert_eq!(outer_kind(&body), "send");
+     }
+ 
+@@ -1692,7 +1666,7 @@ mod tests {
+             table: TableRef(Symbol::from("articles")),
+             conditions: None,
+         });
+-        let body = SqliteVisitor.visit(&op, &schema, &ClassId(Symbol::from("Article")));
++        let body = SqliteVisitor::default().visit(&op, &schema, &ClassId(Symbol::from("Article")));
+         assert_eq!(outer_kind(&body), "seq");
+         assert_eq!(seq_len(&body), 2);
+     }
+@@ -1720,7 +1694,7 @@ mod tests {
+             joins: vec![],
+             preloads: vec![],
+         });
+-        let body = SqliteVisitor.visit(&op, &schema, &owner);
++        let body = SqliteVisitor::default().visit(&op, &schema, &owner);
+         // Walk the body to the prepare call's SQL literal and assert
+         // it carries " ORDER BY title DESC". The body is a Seq whose
+         // first stmt is `stmt = Db.prepare(<sql>)`.
+@@ -1778,7 +1752,7 @@ mod tests {
+             joins: vec![],
+             preloads: vec![],
+         });
+-        let body = SqliteVisitor.visit(&op, &schema, &owner);
++        let body = SqliteVisitor::default().visit(&op, &schema, &owner);
+         let ExprNode::Seq { exprs } = body.node.as_ref() else { panic!() };
+         let ExprNode::Assign { value: prepare_call, .. } = exprs[0].node.as_ref() else { panic!() };
+         let ExprNode::Send { args, .. } = prepare_call.node.as_ref() else { panic!() };
+@@ -1818,17 +1792,14 @@ mod tests {
+         });
+         // No-limit + ColumnSpec::All + WHERE → multi-hydrate (the
+         // has_many proxy shape: `Comment.where(article_id: @id)`).
+-        let body = SqliteVisitor.visit(&op, &schema, &owner);
++        let body = SqliteVisitor::default().visit(&op, &schema, &owner);
+         assert_eq!(outer_kind(&body), "seq");
+         assert_eq!(seq_len(&body), 5);
+     }
+ 
+-    // ---- placeholder-bind emit (ROUNDHOUSE_PARAM_BINDS) -------------
+-    //
+-    // These drive the emitters directly with `param = true` rather than
+-    // flipping the process-global env var (which would race the other
+-    // tests in this binary). `param_binds_enabled()` selects the same
+-    // code path at runtime.
++    // ---- placeholder-bind emit ------------------------------------
++    // The visitor receives the capability explicitly, so these exercise
++    // the production entry point without mutating the process environment.
+ 
+     /// Flatten the literal-string segments of a `+` concat chain into
+     /// `out`; non-literal segments (escape calls, bind exprs) render as
+@@ -1894,8 +1865,7 @@ mod tests {
+             joins: vec![],
+             preloads: vec![],
+         };
+-        let table = &schema.tables[&Symbol::from("articles")];
+-        let body = emit_single_hydrate(&sel, table, &owner, true);
++        let body = SqliteVisitor { param_binds: true }.visit(&ArelOp::Select(sel), &schema, &owner);
+ 
+         // SQL keys on the static shape — placeholder, no inline escape call.
+         let sql = prepare_sql(&body);
+@@ -1932,8 +1902,7 @@ mod tests {
+             joins: vec![],
+             preloads: vec![],
+         };
+-        let table = &schema.tables[&Symbol::from("articles")];
+-        let body = emit_single_hydrate(&sel, table, &owner, false);
++        let body = SqliteVisitor::default().visit(&ArelOp::Select(sel), &schema, &owner);
+ 
+         let sql = prepare_sql(&body);
+         assert!(!sql.contains('?'), "no placeholder when gate off; got:\n{sql}");
+@@ -1962,8 +1931,9 @@ mod tests {
+             joins: vec![],
+             preloads: vec![],
+         };
+-        let table = &schema.tables[&Symbol::from("articles")];
+-        let body = emit_count(&sel, table, true);
++        let body = SqliteVisitor { param_binds: true }.visit(
++            &ArelOp::Select(sel), &schema, &ClassId(Symbol::from("Article")),
++        );
+         let sql = prepare_sql(&body);
+         assert!(sql.contains("COUNT(*)") && sql.contains("WHERE id = ?"), "got:\n{sql}");
+         assert!(db_stmt_calls(&body).iter().any(|(m, _)| m == "bind_int"), "expected bind_int");
+@@ -1987,9 +1957,55 @@ mod tests {
+             joins: vec![],
+             preloads: vec![],
+         };
+-        let table = &schema.tables[&Symbol::from("articles")];
+-        let body = emit_exists(&sel, table, true);
++        let body = SqliteVisitor { param_binds: true }.visit(
++            &ArelOp::Select(sel), &schema, &ClassId(Symbol::from("Article")),
++        );
+         assert!(prepare_sql(&body).contains("WHERE title = ?"));
+         assert!(db_stmt_calls(&body).iter().any(|(m, _)| m == "bind_text"), "expected bind_text");
+     }
++    #[test]
++    fn param_binds_follow_placeholder_order_across_predicates() {
++        let (schema, owner) = fixture_schema();
++        let runtime = |column: &str, name: &str, ty| Predicate::Eq(
++            ColRef { table: TableRef(Symbol::from("articles")), column: Symbol::from(column) },
++            Value::Runtime { expr: var_ref(&Symbol::from(name)), ty },
++        );
++        let sel = Select {
++            table: TableRef(Symbol::from("articles")),
++            columns: ColumnSpec::Count,
++            conditions: Some(Predicate::And(
++                Box::new(runtime("id", "lookup_id", ValueType::Int)),
++                Box::new(Predicate::Or(
++                    Box::new(runtime("title", "lookup_title", ValueType::Str)),
++                    Box::new(runtime("published", "lookup_published", ValueType::Bool)),
++                )),
++            )),
++            single_record: false,
++            orders: vec![], limit: None, joins: vec![], preloads: vec![],
++        };
++        let body = SqliteVisitor { param_binds: true }.visit(&ArelOp::Select(sel), &schema, &owner);
++        assert_eq!(prepare_sql(&body),
++            "SELECT COUNT(*) FROM articles WHERE id = ? AND (title = ? OR published = ?)");
++        let calls = db_stmt_calls(&body);
++        let binds: Vec<_> = calls.iter().filter(|(m, _)| m.starts_with("bind_")).collect();
++        assert_eq!(binds.len(), 3);
++        for (index, ((method, args), (expected_method, expected_value))) in binds.iter().zip([
++            ("bind_int", "lookup_id"),
++            ("bind_text", "lookup_title"),
++            ("bind_bool", "lookup_published"),
++        ]).enumerate() {
++            assert_eq!(method, expected_method);
++            assert!(matches!(args[1].node.as_ref(),
++                ExprNode::Lit { value: Literal::Int { value } } if *value == index as i64 + 1));
++            assert!(matches!(args[2].node.as_ref(),
++                ExprNode::Var { name, .. } if name.as_str() == expected_value));
++        }
++        // All binds must execute directly after prepare, before any step.
++        let ExprNode::Seq { exprs } = body.node.as_ref() else { panic!("expected Seq") };
++        for expr in &exprs[1..=3] {
++            assert!(matches!(expr.node.as_ref(), ExprNode::Send { method, .. }
++                if method.as_str().starts_with("bind_")));
++        }
++    }
++
+ }
+diff --git a/src/lower/controller_to_library/mod.rs b/src/lower/controller_to_library/mod.rs
+index 1290134af..1652fbd42 100644
+--- a/src/lower/controller_to_library/mod.rs
++++ b/src/lower/controller_to_library/mod.rs
+@@ -243,6 +243,8 @@ pub fn lower_controllers_with_arel_views_and_assocs(
+ pub struct LowerControllerOptions<'a> {
+     /// Ruby-family nullable read values; strict-target defaults stay unchanged.
+     pub ruby_read_values: bool,
++    /// The selected Db shim supports typed positional binds for read predicates.
++    pub param_binds: bool,
+     /// App `Schema` — enables the Arel SQL-chain lowering pass.
+     pub schema: Option<&'a crate::schema::Schema>,
+     /// App views — scanned for `*.json.jbuilder` format dispatch and the
+@@ -300,6 +302,7 @@ pub fn lower_controllers_with_arel_views_assocs_and_routes(
+ ) -> Vec<LibraryClass> {
+     let LowerControllerOptions {
+         ruby_read_values,
++        param_binds,
+         schema,
+         views,
+         library_classes,
+@@ -575,6 +578,7 @@ pub fn lower_controllers_with_arel_views_assocs_and_routes(
+                     rewritten |= crate::lower::arel::rewrite_arel_in_expr_with_ruby_values(
+                         &mut method.body, schema, &classes, assocs, ruby_read_values,
+                         &relation_scope_names,
++                        crate::lower::arel::SqliteVisitor { param_binds },
+                     );
+                 }
+             }
+diff --git a/src/lower/model_to_library/adapter_emit/exists.rs b/src/lower/model_to_library/adapter_emit/exists.rs
+index 5780f38cf..c5e461b9f 100644
+--- a/src/lower/model_to_library/adapter_emit/exists.rs
++++ b/src/lower/model_to_library/adapter_emit/exists.rs
+@@ -24,6 +24,7 @@ fn synth_exists_probe(
+     conditions: Option<Predicate>,
+     params: Vec<Param>,
+     param_tys: Vec<(Symbol, Ty)>,
++    param_binds: bool,
+ ) -> MethodDef {
+     let op = ArelOp::Select(Select {
+         single_record: false,
+@@ -43,7 +44,7 @@ fn synth_exists_probe(
+         name: Symbol::from(name),
+         receiver: MethodReceiver::Class,
+         params,
+-        body: SqliteVisitor.visit(&op, schema, owner),
++        body: SqliteVisitor { param_binds }.visit(&op, schema, owner),
+         signature: Some(fn_sig(param_tys, Ty::Bool)),
+         effects: EffectSet::default(),
+         enclosing_class: Some(owner.0.clone()),
+@@ -57,10 +58,10 @@ fn synth_exists_probe(
+ /// Unscoped emptiness without COUNT(*) — `Base.any?` / `none?` on
+ /// Level-3 models. Same Exists emit as `_adapter_exists_by_id?`, no WHERE.
+ pub(super) fn synth_adapter_any(owner: &ClassId, table: &Table, schema: &Schema) -> MethodDef {
+-    synth_exists_probe(owner, table, schema, "_adapter_any?", None, vec![], vec![])
++    synth_exists_probe(owner, table, schema, "_adapter_any?", None, vec![], vec![], false)
+ }
+ 
+-pub(super) fn synth_adapter_exists_by_id(owner: &ClassId, table: &Table, schema: &Schema) -> MethodDef {
++pub(super) fn synth_adapter_exists_by_id(owner: &ClassId, table: &Table, schema: &Schema, param_binds: bool) -> MethodDef {
+     let id = Symbol::from("id");
+     let key = key_ty(table);
+     synth_exists_probe(
+@@ -71,6 +72,7 @@ pub(super) fn synth_adapter_exists_by_id(owner: &ClassId, table: &Table, schema:
+         Some(eq_id_param(table, &id)),
+         vec![Param::positional(id.clone())],
+         vec![(id, key)],
++        param_binds,
+     )
+ }
+ 
+diff --git a/src/lower/model_to_library/adapter_emit/mod.rs b/src/lower/model_to_library/adapter_emit/mod.rs
+index e2ccd3e3b..8ad8fac75 100644
+--- a/src/lower/model_to_library/adapter_emit/mod.rs
++++ b/src/lower/model_to_library/adapter_emit/mod.rs
+@@ -57,9 +57,10 @@ pub(super) fn push_adapter_methods(
+     model: &Model,
+     table: &Table,
+     schema: &Schema,
++    param_binds: bool,
+ ) {
+     let owner = &model.name;
+-    methods.push(synth_adapter_find_by_id(owner, table, schema));
++    methods.push(synth_adapter_find_by_id(owner, table, schema, param_binds));
+     methods.push(synth_adapter_all(owner, table, schema));
+     methods.push(synth_adapter_last(owner, table, schema));
+     methods.push(synth_adapter_insert(owner, table, schema));
+@@ -68,10 +69,10 @@ pub(super) fn push_adapter_methods(
+     methods.push(synth_adapter_delete(owner, table, schema));
+     methods.push(synth_adapter_count(owner, table, schema));
+     methods.push(synth_adapter_any(owner, table, schema));
+-    methods.push(synth_adapter_exists_by_id(owner, table, schema));
++    methods.push(synth_adapter_exists_by_id(owner, table, schema, param_binds));
+     methods.push(synth_adapter_truncate(owner, table, schema));
+     methods.push(synth_delete_all(owner, table));
+-    methods.push(synth_adapter_reload(model, table));
++    methods.push(synth_adapter_reload(model, table, param_binds));
+     methods.push(synth_columns_sql(owner, table));
+     methods.push(synth_hydrate_all(owner));
+ }
+@@ -181,7 +182,7 @@ fn synth_primary_key_input(
+     }
+ }
+ 
+-fn synth_adapter_find_by_id(owner: &ClassId, table: &Table, schema: &Schema) -> MethodDef {
++fn synth_adapter_find_by_id(owner: &ClassId, table: &Table, schema: &Schema, param_binds: bool) -> MethodDef {
+     let id = Symbol::from("id");
+     let key_ty = key_ty(table);
+     let owner_ty = Ty::Class { id: owner.clone(), args: vec![].into() };
+@@ -206,7 +207,7 @@ fn synth_adapter_find_by_id(owner: &ClassId, table: &Table, schema: &Schema) ->
+         name: Symbol::from("_adapter_find_by_id"),
+         receiver: MethodReceiver::Class,
+         params: vec![Param::positional(id.clone())],
+-        body: SqliteVisitor.visit(&op, schema, owner),
++        body: SqliteVisitor { param_binds }.visit(&op, schema, owner),
+         signature: Some(fn_sig(vec![(id, key_ty)], nilable_owner)),
+         effects: EffectSet::default(),
+         enclosing_class: Some(owner.0.clone()),
+@@ -239,7 +240,7 @@ fn synth_adapter_all(owner: &ClassId, table: &Table, schema: &Schema) -> MethodD
+         name: Symbol::from("_adapter_all"),
+         receiver: MethodReceiver::Class,
+         params: vec![],
+-        body: SqliteVisitor.visit(&op, schema, owner),
++        body: SqliteVisitor::default().visit(&op, schema, owner),
+         signature: Some(fn_sig(vec![], Ty::Array { elem: std::sync::Arc::new(owner_ty) })),
+         effects: EffectSet::default(),
+         enclosing_class: Some(owner.0.clone()),
+@@ -285,7 +286,7 @@ fn synth_adapter_last(owner: &ClassId, table: &Table, schema: &Schema) -> Method
+         name: Symbol::from("_adapter_last"),
+         receiver: MethodReceiver::Class,
+         params: vec![],
+-        body: SqliteVisitor.visit(&op, schema, owner),
++        body: SqliteVisitor::default().visit(&op, schema, owner),
+         signature: Some(fn_sig(vec![], nilable_owner)),
+         effects: EffectSet::default(),
+         enclosing_class: Some(owner.0.clone()),
+@@ -349,7 +350,7 @@ fn synth_adapter_insert(owner: &ClassId, table: &Table, schema: &Schema) -> Meth
+         if let Some(mint) = uuid_mint {
+             exprs.push(mint);
+         }
+-        exprs.push(SqliteVisitor.visit(&op, schema, owner));
++        exprs.push(SqliteVisitor::default().visit(&op, schema, owner));
+         if let Some(k) = supplied_key {
+             exprs.push(ivar_ref(&k.name));
+         }
+@@ -364,7 +365,7 @@ fn synth_adapter_insert(owner: &ClassId, table: &Table, schema: &Schema) -> Meth
+             .unwrap_or_else(|| Symbol::from("rowid"));
+         let returning_columns: Vec<Symbol> =
+             generated.iter().map(|c| c.name.clone()).collect();
+-        let insert = SqliteVisitor.visit_insert_returning(
++        let insert = SqliteVisitor::default().visit_insert_returning(
+             &insert,
+             schema,
+             &returning_key,
+@@ -639,7 +640,7 @@ fn synth_adapter_update(owner: &ClassId, table: &Table, schema: &Schema) -> Meth
+         // nothing to write on update. Do not render `UPDATE ... SET WHERE`;
+         // generated values are database-owned and a no-op save stays a no-op.
+         body: if has_assignments {
+-            SqliteVisitor.visit(&op, schema, owner)
++            SqliteVisitor::default().visit(&op, schema, owner)
+         } else {
+             super::nil_lit()
+         },
+@@ -688,7 +689,7 @@ fn synth_adapter_touch(owner: &ClassId, table: &Table, schema: &Schema) -> Metho
+         receiver: MethodReceiver::Instance,
+         params: vec![],
+         body: if has_assignments {
+-            SqliteVisitor.visit(&op, schema, owner)
++            SqliteVisitor::default().visit(&op, schema, owner)
+         } else {
+             super::nil_lit()
+         },
+@@ -718,7 +719,7 @@ fn synth_adapter_delete(owner: &ClassId, table: &Table, schema: &Schema) -> Meth
+         name: Symbol::from("_adapter_delete"),
+         receiver: MethodReceiver::Instance,
+         params: vec![],
+-        body: SqliteVisitor.visit(&op, schema, owner),
++        body: SqliteVisitor::default().visit(&op, schema, owner),
+         signature: Some(fn_sig(vec![], Ty::Nil)),
+         effects: EffectSet::default(),
+         enclosing_class: Some(owner.0.clone()),
+@@ -749,7 +750,7 @@ fn synth_adapter_count(owner: &ClassId, table: &Table, schema: &Schema) -> Metho
+         name: Symbol::from("_adapter_count"),
+         receiver: MethodReceiver::Class,
+         params: vec![],
+-        body: SqliteVisitor.visit(&op, schema, owner),
++        body: SqliteVisitor::default().visit(&op, schema, owner),
+         signature: Some(fn_sig(vec![], Ty::Int)),
+         effects: EffectSet::default(),
+         enclosing_class: Some(owner.0.clone()),
+@@ -844,7 +845,7 @@ fn synth_adapter_truncate(owner: &ClassId, table: &Table, schema: &Schema) -> Me
+         name: Symbol::from("_adapter_truncate"),
+         receiver: MethodReceiver::Class,
+         params: vec![],
+-        body: SqliteVisitor.visit(&op, schema, owner),
++        body: SqliteVisitor::default().visit(&op, schema, owner),
+         signature: Some(fn_sig(vec![], Ty::Nil)),
+         effects: EffectSet::default(),
+         enclosing_class: Some(owner.0.clone()),
+@@ -878,7 +879,7 @@ fn synth_adapter_truncate(owner: &ClassId, table: &Table, schema: &Schema) -> Me
+ /// reload needs to write into self. Generalizing the visitor with
+ /// a "hydrate target = bare ivar / passed-in symbol" option is the
+ /// right cleanup once a second use surfaces.
+-fn synth_adapter_reload(model: &Model, table: &Table) -> MethodDef {
++fn synth_adapter_reload(model: &Model, table: &Table, param: bool) -> MethodDef {
+     use crate::span::Span;
+ 
+     let owner = &model.name;
+@@ -898,12 +899,12 @@ fn synth_adapter_reload(model: &Model, table: &Table) -> MethodDef {
+         .collect::<Vec<_>>()
+         .join(", ");
+ 
+-    // Placeholder-bind gate (roundhouse#12). Reload is a `Db.prepare`
++    // The same read-bind policy as the Arel visitor (roundhouse#12). Reload
++    // is a `Db.prepare`
+     // read — it hits the prepared-statement cache with a per-id key when
+     // inlined, so parameterize its `@id` predicate too, keeping it in
+-    // step with the visitor-emitted find/exists paths. Gate off ⇒
++    // step with the visitor-emitted find/exists paths. Binding disabled ⇒
+     // inline-escape, byte-identical to before.
+-    let param = crate::lower::arel::visitor::param_binds_enabled();
+     // The key column and its ivar, bound with the key's type — the same
+     // column the visitor-emitted find/exists paths compare.
+     let key = key_column_name(table);
+diff --git a/src/lower/model_to_library/mod.rs b/src/lower/model_to_library/mod.rs
+index 4cdf0bd23..a2c1ab316 100644
+--- a/src/lower/model_to_library/mod.rs
++++ b/src/lower/model_to_library/mod.rs
+@@ -10,8 +10,9 @@
+ //! Rails DSL.
+ //!
+ //! This module is pure: input is one `Model` plus the app `Schema`, output
+-//! is one `LibraryClass`. No side-effects, no per-target choices. Per-Rails-
+-//! idiom lowering is a separate function so each can be tested in
++//! is one `LibraryClass`. No side-effects; target capabilities are supplied
++//! by the caller. Per-Rails-idiom lowering is a separate function so each
++//! can be tested in
+ //! isolation (skeleton, schema columns, has_many, belongs_to, validates,
+ //! callbacks, …).
+ //!
+@@ -254,7 +255,7 @@ pub(crate) fn lower_models_inner(
+ ) -> (Vec<LibraryClass>, HashMap<ClassId, crate::analyze::ClassInfo>) {
+     lower_models_inner_with_ruby_values(
+         models, schema, extra_class_infos, params_specs, unfolded, materialization,
+-        finder_inputs, false, ErrorsReaders::FieldRead,
++        finder_inputs, false, false, ErrorsReaders::FieldRead,
+     )
+ }
+ 
+@@ -267,13 +268,14 @@ pub(crate) fn lower_models_inner_with_ruby_values(
+     materialization: Materialization<'_>,
+     finder_inputs: FinderInputs,
+     ruby_read_values: bool,
++    param_binds: bool,
+     errors_readers: ErrorsReaders,
+ ) -> (Vec<LibraryClass>, HashMap<ClassId, crate::analyze::ClassInfo>) {
+     let mut all_methods: Vec<(Vec<MethodDef>, ClassId, Option<&Table>, &Model)> = Vec::new();
+     let mut classes: HashMap<ClassId, crate::analyze::ClassInfo> = HashMap::new();
+     let _body_names = schema::share_model_body_names(models, &Default::default());
+     for model in models {
+-        let methods = build_methods_with_finder_inputs(model, models, schema, params_specs, finder_inputs, errors_readers);
++        let methods = build_methods_with_finder_inputs(model, models, schema, params_specs, finder_inputs, param_binds, errors_readers);
+         let table = schema.tables.get(&model.table.0);
+         // Register actual production definitions, even for unselected
+         // models and when source overrides hide framework ownership.
+@@ -292,7 +294,7 @@ pub(crate) fn lower_models_inner_with_ruby_values(
+                             if matches!(method.as_str(), "attr_accessor" | "attr_reader" | "attr_writer")),
+                     _ => true,
+                 });
+-                let mut methods = build_methods_with_finder_inputs(&definitions, models, schema, params_specs, finder_inputs, errors_readers);
++                let mut methods = build_methods_with_finder_inputs(&definitions, models, schema, params_specs, finder_inputs, param_binds, errors_readers);
+                 // Preserve original source inputs for late derivations
+                 // (e.g. raw helpers) without treating them as framework
+                 // claims. Both kinds traverse the canonical Arel/typer.
+@@ -412,6 +414,7 @@ pub(crate) fn lower_models_inner_with_ruby_values(
+                 crate::lower::arel::rewrite_arel_in_expr_with_ruby_values(
+                     &mut method.body, schema, &classes, &[], ruby_read_values,
+                     &HashSet::new(),
++                    crate::lower::arel::SqliteVisitor { param_binds },
+                 );
+             }
+             type_method_body(method, &classes, table, Some(model));
+@@ -1167,7 +1170,7 @@ pub(crate) fn build_methods(
+     schema: &Schema,
+     params_specs: &crate::lower::controller_to_library::params::ParamsSpecs,
+ ) -> Vec<MethodDef> {
+-    build_methods_with_finder_inputs(model, models, schema, params_specs, FinderInputs::Scalar, ErrorsReaders::FieldRead)
++    build_methods_with_finder_inputs(model, models, schema, params_specs, FinderInputs::Scalar, false, ErrorsReaders::FieldRead)
+ }
+ 
+ /// Return the instance method surface synthesized for a model, for ingest
+@@ -1192,6 +1195,7 @@ fn build_methods_with_finder_inputs(
+     schema: &Schema,
+     params_specs: &crate::lower::controller_to_library::params::ParamsSpecs,
+     finder_inputs: FinderInputs,
++    param_binds: bool,
+     errors_readers: ErrorsReaders,
+ ) -> Vec<MethodDef> {
+     // No-op outside an emit diagnostics scope, so the many direct
+@@ -1227,7 +1231,7 @@ fn build_methods_with_finder_inputs(
+             methods.push(adapter_emit::synth_find_primary_key_input(&model.name, table));
+             methods.push(adapter_emit::synth_exists_primary_key_input(&model.name, table));
+         }
+-        push_adapter_methods(&mut methods, model, table, schema);
++        push_adapter_methods(&mut methods, model, table, schema, param_binds);
+         // `from_params(p: <Resource>Params)` — typed factory matching the
+         // (resource, fields) tuple a controller's `permit(...)` declared.
+         // Skipped silently when the model isn't permitted by any
+diff --git a/src/project.rs b/src/project.rs
+index 795257c11..384454fc6 100644
+--- a/src/project.rs
++++ b/src/project.rs
+@@ -94,6 +94,27 @@ pub enum BuildTarget {
+     TypescriptWorker,
+ }
+ 
++/// Driver support and the measured rollout policy are separate decisions.
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub enum ParamBindCapability {
++    /// Use binds unless the compiler receives the explicit `=0` override.
++    DefaultOn,
++    /// The driver is supported, but binds require the explicit `=1` override.
++    OptIn,
++    /// The selected driver/profile cannot execute the generated bind contract.
++    Unsupported,
++}
++
++impl ParamBindCapability {
++    fn enabled(self, override_value: Option<&str>) -> bool {
++        match self {
++            Self::DefaultOn => override_value != Some("0"),
++            Self::OptIn => override_value == Some("1"),
++            Self::Unsupported => false,
++        }
++    }
++}
++
+ impl BuildTarget {
+     /// All targets that participate in `--site` archive generation,
+     /// in site-archive order.
+@@ -165,6 +186,28 @@ impl BuildTarget {
+         }
+     }
+ 
++    /// Typed positional read binds: support plus the runtime's rollout policy.
++    /// TypeScript's node-sync, libsql and worker shims are all disabled until
++    /// each deployment profile implements that execution contract.
++    pub fn param_bind_capability(self) -> ParamBindCapability {
++        match self {
++            BuildTarget::Spinel => ParamBindCapability::DefaultOn,
++            // CRuby loses SQL-only result replay on repeated bound reads;
++            // JRuby has correctness coverage but no matched performance run.
++            BuildTarget::Ruby | BuildTarget::Jruby => ParamBindCapability::OptIn,
++            BuildTarget::Blog | BuildTarget::Roda | BuildTarget::Futamura | BuildTarget::Crystal
++            | BuildTarget::Elixir | BuildTarget::Go | BuildTarget::Kotlin
++            | BuildTarget::Python | BuildTarget::Rust | BuildTarget::Swift
++            | BuildTarget::CSharp | BuildTarget::Typescript
++            | BuildTarget::TypescriptWorker => ParamBindCapability::Unsupported,
++        }
++    }
++
++    /// Unknown values use the target default; `=1` cannot enable an unsupported shim.
++    pub(crate) fn param_binds_enabled(self, override_value: Option<&str>) -> bool {
++        self.param_bind_capability().enabled(override_value)
++    }
++
+     /// Does this target ship a runtime `ActiveRecord::Relation` for a
+     /// query chain the Arel builder could not fold to SQL?
+     ///
+@@ -2125,6 +2168,11 @@ fn target_files_inner(
+     // errors than the app has.
+     report_unsupported_bundled_constants(app, target);
+     report_i18n_table_sites(app, target);
++    // Snapshot the optional measurement override at the target boundary. The
++    // lowerers receive a value; they never consult process-global environment.
++    let param_binds = target.param_binds_enabled(
++        std::env::var("ROUNDHOUSE_PARAM_BINDS").ok().as_deref(),
++    );
+     reject_unsupported_pattern_matches(app, target)?;
+     reject_file_blob_fixtures(app, target)?;
+     reject_unsupported_data_factories(app, target)?;
+@@ -2255,7 +2303,7 @@ fn target_files_inner(
+     let files = crate::timings::phase(format_args!("emit {}: assemble", target.as_str()), || match target {
+         BuildTarget::Blog => blog_files(fixture),
+         BuildTarget::Futamura => futamura_files(fixture),
+-        BuildTarget::Spinel => spinel_files_with_source_markers(app, fixture).and_then(|(mut files, _)| {
++        BuildTarget::Spinel => spinel_files_with_source_markers(app, fixture, param_binds).and_then(|(mut files, _)| {
+             spinel_relation_model_handle(&mut files)?;
+             spin_shape(files)
+         }),
+@@ -2263,8 +2311,8 @@ fn target_files_inner(
+         // table used to live inside `spin_shape` and so reached only
+         // the spinel tree, which cost campfire two test files on a
+         // Ruby 3.4 runner (`Pathname()`).
+-        BuildTarget::Ruby => ruby_runtime_files(app, fixture).map(with_bundled_requires),
+-        BuildTarget::Jruby => jruby_runtime_files(app, fixture).map(with_bundled_requires),
++        BuildTarget::Ruby => ruby_runtime_files(app, fixture, param_binds).map(with_bundled_requires),
++        BuildTarget::Jruby => jruby_runtime_files(app, fixture, param_binds).map(with_bundled_requires),
+         BuildTarget::Roda => Ok(sort_files(emit::roda::emit(app))),
+         BuildTarget::Crystal => Ok(sort_files(emit::crystal::emit(app))),
+         BuildTarget::Elixir => Ok(sort_files(emit::elixir::emit(app))),
+@@ -3277,8 +3325,9 @@ enum RubyFlavor {
+ fn ruby_runtime_files(
+     app: &App,
+     fixture: &Path,
++    param_binds: bool,
+ ) -> Result<Vec<(String, String)>, String> {
+-    ruby_family_runtime_files(app, fixture, RubyFlavor::CRuby)
++    ruby_family_runtime_files(app, fixture, RubyFlavor::CRuby, param_binds)
+ }
+ 
+ /// "jruby" archive: byte-identical to the "ruby" tree except the SQLite
+@@ -3290,19 +3339,21 @@ fn ruby_runtime_files(
+ fn jruby_runtime_files(
+     app: &App,
+     fixture: &Path,
++    param_binds: bool,
+ ) -> Result<Vec<(String, String)>, String> {
+-    ruby_family_runtime_files(app, fixture, RubyFlavor::JRuby)
++    ruby_family_runtime_files(app, fixture, RubyFlavor::JRuby, param_binds)
+ }
+ 
+ fn ruby_family_runtime_files(
+     app: &App,
+     fixture: &Path,
+     flavor: RubyFlavor,
++    param_binds: bool,
+ ) -> Result<Vec<(String, String)>, String> {
+     // Keep the original immutable App borrowed across base assembly and overlays.
+     let _indexes = emit::ruby::install_lookup_indexes(app);
+     let _body_names = crate::lower::model_to_library::schema::share_model_body_names(&app.models, &Default::default());
+-    let (mut files, test_stems) = spinel_files(app, fixture)?;
++    let (mut files, test_stems) = spinel_files(app, fixture, param_binds)?;
+ 
+     files.retain(|(p, _)| p != "runtime/db.rb");
+     // The spinel SQL-functions file is FFI; CRuby writes its own below
+@@ -3691,7 +3742,7 @@ fn ruby_family_runtime_files(
+     // the layout — the seam where the @ivars a layout reads are in
+     // scope. The plain spinel target keeps unwrapped controllers (its
+     // dispatch wraps body-only).
+-    files.extend(sort_files(emit::ruby::emit_lowered_controllers_with_layout(app)));
++    files.extend(sort_files(emit::ruby::emit_lowered_controllers_with_layout_and_param_binds(app, param_binds)));
+ 
+     // The source app's `app/javascript/` + `public/` static assets are
+     // already folded in by `spinel_files` (both targets need them — the
+@@ -5745,6 +5796,7 @@ fn scaffold_readme_to_specimen(files: &mut [(String, String)]) {
+ /// `spinel: main.rb: cannot load such file` rather than as anything a
+ /// unit test could see. A toolchain test should drive what ships.
+ pub fn spinel_base_files(app: &App, fixture: &Path) -> Result<Vec<(String, String)>, String> {
++    let param_binds = BuildTarget::Spinel.param_binds_enabled(None);
+     // The bundled-library requires belong HERE, not only in
+     // `spin_shape`. This is the tree `tests/spinel_toolchain.rs`
+     // compiles, and without them it compiles something the CLI never
+@@ -5758,7 +5810,7 @@ pub fn spinel_base_files(app: &App, fixture: &Path) -> Result<Vec<(String, Strin
+     // got it — one layer down. A lane is evidence only if it runs the
+     // same code. Idempotent: the gap scan skips a file that already
+     // requires the library, so `spin_shape` running it again is inert.
+-    let (mut files, _) = spinel_files_with_source_markers(app, fixture)?;
++    let (mut files, _) = spinel_files_with_source_markers(app, fixture, param_binds)?;
+     spinel_relation_model_handle(&mut files)?;
+ 
+     write_bundled_requires(&mut files);
+@@ -6492,9 +6544,10 @@ fn report_unsupported_bundled_constants(app: &App, target: BuildTarget) {
+ fn spinel_files_with_source_markers(
+     app: &App,
+     fixture: &Path,
++    param_binds: bool,
+ ) -> Result<(Vec<(String, String)>, Vec<String>), String> {
+     let (mut files, stems) =
+-        emit::ruby::source_markers::with_source_markers(app, || spinel_files(app, fixture))?;
++        emit::ruby::source_markers::with_source_markers(app, || spinel_files(app, fixture, param_binds))?;
+     for (path, content) in files.iter_mut() {
+         if path.ends_with(".rb") {
+             *content = emit::ruby::source_markers::finish(content);
+@@ -6503,7 +6556,7 @@ fn spinel_files_with_source_markers(
+     Ok((files, stems))
+ }
+ 
+-fn spinel_files(app: &App, fixture: &Path) -> Result<(Vec<(String, String)>, Vec<String>), String> {
++fn spinel_files(app: &App, fixture: &Path, param_binds: bool) -> Result<(Vec<(String, String)>, Vec<String>), String> {
+     let mut files: Vec<(String, String)> = Vec::new();
+ 
+     crate::runtime_files::walk_into("runtime/spinel/scaffold", "", &mut files)?;
+@@ -7027,7 +7080,7 @@ fn spinel_files(app: &App, fixture: &Path) -> Result<(Vec<(String, String)>, Vec
+         }
+     }
+ 
+-    let app_files = emit::ruby::emit_spinel(app);
++    let app_files = emit::ruby::emit_spinel_with_param_binds(app, param_binds);
+     let test_stems = app_test_stems(&app_files);
+     files.extend(sort_files(app_files));
+ 
+@@ -11533,7 +11586,7 @@ mod tests {
+             "#<SPINEL_SOURCE>real-blog/app/views/articles/_article.html.erb:1",
+             "{view}"
+         );
+-        let ruby = ruby_runtime_files(&app, fixture).expect("ruby tree");
++        let ruby = ruby_runtime_files(&app, fixture, BuildTarget::Ruby.param_binds_enabled(None)).expect("ruby tree");
+         let marked: Vec<&str> = ruby
+             .iter()
+             .filter(|(_, c)| c.contains("#<SPINEL_SOURCE>"))
+@@ -11628,7 +11681,7 @@ mod tests {
+             "shared relation.rbs must keep Base for Bar A/B"
+         );
+         // CRuby/JRuby share `spinel_files` but must NOT get the rewrite.
+-        let ruby = ruby_runtime_files(&app, fixture).expect("ruby runtime files");
++        let ruby = ruby_runtime_files(&app, fixture, BuildTarget::Ruby.param_binds_enabled(None)).expect("ruby runtime files");
+         let ruby_relation = ruby
+             .iter()
+             .find(|(p, _)| p.ends_with("active_record/relation.rbs"))
+@@ -11653,3 +11706,32 @@ mod tests {
+         );
+     }
+ }
++
++#[cfg(test)]
++mod param_binds_tests {
++    use super::{BuildTarget, ParamBindCapability};
++
++    #[test]
++    fn every_target_has_an_explicit_bind_capability() {
++        use BuildTarget::*;
++        use ParamBindCapability::*;
++        let cases = [
++            (Blog, Unsupported), (Spinel, DefaultOn), (Ruby, OptIn), (Jruby, OptIn),
++            (Roda, Unsupported), (Futamura, Unsupported), (Crystal, Unsupported), (Elixir, Unsupported),
++            (Go, Unsupported), (Kotlin, Unsupported), (Python, Unsupported),
++            (Rust, Unsupported), (Swift, Unsupported), (CSharp, Unsupported),
++            (Typescript, Unsupported), (TypescriptWorker, Unsupported),
++        ];
++        assert_eq!(cases.len(), BuildTarget::TRANSPILE.len() + 1);
++        for (target, capability) in cases {
++            assert_eq!(target.param_bind_capability(), capability, "{target:?}");
++            for value in [None, Some(""), Some("unexpected")] {
++                assert_eq!(target.param_binds_enabled(value), capability == DefaultOn,
++                    "{target:?}: {value:?}");
++            }
++            assert_eq!(target.param_binds_enabled(Some("1")), capability != Unsupported,
++                "{target:?}: =1");
++            assert!(!target.param_binds_enabled(Some("0")), "{target:?}");
++        }
++    }
++}
+diff --git a/tests/ci_plan_test.py b/tests/ci_plan_test.py
+index 64f95ea93..bb8d5fae2 100644
+--- a/tests/ci_plan_test.py
++++ b/tests/ci_plan_test.py
+@@ -651,6 +651,7 @@ class Routing(unittest.TestCase):
+                 "spinel_db_lease",
+                 *ci.PARAM_BIND_TESTS,
+                 "spinel_stmt_cache_lru",
++                "stmt_stats",
+                 "db_sqlite_concurrency",
+             ],
+         )
+@@ -661,6 +662,7 @@ class Routing(unittest.TestCase):
+                 "spinel_db_lease",
+                 *ci.PARAM_BIND_TESTS,
+                 "spinel_stmt_cache_lru",
++                "stmt_stats",
+                 "db_sqlite_concurrency",
+             ],
+         )
+@@ -756,6 +758,13 @@ class Routing(unittest.TestCase):
+                     self.assertEqual(plan["spinel_tests"], [suite])
+                     self.assertIn("spinel-framework", plan["jobs"])
+ 
++    def test_statement_stats_drivers_select_the_native_harness(self):
++        for path in ["tests/stmt_stats.rs", "tests/stmt_stats.rb"]:
++            with self.subTest(path=path):
++                plan = ci.select([path])
++                self.assertEqual(plan["spinel_tests"], ["stmt_stats"])
++                self.assertIn("spinel-framework", plan["jobs"])
++
+     def test_jdbc_bind_inputs_select_the_jruby_contract_job(self):
+         for path in [
+             "tests/param_binds_jruby.rb",
+@@ -847,7 +856,7 @@ class Routing(unittest.TestCase):
+             "tests/spinel_stmt_cache_lru.rb": ["spinel_stmt_cache_lru"],
+             "tests/support/db_concurrency_spinel.rb": ["db_sqlite_concurrency"],
+             "runtime/spinel/db.rb": [
+-                "spinel_db_lease", *ci.PARAM_BIND_TESTS, "spinel_stmt_cache_lru",
++                "spinel_db_lease", *ci.PARAM_BIND_TESTS, "spinel_stmt_cache_lru", "stmt_stats",
+                 "db_sqlite_concurrency",
+             ],
+             "runtime/spinel/sqlite_adapter.rb": [
+@@ -855,10 +864,11 @@ class Routing(unittest.TestCase):
+                 "spinel_db_lease",
+                 *ci.PARAM_BIND_TESTS,
+                 "spinel_stmt_cache_lru",
++                "stmt_stats",
+                 "db_sqlite_concurrency",
+             ],
+             "runtime/spinel/active_support_time_parsing.rb": [
+-                "spinel_db_lease", *ci.PARAM_BIND_TESTS, "spinel_stmt_cache_lru",
++                "spinel_db_lease", *ci.PARAM_BIND_TESTS, "spinel_stmt_cache_lru", "stmt_stats",
+                 "db_sqlite_concurrency", "spinel_pg_db",
+             ],
+             # The PostgreSQL shim owns only its own gate, not the SQLite
+@@ -870,7 +880,7 @@ class Routing(unittest.TestCase):
+             "tests/spinel_pg_db_cases.rb": ["spinel_pg_db"],
+             "runtime/ruby/db.rbs": [
+                 "framework_tests_spinel",
+-                "spinel_db_lease", *ci.PARAM_BIND_TESTS, "spinel_stmt_cache_lru",
++                "spinel_db_lease", *ci.PARAM_BIND_TESTS, "spinel_stmt_cache_lru", "stmt_stats",
+                 "db_sqlite_concurrency", "spinel_pg_db",
+             ],
+             "runtime/spinel/date.rb": ["date_columns_spinel"],
+@@ -922,6 +932,7 @@ class Routing(unittest.TestCase):
+                 "spinel_db_lease",
+                 *ci.PARAM_BIND_TESTS,
+                 "spinel_stmt_cache_lru",
++                "stmt_stats",
+                 "db_sqlite_concurrency",
+             ],
+         )
+diff --git a/tests/param_binds.rs b/tests/param_binds.rs
+index 05c9dafbc..680f2f32c 100644
+--- a/tests/param_binds.rs
++++ b/tests/param_binds.rs
+@@ -1,4 +1,4 @@
+-//! Correctness gate for roundhouse#12. Both emit modes run in separate
++//! Correctness gate for roundhouse#12. The default and both override modes run in separate
+ //! processes: changing ROUNDHOUSE_PARAM_BINDS in the parallel test runner is
+ //! racy. No fixture generation, server, network or Docker is needed.
+ //!
+@@ -14,6 +14,16 @@ use roundhouse::project::BuildTarget;
+ use std::path::PathBuf;
+ use std::process::Command;
+ 
++// These probes cover supported runtimes. Pin their default
++// independently of the production capability table, then inspect actual emit.
++fn expected_binds(target: BuildTarget) -> bool {
++    match std::env::var("ROUNDHOUSE_PARAM_BINDS").as_deref() {
++        Ok("0") => false,
++        Ok("1") => true,
++        _ => target == BuildTarget::Spinel,
++    }
++}
++
+ fn overlay() -> emit_and_run::Overlay {
+     emit_and_run::empty_app()
+         .write(
+@@ -183,14 +193,16 @@ fn check_success(command: &Command, output: &std::process::Output) {
+ 
+ fn emitted(test: &str, target: BuildTarget) {
+     if std::env::var_os("ROUNDHOUSE_BINDS_CHILD").is_none() {
+-        for mode in ["0", "1"] {
+-            println!("{test}: ROUNDHOUSE_PARAM_BINDS={mode}");
+-            success(
+-                Command::new(std::env::current_exe().unwrap())
+-                    .args(["--exact", test, "--include-ignored", "--nocapture"])
+-                    .env("ROUNDHOUSE_BINDS_CHILD", "1")
+-                    .env("ROUNDHOUSE_PARAM_BINDS", mode),
+-            );
++        for mode in [None, Some("0"), Some("1")] {
++            println!("{test}: ROUNDHOUSE_PARAM_BINDS={mode:?}");
++            let mut child = Command::new(std::env::current_exe().unwrap());
++            child.args(["--exact", test, "--include-ignored", "--nocapture"])
++                .env("ROUNDHOUSE_BINDS_CHILD", "1")
++                .env_remove("ROUNDHOUSE_PARAM_BINDS");
++            if let Some(mode) = mode {
++                child.env("ROUNDHOUSE_PARAM_BINDS", mode);
++            }
++            success(&mut child);
+         }
+         return;
+     }
+@@ -198,7 +210,7 @@ fn emitted(test: &str, target: BuildTarget) {
+     assert!(errors.is_empty(), "{}", errors.join("\n"));
+     let probe = std::fs::read_to_string(dir.join("app/models/parent.rb")).unwrap();
+     // Prevent a green test that silently exercises only the inline fallback.
+-    let binds_on = std::env::var("ROUNDHOUSE_PARAM_BINDS").unwrap() == "1";
++    let binds_on = expected_binds(target);
+     for method in [
+         "find_by_id(value)",
+         "rows(value)",
+@@ -282,10 +294,38 @@ Db.close
+ "#,
+         include_str!("param_binds_emit.rb")
+     );
+-    run_script(&dir, &script, target == BuildTarget::Spinel);
++    // JRuby's real JDBC execution is covered by its container contract and
++    // compare lane. This host-independent probe pins its compiler policy.
++    if target != BuildTarget::Jruby {
++        run_script(&dir, &script, target == BuildTarget::Spinel);
++    }
+     std::fs::remove_dir_all(dir.parent().unwrap()).expect("remove successful overlay");
+ }
+ 
++#[test]
++fn emitted_reads_jruby_policy() {
++    emitted(test_subprocess::name!("emitted_reads_jruby_policy"), BuildTarget::Jruby);
++}
++
++#[test]
++fn direct_ruby_and_spinel_emit_use_their_defaults() {
++    let mut app = roundhouse::ingest::ingest_app(std::path::Path::new("fixtures/tiny-blog"))
++        .expect("tiny-blog");
++    roundhouse::session::analyze_and_lower(&mut app);
++    for (label, files, binds) in [
++        ("Ruby", roundhouse::emit::ruby::emit_lowered_models(&app), false),
++        ("Spinel", roundhouse::emit::ruby::emit_spinel(&app), true),
++    ] {
++        let models: Vec<_> = files.iter()
++            .filter(|f| f.content.contains("  def self._adapter_find_by_id(id)\n"))
++            .collect();
++        assert!(!models.is_empty(), "{label}: no synthesized reads");
++        for model in models {
++            assert_bound(&model.content, "self._adapter_find_by_id(id)", "bind_int", binds);
++        }
++    }
++}
++
+ fn method_body<'a>(source: &'a str, method: &str) -> &'a str {
+     let header = format!("  def {method}\n");
+     source
+@@ -593,14 +633,16 @@ fn string_key_adapter_spinel() {
+ 
+ fn nullable_associations(test: &str, target: BuildTarget) {
+     if std::env::var_os("ROUNDHOUSE_BINDS_CHILD").is_none() {
+-        for mode in ["0", "1"] {
+-            println!("{test}: ROUNDHOUSE_PARAM_BINDS={mode}");
+-            success(
+-                Command::new(std::env::current_exe().unwrap())
+-                    .args(["--exact", test, "--include-ignored", "--nocapture"])
+-                    .env("ROUNDHOUSE_BINDS_CHILD", "1")
+-                    .env("ROUNDHOUSE_PARAM_BINDS", mode),
+-            );
++        for mode in [None, Some("0"), Some("1")] {
++            println!("{test}: ROUNDHOUSE_PARAM_BINDS={mode:?}");
++            let mut child = Command::new(std::env::current_exe().unwrap());
++            child.args(["--exact", test, "--include-ignored", "--nocapture"])
++                .env("ROUNDHOUSE_BINDS_CHILD", "1")
++                .env_remove("ROUNDHOUSE_PARAM_BINDS");
++            if let Some(mode) = mode {
++                child.env("ROUNDHOUSE_PARAM_BINDS", mode);
++            }
++            success(&mut child);
+         }
+         return;
+     }
+@@ -656,7 +698,7 @@ end
+         );
+     let (dir, errors) = app.emit(target);
+     assert!(errors.is_empty(), "{}", errors.join("\n"));
+-    let binds_on = std::env::var("ROUNDHOUSE_PARAM_BINDS").unwrap() == "1";
++    let binds_on = expected_binds(target);
+     let link = std::fs::read_to_string(dir.join("app/models/link.rb")).unwrap();
+     assert_bound(&link, "account", "bind_int", binds_on);
+     assert_bound(&link, "article", "bind_text", binds_on);
+@@ -788,3 +830,24 @@ fn raw_where_substitution_ruby() {
+ fn raw_where_substitution_spinel() {
+     raw_where_substitution(BuildTarget::Spinel);
+ }
++
++#[test]
++fn typescript_profiles_keep_inline_reads() {
++    use roundhouse::profile::DeploymentProfile;
++    let mut app = roundhouse::ingest::ingest_app(std::path::Path::new("fixtures/tiny-blog"))
++        .expect("tiny-blog");
++    roundhouse::session::analyze_and_lower(&mut app);
++    for profile in [
++        DeploymentProfile::node_sync(),
++        DeploymentProfile::node_async(),
++        DeploymentProfile::worker(),
++    ] {
++        let files = roundhouse::emit::typescript::emit_with_profile(&app, &profile);
++        let models: Vec<_> = files.iter()
++            .filter(|f| f.content.contains("_adapter_find_by_id"))
++            .collect();
++        assert!(!models.is_empty(), "{} must exercise synthesized reads", profile.name);
++        assert!(models.iter().any(|f| f.content.contains("Db.escape_int(")), "{}", profile.name);
++        assert!(models.iter().all(|f| !f.content.contains("Db.bind_")), "{}", profile.name);
++    }
++}
+diff --git a/tests/param_binds_values.rs b/tests/param_binds_values.rs
+index ecc5b9321..85ef8bdc5 100644
+--- a/tests/param_binds_values.rs
++++ b/tests/param_binds_values.rs
+@@ -10,6 +10,16 @@ mod test_subprocess;
+ use roundhouse::project::BuildTarget;
+ use std::process::Command;
+ 
++// These probes run on the three supported local runtimes. Pin their default
++// independently of the production capability table, then inspect actual emit.
++fn expected_binds(target: BuildTarget) -> bool {
++    match std::env::var("ROUNDHOUSE_PARAM_BINDS").as_deref() {
++        Ok("0") => false,
++        Ok("1") => true,
++        _ => target == BuildTarget::Spinel,
++    }
++}
++
+ fn overlay() -> emit_and_run::Overlay {
+     emit_and_run::empty_app()
+         .write(
+@@ -111,14 +121,16 @@ fn success(command: &mut Command) {
+ 
+ fn emitted(test: &str, target: BuildTarget) {
+     if std::env::var_os("ROUNDHOUSE_BINDS_CHILD").is_none() {
+-        for mode in ["0", "1"] {
+-            println!("{test}: ROUNDHOUSE_PARAM_BINDS={mode}");
+-            success(
+-                Command::new(std::env::current_exe().unwrap())
+-                    .args(["--exact", test, "--include-ignored", "--nocapture"])
+-                    .env("ROUNDHOUSE_BINDS_CHILD", "1")
+-                    .env("ROUNDHOUSE_PARAM_BINDS", mode),
+-            );
++        for mode in [None, Some("0"), Some("1")] {
++            println!("{test}: ROUNDHOUSE_PARAM_BINDS={mode:?}");
++            let mut child = Command::new(std::env::current_exe().unwrap());
++            child.args(["--exact", test, "--include-ignored", "--nocapture"])
++                .env("ROUNDHOUSE_BINDS_CHILD", "1")
++                .env_remove("ROUNDHOUSE_PARAM_BINDS");
++            if let Some(mode) = mode {
++                child.env("ROUNDHOUSE_PARAM_BINDS", mode);
++            }
++            success(&mut child);
+         }
+         return;
+     }
+@@ -148,7 +160,7 @@ fn emitted(test: &str, target: BuildTarget) {
+             .0;
+         assert!(body.contains("Db.prepare("), "{header}{body}");
+         assert!(!body.contains("Reading.where("), "{header}{body}");
+-        if method.starts_with("optional_") && std::env::var("ROUNDHOUSE_PARAM_BINDS").unwrap() == "1" {
++        if method.starts_with("optional_") && expected_binds(target) {
+             assert!(body.contains(" IS NULL"), "{header}{body}");
+             assert!(body.contains(" = ?"), "{header}{body}");
+             assert!(!body.contains(" IS ?"), "{header}{body}");
+@@ -159,7 +171,7 @@ fn emitted(test: &str, target: BuildTarget) {
+             let bind = if method == "ratio_matches" { "Db.bind_text(" } else { "Db.bind_text_opt(" };
+             assert_eq!(
+                 body.contains(bind),
+-                std::env::var("ROUNDHOUSE_PARAM_BINDS").unwrap() == "1",
++                expected_binds(target),
+                 "{header}{body}"
+             );
+         }
+@@ -169,7 +181,7 @@ fn emitted(test: &str, target: BuildTarget) {
+         if method.starts_with("string_time") {
+             assert!(!body.contains("ActiveSupport.format_db_time("), "{header}{body}");
+             let bind = if method == "string_time_matches" { "Db.bind_text(" } else { "Db.bind_text_opt(" };
+-            assert_eq!(body.contains(bind), std::env::var("ROUNDHOUSE_PARAM_BINDS").unwrap() == "1", "{header}{body}");
++            assert_eq!(body.contains(bind), expected_binds(target), "{header}{body}");
+         } else if method.contains("time") || method == "pair_matches" {
+             assert!(
+                 body.contains("ActiveSupport.format_db_time("),
+@@ -179,11 +191,11 @@ fn emitted(test: &str, target: BuildTarget) {
+         if method == "time_matches_value(value)" {
+             assert_eq!(
+                 body.contains("Db.bind_text("),
+-                std::env::var("ROUNDHOUSE_PARAM_BINDS").unwrap() == "1",
++                expected_binds(target),
+                 "{header}{body}"
+             );
+         }
+-        if method == "pair_matches" && std::env::var("ROUNDHOUSE_PARAM_BINDS").unwrap() == "1" {
++        if method == "pair_matches" && expected_binds(target) {
+             assert!(
+                 body.contains("Db.bind_int(stmt, 1, @key)"),
+                 "{header}{body}"
+@@ -291,7 +303,7 @@ end
+     let source = std::fs::read_to_string(dir.join("app/models/calendar_entry.rb")).unwrap();
+     assert!(source.contains("ActiveSupport.format_db_date(@date_needle)"), "{source}");
+     assert!(!source.contains("ActiveSupport.format_db_date(@text_needle)"), "{source}");
+-    if std::env::var("ROUNDHOUSE_PARAM_BINDS").unwrap() == "1" {
++    if expected_binds(BuildTarget::Ruby) {
+         assert!(source.contains("Db.bind_text_opt("), "{source}");
+         assert!(source.contains(" IS NULL"), "{source}");
+         assert!(source.contains(" = ?"), "{source}");
+diff --git a/tests/stmt_stats.rb b/tests/stmt_stats.rb
+new file mode 100644
+index 000000000..baad42f83
+--- /dev/null
++++ b/tests/stmt_stats.rb
+@@ -0,0 +1,114 @@
++require_relative "active_record_errors"
++require_relative "db"
++
++# The flag must remain the value captured at boot even if an application
++# changes its environment later. File destinations are captured too.
++ENV["RH_STMT_STATS"] = DbConn::STMT_STATS ? "0" : "1"
++
++def point(sql)
++  stmt = Db.prepare(sql)
++  raise "missing point" unless Db.step?(stmt)
++  value = Db.column_int(stmt, 0)
++  Db.finalize(stmt)
++  value
++end
++
++def bound(value, nullable = false, transient = false)
++  stmt = transient ? Db.prepare_uncached("SELECT COALESCE(?, -99)") : Db.prepare("SELECT COALESCE(?, -99)")
++  if nullable
++    Db.bind_int_opt(stmt, 1, nil)
++  else
++    Db.bind_int(stmt, 1, value)
++  end
++  raise "missing bound point" unless Db.step?(stmt)
++  got = Db.column_int(stmt, 0)
++  Db.finalize(stmt)
++  got
++end
++
++Db.configure(":memory:", pool_size: 1)
++Db.dump_stmt_stats("empty")
++raise "outside lease" unless point("SELECT 1") == 1
++Db.dump_stmt_stats("plain")
++
++Db.with_connection do
++  raise "first point" unless point("SELECT 1") == 1
++  raise "inline replay" unless point("SELECT 1") == 1
++  raise "first bind" unless bound(7) == 7
++  raise "repeated bind" unless bound(7) == 7
++  raise "varying bind" unless bound(8) == 8
++  raise "NULL bind" unless bound(0, true) == -99
++  raise "repeated NULL bind" unless bound(0, true) == -99
++end
++Db.dump_stmt_stats("bound")
++
++Db.with_connection do
++  first = Db.prepare_uncached("SELECT 9 UNION ALL SELECT 10")
++  raise "transient first" unless Db.step?(first) && Db.column_int(first, 0) == 9
++  Db.finalize(first)
++  replay = Db.prepare_uncached("SELECT 9 UNION ALL SELECT 10")
++  raise "transient replay" unless Db.step?(replay) && Db.column_int(replay, 0) == 9
++  # A native prepare occurs only when the partial replay needs more rows.
++  raise "transient promotion" unless Db.step?(replay) && Db.column_int(replay, 0) == 10
++  raise "transient eof" if Db.step?(replay)
++  Db.finalize(replay)
++  raise "transient bound" unless bound(12, false, true) == 12
++  raise "repeated transient bind" unless bound(12, false, true) == 12
++end
++Db.dump_stmt_stats("transient")
++
++# An idle pool snapshot still includes an explicitly-owned transient
++# cursor opened by a script outside a request lease.
++live = Db.prepare_uncached("SELECT 314")
++raise "live transient" unless Db.step?(live) && Db.column_int(live, 0) == 314
++Db.dump_stmt_stats("live")
++Db.finalize(live)
++Db.dump_stmt_stats("released")
++
++# Checked step consumes the driver's error with a reset but retains ownership.
++# Lease cleanup can then reuse this statement; it is not a finalization.
++# Statement failures use ActiveRecord's hierarchy, as in an emitted app.
++Db.with_connection do
++  bad = Db.prepare("SELECT abs(-9223372036854775808)")
++  begin
++    Db.step?(bad)
++    raise "step should fail"
++  rescue ActiveRecord::StatementInvalid => e
++    raise e unless e.message.include?("Db.step failed") && e.message.include?("integer overflow")
++  end
++end
++Db.dump_stmt_stats("failed")
++
++# Leave SQLite's error pending to exercise a genuinely failed cached reset.
++# The direct FFI call is fault injection, not the normal checked-step path.
++Db.with_connection do
++  conn = Db.current_conn
++  bad = conn.prepare_cached("SELECT abs(-9223372036854775808) /* pending reset error */")
++  raise "raw step should fail" if SQL.sqlite3_step(bad) == SQL::ROW
++  begin
++    conn.release(bad)
++    raise "release should fail"
++  rescue RuntimeError => e
++    raise e unless e.message.include?("Db.release failed")
++  end
++end
++Db.dump_stmt_stats("reset_failed")
++
++Db.with_connection do
++  begin
++    Db.prepare("SELECT missing_column")
++    raise "prepare should fail"
++  rescue ActiveRecord::StatementInvalid => e
++    raise e unless e.message.include?("Db.prepare failed")
++  end
++  i = 0
++  while i < 130
++    raise "trim read" unless point("SELECT " + i.to_s + " + 0") == i
++    i += 1
++  end
++  # A prepare without a step must not count as an execution.
++  Db.finalize(Db.prepare("SELECT 999"))
++end
++Db.dump_stmt_stats("trimmed")
++Db.close
++puts "stmt stats probe passed"
+diff --git a/tests/stmt_stats.rs b/tests/stmt_stats.rs
+new file mode 100644
+index 000000000..156aadc19
+--- /dev/null
++++ b/tests/stmt_stats.rs
+@@ -0,0 +1,163 @@
++//! Native diagnostic contract; no fixture, server, network or database file.
++use std::collections::HashMap;
++use std::path::{Path, PathBuf};
++use std::process::Command;
++use std::sync::atomic::{AtomicUsize, Ordering};
++
++struct ScratchDir(PathBuf);
++impl Drop for ScratchDir {
++    fn drop(&mut self) {
++        let _ = std::fs::remove_dir_all(&self.0);
++    }
++}
++
++/// A killed run can leave `roundhouse-stmt-stats-<pid>` behind. Reserve a new
++/// directory with `create_dir` so a reused pid cannot reopen that stale tree.
++fn reserve_scratch() -> PathBuf {
++    static NEXT: AtomicUsize = AtomicUsize::new(0);
++    let base = option_env!("CARGO_TARGET_TMPDIR")
++        .map(PathBuf::from)
++        .unwrap_or_else(std::env::temp_dir);
++    loop {
++        let dir = base.join(format!(
++            "roundhouse-stmt-stats-{}-{}",
++            std::process::id(),
++            NEXT.fetch_add(1, Ordering::Relaxed)
++        ));
++        match std::fs::create_dir(&dir) {
++            Ok(()) => return dir,
++            Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => continue,
++            Err(error) => panic!("create scratch directory {}: {error}", dir.display()),
++        }
++    }
++}
++
++fn counters(line: &str) -> HashMap<&str, usize> {
++    line.split_whitespace()
++        .filter_map(|field| {
++            let (key, value) = field.split_once('=')?;
++            Some((key, value.parse().ok()?))
++        })
++        .collect()
++}
++
++#[test]
++#[ignore = "requires Spinel (SPINEL=/path/to/spinel)"]
++fn statement_stats_are_opt_in_and_count_cached_transient_and_bound_reads() {
++    let root = Path::new(env!("CARGO_MANIFEST_DIR"));
++    let dir = reserve_scratch();
++    let _cleanup = ScratchDir(dir.clone());
++    for name in ["db.rb", "active_support_time_parsing.rb"] {
++        std::fs::copy(root.join("runtime/spinel").join(name), dir.join(name)).unwrap();
++    }
++    std::fs::copy(
++        root.join("runtime/ruby/active_record/errors.rb"),
++        dir.join("active_record_errors.rb"),
++    )
++    .unwrap();
++    std::fs::write(dir.join("probe.rb"), include_str!("stmt_stats.rb")).unwrap();
++    let compile = Command::new(std::env::var("SPINEL").unwrap_or_else(|_| "spinel".into()))
++        .args(["probe.rb", "-o", "probe"])
++        .current_dir(&dir)
++        .output()
++        .unwrap();
++    assert!(
++        compile.status.success(),
++        "{}\n{}",
++        String::from_utf8_lossy(&compile.stdout),
++        String::from_utf8_lossy(&compile.stderr)
++    );
++    for setting in [None, Some(""), Some("0"), Some("1"), Some("stats.txt")] {
++        let mut command = Command::new(dir.join("probe"));
++        command.current_dir(&dir).env("DATABASE_POOL_SIZE", "1");
++        if let Some(value) = setting {
++            command.env("RH_STMT_STATS", value);
++        } else {
++            command.env_remove("RH_STMT_STATS");
++        }
++        let out = command.output().unwrap();
++        assert!(
++            out.status.success(),
++            "{setting:?}: {}\n{}",
++            String::from_utf8_lossy(&out.stdout),
++            String::from_utf8_lossy(&out.stderr)
++        );
++        assert_eq!(
++            String::from_utf8_lossy(&out.stdout),
++            "stmt stats probe passed\n"
++        );
++        if matches!(setting, None | Some("") | Some("0")) {
++            assert!(out.stderr.is_empty());
++            assert!(!dir.join("stats.txt").exists());
++            continue;
++        }
++        let stats = if setting == Some("1") {
++            String::from_utf8(out.stderr).unwrap()
++        } else {
++            assert!(out.stderr.is_empty());
++            std::fs::read_to_string(dir.join("stats.txt")).unwrap()
++        };
++        let lines: Vec<_> = stats.lines().collect();
++        assert_eq!(lines.len(), 10, "{stats}");
++        let phases = [
++            "empty",
++            "plain",
++            "bound",
++            "transient",
++            "live",
++            "released",
++            "failed",
++            "reset_failed",
++            "trimmed",
++            "close",
++        ];
++        for (line, phase) in lines.iter().zip(phases) {
++            assert!(line
++                .split_whitespace()
++                .any(|field| field == format!("phase={phase}")));
++            assert!(line
++                .split_whitespace()
++                .any(|field| field == "connection=0:0"));
++        }
++        let values: Vec<_> = lines.iter().map(|line| counters(line)).collect();
++        assert_eq!(values[0]["misses"], 0);
++        assert_eq!(values[0]["executions"], 0);
++        assert_eq!(values[1]["misses"], 1);
++        assert_eq!(values[1]["executions"], 1);
++        assert_eq!(values[1]["qc_bypasses"], 1);
++        // Five bound reads bypass SQL-only replay, even with equal values.
++        assert_eq!(values[2]["qc_hits"], 1);
++        assert_eq!(values[2]["qc_misses"], 1);
++        assert_eq!(values[2]["qc_bypasses"], 6);
++        assert_eq!(values[2]["executions"], 7);
++        assert!(!values[2].contains_key("qc_bound_hits"));
++        assert!(!values[2].contains_key("qc_bound_misses"));
++        assert_eq!(values[3]["transient_prepares"], 4);
++        assert_eq!(values[3]["qc_hits"], 2);
++        assert_eq!(values[3]["qc_misses"], 2);
++        assert_eq!(values[3]["qc_bypasses"], 8);
++        assert_eq!(values[3]["executions"], 11);
++        assert_eq!(values[3]["finalizations"], 4);
++        assert_eq!(values[4]["transient_prepares"], 5);
++        assert_eq!(values[4]["executions"], 12);
++        assert_eq!(values[4]["finalizations"], 4);
++        assert_eq!(values[5]["executions"], 12);
++        assert_eq!(values[5]["finalizations"], 5);
++        assert_eq!(values[6]["executions"], 13);
++        assert_eq!(values[6]["finalizations"], 5);
++        assert_eq!(values[6]["evictions"], 0);
++        assert_eq!(values[7]["executions"], 14);
++        assert_eq!(values[7]["finalizations"], 6);
++        assert_eq!(values[7]["evictions"], 1);
++        assert_eq!(values[8]["distinct_sql_capped"], 0);
++        assert!(values[8]["distinct_sql"] > 128, "{stats}");
++        assert_eq!(values[8]["entries"], 128);
++        assert_eq!(values[8]["trims"], 1);
++        assert_eq!(values[8]["prepare_failures"], 1);
++        assert_eq!(values[8]["executions"], 144);
++        assert_eq!(values[9]["entries"], 0);
++        assert_eq!(values[9]["executions"], 144);
++        assert_eq!(values[9]["finalizations"] - values[8]["finalizations"], 128);
++        assert_eq!(values[9]["misses"], values[9]["finalizations"]);
++    }
++}

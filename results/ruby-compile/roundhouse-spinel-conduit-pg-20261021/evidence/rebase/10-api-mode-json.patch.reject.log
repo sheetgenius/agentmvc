@@ -1,0 +1,103 @@
+Checking patch runtime/ruby/action_controller/base.rb...
+Hunk #2 succeeded at 1053 (offset 9 lines).
+Hunk #3 succeeded at 1205 (offset 24 lines).
+Hunk #4 succeeded at 1215 (offset 24 lines).
+Checking patch runtime/ruby/action_controller/base.rbs...
+error: while searching for:
+      String path,
+      ?notice: String?,
+      ?alert: String?,
+      ?status: Symbol
+    ) -> void
+
+    # The shared strict-target implementation supports the bounded
+    # keyword form. The Ruby/Spinel options-hash extension has its own
+    # signature in runtime/spinel/action_controller_head.rbs.
+    def head: (Symbol status, ?content_type: String?, ?location: String?) -> void
+    def response: () -> Base
+    # Strict stubs; Ruby/Spinel reopen in current.rb fills these in.
+    def fresh_when: (untyped subject) -> void
+
+error: patch failed: runtime/ruby/action_controller/base.rbs:203
+error: while searching for:
+                      ?immutable: bool) -> void
+    def cache_control_max_age: () -> Integer
+    def cache_control_public: () -> bool
+    def headers: () -> ActionController::HeaderStore
+    def send_data: (String data, ?type: String, ?disposition: String) -> void
+    def verify_authenticity_token: () -> void
+
+error: patch failed: runtime/ruby/action_controller/base.rbs:225
+Hunk #4 succeeded at 238 (offset 2 lines).
+Checking patch runtime/ruby/action_controller/parameter_missing.rb...
+Checking patch runtime/ruby/action_controller/parameter_missing.rbs...
+Checking patch runtime/ruby/active_support_ext.rb...
+error: while searching for:
+
+  def self.present(t)
+    zone = current_zone
+    zone.nil? ? t.getlocal : t.getlocal(zone.offset_at(t.to_i))
+  end
+
+  def self.present_db(t)
+
+error: patch failed: runtime/ruby/active_support_ext.rb:1089
+Checking patch runtime/spinel/scaffold/main.rb...
+Hunk #1 succeeded at 671 (offset 9 lines).
+Checking patch runtime/spinel/tep/net.rb...
+Checking patch runtime/spinel/tep/server.rb...
+Hunk #1 succeeded at 174 (offset 2 lines).
+Checking patch runtime/spinel/tep/server_scheduled.rb...
+Hunk #1 succeeded at 215 (offset 1 line).
+Checking patch runtime/spinel/tep/server_threaded.rb...
+Hunk #1 succeeded at 214 (offset 1 line).
+Checking patch src/lower/controller_to_library/mod.rs...
+error: while searching for:
+            all_controllers,
+            &dispatcher_bodies(&preamble, &wraps, &rescues),
+        );
+        methods.insert(
+            dispatcher_at,
+            synthesize_process_action(
+                &preamble,
+                &publics_inlined,
+                &inherited,
+
+error: patch failed: src/lower/controller_to_library/mod.rs:1399
+error: while searching for:
+                &wraps,
+                reads,
+                &missing,
+            ),
+        );
+    }
+    // The empty set for both non-public loops below: `is_public: false`
+    // already suppresses the implicit render, so there is never one to
+
+error: patch failed: src/lower/controller_to_library/mod.rs:1411
+Hunk #3 succeeded at 2595 (offset 23 lines).
+Hunk #4 succeeded at 2625 (offset 23 lines).
+Checking patch src/lower/errors_add.rs...
+Checking patch tests/api_mode.rs...
+Applied patch runtime/ruby/action_controller/base.rb cleanly.
+Applying patch runtime/ruby/action_controller/base.rbs with 2 rejects...
+Hunk #1 applied cleanly.
+Rejected hunk #2.
+Rejected hunk #3.
+Hunk #4 applied cleanly.
+Applied patch runtime/ruby/action_controller/parameter_missing.rb cleanly.
+Applied patch runtime/ruby/action_controller/parameter_missing.rbs cleanly.
+Applying patch runtime/ruby/active_support_ext.rb with 1 reject...
+Rejected hunk #1.
+Applied patch runtime/spinel/scaffold/main.rb cleanly.
+Applied patch runtime/spinel/tep/net.rb cleanly.
+Applied patch runtime/spinel/tep/server.rb cleanly.
+Applied patch runtime/spinel/tep/server_scheduled.rb cleanly.
+Applied patch runtime/spinel/tep/server_threaded.rb cleanly.
+Applying patch src/lower/controller_to_library/mod.rs with 2 rejects...
+Rejected hunk #1.
+Rejected hunk #2.
+Hunk #3 applied cleanly.
+Hunk #4 applied cleanly.
+Applied patch src/lower/errors_add.rs cleanly.
+Applied patch tests/api_mode.rs cleanly.

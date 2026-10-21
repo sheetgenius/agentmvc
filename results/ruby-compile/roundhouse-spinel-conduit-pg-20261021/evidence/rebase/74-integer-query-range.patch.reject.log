@@ -1,0 +1,147 @@
+Checking patch runtime/ruby/active_record/base.rb...
+Hunk #2 succeeded at 565 (offset 7 lines).
+Checking patch runtime/ruby/active_record/base.rbs...
+Hunk #2 succeeded at 164 (offset 1 line).
+Checking patch runtime/ruby/active_record/connection.rb...
+Hunk #1 succeeded at 409 (offset 4 lines).
+Checking patch runtime/ruby/active_record/connection.rbs...
+error: while searching for:
+    def _as_json_only: (Array[Symbol] only) -> Hash[String, untyped]
+    # Nil and uncastable request keys reject before the scalar adapter.
+    # Not `?id`: the def takes `*ids`, and spinel types a positional field by the def's own slot.
+    def self.exists?: (*(Integer | Float | String | nil) ids) -> bool
+    def self._exists_primary_key_input: (Integer | Float | String | nil id) -> bool
+    # Ruby-family overrides of base.rb's Array / COUNT fallbacks.
+    def self.select: (*untyped specs) -> Relation
+
+error: patch failed: runtime/ruby/active_record/connection.rbs:94
+Checking patch runtime/ruby/active_record/relation.rb...
+Hunk #1 succeeded at 2091 (offset 290 lines).
+Hunk #2 succeeded at 2906 (offset 370 lines).
+error: while searching for:
+      end
+    end
+
+    # For positional binds, split only the original `?` placeholders,
+    # keeping escaped values verbatim. Preserve trailing empty parts so
+    # missing binds leave their `?` intact. (`String#sub` used to search
+
+error: patch failed: runtime/ruby/active_record/relation.rb:2571
+Checking patch runtime/ruby/active_record/relation.rbs...
+error: while searching for:
+    def exists_sql: (Integer n) -> String
+    def bound_exists_sql: (Integer n) -> String
+    def hash_conditions: (Hash[String | Symbol, untyped] hash) -> String
+    def column_predicate: (String col, Relation | Array[untyped] | Base | String | Integer | Float | bool | nil val) -> String
+    def substitute_binds: (String sql, Array[untyped] args) -> String
+    def substitute_named_binds: (String sql, Hash[Symbol, untyped] binds) -> String
+
+error: patch failed: runtime/ruby/active_record/relation.rbs:312
+Checking patch src/lower/arel/visitor.rs...
+Hunk #1 succeeded at 1081 (offset -26 lines).
+Hunk #2 succeeded at 1090 (offset -26 lines).
+Hunk #3 succeeded at 1118 (offset -26 lines).
+Hunk #4 succeeded at 1880 (offset -29 lines).
+error: while searching for:
+        let table = &schema.tables[&Symbol::from("articles")];
+        let body = emit_single_hydrate(&sel, table, &owner, true);
+
+        // SQL keys on the static shape — placeholder, no inline escape call.
+        let sql = prepare_sql(&body);
+        assert!(sql.contains("WHERE id = ?"), "expected placeholder WHERE; got:\n{sql}");
+        assert!(!sql.contains("«expr»"), "no inline value segment expected; got:\n{sql}");
+
+        // A `Db.bind_int(stmt, 1, id)` lands right after prepare.
+        let calls = db_stmt_calls(&body);
+        let bind = calls.iter().find(|(m, _)| m == "bind_int").expect("bind_int call");
+        assert_eq!(bind.1.len(), 3, "bind_int(stmt, idx, expr)");
+        assert!(
+            matches!(bind.1[1].node.as_ref(), ExprNode::Lit { value: Literal::Int { value: 1 } }),
+            "1-based bind index"
+        );
+        // And exactly one bind for one runtime value.
+        assert_eq!(calls.iter().filter(|(m, _)| m.starts_with("bind_")).count(), 1);
+    }
+
+    #[test]
+    fn param_off_keeps_inline_escape() {
+        // Same op, gate OFF → the pre-existing inline-escape emit: no
+        // `?`, no bind call (byte-identical to today).
+        let (schema, owner) = fixture_schema();
+        let sel = Select {
+            single_record: true,
+
+error: patch failed: src/lower/arel/visitor.rs:1906
+Hunk #6 succeeded at 1946 (offset -28 lines).
+error: while searching for:
+        let table = &schema.tables[&Symbol::from("articles")];
+        let body = emit_count(&sel, table, true);
+        let sql = prepare_sql(&body);
+        assert!(sql.contains("COUNT(*)") && sql.contains("WHERE id = ?"), "got:\n{sql}");
+        assert!(db_stmt_calls(&body).iter().any(|(m, _)| m == "bind_int"), "expected bind_int");
+    }
+
+    #[test]
+
+error: patch failed: src/lower/arel/visitor.rs:1974
+Checking patch src/lower/model_to_library/mod.rs...
+error: while searching for:
+        let writable_fields =
+            permitted_fields.map(|fields| writable_permit_fields(model, table, fields));
+        let permitted_fields = writable_fields.as_deref();
+        push_schema_methods(&mut methods, model, models, table);
+        // Per-model Level-3 adapter primitives (`_adapter_find_by_id`, etc.)
+        // — typed methods that go directly from SQL composition to typed
+        // model instances over the `Sqlite` primitive surface. See
+
+error: patch failed: src/lower/model_to_library/mod.rs:1142
+Checking patch src/lower/model_to_library/schema.rs...
+error: while searching for:
+use crate::effect::EffectSet;
+use crate::expr::{ArrayStyle, BoolOpKind, BoolOpSurface, Expr, ExprNode, LValue, Literal};
+use crate::ident::{ClassId, Symbol, VarId};
+use crate::schema::{Column, Table};
+use crate::span::Span;
+use crate::ty::Ty;
+
+
+error: patch failed: src/lower/model_to_library/schema.rs:5
+error: while searching for:
+    model: &Model,
+    models: &[Model],
+    table: &Table,
+) {
+    let owner = &model.name;
+
+
+error: patch failed: src/lower/model_to_library/schema.rs:62
+Hunk #3 succeeded at 375 (offset 9 lines).
+Checking patch tests/integer_query_predicates.rb...
+Checking patch tests/integer_query_predicates.rs...
+Applied patch runtime/ruby/active_record/base.rb cleanly.
+Applied patch runtime/ruby/active_record/base.rbs cleanly.
+Applied patch runtime/ruby/active_record/connection.rb cleanly.
+Applying patch runtime/ruby/active_record/connection.rbs with 1 reject...
+Rejected hunk #1.
+Applying patch runtime/ruby/active_record/relation.rb with 1 reject...
+Hunk #1 applied cleanly.
+Hunk #2 applied cleanly.
+Rejected hunk #3.
+Applying patch runtime/ruby/active_record/relation.rbs with 1 reject...
+Rejected hunk #1.
+Applying patch src/lower/arel/visitor.rs with 2 rejects...
+Hunk #1 applied cleanly.
+Hunk #2 applied cleanly.
+Hunk #3 applied cleanly.
+Hunk #4 applied cleanly.
+Rejected hunk #5.
+Hunk #6 applied cleanly.
+Rejected hunk #7.
+Applying patch src/lower/model_to_library/mod.rs with 1 reject...
+Rejected hunk #1.
+Applying patch src/lower/model_to_library/schema.rs with 2 rejects...
+Rejected hunk #1.
+Rejected hunk #2.
+Hunk #3 applied cleanly.
+Applied patch tests/integer_query_predicates.rb cleanly.
+Applied patch tests/integer_query_predicates.rs cleanly.

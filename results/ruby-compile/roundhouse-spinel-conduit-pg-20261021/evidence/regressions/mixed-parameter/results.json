@@ -1,0 +1,42 @@
+[
+  {
+    "condition": "v8",
+    "emitted_signature": "class Probe\n  def self.pick: (bool flag) -> untyped\n  def self.consume: (untyped value) -> untyped\n  def self.run: () -> untyped\nend\n",
+    "cruby": {
+      "exit": 0,
+      "stdout": "{\"n\" => 1}\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "v8/driver.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "{\"n\" => 1}\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "condition": "current",
+    "emitted_signature": "class Probe\n  def self.pick: (bool flag) -> untyped\n  def self.consume: (Symbol value) -> untyped\n  def self.run: () -> untyped\nend\n",
+    "cruby": {
+      "exit": 0,
+      "stdout": "{\"n\" => 1}\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "current/driver.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": ":generate\n",
+      "stderr": ""
+    },
+    "matches_cruby": false
+  }
+]

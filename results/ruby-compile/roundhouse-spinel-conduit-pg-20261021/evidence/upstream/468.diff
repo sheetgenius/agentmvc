@@ -1,0 +1,836 @@
+commit 702b1d2ff67f1ee8b89c59f728bca8545e6773aa
+Merge: c967fe8ee 43c343522
+Author: Thomas Klemm <[redacted-email]>
+Date:   Mon Oct 19 14:08:04 2026 +0300
+
+    Merge pull request #468 from bunnykong/tep-pipelined-boundary
+    
+    Pipelined requests retain bytes past the Content-Length boundary
+
+diff --git a/runtime/spinel/tep/net.rb b/runtime/spinel/tep/net.rb
+index 54dc9bd5d..2ebe8fe12 100644
+--- a/runtime/spinel/tep/net.rb
++++ b/runtime/spinel/tep/net.rb
+@@ -110,7 +110,7 @@ end
+         if io.wait_readable(5).nil?
+           return ""
+         end
+-        chunk = Sock.sp_net_recv_some(fd, n - out.bytesize)
++        chunk = Sock.sp_net_recv_some(fd, n - out.bytesize).b
+         if chunk.bytesize == 0
+           return ""
+         end
+diff --git a/runtime/spinel/tep/parser.rb b/runtime/spinel/tep/parser.rb
+index 9e88cc4b0..52106a276 100644
+--- a/runtime/spinel/tep/parser.rb
++++ b/runtime/spinel/tep/parser.rb
+@@ -3,9 +3,30 @@
+ # byte blob the C helper read off the wire (headers, possibly a
+ # prefix of the body).
+ module Tep
++  # Owned by one connection, never by an fd number or the server singleton.
++  # Headers can arrive with bytes belonging to a later pipelined request.
++  class InputBuffer
++    def initialize
++      @pending_input = +"".b
++    end
++
++    def take_pending_input
++      pending = @pending_input
++      @pending_input = +"".b
++      pending
++    end
++
++    def keep_pending_input(bytes)
++      @pending_input = bytes
++      nil
++    end
++  end
++
+   class Parser
+     # Returns a fully-populated Request, or nil if the blob is malformed.
+-    def self.parse(blob)
++    def self.parse(blob, input = InputBuffer.new)
++      # Delimit headers and bodies as octets, even with a UTF-8-tagged recv.
++      blob = blob.b
+       # String#index returns nil (not -1) when not found — matches CRuby.
+       # See matz/spinel#532; spinel 0210389 fixed the prior -1 sentinel.
+       end_of_headers = blob.index("\r\n\r\n")
+@@ -90,12 +111,20 @@ module Tep
+         end
+       end
+ 
+-      # Carry over any body bytes already in the blob (the C helper
+-      # may have read more than just the headers in one recv()).
++      # Content-Length ends this body exactly, including zero (or an
++      # absent header). Keep surplus bytes for this connection's next
++      # request instead of appending them to the body or dropping them.
+       body_start = end_of_headers + 4
+-      if body_start < blob.length
+-        req.raw_body = blob[body_start, blob.length - body_start]
++      received = blob.bytesize - body_start
++      body_bytes = req.content_length
++      if body_bytes < 0
++        body_bytes = 0   # body_refusal will reject the invalid length
++      end
++      if body_bytes > received
++        body_bytes = received
+       end
++      req.raw_body = blob.byteslice(body_start, body_bytes)
++      input.keep_pending_input(blob.byteslice(body_start + body_bytes, received - body_bytes))
+ 
+       req
+     end
+diff --git a/runtime/spinel/tep/request.rb b/runtime/spinel/tep/request.rb
+index 4ad3785bc..65f0c21c1 100644
+--- a/runtime/spinel/tep/request.rb
++++ b/runtime/spinel/tep/request.rb
+@@ -251,7 +251,7 @@ module Tep
+         if ready == 0
+           return false   # timeout -- client never finished sending
+         end
+-        chunk = Sock.sphttp_recv_some(client_fd, cl - @raw_body.bytesize)
++        chunk = Sock.sphttp_recv_some(client_fd, cl - @raw_body.bytesize).b
+         if chunk.bytesize == 0
+           return false   # peer closed mid-body
+         end
+@@ -280,7 +280,7 @@ module Tep
+         if ready.nil?
+           return false   # timeout -- client never finished sending
+         end
+-        chunk = Sock.sphttp_recv_some(client_fd, cl - @raw_body.bytesize)
++        chunk = Sock.sphttp_recv_some(client_fd, cl - @raw_body.bytesize).b
+         if chunk.bytesize == 0
+           return false   # peer closed mid-body
+         end
+diff --git a/runtime/spinel/tep/response.rb b/runtime/spinel/tep/response.rb
+index 0c5cb2202..d0ef467b5 100644
+--- a/runtime/spinel/tep/response.rb
++++ b/runtime/spinel/tep/response.rb
+@@ -87,6 +87,14 @@ module Tep
+     def set_status(n); @status = n; end
+ 
+     def halted_close?
++      # A handler's close option also overrides request keep-alive.
++      @headers.each do |name, value|
++        if name.downcase == "connection"
++          value.downcase.split(",").each do |option|
++            return true if option.strip == "close"
++          end
++        end
++      end
+       @halted && @status >= 300
+     end
+   end
+diff --git a/runtime/spinel/tep/server.rb b/runtime/spinel/tep/server.rb
+index 0ea312c3a..24a81d9a9 100644
+--- a/runtime/spinel/tep/server.rb
++++ b/runtime/spinel/tep/server.rb
+@@ -128,9 +128,10 @@ module Tep
+     # surrounding while loop and prevent the young-gen GC from
+     # reclaiming the previous request's allocations.
+     def handle_connection(client)
++      input = InputBuffer.new
+       keep_going = true
+       while keep_going
+-        keep_going = handle_one(client)
++        keep_going = handle_one(client, input)
+       end
+       Sock.sphttp_close(client)
+     end
+@@ -143,25 +144,26 @@ module Tep
+     # client fd is blocking, so each recv parks the worker until bytes
+     # arrive — no scheduler. Replaces the C sphttp_read_request +
+     # request_buf (sphttp.c retired — matz/spinel#1466). `+` is binary-safe.
+-    def read_request_blocking(client)
+-      buf = +""
+-      while buf.length < 65535
+-        chunk = Sock.sp_net_recv_some(client, 4096)
++    def read_request_blocking(client, input = InputBuffer.new)
++      buf = input.take_pending_input
++      return buf if buf.include?("\r\n\r\n")
++      while buf.bytesize < 65535
++        chunk = Sock.sp_net_recv_some(client, [4096, 65535 - buf.bytesize].min).b
+         if chunk.length == 0
+           return ""
+         end
+         buf = buf + chunk
+-        if buf.length >= 4 && buf.include?("\r\n\r\n")
++        if buf.bytesize >= 4 && buf.include?("\r\n\r\n")
+           return buf
+         end
+       end
+       ""
+     end
+ 
+-    def handle_one(client)
+-      blob = read_request_blocking(client)
++    def handle_one(client, input = InputBuffer.new)
++      blob = read_request_blocking(client, input)
+       return false if blob.length == 0
+-      req = Parser.parse(blob)
++      req = Parser.parse(blob, input)
+       if req == nil
+         send_simple(client, 400, "bad request")
+         return false
+@@ -195,9 +197,9 @@ module Tep
+       end
+       keep_alive = req.keep_alive? && !res.halted_close?
+       write_response(client, req, res, keep_alive)
+-      keep_alive
+     end
+ 
++    # Return the keep-alive decision actually sent by the writer.
+     def write_response(client, req, res, keep_alive)
+       if res.streaming
+         # Chunked-encoding stream. Send headers immediately, hand a
+@@ -214,7 +216,7 @@ module Tep
+         out = Stream.new(client)
+         res.streamer.pump(out)
+         Sock.sphttp_write_chunk_end(client)
+-        return
++        return false
+       end
+ 
+       if res.file_path.length > 0
+@@ -222,7 +224,7 @@ module Tep
+         sz = Sock.sphttp_filesize(res.file_path)
+         if sz < 0
+           send_simple(client, 404, "file not found")
+-          return
++          return false
+         end
+         res.headers["Content-Length"] = sz.to_s
+         if !res.headers.key?("Content-Type")
+@@ -236,7 +238,7 @@ module Tep
+         head = build_head(req, res)
+         Sock.sphttp_write_str(client, head)
+         Sock.sphttp_sendfile(client, res.file_path) unless req.verb == "HEAD"
+-        return
++        return keep_alive
+       end
+ 
+       if res.body.length > 0 && !res.headers.key?("Content-Type")
+@@ -261,6 +263,7 @@ module Tep
+       if res.body.bytesize > 0 && req.verb != "HEAD"
+         Sock.sphttp_write_bytes(client, res.body, res.body.bytesize)
+       end
++      keep_alive
+     end
+ 
+     def build_head(req, res)
+diff --git a/runtime/spinel/tep/server_scheduled.rb b/runtime/spinel/tep/server_scheduled.rb
+index b01b1c8da..7ca18b873 100644
+--- a/runtime/spinel/tep/server_scheduled.rb
++++ b/runtime/spinel/tep/server_scheduled.rb
+@@ -185,9 +185,10 @@ module Tep
+       # Mirrors the Tep::Server#handle_one fix (210a5f6) for the prefork
+       # server; this Scheduled server is the one the blog actually runs.
+       def self.handle_connection(client)
++        input = InputBuffer.new
+         keep_going = true
+         while keep_going
+-          keep_going = Tep::Server::Scheduled.handle_one(client)
++          keep_going = Tep::Server::Scheduled.handle_one(client, input)
+         end
+         Sock.sphttp_close(client)
+         0
+@@ -195,12 +196,12 @@ module Tep
+ 
+       # Process exactly one request on `client`. Returns true to keep the
+       # connection open for the next keep-alive request, false to close.
+-      def self.handle_one(client)
+-        blob = Tep::Server::Scheduled.read_request_blob(client, KEEPALIVE_TIMEOUT)
++      def self.handle_one(client, input = InputBuffer.new)
++        blob = Tep::Server::Scheduled.read_request_blob(client, KEEPALIVE_TIMEOUT, input)
+         if blob.length == 0
+           return false
+         end
+-        req = Parser.parse(blob)
++        req = Parser.parse(blob, input)
+         if req == nil
+           Tep::Server::Scheduled.send_simple(client, 400, "bad request")
+           return false
+@@ -232,21 +233,18 @@ module Tep
+           return false
+         end
+ 
+-        # Streaming responses use chunked Connection: close (same
+-        # simplification as the prefork server) -- force the keep-alive
+-        # loop to end after this response so the stream's terminator isn't
+-        # followed by a stale read on the same fd.
+-        keep_alive = req.keep_alive? && !res.halted_close? && !res.streaming
++        # The writer returns the keep-alive decision it actually sends.
++        keep_alive = req.keep_alive? && !res.halted_close?
+         Tep::Server::Scheduled.write_response(client, req, res, keep_alive)
+-        keep_alive
+       end
+ 
+       # Non-blocking request reader. Returns the accumulated blob
+       # once "\r\n\r\n" is seen, or "" on timeout / EOF / oversize.
+-      def self.read_request_blob(fd, timeout_seconds)
+-        buf = +""
++      def self.read_request_blob(fd, timeout_seconds, input = InputBuffer.new)
++        buf = input.take_pending_input
++        return buf if buf.include?("\r\n\r\n")
+         deadline = Time.now.to_i + timeout_seconds
+-        while buf.length < MAX_REQUEST_BYTES
++        while buf.bytesize < MAX_REQUEST_BYTES
+           remaining = deadline - Time.now.to_i
+           if remaining <= 0
+             return ""
+@@ -255,12 +253,12 @@ module Tep
+           if ready == 0
+             return ""
+           end
+-          chunk = Sock.sphttp_recv_some(fd, 4096)
++          chunk = Sock.sphttp_recv_some(fd, [4096, MAX_REQUEST_BYTES - buf.bytesize].min).b
+           if chunk.length == 0
+             return ""
+           end
+           buf << chunk
+-          if buf.length >= 4 && buf.include?("\r\n\r\n")
++          if buf.bytesize >= 4 && buf.include?("\r\n\r\n")
+             return buf
+           end
+         end
+@@ -285,7 +283,7 @@ module Tep
+           # other connection. Refuse the upgrade rather than serve it wrong.
+           Tep::Server::Scheduled.send_simple(client, 501,
+             "websocket upgrade needs TEP_SERVER=thread")
+-          return 0
++          return false
+         end
+ 
+         # Streaming branch -- cooperative mirror of Tep::Server's
+@@ -311,7 +309,7 @@ module Tep
+           out = Tep::Stream.new(client)
+           res.streamer.pump(out)
+           Sock.sphttp_write_chunk_end(client)
+-          return 0
++          return false
+         end
+ 
+         # Default Content-Type for inline-body responses. Matches
+@@ -332,6 +330,10 @@ module Tep
+         end
+         if res.file_path.length > 0
+           fs = Sock.sphttp_filesize(res.file_path)
++          if fs < 0
++            Tep::Server::Scheduled.send_simple(client, 404, "file not found")
++            return false
++          end
+           head << "Content-Length: " + fs.to_s + "\r\n\r\n"
+           Sock.sphttp_write_str(client, head)
+           Sock.sphttp_sendfile(client, res.file_path) unless req.verb == "HEAD"
+@@ -354,7 +356,7 @@ module Tep
+             Sock.sphttp_write_bytes(client, res.body, res.body.bytesize)
+           end
+         end
+-        0
++        keep_alive
+       end
+ 
+       # bytesize, as write_response: a multibyte `msg` would otherwise
+diff --git a/runtime/spinel/tep/server_threaded.rb b/runtime/spinel/tep/server_threaded.rb
+index 4b1ee9b19..bd766be62 100644
+--- a/runtime/spinel/tep/server_threaded.rb
++++ b/runtime/spinel/tep/server_threaded.rb
+@@ -181,9 +181,10 @@ module Tep
+           raise
+         end
+         begin
++          input = InputBuffer.new
+           keep_going = true
+           while keep_going
+-            keep_going = Tep::Server::Threaded.handle_one(client, io)
++            keep_going = Tep::Server::Threaded.handle_one(client, io, input)
+           end
+         ensure
+           io.close
+@@ -194,12 +195,12 @@ module Tep
+ 
+       # Process exactly one request on `client`. Returns true to keep the
+       # connection open for the next keep-alive request, false to close.
+-      def self.handle_one(client, io)
+-        blob = Tep::Server::Threaded.read_request_blob(client, io, KEEPALIVE_TIMEOUT)
++      def self.handle_one(client, io, input = InputBuffer.new)
++        blob = Tep::Server::Threaded.read_request_blob(client, io, KEEPALIVE_TIMEOUT, input)
+         if blob.length == 0
+           return false
+         end
+-        req = Parser.parse(blob)
++        req = Parser.parse(blob, input)
+         if req == nil
+           Tep::Server::Threaded.send_simple(client, 400, "bad request")
+           return false
+@@ -230,20 +231,19 @@ module Tep
+           return false
+         end
+ 
+-        # Streaming responses use chunked Connection: close (same
+-        # simplification as the prefork server).
+-        keep_alive = req.keep_alive? && !res.halted_close? && !res.streaming
+-        Tep::Server::Threaded.write_response(client, io, req, res, keep_alive)
+-        keep_alive
++        # The writer returns the keep-alive decision it actually sends.
++        keep_alive = req.keep_alive? && !res.halted_close?
++        Tep::Server::Threaded.write_response(client, io, req, res, keep_alive, input)
+       end
+ 
+       # Request reader. Returns the accumulated blob once "\r\n\r\n" is
+       # seen, or "" on timeout / EOF / oversize. The timed wait parks the
+       # thread; a peer that closes wakes it (EOF reads as zero bytes).
+-      def self.read_request_blob(fd, io, timeout_seconds)
+-        buf = +""
++      def self.read_request_blob(fd, io, timeout_seconds, input = InputBuffer.new)
++        buf = input.take_pending_input
++        return buf if buf.include?("\r\n\r\n")
+         deadline = Time.now.to_i + timeout_seconds
+-        while buf.length < MAX_REQUEST_BYTES
++        while buf.bytesize < MAX_REQUEST_BYTES
+           remaining = deadline - Time.now.to_i
+           if remaining <= 0
+             return ""
+@@ -252,12 +252,12 @@ module Tep
+           if ready.nil?
+             return ""
+           end
+-          chunk = Sock.sphttp_recv_some(fd, 4096)
++          chunk = Sock.sphttp_recv_some(fd, [4096, MAX_REQUEST_BYTES - buf.bytesize].min).b
+           if chunk.length == 0
+             return ""
+           end
+           buf << chunk
+-          if buf.length >= 4 && buf.include?("\r\n\r\n")
++          if buf.bytesize >= 4 && buf.include?("\r\n\r\n")
+             return buf
+           end
+         end
+@@ -265,7 +265,7 @@ module Tep
+       end
+ 
+       # Body-shape mirror of Tep::Server#write_response.
+-      def self.write_response(client, io, req, res, keep_alive)
++      def self.write_response(client, io, req, res, keep_alive, input = InputBuffer.new)
+         # WebSocket upgrade branch. Set by res.start_websocket in the
+         # user's handler after a successful Handshake.check. Writes the
+         # 101 Switching Protocols head, then hands the fd (and this
+@@ -284,12 +284,14 @@ module Tep
+           # `ensure`, because handle_connection now closes the fd on the
+           # way out of a raise too, and an unretired driver would write
+           # into whatever socket reuses that number.
++          # Surplus after the upgrade headers is the first WebSocket
++          # frame when it shared the request's recv.
+           begin
+-            conn.run
++            conn.run(input.take_pending_input)
+           ensure
+             res.ws_driver.retire
+           end
+-          return 0
++          return false
+         end
+ 
+         # Streaming branch -- chunked, Connection: close.
+@@ -306,7 +308,7 @@ module Tep
+           out = Tep::Stream.new(client)
+           res.streamer.pump(out)
+           Sock.sphttp_write_chunk_end(client)
+-          return 0
++          return false
+         end
+ 
+         # Default Content-Type for inline-body responses.
+@@ -324,6 +326,10 @@ module Tep
+         end
+         if res.file_path.length > 0
+           fs = Sock.sphttp_filesize(res.file_path)
++          if fs < 0
++            Tep::Server::Threaded.send_simple(client, 404, "file not found")
++            return false
++          end
+           head << "Content-Length: " + fs.to_s + "\r\n\r\n"
+           Sock.sphttp_write_str(client, head)
+           Sock.sphttp_sendfile(client, res.file_path) unless req.verb == "HEAD"
+@@ -339,7 +345,7 @@ module Tep
+             Sock.sphttp_write_bytes(client, res.body, res.body.bytesize)
+           end
+         end
+-        0
++        keep_alive
+       end
+ 
+       # bytesize, as write_response: a multibyte `msg` would otherwise
+diff --git a/runtime/spinel/tep/websocket/connection.rb b/runtime/spinel/tep/websocket/connection.rb
+index a5a777742..34a0a8596 100644
+--- a/runtime/spinel/tep/websocket/connection.rb
++++ b/runtime/spinel/tep/websocket/connection.rb
+@@ -39,7 +39,12 @@ module Tep
+       # sphttp_recv_into_frame fill may contain several complete
+       # frames; Connection consumes them all before parking again.
+       #
+-      # The caller (Tep::Server::Scheduled.write_response) owns the
++      # `pending` is the suffix Parser already took off the socket with
++      # the upgrade request (the first frame often shares that recv).
++      # Those bytes are the WebSocket stream, so they are parsed before
++      # the loop waits for anything further.
++      #
++      # The caller (Tep::Server::Threaded.write_response) owns the
+       # fd lifecycle -- run() never calls sphttp_close. On clean
+       # close OR error the server's handle_connection closes the fd
+       # via its usual exit path, after retiring the driver. Every exit
+@@ -47,7 +52,7 @@ module Tep
+       # registry drops this fd's subscriptions while the number is still
+       # this connection's; a timed-out socket used to skip that and leave
+       # entries behind for the number's next owner.
+-      def run
++      def run(pending = +"".b)
+         # Synthetic open event before the first recv -- handlers
+         # often want to send a welcome message.
+         Connection.dispatch_open(@driver)
+@@ -57,25 +62,10 @@ module Tep
+         # whole frames as the buffer holds, carrying any partial trailing
+         # frame forward via byteslice. Replaces the old static recv buffer
+         # + per-byte C accessor (sphttp.c is retired — matz/spinel#1466).
+-        inbuf = +""
++        inbuf = pending.b
+         while true
+-          ready = @io.wait_readable(@idle_timeout_seconds)
+-          if ready.nil?
+-            # Timeout: close 1001 going-away.
+-            @driver.close(Tep::WebSocket::CLOSE_GOING_AWAY, "idle timeout")
+-            Connection.dispatch_close(@driver, Tep::WebSocket::CLOSE_GOING_AWAY, "idle timeout")
+-            return 0
+-          end
+-
+-          chunk = Sock.sp_net_recv_some(@fd, 65536)
+-          if chunk.bytesize == 0
+-            # EOF / peer gone: dispatch close without sending one back.
+-            Connection.dispatch_close(@driver, Tep::WebSocket::CLOSE_GOING_AWAY, "")
+-            return 0
+-          end
+-          inbuf = inbuf + chunk
+-
+-          # Parse + dispatch every complete frame the buffer now holds.
++          # Parse + dispatch every complete frame the buffer now holds,
++          # including a frame that arrived in the same recv as the upgrade.
+           while true
+             # bytesize, not length: inbuf is masked binary, and char-count
+             # arithmetic under-reports avail (complete frames report "need")
+@@ -108,6 +98,22 @@ module Tep
+             end
+             inbuf = inbuf.byteslice(r.consumed, inbuf.bytesize - r.consumed)
+           end
++
++          ready = @io.wait_readable(@idle_timeout_seconds)
++          if ready.nil?
++            # Timeout: close 1001 going-away.
++            @driver.close(Tep::WebSocket::CLOSE_GOING_AWAY, "idle timeout")
++            Connection.dispatch_close(@driver, Tep::WebSocket::CLOSE_GOING_AWAY, "idle timeout")
++            return 0
++          end
++
++          chunk = Sock.sp_net_recv_some(@fd, 65536)
++          if chunk.bytesize == 0
++            # EOF / peer gone: dispatch close without sending one back.
++            Connection.dispatch_close(@driver, Tep::WebSocket::CLOSE_GOING_AWAY, "")
++            return 0
++          end
++          inbuf = inbuf + chunk
+         end
+         0
+       end
+diff --git a/tests/spinel_pipelined_boundary.rb b/tests/spinel_pipelined_boundary.rb
+new file mode 100644
+index 000000000..1eb2d27ff
+--- /dev/null
++++ b/tests/spinel_pipelined_boundary.rb
+@@ -0,0 +1,242 @@
++# Exercise the real connection loops, including bytes already read for
++# a successor and a successor header that needs another recv to finish.
++require_relative "tep_server_harness"
++
++class RecordingApp
++  attr_reader :paths
++
++  alias reset_bodies reset
++  def reset
++    reset_bodies
++    @paths = []
++  end
++
++  def dispatch(req, res)
++    @paths << req.path.b
++    @bodies << req.raw_body.b
++    res.status = 200
++    res.body = "ok"
++    res.start_stream(Tep::Streamer.new) if req.path == "/stream"
++    res.start_websocket("test", Tep::WebSocket::Driver.new(0)) if req.path == "/upgrade"
++    res.send_file(File.join(__dir__, "missing-pipelined-file")) if req.path == "/missing-file"
++    res.headers["connection"] = "keep-alive, CLOSE" if req.path == "/response-close"
++  end
++end
++
++# Keep the upgrade handoff synchronous without a WebSocket transport here.
++# The native probe separately checks the real handshake and close frame.
++# `handed` is the suffix the server passed into the receive loop.
++class Tep::WebSocket::Connection
++  class << self
++    attr_accessor :handed
++  end
++  alias run_from_socket run
++  def run(pending = +"".b)
++    self.class.handed = pending
++  end
++end
++
++class Wire
++  def exhausted? = @pos == @bytes.bytesize
++end
++
++# Buffered requests must not wait for fresh socket readability.
++class ReadyIO
++  def wait_readable(_timeout) = Sock.wire.exhausted? ? nil : self
++end
++
++module Tep::Scheduler
++  def self.io_wait(_fd, _mode, _timeout) = Sock.wire.exhausted? ? 0 : 1
++end
++
++module Sock
++  class << self
++    attr_accessor :closes
++  end
++
++  def self.sp_net_close(_fd)
++    self.closes += 1
++    0
++  end
++end
++
++SECOND = "GET /next HTTP/1.1\r\nHost: localhost\r\n\r\n".b
++THIRD = "POST /third HTTP/1.1\r\nHost: localhost\r\nContent-Length: 2\r\n\r\né".b
++close_first = "POST /posts HTTP/1.1\r\nHost: localhost\r\nContent-Length: 0\r\nConnection: close\r\n\r\n".b
++stream_first = "GET /stream HTTP/1.1\r\nHost: localhost\r\n\r\n".b
++upgrade_first = "GET /upgrade HTTP/1.1\r\nHost: localhost\r\n\r\n".b
++missing_first = "GET /missing-file HTTP/1.1\r\nHost: localhost\r\n\r\n".b
++response_close_first = "GET /response-close HTTP/1.1\r\nHost: localhost\r\n\r\n".b
++scenarios = [
++  ["two-byte body", post(2, "é".b), SECOND, ["/posts", "/next"], ["é".b, ""]],
++  ["zero-length body", post(0, ""), SECOND, ["/posts", "/next"], ["", ""]],
++  ["absent length", post(nil, ""), SECOND, ["/posts", "/next"], ["", ""]],
++  ["binary body", post(3, "\x00\xff\x80".b), SECOND, ["/posts", "/next"], ["\x00\xff\x80".b, ""]],
++  ["three requests", post(2, "é".b), SECOND + THIRD, ["/posts", "/next", "/third"], ["é".b, "", "é".b]],
++  ["multibyte request target", "POST /pést HTTP/1.1\r\nHost: localhost\r\nContent-Length: 2\r\n\r\né".b,
++   SECOND, ["/pést".b, "/next"], ["é".b, ""]],
++  ["body requiring a drain", post(6000, "é".b * 3000), SECOND, ["/posts", "/next"], ["é".b * 3000, ""]],
++  ["Connection close", close_first, SECOND, ["/posts"], [""]],
++  ["streaming close", stream_first, SECOND, ["/stream"], [""]],
++  ["missing file close", missing_first, SECOND, ["/missing-file"], [""]],
++  ["response Connection close", response_close_first, SECOND, ["/response-close"], [""]],
++  ["WebSocket upgrade", upgrade_first, SECOND, ["/upgrade"], [""]]
++]
++
++SERVERS.each_key do |server|
++  scenarios.each do |label, first, rest, paths, bodies|
++    # The prefork server has no WebSocket upgrade implementation.
++    next if label == "WebSocket upgrade" && server == "blocking"
++    [false, true].each do |utf8|
++      [1 << 20, 5, first.bytesize + 10].each do |chunk|
++        Sock.wire = Wire.new(first.b + rest.b, utf8: utf8, chunk: chunk)
++        Sock.closes = 0
++        APP.reset
++        raised = nil
++        begin
++          case server
++          when "threaded" then Tep::Server::Threaded.handle_connection(7)
++          when "scheduled" then Tep::Server::Scheduled.handle_connection(7)
++          when "blocking" then Tep::Server.new(APP).handle_connection(7)
++          end
++        rescue StandardError => error
++          raised = error
++        end
++        name = "#{server}: #{label}, utf8=#{utf8}, recv chunk=#{chunk}"
++        detail = "paths=#{APP.paths.inspect}, sizes=#{APP.bodies.map(&:bytesize)}, raised=#{raised.inspect}"
++        check("#{name}: each body has exactly its own bytes", raised.nil? && APP.bodies == bodies.map(&:b), detail)
++        check("#{name}: successor paths are retained in order", raised.nil? && APP.paths == paths.map(&:b), detail)
++        statuses = Sock.wire.out.scan(/HTTP\/1\.\d (\d{3})/).flatten.map(&:to_i)
++        expected_statuses = if label == "WebSocket upgrade"
++          server == "threaded" ? [101] : [501]
++        elsif label == "missing file close"
++          [404]
++        else
++          [200] * paths.length
++        end
++        check("#{name}: each request receives its response", raised.nil? && statuses == expected_statuses, statuses.inspect)
++        check("#{name}: the connection closes once", raised.nil? && Sock.closes == 1, Sock.closes.inspect)
++      end
++    end
++  end
++end
++
++# A short first recv creates the same header offset without pipelining.
++class FragmentedHeaderWire < Wire
++  def recv(n)
++    super(@recvs == 0 ? [n, 4034].min : n)
++  end
++end
++
++prefix = "POST /first HTTP/1.1\r\nHost: localhost\r\nContent-Length: 2\r\n\r\nab".b
++SERVERS.each_key do |server|
++  [65535, 65536, 66000, 69000].each do |size|
++    head = "GET /large-header HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\nX-Pad: ".b
++    header = head + "x" * (size - head.bytesize - 4) + "\r\n\r\n"
++    [false, true].each do |queued|
++      [false, true].each do |utf8|
++        wire_class = queued ? Wire : FragmentedHeaderWire
++        Sock.wire = wire_class.new((queued ? prefix : "") + header + SECOND, utf8: utf8, chunk: 4096)
++        Sock.closes = 0
++        APP.reset
++        case server
++        when "threaded" then Tep::Server::Threaded.handle_connection(7)
++        when "scheduled" then Tep::Server::Scheduled.handle_connection(7)
++        when "blocking" then Tep::Server.new(APP).handle_connection(7)
++        end
++        paths = queued ? ["/first"] : []
++        paths << "/large-header" if size <= 65535
++        statuses = Sock.wire.out.scan(/HTTP\/1\.\d (\d{3})/).flatten.map(&:to_i)
++        name = "#{server}: #{size}-byte header, queued=#{queued}, utf8=#{utf8}"
++        check("#{name}: only headers within the limit dispatch", APP.paths == paths, APP.paths.inspect)
++        check("#{name}: only accepted requests get responses", statuses == [200] * paths.length, statuses.inspect)
++        check("#{name}: the connection closes once", Sock.closes == 1)
++      end
++    end
++  end
++end
++
++# Bounds are measured at the connection-owned buffer, not on TCP input size.
++class Tep::InputBuffer
++  attr_reader :high_water
++  alias keep_without_measurement keep_pending_input
++  def keep_pending_input(bytes)
++    @high_water = [@high_water || 0, bytes.bytesize].max
++    keep_without_measurement(bytes)
++  end
++end
++
++SERVERS.each_key do |server|
++  long_stream = SECOND * 1000
++  Sock.wire = Wire.new(long_stream)
++  APP.reset
++  Sock.closes = 0
++  # Explicit handle_one calls keep the buffer available for inspection.
++  input = Tep::InputBuffer.new
++  1000.times do
++    case server
++    when "threaded" then Tep::Server::Threaded.handle_one(7, ReadyIO.new, input)
++    when "scheduled" then Tep::Server::Scheduled.handle_one(7, input)
++    when "blocking" then Tep::Server.new(APP).handle_one(7, input)
++    end
++  end
++  check("#{server}: a long pipeline dispatches every request", APP.paths == ["/next"] * 1000)
++  check("#{server}: pending input stays below one recv", input && input.high_water < 4096)
++
++  oversized = "POST /big HTTP/1.1\r\nHost: localhost\r\n" \
++              "Content-Length: #{Tep.max_body_bytes + 1}\r\n\r\n"
++  Sock.wire = Wire.new(SECOND + oversized + "x" * 8192)
++  APP.reset
++  case server
++  when "threaded" then Tep::Server::Threaded.handle_connection(7)
++  when "scheduled" then Tep::Server::Scheduled.handle_connection(7)
++  when "blocking" then Tep::Server.new(APP).handle_connection(7)
++  end
++  check("#{server}: a buffered successor still obeys the body cap",
++        APP.paths == ["/next"] && Sock.wire.out.scan(/HTTP\/1\.\d (\d{3})/).flatten == ["200", "413"])
++  check("#{server}: an oversized successor never drains", Sock.wire.recvs == 1)
++end
++
++# A masked text frame ("hi", mask key 0) sharing the upgrade recv.
++# FIN+text, MASK+len 2, then the key and the masked payload.
++frame = "\x81\x82\x00\x00\x00\x00hi".b
++upgrade_with_frame = upgrade_first + frame
++Sock.wire = Wire.new(upgrade_with_frame)
++Sock.closes = 0
++APP.reset
++Tep::WebSocket::Connection.handed = nil
++Tep::Server::Threaded.handle_connection(7)
++check("threaded: a frame buffered with the upgrade is handed to the receive loop",
++      Tep::WebSocket::Connection.handed == frame,
++      Tep::WebSocket::Connection.handed.inspect)
++
++class CapturingHandler < Tep::WebSocket::Handler
++  attr_reader :data
++  def handle_event(event)
++    @data = event.data
++    0
++  end
++end
++
++# The harness does not load the broadcast registry. The idle close that
++# follows a delivered frame still notifies it.
++module Tep
++  module Broadcast
++    def self.unsubscribe_fd(_fd) = 0
++  end
++  module Presence
++    def self.untrack_by_fd(_fd) = 0
++  end
++end
++
++Sock.wire = Wire.new("".b)
++driver = Tep::WebSocket::Driver.new(7)
++handler = CapturingHandler.new
++driver.set_on_message(handler)
++Tep::WebSocket::Connection.new(driver, ReadyIO.new).run_from_socket(frame)
++check("a complete buffered frame is delivered before the next recv",
++      handler.data == "hi" && Sock.wire.recvs == 0,
++      "data=#{handler.data.inspect} recvs=#{Sock.wire.recvs}")
++
++puts "#{CHECKS.count(true)}/#{CHECKS.length} checks pass"
++puts "done"
+diff --git a/tests/spinel_pipelined_boundary.rs b/tests/spinel_pipelined_boundary.rs
+new file mode 100644
+index 000000000..31acac700
+--- /dev/null
++++ b/tests/spinel_pipelined_boundary.rs
+@@ -0,0 +1,39 @@
++//! Regression for Tep request framing across all three servers.
++//! The Ruby driver uses the real parser, drains and server implementations
++//! over tests/tep_server_harness.rb's scripted socket.
++
++use std::path::Path;
++use std::process::Command;
++
++#[test]
++fn pipelined_requests_keep_their_byte_boundaries() {
++    let root = Path::new(env!("CARGO_MANIFEST_DIR"));
++    let out = Command::new("ruby")
++        .arg(root.join("tests/spinel_pipelined_boundary.rb"))
++        .output()
++        .expect("ruby is on PATH");
++    let stdout = String::from_utf8_lossy(&out.stdout);
++    let stderr = String::from_utf8_lossy(&out.stderr);
++    assert!(
++        stdout.lines().any(|line| line == "done"),
++        "driver did not finish\n=== stdout ===\n{stdout}\n=== stderr ===\n{stderr}"
++    );
++    assert!(
++        out.status.success(),
++        "driver exited {:?}\n=== stdout ===\n{stdout}\n=== stderr ===\n{stderr}",
++        out.status.code()
++    );
++    let failed: Vec<&str> = stdout
++        .lines()
++        .filter(|line| line.starts_with("FAIL"))
++        .collect();
++    assert!(
++        failed.is_empty(),
++        "{}\n=== stdout ===\n{stdout}",
++        failed.join("\n")
++    );
++    assert!(
++        stdout.lines().any(|line| line == "998/998 checks pass"),
++        "fewer checks ran than expected\n=== stdout ===\n{stdout}"
++    );
++}

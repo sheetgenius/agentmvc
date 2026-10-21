@@ -1,0 +1,123 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v9-20261021-final",
+  "scope": "Publication copy of the completed build record; original observations retained under their recorded conditions",
+  "retained": [
+    "README and run record",
+    "checksummed Roundhouse and Spinel patch series",
+    "reproduction scripts and Dockerfiles",
+    "unchanged compile variant",
+    "final and diagnostic gates, captured app errors and binary identities",
+    "edge responses and comparison summaries",
+    "public regression sources, signatures and outcomes",
+    "upstream snapshots, retirement diffs and final replay"
+  ],
+  "source": {
+    "files": 26721,
+    "logical_bytes": 91433457,
+    "allocated_kib": 177832
+  },
+  "v8_reference": {
+    "files": 286,
+    "logical_bytes": 1959712,
+    "allocated_kib": 2772
+  },
+  "omitted": {
+    "duplicate historical patch copies; v8 remains the source": {
+      "files": 10,
+      "bytes": 173867
+    },
+    "Python bytecode caches": {
+      "files": 5,
+      "bytes": 44078
+    },
+    "exploratory execution metadata and redundant build logs": {
+      "files": 190,
+      "bytes": 685428
+    },
+    "superseded intermediate patches and combined diffs; summaries retained": {
+      "files": 37,
+      "bytes": 1048037
+    },
+    "superseded aggregate or agent handoff check metadata": {
+      "files": 5,
+      "bytes": 182311
+    },
+    "superseded replay logs; final eleven-patch replay retained": {
+      "files": 4,
+      "bytes": 5438
+    },
+    "superseded reduction attempts; final public reproductions retained": {
+      "files": 20,
+      "bytes": 41106
+    },
+    "superseded diagnostic summaries and planning notes": {
+      "files": 8,
+      "bytes": 3529
+    },
+    "generated build contexts, copied dependencies, gate workspaces and container logs": {
+      "files": 26022,
+      "bytes": 87364755
+    }
+  },
+  "promoted_evidence": [
+    {
+      "source": "reproduce/build/container-logs/conduit-v9-gate-conduit-v9-ws-compiled-78934-app.log",
+      "destination": "evidence/execution/c-compiled-gate-02-app.log",
+      "bytes": 1473,
+      "sha256": "fb22f5f16ae5e068638e2f68c1371e35d445c60b2e55a013a94731bbab1d9801"
+    },
+    {
+      "source": "reproduce/build/container-logs/conduit-v9-gate-conduit-v9-ws-compiled-78934-app-binary.json",
+      "destination": "evidence/execution/c-compiled-gate-02-app-binary.json",
+      "bytes": 246,
+      "sha256": "a6a9b7fa2bb2bf8c07b3128e2f959bc8762010b3c65fc0282cc09914c9b21fa1"
+    },
+    {
+      "source": "reproduce/build/container-logs/conduit-v9-gate-conduit-v9-ws-compiled-2639-app.log",
+      "destination": "evidence/execution/c-compiled-gate-04-app.log",
+      "bytes": 137,
+      "sha256": "aa11bcfad627241428a4da7455aa7b90c6a3bd1c48b298ba738958ae62266486"
+    },
+    {
+      "source": "reproduce/build/container-logs/conduit-v9-gate-conduit-v9-ws-compiled-2639-app-binary.json",
+      "destination": "evidence/execution/c-compiled-gate-04-app-binary.json",
+      "bytes": 245,
+      "sha256": "93b7f00c8628eef330d743d13ecf3694ea5f852bd398f933c7c505e5cf3b9e95"
+    },
+    {
+      "source": "reproduce/build/container-logs/conduit-v9-gate-conduit-v9-ws-compiled-18103-app.log",
+      "destination": "evidence/execution/c-compiled-gate-05-app.log",
+      "bytes": 560,
+      "sha256": "ceb0a30e53d66cd1434beaaad76acbd92c4f8cc85a66b0368c10b6287e4be763"
+    },
+    {
+      "source": "reproduce/build/container-logs/conduit-v9-gate-conduit-v9-ws-compiled-18103-app-binary.json",
+      "destination": "evidence/execution/c-compiled-gate-05-app-binary.json",
+      "bytes": 246,
+      "sha256": "4368ee7cd98f4955d633f0632f83030145e051e49c9f635f4caf512b0ba50cb7"
+    },
+    {
+      "source": "reproduce/build/container-logs/conduit-v9-gate-conduit-v9-ws-compiled-26835-app.log",
+      "destination": "evidence/execution/c-compiled-gate-06-app.log",
+      "bytes": 137,
+      "sha256": "aa11bcfad627241428a4da7455aa7b90c6a3bd1c48b298ba738958ae62266486"
+    },
+    {
+      "source": "reproduce/build/container-logs/conduit-v9-gate-conduit-v9-ws-compiled-26835-app-binary.json",
+      "destination": "evidence/execution/c-compiled-gate-06-app-binary.json",
+      "bytes": 246,
+      "sha256": "b0cbd2bc4cd53caacbacd1c502750e7fcd72167e62f33d84fa6c71732fea83c3"
+    }
+  ],
+  "normalization": [
+    "Host checkout paths are repository-relative.",
+    "Upstream API snapshots retain revision/status metadata; discussion and account metadata are omitted.",
+    "Upstream author email addresses and disposable diagnostic authentication values are redacted with tools/scrub.py rules.",
+    "Synthetic fixture values needed to compare behavior are retained; generic scrubber matches in source code are reviewed.",
+    "One JSON HTTP route uses an equivalent slash escape; the edge script uses equivalent Python escapes. Decoded values and the script AST are unchanged.",
+    "The source variant, toolchain Dockerfiles and checksummed patches are byte-identical to the supplied record."
+  ],
+  "verification": "evidence/publication-validation.json",
+  "excluded_results": "Intermediate, interrupted and cached-build attempts remain diagnostics, not final passing conditions.",
+  "performance_benchmark": false
+}

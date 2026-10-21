@@ -1,0 +1,47 @@
+diff --git a/src/lower/model_to_library/schema.rs b/src/lower/model_to_library/schema.rs
+--- a/src/lower/model_to_library/schema.rs
++++ b/src/lower/model_to_library/schema.rs
+@@ -2539,37 +2539,12 @@
+         }
+ 
+         if column.is_temporal() {
+-            // Temporal columns: callers pass native Date or Time values
+-            // (`Username.create!(created_at: user.created_at)` in
+-            // lobsters), so the attrs value can't be stuffed into the
+-            // raw ISO-text slot directly. First the STANDARD
+-            // `attrs[:col] || <default>` raw-slot assignment — the
+-            // exact pre-existing shape every target compiles (a Time
+-            // value transiently lands in the raw slot; nothing reads
+-            // between the two statements) — then a nil-guarded
+-            // normalize through the selected format intrinsic, the
+-            // same funnel `synth_temporal_writer` uses, called
+-            // directly because several emitters render the public
+-            // `<col>=` MethodDef without a property-setter
+-            // counterpart for the computed getter (tsc TS2540). On
+-            // the lenient ruby-family runtime the intrinsic passes
+-            // stored-text strings through unchanged. rust strips the
+-            // guard (let-binding constructor can't express it —
+-            // honest not-normalized subset); hydration is unaffected
+-            // (`from_row`/`from_stmt` write `<col>_raw=` directly).
+-            let standard = if nullable {
+-                lookup.clone()
+-            } else {
+-                Expr::new(
+-                    Span::synthetic(),
+-                    ExprNode::BoolOp {
+-                        op: crate::expr::BoolOpKind::Or,
+-                        surface: crate::expr::BoolOpSurface::Symbol,
+-                        left: lookup.clone(),
+-                        right: default,
+-                    },
+-                )
+-            };
++            // Raw storage accepts only its stored type, including during
++            // construction. Seed its default, then normalize a supplied
++            // Date/Time before the typed raw writer sees it. A transient
++            // native value can fail the writer's contract before the next
++            // statement gets a chance to normalize it.
++            let standard = if nullable { nil_lit() } else { default };
+             stmts.push(Expr::new(
+                 Span::synthetic(),
+                 ExprNode::Send {

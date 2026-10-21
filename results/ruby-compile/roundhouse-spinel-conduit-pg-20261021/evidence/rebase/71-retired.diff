@@ -1,0 +1,616 @@
+commit f89915e74b0f76edf253eb97f0979e51d99db7d5
+Author: Tagami Daiki <[redacted-email]>
+Date:   Wed Oct 14 11:19:53 2026 +0900
+
+    An error keeps whether its type is a Symbol; `error.type` and `errors.of_kind?` read it
+    
+    Co-Authored-By: Claude <[redacted-email]>
+
+diff --git a/docs/pipeline/runtime.md b/docs/pipeline/runtime.md
+index 14a03e690..2cbb8f1f2 100644
+--- a/docs/pipeline/runtime.md
++++ b/docs/pipeline/runtime.md
+@@ -1898,7 +1898,8 @@ name. Here `errors` stays a plain `Array[String]` of FULL messages
+ `error_details`, holds an `ActiveRecord::ErrorDetail` for each:
+ attribute `"url"`, kind `"not_public"` (the message itself when
+ `errors.add` was given a String, as Rails' type is), message
+-`"is not public"`, full message `"Url is not public"`. `errors.add` and every `validates` rule push to both
++`"is not public"`, full message `"Url is not public"`, and whether the
++type is a Symbol (`errors.add` given a String message records `false`). `errors.add` and every `validates` rule push to both
+ (`src/lower/errors_add.rs`, `model_to_library/validations.rs`), and
+ `errors.clear` empties both. `src/lower/errors_index.rs` grounds
+ `errors[:url]` as `error_messages_for("url")`, a `Base` method that
+@@ -1930,9 +1931,12 @@ Iterating `errors` (`each`, `map`, `collect`, `select`, `filter`,
+ `count` with a block) iterates `error_details` instead, because Rails
+ yields each `ActiveModel::Error`, not its full message. On what they
+ yield, `attribute` reads `attribute.to_sym`, Rails' Symbol, and
+-`message` and `full_message` read the detail's. `type` stays an error:
+-`kind` is a String, where Rails answers a Symbol unless `errors.add`
+-was given a String. Without a block, `any?`, `none?` and `count` keep
++`message` and `full_message` read the detail's. `type` reads
++`kind.to_sym` when the type is a Symbol and `kind` when it is not, so
++only on an error read more than once without effect: a block parameter,
++a local or `errors.first`. `errors.of_kind?(:field, :type)` asks for an
++error on that field with that Symbol type, and with a String type asks
++the field's messages, as Rails does. Without a block, `any?`, `none?` and `count` keep
+ asking the full messages, which answer the same.
+ 
+ Every one of these rewrites matches an `errors` send as its receiver,
+diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+index 903a9f22d..a4e555e06 100644
+--- a/runtime/ruby/active_record/base.rb
++++ b/runtime/ruby/active_record/base.rb
+@@ -175,18 +175,19 @@ module ActiveRecord
+ 
+   # One error as Rails' `ActiveModel::Error` holds it: the attribute, the
+   # error type (the message itself when `errors.add` was given a String),
+-  # the message without the attribute's name, and the full message
+-  # `errors` lists for it.
++  # the message without the attribute's name, the full message
++  # `errors` lists for it, and whether the type is a Symbol.
+   # Not `ActiveModel::Error`: the strict targets emit the class unqualified, beside their own `Error`.
+   class ErrorDetail
+     # `kind`, not Rails' `type`: a field named `type` does not compile in Rust or Go
+-    attr_reader :attribute, :kind, :message, :full_message
++    attr_reader :attribute, :kind, :message, :full_message, :symbolic
+ 
+-    def initialize(attribute, kind, message, full_message)
++    def initialize(attribute, kind, message, full_message, symbolic)
+       @attribute = attribute
+       @kind = kind
+       @message = message
+       @full_message = full_message
++      @symbolic = symbolic
+     end
+   end
+ 
+diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+index d42066ab7..303d1ed8e 100644
+--- a/runtime/ruby/active_record/base.rbs
++++ b/runtime/ruby/active_record/base.rbs
+@@ -83,11 +83,13 @@ module ActiveRecord
+     @kind: String
+     @message: String
+     @full_message: String
++    @symbolic: bool
+     def attribute: () -> String
+     def kind: () -> String
+     def message: () -> String
+     def full_message: () -> String
+-    def initialize: (String attribute, String kind, String message, String full_message) -> void
++    def symbolic: () -> bool
++    def initialize: (String attribute, String kind, String message, String full_message, bool symbolic) -> void
+   end
+ 
+   class Base
+diff --git a/runtime/rust/errors_ext.rs b/runtime/rust/errors_ext.rs
+index 79770284c..9626ab5f8 100644
+--- a/runtime/rust/errors_ext.rs
++++ b/runtime/rust/errors_ext.rs
+@@ -74,9 +74,9 @@ pub fn name() -> &'static str {
+ thread_local! {
+     static VALIDATION_ERRORS: std::cell::RefCell<Vec<String>> =
+         std::cell::RefCell::new(Vec::new());
+-    // The (attribute, kind, message, full message) each message above records, index for index.
++    // The (attribute, kind, message, full message, symbolic) each message above records, index for index.
+     // Tuples, not `ErrorDetail`: this file also compiles alone, without the transpiled base.
+-    static VALIDATION_ERROR_DETAILS: std::cell::RefCell<Vec<(String, String, String, String)>> =
++    static VALIDATION_ERROR_DETAILS: std::cell::RefCell<Vec<(String, String, String, String, bool)>> =
+         std::cell::RefCell::new(Vec::new());
+ }
+ 
+@@ -85,11 +85,11 @@ pub fn validation_errors_clear() {
+     VALIDATION_ERROR_DETAILS.with(|c| c.borrow_mut().clear());
+ }
+ 
+-pub fn validation_error_details_push(attribute: String, kind: String, message: String, full_message: String) {
+-    VALIDATION_ERROR_DETAILS.with(|c| c.borrow_mut().push((attribute, kind, message, full_message)));
++pub fn validation_error_details_push(attribute: String, kind: String, message: String, full_message: String, symbolic: bool) {
++    VALIDATION_ERROR_DETAILS.with(|c| c.borrow_mut().push((attribute, kind, message, full_message, symbolic)));
+ }
+ 
+-pub fn validation_error_details_snapshot() -> Vec<(String, String, String, String)> {
++pub fn validation_error_details_snapshot() -> Vec<(String, String, String, String, bool)> {
+     VALIDATION_ERROR_DETAILS.with(|c| c.borrow().clone())
+ }
+ 
+diff --git a/src/analyze/body/mod.rs b/src/analyze/body/mod.rs
+index 485f6fac5..4ef325d5e 100644
+--- a/src/analyze/body/mod.rs
++++ b/src/analyze/body/mod.rs
+@@ -1925,6 +1925,14 @@ impl<'a> BodyTyper<'a> {
+                 {
+                     return Ty::Str;
+                 }
++                if method.as_str() == "of_kind?"
++                    && matches!(dispatched, Ty::Var { .. } | Ty::Untyped)
++                    && matches!(recv_ty.as_ref(), Some(Ty::Class { id, .. }) if id.0.as_str() == "ActiveModel::Errors")
++                    && block.is_none()
++                    && crate::lower::errors_index::of_kind_grounds(args)
++                {
++                    return Ty::Bool;
++                }
+                 if method.as_str() == "full_message"
+                     && matches!(dispatched, Ty::Var { .. } | Ty::Untyped)
+                     && matches!(recv_ty.as_ref(), Some(Ty::Class { id, .. }) if id.0.as_str() == "ActiveModel::Errors")
+diff --git a/src/analyze/registry/activemodel.rs b/src/analyze/registry/activemodel.rs
+index 815d40336..0651d0bb1 100644
+--- a/src/analyze/registry/activemodel.rs
++++ b/src/analyze/registry/activemodel.rs
+@@ -99,12 +99,13 @@ pub(in crate::analyze) fn register(classes: &mut HashMap<ClassId, ClassInfo>) {
+         errors_cls,
+     );
+ 
+-    // Individual Error with its Rails API. Not `type`: `ErrorDetail#kind` is a String, where Rails answers a Symbol unless `errors.add` was given a String.
++    // Individual Error with its Rails API.
+     let mut error_cls = ClassInfo::default();
+     for (m, ty) in [
+         ("full_message", Ty::Str),
+         ("message", Ty::Str),
+         ("attribute", Ty::Sym),
++        ("type", Ty::Union { variants: vec![Ty::Sym, Ty::Str].into() }),
+     ] {
+         error_cls.instance_methods.insert(Symbol::from(m), ty);
+     }
+diff --git a/src/emit/elixir.rs b/src/emit/elixir.rs
+index 29b841df1..b3a6767b7 100644
+--- a/src/emit/elixir.rs
++++ b/src/emit/elixir.rs
+@@ -138,8 +138,9 @@ pub fn emit_overlay_files(app: &App) -> Vec<EmittedFile> {
+     // dispatches through `__struct__`.
+     expr::register_field_names("ActiveRecord::Base", &["id".to_string()]);
+     // `ActiveRecord::ErrorDetail` is a map here, so what an `errors` iteration yields reads its keys.
+-    let detail_fields: Vec<(String, crate::ty::Ty)> =
++    let mut detail_fields: Vec<(String, crate::ty::Ty)> =
+         ["attribute", "kind", "message", "full_message"].iter().map(|f| (f.to_string(), crate::ty::Ty::Str)).collect();
++    detail_fields.push(("symbolic".to_string(), crate::ty::Ty::Bool));
+     expr::register_field_types("ActiveRecord::ErrorDetail", &detail_fields);
+ 
+     // Functional-target lowerings (issue #29): rewrite imperative
+diff --git a/src/emit/elixir/expr.rs b/src/emit/elixir/expr.rs
+index bb701756d..ab90c06b4 100644
+--- a/src/emit/elixir/expr.rs
++++ b/src/emit/elixir/expr.rs
+@@ -1234,15 +1234,16 @@ fn emit_send(recv: Option<&Expr>, method: &str, args: &[Expr]) -> String {
+     // hand-written `RhDateTime.parse` (runtime/elixir/v2/rh_datetime.ex),
+     // not a transpiled `ActiveSupport` module (no such unit exists).
+     // `ActiveRecord::ErrorDetail` (runtime/ruby/active_record/base.rb) is a map here: the Elixir model keeps no transpiled Base.
+-    if method == "new" && args.len() == 4 {
++    if method == "new" && args.len() == 5 {
+         if let Some(ExprNode::Const { path }) = recv.map(|r| &*r.node) {
+             if path.iter().map(|s| s.as_str()).eq(["ActiveRecord", "ErrorDetail"]) {
+                 return format!(
+-                    "%{{attribute: {}, kind: {}, message: {}, full_message: {}}}",
++                    "%{{attribute: {}, kind: {}, message: {}, full_message: {}, symbolic: {}}}",
+                     emit_expr(&args[0]),
+                     emit_expr(&args[1]),
+                     emit_expr(&args[2]),
+                     emit_expr(&args[3]),
++                    emit_expr(&args[4]),
+                 );
+             }
+         }
+diff --git a/src/emit/rust.rs b/src/emit/rust.rs
+index b48692ae7..991cb69c8 100644
+--- a/src/emit/rust.rs
++++ b/src/emit/rust.rs
+@@ -871,9 +871,9 @@ pub fn emit(app: &App) -> Vec<EmittedFile> {
+                     "\nimpl {name} {{\n\
+                         pub fn mark_persisted_bang(&mut self) {{ }}\n\
+                         pub fn errors(&self) -> Vec<String> {{ crate::errors_ext::validation_errors_snapshot() }}\n\
+-                        pub fn error_details(&self) -> Vec<crate::active_record_base::ErrorDetail> {{ crate::errors_ext::validation_error_details_snapshot().iter().map(|(a, k, m, f)| crate::active_record_base::ErrorDetail::new(a, k, m, f)).collect() }}\n\
+-                        pub fn push_error_detail(error: crate::active_record_base::ErrorDetail) {{ crate::errors_ext::validation_error_details_push(error.attribute(), error.kind(), error.message(), error.full_message()) }}\n\
+-                        pub fn error_messages_for(&self, attribute: &str) -> Vec<String> {{ crate::errors_ext::validation_error_details_snapshot().into_iter().filter(|(a, _, _, _)| a == attribute).map(|(_, _, m, _)| m).collect() }}\n\
++                        pub fn error_details(&self) -> Vec<crate::active_record_base::ErrorDetail> {{ crate::errors_ext::validation_error_details_snapshot().iter().map(|(a, k, m, f, s)| crate::active_record_base::ErrorDetail::new(a, k, m, f, *s)).collect() }}\n\
++                        pub fn push_error_detail(error: crate::active_record_base::ErrorDetail) {{ crate::errors_ext::validation_error_details_push(error.attribute(), error.kind(), error.message(), error.full_message(), error.symbolic()) }}\n\
++                        pub fn error_messages_for(&self, attribute: &str) -> Vec<String> {{ crate::errors_ext::validation_error_details_snapshot().into_iter().filter(|(a, _, _, _, _)| a == attribute).map(|(_, _, m, _, _)| m).collect() }}\n\
+                         pub fn save(&mut self) -> bool {{\n\
+                             crate::errors_ext::validation_errors_clear();\n\
+                             self.validate();\n\
+diff --git a/src/lower/errors_add.rs b/src/lower/errors_add.rs
+index 3fa9f6700..1327a86bf 100644
+--- a/src/lower/errors_add.rs
++++ b/src/lower/errors_add.rs
+@@ -1,5 +1,5 @@
+ //! `errors.add` grounding: `errors.add(:field, "msg")` →
+-//! `errors << "Field msg"` and `error_details << ActiveRecord::ErrorDetail.new("field", "msg", "msg", "Field msg")`,
++//! `errors << "Field msg"` and `error_details << ActiveRecord::ErrorDetail.new("field", "msg", "msg", "Field msg", false)`,
+ //! so the accumulator keeps what Rails keeps for each message; `errors.clear`
+ //! empties both.
+ //!
+@@ -274,6 +274,7 @@ fn rewrite_errors_add(expr: &mut Expr, labels: &Labels, diags: &mut Vec<Diagnost
+         _ => None,
+     };
+     let ExprNode::Send { recv: reader_owner, .. } = &*reader.node else { unreachable!() };
++    let symbolic = kind.is_some();
+     let (message, kind, bare) = match kind {
+         Some(kind) => (
+             parts_expr(span, i18n.full_error(field.as_str(), &kind, &Default::default()), reader_owner.as_ref(), field.as_str()),
+@@ -313,16 +314,17 @@ fn rewrite_errors_add(expr: &mut Expr, labels: &Labels, diags: &mut Vec<Diagnost
+         ExprNode::Send { recv, method: Symbol::from("<<"), args: vec![message], block: None, parenthesized: false },
+     );
+     push_message.ty = recv_ty.clone();
+-    *expr = attributed_push(push_message, owner, field.as_str(), kind, bare, span);
++    *expr = attributed_push(push_message, owner, field.as_str(), kind, symbolic, bare, span);
+ }
+ 
+-/// `<errors> << msg` followed by `<owner>.error_details << ActiveRecord::ErrorDetail.new("field", type, message, msg)`,
++/// `<errors> << msg` followed by `<owner>.error_details << ActiveRecord::ErrorDetail.new("field", type, message, msg, symbolic)`,
+ /// so the accumulator keeps what Rails keeps for each message.
+ pub(crate) fn attributed_push(
+     push_message: Expr,
+     owner: Option<Expr>,
+     field: &str,
+     kind: Expr,
++    symbolic: bool,
+     message: Expr,
+     span: crate::span::Span,
+ ) -> Expr {
+@@ -336,7 +338,7 @@ pub(crate) fn attributed_push(
+         ExprNode::Send {
+             recv: Some(class),
+             method: Symbol::from("new"),
+-            args: vec![str_lit(span, field), typed_str(kind), typed_str(message), full_message],
++            args: vec![str_lit(span, field), typed_str(kind), typed_str(message), full_message, bool_lit(span, symbolic)],
+             block: None,
+             parenthesized: true,
+         },
+@@ -375,6 +377,12 @@ pub(crate) fn error_details(owner: Option<Expr>, span: crate::span::Span) -> Exp
+     e
+ }
+ 
++fn bool_lit(span: crate::span::Span, value: bool) -> Expr {
++    let mut e = Expr::new(span, ExprNode::Lit { value: Literal::Bool { value } });
++    e.ty = Some(crate::ty::Ty::Bool);
++    e
++}
++
+ fn str_lit(span: crate::span::Span, value: &str) -> Expr {
+     typed_str(Expr::new(span, ExprNode::Lit { value: Literal::Str { value: value.to_string() } }))
+ }
+diff --git a/src/lower/errors_index.rs b/src/lower/errors_index.rs
+index 86f7a282c..12f6acd18 100644
+--- a/src/lower/errors_index.rs
++++ b/src/lower/errors_index.rs
+@@ -56,7 +56,7 @@ pub fn apply_errors_index_lowering(app: &mut App) -> Vec<Diagnostic> {
+ fn rewrite_body(body: &mut Expr, diags: &mut Vec<Diagnostic>) {
+     rewrite(body, diags);
+     rewrite_whole_messages(body);
+-    symbolize_error_attributes(body);
++    read_errors(body, diags);
+     iterate_details(body);
+ }
+ 
+@@ -68,16 +68,58 @@ fn is_error(e: &Expr) -> bool {
+     matches!(e.ty.as_ref().map(Ty::peel_nilable), Some(Ty::Class { id, .. }) if id.0.as_str() == "ActiveModel::Error")
+ }
+ 
+-// Not `ErrorDetail#attribute` as it is: it is the attribute's String, where Rails' `Error#attribute` is a Symbol.
+-fn symbolize_error_attributes(expr: &mut Expr) {
+-    expr.node.for_each_child_mut(&mut |c| symbolize_error_attributes(c));
++/// `ActiveModel::Error#attribute` and `#type` over the `ErrorDetail` an iteration yields.
++fn read_errors(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
++    expr.node.for_each_child_mut(&mut |c| read_errors(c, diags));
+     let ExprNode::Send { recv: Some(r), method, args, block: None, .. } = &mut *expr.node else { return };
+-    if method.as_str() != "attribute" || !args.is_empty() || !is_error(r) {
++    if !args.is_empty() || !is_error(r) {
+         return;
+     }
+-    expr.ty = Some(Ty::Str);
+-    let read = std::mem::replace(expr, Expr::new(expr.span, ExprNode::Seq { exprs: vec![] }));
+-    *expr = send(read.span, read, "to_sym", vec![], Ty::Sym);
++    let span = expr.span;
++    match method.as_str() {
++        // Not `ErrorDetail#attribute` as it is: it is the attribute's String, where Rails' `Error#attribute` is a Symbol.
++        "attribute" => {
++            expr.ty = Some(Ty::Str);
++            let read = std::mem::replace(expr, Expr::new(span, ExprNode::Seq { exprs: vec![] }));
++            *expr = send(span, read, "to_sym", vec![], Ty::Sym);
++        }
++        // Rails' type is a Symbol, or the message when `errors.add` was given a String.
++        "type" => {
++            if !reads_again(r) {
++                let mut d = crate::lower::residue_diagnostic(
++                    "errors_index",
++                    "error.type",
++                    span,
++                    "the error is not a plain read",
++                    "`error.type` reads the error three times, so only on a block parameter, a local or `errors.first`".to_string(),
++                );
++                d.severity = crate::diagnostic::Severity::Error;
++                diags.push(d);
++                return;
++            }
++            let error = r.clone();
++            let kind = || send(span, error.clone(), "kind", vec![], Ty::Str);
++            let mut read = Expr::new(
++                span,
++                ExprNode::If {
++                    cond: send(span, error.clone(), "symbolic", vec![], Ty::Bool),
++                    then_branch: send(span, kind(), "to_sym", vec![], Ty::Sym),
++                    else_branch: kind(),
++                },
++            );
++            read.ty = Some(Ty::Union { variants: vec![Ty::Sym, Ty::Str].into() });
++            *expr = read;
++        }
++        _ => {}
++    }
++}
++
++fn reads_again(e: &Expr) -> bool {
++    match &*e.node {
++        ExprNode::Var { .. } | ExprNode::Ivar { .. } => true,
++        ExprNode::Send { recv: Some(r), method, args, block: None, .. } => method.as_str() == "first" && args.is_empty() && is_errors_read(r),
++        _ => false,
++    }
+ }
+ 
+ /// `<owner>.errors.<iterator>` → `<owner>.error_details.<iterator>`, and
+@@ -189,6 +231,7 @@ fn rewrite(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
+     rewrite_messages(expr, diags);
+     rewrite_index(expr, diags);
+     rewrite_include(expr, diags);
++    rewrite_of_kind(expr, diags);
+     rewrite_to_hash(expr);
+     rewrite_render_json(expr);
+ }
+@@ -223,6 +266,100 @@ fn rewrite_include(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
+     *expr = has_errors_on(owner.clone(), &field, expr.span);
+ }
+ 
++/// The field, whether the type is a Symbol, and the type, when each is a literal.
++fn of_kind_args(args: &[Expr]) -> Option<(String, bool, String)> {
++    let field = match args.first().map(|a| &*a.node) {
++        Some(ExprNode::Lit { value: Literal::Sym { value } }) => value.as_str().to_string(),
++        Some(ExprNode::Lit { value: Literal::Str { value } }) => value.clone(),
++        _ => return None,
++    };
++    let (symbolic, kind) = match args.get(1).map(|a| &*a.node) {
++        None => (true, "invalid".to_string()),
++        Some(ExprNode::Lit { value: Literal::Sym { value } }) => (true, value.as_str().to_string()),
++        Some(ExprNode::Lit { value: Literal::Str { value } }) => (false, value.clone()),
++        _ => return None,
++    };
++    (args.len() <= 2).then_some((field, symbolic, kind))
++}
++
++/// Shared with analyze, which types `of_kind?` only when this holds.
++pub(crate) fn of_kind_grounds(args: &[Expr]) -> bool {
++    of_kind_args(args).is_some()
++}
++
++/// `errors.of_kind?(:field, :type)`: an error on the field with that Symbol type; a String type is one of the field's messages, as Rails asks it.
++fn rewrite_of_kind(expr: &mut Expr, diags: &mut Vec<Diagnostic>) {
++    let ExprNode::Send { recv: Some(reader), method, args, block: None, .. } = &*expr.node else { return };
++    if method.as_str() != "of_kind?" || !is_model_errors_read(reader) {
++        return;
++    }
++    let Some((field, symbolic, kind)) = of_kind_args(args) else {
++        let mut d = crate::lower::residue_diagnostic(
++            "errors_index",
++            "errors.of_kind?",
++            expr.span,
++            "not literal",
++            "`errors.of_kind?` with a field or type that is not a literal is not grounded".to_string(),
++        );
++        d.severity = crate::diagnostic::Severity::Error;
++        diags.push(d);
++        return;
++    };
++    let span = expr.span;
++    let ExprNode::Send { recv: owner, .. } = &*reader.node else { unreachable!("an errors reader") };
++    if !symbolic {
++        let messages = messages_on(owner.clone(), &field, span);
++        *expr = send(span, messages, "include?", vec![str_expr(span, &kind)], Ty::Bool);
++        let ExprNode::Send { parenthesized, .. } = &mut *expr.node else { unreachable!() };
++        *parenthesized = true;
++        return;
++    }
++    let detail_ty = Ty::Class { id: crate::ident::ClassId(Symbol::from("ActiveRecord::ErrorDetail")), args: vec![].into() };
++    let error = || {
++        let mut e = Expr::new(span, ExprNode::Var { id: crate::ident::VarId(0), name: Symbol::from("error") });
++        e.ty = Some(detail_ty.clone());
++        e
++    };
++    let and = |left: Expr, right: Expr| {
++        let mut e = Expr::new(span, ExprNode::BoolOp { op: crate::expr::BoolOpKind::And, surface: crate::expr::BoolOpSurface::Symbol, left, right });
++        e.ty = Some(Ty::Bool);
++        e
++    };
++    let equals = |reader: &str, value: &str| {
++        send(span, send(span, error(), reader, vec![], Ty::Str), "==", vec![str_expr(span, value)], Ty::Bool)
++    };
++    let body = and(and(equals("attribute", &field), send(span, error(), "symbolic", vec![], Ty::Bool)), equals("kind", &kind));
++    let block = Expr::new(
++        span,
++        ExprNode::Lambda {
++            extra_params: Vec::new(),
++            rest_param: None,
++            params: vec![Symbol::from("error")],
++            block_param: None,
++            body,
++            block_style: crate::expr::BlockStyle::Brace,
++        },
++    );
++    let mut any = Expr::new(
++        span,
++        ExprNode::Send {
++            recv: Some(super::errors_add::error_details(owner.clone(), span)),
++            method: Symbol::from("any?"),
++            args: vec![],
++            block: Some(block),
++            parenthesized: false,
++        },
++    );
++    any.ty = Some(Ty::Bool);
++    *expr = any;
++}
++
++fn str_expr(span: crate::span::Span, value: &str) -> Expr {
++    let mut e = Expr::new(span, ExprNode::Lit { value: Literal::Str { value: value.to_string() } });
++    e.ty = Some(Ty::Str);
++    e
++}
++
+ /// What the per-field rewrites leave of `errors.messages` is the Hash itself.
+ fn rewrite_whole_messages(expr: &mut Expr) {
+     expr.node.for_each_child_mut(&mut |c| rewrite_whole_messages(c));
+diff --git a/src/lower/model_to_library/validations.rs b/src/lower/model_to_library/validations.rs
+index 3b4520d4b..c76728692 100644
+--- a/src/lower/model_to_library/validations.rs
++++ b/src/lower/model_to_library/validations.rs
+@@ -1231,7 +1231,7 @@ fn errors_push(attribute: &str, msg: Message) -> Expr {
+         },
+     );
+     let kind = Expr::new(Span::synthetic(), ExprNode::Lit { value: Literal::Str { value: msg.kind } });
+-    crate::lower::errors_add::attributed_push(send(errors_call, "<<", vec![msg.full]), None, attribute, kind, msg.bare, Span::synthetic())
++    crate::lower::errors_add::attributed_push(send(errors_call, "<<", vec![msg.full]), None, attribute, kind, true, msg.bare, Span::synthetic())
+ }
+ 
+ fn if_with_nil_else(cond: Expr, then_branch: Expr) -> Expr {
+diff --git a/tests/critic_admission.rs b/tests/critic_admission.rs
+index 50debf061..698fa9e44 100644
+--- a/tests/critic_admission.rs
++++ b/tests/critic_admission.rs
+@@ -70,7 +70,7 @@ fn new_errors_api_requires_runtime_support() {
+     }
+     // Not `ActiveModel::Error`: on emit, what an iteration yields is already the `ErrorDetail` the lowering iterates.
+     refuses("errors.first.options", "no known method `options`");
+-    refuses("errors.each { |error| error.type }", "no known method `type`");
++    refuses("errors.of_kind?(title.to_sym, :blank)", "of_kind?");
+ }
+ 
+ #[test]
+diff --git a/tests/emit_and_run.rs b/tests/emit_and_run.rs
+index 9c69e92df..4b82db505 100644
+--- a/tests/emit_and_run.rs
++++ b/tests/emit_and_run.rs
+@@ -1548,21 +1548,66 @@ fn each_link_of_a_safe_navigation_chain_reads_its_own_receiver_on_spinel() {
+     safe_navigation_chain_app().run_spinel(SAFE_NAVIGATION_CHAIN).assert_passes();
+ }
+ 
+-/// `ErrorDetail#kind` is a String, so it cannot answer Rails' Symbol `type`.
++/// `error.type` is a Symbol, or the message when `errors.add` was given a
++/// String, and `of_kind?` asks it, as Rails 8.1 does.
++fn error_types_app() -> emit_and_run::Overlay {
++    errors_each_app().edit(
++        "app/models/article.rb",
++        "  def error_rows\n",
++        "  def error_types
++    errors.map { |error| error.type }
++  end
++
++  def first_type
++    errors.first ? errors.first.type : :none
++  end
++
++  def kinds
++    [errors.of_kind?(:title, :blank), errors.of_kind?(:body, :blank), errors.of_kind?(\"body\", :too_short),
++     errors.of_kind?(:base, \"is odd\"), errors.of_kind?(:base, :invalid), errors.of_kind?(:title)]
++  end
++
++  def error_rows\n",
++    )
++}
++
++const ERROR_TYPES: &str = r#"a = Article.new(title: "", body: "odd")
++a.valid?
++raise a.error_types.inspect unless a.error_types == [:blank, :too_short, "is odd"]
++raise a.first_type.inspect unless a.first_type == :blank
++raise a.kinds.inspect unless a.kinds == [true, false, true, true, false, false]
++b = Article.new(title: "A title", body: "A long enough body")
++b.valid?
++raise b.kinds.inspect unless b.kinds == [false, false, false, false, false, false] && b.first_type == :none
++puts "error types passed"
++"#;
++
++#[test]
++fn an_error_s_type_is_rails_type() {
++    error_types_app().run_ruby(ERROR_TYPES).assert_passes();
++}
++
++#[test]
++#[ignore = "requires the Spinel toolchain"]
++fn an_error_s_type_is_rails_type_on_spinel() {
++    error_types_app().run_spinel(ERROR_TYPES).assert_passes();
++}
++
++/// `type` reads the error more than once, so a found error is an error.
+ #[test]
+-fn an_error_s_type_stays_an_error() {
++fn the_type_of_an_error_that_is_not_a_plain_read_is_an_error() {
+     let (_emitted, errors) = errors_each_app()
+         .edit(
+             "app/models/article.rb",
+             "  def error_rows\n",
+-            "  def error_types
+-    errors.map { |error| error.type }
++            "  def base_type
++    errors.find { |error| error.attribute == :base }.type
+   end
+ 
+   def error_rows\n",
+         )
+         .emit(roundhouse::project::BuildTarget::Ruby);
+-    assert!(errors.iter().any(|e| e.contains("ActiveModel::Error not supported (all targets): type lacks")), "{errors:#?}");
++    assert!(errors.iter().any(|e| e.contains("`error.type` reads the error three times")), "{errors:#?}");
+ }
+ 
+ /// The helper is the shared Ruby runtime's, which no strict target loads.
+diff --git a/tests/errors_add_lowering.rs b/tests/errors_add_lowering.rs
+index ef40ae674..b2b352c95 100644
+--- a/tests/errors_add_lowering.rs
++++ b/tests/errors_add_lowering.rs
+@@ -213,11 +213,11 @@ end
+ "#,
+     );
+     assert!(
+-        out.contains(r#"error_details << ActiveRecord::ErrorDetail.new("title", "taken", "has already been taken", "Title has already been taken")"#),
++        out.contains(r#"error_details << ActiveRecord::ErrorDetail.new("title", "taken", "has already been taken", "Title has already been taken", true)"#),
+         "a Symbol message is the error type:\n{out}"
+     );
+     assert!(
+-        out.contains(r#"error_details << ActiveRecord::ErrorDetail.new("title", why, why, "Title #{why}")"#),
++        out.contains(r#"error_details << ActiveRecord::ErrorDetail.new("title", why, why, "Title #{why}", false)"#),
+         "a String message is its own type:\n{out}"
+     );
+     assert!(diags.is_empty(), "{diags:?}");
+diff --git a/tests/inference_on_spinel_blog_runtime.rs b/tests/inference_on_spinel_blog_runtime.rs
+index 257b898ea..fbb05ea52 100644
+--- a/tests/inference_on_spinel_blog_runtime.rs
++++ b/tests/inference_on_spinel_blog_runtime.rs
+@@ -371,13 +371,14 @@ fn untyped_subexpressions_baseline() {
+     // Remount remeasure after #818 merge: 603 -> 608.
+     // `ErrorDetail`'s full message: 608 -> 610, MEASURED — its
+     // initialize ivar write, untyped here like the other three fields'.
++    // `ErrorDetail#symbolic`: 610 -> 612, MEASURED — the same write.
+ 
+     // This uncalled API adds 27 nodes without its String parameter RBS.
+     // Keep the existing-method ceiling and RBS-aware typing gates intact.
+     const LIKE_CEILING: usize = 27;
+     let existing_untyped = all_untyped.len() - like_untyped;
+     eprintln!("inference-only ledger: existing={existing_untyped}, sanitize_sql_like={like_untyped}");
+-    const CEILING: usize = 610;
++    const CEILING: usize = 612;
+     assert!(
+         existing_untyped <= CEILING && like_untyped <= LIKE_CEILING,
+         "{} untyped sub-expressions on spinel-blog runtime — exceeds ledger: \
+diff --git a/tests/lowered_ruby_emit.rs b/tests/lowered_ruby_emit.rs
+index 2991c6a19..bda465d6e 100644
+--- a/tests/lowered_ruby_emit.rs
++++ b/tests/lowered_ruby_emit.rs
+@@ -147,11 +147,11 @@ fn article_renders_validate_with_inline_checks() {
+     // constants; the type-erased `value: untyped` channel is gone.
+     // Each message is pushed with the error Rails records for it.
+     assert!(
+-        src.contains("self.errors << \"Title can't be blank\"\n      self.error_details << ActiveRecord::ErrorDetail.new(\"title\", \"blank\", \"can't be blank\", \"Title can't be blank\")"),
++        src.contains("self.errors << \"Title can't be blank\"\n      self.error_details << ActiveRecord::ErrorDetail.new(\"title\", \"blank\", \"can't be blank\", \"Title can't be blank\", true)"),
+         "{src}",
+     );
+     assert!(
+-        src.contains("self.errors << \"Body can't be blank\"\n      self.error_details << ActiveRecord::ErrorDetail.new(\"body\", \"blank\", \"can't be blank\", \"Body can't be blank\")"),
++        src.contains("self.errors << \"Body can't be blank\"\n      self.error_details << ActiveRecord::ErrorDetail.new(\"body\", \"blank\", \"can't be blank\", \"Body can't be blank\", true)"),
+         "{src}",
+     );
+     // Length is inline. A nil body fails the minimum (Rails does not

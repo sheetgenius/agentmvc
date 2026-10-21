@@ -1,0 +1,8 @@
+{
+  "classification": "local build-context assembly error; not a toolchain regression",
+  "bad_tree_sha256": "b0bdd9a75c49100b30cd81e5babb6df6023651155c7c272998d7cdaa3ea6b6e9",
+  "correct_tree_sha256": "6aed8012ea7045f0b98e5f8d1a98d12d1b7a17b3ebb7f70ed4f3cbe7f4afc5d8",
+  "file": "runtime/ruby/active_record/relation.rb",
+  "cause": "SQL candidate was based on pristine upstream text, accidentally replacing retained local relation helpers in the manual context. The patch itself retained those helpers.",
+  "repair": "Use the fresh replayed series as source; only one file differed. No result from the mismatched context is accepted."
+}

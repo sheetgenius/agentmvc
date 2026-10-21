@@ -1,0 +1,13 @@
+{
+  "condition": "isolated-emitted-temporal-initialization-v9",
+  "only_source_differences": [
+    "app/models/article.rb",
+    "app/models/article_export.rb",
+    "app/models/article_share.rb",
+    "app/models/comment.rb",
+    "app/models/user.rb"
+  ],
+  "shared_changes": "SQL patch 82 applied in both; all other emitted files identical",
+  "before": "upstream temporal storage initializer",
+  "after": "patch83 seeds raw storage with typed default before normalization"
+}

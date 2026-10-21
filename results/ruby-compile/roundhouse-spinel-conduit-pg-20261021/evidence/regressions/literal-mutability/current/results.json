@@ -1,0 +1,52 @@
+[
+  {
+    "source": "literal.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "literal.rb:1: warning: `value` only ever holds frozen string literals, so this `<<` raises FrozenError at run time (string literals are frozen in spinel; build a mutable string with +\"...\", String.new, or interpolation -- see docs/limitations.md)\nWrote /tmp/types.rbs\n"
+    },
+    "inferred": "",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "literal.rb:1: warning: `value` only ever holds frozen string literals, so this `<<` raises FrozenError at run time (string literals are frozen in spinel; build a mutable string with +\"...\", String.new, or interpolation -- see docs/limitations.md)\nliteral.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 1,
+      "stdout": "",
+      "stderr": "can't modify frozen String: \"a\" (FrozenError)\n"
+    },
+    "matches_cruby": false
+  },
+  {
+    "source": "mutable.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "mutable.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  }
+]

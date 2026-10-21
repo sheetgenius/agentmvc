@@ -1,0 +1,35 @@
+== patches: assemble the flat set and verify SHA256SUMS
+00-interval.patch: OK
+10-api-mode-json.patch: OK
+20-raw-websocket.patch: OK
+30-jobs-boot.patch: OK
+50-postgresql-lane.patch: OK
+60-rails-surface.patch: OK
+74-integer-query-range.patch: OK
+80-gradual-return-stabilization.patch: OK
+82-upstream-regression-quoted-bulk-update.patch: OK
+83-upstream-regression-temporal-initialize.patch: OK
+84-upstream-regression-mixed-parameter-arm.patch: OK
+series: OK
+manifest sha256 62835d93aa0afc79a290827ddd61912fa399580d7328cb8caf7d1e5b0968c301 OK
+== roundhouse 1c84d346361237ef9a99b6c01cead7c340532330 + series
+applying 00-interval.patch
+applying 10-api-mode-json.patch
+applying 20-raw-websocket.patch
+applying 30-jobs-boot.patch
+applying 50-postgresql-lane.patch
+applying 60-rails-surface.patch
+applying 74-integer-query-range.patch
+applying 80-gradual-return-stabilization.patch
+applying 82-upstream-regression-quoted-bulk-update.patch
+applying 83-upstream-regression-temporal-initialize.patch
+applying 84-upstream-regression-mixed-parameter-arm.patch
+ 66 files changed, 2481 insertions(+), 221 deletions(-)
+== spinel 6ca6d451b97452d8a8b9dd8f6af51a391f060570 + regression repair
+== Spinel regression repair
+91-upstream-regression-late-hash-return.patch: OK
+series: OK
+== export vendor trees (without .git)
+vendor/roundhouse tree sha256 a0db08ed8bc5db3d568d88fda50267c07abbd85861afaf0434df7a90ab4203d5 OK
+vendor/spinel tree sha256 35680c8e6258aa53351b3ce401eb45c6b237a783a9c16f9e31e480dffa9a71d5 OK
+context: .work/upstream/frontier/agents/sol-conduit-v9c/final-replay5/toolchain-context

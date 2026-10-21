@@ -1,0 +1,9 @@
+class Object
+  def put: (Box, String) -> String
+end
+
+class Box
+  @data: Hash[String, String]
+  def initialize: () -> Hash[String, String]
+end
+

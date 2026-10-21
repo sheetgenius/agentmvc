@@ -1,0 +1,5 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+Traceback (most recent call last):
+  File "results/ruby-compile/roundhouse-spinel-conduit-pg-20261009/reproduce/with-docker-lock.py", line 23, in <module>
+    fcntl.flock(stream, fcntl.LOCK_EX)
+KeyboardInterrupt

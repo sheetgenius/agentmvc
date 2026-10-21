@@ -1,0 +1,23 @@
+{
+  "condition": "minimal Rails API malformed-JSON rescue",
+  "input": {
+    "method": "POST",
+    "path": "/probe",
+    "content_type": "application/json",
+    "body": "{"
+  },
+  "image": "conduit-v9-malformed:current",
+  "image_id": "sha256:4a203aee17926ae0117f5fb59005ba10fa695ed0dccdf14c293f364a6d98523c",
+  "cruby": "[400, \"{\\\"error\\\":\\\"parse\\\"}\"]",
+  "native": {
+    "status": 400,
+    "body": "<h1>400 Bad Request</h1>",
+    "content_type": "text/html; charset=utf-8"
+  },
+  "log": "app (spinel) listening on http://0.0.0.0:8080, pid 1\n  one green thread per connection; OS workers: 4 (SPINEL_WORKERS); processes: 1\n",
+  "classification": "new v9 edge payload regression; frozen gate passes",
+  "introducing_source_change": "9f376e22e1b59991525a0e49e1636d546ed69ce5",
+  "repaired": false,
+  "explanation": "Main returns the generic 400 when parsed body params are nil, before the generated controller can run its ParseError rescue.",
+  "smallest_input": "One-byte malformed JSON body: {"
+}

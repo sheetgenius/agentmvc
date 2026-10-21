@@ -1,0 +1,27 @@
+{
+  "classification": "upstream temporal storage contract defect, exposed in production emission",
+  "introducing_source_change": "0b20a0f96a61d4fdcdc126180635c24bde1db7bc",
+  "native_trigger_bisected": false,
+  "before": {
+    "record": "time-release.json",
+    "image_id": "sha256:7f424dfcda1401a4f3e07e045c94537ae8f3acfa1419be1192aebccc75108e5c",
+    "roundhouse_patches": 8,
+    "spinel_patches": 1,
+    "article_status": 500,
+    "rows": ""
+  },
+  "after": {
+    "record": "time-repaired.json",
+    "image_id": "sha256:4f7e09cacd339b15fd501ab2ae092444fded32cfa6c08a50234715647408391c",
+    "roundhouse_patches": 10,
+    "spinel_patches": 1,
+    "article_status": 201,
+    "rows": "1|2026-10-21 07:39:45.468114|2026-10-21 07:39:45.467834\n"
+  },
+  "types": {
+    "raw_writer_contract": "String?",
+    "supplied_value": "Time",
+    "final_cruby_value": "String after formatting"
+  },
+  "limitation": "Small standalone copies do not reproduce the context-dependent failure. The two-request public-app case verifies failure before and success after adding patches 82 and 83. Source 83 restores the pre-0b20 constructor order; no isolated 83 ablation or first-bad Spinel revision is claimed."
+}

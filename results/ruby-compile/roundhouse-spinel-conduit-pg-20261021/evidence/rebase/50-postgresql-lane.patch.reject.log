@@ -1,0 +1,228 @@
+Checking patch docs/guide/spinel.md...
+Checking patch runtime/ruby/active_record/base.rb...
+Hunk #1 succeeded at 911 (offset 7 lines).
+Hunk #2 succeeded at 1247 (offset 7 lines).
+Hunk #3 succeeded at 1269 (offset 7 lines).
+Checking patch runtime/ruby/active_record/base.rbs...
+Hunk #1 succeeded at 266 (offset 10 lines).
+Checking patch runtime/ruby/active_record/connection.rb...
+error: while searching for:
+    # (no Relation class in their tables); this file is walked only
+    # into the ruby-family trees. Lowered call-sites don't land here —
+    # they drive a Relation or `_adapter_*` directly.
+    def self.where(conditions)
+      ActiveRecord::Relation.new(self).where(conditions.to_h)
+    end
+
+    # Model Hash finders use the relation's NULL / IN predicates too.
+
+error: patch failed: runtime/ruby/active_record/connection.rb:905
+Hunk #2 succeeded at 1022 (offset 57 lines).
+Checking patch runtime/ruby/active_record/connection.rbs...
+error: while searching for:
+    def self.exists?: (*(Integer | Float | String | nil) ids) -> bool
+    def self._exists_primary_key_input: (Integer | Float | String | nil id) -> bool
+    # Ruby-family overrides of base.rb's Array / COUNT fallbacks.
+    def self.where: (Hash[Symbol, untyped] conditions) -> Relation
+    def self.find_by: (Hash[String | Symbol, untyped] conditions) -> Base?
+    def self.find_sole_by: (Hash[String | Symbol, untyped] conditions) -> Base
+    def self.find_or_initialize_by: (Hash[Symbol, untyped] conditions) -> Base
+
+error: patch failed: runtime/ruby/active_record/connection.rbs:97
+Checking patch runtime/spinel/db_libpq.rb...
+Checking patch src/emit/roda.rs...
+error: while searching for:
+        // No 1:1 Sequel generic type; store as text and note the source type.
+        ColumnType::Json => ("String", ", text: true # was json"),
+        ColumnType::Jsonb => ("String", ", text: true # was jsonb"),
+        ColumnType::Uuid => ("String", ", fixed: true, size: 36 # was uuid"),
+        ColumnType::Reference { .. } => ("Integer", " # was t.references"),
+    }
+
+error: patch failed: src/emit/roda.rs:234
+Checking patch src/emit/ruby.rs...
+Hunk #1 succeeded at 1262 (offset 160 lines).
+Checking patch src/emit/ruby/library.rs...
+Hunk #1 succeeded at 1785 (offset 185 lines).
+Checking patch src/emit/shared/schema_sql.rs...
+error: while searching for:
+        ColumnType::Binary => "bytea".into(),
+        ColumnType::Json => "json".into(),
+        ColumnType::Jsonb => "jsonb".into(),
+        ColumnType::Uuid => "uuid".into(),
+    }
+}
+
+error: patch failed: src/emit/shared/schema_sql.rs:514
+Checking patch src/ingest/model.rs...
+error: while searching for:
+        // type. A `has_json` declaration adds its stronger per-key schema
+        // separately in `lower::has_json`.
+        ColumnType::Json | ColumnType::Jsonb => Ty::Untyped,
+        ColumnType::Uuid => Ty::Str,
+        ColumnType::Reference { .. } => Ty::Int,
+    }
+
+error: patch failed: src/ingest/model.rs:3306
+Checking patch src/ingest/schema.rs...
+Hunk #2 succeeded at 1700 (offset 3 lines).
+Checking patch src/ingest/structure_sql.rs...
+Hunk #1 succeeded at 509 (offset 2 lines).
+Hunk #2 succeeded at 1566 (offset 3 lines).
+Checking patch src/lib.rs...
+Hunk #1 succeeded at 106 (offset 5 lines).
+Checking patch src/lower/arel/ir.rs...
+Checking patch src/lower/arel/ruby_values.rs...
+error: while searching for:
+        | ColumnType::Binary
+        | ColumnType::Json
+        | ColumnType::Jsonb
+        | ColumnType::Uuid => return expr.clone(),
+    };
+    crate::lower::typing::with_ty(converted, text_ty)
+
+error: patch failed: src/lower/arel/ruby_values.rs:97
+Checking patch src/lower/arel/visitor.rs...
+Hunk #1 succeeded at 126 (offset -27 lines).
+Hunk #2 succeeded at 672 (offset -26 lines).
+Hunk #3 succeeded at 767 (offset -26 lines).
+Hunk #4 succeeded at 894 (offset -26 lines).
+Hunk #5 succeeded at 986 (offset -26 lines).
+Hunk #6 succeeded at 1112 (offset -26 lines).
+Hunk #7 succeeded at 1145 (offset -26 lines).
+Hunk #8 succeeded at 1173 (offset -26 lines).
+Checking patch src/lower/group_count.rs...
+Checking patch src/lower/model_to_library/adapter_emit/mod.rs...
+error: while searching for:
+    methods.push(synth_adapter_exists_by_id(owner, table, schema));
+    methods.push(synth_adapter_truncate(owner, table, schema));
+    methods.push(synth_delete_all(owner, table));
+    methods.push(synth_adapter_reload(model, table));
+    methods.push(synth_columns_sql(owner, table));
+    methods.push(synth_hydrate_all(owner));
+}
+
+error: patch failed: src/lower/model_to_library/adapter_emit/mod.rs:71
+error: while searching for:
+            exprs.push(mint);
+        }
+        exprs.push(SqliteVisitor.visit(&op, schema, owner));
+        if let Some(k) = supplied_key {
+            exprs.push(ivar_ref(&k.name));
+        }
+
+error: patch failed: src/lower/model_to_library/adapter_emit/mod.rs:350
+error: while searching for:
+        name: Symbol::from("_adapter_truncate"),
+        receiver: MethodReceiver::Class,
+        params: vec![],
+        body: SqliteVisitor.visit(&op, schema, owner),
+        signature: Some(fn_sig(vec![], Ty::Nil)),
+        effects: EffectSet::default(),
+        enclosing_class: Some(owner.0.clone()),
+
+error: patch failed: src/lower/model_to_library/adapter_emit/mod.rs:844
+error: while searching for:
+/// reload needs to write into self. Generalizing the visitor with
+/// a "hydrate target = bare ivar / passed-in symbol" option is the
+/// right cleanup once a second use surfaces.
+fn synth_adapter_reload(model: &Model, table: &Table) -> MethodDef {
+    use crate::span::Span;
+
+    let owner = &model.name;
+
+error: patch failed: src/lower/model_to_library/adapter_emit/mod.rs:878
+Hunk #7 succeeded at 960 (offset -1 lines).
+Hunk #8 succeeded at 1023 (offset -1 lines).
+Hunk #9 succeeded at 1305 (offset -1 lines).
+Checking patch src/lower/model_to_library/mod.rs...
+error: while searching for:
+        // is modeled as typed per-key accessors over this text
+        // (`lower::has_json`), not as a Hash the whole column decodes to.
+        ColumnType::Json | ColumnType::Jsonb => Ty::Str,
+        ColumnType::Uuid => Ty::Str,
+        ColumnType::Reference { .. } => Ty::Int,
+    }
+
+error: patch failed: src/lower/model_to_library/mod.rs:2855
+Checking patch src/lower/model_to_library/schema.rs...
+Hunk #1 succeeded at 1973 (offset -79 lines).
+Checking patch src/naming.rs...
+Hunk #1 succeeded at 508 (offset 21 lines).
+Hunk #2 succeeded at 544 (offset 21 lines).
+Checking patch src/project.rs...
+error: while searching for:
+        BuildTarget::Futamura => futamura_files(fixture),
+        BuildTarget::Spinel => spinel_files_with_source_markers(app, fixture).and_then(|(mut files, _)| {
+            spinel_relation_model_handle(&mut files)?;
+            spin_shape(files)
+        }),
+        // The ruby family gets the bundled-library requires too: the
+        // table used to live inside `spin_shape` and so reached only
+
+error: patch failed: src/project.rs:2049
+error: while searching for:
+        let files = ensure_static_assets(files, target);
+        ensure_e2e(files, target)
+    };
+    Ok(ensure_readme(files, target))
+}
+
+/// Targets whose archives ship the Playwright e2e suite under `e2e/`
+
+error: patch failed: src/project.rs:2123
+Hunk #3 succeeded at 6619 (offset 475 lines).
+error: while searching for:
+        );
+    }
+}
+
+error: patch failed: src/project.rs:11174
+Checking patch src/schema.rs...
+Applied patch docs/guide/spinel.md cleanly.
+Applied patch runtime/ruby/active_record/base.rb cleanly.
+Applied patch runtime/ruby/active_record/base.rbs cleanly.
+Applying patch runtime/ruby/active_record/connection.rb with 1 reject...
+Rejected hunk #1.
+Hunk #2 applied cleanly.
+Applying patch runtime/ruby/active_record/connection.rbs with 1 reject...
+Rejected hunk #1.
+Applied patch runtime/spinel/db_libpq.rb cleanly.
+Applying patch src/emit/roda.rs with 1 reject...
+Rejected hunk #1.
+Applied patch src/emit/ruby.rs cleanly.
+Applied patch src/emit/ruby/library.rs cleanly.
+Applying patch src/emit/shared/schema_sql.rs with 1 reject...
+Hunk #1 applied cleanly.
+Rejected hunk #2.
+Applying patch src/ingest/model.rs with 1 reject...
+Rejected hunk #1.
+Applied patch src/ingest/schema.rs cleanly.
+Applied patch src/ingest/structure_sql.rs cleanly.
+Applied patch src/lib.rs cleanly.
+Applied patch src/lower/arel/ir.rs cleanly.
+Applying patch src/lower/arel/ruby_values.rs with 1 reject...
+Hunk #1 applied cleanly.
+Rejected hunk #2.
+Applied patch src/lower/arel/visitor.rs cleanly.
+Applied patch src/lower/group_count.rs cleanly.
+Applying patch src/lower/model_to_library/adapter_emit/mod.rs with 4 rejects...
+Rejected hunk #1.
+Hunk #2 applied cleanly.
+Hunk #3 applied cleanly.
+Rejected hunk #4.
+Rejected hunk #5.
+Rejected hunk #6.
+Hunk #7 applied cleanly.
+Hunk #8 applied cleanly.
+Hunk #9 applied cleanly.
+Applying patch src/lower/model_to_library/mod.rs with 1 reject...
+Rejected hunk #1.
+Applied patch src/lower/model_to_library/schema.rs cleanly.
+Applied patch src/naming.rs cleanly.
+Applying patch src/project.rs with 3 rejects...
+Rejected hunk #1.
+Rejected hunk #2.
+Hunk #3 applied cleanly.
+Rejected hunk #4.
+Applied patch src/schema.rs cleanly.

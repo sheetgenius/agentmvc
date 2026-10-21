@@ -1,0 +1,18 @@
+{
+  "condition": "diagnostic-Time-backtrace-v9",
+  "image": "conduit-v9-time-ablation:after",
+  "requests": [
+    {
+      "path": "/api/users",
+      "status": 201,
+      "body": "{\"user\":{\"email\":\"[redacted-email]\",\"token\":\"[redacted]\",\"username\":\"timerepro\",\"bio\":null,\"image\":null}}"
+    },
+    {
+      "path": "/api/articles",
+      "status": 201,
+      "body": "{\"article\":{\"slug\":\"time-reduction-a3a8122bca\",\"title\":\"Time reduction\",\"description\":\"test\",\"tagList\":[],\"createdAt\":\"2026-10-21T08:22:46.888Z\",\"updatedAt\":\"2026-10-21T08:22:46.888Z\",\"favorited\":false,\"favoritesCount\":0,\"author\":{\"username\":\"timerepro\",\"bio\":null,\"image\":null,\"following\":false},\"status\":\"published\",\"publishedAt\":\"2026-10-21T08:22:46.887Z\",\"revision\":1,\"body\":\"test\"}}"
+    }
+  ],
+  "article_rows": "1|2026-10-21 08:22:46.888033|2026-10-21 08:22:46.887822\n",
+  "db_error": ""
+}

@@ -1,0 +1,106 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v9-20261021-final",
+  "scope": "Publication evidence audit; no new Docker gate or benchmark",
+  "checks": {
+    "roundhouse_patches": {
+      "count": 11,
+      "checksums": "pass",
+      "line_counts": "pass"
+    },
+    "spinel_patches": {
+      "count": 1,
+      "checksums": "pass",
+      "line_counts": "pass"
+    },
+    "integrated_roundhouse_diff": {
+      "added": 2481,
+      "removed": 221,
+      "files": 66
+    },
+    "source": {
+      "gated_files": 75,
+      "match_v8": true,
+      "manifest": "pass",
+      "variant_toolchain_and_patches_match_supplied_record": true,
+      "app_delta": {
+        "files": 16,
+        "added": 180,
+        "removed": 44
+      }
+    },
+    "recorded_validation": {
+      "compiled_gate": "17 API / live / 4 browser / 13 security",
+      "rails_gate": "17 API / live / 4 browser / 13 security",
+      "common_probe": {
+        "contract_passed": 21,
+        "contract_total": 21,
+        "quality_passed": 3,
+        "quality_total": 3
+      },
+      "pending_export": "done",
+      "final_image_and_binary_match": true,
+      "diagnostic_api_passes": [
+        4,
+        13,
+        17
+      ]
+    },
+    "edge": {
+      "responses": 166,
+      "setup_requests": 25,
+      "scripted_requests": 191,
+      "rails_differences": [
+        "update_email_spaces",
+        "after_email_spaces",
+        "login_email_spaces_password123",
+        "update_password_null",
+        "update_password_number",
+        "login_password_number_password123",
+        "login_password_number_123456789",
+        "update_malformed"
+      ],
+      "v8_differences_after_historical_mapping": [
+        "update_malformed"
+      ],
+      "historical_email_fields_mapped": 62,
+      "raw_v8_differences": 63
+    },
+    "temporal_pair": {
+      "manifest_files": 435,
+      "changed_files": [
+        "app/models/article.rb",
+        "app/models/article_export.rb",
+        "app/models/article_share.rb",
+        "app/models/comment.rb",
+        "app/models/user.rb"
+      ],
+      "before_status": 500,
+      "after_status": 201
+    },
+    "late_hash_pair": "parent and repaired match CRuby; introduced and pinned head fail compilation",
+    "readme_local_links": {
+      "checked": 69,
+      "missing": []
+    },
+    "structured_package_references": {
+      "checked": 66,
+      "missing": []
+    },
+    "publication_hygiene": {
+      "text_files_scanned": 422,
+      "oversized_files": 0,
+      "requested_scan_matches": 0,
+      "decoded_home_paths_or_private_names": 0,
+      "disposable_jwts_remaining": 0,
+      "edge_script_ast_unchanged": true,
+      "rails_response_json_values_unchanged": true,
+      "scrubber_flags_reviewed": {
+        "email": 10,
+        "sensitive assignment": 29,
+        "secret": 6
+      },
+      "scrubber_exceptions": "Synthetic fixture emails and database examples, placeholder tokens, and source-code identifiers; recorded behavior and checksummed code preserved."
+    },
+    "benchmark": "not run; no throughput result"
+  }
+}

@@ -1,0 +1,120 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+gate inputs: 72 files, sha256 a8999f01c936cc37fe182c314c7a9a602b62611c1a15dc8338e7853d30831710 (matches the published workspace)
+workspace: results/ruby-compile/roundhouse-spinel-conduit-pg-20261021/reproduce/build/conduit-v9-ws-rails
+log: results/ruby-compile/roundhouse-spinel-conduit-pg-20261021/reproduce/build/gate-rails.log
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.09kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 1.2s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/ruby:4.0.7-slim
+#4 DONE 0.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 210B done
+#5 DONE 0.0s
+
+#6 [base 1/3] FROM docker.io/library/ruby:4.0.7-slim
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 137.20kB done
+#7 DONE 0.0s
+
+#8 [base 2/3] WORKDIR /rails
+#8 CACHED
+
+#9 [stage-2 1/3] RUN groupadd --system --gid 1000 rails &&     useradd rails --uid 1000 --gid 1000 --create-home
+#9 CACHED
+
+#10 [build 4/5] COPY . .
+#10 CACHED
+
+#11 [stage-2 2/3] COPY --from=build --chown=rails:rails /usr/local/bundle /usr/local/bundle
+#11 CACHED
+
+#12 [build 2/5] COPY Gemfile Gemfile.lock ./
+#12 CACHED
+
+#13 [build 5/5] RUN bundle exec bootsnap precompile -j 1 --gemfile &&     bundle exec bootsnap precompile -j 1 app/ lib/
+#13 CACHED
+
+#14 [build 3/5] RUN bundle install && rm -rf /usr/local/bundle/ruby/*/cache
+#14 CACHED
+
+#15 [base 3/3] RUN apt-get update -qq && apt-get install --no-install-recommends -y     libpq5 ca-certificates && rm -rf /var/lib/apt/lists/*
+#15 CACHED
+
+#16 [build 1/5] RUN apt-get update -qq && apt-get install --no-install-recommends -y     build-essential libpq-dev git && rm -rf /var/lib/apt/lists/*
+#16 CACHED
+
+#17 [stage-2 3/3] COPY --from=build --chown=rails:rails /rails /rails
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers done
+#18 writing image sha256:fb1caafbf7cd7dbdd9e95697a5e52b7c4b7fcd6c2fdfb513d9df5b7289a327d6 done
+#18 naming to docker.io/library/conduit-v9-gate-conduit-v9-ws-rails-51140:latest done
+#18 DONE 0.0s
+Success api/hurl/articles.hurl (17 request(s) in 380 ms)
+Success api/hurl/auth.hurl (20 request(s) in 429 ms)
+Success api/hurl/comments.hurl (13 request(s) in 244 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 223 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 1585 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 365 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 214 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 199 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 252 ms)
+Success api/hurl/feed.hurl (12 request(s) in 368 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 191 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 350 ms)
+Success api/hurl/tags.hurl (4 request(s) in 173 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 380 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 357 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 689 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 370 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (34.9/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          6794 ms (0h:0m:6s:794ms)
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (760ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (616ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (318ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (525ms)
+
+  4 passed (2.6s)
+Success s01_jwt_alg_none.hurl (1 request(s) in 1 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 180 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 1 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 176 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 177 ms)
+Success s06_injection_filters.hurl (4 request(s) in 8 ms)
+Success s07_malformed_json.hurl (1 request(s) in 1 ms)
+Success s08_wrong_types.hurl (8 request(s) in 188 ms)
+Success s09_oversized_body.hurl (2 request(s) in 238 ms)
+Success s10_unknown_route.hurl (1 request(s) in 3 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 365 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 13 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 3776 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (10.1/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          5137 ms (0h:0m:5s:137ms)
+
+check-production.sh exit 0

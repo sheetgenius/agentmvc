@@ -1,0 +1,18 @@
+class ActiveRecord
+  def self.adapter: () -> Adapter
+end
+
+class Adapter
+  def escape_value: (Integer) -> String
+  def execute_ddl: (String) -> nil
+  def changes: () -> Integer
+end
+
+class Relation
+  @null: bool
+  @table: String
+  def initialize: () -> String
+  def scoped_write_where: () -> String
+  def update_all: (Hash[String, Integer]) -> Integer
+end
+

@@ -1,0 +1,597 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v9-20261021-final",
+  "date": "2026-10-21",
+  "previous": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261009 (v8; unchanged)",
+  "status": "complete",
+  "ruby": {
+    "variant": "4.0.7",
+    "toolchain": "4.0.7",
+    "frozen_rails_reference": "3.3.2",
+    "gemfile_changes": [],
+    "lockfile_changes": []
+  },
+  "source": {
+    "reference": "results/one-shot-v2-rails-expert/pilot-1/reference-1/source",
+    "variant": "variant/source (v9 compile variant; byte-identical gated app to v8)",
+    "gated_files": 75,
+    "manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+    "app_delta_vs_reference": {
+      "files": 16,
+      "added": 180,
+      "removed": 44
+    },
+    "new_app_substitutions": 0,
+    "verification": "evidence/source-final-verification.json"
+  },
+  "toolchain": {
+    "roundhouse_base": "1c84d346361237ef9a99b6c01cead7c340532330",
+    "roundhouse_patch_count": 11,
+    "roundhouse_patches": "patches/roundhouse/series",
+    "roundhouse_delta": {
+      "added": 2481,
+      "removed": 221,
+      "files": 66
+    },
+    "spinel_base": "6ca6d451b97452d8a8b9dd8f6af51a391f060570",
+    "spinel_patch_count": 1,
+    "spinel_patches": "patches/spinel/series",
+    "spinel_9398_fix": "e7ad51d7f080825055e0bcb876f6ef597aeee695",
+    "spinel_9398_fix_is_ancestor": true,
+    "heads_observed_at": "2026-10-21T04:41:00Z",
+    "roundhouse_manifest_sha256": "62835d93aa0afc79a290827ddd61912fa399580d7328cb8caf7d1e5b0968c301",
+    "spinel_manifest_sha256": "497b76e59719a7aa95d938bb55544f8e0ffcb080ddade6022e27c2c2739ccdf9",
+    "vendor_tree_sha256": {
+      "roundhouse": "a0db08ed8bc5db3d568d88fda50267c07abbd85861afaf0434df7a90ab4203d5",
+      "spinel": "35680c8e6258aa53351b3ce401eb45c6b237a783a9c16f9e31e480dffa9a71d5"
+    },
+    "flags": "Ruby 4.0.7; Rust 1.98.1; RH_DATABASE_ADAPTER=postgresql; strict emit; spin build -- --cc=clang --jobs=8; SPINEL_WORKERS=4",
+    "scoreboard": "evidence/patch-count-comparison.json"
+  },
+  "images": {
+    "toolchain": {
+      "tag": "conduit-v9-toolchain:62835d93aa0a",
+      "id": "sha256:9a356f7d8cfe279018039221d3a58b9c1a50ebe1743456f4d498193159bdff83",
+      "bytes": 2063577149
+    },
+    "compiled": {
+      "tag": "conduit-v9-app:compiled",
+      "id": "sha256:20362abfe7234658c54610ffc66c47975e68f2d7e8f097a193f06e4c6e05a8b3",
+      "bytes": 121130407,
+      "server_sha256": "a6197b9d72e05ad7302073e9bde5436841c0c778e0e841288495b8c66e589121"
+    },
+    "variant_rails": {
+      "tag": "conduit-v9-app:cruby",
+      "id": "sha256:fb1caafbf7cd7dbdd9e95697a5e52b7c4b7fcd6c2fdfb513d9df5b7289a327d6",
+      "bytes": 318022561
+    },
+    "reference_rails": {
+      "tag": "conduit-v9-rails:reference-1",
+      "id": "sha256:2c30f2cb0b4607172eb10cad1a0197b741561678797366a8eb3166f9bf8f05f5",
+      "bytes": 324043740
+    },
+    "postgres": {
+      "tag": "conduit-v9-postgres:17",
+      "id": "sha256:b05fab95d0492cb222fbb8cd0e07707c2f3f778518e85b5a2600de8bc2d1450e",
+      "bytes": 290942266
+    },
+    "browser": {
+      "tag": "conduit-v9-browser:1.63.0",
+      "id": "sha256:20ebb9d1f08225bf17a6b37df7ee4aff155a26fa9ba815263bff417bb882c037",
+      "bytes": 2517082188
+    }
+  },
+  "gates": {
+    "compiled_production": {
+      "label": "c-compiled-gate-06",
+      "command": [
+        "results/ruby-compile/roundhouse-spinel-conduit-pg-20261021/reproduce/run-gate.sh",
+        "compiled",
+        "4461"
+      ],
+      "started": "2026-10-21T08:08:17.094930+00:00",
+      "finished": "2026-10-21T08:12:21.498399+00:00",
+      "exit": 0,
+      "log": "evidence/execution/c-compiled-gate-06.log"
+    },
+    "variant_rails_production": {
+      "label": "rails-gate-01",
+      "command": [
+        "results/ruby-compile/roundhouse-spinel-conduit-pg-20261021/reproduce/run-gate.sh",
+        "rails",
+        "4461"
+      ],
+      "started": "2026-10-21T05:06:39.305333+00:00",
+      "finished": "2026-10-21T05:07:07.749349+00:00",
+      "exit": 0,
+      "log": "evidence/execution/rails-gate-01.log"
+    },
+    "coverage": {
+      "api_files": "17/17",
+      "live_protocol": "pass",
+      "browser": "4/4",
+      "security": "13/13"
+    },
+    "common_http": {
+      "contract": "21/21",
+      "quality": "3/3",
+      "file": "evidence/compiled-v9-common-http-probe.json"
+    },
+    "boot_recovery": {
+      "condition": "supplemental-pending-export-boot-20261021",
+      "label": "final",
+      "image": "conduit-v9-app:compiled",
+      "expected": "done",
+      "procedure": "Seed a durable pending export before starting the compiled server; send no enqueue request.",
+      "image_id": "sha256:20362abfe7234658c54610ffc66c47975e68f2d7e8f097a193f06e4c6e05a8b3",
+      "before": "pending",
+      "after": "done",
+      "articles": "[]",
+      "completed": "t",
+      "server_sha256": "a6197b9d72e05ad7302073e9bde5436841c0c778e0e841288495b8c66e589121",
+      "pass": true
+    },
+    "compiled_binary": {
+      "container": "conduit-v9-gate-conduit-v9-ws-compiled-26835-app",
+      "image_id": "sha256:20362abfe7234658c54610ffc66c47975e68f2d7e8f097a193f06e4c6e05a8b3",
+      "server_sha256": "a6197b9d72e05ad7302073e9bde5436841c0c778e0e841288495b8c66e589121"
+    }
+  },
+  "edge_comparison": {
+    "condition": "v9 final vs frozen Rails reference-1 and historical v8",
+    "recorded_responses": 166,
+    "setup_requests": 25,
+    "total_script_requests": 191,
+    "readiness_requests": "additional, excluded",
+    "v9_vs_rails_reference_differences": 8,
+    "v9_vs_v8_differences": 1,
+    "differences_vs_rails": [
+      {
+        "name": "update_email_spaces",
+        "v9": {
+          "name": "update_email_spaces",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "   ",
+              "token": "<token>",
+              "username": "u14",
+              "bio": null,
+              "image": null
+            }
+          }
+        },
+        "other": {
+          "name": "update_email_spaces",
+          "status": 422,
+          "body": {
+            "errors": {
+              "email": [
+                "can't be blank"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "after_email_spaces",
+        "v9": {
+          "name": "after_email_spaces",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "   ",
+              "token": "<token>",
+              "username": "u14",
+              "bio": null,
+              "image": null
+            }
+          }
+        },
+        "other": {
+          "name": "after_email_spaces",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u14@example.com",
+              "token": "<token>",
+              "username": "u14",
+              "bio": null,
+              "image": null
+            }
+          }
+        }
+      },
+      {
+        "name": "login_email_spaces_password123",
+        "v9": {
+          "name": "login_email_spaces_password123",
+          "status": 401,
+          "body": {
+            "errors": {
+              "credentials": [
+                "invalid"
+              ]
+            }
+          }
+        },
+        "other": {
+          "name": "login_email_spaces_password123",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u14@example.com",
+              "token": "<token>",
+              "username": "u14",
+              "bio": null,
+              "image": null
+            }
+          }
+        }
+      },
+      {
+        "name": "update_password_null",
+        "v9": {
+          "name": "update_password_null",
+          "status": 422,
+          "body": {
+            "errors": {
+              "password": [
+                "can't be blank"
+              ]
+            }
+          }
+        },
+        "other": {
+          "name": "update_password_null",
+          "status": 422,
+          "body": {
+            "errors": {
+              "password": [
+                "can't be blank",
+                "can't be blank"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "update_password_number",
+        "v9": {
+          "name": "update_password_number",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u20@example.com",
+              "token": "<token>",
+              "username": "u20",
+              "bio": null,
+              "image": null
+            }
+          }
+        },
+        "other": {
+          "name": "update_password_number",
+          "status": 500,
+          "body": {
+            "status": 500,
+            "error": "Internal Server Error"
+          }
+        }
+      },
+      {
+        "name": "login_password_number_password123",
+        "v9": {
+          "name": "login_password_number_password123",
+          "status": 401,
+          "body": {
+            "errors": {
+              "credentials": [
+                "invalid"
+              ]
+            }
+          }
+        },
+        "other": {
+          "name": "login_password_number_password123",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u20@example.com",
+              "token": "<token>",
+              "username": "u20",
+              "bio": null,
+              "image": null
+            }
+          }
+        }
+      },
+      {
+        "name": "login_password_number_123456789",
+        "v9": {
+          "name": "login_password_number_123456789",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u20@example.com",
+              "token": "<token>",
+              "username": "u20",
+              "bio": null,
+              "image": null
+            }
+          }
+        },
+        "other": {
+          "name": "login_password_number_123456789",
+          "status": 401,
+          "body": {
+            "errors": {
+              "credentials": [
+                "invalid"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "update_malformed",
+        "v9": {
+          "name": "update_malformed",
+          "status": 400,
+          "body": {
+            "_raw": "<h1>400 Bad Request</h1>"
+          }
+        },
+        "other": {
+          "name": "update_malformed",
+          "status": 400,
+          "body": {
+            "errors": {
+              "body": [
+                "is invalid"
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "differences_vs_v8": [
+      {
+        "name": "update_malformed",
+        "v9": {
+          "name": "update_malformed",
+          "status": 400,
+          "body": {
+            "_raw": "<h1>400 Bad Request</h1>"
+          }
+        },
+        "other": {
+          "name": "update_malformed",
+          "status": 400,
+          "body": {
+            "errors": {
+              "body": [
+                "is invalid"
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "v8_input_sha256": "723e0f33578f4e2bde4390e27e7b1628a206e11085f907c2af869cf0f003d20f",
+    "report_text": "The seven inherited Rails differences persist: whitespace email updates and later login, nil-password error duplication, and numeric-password coercion with later login effects. A new eighth case, malformed JSON, still returns 400 but sends HTML instead of the application\u2019s rescued JSON error. Historical v8 email fields were redacted; matching valid-email fields are mapped to that placeholder only for the v8 comparison. The other 165 status/body responses match after that documented mapping.",
+    "raw_v9_vs_v8_differences": 63,
+    "historical_email_fields_mapped": 62,
+    "historical_comparison_rule": "Only valid-email values whose corresponding historical field is [redacted-email] are mapped to that same historical placeholder. Status, malformed bodies and non-email strings remain unchanged."
+  },
+  "regressions": {
+    "spinel_91": {
+      "ruby_lines": 3,
+      "rbs_input_required": false,
+      "introducing_commit": "a07741ff1fad0304029eb8f515ba042f73f42f7b",
+      "parent": "ea53627f4e79847bd9d5872ee59f935cdd360fb4",
+      "current": "6ca6d451b97452d8a8b9dd8f6af51a391f060570",
+      "repair": "patches/spinel/91-upstream-regression-late-hash-return.patch",
+      "oracle_stdout": "{\"n\" => nil}\n",
+      "current_inferred": "pack: (Integer) -> Hash[String, Integer]; relay: (Integer) -> Hash[String, Integer]",
+      "repaired_inferred": "class Object\n  def pack: (Integer) -> Hash[String, untyped] # spinel: widened to untyped (slow path)\n  def relay: (Integer) -> Hash[String, untyped] # spinel: widened to untyped (slow path)\nend\n\n",
+      "outcomes": {
+        "parent": {
+          "source": "int.rb",
+          "cruby": {
+            "exit": 0,
+            "stdout": "{\"n\" => nil}\n",
+            "stderr": ""
+          },
+          "types": {
+            "exit": 0,
+            "stdout": "",
+            "stderr": "Wrote int.rbs\n"
+          },
+          "compile": {
+            "exit": 0,
+            "stdout": "",
+            "stderr": "int.rb -> /tmp/probe\n"
+          },
+          "compiled": {
+            "exit": 0,
+            "stdout": "{\"n\" => nil}\n",
+            "stderr": ""
+          },
+          "matches_cruby": true
+        },
+        "introduced": {
+          "source": "int.rb",
+          "cruby": {
+            "exit": 0,
+            "stdout": "{\"n\" => nil}\n",
+            "stderr": ""
+          },
+          "types": {
+            "exit": 0,
+            "stdout": "",
+            "stderr": "Wrote int.rbs\n"
+          },
+          "compile": {
+            "exit": 1,
+            "stdout": "",
+            "stderr": "int.rb:1: error: incompatible pointer types returning 'sp_StrPolyHash *' (aka 'struct sp_StrPolyHash *') from a function with result type 'sp_StrIntHash *' [-Werror,-Wincompatible-pointer-types]\nspinel: C compilation failed\nspinel: the generated C is kept at /tmp/spinel_out_51_0.c\n"
+          }
+        },
+        "current": {
+          "source": "int.rb",
+          "cruby": {
+            "exit": 0,
+            "stdout": "{\"n\" => nil}\n",
+            "stderr": ""
+          },
+          "types": {
+            "exit": 0,
+            "stdout": "",
+            "stderr": "Wrote int.rbs\n"
+          },
+          "compile": {
+            "exit": 1,
+            "stdout": "",
+            "stderr": "int.rb:1: error: incompatible pointer types returning 'sp_StrPolyHash *' (aka 'struct sp_StrPolyHash *') from a function with result type 'sp_StrIntHash *' [-Werror,-Wincompatible-pointer-types]\nspinel: C compilation failed\nspinel: the generated C is kept at /tmp/spinel_out_23_0.c\n"
+          }
+        },
+        "repaired": {
+          "source": "int.rb",
+          "cruby": {
+            "exit": 0,
+            "stdout": "{\"n\" => nil}\n",
+            "stderr": ""
+          },
+          "types": {
+            "exit": 0,
+            "stdout": "",
+            "stderr": "Wrote int.rbs\n"
+          },
+          "compile": {
+            "exit": 0,
+            "stdout": "",
+            "stderr": "int.rb -> /tmp/probe\n"
+          },
+          "compiled": {
+            "exit": 0,
+            "stdout": "{\"n\" => nil}\n",
+            "stderr": ""
+          },
+          "matches_cruby": true
+        }
+      }
+    },
+    "roundhouse_82": {
+      "introducing_commit": "d5bbeaaaa58c1213c6ff2429531d90ac8edf8378",
+      "parent": "61a8f105f1323a635e6d771ecb3e13bab1574734",
+      "current_roundhouse": "1c84d346361237ef9a99b6c01cead7c340532330",
+      "expected_sql": "UPDATE \"widgets\" SET value = 2 WHERE id = 1",
+      "oracle": "CRuby and compiled execution of each exact runtime method; frozen Rails gate tests the app contract"
+    },
+    "roundhouse_83": {
+      "classification": "upstream temporal constructor contract defect exposed by native compilation",
+      "introducing_source_change": "0b20a0f96a61d4fdcdc126180635c24bde1db7bc",
+      "isolated_patch83": true,
+      "first_bad_spinel_not_bisected": true,
+      "only_changed_emitted_files": [
+        "app/models/article.rb",
+        "app/models/article_export.rb",
+        "app/models/article_share.rb",
+        "app/models/comment.rb",
+        "app/models/user.rb"
+      ],
+      "shared": "SQL82 in both; identical emitted signatures and all other Ruby files; same Spinel6ca plus91",
+      "before": {
+        "image_id": "sha256:45561ad31f4488ec4002838fb0a421fc290f91202336501c2bdbb9db21ade949",
+        "article_status": 500,
+        "article_rows": "",
+        "raw_record": "time-ablation-before.json"
+      },
+      "after": {
+        "image_id": "sha256:150d0f19415ab5c242134c4fb908316b4da0c96972f641f5a8c356219d27803a",
+        "article_status": 201,
+        "article_rows": "1|2026-10-21 08:22:46.888033|2026-10-21 08:22:46.887822\n",
+        "raw_record": "time-ablation-after.json"
+      },
+      "types": {
+        "writer": "String?",
+        "supplied": "Time",
+        "CRuby_final_raw": "String after formatting"
+      },
+      "standalone_minimal_ruby_reproducer": false,
+      "limitation": "Small extracted constructors pass; the smallest observed mismatch still requires the emitted application context. This pair isolates the temporal initialization change without claiming a first-bad Spinel revision.",
+      "report_text": "An isolated emitted-program pair now holds SQL82, all sidecars and every other emitted file identical: only the five model constructors differ. The same published-article request returns 500 before 83 and 201 after it, with the row present only after. The [pair](evidence/regressions/time-ablation-comparison.json) records immutable image IDs and all emitted-file hashes."
+    },
+    "roundhouse_84": {
+      "classification": "upstream Roundhouse parameter-join regression",
+      "introducing_commit": "0714d4f2184e506a7835e5fd569da6a9170a029d",
+      "parent": "6c26039c644b8b4cd07b0679b12adc2f7666947c",
+      "shared_prerequisite": "Only patch80 source hunk in src/analyze/harvest_return.rs; no other Roundhouse patches in adjacent pair",
+      "public_program": "source.rb; append Probe.run, or use each condition driver.rb",
+      "cruby_stdout": "{\"n\" => 1}\n",
+      "parent_native_stdout": "{\"n\" => 1}\n",
+      "introduced_native_stdout": ":generate\n",
+      "parent_consumer_type": "untyped",
+      "introduced_consumer_type": "Symbol",
+      "repair": "patches/roundhouse/84-upstream-regression-mixed-parameter-arm.patch",
+      "repaired_current_matches_cruby": true,
+      "authoritative_adjacent_results": "results-fresh.json",
+      "current_v8_repaired_results": "results-all.json",
+      "build_evidence": "evidence/execution/c-param-fresh-check-01.log",
+      "source_refresh": "Each archive build touches build.rs and all src/runtime files before cargo; both conditions compile roundhouse independently",
+      "excluded_cached_pairs": [
+        "results-adjacent.json",
+        "results-merge.json"
+      ],
+      "exclusion_reason": "Child builds reused the parent binary; see evidence/regressions/parameter-cache-error.json",
+      "limits": "Preserves explicit mixed unknown arms; bare-untyped policy remains; no global associativity or provenance-lattice proof"
+    },
+    "existing_string_alias": "evidence/regressions/string-alias/comparison.json",
+    "literal_mutability": "evidence/regressions/literal-mutability/",
+    "malformed_json_edge": "evidence/regressions/malformed-json/comparison.json"
+  },
+  "rebase_corrections": [
+    "10: retain String header contract in generated RBS",
+    "50: carry upstream per-thread transaction joinability API",
+    "Spinel 91: propagate nil evidence before final return derivation",
+    "82: avoid quoting already-quoted physical table in bulk UPDATE",
+    "83: seed typed temporal storage before normalizing supplied values; restore pre-0b20 initialization order",
+    "50: keep per-record DELETE scoped by id; PostgreSQL TRUNCATE belongs only to _adapter_truncate",
+    "84: retain explicit mixed untyped return evidence when deriving consumer parameters"
+  ],
+  "failure_classification": "evidence/failure-classification.json",
+  "reproduction": {
+    "fresh_checkouts_apply": true,
+    "vendor_digests_match": true,
+    "log": "evidence/rebase/final-replay-11rh.log",
+    "compiled_build": "evidence/execution/c-build-final-06.json"
+  },
+  "timing": {
+    "run": false,
+    "reason": "Shared host; no throughput claim"
+  },
+  "limits": [
+    "Context-dependent Time case lacks a standalone minimal reproducer or first-bad Spinel revision",
+    "Existing String alias and literal-mutability mismatches occur on v8 and final Spinel",
+    "New malformed-JSON edge case returns HTML rather than the app-rescued JSON; not repaired",
+    "No full upstream CI or broader v8 typing/validator suites rerun"
+  ],
+  "constraints": {
+    "docker_lock": ".work/lane-docker.lock",
+    "resource_prefix": "conduit-v9-",
+    "port": 4461
+  },
+  "cleanup": {
+    "observed_utc": "2026-10-21T08:36:12.955694+00:00",
+    "removed_containers": [],
+    "removed_networks": [],
+    "remaining_task_containers": [],
+    "remaining_task_networks": [],
+    "volume_operations": 0,
+    "prune_operations": 0
+  },
+  "publication": {
+    "inventory": "evidence/publication.json",
+    "validation": "evidence/publication-validation.json"
+  }
+}

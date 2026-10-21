@@ -1,0 +1,104 @@
+class ArticleShare < ApplicationRecord
+  attr_reader id: String
+  attr_writer id: String
+  def id?: () -> bool
+  attr_reader article_id: Integer
+  attr_writer article_id: Integer
+  def article_id?: () -> bool
+  def article_id_previously_changed?: () -> bool
+  def saved_change_to_article_id?: () -> bool
+  def article_id_previously_was: () -> untyped
+  attr_reader created_at: Time?
+  attr_reader created_at_raw: String
+  def created_at=: (Time value) -> nil
+  attr_writer created_at_raw: String
+  def created_at?: () -> bool
+  def created_at_previously_changed?: () -> bool
+  def saved_change_to_created_at?: () -> bool
+  def created_at_previously_was: () -> untyped
+  attr_reader key_hash: String
+  attr_writer key_hash: String
+  def key_hash?: () -> bool
+  def key_hash_previously_changed?: () -> bool
+  def saved_change_to_key_hash?: () -> bool
+  def key_hash_previously_was: () -> untyped
+  attr_reader revoked_at: Time?
+  attr_reader revoked_at_raw: String
+  def revoked_at=: (Time? value) -> nil
+  attr_writer revoked_at_raw: String?
+  def revoked_at?: () -> bool
+  def revoked_at_previously_changed?: () -> bool
+  def saved_change_to_revoked_at?: () -> bool
+  def revoked_at_previously_was: () -> untyped
+  attr_reader updated_at: Time?
+  attr_reader updated_at_raw: String
+  def updated_at=: (Time value) -> nil
+  attr_writer updated_at_raw: String
+  def updated_at?: () -> bool
+  def updated_at_previously_changed?: () -> bool
+  def saved_change_to_updated_at?: () -> bool
+  def updated_at_previously_was: () -> untyped
+  def self.table_name: () -> String
+  def self._table_sql: () -> String
+  def self._string_primary_key: () -> bool
+  def self._conflict_predicate: (String columns) -> String
+  def self.schema_columns: () -> Array[Symbol]
+  def self.schema_time_columns: () -> Array[Symbol]
+  def self.schema_date_columns: () -> Array[Symbol]
+  def self.schema_boolean_columns: () -> Array[Symbol]
+  def self.schema_decimal_columns: () -> Array[Symbol]
+  def self.schema_integer_limits: () -> Hash[String, Integer]
+  def self.instantiate: (Hash[String, untyped] row) -> ArticleShare
+  def attributes_before_type_cast: () -> Hash[String, untyped]
+  def self.from_row: (ArticleShareRow row) -> ArticleShare
+  def self.from_stmt: (untyped stmt) -> ArticleShare
+  def initialize: (?Hash[Symbol, untyped] attrs) -> nil
+  def attributes: () -> Hash[String, untyped]
+  def []: ((Symbol | String) name) -> untyped
+  def []=: (Symbol name, (String | Integer) value) -> (String | Integer | nil)
+  def update: (Hash[Symbol, untyped] attrs) -> bool
+  def update!: (Hash[Symbol, untyped] attrs) -> ArticleShare
+  def fill_timestamps: (bool creating) -> nil
+  def self._find_primary_key_input: ((Integer | Float | String | nil) id) -> ArticleShare?
+  def self._exists_primary_key_input: ((Integer | Float | String | nil) id) -> bool
+  def self._adapter_find_by_id: (String id) -> ArticleShare?
+  def self._adapter_all: () -> Array[ArticleShare]
+  def self._adapter_last: () -> ArticleShare?
+  def _adapter_insert: () -> Integer
+  def _adapter_update: () -> nil
+  def _adapter_touch: () -> nil
+  def _adapter_delete: () -> nil
+  def self._adapter_count: () -> Integer
+  def self._adapter_any?: () -> bool
+  def self._adapter_exists_by_id?: (String id) -> bool
+  def self._adapter_truncate: () -> nil
+  def self.delete_all: () -> Integer
+  def _adapter_reload: () -> ArticleShare
+  def _adapter_reload_lock: () -> ArticleShare
+  def self._columns_sql: () -> String
+  def self._hydrate_all: (String sql) -> Array[ArticleShare]
+  def validate: () -> nil
+  def article: () -> Article?
+  def article=: (Article? value) -> nil
+  def article_loaded?: () -> bool
+  def self._association_names: () -> Array[Symbol]
+  def self.issue!: (untyped article) -> untyped
+  def valid_key?: (untyped key) -> untyped
+  def dom_prefix: () -> String
+  def to_param: () -> String
+  def dom_record_key: () -> String
+  def cache_key: () -> String
+  def cache_key_with_version: () -> String
+  def reload: (?untyped options) -> ArticleShare
+  def lock!: (?(bool | String | nil) lock) -> ArticleShare
+  def to_gid_param: () -> untyped
+  def to_gid_uri: () -> untyped
+  def self.active: (?untyped __rel) -> untyped
+  def self.__scope_active__0: (ActiveRecord::Relation __rel) -> untyped
+  def _autosave_article: () -> untyped
+  def before_validation: () -> untyped
+  def self._preload_batch_article: (untyped records) -> untyped
+  def _preload_article: (untyped rec) -> untyped
+  def self._preload_dispatch: (untyped records, untyped name, untyped nested) -> untyped
+  def self.preload_associations: (untyped records, untyped specs) -> untyped
+end

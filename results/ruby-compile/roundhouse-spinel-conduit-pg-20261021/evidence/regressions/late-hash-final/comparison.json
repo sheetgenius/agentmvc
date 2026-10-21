@@ -1,0 +1,97 @@
+{
+  "ruby_lines": 3,
+  "rbs_input_required": false,
+  "introducing_commit": "a07741ff1fad0304029eb8f515ba042f73f42f7b",
+  "parent": "ea53627f4e79847bd9d5872ee59f935cdd360fb4",
+  "current": "6ca6d451b97452d8a8b9dd8f6af51a391f060570",
+  "repair": "patches/spinel/91-upstream-regression-late-hash-return.patch",
+  "oracle_stdout": "{\"n\" => nil}\n",
+  "current_inferred": "pack: (Integer) -> Hash[String, Integer]; relay: (Integer) -> Hash[String, Integer]",
+  "repaired_inferred": "class Object\n  def pack: (Integer) -> Hash[String, untyped] # spinel: widened to untyped (slow path)\n  def relay: (Integer) -> Hash[String, untyped] # spinel: widened to untyped (slow path)\nend\n\n",
+  "outcomes": {
+    "parent": {
+      "source": "int.rb",
+      "cruby": {
+        "exit": 0,
+        "stdout": "{\"n\" => nil}\n",
+        "stderr": ""
+      },
+      "types": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Wrote int.rbs\n"
+      },
+      "compile": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": "int.rb -> /tmp/probe\n"
+      },
+      "compiled": {
+        "exit": 0,
+        "stdout": "{\"n\" => nil}\n",
+        "stderr": ""
+      },
+      "matches_cruby": true
+    },
+    "introduced": {
+      "source": "int.rb",
+      "cruby": {
+        "exit": 0,
+        "stdout": "{\"n\" => nil}\n",
+        "stderr": ""
+      },
+      "types": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Wrote int.rbs\n"
+      },
+      "compile": {
+        "exit": 1,
+        "stdout": "",
+        "stderr": "int.rb:1: error: incompatible pointer types returning 'sp_StrPolyHash *' (aka 'struct sp_StrPolyHash *') from a function with result type 'sp_StrIntHash *' [-Werror,-Wincompatible-pointer-types]\nspinel: C compilation failed\nspinel: the generated C is kept at /tmp/spinel_out_51_0.c\n"
+      }
+    },
+    "current": {
+      "source": "int.rb",
+      "cruby": {
+        "exit": 0,
+        "stdout": "{\"n\" => nil}\n",
+        "stderr": ""
+      },
+      "types": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Wrote int.rbs\n"
+      },
+      "compile": {
+        "exit": 1,
+        "stdout": "",
+        "stderr": "int.rb:1: error: incompatible pointer types returning 'sp_StrPolyHash *' (aka 'struct sp_StrPolyHash *') from a function with result type 'sp_StrIntHash *' [-Werror,-Wincompatible-pointer-types]\nspinel: C compilation failed\nspinel: the generated C is kept at /tmp/spinel_out_23_0.c\n"
+      }
+    },
+    "repaired": {
+      "source": "int.rb",
+      "cruby": {
+        "exit": 0,
+        "stdout": "{\"n\" => nil}\n",
+        "stderr": ""
+      },
+      "types": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Wrote int.rbs\n"
+      },
+      "compile": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": "int.rb -> /tmp/probe\n"
+      },
+      "compiled": {
+        "exit": 0,
+        "stdout": "{\"n\" => nil}\n",
+        "stderr": ""
+      },
+      "matches_cruby": true
+    }
+  }
+}

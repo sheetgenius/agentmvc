@@ -1,0 +1,44 @@
+[
+  {
+    "source": "float.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "{\"n\" => nil}\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote float.rbs\n"
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "float.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "{\"n\" => nil}\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "int.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "{\"n\" => nil}\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote int.rbs\n"
+    },
+    "compile": {
+      "exit": 1,
+      "stdout": "",
+      "stderr": "int.rb:1: error: incompatible pointer types returning 'sp_StrPolyHash *' (aka 'struct sp_StrPolyHash *') from a function with result type 'sp_StrIntHash *' [-Werror,-Wincompatible-pointer-types]\nspinel: C compilation failed\nspinel: the generated C is kept at /tmp/spinel_out_51_0.c\n"
+    }
+  }
+]

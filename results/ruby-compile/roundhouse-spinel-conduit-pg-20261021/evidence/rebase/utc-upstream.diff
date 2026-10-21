@@ -1,0 +1,246 @@
+commit 2d7a585dc150abdb38a0089efb1d99b8be5937b8
+Author: iberianpig <[redacted-email]>
+Date:   Sun Oct 18 12:45:52 2026 +0000
+
+    Preserve UTC identity when presenting zoned times
+    
+    Presenting a time in UTC currently calls getlocal(0). That creates a
+    fixed-offset Time, so iso8601 writes +00:00 where Rails' UTC zone writes
+    Z. Stored Active Record times reach the same conversion.
+    
+    Use getutc for UTC zone identities and keep getlocal for other zones.
+    Share the conversion across presentation, explicit zone conversion,
+    local construction and TimeZone#now. Preserve the configured GMT name
+    instead of normalizing it to UTC. Use getutc to leave the input intact.
+    
+    Compare both parser trees against Rails 8.1.4 across ten zones in winter
+    and summer. Cover stored and explicitly zoned times in emitted Ruby,
+    fractional precision, fixed-zero controls and input preservation.
+    
+    Co-Authored-By: GPT-6.1 Sol <[redacted-email]>
+
+diff --git a/runtime/ruby/active_support_ext.rb b/runtime/ruby/active_support_ext.rb
+index c279ad2a8..c83e4d9d2 100644
+--- a/runtime/ruby/active_support_ext.rb
++++ b/runtime/ruby/active_support_ext.rb
+@@ -109,6 +109,10 @@ module ActiveSupport
+     def self.utc_zone?
+       zone = ActiveSupport.current_zone
+       name = zone.nil? ? Rails.application.config_time_zone : zone.name
++      utc_zone_name?(name)
++    end
++
++    def self.utc_zone_name?(name)
+       UTC_ZONE_NAMES.include?(name)
+     end
+ 
+@@ -1065,7 +1069,7 @@ module ActiveSupport
+     iana = ZONE_NAMES[name.to_s] || name.to_s
+     DEFAULT_ZONE.clear
+     if iana == "UTC" || iana == "Etc/UTC" || iana == "Etc/UCT" || iana == "GMT" || iana == "Etc/GMT"
+-      DEFAULT_ZONE << TimeZoneData.new("UTC", [], [], 0, [], [])
++      DEFAULT_ZONE << TimeZoneData.new(name.to_s, [], [], 0, [], [])
+     else
+       DEFAULT_ZONE << find_zone!(name)
+     end
+@@ -1089,7 +1093,12 @@ module ActiveSupport
+ 
+   def self.present(t)
+     zone = current_zone
+-    zone.nil? ? t.getlocal : t.getlocal(zone.offset_at(t.to_i))
++    zone.nil? ? t.getlocal : present_in_zone(t, zone)
++  end
++
++  def self.present_in_zone(t, zone)
++    return t.getutc if ActiveSupport::JSON.utc_zone_name?(zone.name)
++    t.getlocal(zone.offset_at(t.to_i))
+   end
+ 
+   def self.present_db(t)
+@@ -1099,7 +1108,7 @@ module ActiveSupport
+ 
+   def self.in_time_zone(t, zone)
+     return present(t) if zone.nil?
+-    t.getlocal(find_zone!(zone).offset_at(t.to_i))
++    present_in_zone(t, find_zone!(zone))
+   end
+ 
+   def self.zone_name(zone)
+@@ -1117,7 +1126,7 @@ module ActiveSupport
+     return Time.at(Time.local(y, mo, d, h, mi, s).to_i, nsec, :nsec) if zone.nil?
+     guess = Time.utc(y, mo, d, h, mi, s).to_i
+     epoch = guess - zone.offset_at(guess - zone.offset_at(guess))
+-    Time.at(epoch, nsec, :nsec).getlocal(zone.offset_at(epoch))
++    present_in_zone(Time.at(epoch, nsec, :nsec), zone)
+   end
+ 
+   # Not `number.to_s` with commas everywhere: only an all-digit integer part takes them, so `1.0e+20` and `Infinity` pass through.
+@@ -1236,7 +1245,7 @@ module ActiveSupport
+ 
+     def now
+       t = Time.now
+-      t.getlocal(@data.offset_at(t.to_i))
++      ActiveSupport.present_in_zone(t, @data)
+     end
+   end
+ end
+diff --git a/runtime/ruby/active_support_ext.rbs b/runtime/ruby/active_support_ext.rbs
+index 124bfea57..b7f52c336 100644
+--- a/runtime/ruby/active_support_ext.rbs
++++ b/runtime/ruby/active_support_ext.rbs
+@@ -7,6 +7,7 @@ module ActiveSupport
+     def self.time_fragment: (::Time? t) -> String
+     def self.written: (String text) -> String
+     def self.utc_zone?: () -> bool
++    def self.utc_zone_name?: (String name) -> bool
+     UTC_ZONE_NAMES: Array[String]
+   end
+   def self.deep_dup: (untyped value) -> untyped
+@@ -143,6 +144,7 @@ module ActiveSupport
+   def self.current_zone: () -> TimeZoneData?
+   def self.use_zone: (String? zone) { () -> untyped } -> untyped
+   def self.present: (Time t) -> Time
++  def self.present_in_zone: (Time t, TimeZoneData zone) -> Time
+   def self.present_db: (Time? t) -> Time?
+   def self.in_time_zone: (Time t, String? zone) -> Time
+   def self.zone_name: (TimeZone? zone) -> String?
+diff --git a/tests/emit_and_run.rs b/tests/emit_and_run.rs
+index 861856beb..ecb4a6c43 100644
+--- a/tests/emit_and_run.rs
++++ b/tests/emit_and_run.rs
+@@ -9,6 +9,8 @@
+ mod emit_and_run;
+ #[path = "emit_and_run/date_calendar_duration.rs"]
+ mod date_calendar_duration;
++#[path = "emit_and_run/utc_zone_time.rs"]
++mod utc_zone_time;
+ #[path = "emit_and_run/discard.rs"]
+ mod discard;
+ #[path = "emit_and_run/pay_exceptions.rs"]
+diff --git a/tests/emit_and_run/utc_zone_time.rs b/tests/emit_and_run/utc_zone_time.rs
+new file mode 100644
+index 000000000..80068d77b
+--- /dev/null
++++ b/tests/emit_and_run/utc_zone_time.rs
+@@ -0,0 +1,32 @@
++use super::emit_and_run;
++
++#[test]
++fn stored_and_explicitly_zoned_times_keep_utc_identity() {
++    emit_and_run::empty_app()
++        .write("app/models/application_record.rb", "class ApplicationRecord < ActiveRecord::Base\n  self.abstract_class = true\nend\n")
++        .write("config/application.rb", "module UtcProbe\n  class Application < Rails::Application\n    config.load_defaults 8.1\n    config.time_zone = \"UTC\"\n  end\nend\n")
++        .write("db/schema.rb", "ActiveRecord::Schema.define do\n  create_table :widgets do |t|\n    t.datetime :created_at\n  end\nend\n")
++        .write("app/models/widget.rb", "class Widget < ApplicationRecord\nend\n")
++        .write("app/services/utc_zone_probe.rb", r#"class UtcZoneProbe
++  def self.from_record
++    Widget.find(1).created_at.iso8601(6)
++  end
++
++  def self.from_utc_zone
++    Time.utc(2026, 1, 2, 3, 4, 5).in_time_zone("UTC").iso8601
++  end
++
++  def self.from_gmt_zone
++    Time.utc(2026, 1, 2, 3, 4, 5).in_time_zone("GMT").iso8601
++  end
++end
++"#)
++        .run_ruby(r#"
++Db.exec("INSERT INTO widgets (id, created_at) VALUES (1, '2026-01-02 03:04:05.123456')")
++raise UtcZoneProbe.from_record unless UtcZoneProbe.from_record == "2026-01-02T03:04:05.123456Z"
++raise UtcZoneProbe.from_utc_zone unless UtcZoneProbe.from_utc_zone == "2026-01-02T03:04:05Z"
++raise UtcZoneProbe.from_gmt_zone unless UtcZoneProbe.from_gmt_zone == "2026-01-02T03:04:05+00:00"
++puts "Stored and explicitly zoned times keep UTC identity"
++"#)
++        .assert_passes();
++}
+diff --git a/tests/utc_zone_time.rb b/tests/utc_zone_time.rb
+new file mode 100644
+index 000000000..a23aed897
+--- /dev/null
++++ b/tests/utc_zone_time.rb
+@@ -0,0 +1,52 @@
++require "time"
++require "open3"
++require "rbconfig"
++
++zones = ["UTC", "Etc/UTC", "Etc/Universal", "Etc/Zulu", "Etc/UCT", "GMT", "Etc/GMT", "Europe/London", "Asia/Tokyo", "America/New_York"]
++instants = [Time.utc(2026, 1, 2, 3, 4, 5, 123456), Time.utc(2026, 7, 2, 3, 4, 5, 123456)]
++oracle = <<~RUBY
++  gem "activesupport", "8.1.4"
++  require "active_support/all"
++  rows = #{instants.map(&:to_f).inspect}.flat_map do |epoch|
++    instant = Time.at(epoch).getutc
++    #{zones.inspect}.map do |name|
++      Time.define_singleton_method(:now) { instant }
++      Time.use_zone(name) do
++        zoned = instant.in_time_zone
++        local = Time.zone.local(2026, instant.month, 2, 3, 4, 5 + Rational(123456, 1000000))
++        values = [zoned, zoned, zoned, local, Time.zone.now]
++        [name, values.map { |time| [time.iso8601, time.iso8601(6), time.utc?] }]
++      end
++    end
++  end
++  p rows
++RUBY
++expected, status = Open3.capture2e(RbConfig.ruby, "-e", oracle)
++abort expected unless status.success?
++
++require ARGV.fetch(0)
++require ARGV.fetch(1)
++rows = instants.map(&:to_f).flat_map do |epoch|
++  instant = Time.at(epoch).getutc
++  zones.map do |name|
++    Time.define_singleton_method(:now) { instant }
++    ActiveSupport.set_default_zone(name)
++    values = [
++      ActiveSupport.present(instant),
++      ActiveSupport.in_time_zone(instant, name),
++      ActiveSupport.parse_db_time(instant.strftime("%Y-%m-%d %H:%M:%S.%6N")),
++      ActiveSupport.local_time(2026, instant.month, 2, 3, 4, 5, 123456000),
++      ActiveSupport::TimeZone.lookup(name).now
++    ]
++    [name, values.map { |time| [time.iso8601, time.iso8601(6), time.utc?] }]
++  end
++end
++abort "zone times differ:\nexpected #{expected}\nactual #{rows.inspect}" unless rows.inspect == expected.strip
++
++input = Time.new(2026, 1, 2, 3, 4, 5, "+09:00")
++before = [input.to_i, input.utc_offset, input.utc?]
++ActiveSupport.in_time_zone(input, "UTC")
++abort "zone conversion mutated its input" unless [input.to_i, input.utc_offset, input.utc?] == before
++abort "nil database time changed" unless ActiveSupport.present_db(nil).nil?
++abort "fixed-zero control changed" unless instants.first.getlocal(0).iso8601(6).end_with?("+00:00")
++puts "UTC presentation matches Rails 8.1.4: #{zones.length} zones, winter and summer, five conversion paths"
+diff --git a/tests/utc_zone_time.rs b/tests/utc_zone_time.rs
+new file mode 100644
+index 000000000..4bade26d0
+--- /dev/null
++++ b/tests/utc_zone_time.rs
+@@ -0,0 +1,25 @@
++use std::path::Path;
++use std::process::Command;
++
++#[test]
++fn utc_zone_identity_matches_rails_without_changing_other_zero_offsets() {
++    let root = Path::new(env!("CARGO_MANIFEST_DIR"));
++    for parser in [
++        "runtime/spinel/active_support_time_parsing.rb",
++        "runtime/spinel/scaffold/ruby_overlay/runtime/active_support_time_parsing.rb",
++    ] {
++        let output = Command::new("ruby")
++            .arg(root.join("tests/utc_zone_time.rb"))
++            .arg(root.join("runtime/ruby/active_support_ext.rb"))
++            .arg(root.join(parser))
++            .env("TZ", "UTC")
++            .output()
++            .expect("Ruby on PATH");
++        assert!(
++            output.status.success(),
++            "{parser}\n{}\n{}",
++            String::from_utf8_lossy(&output.stdout),
++            String::from_utf8_lossy(&output.stderr)
++        );
++    }
++}

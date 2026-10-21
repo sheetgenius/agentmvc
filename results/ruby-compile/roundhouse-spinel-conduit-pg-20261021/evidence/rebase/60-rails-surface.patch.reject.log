@@ -1,0 +1,115 @@
+Checking patch runtime/ruby/active_record/base.rb...
+Hunk #1 succeeded at 336 (offset 7 lines).
+Hunk #2 succeeded at 426 (offset 7 lines).
+Checking patch runtime/ruby/active_record/base.rbs...
+Hunk #2 succeeded at 215 (offset 1 line).
+Checking patch src/ingest/model.rs...
+error: while searching for:
+        "presence" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Presence),
+        "absence" => bool_value(value).filter(|b| *b).map(|_| ValidationRule::Absence),
+        "length" => parse_length_rule(value),
+        _ => None,
+    }
+}
+
+error: patch failed: src/ingest/model.rs:2784
+error: while searching for:
+/// `length: { minimum: N, maximum: M }`. Either bound may be absent;
+/// the hash-value shape is the only one we accept today. The shorthand
+/// `length: 5` (exact length) isn't in any fixture yet and drops.
+fn parse_length_rule(value: &ruby_prism::Node<'_>) -> Option<crate::dialect::ValidationRule> {
+    use super::util::integer_value;
+    use crate::dialect::ValidationRule;
+
+error: patch failed: src/ingest/model.rs:2791
+Checking patch src/lower/assoc_attr_key.rs...
+Checking patch src/lower/first_or_create.rs...
+Checking patch src/lower/model_to_library/schema.rs...
+Hunk #1 succeeded at 1407 (offset -79 lines).
+Hunk #2 succeeded at 3133 (offset -93 lines).
+Hunk #3 succeeded at 3167 (offset -94 lines).
+Hunk #4 succeeded at 3198 (offset -94 lines).
+Checking patch src/lower/model_to_library/validations.rs...
+error: while searching for:
+                        stmts.push(check);
+                        continue;
+                    }
+                    for mut check in validation_rule_to_calls(msgs, &v.attribute, rule, attr_ty) {
+                        // Each expanded check attributes to its `validates` line.
+                        check.inherit_span(span);
+
+error: patch failed: src/lower/model_to_library/validations.rs:73
+error: while searching for:
+/// of Rails' check — it can fail a save Rails would fail, never one
+/// Rails would pass — and the id-presence half is the part that
+/// catches the real error (an unset owner).
+fn inline_belongs_to_check(
+    msgs: Messages,
+    assoc_name: &Symbol,
+
+error: patch failed: src/lower/model_to_library/validations.rs:636
+Checking patch src/lower/scope_chain.rs...
+Hunk #1 succeeded at 2730 (offset 308 lines).
+Hunk #2 succeeded at 2749 (offset 308 lines).
+error: while searching for:
+///
+/// `maximum` / `minimum` likewise: `Base` defines neither, and the arel
+/// pass leaves them to `Relation`'s SQL extrema.
+const CLASS_ROOT_TERMINALS: &[&str] = &["pluck", "ids", "destroy_by", "delete_by", "maximum", "minimum"];
+
+/// Relation TERMINALS our runtime implements — a seeded association
+/// chain may end in one (`@story.merged_stories.ids`). Deliberately
+
+error: patch failed: src/lower/scope_chain.rs:2536
+Hunk #4 succeeded at 2917 (offset 312 lines).
+error: while searching for:
+        // are `find_by`'s — a list that names some of them renames
+        // `user:` to `user_id:` on one spelling and emits the
+        // nonexistent `memberships.user` column on the next.
+        "where" | "not" | "find_by" | "find_by!" | "find_sole_by" | "destroy_by" | "delete_by"
+        | "exists?" => {
+            // `where(connected_at: TTL.ago..)` — a RANGE value. Rails
+            // renders `>=` / `<=` / `<` / BETWEEN; the runtime's
+            // `column_predicate` has no Range arm and falls through to
+
+error: patch failed: src/lower/scope_chain.rs:3122
+Hunk #6 succeeded at 3579 (offset 321 lines).
+Hunk #7 succeeded at 3939 (offset 337 lines).
+Hunk #8 succeeded at 3963 (offset 337 lines).
+Hunk #9 succeeded at 4660 (offset 355 lines).
+Hunk #10 succeeded at 4834 (offset 355 lines).
+Hunk #11 succeeded at 5957 (offset 521 lines).
+Checking patch src/project.rs...
+Hunk #1 succeeded at 9177 (offset 608 lines).
+Checking patch tests/assoc_class_method_scope.rs...
+Checking patch tests/rails_surface.rs...
+Checking patch tests/relation_class_method_scope.rs...
+Checking patch tests/scope_body_left_joins.rs...
+Applied patch runtime/ruby/active_record/base.rb cleanly.
+Applied patch runtime/ruby/active_record/base.rbs cleanly.
+Applying patch src/ingest/model.rs with 2 rejects...
+Rejected hunk #1.
+Rejected hunk #2.
+Applied patch src/lower/assoc_attr_key.rs cleanly.
+Applied patch src/lower/first_or_create.rs cleanly.
+Applied patch src/lower/model_to_library/schema.rs cleanly.
+Applying patch src/lower/model_to_library/validations.rs with 2 rejects...
+Rejected hunk #1.
+Rejected hunk #2.
+Applying patch src/lower/scope_chain.rs with 2 rejects...
+Hunk #1 applied cleanly.
+Hunk #2 applied cleanly.
+Rejected hunk #3.
+Hunk #4 applied cleanly.
+Rejected hunk #5.
+Hunk #6 applied cleanly.
+Hunk #7 applied cleanly.
+Hunk #8 applied cleanly.
+Hunk #9 applied cleanly.
+Hunk #10 applied cleanly.
+Hunk #11 applied cleanly.
+Applied patch src/project.rs cleanly.
+Applied patch tests/assoc_class_method_scope.rs cleanly.
+Applied patch tests/rails_surface.rs cleanly.
+Applied patch tests/relation_class_method_scope.rs cleanly.
+Applied patch tests/scope_body_left_joins.rs cleanly.

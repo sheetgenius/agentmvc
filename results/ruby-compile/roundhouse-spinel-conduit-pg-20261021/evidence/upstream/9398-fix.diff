@@ -1,0 +1,80 @@
+commit e7ad51d7f080825055e0bcb876f6ef597aeee695
+Author: Yukihiro "Matz" Matsumoto <[redacted-email]>
+Date:   Sat Oct 17 07:05:25 2026 +0900
+
+    A dispatch arm hands an Integer? parameter the oint its box holds
+    
+    An inherited method's call that dispatches on the receiver's class held
+    its arguments boxed and unboxed each for the arm's parameter. A
+    parameter that holds its nil (`Integer?`, `Float?`) got the plain unbox,
+    which raises on nil and answers an sp_int where the override takes the
+    oint, so the C did not compile (since a07741ff1). Such a parameter now
+    takes the box's oint, its nil kept (emit_unbox_nilable_text).
+    
+    Fixes #9398
+    
+    Co-Authored-By: Claude <[redacted-email]>
+
+diff --git a/src/codegen_fold.c b/src/codegen_fold.c
+index 911e5b927..683d87302 100644
+--- a/src/codegen_fold.c
++++ b/src/codegen_fold.c
+@@ -12162,6 +12162,8 @@ static void emit_arm_arg(Compiler *c, Scope *arm, int a, int atmp_id, TyKind fro
+   else if (from_o && pt == from && !pto) buf_printf(b, "%s(%s)", oint_arg(pt), tn);
+   else if (!from_o && pt == from && pto) buf_printf(b, "%s(%s)", oint_of(pt), tn);
+   else if (pt == TY_POLY && from != TY_POLY && from != TY_UNKNOWN) emit_boxed_text(c, from, tn, b);
++  /* (a parameter that holds its nil takes the box's oint, nil kept: #9398) */
++  else if (from == TY_POLY && pt != TY_POLY && pt != TY_UNKNOWN && pto) emit_unbox_nilable_text(c, pt, tn, b);
+   else if (from == TY_POLY && pt != TY_POLY && pt != TY_UNKNOWN) emit_unbox_text(c, pt, tn, b);
+   else buf_puts(b, tn);
+ }
+diff --git a/test/rbs-seed/oint_arg_through_self_dispatch.expected b/test/rbs-seed/oint_arg_through_self_dispatch.expected
+new file mode 100644
+index 000000000..95721dc7c
+--- /dev/null
++++ b/test/rbs-seed/oint_arg_through_self_dispatch.expected
+@@ -0,0 +1,3 @@
++nil
++5
++nil
+diff --git a/test/rbs-seed/oint_arg_through_self_dispatch.rb b/test/rbs-seed/oint_arg_through_self_dispatch.rb
+new file mode 100644
+index 000000000..489c359c9
+--- /dev/null
++++ b/test/rbs-seed/oint_arg_through_self_dispatch.rb
+@@ -0,0 +1,20 @@
++# spinel: rbs-seed-run
++# An inherited method's call dispatches on the receiver's class, and an
++# override whose parameter is `Integer?` (or `Float?`) takes the argument
++# with its nil: the arm unboxed it as a plain Integer, which nil raises on,
++# and passed an sp_int where the override takes the oint (#9398).
++class OintDispatchBase
++  def f(x) = raise NotImplementedError
++  def g = f(nil)
++  def h(v) = f(v)
++  def q(x) = raise NotImplementedError
++  def r = q(nil)
++end
++class OintDispatchSub < OintDispatchBase
++  def f(x) = x
++  def q(x) = x
++end
++s = OintDispatchSub.new
++p s.g
++p s.h(5)
++p s.r
+diff --git a/test/rbs-seed/sig/oint_arg_through_self_dispatch.rbs b/test/rbs-seed/sig/oint_arg_through_self_dispatch.rbs
+new file mode 100644
+index 000000000..394b77540
+--- /dev/null
++++ b/test/rbs-seed/sig/oint_arg_through_self_dispatch.rbs
+@@ -0,0 +1,9 @@
++class OintDispatchBase
++  def f: (untyped x) -> untyped
++  def h: (Integer? v) -> untyped
++  def q: (untyped x) -> untyped
++end
++class OintDispatchSub < OintDispatchBase
++  def f: (Integer? x) -> Integer?
++  def q: (Float? x) -> Float?
++end

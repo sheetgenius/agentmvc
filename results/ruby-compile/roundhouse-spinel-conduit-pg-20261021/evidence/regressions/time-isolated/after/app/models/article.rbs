@@ -1,0 +1,166 @@
+class Article < ApplicationRecord
+  attr_reader id: Integer
+  attr_writer id: Integer
+  def id?: () -> bool
+  attr_reader author_id: Integer
+  attr_writer author_id: Integer
+  def author_id?: () -> bool
+  def author_id_previously_changed?: () -> bool
+  def saved_change_to_author_id?: () -> bool
+  def author_id_previously_was: () -> untyped
+  attr_reader body: String
+  attr_writer body: String
+  def body?: () -> bool
+  def body_previously_changed?: () -> bool
+  def saved_change_to_body?: () -> bool
+  def body_previously_was: () -> untyped
+  attr_reader created_at: Time?
+  attr_reader created_at_raw: String
+  def created_at=: (Time value) -> nil
+  attr_writer created_at_raw: String
+  def created_at?: () -> bool
+  def created_at_previously_changed?: () -> bool
+  def saved_change_to_created_at?: () -> bool
+  def created_at_previously_was: () -> untyped
+  attr_reader description: String
+  attr_writer description: String
+  def description?: () -> bool
+  def description_previously_changed?: () -> bool
+  def saved_change_to_description?: () -> bool
+  def description_previously_was: () -> untyped
+  attr_reader published_at: Time?
+  attr_reader published_at_raw: String
+  def published_at=: (Time? value) -> nil
+  attr_writer published_at_raw: String?
+  def published_at?: () -> bool
+  def published_at_previously_changed?: () -> bool
+  def saved_change_to_published_at?: () -> bool
+  def published_at_previously_was: () -> untyped
+  attr_reader revision: Integer
+  attr_writer revision: Integer
+  def revision?: () -> bool
+  def revision_previously_changed?: () -> bool
+  def saved_change_to_revision?: () -> bool
+  def revision_previously_was: () -> untyped
+  attr_reader slug: String
+  attr_writer slug: String
+  def slug?: () -> bool
+  def slug_previously_changed?: () -> bool
+  def saved_change_to_slug?: () -> bool
+  def slug_previously_was: () -> untyped
+  attr_reader status: String
+  attr_writer status: String
+  def status?: () -> bool
+  def status_previously_changed?: () -> bool
+  def saved_change_to_status?: () -> bool
+  def status_previously_was: () -> untyped
+  attr_reader tag_list: Array[String]
+  attr_writer tag_list: Array[String]
+  def tag_list?: () -> bool
+  def tag_list_previously_changed?: () -> bool
+  def saved_change_to_tag_list?: () -> bool
+  def tag_list_previously_was: () -> untyped
+  attr_reader title: String
+  attr_writer title: String
+  def title?: () -> bool
+  def title_previously_changed?: () -> bool
+  def saved_change_to_title?: () -> bool
+  def title_previously_was: () -> untyped
+  attr_reader updated_at: Time?
+  attr_reader updated_at_raw: String
+  def updated_at=: (Time value) -> nil
+  attr_writer updated_at_raw: String
+  def updated_at?: () -> bool
+  def updated_at_previously_changed?: () -> bool
+  def saved_change_to_updated_at?: () -> bool
+  def updated_at_previously_was: () -> untyped
+  def self.table_name: () -> String
+  def self._table_sql: () -> String
+  def self.schema_columns: () -> Array[Symbol]
+  def self.schema_time_columns: () -> Array[Symbol]
+  def self.schema_date_columns: () -> Array[Symbol]
+  def self.schema_boolean_columns: () -> Array[Symbol]
+  def self.schema_decimal_columns: () -> Array[Symbol]
+  def self.schema_integer_limits: () -> Hash[String, Integer]
+  def self.instantiate: (Hash[String, untyped] row) -> Article
+  def attributes_before_type_cast: () -> Hash[String, untyped]
+  def self.from_row: (ArticleRow row) -> Article
+  def self.from_stmt: (untyped stmt) -> Article
+  def initialize: (?Hash[Symbol, untyped] attrs) -> nil
+  def attributes: () -> Hash[String, untyped]
+  def []: ((Symbol | String) name) -> untyped
+  def []=: (Symbol name, (Integer | String | Array[String]) value) -> (Integer | String | Array[String] | nil)
+  def update: (Hash[Symbol, untyped] attrs) -> bool
+  def update!: (Hash[Symbol, untyped] attrs) -> Article
+  def fill_timestamps: (bool creating) -> nil
+  def self._find_primary_key_input: ((Integer | Float | String | nil) id) -> Article?
+  def self._exists_primary_key_input: ((Integer | Float | String | nil) id) -> bool
+  def self._adapter_find_by_id: (Integer id) -> Article?
+  def self._adapter_all: () -> Array[Article]
+  def self._adapter_last: () -> Article?
+  def _adapter_insert: () -> Integer
+  def _adapter_update: () -> nil
+  def _adapter_touch: () -> nil
+  def _adapter_delete: () -> nil
+  def self._adapter_count: () -> Integer
+  def self._adapter_any?: () -> bool
+  def self._adapter_exists_by_id?: (Integer id) -> bool
+  def self._adapter_truncate: () -> nil
+  def self.delete_all: () -> Integer
+  def _adapter_reload: () -> Article
+  def _adapter_reload_lock: () -> Article
+  def self._columns_sql: () -> String
+  def self._hydrate_all: (String sql) -> Array[Article]
+  def validate: () -> nil
+  def author: () -> User?
+  def author=: (User? value) -> nil
+  def author_loaded?: () -> bool
+  def comments: () -> Array[Comment]
+  def _preload_comments: (Array[Comment] list) -> nil
+  def comments_loaded?: () -> bool
+  def reload_comments: () -> Array[Comment]
+  def comments_target: () -> Array[Comment]
+  def comment_ids: () -> Array[Integer]
+  def favorites: () -> Array[Favorite]
+  def _preload_favorites: (Array[Favorite] list) -> nil
+  def favorites_loaded?: () -> bool
+  def reload_favorites: () -> Array[Favorite]
+  def favorites_target: () -> Array[Favorite]
+  def favorite_ids: () -> Array[Integer]
+  def article_shares: () -> Array[ArticleShare]
+  def _preload_article_shares: (Array[ArticleShare] list) -> nil
+  def article_shares_loaded?: () -> bool
+  def reload_article_shares: () -> Array[ArticleShare]
+  def article_shares_target: () -> Array[ArticleShare]
+  def article_share_ids: () -> Array[Integer]
+  def self._association_names: () -> Array[Symbol]
+  def before_destroy: () -> nil
+  def self.slug_for: (untyped title) -> String
+  def shared_json: () -> untyped
+  def publish!: () -> untyped
+  def dom_prefix: () -> String
+  def to_param: () -> String
+  def dom_record_key: () -> String
+  def cache_key: () -> String
+  def cache_key_with_version: () -> String
+  def reload: (?untyped options) -> Article
+  def lock!: (?(bool | String | nil) lock) -> Article
+  def to_gid_param: () -> untyped
+  def to_gid_uri: () -> untyped
+  def self.published: (?untyped __rel) -> untyped
+  def self.visible_to: (untyped user, ?untyped __rel) -> untyped
+  def self.__scope_published__0: (ActiveRecord::Relation __rel) -> untyped
+  def self.__scope_visible_to__1: (ActiveRecord::Relation __rel, untyped user) -> untyped
+  def _autosave_author: () -> untyped
+  def before_validation: () -> untyped
+  def self._preload_batch_author: (untyped records) -> untyped
+  def _preload_author: (untyped rec) -> untyped
+  def self._preload_batch_comments: (untyped records) -> untyped
+  def self._preload_batch_favorites: (untyped records) -> untyped
+  def self._preload_batch_article_shares: (untyped records) -> untyped
+  def self._preload_dispatch: (untyped records, untyped name, untyped nested) -> untyped
+  def self.preload_associations: (untyped records, untyped specs) -> untyped
+  def __comments_cache: () -> untyped
+  def __favorites_cache: () -> untyped
+  def __article_shares_cache: () -> untyped
+end

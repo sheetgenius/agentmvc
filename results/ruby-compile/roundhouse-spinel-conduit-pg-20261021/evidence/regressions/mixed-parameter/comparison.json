@@ -1,0 +1,24 @@
+{
+  "classification": "upstream Roundhouse parameter-join regression",
+  "introducing_commit": "0714d4f2184e506a7835e5fd569da6a9170a029d",
+  "parent": "6c26039c644b8b4cd07b0679b12adc2f7666947c",
+  "shared_prerequisite": "Only patch80 source hunk in src/analyze/harvest_return.rs; no other Roundhouse patches in adjacent pair",
+  "public_program": "source.rb; append Probe.run, or use each condition driver.rb",
+  "cruby_stdout": "{\"n\" => 1}\n",
+  "parent_native_stdout": "{\"n\" => 1}\n",
+  "introduced_native_stdout": ":generate\n",
+  "parent_consumer_type": "untyped",
+  "introduced_consumer_type": "Symbol",
+  "repair": "patches/roundhouse/84-upstream-regression-mixed-parameter-arm.patch",
+  "repaired_current_matches_cruby": true,
+  "authoritative_adjacent_results": "results-fresh.json",
+  "current_v8_repaired_results": "results-all.json",
+  "build_evidence": "evidence/execution/c-param-fresh-check-01.log",
+  "source_refresh": "Each archive build touches build.rs and all src/runtime files before cargo; both conditions compile roundhouse independently",
+  "excluded_cached_pairs": [
+    "results-adjacent.json",
+    "results-merge.json"
+  ],
+  "exclusion_reason": "Child builds reused the parent binary; see evidence/regressions/parameter-cache-error.json",
+  "limits": "Preserves explicit mixed unknown arms; bare-untyped policy remains; no global associativity or provenance-lattice proof"
+}

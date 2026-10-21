@@ -1,0 +1,9 @@
+class Object
+  def put: (Box, String) -> untyped # spinel: widened to untyped (slow path)
+end
+
+class Box
+  @data: Hash[String, untyped]
+  def initialize: () -> Hash[String, untyped] # spinel: widened to untyped (slow path)
+end
+

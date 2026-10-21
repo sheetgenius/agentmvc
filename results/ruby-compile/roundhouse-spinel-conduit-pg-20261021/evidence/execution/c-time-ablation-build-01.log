@@ -1,0 +1,176 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 587B done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 1.4s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/conduit-v9-toolchain:3d66ee698bdf
+#4 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/conduit-v9-app:compiled
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [build 1/4] FROM docker.io/library/conduit-v9-toolchain:3d66ee698bdf
+#7 CACHED
+
+#8 [stage-1 1/2] FROM docker.io/library/conduit-v9-app:compiled
+#8 DONE 0.1s
+
+#9 [internal] load build context
+#9 transferring context: 2.74MB 0.1s done
+#9 DONE 0.2s
+
+#10 [build 2/4] WORKDIR /build
+#10 DONE 0.2s
+
+#11 [build 3/4] COPY before/ ./
+#11 DONE 0.1s
+
+#12 [build 4/4] RUN spin build -- --cc=clang --jobs=8  && mkdir -p /runtime/static /runtime/public /runtime/db /runtime/config /runtime/storage  && set -- build/bin/* && test "$#" -eq 1 && install -m755 "$1" /runtime/server && strip /runtime/server  && for dir in static public db config; do if [ -d "$dir" ]; then cp -a "$dir/." "/runtime/$dir/"; fi; done
+#12 2.293 Note: switching to 'cc29f69ee8bd52f1b2d39639b25458909e7cd476'.
+#12 2.293 
+#12 2.293 You are in 'detached HEAD' state. You can look around, make experimental
+#12 2.293 changes and commit them, and you can discard any commits you make in this
+#12 2.293 state without impacting any branches by switching back to a branch.
+#12 2.293 
+#12 2.293 If you want to create a new branch to retain commits you create, you may
+#12 2.293 do so (now or later) by using -c with the switch command. Example:
+#12 2.293 
+#12 2.293   git switch -c <new-branch-name>
+#12 2.293 
+#12 2.293 Or undo this operation with:
+#12 2.293 
+#12 2.293   git switch -
+#12 2.293 
+#12 2.293 Turn off this advice by setting config variable advice.detachedHead to false
+#12 2.293 
+#12 2.299 build blog
+#12 2.448 cc bcrypt/crypt_blowfish.c
+#12 2.586 cc bcrypt/crypt_blowfish.c (threaded)
+#12 2.604 cc bcrypt/sp_bcrypt.c
+#12 2.622 cc bcrypt/sp_bcrypt.c (threaded)
+#12 144.2 warning: --rbs: Attached @variations: Array[Variation] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: AttachedMany @rows: Array[ManyAttachment] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: Fragment @changes: Array[Change] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: ActiveRecord__Base @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: Preloader @records: Array[ActiveRecord__Base] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: UserAgent @tokens: Array[UserAgentToken] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: ApplicationRecord @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: Article @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: ArticleExport @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: ArticleShare @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: Comment @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: Favorite @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: Follow @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 warning: --rbs: User @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 144.2 /build/bin/blog.rb -> /build/build/bin/blog
+#12 DONE 144.3s
+
+#13 [stage-1 2/2] COPY --from=build --chown=10001:10001 /runtime/ /app/
+#13 DONE 0.0s
+
+#14 exporting to image
+#14 exporting layers 0.0s done
+#14 writing image sha256:45561ad31f4488ec4002838fb0a421fc290f91202336501c2bdbb9db21ade949 done
+#14 naming to docker.io/library/conduit-v9-time-ablation:before done
+#14 DONE 0.1s
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 587B done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 3.2s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/conduit-v9-app:compiled
+#4 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/conduit-v9-toolchain:3d66ee698bdf
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [stage-1 1/2] FROM docker.io/library/conduit-v9-app:compiled
+#7 DONE 0.0s
+
+#8 [build 1/4] FROM docker.io/library/conduit-v9-toolchain:3d66ee698bdf
+#8 DONE 0.0s
+
+#9 [build 2/4] WORKDIR /build
+#9 CACHED
+
+#10 [internal] load build context
+#10 transferring context: 2.74MB 0.1s done
+#10 DONE 0.1s
+
+#11 [build 3/4] COPY after/ ./
+#11 DONE 0.1s
+
+#12 [build 4/4] RUN spin build -- --cc=clang --jobs=8  && mkdir -p /runtime/static /runtime/public /runtime/db /runtime/config /runtime/storage  && set -- build/bin/* && test "$#" -eq 1 && install -m755 "$1" /runtime/server && strip /runtime/server  && for dir in static public db config; do if [ -d "$dir" ]; then cp -a "$dir/." "/runtime/$dir/"; fi; done
+#12 3.009 Note: switching to 'cc29f69ee8bd52f1b2d39639b25458909e7cd476'.
+#12 3.009 
+#12 3.009 You are in 'detached HEAD' state. You can look around, make experimental
+#12 3.009 changes and commit them, and you can discard any commits you make in this
+#12 3.009 state without impacting any branches by switching back to a branch.
+#12 3.009 
+#12 3.009 If you want to create a new branch to retain commits you create, you may
+#12 3.009 do so (now or later) by using -c with the switch command. Example:
+#12 3.009 
+#12 3.009   git switch -c <new-branch-name>
+#12 3.009 
+#12 3.009 Or undo this operation with:
+#12 3.009 
+#12 3.009   git switch -
+#12 3.009 
+#12 3.009 Turn off this advice by setting config variable advice.detachedHead to false
+#12 3.009 
+#12 3.015 build blog
+#12 3.142 cc bcrypt/crypt_blowfish.c
+#12 3.271 cc bcrypt/crypt_blowfish.c (threaded)
+#12 3.287 cc bcrypt/sp_bcrypt.c
+#12 3.303 cc bcrypt/sp_bcrypt.c (threaded)
+#12 146.4 warning: --rbs: Attached @variations: Array[Variation] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: AttachedMany @rows: Array[ManyAttachment] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: Fragment @changes: Array[Change] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: ActiveRecord__Base @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: Preloader @records: Array[ActiveRecord__Base] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: UserAgent @tokens: Array[UserAgentToken] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: ApplicationRecord @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: Article @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: ArticleExport @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: ArticleShare @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: Comment @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: Favorite @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: Follow @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 warning: --rbs: User @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#12 146.4 /build/bin/blog.rb -> /build/build/bin/blog
+#12 DONE 146.5s
+
+#7 [stage-1 1/2] FROM docker.io/library/conduit-v9-app:compiled
+#7 CACHED
+
+#13 [stage-1 2/2] COPY --from=build --chown=10001:10001 /runtime/ /app/
+#13 DONE 0.1s
+
+#14 exporting to image
+#14 exporting layers 0.1s done
+#14 writing image sha256:150d0f19415ab5c242134c4fb908316b4da0c96972f641f5a8c356219d27803a done
+#14 naming to docker.io/library/conduit-v9-time-ablation:after done
+#14 DONE 0.1s

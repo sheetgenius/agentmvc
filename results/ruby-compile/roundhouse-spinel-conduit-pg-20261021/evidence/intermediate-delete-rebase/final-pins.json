@@ -1,0 +1,22 @@
+{
+  "observed_utc": "2026-10-21T04:41:00Z",
+  "roundhouse": "1c84d346361237ef9a99b6c01cead7c340532330",
+  "spinel": "6ca6d451b97452d8a8b9dd8f6af51a391f060570",
+  "spinel_fix": "e7ad51d7f080825055e0bcb876f6ef597aeee695",
+  "spinel_fix_is_ancestor": true,
+  "roundhouse_patches": 10,
+  "spinel_patches": 1,
+  "patch_manifest_sha256": "3d66ee698bdf63fb48fa42de8e0e186248ac209a50d6d6eb3d7b8169460d91d0",
+  "roundhouse_tree_sha256": "6aed8012ea7045f0b98e5f8d1a98d12d1b7a17b3ebb7f70ed4f3cbe7f4afc5d8",
+  "spinel_tree_sha256": "35680c8e6258aa53351b3ce401eb45c6b237a783a9c16f9e31e480dffa9a71d5",
+  "spinel_dist": "6ca6d451b\n2026.09.12+11842",
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v9-20261021-final",
+  "spinel_patch_manifest_sha256": "497b76e59719a7aa95d938bb55544f8e0ffcb080ddade6022e27c2c2739ccdf9",
+  "corrections": [
+    "10: retain String header contract in generated RBS",
+    "50: carry upstream per-thread transaction joinability API",
+    "Spinel 91: propagate nil evidence before final return derivation",
+    "82: avoid quoting already-quoted physical table in bulk UPDATE",
+    "83: seed typed temporal storage before normalizing supplied values; restore pre-0b20 initialization order"
+  ]
+}

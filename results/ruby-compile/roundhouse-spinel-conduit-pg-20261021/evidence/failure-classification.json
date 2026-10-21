@@ -1,0 +1,121 @@
+{
+  "scope": "Gate/build blockers in diagnostic conditions; final acceptance is separate",
+  "cases": [
+    {
+      "symptom": "String request headers refused through Struct path",
+      "classification": "rebase error, missing existing contract",
+      "repair": "Fold String Hash RBS into patch10",
+      "evidence": "evidence/final-pins.json"
+    },
+    {
+      "symptom": "Missing per-thread transaction joinability methods",
+      "classification": "rebase error, libpq contract omission",
+      "repair": "Fold existing upstream getter/setter into50",
+      "evidence": "evidence/intermediate-8rh-1sp/"
+    },
+    {
+      "symptom": "Hash with nil value fails native compilation",
+      "classification": "upstream Spinel regression",
+      "introducing_commit": "a07741ff1fad0304029eb8f515ba042f73f42f7b",
+      "repair": "Spinel91",
+      "evidence": "evidence/regressions/late-hash-final/comparison.json"
+    },
+    {
+      "symptom": "Bulk UPDATE double quotes table; share creation HTTP500",
+      "classification": "upstream Roundhouse runtime regression",
+      "introducing_source_change": "d5bbeaaaa58c1213c6ff2429531d90ac8edf8378",
+      "repair": "Roundhouse82",
+      "evidence": "evidence/regressions/bulk-update/"
+    },
+    {
+      "symptom": "Time assigned to String raw slot; published article HTTP500",
+      "classification": "upstream Roundhouse temporal constructor contract defect",
+      "introducing_source_change": "0b20a0f96a61d4fdcdc126180635c24bde1db7bc",
+      "native_trigger_bisected": false,
+      "repair": "Roundhouse83",
+      "evidence": "evidence/regressions/time-comparison.json"
+    },
+    {
+      "symptom": "13/17 API files: deletes wipe unrelated records, later DELETE404",
+      "classification": "rebase error",
+      "repair": "Move PostgreSQL TRUNCATE from record deletion to fixture truncation in50",
+      "evidence": "evidence/regressions/delete-rebase.json"
+    },
+    {
+      "symptom": "17/17 API files then live presence timeout, Room/Integer TypeError",
+      "classification": "upstream Roundhouse parameter-join regression",
+      "introducing_source_change": "0714d4f2184e506a7835e5fd569da6a9170a029d",
+      "repair": "Roundhouse84",
+      "evidence": "evidence/regressions/mixed-parameter/",
+      "introducing_commit": "0714d4f2184e506a7835e5fd569da6a9170a029d",
+      "adjacent_native_pair_verified": true
+    },
+    {
+      "symptom": "Wrong local manual build context dropped retained Relation helpers",
+      "classification": "environment/assembly error",
+      "repair": "Reject mismatched context; replay checksummed series",
+      "evidence": "evidence/assembly-error.json"
+    },
+    {
+      "symptom": "Capacity-interrupted build/gate attempts",
+      "classification": "environment/interruption; not conformance result",
+      "exit": 130,
+      "evidence": [
+        "evidence/execution/c-build-final-01.json",
+        "evidence/execution/c-compiled-gate-01.json",
+        "evidence/execution/c-compiled-gate-03.json"
+      ]
+    },
+    {
+      "classification": "diagnostic build-cache error, excluded from attribution",
+      "symptom": "An archived child source reused its parent Rust binary, producing false passing adjacent results",
+      "repair": "Force fresh build.rs/src/runtime mtimes and require both versions to compile",
+      "evidence": "evidence/regressions/parameter-cache-error.json"
+    }
+  ],
+  "gate_iterations": [
+    {
+      "gate": "c-compiled-gate-02",
+      "api_passed": 4,
+      "api_total": 17,
+      "blockers": [
+        "temporal initialization",
+        "bulk UPDATE quoting",
+        "record deletion rebase error"
+      ]
+    },
+    {
+      "gate": "c-compiled-gate-04",
+      "api_passed": 13,
+      "api_total": 17,
+      "blockers": [
+        "record deletion rebase error"
+      ]
+    },
+    {
+      "gate": "c-compiled-gate-05",
+      "api_passed": 17,
+      "api_total": 17,
+      "blockers": [
+        "live Room parameter narrowed to Symbol"
+      ]
+    }
+  ],
+  "not_repaired": [
+    {
+      "finding": "String alias mutation differs from CRuby",
+      "classification": "existing gap, reproduced on v8",
+      "evidence": "evidence/regressions/string-alias/comparison.json"
+    },
+    {
+      "finding": "New malformed-JSON edge response is HTML400 instead of rescuedJSON400",
+      "introducing_source_change": "9f376e22e1b59991525a0e49e1636d546ed69ce5",
+      "evidence": "evidence/regressions/malformed-json/comparison.json"
+    },
+    {
+      "finding": "Unprefixed String literal mutation raises FrozenError, CRuby prints ab",
+      "classification": "Existing on v8 and final Spinel",
+      "evidence": "evidence/regressions/literal-mutability/"
+    }
+  ]
+}

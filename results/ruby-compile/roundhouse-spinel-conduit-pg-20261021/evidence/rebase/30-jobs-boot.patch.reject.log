@@ -1,0 +1,41 @@
+Checking patch docs/guide/spinel-jobs.md...
+Checking patch runtime/ruby/rails.rb...
+Hunk #1 succeeded at 447 (offset 3 lines).
+Checking patch runtime/ruby/rails.rbs...
+error: while searching for:
+  end
+
+  class Application
+    def session_cookie_key: () -> String
+    def forgery_protection_verification_strategy: () -> String
+    def public_file_server_headers: () -> Hash[String, String]
+
+error: patch failed: runtime/ruby/rails.rbs:73
+Checking patch runtime/spinel/scaffold/main.rb...
+Hunk #1 succeeded at 887 (offset 9 lines).
+Checking patch src/ingest/app.rs...
+error: while searching for:
+        }
+    }
+
+    // Top-level constants an initializer defines that are not mixins —
+    // kept or dropped after every app file is read (see
+    // `keep_initializer_defined`).
+
+error: patch failed: src/ingest/app.rs:1353
+Hunk #2 succeeded at 9246 (offset 231 lines).
+Checking patch src/ingest/boot_hooks.rs...
+Checking patch src/ingest/mod.rs...
+Hunk #1 succeeded at 38 (offset 6 lines).
+Checking patch tests/boot_hooks.rs...
+Applied patch docs/guide/spinel-jobs.md cleanly.
+Applied patch runtime/ruby/rails.rb cleanly.
+Applying patch runtime/ruby/rails.rbs with 1 reject...
+Rejected hunk #1.
+Applied patch runtime/spinel/scaffold/main.rb cleanly.
+Applying patch src/ingest/app.rs with 1 reject...
+Rejected hunk #1.
+Hunk #2 applied cleanly.
+Applied patch src/ingest/boot_hooks.rs cleanly.
+Applied patch src/ingest/mod.rs cleanly.
+Applied patch tests/boot_hooks.rs cleanly.

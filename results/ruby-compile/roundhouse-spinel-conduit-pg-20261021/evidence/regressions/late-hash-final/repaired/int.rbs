@@ -1,0 +1,5 @@
+class Object
+  def pack: (Integer) -> Hash[String, untyped] # spinel: widened to untyped (slow path)
+  def relay: (Integer) -> Hash[String, untyped] # spinel: widened to untyped (slow path)
+end
+

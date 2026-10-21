@@ -1,0 +1,18 @@
+{
+  "condition": "diagnostic-Time-backtrace-v9",
+  "image": "conduit-v9-time-ablation:before",
+  "requests": [
+    {
+      "path": "/api/users",
+      "status": 201,
+      "body": "{\"user\":{\"email\":\"[redacted-email]\",\"token\":\"[redacted]\",\"username\":\"timerepro\",\"bio\":null,\"image\":null}}"
+    },
+    {
+      "path": "/api/articles",
+      "status": 500,
+      "body": "internal server error"
+    }
+  ],
+  "article_rows": "",
+  "db_error": ""
+}

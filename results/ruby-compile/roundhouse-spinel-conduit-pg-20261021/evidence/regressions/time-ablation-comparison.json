@@ -1,0 +1,34 @@
+{
+  "classification": "upstream temporal constructor contract defect exposed by native compilation",
+  "introducing_source_change": "0b20a0f96a61d4fdcdc126180635c24bde1db7bc",
+  "isolated_patch83": true,
+  "first_bad_spinel_not_bisected": true,
+  "only_changed_emitted_files": [
+    "app/models/article.rb",
+    "app/models/article_export.rb",
+    "app/models/article_share.rb",
+    "app/models/comment.rb",
+    "app/models/user.rb"
+  ],
+  "shared": "SQL82 in both; identical emitted signatures and all other Ruby files; same Spinel6ca plus91",
+  "before": {
+    "image_id": "sha256:45561ad31f4488ec4002838fb0a421fc290f91202336501c2bdbb9db21ade949",
+    "article_status": 500,
+    "article_rows": "",
+    "raw_record": "time-ablation-before.json"
+  },
+  "after": {
+    "image_id": "sha256:150d0f19415ab5c242134c4fb908316b4da0c96972f641f5a8c356219d27803a",
+    "article_status": 201,
+    "article_rows": "1|2026-10-21 08:22:46.888033|2026-10-21 08:22:46.887822\n",
+    "raw_record": "time-ablation-after.json"
+  },
+  "types": {
+    "writer": "String?",
+    "supplied": "Time",
+    "CRuby_final_raw": "String after formatting"
+  },
+  "standalone_minimal_ruby_reproducer": false,
+  "limitation": "Small extracted constructors pass; the smallest observed mismatch still requires the emitted application context. This pair isolates the temporal initialization change without claiming a first-bad Spinel revision.",
+  "report_text": "An isolated emitted-program pair now holds SQL82, all sidecars and every other emitted file identical: only the five model constructors differ. The same published-article request returns 500 before 83 and 201 after it, with the row present only after. The [pair](evidence/regressions/time-ablation-comparison.json) records immutable image IDs and all emitted-file hashes."
+}

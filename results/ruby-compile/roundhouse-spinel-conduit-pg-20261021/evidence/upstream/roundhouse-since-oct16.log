@@ -1,0 +1,635 @@
+1c84d3463 Merge pull request #1168 from dai199/module-protocol-receivers
+64238712d Review: a String#constantize from an included module is an override too
+80fd7d115 Review: an app override is not the Module protocol
+126bd1b67 x.class, is_a?(Class) and constantize answer Module queries only
+cd8856528 Module protocol on receivers proven to be class objects: x.class, tap, is_a?(Class), constantize
+f4b3dcb10 Merge pull request #1166 from dai199/builtin-consts
+b713b0d4f Review: a splatted argument is not a Range bound
+3196e43f9 Merge pull request #1142 from roger-wilco-forever/connected-to-writing
+b777d5040 Review: type Range.new through resolution, not an ingest rewrite; gate Object::RUBY_VERSION
+64d3c7cea Range.new, is_a?(Proc), RUBY_VERSION and rescue LoadError resolve as Ruby has them
+9f8e17578 Stop naming .ruby and .css.erb as un-ingested template engines
+24f17026d Merge pull request #1157 from eddygarcas/regex-string-interpolation
+56a979747 Merge pull request #1155 from eddygarcas/concern-probe-diagnostics
+55be81268 Merge pull request #1144 from eddygarcas/validates-uniqueness
+98479d0a3 Fractal: ingest only the selected classes and what the passes declare (#1156)
+e92bc2c0e validates uniqueness: a self.default_scope keeps the gap too
+9d2cfda6b ClassConsts: fold regexes and strings built from String constants
+02c55fe60 Concern accessor probe: discard its diagnostics with its items
+b6e6a68b8 Merge pull request #1154 from eddygarcas/concern-included-constants
+495b55a86 validates uniqueness: a call-level allow_nil/allow_blank applies to it
+1826441fd uniqueness gap: collect it where the CLI and MCP both read a target's gaps
+7b2ffac86 validates uniqueness: exclude the record by its declared primary key
+c6e8cca31 validates: lower `uniqueness:` on the targets that ship the runtime Relation
+7d150d96f Concern `included do`: validations read the concern's own constants
+83c51f653 Merge pull request #1145 from dai199/spinel-lanes
+f2d3bf310 Merge pull request #1034 from eddygarcas/jbuilder-cache-key-parity
+47f4f5435 Merge pull request #1151 from eddygarcas/view-ruby-handler
+c829c7bf3 Merge pull request #1152 from eddygarcas/render-json-serializer-options
+705189c24 Merge pull request #1137 from eddygarcas/validates-on-context
+b99cf8b77 The interval shim requires the Duration it builds
+06f768380 ActionText::Content.new takes a Fragment, as Rails' does
+023e88a6d Copy active_support_interval.rb into the Spinel harnesses' runtime dirs
+c3fa3ca41 tests: pin the full shape of the on: guards
+8c568ddd7 validates: `on: :create` / `on: :update` guard the check by the record's state
+0c66f7907 Merge pull request #1135 from eddygarcas/validates-exclusion
+e22d20b7d render json: with serializer options is a reported residue
+877bcc594 Merge pull request #1150 from dai199/source-gem-autoload
+644002880 exclusion: false / inclusion: false add no validator
+5249cded1 exclusion: say when nil is reserved
+a126b4bf7 validates: lower `exclusion: { in: … }` as the inverse of inclusion
+0077c7973 Merge pull request #1139 from eddygarcas/validation-callback-on-guard
+b9b42b69e Merge pull request #1143 from eddygarcas/classconsts-reassign
+a6485232d Merge pull request #1123 from eddygarcas/extend-cross-namespace
+29fbd14ef Review: autoload only at load time; drop a lone qualified carrier extend
+74dec12e2 Merge pull request #1146 from roger-wilco-forever/faraday
+7b345f2b7 An included hook that extends its carrier and does more keeps the rest
+786415249 Add scripts/bench-paired, a per-route paired latency benchmark (#1149)
+b5daab706 Ingest `.ruby` view templates (Rails' :source.to_proc handler)
+b4131967e source_gems: follow a literal autoload as a require
+6842e50ed Faraday demand: token boundary, not AnyText substring
+4d58d8eb4 Faraday: refuse test-module parents, includes, inners
+dcc70cb74 Faraday: refuse controller and sibling superclasses
+536838d3a Faraday: refuse superclass refs; demand bare Faraday
+1f39aa58b Re-measure the gradual ceiling after rebasing onto main (858)
+26461d0c2 Relation#cache_key/#cache_version hand out a fresh String
+1dd5cf934 Relation#cache_version refuses a custom FROM, or an explicit select with distinct, under a LIMIT/OFFSET window
+c838f1520 Test fix: compare cache_key directly, not cache_key_with_version
+183123d42 Share hoisted helper constant names across html and jbuilder views
+eb6cfbade Relation#compute_cache_version: window LIMIT/OFFSET, refuse on GROUP BY; collision-resistant digest
+8b35585e0 Relation#order_parts!/#clear_ordering: clear cache-key memos too
+67ec77917 Base#cache_version: parse the stored timestamp before to_f
+9af70351b Address CodeRabbit's #1034 findings on Relation and the jbuilder emit
+59cdd3498 Move Base#cache_key_with_version out of base.rb (strict targets)
+958d93e60 Fix the cache-key commits against the full suite
+3df57deb4 ActiveRecord::Base#cache_key_with_version for jbuilder cache!
+846108cbe Run apply_helper_lowering on jbuilder views too
+469d08fd0 ActiveRecord::Relation#cache_key_with_version for jbuilder cache!
+b256491f0 Test: a class-defined method must not outrank the prepended module
+0c1dd9cb2 Test: also assert analyze_and_lower's own diagnostics are empty
+7abf6a102 Resolve a rooted ::M extend/prepend to the top-level module only
+1d8ab3405 Replay a library class's extend/prepend of a cross-namespace module (#1114)
+3db9709bd Merge rubys/main; refuse Faraday on Roda
+ce59fb9bf Merge pull request #1125 from dai199/pundit-source
+55555a5f9 faraday-multipart and faraday-retry run with Faraday
+9e03beb76 Faraday runs as the real gem on ruby and jruby, refused elsewhere
+e6f29ae41 `connected_to(role: :writing)` is its block
+ae08e03d5 ClassConsts: a later write replaces a folded constant
+57d0f81bf source_gems: resolve the installed root as the OS does
+cc304282b CI: rename SPINEL11→SPINEL; demote smoke/sidekiq; skip missing docker.tgz
+f729cb3cb Validation callbacks with on: guard on the model's own persisted?
+ba5471063 Merge pull request #1134 from eddygarcas/validates-integer-constants
+0a903c6f1 Spinel: pin Tep::Response#headers as Hash[String, String] (#1136)
+3ccc4a777 Crystal: stamp Hash return onto empty `{}` tails (#1132)
+3596882ce fix: drop leftover conflict markers in emit_and_run module list
+1782c8108 Merge remote-tracking branch 'rubys/main' into pr-1134-check
+1f057d8a2 Merge pull request #1133 from eddygarcas/dynamic-where-forms
+dfea9ac0e Merge pull request #1126 from eddygarcas/spinel-harness-db
+f894b9e81 Merge remote-tracking branch 'rubys/main' into validates-integer-constants
+50521c36c Merge pull request #1127 from dai199/ledger-severity
+c8ce5ddf2 Ledger spinel-blog untyped ceiling for Relation Range arms
+325ae1847 CI: drop advisory campfire-latest tip job
+3ee65e111 Relation calculations qualify their column as Rails does under from(...) (#1124)
+a540bb29f emit_and_run: run_spinel_with_db uses the harness Db boot
+301d6b809 Merge pull request #1122 from iberianpig/fix/wire-header-import
+c6853420b Fill initializer_response_headers in the roundtrip App fixture
+941e5f8fb validates: an integer constant of the model is a length or numericality bound
+71c234abc A Range in a runtime hash condition renders as Rails' comparison
+c234d6b98 Class-level where forwards every condition form; find_by takes SQL
+5a211a458 A reader that yields is not a delegate target (CodeRabbit)
+aed34c455 A model delegates to its own reader, and an inherited visibility change no longer hides a delegate's visibility
+9452b8bcd CI: Spinel optimization meta (reuse bin, compile-once, path-own main)
+f14117689 Initializer after_action headers, inert bare constants, rack-protection out of infrastructure
+c55ac9c11 Relation#sum keeps a with_recursive CTE
+bf11746f3 source_gems: normalize the installed root; constantize: strip a leading ::
+2678e1ded Merge pull request #1104 from eddygarcas/validates-format-flags
+a133fc28c emit_and_run: run_spinel_with_db configures the database before the script
+0347985d0 Relation calculations qualify their column as Rails does under from(...)
+14cfe1a4e html_escape answers a fresh String when the input is already safe (#1116)
+c92268cd1 constantize: one generated lookup instead of a case at every call site
+8567b89e6 ingest: read constraints: on resources/resource (#857) (#1087)
+0ef3f1b0b Schedule Full validation about every three hours (#1121)
+f03021b94 ci: retrigger sparse compact-required gate for #1104
+54c493d15 Merge pull request #1049 from iberianpig/fix/session-cookie-key
+4b2e4acf2 Merge pull request #1111 from deepj/fix/turbo-partial-ivars
+bc1941cb7 TimeZone.all skips a name whose zone file is missing, as Rails 8.1 does (#1084)
+f0319bb21 source_gems: compile an installed gem's Ruby with the app
+fcbbf3629 Match native wire header import to Puma
+60ab74a2d pundit runs from its own source: a nested superclass loads, and safe_constantize answers the app's constants
+853714ca6 regex flags: share RE2/options mapping; Elixir m is sm
+df6ae05ba Session cookie ingest: step IR, ledger purity, Rails underscore
+ba1049ade Align flash rename across def and callers
+8b9994d14 ingest: survey-recover bad constraints(...) blocks
+79c92485f Merge rubys/main into fix/turbo-partial-ivars
+3243083f9 ingest: one fail-closed reader for constraints: regex maps
+a7b94abc6 TimeZone.all builds through lookup, not a second rescue
+bed644e15 Merge main into timezone-missing-zonefile
+bc5c5ff6f Merge pull request #1109 from eddygarcas/mailer-private-wrappers
+2494d32b0 Merge upstream/main into fix/session-cookie-key
+dbab1278e Merge main into validates-format-flags
+51d9d4887 Spinel lane: honest shapes Spinel can compile (#1115)
+070a0f6b8 Merge remote-tracking branch 'upstream/main' into fix/turbo-partial-ivars
+6d0be9e21 Merge pull request #1093 from thomasklemm/thomasklemm/framework-surface-constants-ab88
+d58da6167 Hoist a traced instance Object#extend onto one .new (#1070)
+eac90c0ec test: remeasure the merged-tree typing ceilings
+e7358f616 fix(project): drop YAML config from the spinel toolchain tree
+4f43a9794 fix(runtime): substitute Arel positional binds in one pass
+e58b8d94d fix(runtime): close the framework-surface review findings
+6d557f93a Serve baked stylesheets at the Propshaft fingerprint
+39736dd60 Ledger the raw-inference vars from the new framework classes
+a8db8b575 Expect the Preloader class and RecordNotDestroyed to typecheck
+0a663fbed Keep casts, bound order, and SQL notifications
+572bc83d7 Add ActiveJob::EnqueueError and Continuable
+7f2fd7f93 Add the ActiveSupport constants the ruby runtime was missing
+426ae55f5 Cast ActiveRecord::Type::String and Type::Integer
+deb163964 Resolve Associations::Preloader and preload through it
+964006608 Add the ActiveRecord exceptions app code rescues
+bba5da398 Teach Arel.sql to quote binds and render node text
+8658021ca Fix main-unit reds: relative reload + class-body constant (#1113)
+25e199787 Run Campfire's room counter through ActiveRecord database tasks (#1071)
+22d3c4f35 regex flags: Ruby's `m` keeps line anchors as well as dot-all
+217558c77 validates format: accept i/m-flagged regex literals and constants
+a093c45b7 validates format: carry a regex's flags through the IR and emit them correctly
+a2001db28 Merge pull request #1108 from eddygarcas/validates-lambda-conditions
+1de3fcf54 A view's @notice and a turbo_stream partial's ivars reach the template
+ce3a07015 Keep validation lambda guards honest
+4bb2d10ad mailer class side: wrap only public action methods
+a9af907d0 tests: set the new Validation condition fields in struct literals
+6b1931165 Bake Propshaft CSS at the digested path for JRuby
+2d6fc4496 validates: lower a lambda/proc if:/unless: condition, not just a Symbol
+bb90df251 Merge pull request #1078 from thomasklemm/thomasklemm/non-inertia-lowering-gaps-da00
+5406d9f5a Merge pull request #1101 from Shopify/roundhouse:hold-symbol-text-in-an-arc-str-so-cloning-a-name
+7cdc84d4a Merge pull request #1100 from eddygarcas/macro-rescue-splat-2
+d9121bd38 Merge pull request #1098 from eddygarcas/planner-unknown-class-guard
+f12bd5429 Merge pull request #1092 from eddygarcas/haml-continuation-offsets
+0418e86f6 Merge pull request #1076 from thomasklemm/thomasklemm/local-lambda-call-types-d42a
+09793e609 Initializer ledger: name who each dropped statement belongs to (#1099)
+8fed6fcb9 Drop a lambda binding a join cannot see
+2c1c027f8 Borrow class-side macro methods and copy only included modules
+84e78cfb2 Box the rarely-set Expr annotations (#1095)
+49b0e89e9 Resolve superclasses and mixins once from Rubydex (#1094)
+4844be8b4 Add a fractal target: specialize selected classes with application knowledge (#1089)
+6f76dbde8 Refuse non-redirect statuses, colliding temps, and alphanumeric escapes
+7b33a1fec Hold Symbol text in an Arc<str>, so cloning a name does not allocate
+5a65849d9 class macros: a splat in a rescue list doesn't block the expansion
+a5c082e63 Keep the lambda on the side of an if that does not write it
+5d59004a8 Merge upstream main into the lowering-gaps branch
+e06cc325f Merge remote-tracking branch 'upstream/main' into thomasklemm/local-lambda-call-types-d42a
+4d339291f Retire a stored lambda when a running body writes it
+854a119c9 ingest: refuse an unparseable or modified constraints: regex
+b669d506f i18n: `I18n.locale_available?` and the gem's `I18n::Locale::Tag` (#1086)
+43a7865e6 Merge pull request #1074 from thomasklemm/thomasklemm/lower-untyped-ceilings-bfd6
+aca712ae6 Borrow library-class methods when splicing concerns, instead of cloning them (#1090)
+a9c41eb07 Merge remote-tracking branch 'upstream/main' into thomasklemm/local-lambda-call-types-d42a
+452bd6e1f Compile BuildTarget on wasm (#1088)
+7c41388df Merge pull request #1069 from thomasklemm/thomasklemm/issue-823-alias-and-table-prefix-a9e0
+24b682b56 Retire a stored lambda on every local write
+ee21b77c7 tests: make the missing-zone-file count relative, not fixed
+a251e46cd Merge upstream main into the lowering-gaps branch
+264c5e7b9 Merge remote-tracking branch 'upstream/main' into thomasklemm/local-lambda-call-types-d42a
+725d38035 Run forwarded calls whose override keyword default was restored
+0ed046066 Keep the interval fallback out of the emitted require graph
+dd5cd7cfa futamura planner: don't let a mistyped value-constant class clear a route
+d801696ee haml: pin the marker-line expression's start position in its test
+5ccf883b4 Merge pull request #1063 from iberianpig/fix/propshaft-asset-paths
+646b91ae8 Merge remote-tracking branch 'upstream/main' into thomasklemm/local-lambda-call-types-d42a
+f9d8008f2 Shorten the CI unit-test critical path (#1081)
+80cfe6b75 Read a deep_dup key's class once
+ab06a52a6 ingest: read constraints: on resources/resource (#857)
+88623a48c haml: map a marker line's expression from its real first byte
+b9475e05f Ask once whether an event name is text
+8c85d7ba1 Share the enlist walk between save and destroy
+8d45c4b6e Merge upstream main and pin the remeasured ceilings
+ad830224e Merge remote-tracking branch 'upstream/main' into thomasklemm/local-lambda-call-types-d42a
+7fc276027 Bound lambda refinement and keep a blocked call a method
+140b4ee2d span: snap a mid-character offset back before resolving line/col
+a83e3ad08 Merge branch 'main' of https://github.com/rubys/roundhouse into thomasklemm/issue-823-alias-and-table-prefix-a9e0
+0bd3092e7 haml: clamp joined continuation segments to the first line's end
+ef5bf503c Keep the branch join for locals the condition assigns
+9d7c1a774 TimeZone.all skips a name whose zone file is missing, as Rails 8.1 does
+87c1dcadf Merge pull request #948 from ljachymczyk/activemodel-attributes
+bda26aa42 Merge pull request #1077 from thomasklemm/thomasklemm/validates-option-ingest-a553
+3b10302c7 Merge branch 'main' of https://github.com/rubys/roundhouse into thomasklemm/issue-823-alias-and-table-prefix-a9e0
+28bd4f4d3 Merge remote-tracking branch 'upstream/main' into thomasklemm/local-lambda-call-types-d42a
+e559e01c4 Merge pull request #1009 from iberianpig/fix/pluck-multiple-columns
+fc7fad0cb Merge pull request #1079 from thomasklemm/thomasklemm/inertia-rails-patterns-6aab
+bdf5ccb0d Fix Propshaft Makefile copy rules for stylesheets only
+1b91fdc15 Keep the Oj emit gate out of the wasm build
+fa943145b Lower inclusive numericality bounds
+6b84c1af4 Merge upstream main into the lowering-gaps branch
+3664ea02b Refuse Array.try_convert outside the Ruby family
+fd461bec4 Diagnose inclusive numericality bounds
+d739ea23c Keep Ruby emit off the host-only project module on wasm
+9d7ed328b Publish string locals that both redirect branches assign
+636492c77 Merge pull request #1068 from thomasklemm/thomasklemm/extract-conditional-get-eb3b
+a1918f68a Merge upstream main and keep the Inertia untyped ceiling
+ba0ea7e11 i18n: `t` on an Array, a number or a boolean answers the value as it is (#1075)
+994ec5f2a Merge branch 'main' of https://github.com/rubys/roundhouse into thomasklemm/issue-823-alias-and-table-prefix-a9e0
+cd9ba6a54 Sanitize an Inertia location before either response
+0c720e5c4 Merge pull request #1032 from eddygarcas/planner-rta-3
+71c4f39a6 Merge branch 'main' of https://github.com/rubys/roundhouse into thomasklemm/pluck-projection-values-3542
+4d97f2df5 Lower inclusive numericality bounds
+5e1dbe23c Merge branch 'main' of https://github.com/rubys/roundhouse into thomasklemm/issue-823-alias-and-table-prefix-a9e0
+8add5cb06 Read loaded ids from the primary key
+f6d6db73b Join locals assigned on some paths through a branch
+6d8685bd3 Type the attribute casts as an object
+07236d979 Lower the untyped ceiling for computed Inertia props
+4f7ad70f9 Align Makefile assets with Propshaft digested CSS names
+886373bc3 Merge pull request #1073 from thomasklemm/thomasklemm/avoid-app-clone-data-define-e727
+c3b0426bb Merge upstream main into extract-conditional-get
+facf80961 Keep the column reader an override's super calls
+d77e99754 Pass the inclusion range into the lowerer unit test
+3c580e33d Merge pull request #1007 from roger-wilco-forever/oj
+27d3e2233 Refuse an interval column on the Roda target
+df8e12da9 Pin a qualified class constant to Ruby's nesting
+08927f10c Treat inertia_location as the action response
+e1d0f3481 Resolve constant callees with the source constant resolver
+e4b900476 futamura planner: a module's includers and extenders are below it
+55bb9edbd Load the interval parser from the source tree too
+00132d876 Record the untyped sites in computed Inertia props
+340c3201a Merge pull request #1072 from thomasklemm/thomasklemm/through-writer-join-5cfd
+8ddd8f2e8 Encode a nested record in a computed Inertia prop
+f990ca327 Restore anonymous keyword contracts for constant callees
+7072715e8 Leave an Inertia full_page redirect as a survey gap
+a9c6a1bc6 Keep once, merge, lazy, and scroll Inertia props as survey gaps
+c643790a4 Include an Inertia always prop on a partial reload
+dda4822b9 Keep Ruby param-bind defaults compiling on wasm
+e961ae523 Evaluate Proc and InertiaRails props in a computed hash
+e7d126d89 Answer inertia_location with a 409 for an Inertia visit
+8a3143c4c Carry Inertia preserve_fragment onto the next visit
+73a8b7282 Carry Inertia clear_history onto the next visit
+34f841175 Leave inertia: true and a Hash as a survey gap
+18fa6eb69 Lower a computed Inertia component name
+16ac59b60 Merge pull request #997 from deepj/fix/assoc-build-declared-class
+e65da9020 Merge branch 'main' of https://github.com/rubys/roundhouse into thomasklemm/issue-823-alias-and-table-prefix-a9e0
+f176e82fe Restore keyword parameters that an anonymous packet targets.
+d1ee47d88 Allow a concern class method to share a name with an instance method
+2366cc24a Require irregular gems whose entry file is the gem name
+b8fe97c35 Map irregular gem names to the constants Ruby emit passes through
+22357cdad Serve route redirects and alternation constraints
+2ca6aaf2d Destructure a splat inside a nested assignment
+dc5da367d Treat PostgreSQL interval columns as durations
+d39eaae72 Share the savepoint rollback pair
+1ac617c6f Share the enlisted-record slice between commit and rollback
+9c61f7dc1 Pin the inference ceilings to the measured residual
+637d67fde Warn when a validates option is not lowered
+872791278 Merge upstream main into the pluck follow-up
+47da1a9ef Type a stored lambda's parameters from its .call sites
+b8455da0d Stop the integer blank scan at the first non-space
+c24b37a8c Select a real id column and quote pluck names
+041f1c62f Merge pull request #868 from ljachymczyk/default-headers-assume-ssl
+634cb7c35 Describe deep_dup's fresh Hash copy
+70c8de78a Read a parameter-filter key's text once
+8069bf320 Read a to_query key's text once
+bfb1c739f Merge upstream main into extract-conditional-get
+48339a6a6 Share one deep_dup between ActiveSupport and ErrorReporter
+dd1679bbe Alias app.css to tailwind for tailwindcss-rails layouts
+7b3e6073d Avoid cloning the full App for Data.define emission
+30e60b5fb Merge remote-tracking branch 'rubys/main' into oj
+4378eb034 Merge remote-tracking branch 'rubys/main' into activemodel-attributes
+f6d87337e Merge branch 'main' of https://github.com/rubys/roundhouse into thomasklemm/issue-823-alias-and-table-prefix-a9e0
+7d3622fde Merge remote-tracking branch 'rubys/main' into fix/assoc-build-declared-class
+e57bf7451 Destroy the join rows the through reader returns
+9222f8bcb Oj: refuse every emit root, and parse non-scalars
+5be71872b Merge pull request #1067 from thomasklemm/thomasklemm/extract-typed-update-attrs-29f4
+f360badaa Make the integer scan a counter loop and ledger the casts
+7af4be203 Read the through-join decision for the stale flag
+7a9dc48ca Decide a has_many :through join once
+702b1d2ff Merge pull request #468 from bunnykong/tep-pipelined-boundary
+8700640ba Treat a missing peer address as untrusted
+b4285aff5 Merge upstream main into extract-conditional-get
+c967fe8ee Merge pull request #405 from bunnykong/pr5-default-on
+19d7f86d7 Merge pull request #1058 from rubys/thomasklemm/campfire-floor-579-e119
+6bb09646e Merge pull request #1064 from iberianpig/fix/string-squish-blocks
+9adbc9a54 Honor X-Forwarded-Host only from a trusted peer
+8ed3a69f5 Hoist defs out of a concern's `included do` onto its includers (#1066)
+bc62355f5 Move fresh_when and stale? onto the conditional_get reopen
+1a467e965 Drop the unused mut on a singleton alias_method copy
+60d6fd41a Merge remote-tracking branch 'rubys/main' into oj
+1f5a91097 Oj: refuse the stand-in where it is not emitted
+e5178261b Extract #856 typed-update attrs policy from params
+6c3428ecb Share one helper for alias_method copies
+8e66579a2 Move table-prefix scanners into ingest/model/table_prefix
+77b7879c4 Merge rubys/main into fix/propshaft-asset-paths
+0961d4a9a A non-direct association keeps the by-name seed off another model's key
+0e3b4ba17 Address Propshaft review: strict-target helpers and digest refs
+43c343522 Name the threaded server as the WebSocket recv-loop owner
+47c125563 Merge main and share default headers, absolute redirects, and assume_ssl
+abe428a99 Merge remote-tracking branch 'rubys/main' into activemodel-attributes
+c9eba508f Refuse class-side included-block hoists that collide with class_methods
+efda62ab0 Merge upstream main into fix/string-squish-blocks
+922b35182 Bound statement-stat SQL and keep a bad stats path from failing the pool
+0746a4d50 Merge remote-tracking branch 'upstream/main' into pr5-default-on
+bbcb041ea Pass bytes already read with a WebSocket upgrade into the receive loop
+5e6419e24 Merge remote-tracking branch 'upstream/main' into tep-pipelined-boundary
+957f4fdfb Drop the Campfire CI changelog from the workflow.
+40c3abef3 Merge pull request #1061 from thomasklemm/thomasklemm/column-slot-temporal-json-cc0e
+bd41d88ff Merge pull request #1059 from thomasklemm/thomasklemm/counted-first-last-predicate-12db
+807d0f226 Merge pull request #1060 from thomasklemm/thomasklemm/silent-lowering-pins-f046
+22f4abd9c Oj: a modifier-form mode call is not a top-level statement
+6db9cf8de Merge pull request #1065 from dai199/emit-audit-pr
+d0a3d699c Class-side query fallbacks start from `all`; the audit records only when asked, keys a finding by its class, and leaves a held mixin's `included` hook unknown (CodeRabbit)
+afbd51ef7 Hoist defs out of a concern's `included do` onto its includers
+36ee551ab The class-side batch fallbacks walk the relation's records; the untyped ceiling records the column-valued fallbacks
+99e193a9d A class-side query method answers through `all`, as Rails' `Querying` does
+8284de557 An opt-in audit: every send on an app class names a method the emitted Ruby defines
+f4d430954 Oj: refuse dump; parse with one argument; option values true/false/nil
+81a0cd106 Merge remote-tracking branch 'origin/main' into oj
+5e8d76db2 Lower String#squish in synthesized model normalizers
+1bbb53767 Emit Propshaft paths and compiled app assets
+3aa4e238c Merge pull request #1055 from thomasklemm/thomasklemm/ground-crystal-time-bridge-1cc3
+93f4e9345 Merge upstream main after inherited visibility
+33513bff7 Keep the grounded time-format bit through scope rewrite
+221e983ce Merge pull request #1053 from dai199/inherited-visibility-pr
+3d097de8f Restore iso8601 when a time union is widened
+99a746a99 Pin four silent lowerings with emitted Ruby runs
+088e10c20 Share one ColumnSlot for temporal and JSON columns
+502cf73ff Share one predicate for counted first(n) and last(n)
+47639843c Map to_rfc3339 only for a time receiver
+ebadad473 Raise the Campfire floor to the measured 579/84.
+b4e96a9df Keep namespaced Time and custom iso8601 calls
+5a7b6c959 Merge upstream main after string core-ext grounding
+5fd52283e Merge pull request #1054 from thomasklemm/thomasklemm/string-core-ext-table-4e11
+ff3f97ab2 Merge pull request #1056 from thomasklemm/thomasklemm/relation-lists-from-catalog-bfb0
+8e45e619c A union-typed owner named after its declaring arm reads that arm's association
+1f63ed94d Merge pull request #1057 from dai199/ts-string-truthiness
+5b1579b4d A default reads the defaults before it, its calls are call sites, and a helper default's ivar is the controller's (CodeRabbit)
+de22f0a35 A String `split` on TypeScript answers Ruby's fields, or is refused (CodeRabbit)
+fecf267dd A marker in `class << self` still refuses the model; a carried marker overrides a generated method's visibility in the private-call check (CodeRabbit)
+59231330d Keep reload off name-only relation hops
+9aad1832b Apply the Crystal clock spelling where the node is built
+69b71ebaa A parameter default is checked and lowered as its method's body is
+ea028fcaa Collapse string core-ext walks to one site flag
+f4236daec Conditions and `||` / `&&` on TypeScript test values as Ruby does
+85213beb9 Ground Crystal's Time.utc and to_rfc3339 spellings in the IR
+0a0e813c8 Ground the string core-ext family from one table
+17c63d380 Read relation chain hops and arel refiners from the catalog
+efd784d90 String methods JS lacks translate on TypeScript, or are refused by name
+0df50a3d9 A model carries a visibility change for a method its body does not define
+794fd60eb Mailer params default to an empty hash; private calls cover module class sides and seeds; `with` respects an inherited one (CodeRabbit)
+9042282e8 The route default format test carries Rails' answers, not a railties run
+23801704d Honor default formats in route helper paths
+2d7a585dc Preserve UTC identity when presenting zoned times
+51cfd21ea Lower explicit calendar durations in Date arithmetic
+df495c5e5 Merge pull request #901 from baron-hines/sk-1-runtime
+558f86ba3 Merge pull request #1046 from dai199/console-only
+e8f99dd9e A private method called on another receiver is an error
+bb671fb6f A parameterized mailer runs: `with` hands its params to the action
+e4afb827d Net::HTTP.start takes CRuby's positional form on spinel
+b6fce7696 Merge remote-tracking branch 'upstream/main' into sk-1-runtime
+02ec3636d Campfire's WAL checkpointer compiles as written on spinel
+948a9d537 Open classes: method references, a deterministic span, rooted and shadowed extends, reopened modules (CodeRabbit)
+2c7eacfc6 css_select's spinel helper is not a test file; stub_const's doc sketch is text
+cc37e2a91 Address review: PING a new connection outside the lock, run live tests serially
+1340f0ff6 Derive session cookie keys from application configuration
+ca8d28f58 stub_const and assert_broadcast_on mean something on a compiled tree
+3f7f6d28f A spinel tree with real Nokogiri answers css_select
+8c25510bb Merge remote-tracking branch 'upstream/main' into sk-1-runtime
+6b47d4ee0 Add a live Redis gate for the Sidekiq push, read back by real Sidekiq
+1bfb58816 Read self.queue_adapter on ApplicationJob
+8adab33e6 Read Sidekiq.configure_client's url: and password: as the push's Redis
+2493eace9 Open the Redis connection outside the push lock
+930828b15 Association build and find judge the scope, name and extension per call
+f64037c42 Run record after_commit callbacks before the held jobs at COMMIT
+b90c5780e Leave the Sidekiq boot line and ledger recognizer to part 2
+905fc07ac A redeclared association replaces every fact the registry kept for it
+b4a7fe84a Merge remote-tracking branch 'upstream/main' into fix/assoc-build-declared-class
+9a31da8ba Association build and find read the registry's last declaration, per call
+3f28fe066 Merge pull request #1045 from iberianpig/fix/spinel-concurrent-runtime-require
+b0755807b A model replays an app module's class-body macros in source order
+17ca1472d Pin that a console-only definition is absent from the emitted source
+d9e429423 A console-only definition declares nothing in the emitted app
+84d64f0d3 A nested def is a refusal, not a silent nil
+002df75b1 Merge pull request #1044 from dai199/settings-macros
+7679a3e62 An override's `super` calls the generated accessor; only a table column's yields
+151372832 An ivar's blank predicate keeps its nil guard under a non-nil stamp
+df9c952ae Python bytecode caches are ignored everywhere, not tracked
+b51d7fc8d Ledger the dropped expires: on signed and encrypted cookie writes
+7821f16fb A fork that changes no query state does not keep its receiver's rows
+8e61b7d04 Merge pull request #1041 from ljachymczyk/relation-immutable
+5491eddda Merge pull request #924 from ljachymczyk/encrypted-session-cookie
+1366854bb `reset_counters` is written before analysis too, so `check` agrees with the emit
+d2c5cd30e A model's own accessor for a column is the one that runs
+7a0ddb53e Merge pull request #943 from ljachymczyk/before-action-return
+18f405334 Merge pull request #960 from roger-wilco-forever/dry-validation-tail
+38ce8b12f Class macros: `||=` on an argument, `alias_method`, and the concern expansion's guards
+90323477e A class method an app writes to define methods is expanded at each call
+29395293a emit_and_run counts the errors ingest reports, as the CLI does
+4202f0b81 A push to main can ask for full validation in its commit message
+b2b1310f3 A nil-guarded present? keeps its receiver whole on Rust, Kotlin and Elixir
+21d79f2a6 Merge pull request #1043 from dai199/nested-and-helpers
+9991e4eba Every helper module is checked, and nullable arithmetic is a warning only where nil is the miss
+ebf4f4077 Merge pull request #1039 from thomasklemm/thomasklemm/blank-string-nil-guard-ed95
+b0bab730e TypeScript reports an app class named `Error`
+0b8baa7fc `call` on a lambda whose body did not resolve answers untyped
+1720af7e2 A Seq lifted out of a value runs after the values to its left
+d58a1eb01 A helper copy counts as called only from its own controller family
+be0d6d62a An html-safe mark is kept with the class that defines the method
+486166156 i18n: an empty mapping answers `{}`; `with_locale` in a value keeps its siblings' locale
+83e60f008 An `app/helpers` module's body is checked as view code
+1b99a9735 Merge pull request #1040 from thomasklemm/thomasklemm/string-kernel-f685
+0e4246ea5 Expect the nil guard on jbuilder string present?.
+4f01f754d Find runtime requires inside compound assignments
+9fc4ca70f A block's own local is not hoisted on Kotlin and Swift
+9755b26d0 Merge pull request #1038 from thomasklemm/thomasklemm/verify-local-loop-defd
+e30374c98 A backtick literal is Ruby's Kernel#` call: it runs the command on the Ruby family and Spinel (#904)
+108dd7170 Match projection types to emitted readers and SQL
+043684ce5 Infer uncalled rest parameters as arrays
+35189c9a8 Honor ci:rust and ci:typescript focus labels
+f847d8979 Retrigger the Ruby floor under the contributor account.
+16c753eab Merge upstream main into the string kernel branch
+2ad741e4f Retrigger the Ruby floor under the contributor account.
+97d93f838 Merge remote-tracking branch 'rubys/main' into thomasklemm/verify-local-loop-defd
+43b31fb8c Merge remote-tracking branch 'upstream/main' into thomasklemm/blank-string-nil-guard-ed95
+a9c17fd26 Merge upstream/main into the pluck follow-up
+56b94fdf6 Merge remote-tracking branch 'refs/remotes/rubys/main' into thomasklemm/backticks-all-targets-3e98
+f5b5e5ad7 Keep form_with's view-context entry and ControllerConfig Ruby-family only
+fa45dfbe7 Address review: a rightward assignment does not set queue_adapter
+aed9224c7 Answer a new relation from every Relation query method
+a98743554 Write a Hash through the options form in the encrypted jar test
+b7f8656c9 cookies.encrypted is Rails' encrypted cookie jar
+ee3bb06ad Pin spinel-redis to rubys/spinel-redis v0.2.0
+02f39c3a4 Spinel manifests pin the spin packages to release tags, not `main`
+fa13cf268 Put the js_expr doc comment back on js_expr
+a9d53ee87 Keep the string kernel as the only spelling source
+1ca985e86 Keep strip off untyped view blank predicates
+bddca3f5b Share one string-kernel table across analyze, Rust, and TypeScript
+9e465093d Document the empty verify plan and share the env passthrough
+d5f94aa89 Ground string blank? with the nil guard in shared IR
+d310453a4 Let bin/rh verify stay incremental and opt into the lib suite
+d74d9dec9 Merge remote-tracking branch 'upstream/main' into sk-1-runtime
+e8c027980 Emit nested classes before their first use in the parent (#1010)
+7924d2d1c Recognize constants assigned from Class.new in check (#962)
+5ca085b65 Merge main into nested class emission.
+128993753 Skip the fixture transaction call in framework tests.
+3b01d833e Follow aliases when a const_set hides Class
+04f8ac26f Refuse Class.new after a nested const_set of Class
+6dcb5756e Remount retained Class.new analysis onto current main
+02f3481d9 Merge remote-tracking branch 'upstream/main' into sk-1-runtime
+3d1fc9806 Merge pull request #1023 from iberianpig/fix/routing-redirect-host
+845f89652 Merge main into nested class emission.
+99881845d Keep lookup callbacks from reopening constructor keywords (#1036)
+4f81f1caa Run a relation's includes when its rows load
+9291b0269 Lock the routing redirect host override to String.
+29d48755b Merge main into nested class emission.
+a1a79ff9e Ledger shell-outs copied into association methods
+6b9ea8061 Merge upstream main into routing redirect host fix.
+3225c05e7 Type the routing redirect host override as String.
+ade9213b1 Merge pull request #1020 from iberianpig/fix/library-constructor-keywords
+8a92953c2 Merge upstream main into routing redirect host fix.
+f6f7c3495 Scan load-time parameter defaults for nested classes.
+a9d1024f3 Merge pull request #1025 from iberianpig/fix/time-to-date
+6abcad6ec Ledger backtick shell-out on strict targets
+5759c8e90 Scan immediately invoked lambda and proc bodies.
+ab2f97111 Merge upstream main into routing redirect host fix
+aaf4acaef Merge pull request #1015 from jonasporto/require-relative-config
+c7b098854 Merge pull request #1021 from iberianpig/fix/request-port
+7df76a7c1 Merge main into nested class emission.
+fcc4a8d5a Keep constructor lookup valid after unrelated method mutations
+c683f9942 Merge main into routing redirect host fix.
+2e71fa482 Lower Time#to_date to the civil-date helper
+065b29bba Pin Campfire to 11d3fb9 and peel CSP and Nokogiri CSS (#1017)
+fd065bb48 Merge pull request #1033 from dai199/ts-array-methods
+1905abc65 Merge remote-tracking branch 'origin/main' into dry-validation-tail
+22b634229 Dry::Validation: a schema reference that does not resolve is the reason
+991901b58 Oj: read the mode from top-level calls; load an IO; refuse safe_load
+c79a35764 The TypeScript refusal skips only query chains, and checks arity
+90373df94 Leave a bare concern CSP block as the futamura divergence.
+a3b8ff3b8 Merge main into campfire peels.
+1dfc65d96 futamura planner: count only class-body calls that can keep `self`
+ed84e4b6d The TypeScript refusal reads what the translations actually accept
+8704d4894 futamura planner: a class body that hands on `self` makes the class live
+b2f75f69e A number method TypeScript does not translate is refused by name
+594c7d2b8 Integer and Float methods translate on TypeScript; a chained `<<` appends
+f3e5ecf14 An Array method TypeScript does not translate is refused by name
+6bd6b0572 The common Array methods translate on TypeScript
+43401c5ef Merge pull request #1030 from dai199/ts-nested-class
+b11f2f5f2 The redirect? framework test sets its status through head
+7006a6352 A helper with an optional or rest positional keeps the safe default
+ce5a5ac0e A helper that returns its argument is as html-safe as the argument
+209032bd7 A nested app class is declared in its root's namespace on TypeScript
+cdb49da61 `rescue X => e` on TypeScript binds `e` without redeclaring it
+04077cd6e futamura planner: rapid type analysis for untyped sends
+298fd9a1c Merge pull request #1026 from iberianpig/fix/io-timeout-error-constant
+2adc907d9 Merge pull request #1022 from iberianpig/fix/time-find-zone
+db2556f8c Merge pull request #1019 from iberianpig/fix/response-redirect-predicate
+5c98fddcd Merge pull request #1006 from roger-wilco-forever/match-write
+4d06e1c79 Merge pull request #995 from deepj/fix/assoc-build-kwargs-hash
+7e9d9e7b5 Merge pull request #1029 from eddygarcas/csp-block-divergence
+6bd202592 Merge pull request #1028 from eddygarcas/planner-soundness-reach
+205b5721d Merge pull request #1027 from eddygarcas/filter-block-params-routes-loop
+f2068d9e8 content_security_policy: an only:/if:-scoped block keeps the gap
+00f962936 futamura planner: two more unsound clears in the reach fixes
+8c0040726 A readable content_security_policy block is a divergence, not a gap
+6378802fa Raise mount_scope_depth around a literal-each loop's body
+3c0a0cf43 futamura planner: the whole-route planner clears routes that reach unsupported code
+68f999c93 Draw routes inside a literal-Array each loop
+172f059ec Spinel regression test for the block/lambda params fix
+a98dd6019 Read params in block and lambda filters as the action does
+cceae7c37 Merge pull request #1024 from dai199/ci-spinel-timings
+413058a0b A huge recorded integer is rejected, not an overflow
+ec21d8f9f Recorded seconds must be finite and positive; a sub-second pass counts as one
+f96e67725 Register IO::TimeoutError as an exception class
+6f9afb145 Measure CONTROLLER_CONFIG_SLOT indentation from the line start.
+a07d80668 Merge main into campfire peels.
+e58b6b1eb spinel-toolchain's test processes get cargo's stack size
+982625b36 Allow other hosts in routing redirects
+02912068a Spinel shards balance on seconds main's runs recorded
+dedc32e7b Support Time.find_zone for zone names
+56eb8f671 Share the fixture pin with threads the example starts.
+35cd5947a A compact name under a model is nested too; refresh the Writebook inventory
+1ed7e585b Keep fixture transactions on one connection across threads and JRuby.
+575c46b15 Merge main and keep both Bar B measurements.
+a6fb650d9 Keep framework tests and Python defaults working after the peels.
+d0b986bc5 Merge pull request #1018 from dai199/todo-batch-1017
+6eed7b789 Hide the fixture transaction from fragment caching.
+f515fa6a7 Tests resolve the temp root, so macOS's /var symlink no longer fails them
+9fd78fd12 Raise the Campfire suite floor to 577/82.
+7a02d972d Pin the CRuby fixture connection for the whole transaction.
+b56dcd794 `Proc.new { … }` is `proc { … }`, and `STDOUT` / `STDERR` are IO
+8a1007e2f `Error = Class.new(StandardError)` defines a class, as `class Error < StandardError` does
+ed68b8330 A template escapes an app helper's plain String, as Rails does
+eed7d342c An `app/helpers` module's `t` is ActionView's, in the module and in a copy no controller calls
+13605b766 A template no request reaches reports its errors as warnings
+06309be9d i18n: `I18n.t` on a node of Strings answers a Hash; a non-String value is told
+fccda1d21 A strict target reports `Regexp.new` and the class's other methods
+7e19e0346 A mailer action renders its templates into the message, as ActionMailer does
+eaab3bcb0 Open a savepoint when a destroy runs inside a non-joinable fixture transaction
+ee0211916 Call ActionView::Base#form_with when a template form site runs
+511d4aca5 Read the app CSP policy from the view-helper unit.
+bfde7bf16 Emit Python classes before their module constants.
+344e1a93e Emit the CSP nonce meta tag when a policy is configured.
+886f27614 Define ControllerConfig before Python constructs it.
+afdc7f7b6 Hash the importmap script body the page actually embeds
+997341db9 Raise the Campfire suite floor to 576/81
+b34be5d8a Load ruby-vips after boot so Nokogiri keeps its libxml
+c848f86f7 Narrow script-src on cached Campfire pages
+19f4188c8 Mark message-creation-tx at_zero in the suite ledger
+89a58afee Pin Campfire to 11d3fb9 and raise the suite floor to 568/77
+02f52e1c8 Merge pull request #1016 from dai199/test-speed
+448bfea2e Build unit CI once and run checked Nextest partitions (#1012)
+aef62b1c3 toolchain-shard prints nothing for an empty selection
+e15eebedf Merge upstream verification updates into pr5-default-on
+7b2b76c3d CI: the Spinel suites compile their test binary at opt-level 0
+ee2bb6bab Ingest the files config/application.rb loads with require_relative
+14b82a734 Merge latest upstream main into pr5-default-on
+475dd50e9 CI: campfire-archive-build transpiles with the run's shared debug binary
+96edd2579 CI: spinel-framework balances four shards on this month's suite times
+6ca909b42 CI: spinel-toolchain runs on four shards balanced by recorded seconds
+08187b155 Merge upstream main into pr5-default-on
+9cf59994f Oj under Oj.mimic_JSON is lowered into JSON
+27cd3a821 Named-capture matches assign their locals
+db85ce25e Re-run CI: Docker Hub pull limit again on campfire-compare
+16c5087ea Re-run CI: campfire-compare hit the Docker Hub pull limit
+a5478f15d Implement ActionDispatch::Request#port
+f1df63eba Implement response.redirect? for controller responses
+57454aff9 Support multiple columns in Relation#pluck and #pick
+5e00677fa Emit nested classes before their first use in the parent
+32ec7dc4e Dry::Validation: schema_ref takes its context again
+64736250d Drop .codegraph from .gitignore
+436b9e0fa Merge remote-tracking branch 'origin/main' into dry-validation-tail
+3a9c7df0d Freeze string literals in the Sidekiq runtime files
+c9bd6173f Merge remote-tracking branch 'upstream/main' into sk-1-runtime
+b1a65cad4 A controller's association build and find use the declared class and foreign key
+a89d54afa An association build with an inline keyword hash emits the hash in braces
+be68d56b7 Address review: queue_adapter == is not an assignment, comments need no space
+1af996f68 Use Rails errors in statement stats probes
+fab5e0a27 Merge current main
+ee1c01aed Merge branch 'dry-monads' into dry-validation-tail
+e62b3fbe4 Merge current main into pr5-default-on
+7600b07eb Merge branch 'dry-monads' into dry-validation-tail
+f0fbb1648 ActiveModel::Attributes on a plain class: typed readers and casting writers
+eec71f90b A before_action's return ends the filter, not the action
+4523c8531 Dry::Validation: more schema forms
+b66b2f7a7 backticks: a class's own ` method wins over Kernel#`
+0023dbcf0 backticks: the survey test checks the defined? gap it records
+5f1a2555b backticks: escape a backtick in the command's text, not in its code
+e38dc44e3 A backtick literal is Ruby's Kernel#` call: it runs the command
+35f45b5e6 Give a tree on queue_adapter :sidekiq a real Redis client
+de8a2d445 Route changes to the Sidekiq push gate's inputs to its suite
+affa001fd Add the runtime that pushes ActiveJob payloads as Sidekiq jobs
+71845db7b Read the app's ActiveJob queue adapter at ingest
+ec323a381 Record what Sidekiq 8.1 pushes to Redis for ActiveJob jobs
+0c5bb7b89 config.assume_ssl = true with a trailing comment is carried
+79f19f794 Responses carry Rails' default headers and absolute redirects; config.assume_ssl is honored
+cc7090c2d Merge current main into pr5-default-on
+60388bbdf Tep: enforce the header cap across receive boundaries
+bbb33a37d Tep: stop pipelining after the response writer closes
+09734777a Merge current main into pr5-default-on
+c2f02d408 Merge current main into pr5-default-on
+1af840367 Merge current main into tep-pipelined-boundary
+51589ee6b Merge updated pr4-jruby into pr5-default-on
+eb37da567 Merge current main into pr5-default-on
+a578563f3 Merge current main into tep-pipelined-boundary
+6fe25b488 Merge upstream main into pr5-default-on
+d15500a33 Merge upstream main into tep-pipelined-boundary
+c11759a7a Pipelined requests retain bytes past the Content-Length boundary
+ded5d8723 Add opt-in native statement-cache diagnostics
+c8c70d14a Enable read binds by target capability for the Ruby family
+04073b4cb Add typed positional binds to the JRuby JDBC shim
+d38e73b8b Substitute raw where placeholders in one pass
+df922f06a Serialize read arguments explicitly and finalize exceptional reads
+3be130d52 Match bound storage values and release failed text conversion
+075d09db2 Preserve nullable equality plans with runtime SQL shapes
+f15d5df73 Raise failed bind and read errors without losing statement ownership
+65029e533 Keep active prepared statements exclusive and drain failed requests

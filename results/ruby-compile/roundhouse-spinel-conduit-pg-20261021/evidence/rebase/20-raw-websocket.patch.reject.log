@@ -1,0 +1,80 @@
+Checking patch runtime/spinel/faye_websocket.rb...
+Checking patch runtime/spinel/scaffold/boot.rb...
+Hunk #1 succeeded at 185 (offset 6 lines).
+Checking patch runtime/spinel/scaffold/main.rb...
+Hunk #2 succeeded at 632 (offset 8 lines).
+Checking patch runtime/spinel/tep/net.rb...
+Checking patch runtime/spinel/tep/server_threaded.rb...
+error: while searching for:
+
+        # Streaming responses use chunked Connection: close (same
+        # simplification as the prefork server).
+        keep_alive = req.keep_alive? && !res.halted_close? && !res.streaming
+        Tep::Server::Threaded.write_response(client, io, req, res, keep_alive)
+        keep_alive
+      end
+
+error: patch failed: runtime/spinel/tep/server_threaded.rb:233
+error: while searching for:
+          # into whatever socket reuses that number.
+          begin
+            conn.run
+          ensure
+            res.ws_driver.retire
+          end
+
+error: patch failed: runtime/spinel/tep/server_threaded.rb:287
+Checking patch runtime/spinel/tep/websocket/connection.rb...
+error: while searching for:
+        # frame forward via byteslice. Replaces the old static recv buffer
+        # + per-byte C accessor (sphttp.c is retired — matz/spinel#1466).
+        inbuf = +""
+        while true
+          ready = @io.wait_readable(@idle_timeout_seconds)
+          if ready.nil?
+            # Timeout: close 1001 going-away.
+            @driver.close(Tep::WebSocket::CLOSE_GOING_AWAY, "idle timeout")
+            Connection.dispatch_close(@driver, Tep::WebSocket::CLOSE_GOING_AWAY, "idle timeout")
+            return 0
+          end
+
+          chunk = Sock.sp_net_recv_some(@fd, 65536)
+          if chunk.bytesize == 0
+            # EOF / peer gone: dispatch close without sending one back.
+            Connection.dispatch_close(@driver, Tep::WebSocket::CLOSE_GOING_AWAY, "")
+            return 0
+          end
+          inbuf = inbuf + chunk
+
+error: patch failed: runtime/spinel/tep/websocket/connection.rb:58
+Hunk #2 succeeded at 88 (offset -9 lines).
+error: while searching for:
+          end
+        end
+        0
+      end
+
+      # Route a parsed frame to the right handler.
+
+error: patch failed: runtime/spinel/tep/websocket/connection.rb:110
+Hunk #4 succeeded at 145 (offset 4 lines).
+Hunk #5 succeeded at 180 (offset 4 lines).
+Checking patch runtime/spinel/tep/websocket/driver.rb...
+Checking patch tests/spinel_raw_websocket.rb...
+Checking patch tests/spinel_raw_websocket.rs...
+Applied patch runtime/spinel/faye_websocket.rb cleanly.
+Applied patch runtime/spinel/scaffold/boot.rb cleanly.
+Applied patch runtime/spinel/scaffold/main.rb cleanly.
+Applied patch runtime/spinel/tep/net.rb cleanly.
+Applying patch runtime/spinel/tep/server_threaded.rb with 2 rejects...
+Rejected hunk #1.
+Rejected hunk #2.
+Applying patch runtime/spinel/tep/websocket/connection.rb with 2 rejects...
+Rejected hunk #1.
+Hunk #2 applied cleanly.
+Rejected hunk #3.
+Hunk #4 applied cleanly.
+Hunk #5 applied cleanly.
+Applied patch runtime/spinel/tep/websocket/driver.rb cleanly.
+Applied patch tests/spinel_raw_websocket.rb cleanly.
+Applied patch tests/spinel_raw_websocket.rs cleanly.

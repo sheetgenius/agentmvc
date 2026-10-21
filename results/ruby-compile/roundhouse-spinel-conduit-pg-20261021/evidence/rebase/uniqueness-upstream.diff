@@ -1,0 +1,922 @@
+commit 55be812680939cbacf82d26b782b1916208c8640
+Merge: 98479d0a3 e92bc2c0e
+Author: Eduard G.Castelló <[redacted-email]>
+Date:   Tue Oct 20 23:36:53 2026 +0200
+
+    Merge pull request #1144 from eddygarcas/validates-uniqueness
+    
+    validates: lower uniqueness: on the targets that ship the runtime Relation
+
+diff --git a/docs/guide/rails-coverage.md b/docs/guide/rails-coverage.md
+index 909b436db..e93a5f928 100644
+--- a/docs/guide/rails-coverage.md
++++ b/docs/guide/rails-coverage.md
+@@ -133,7 +133,7 @@ diagnostic corpus until its independent framework and Spinel gaps close.
+ |---|---|---|
+ | Attributes | From `db/schema.rb` (migrations as fallback), typed per column; `id`, timestamps, defaults, nullability | + `enum`, `serialize`/`has_json` columns, `has_secure_token`, `has_secure_password` (real bcrypt) |
+ | Associations | `belongs_to`, `has_many` (with `dependent:`), `has_one`; association readers, builders, `<assoc>_ids` | + `has_many :through`, polymorphic, `touch:`, `has_one_attached`/`has_many_attached`, `has_rich_text` |
+-| Validations | `presence`, `absence`, `length` (min/max), `numericality` (bounds, `only_integer`), `format`, `inclusion`, `uniqueness`; `errors`, `full_messages`, `valid?` | + custom `validate` methods, conditional `if:`/`unless:` |
++| Validations | `presence`, `absence`, `length` (min/max), `numericality` (bounds, `only_integer`), `format`, `inclusion`; `errors`, `full_messages`, `valid?` | + custom `validate` methods, conditional `if:`/`unless:`, `uniqueness` (`scope:`, `case_sensitive:`, `allow_nil:`/`allow_blank:`; a reported gap on the strict targets) |
+ | Callbacks | `after_create_commit` and the Turbo `broadcasts_to` family | + `before_save`/`after_save`, `before_destroy`, `after_touch`, STI-aware callback inheritance |
+ | Queries | `where` (hash and string), `order`, `limit`, `find`, `find_by`, `first`/`last`, `count`, `exists?`, `includes`, `pluck`, named `scope`s — folded to SQL by the Arel builder | + `joins`, `left_joins`, `group`/`count`, `select`, `distinct`, `or`, `none`, `find_or_create_by`, `insert_all`, `update_all`, `in_batches`, `sum`; a live `Relation` for chains the builder can't fold |
+ | Persistence | `create`, `save`, `update`, `destroy`, `new`/`build` | + `destroy!`, `increment!`, `update_columns`, transactions, dirty tracking predicates |
+diff --git a/src/dialect.rs b/src/dialect.rs
+index 0cb7593fb..a0b2a494f 100644
+--- a/src/dialect.rs
++++ b/src/dialect.rs
+@@ -618,7 +618,18 @@ pub struct InclusionRange {
+ pub enum ValidationRule {
+     Presence,
+     Absence,
+-    Uniqueness { scope: Vec<Symbol>, case_sensitive: bool },
++    /// `uniqueness: true` / `{ scope:, case_sensitive:, allow_nil:,
++    /// allow_blank: }`. `scope` holds the names as written; an
++    /// association name resolves to its foreign key when the check is
++    /// built. `case_sensitive: false` compares `LOWER(col) = LOWER(value)`.
++    Uniqueness {
++        scope: Vec<Symbol>,
++        case_sensitive: bool,
++        #[serde(default)]
++        allow_nil: bool,
++        #[serde(default)]
++        allow_blank: bool,
++    },
+     Length {
+         min: Option<u32>,
+         max: Option<u32>,
+diff --git a/src/emit/ruby.rs b/src/emit/ruby.rs
+index 07e0f1b52..c7ac953d1 100644
+--- a/src/emit/ruby.rs
++++ b/src/emit/ruby.rs
+@@ -252,6 +252,7 @@ fn materialize_models_with_param_binds(
+         true,
+         param_binds,
+         crate::lower::model_to_library::ErrorsReaders::CreatedOnFirstRead,
++        crate::lower::model_to_library::RuntimeRelation::Present,
+     ).0;
+     (lcs, params_specs)
+ }
+diff --git a/src/ingest/model.rs b/src/ingest/model.rs
+index 06faeb630..de728d634 100644
+--- a/src/ingest/model.rs
++++ b/src/ingest/model.rs
+@@ -1461,11 +1461,19 @@ pub(super) struct ClassConsts {
+     /// of one other folded regex constant — `(pattern, flags)`. Used to
+     /// resolve `validates …, format: { with: NAME }` (#985 follow-up).
+     regexes: std::collections::HashMap<String, (String, String)>,
++    /// The class body calls `default_scope` (bare or on `self`).
++    default_scoped: bool,
+ }
+ 
+ impl ClassConsts {
+     pub(super) fn collect(stmts: &[Node<'_>], file: &str) -> Self {
+         let mut out = ClassConsts::default();
++        out.default_scoped = stmts.iter().any(|stmt| {
++            stmt.as_call_node().is_some_and(|call| {
++                call.receiver().is_none_or(|r| r.as_self_node().is_some())
++                    && constant_id_str(&call.name()) == "default_scope"
++            })
++        });
+         for stmt in stmts {
+             let Some(cw) = stmt.as_constant_write_node() else { continue };
+             let name = constant_id_str(&cw.name()).to_string();
+@@ -1601,6 +1609,11 @@ impl ClassConsts {
+         None
+     }
+ 
++    /// Does the class body declare a `default_scope`?
++    pub(super) fn default_scoped(&self) -> bool {
++        self.default_scoped
++    }
++
+     /// An integer the class body can fold: a literal, `.freeze`d or not,
+     /// or one of the class's own integer constants (`maximum:
+     /// NAME_LIMIT`), whose value Rails reads when the class body runs.
+diff --git a/src/ingest/model/validations.rs b/src/ingest/model/validations.rs
+index c3cb5aeba..2158d844c 100644
+--- a/src/ingest/model/validations.rs
++++ b/src/ingest/model/validations.rs
+@@ -66,11 +66,16 @@ struct BuiltRule {
+     rule: crate::dialect::ValidationRule,
+     if_cond: Option<Expr>,
+     unless_cond: Option<Expr>,
++    /// The rule's own hash named `allow_nil:` / `allow_blank:`, which
++    /// wins over the call-level option (Rails merges the call's options
++    /// under each validator's own).
++    own_allow_nil: bool,
++    own_allow_blank: bool,
+ }
+ 
+ impl BuiltRule {
+     fn bare(rule: crate::dialect::ValidationRule) -> Self {
+-        Self { rule, if_cond: None, unless_cond: None }
++        Self { rule, if_cond: None, unless_cond: None, own_allow_nil: false, own_allow_blank: false }
+     }
+ }
+ 
+@@ -209,17 +214,20 @@ pub(super) fn parse_validates_call(
+         });
+     }
+ 
+-    if allow_blank && drafts.iter().any(|draft| !blank_safe(&draft.rule)) {
++    // Uniqueness stores both flags, so a call-level one applies to it
++    // (below) rather than refusing the call.
++    let is_uniqueness = |draft: &BuiltRule| matches!(draft.rule, ValidationRule::Uniqueness { .. });
++    if allow_blank && drafts.iter().any(|draft| !blank_safe(&draft.rule) && !is_uniqueness(draft)) {
+         gaps.push("allow_blank".to_string());
+     }
+     // Call-level `allow_nil: true` is Rails' skip-when-nil for every
+-    // validator in the call. Length stores it. The other rules this
+-    // build lowers reject nil, so applying them would reject records
+-    // Rails accepts.
++    // validator in the call. Length and Uniqueness store it. The other
++    // rules this build lowers reject nil, so applying them would reject
++    // records Rails accepts.
+     if allow_nil == Some(true)
+         && drafts
+             .iter()
+-            .any(|draft| !matches!(draft.rule, ValidationRule::Length { .. }))
++            .any(|draft| !matches!(draft.rule, ValidationRule::Length { .. }) && !is_uniqueness(draft))
+     {
+         gaps.push("allow_nil".to_string());
+     }
+@@ -237,6 +245,17 @@ pub(super) fn parse_validates_call(
+     if allow_blank {
+         drafts.retain(|draft| !matches!(draft.rule, ValidationRule::Presence));
+     }
++    for draft in &mut drafts {
++        let (own_nil, own_blank) = (draft.own_allow_nil, draft.own_allow_blank);
++        if let ValidationRule::Uniqueness { allow_nil: nil_slot, allow_blank: blank_slot, .. } = &mut draft.rule {
++            if let (Some(flag), false) = (allow_nil, own_nil) {
++                *nil_slot = flag;
++            }
++            if allow_blank && !own_blank {
++                *blank_slot = true;
++            }
++        }
++    }
+     if let Some(flag) = allow_nil {
+         for draft in &mut drafts {
+             if let ValidationRule::Length {
+@@ -379,6 +398,88 @@ fn and_guard(a: Option<Expr>, b: Option<Expr>) -> Option<Expr> {
+     }
+ }
+ 
++/// `uniqueness: true` or `{ scope:, case_sensitive:, allow_nil:,
++/// allow_blank:, if:, unless: }`. `conditions:` (a relation callable) and
++/// `message:` stay gaps, and so does any uniqueness rule on a model whose
++/// class body declares a `default_scope`: Rails queries `unscoped`, and
++/// the runtime has no `unscoped` to match it.
++fn parse_uniqueness(value: &Node<'_>, file: &str, class_consts: &super::ClassConsts) -> RuleParse {
++    use crate::dialect::ValidationRule;
++    if class_consts.default_scoped() {
++        return RuleParse::Gap(vec!["uniqueness".to_string()]);
++    }
++    let rule = |scope, case_sensitive, allow_nil, allow_blank| ValidationRule::Uniqueness {
++        scope,
++        case_sensitive,
++        allow_nil,
++        allow_blank,
++    };
++    match super::super::util::bool_value(value) {
++        Some(true) => return RuleParse::Rule(BuiltRule::bare(rule(Vec::new(), true, false, false))),
++        Some(false) => return RuleParse::Skip,
++        None => {}
++    }
++    let Some(elements) = hash_elements(value) else {
++        return RuleParse::Gap(vec!["uniqueness".to_string()]);
++    };
++    let mut scope: Vec<Symbol> = Vec::new();
++    let mut case_sensitive = true;
++    let mut allow_nil = false;
++    let mut allow_blank = false;
++    let mut built = BuiltRule::bare(rule(Vec::new(), true, false, false));
++    let mut gaps = Vec::new();
++    for el in elements.iter() {
++        let Some(assoc) = el.as_assoc_node() else {
++            gaps.push("uniqueness".to_string());
++            continue;
++        };
++        let Some(key) = symbol_value(&assoc.key()) else {
++            gaps.push("uniqueness".to_string());
++            continue;
++        };
++        let child = assoc.value();
++        match key.as_str() {
++            "scope" => {
++                let names: Option<Vec<Symbol>> = if let Some(array) = child.as_array_node() {
++                    array.elements().iter().map(|e| symbol_value(&e).map(|s| Symbol::from(s.as_str()))).collect()
++                } else {
++                    symbol_value(&child).map(|s| vec![Symbol::from(s.as_str())])
++                };
++                match names {
++                    Some(names) => scope = names,
++                    None => gaps.push("uniqueness: scope".to_string()),
++                }
++            }
++            "case_sensitive" => match super::super::util::bool_value(&child) {
++                Some(flag) => case_sensitive = flag,
++                None => gaps.push("uniqueness: case_sensitive".to_string()),
++            },
++            "allow_nil" => match super::super::util::bool_value(&child) {
++                Some(flag) => {
++                    allow_nil = flag;
++                    built.own_allow_nil = true;
++                }
++                None => gaps.push("uniqueness: allow_nil".to_string()),
++            },
++            "allow_blank" => match super::super::util::bool_value(&child) {
++                Some(flag) => {
++                    allow_blank = flag;
++                    built.own_allow_blank = true;
++                }
++                None => gaps.push("uniqueness: allow_blank".to_string()),
++            },
++            "if" => push_condition(&child, file, &mut built.if_cond, "if", &mut gaps),
++            "unless" => push_condition(&child, file, &mut built.unless_cond, "unless", &mut gaps),
++            other => gaps.push(format!("uniqueness: {other}")),
++        }
++    }
++    if !gaps.is_empty() {
++        return RuleParse::Gap(gaps);
++    }
++    built.rule = rule(scope, case_sensitive, allow_nil, allow_blank);
++    RuleParse::Rule(built)
++}
++
+ /// `allow_blank: true` skips every validator when the value is blank.
+ /// Presence is then a dead check (Rails runs validations before
+ /// `before_save`, which is what lobsters' `allow_blank: true, presence:
+@@ -603,6 +704,7 @@ fn parse_validator(key: &str, value: &Node<'_>, file: &str, class_consts: &super
+         "numericality" => parse_numericality(value, file, class_consts),
+         "inclusion" => parse_set(value, file, false),
+         "exclusion" => parse_set(value, file, true),
++        "uniqueness" => parse_uniqueness(value, file, class_consts),
+         "format" => parse_format(value, file, class_consts),
+         other => RuleParse::Gap(vec![other.to_string()]),
+     }
+diff --git a/src/lower/model_to_library/mod.rs b/src/lower/model_to_library/mod.rs
+index 125528dcf..76658ae9a 100644
+--- a/src/lower/model_to_library/mod.rs
++++ b/src/lower/model_to_library/mod.rs
+@@ -117,6 +117,17 @@ pub(crate) enum ErrorsReaders {
+     CreatedOnFirstRead,
+ }
+ 
++/// Whether the target ships the runtime `ActiveRecord::Relation`
++/// (`BuildTarget::has_runtime_relation`): the ruby-family targets do, so a
++/// validation that needs a query at validation time (`uniqueness:`) can
++/// run one. A strict target has only the chains the Arel builder folds,
++/// and keeps such a validation as a reported gap.
++#[derive(Clone, Copy, PartialEq, Eq)]
++pub(crate) enum RuntimeRelation {
++    Absent,
++    Present,
++}
++
+ /// Probe bodies expose framework ownership hidden by source overrides,
+ /// but register the ordinary production definitions for faithful typing.
+ /// Selection bounds retained bodies, never registry or demand inputs.
+@@ -256,7 +267,7 @@ pub(crate) fn lower_models_inner(
+ ) -> (Vec<LibraryClass>, HashMap<ClassId, crate::analyze::ClassInfo>) {
+     lower_models_inner_with_ruby_values(
+         models, schema, extra_class_infos, params_specs, unfolded, materialization,
+-        finder_inputs, false, false, ErrorsReaders::FieldRead,
++        finder_inputs, false, false, ErrorsReaders::FieldRead, RuntimeRelation::Absent,
+     )
+ }
+ 
+@@ -271,12 +282,13 @@ pub(crate) fn lower_models_inner_with_ruby_values(
+     ruby_read_values: bool,
+     param_binds: bool,
+     errors_readers: ErrorsReaders,
++    runtime_relation: RuntimeRelation,
+ ) -> (Vec<LibraryClass>, HashMap<ClassId, crate::analyze::ClassInfo>) {
+     let mut all_methods: Vec<(Vec<MethodDef>, ClassId, Option<&Table>, &Model)> = Vec::new();
+     let mut classes: HashMap<ClassId, crate::analyze::ClassInfo> = HashMap::new();
+     let _body_names = schema::share_model_body_names(models, &Default::default());
+     for model in models {
+-        let methods = build_methods_with_finder_inputs(model, models, schema, params_specs, finder_inputs, param_binds, errors_readers);
++        let methods = build_methods_with_finder_inputs(model, models, schema, params_specs, finder_inputs, param_binds, errors_readers, runtime_relation);
+         let table = schema.tables.get(&model.table.0);
+         // Register actual production definitions, even for unselected
+         // models and when source overrides hide framework ownership.
+@@ -295,7 +307,7 @@ pub(crate) fn lower_models_inner_with_ruby_values(
+                             if matches!(method.as_str(), "attr_accessor" | "attr_reader" | "attr_writer")),
+                     _ => true,
+                 });
+-                let mut methods = build_methods_with_finder_inputs(&definitions, models, schema, params_specs, finder_inputs, param_binds, errors_readers);
++                let mut methods = build_methods_with_finder_inputs(&definitions, models, schema, params_specs, finder_inputs, param_binds, errors_readers, runtime_relation);
+                 // Preserve original source inputs for late derivations
+                 // (e.g. raw helpers) without treating them as framework
+                 // claims. Both kinds traverse the canonical Arel/typer.
+@@ -1171,7 +1183,7 @@ pub(crate) fn build_methods(
+     schema: &Schema,
+     params_specs: &crate::lower::controller_to_library::params::ParamsSpecs,
+ ) -> Vec<MethodDef> {
+-    build_methods_with_finder_inputs(model, models, schema, params_specs, FinderInputs::Scalar, false, ErrorsReaders::FieldRead)
++    build_methods_with_finder_inputs(model, models, schema, params_specs, FinderInputs::Scalar, false, ErrorsReaders::FieldRead, RuntimeRelation::Absent)
+ }
+ 
+ /// Return the instance method surface synthesized for a model, for ingest
+@@ -1198,6 +1210,7 @@ fn build_methods_with_finder_inputs(
+     finder_inputs: FinderInputs,
+     param_binds: bool,
+     errors_readers: ErrorsReaders,
++    runtime_relation: RuntimeRelation,
+ ) -> Vec<MethodDef> {
+     // No-op outside an emit diagnostics scope, so the many direct
+     // test callers of the lowering entries are unaffected.
+@@ -1296,7 +1309,19 @@ fn build_methods_with_finder_inputs(
+         }
+     }
+ 
+-    push_validate_method(&mut methods, model, models, errors_readers);
++    // The key a uniqueness check excludes the record by: `self.primary_key
++    // = "…"`, else a schema key other than `id`, else `id` (as `def
++    // self.primary_key` is chosen in `push_schema_methods`).
++    let primary_key = model
++        .primary_key
++        .clone()
++        .or_else(|| {
++            schema.tables.get(&model.table.0).and_then(|t| {
++                t.columns.iter().find(|c| c.primary_key && c.name.as_str() != "id").map(|c| c.name.clone())
++            })
++        })
++        .unwrap_or_else(|| Symbol::from("id"));
++    push_validate_method(&mut methods, model, models, errors_readers, runtime_relation, &primary_key);
+     push_association_methods(&mut methods, model, models, &through_joins);
+     push_dependent_destroy(&mut methods, model, &through_joins);
+     push_unknown_marker_methods(&mut methods, model);
+diff --git a/src/lower/model_to_library/validations.rs b/src/lower/model_to_library/validations.rs
+index f42407a33..ea3ce07c1 100644
+--- a/src/lower/model_to_library/validations.rs
++++ b/src/lower/model_to_library/validations.rs
+@@ -26,6 +26,8 @@ pub(super) fn push_validate_method(
+     model: &Model,
+     models: &[Model],
+     errors_readers: ErrorsReaders,
++    runtime_relation: super::RuntimeRelation,
++    primary_key: &Symbol,
+ ) {
+     let msgs = Messages(Some(model));
+     let mut stmts: Vec<Expr> = Vec::new();
+@@ -69,6 +71,15 @@ pub(super) fn push_validate_method(
+                             send(reader, "nil?", vec![]),
+                             errors_push(v.attribute.as_str(), msgs.error(v.attribute.as_str(), "blank", &Default::default())),
+                         )]
++                    } else if let ValidationRule::Uniqueness { scope, case_sensitive, allow_nil, allow_blank } = rule {
++                        match runtime_relation {
++                            super::RuntimeRelation::Present => vec![inline_uniqueness_check(
++                                msgs, model, primary_key, &v.attribute, scope, *case_sensitive, *allow_nil, *allow_blank,
++                            )],
++                            // Reported per target by
++                            // `relation_residue::uniqueness_gaps_for_target`.
++                            super::RuntimeRelation::Absent => Vec::new(),
++                        }
+                     } else {
+                         validation_rule_to_calls(msgs, &v.attribute, rule, attr_ty)
+                     };
+@@ -632,6 +643,102 @@ fn validation_rule_to_calls(msgs: Messages, attr: &Symbol, rule: &ValidationRule
+ /// of Rails' check — it can fail a save Rails would fail, never one
+ /// Rails would pass — and the id-presence half is the part that
+ /// catches the real error (an unset owner).
++/// Inline `validates :attr, uniqueness: …`, as Rails 8.1's
++/// `UniquenessValidator` queries (on a target with the runtime Relation):
++///   if Model.where(attr: @attr).not(<pk>: @<pk>)[.where(scope_col: @scope_col)…].exists?
++///     errors << "attr has already been taken"
++///   end
++/// `case_sensitive: false` compares `LOWER(table.attr) = LOWER(?)`, except
++/// for a nil value, which Rails compares `IS NULL` either way. A nil value
++/// is checked like any other (two nils collide) unless `allow_nil:`, and a
++/// blank one (nil, or empty once stripped) unless `allow_blank:`. The `not(<pk>: @<pk>)` is Rails'
++/// persisted-record exclusion, by the model's declared primary key (`"codes"."code" != ?`
++/// under `self.primary_key = "code"`, even beside an `id` column); on a new record it is `<pk> IS NOT NULL`,
++/// which every stored row satisfies, so the answer is the same. A `scope:`
++/// naming a `belongs_to` reads its foreign key (and type column when
++/// polymorphic), as Rails resolves it.
++fn inline_uniqueness_check(
++    msgs: Messages,
++    model: &Model,
++    primary_key: &Symbol,
++    attr: &Symbol,
++    scope: &[Symbol],
++    case_sensitive: bool,
++    allow_nil: bool,
++    allow_blank: bool,
++) -> Expr {
++    let sym = |name: &str| {
++        Expr::new(Span::synthetic(), ExprNode::Lit { value: Literal::Sym { value: Symbol::from(name) } })
++    };
++    let hash = |key: &str, value: Expr| {
++        Expr::new(Span::synthetic(), ExprNode::Hash { entries: vec![(sym(key), value)], kwargs: true })
++    };
++    let finder = Expr::new(
++        Span::synthetic(),
++        ExprNode::Const { path: model.name.0.as_str().split("::").map(Symbol::from).collect() },
++    );
++    let value = ivar(attr);
++    let mut relation = if case_sensitive {
++        send(finder, "where", vec![hash(attr.as_str(), value.clone())])
++    } else {
++        let lowered = Expr::new(
++            Span::synthetic(),
++            ExprNode::Lit {
++                value: Literal::Str {
++                    value: format!("LOWER({}.{}) = LOWER(?)", model.table.0.as_str(), attr.as_str()),
++                },
++            },
++        );
++        Expr::new(
++            Span::synthetic(),
++            ExprNode::If {
++                cond: send(value.clone(), "nil?", vec![]),
++                then_branch: send(finder.clone(), "where", vec![hash(attr.as_str(), value.clone())]),
++                else_branch: send(finder, "where", vec![lowered, value.clone()]),
++            },
++        )
++    };
++    relation = send(relation, "not", vec![hash(primary_key.as_str(), ivar(primary_key))]);
++    for name in scope {
++        let columns: Vec<Symbol> = match model.associations().find(|a| {
++            matches!(a, Association::BelongsTo { name: n, .. } if n == name)
++        }) {
++            Some(Association::BelongsTo { foreign_key, polymorphic, .. }) => {
++                let mut cols = vec![foreign_key.clone()];
++                if *polymorphic {
++                    cols.push(Symbol::from(format!("{}_type", name.as_str()).as_str()));
++                }
++                cols
++            }
++            _ => vec![name.clone()],
++        };
++        for column in columns {
++            relation = send(relation, "where", vec![hash(column.as_str(), ivar(&column))]);
++        }
++    }
++    let mut taken = send(relation, "exists?", vec![]);
++    let not = |e: Expr| {
++        Expr::new(
++            Span::synthetic(),
++            ExprNode::Send { recv: Some(e), method: Symbol::from("!"), args: vec![], block: None, parenthesized: false },
++        )
++    };
++    if allow_blank {
++        // `blank?` spelled out (`nil?` or empty once stripped): the Spinel
++        // runtime's String has no ActiveSupport `blank?`.
++        let blank = bool_op(
++            BoolOpKind::Or,
++            send(value.clone(), "nil?", vec![]),
++            send(send(send(value.clone(), "to_s", vec![]), "strip", vec![]), "empty?", vec![]),
++        );
++        taken = bool_op(BoolOpKind::And, not(blank), taken);
++    } else if allow_nil {
++        taken = bool_op(BoolOpKind::And, not(send(value.clone(), "nil?", vec![])), taken);
++    }
++    let push_err = errors_push(attr.as_str(), msgs.error(attr.as_str(), "taken", &Default::default()));
++    if_with_nil_else(taken, push_err)
++}
++
+ fn inline_belongs_to_check(
+     msgs: Messages,
+     assoc_name: &Symbol,
+diff --git a/src/lower/relation_residue.rs b/src/lower/relation_residue.rs
+index 9dbf31131..1a0890929 100644
+--- a/src/lower/relation_residue.rs
++++ b/src/lower/relation_residue.rs
+@@ -161,6 +161,36 @@ fn walk(e: &Expr, in_chain: bool, ctx: &FoldCtx, diags: &mut Vec<Diagnostic>) {
+ ///
+ /// Host-only: the CLI is the emit gate that raises these, and the
+ /// playground has no emit gate to raise anything for.
++/// `validates :attr, uniqueness: …` needs a query at validation time,
++/// which only the targets that ship the runtime Relation lower
++/// (`model_to_library::RuntimeRelation::Present`). Elsewhere the rule is
++/// not lowered, and this reports it, as the gap it was before, once per
++/// validation, so the emit says what it leaves out.
++#[cfg(not(target_arch = "wasm32"))]
++pub fn uniqueness_gaps_for_target(app: &App, target: crate::build_target::BuildTarget) -> Vec<Diagnostic> {
++    if target.has_runtime_relation() {
++        return Vec::new();
++    }
++    let mut out = Vec::new();
++    for model in &app.models {
++        for item in &model.body {
++            let crate::dialect::ModelBodyItem::Validation { validation, .. } = item else { continue };
++            if !validation.rules.iter().any(|r| matches!(r, crate::dialect::ValidationRule::Uniqueness { .. })) {
++                continue;
++            }
++            let mut d = Diagnostic::unsupported(
++                item.span(),
++                Some(crate::ident::Symbol::from(target.as_str())),
++                format!("validates :{}, uniqueness:", validation.attribute.as_str()),
++                "the uniqueness query needs the runtime Relation, which this target does not ship; Rails rejects records this build saves",
++            );
++            d.severity = crate::diagnostic::Severity::Warning;
++            out.push(d);
++        }
++    }
++    out
++}
++
+ #[cfg(not(target_arch = "wasm32"))]
+ pub fn elevate_dynamic_relation_for_target(
+     diags: &mut [Diagnostic],
+diff --git a/src/lower/validations.rs b/src/lower/validations.rs
+index bc7a9f7f5..53cf40436 100644
+--- a/src/lower/validations.rs
++++ b/src/lower/validations.rs
+@@ -246,7 +246,7 @@ fn expand_rule(rule: &ValidationRule, out: &mut Vec<Check>) {
+                 out.push(Check::Exclusion { values: vs });
+             }
+         }
+-        ValidationRule::Uniqueness { scope, case_sensitive } => {
++        ValidationRule::Uniqueness { scope, case_sensitive, .. } => {
+             out.push(Check::Uniqueness {
+                 scope: scope.clone(),
+                 case_sensitive: *case_sensitive,
+diff --git a/src/mcp.rs b/src/mcp.rs
+index d5b646519..d1833e959 100644
+--- a/src/mcp.rs
++++ b/src/mcp.rs
+@@ -1083,4 +1083,28 @@ mod tests {
+         let bad = call(&server(), "wont_lower", json!({ "target": "fortran" }));
+         assert_eq!(bad["result"]["isError"], true);
+     }
++
++    /// A strict target leaves `validates …, uniqueness:` out (it has no
++    /// runtime Relation to query), and `wont_lower` says so, as the CLI
++    /// does; a ruby-family target lowers the check and lists nothing for it.
++    #[test]
++    fn wont_lower_reports_uniqueness_only_where_it_is_not_lowered() {
++        let root = std::env::temp_dir().join(format!("roundhouse-mcp-wont-lower-{}", std::process::id()));
++        let _ = std::fs::remove_dir_all(&root);
++        for (path, body) in [
++            ("app/models/application_record.rb", "class ApplicationRecord < ActiveRecord::Base\n  self.abstract_class = true\nend\n"),
++            ("app/models/widget.rb", "class Widget < ApplicationRecord\n  validates :uri, uniqueness: true\nend\n"),
++            ("db/schema.rb", "ActiveRecord::Schema.define do\n  create_table \"widgets\", force: :cascade do |t|\n    t.string \"uri\"\n  end\nend\n"),
++        ] {
++            let file = root.join(path);
++            std::fs::create_dir_all(file.parent().unwrap()).unwrap();
++            std::fs::write(file, body).unwrap();
++        }
++        let server = Server { root: root.clone() };
++        let rust = text_of(&call(&server, "wont_lower", json!({ "target": "rust" })));
++        let ruby = text_of(&call(&server, "wont_lower", json!({ "target": "ruby" })));
++        std::fs::remove_dir_all(&root).ok();
++        assert_eq!(rust.matches("validates :uri, uniqueness:").count(), 1, "{rust}");
++        assert!(!ruby.contains("uniqueness:"), "{ruby}");
++    }
+ }
+diff --git a/src/project.rs b/src/project.rs
+index f02abb3f6..7d616e9e7 100644
+--- a/src/project.rs
++++ b/src/project.rs
+@@ -1986,6 +1986,12 @@ fn target_files_inner(
+     report_typescript_error_class(app, target);
+     report_replayed_class_bodies(app, target);
+     report_controller_sibling_classes(app, target);
++    // `validates …, uniqueness:` left out of a target with no runtime
++    // Relation: reported here, where the CLI and the MCP `wont_lower`
++    // both collect a target's gaps, so neither reports a clean emit.
++    for d in crate::lower::relation_residue::uniqueness_gaps_for_target(app, target) {
++        emit::diagnostics::push(d);
++    }
+     report_mailers(app, target);
+     report_sqlite_index_predicates(app, target);
+     report_native_ruby_syntax(app, target);
+diff --git a/tests/emit_and_run.rs b/tests/emit_and_run.rs
+index 9b2435028..81f051a17 100644
+--- a/tests/emit_and_run.rs
++++ b/tests/emit_and_run.rs
+@@ -280,6 +280,8 @@ mod sidekiq_adapter;
+ mod silent_lowerings;
+ #[path = "emit_and_run/validates_options.rs"]
+ mod validates_options;
++#[path = "emit_and_run/validates_uniqueness.rs"]
++mod validates_uniqueness;
+ #[path = "emit_and_run/validates_integer_constants.rs"]
+ mod validates_integer_constants;
+ #[path = "emit_and_run/validation_callback_on.rs"]
+diff --git a/tests/emit_and_run/validates_options.rs b/tests/emit_and_run/validates_options.rs
+index cfaa4cfa9..3bceb10a7 100644
+--- a/tests/emit_and_run/validates_options.rs
++++ b/tests/emit_and_run/validates_options.rs
+@@ -9,8 +9,9 @@ use super::emit_and_run;
+ /// lambda-condition follow-up) a zero-arity lambda `if:` now guards the
+ /// same way — `:note` below, with dedicated coverage in
+ /// `validates_lambda_conditions.rs`. `equal_to`, `other_than`,
+-/// uniqueness, comparison, and `length: is:` stay diagnostics and are
+-/// not enforced.
++/// `uniqueness: { conditions: }`, comparison, and `length: is:` stay
++/// diagnostics and are not enforced (plain `uniqueness:` is covered by
++/// `validates_uniqueness.rs`).
+ const MODEL: &str = r#"class Article < ApplicationRecord
+   has_many :comments, dependent: :destroy
+ 
+@@ -35,7 +36,7 @@ const MODEL: &str = r#"class Article < ApplicationRecord
+   validates :label, presence: true, if: :live?
+   validates :extra, presence: true, unless: :draft?
+   validates :note, presence: true, if: -> { status == "live" }
+-  validates :title, uniqueness: true
++  validates :title, uniqueness: { conditions: -> { where(published: true) } }
+   validates :level, comparison: { less_than_or_equal_to: :cap }
+   validates :tag, length: { maximum: 4, is: 2 }
+ 
+@@ -145,7 +146,7 @@ raise "lambda condition not enforced: #{lambda_blank.inspect}" unless lambda_bla
+ valid, msgs = messages(base.merge(title: "LambdaOk", status: "live", label: "x", extra: "y", note: "z"))
+ raise "lambda condition filled rejected: #{msgs.inspect}" unless valid
+ 
+-# uniqueness:, comparison:, and length: is: are not enforced.
++# uniqueness: { conditions: }, comparison:, and length: is: are not enforced.
+ Article.create!(base.merge(title: "Taken", label: "x", extra: "y"))
+ Article.create!(base.merge(title: "Taken"))
+ valid, msgs = messages(base.merge(title: "Compared"))
+diff --git a/tests/emit_and_run/validates_uniqueness.rs b/tests/emit_and_run/validates_uniqueness.rs
+new file mode 100644
+index 000000000..bd5d2433c
+--- /dev/null
++++ b/tests/emit_and_run/validates_uniqueness.rs
+@@ -0,0 +1,227 @@
++use super::emit_and_run;
++
++/// `validates :attr, uniqueness: …` on the ruby-family targets, which ship
++/// the runtime Relation the check queries at validation time (Rails 8.1's
++/// `UniquenessValidator`: `where(attr: value)`, minus the record itself,
++/// per `scope:` column, `exists?`). Answers below are Rails 8.1.4's for the
++/// same schema, rows and records.
++const MODEL: &str = r#"class Widget < ApplicationRecord
++  belongs_to :account, optional: true
++
++  validates :uri, uniqueness: true
++  validates :name, uniqueness: { scope: :owner_id, case_sensitive: false }
++  validates :code, uniqueness: { scope: :account, allow_nil: true }
++  validates :label, uniqueness: { allow_blank: true }
++end
++"#;
++
++const APPLICATION_RECORD: &str =
++    "class ApplicationRecord < ActiveRecord::Base\n  self.abstract_class = true\nend\n";
++
++const SCHEMA: &str = r#"ActiveRecord::Schema.define do
++  create_table "accounts", force: :cascade do |t|
++    t.string "handle"
++  end
++
++  create_table "widgets", force: :cascade do |t|
++    t.string "uri"
++    t.string "name"
++    t.integer "owner_id"
++    t.string "code"
++    t.integer "account_id"
++    t.string "label"
++  end
++end
++"#;
++
++fn app() -> emit_and_run::Overlay {
++    emit_and_run::empty_app()
++        .write("app/models/application_record.rb", APPLICATION_RECORD)
++        .write("app/models/account.rb", "class Account < ApplicationRecord\nend\n")
++        .write("db/schema.rb", SCHEMA)
++        .write("app/models/widget.rb", MODEL)
++}
++
++#[test]
++fn uniqueness_matches_rails_on_the_ruby_target() {
++    app()
++        .run_ruby(
++            r#"a1 = Account.create!(handle: "a1")
++a2 = Account.create!(handle: "a2")
++Widget.create!(uri: "u1", name: "Bob", owner_id: 1, code: "c1", account_id: a1.id, label: "")
++Widget.create!(uri: nil, name: nil, owner_id: 2, code: nil, account_id: a1.id, label: "l")
++def errors_for(**attrs)
++  w = Widget.new(**attrs)
++  w.valid?
++  w.errors.to_a
++end
++got = [
++  errors_for(uri: "u1"),
++  errors_for(uri: "u2", name: "bob", owner_id: 1),
++  errors_for(uri: "u3", name: "bob", owner_id: 9),
++  errors_for(uri: nil),
++  errors_for(uri: "u4", code: "c1", account_id: a1.id),
++  errors_for(uri: "u5", code: "c1", account_id: a2.id),
++  errors_for(uri: "u6", code: nil, account_id: a1.id),
++  errors_for(uri: "u7", label: ""),
++  errors_for(uri: "u8", label: "l"),
++]
++want = [
++  ["Uri has already been taken"],
++  ["Name has already been taken"],
++  [],
++  ["Uri has already been taken"],
++  ["Code has already been taken"],
++  [],
++  [],
++  [],
++  ["Label has already been taken"],
++]
++raise "errors: #{got.inspect}" unless got == want
++saved = Widget.first
++saved.name = "BOB"
++saved.valid?
++raise "a persisted record collides with itself: #{saved.errors.to_a.inspect}" unless saved.errors.to_a == []
++puts "uniqueness passed"
++"#,
++        )
++        .assert_passes();
++}
++
++/// The strict targets have no runtime Relation to run the query, so the
++/// rule stays a reported gap there: the emit raises no error (no dynamic
++/// relation chain reaches their emitters).
++#[test]
++fn strict_targets_keep_uniqueness_a_gap_without_emit_errors() {
++    use roundhouse::project::BuildTarget;
++    for target in [BuildTarget::Rust, BuildTarget::Typescript, BuildTarget::Go, BuildTarget::Crystal] {
++        let (_emitted, errors) = app().emit(target);
++        assert!(errors.is_empty(), "{target:?}: {errors:#?}");
++    }
++}
++
++/// Through the CLI, a strict target reports the rule it leaves out, and a
++/// ruby-family target, which runs the check, reports nothing for it.
++#[test]
++fn the_cli_reports_uniqueness_only_where_it_is_not_lowered() {
++    let root = std::env::temp_dir().join(format!("roundhouse-uniqueness-cli-{}", std::process::id()));
++    let _ = std::fs::remove_dir_all(&root);
++    for (path, body) in [
++        ("app/models/application_record.rb", APPLICATION_RECORD),
++        ("app/models/account.rb", "class Account < ApplicationRecord\nend\n"),
++        ("app/models/widget.rb", MODEL),
++        ("db/schema.rb", SCHEMA),
++    ] {
++        let file = root.join("app_src").join(path);
++        std::fs::create_dir_all(file.parent().unwrap()).unwrap();
++        std::fs::write(file, body).unwrap();
++    }
++    let warnings = |target: &str| {
++        let out = std::process::Command::new(env!("CARGO_BIN_EXE_roundhouse"))
++            .args(["--target", target, "--allow-unsupported", "-o"])
++            .arg(root.join(format!("out-{target}")))
++            .arg(root.join("app_src"))
++            .output()
++            .expect("run roundhouse");
++        String::from_utf8_lossy(&out.stderr)
++            .lines()
++            .filter(|l| l.contains("uniqueness: not supported"))
++            .count()
++    };
++    let rust = warnings("rust");
++    let ruby = warnings("ruby");
++    std::fs::remove_dir_all(&root).ok();
++    assert_eq!(rust, 4, "one warning per uniqueness rule on rust");
++    assert_eq!(ruby, 0, "the ruby target lowers the check");
++}
++
++/// Rails excludes the record itself by the model's primary key
++/// (`finder_class.primary_key => id_in_database`), not by an `id`
++/// column: `"codes"."code" != ?` for `self.primary_key = "code"` over a
++/// table keyed by `code`, and `"keystores"."key" != ?` for a table that keeps
++/// its integer `id` but names `key` as the key. Rails 8.1.4 answers: a
++/// persisted record is valid (it does not collide with itself), and a
++/// new one with the same name is not.
++#[test]
++fn uniqueness_excludes_the_record_by_its_declared_primary_key() {
++    emit_and_run::empty_app()
++        .write("app/models/application_record.rb", APPLICATION_RECORD)
++        .write(
++            "db/schema.rb",
++            r#"ActiveRecord::Schema.define do
++  create_table "codes", id: :string, primary_key: "code", force: :cascade do |t|
++    t.string "name"
++  end
++
++  create_table "keystores", force: :cascade do |t|
++    t.string "key"
++    t.string "name"
++  end
++end
++"#,
++        )
++        .write(
++            "app/models/code.rb",
++            "class Code < ApplicationRecord\n  self.primary_key = \"code\"\n  validates :name, uniqueness: true\nend\n",
++        )
++        .write(
++            "app/models/keystore.rb",
++            "class Keystore < ApplicationRecord\n  self.primary_key = \"key\"\n  validates :name, uniqueness: true\nend\n",
++        )
++        .run_ruby(
++            r#"a = Code.create!(code: "a", name: "x")
++k = Keystore.create!(key: "k1", name: "x")
++got = [a.valid?, Code.new(code: "b", name: "x").valid?, k.valid?, Keystore.new(key: "k2", name: "x").valid?]
++raise "valid?: #{got.inspect}" unless got == [true, false, true, false]
++puts "primary key exclusion passed"
++"#,
++        )
++        .assert_passes();
++}
++
++/// A call-level `allow_nil:` / `allow_blank:` reaches the uniqueness
++/// validator like every other one in the call (Rails passes the call's
++/// options to each), and a key in the validator's own hash wins over it.
++/// Rails 8.1.4 answers for the same rows: a nil uri and a blank label are
++/// skipped, and `code` still collides on nil because its hash says
++/// `allow_nil: false`.
++#[test]
++fn call_level_allow_nil_and_allow_blank_reach_uniqueness() {
++    emit_and_run::empty_app()
++        .write("app/models/application_record.rb", APPLICATION_RECORD)
++        .write(
++            "db/schema.rb",
++            r#"ActiveRecord::Schema.define do
++  create_table "widgets", force: :cascade do |t|
++    t.string "uri"
++    t.string "label"
++    t.string "code"
++  end
++end
++"#,
++        )
++        .write(
++            "app/models/widget.rb",
++            r#"class Widget < ApplicationRecord
++  validates :uri, uniqueness: true, allow_nil: true
++  validates :label, uniqueness: true, allow_blank: true
++  validates :code, uniqueness: { allow_nil: false }, allow_nil: true
++end
++"#,
++        )
++        .run_ruby(
++            r#"Widget.create!(uri: nil, label: "", code: "c")
++Widget.create!(uri: nil, label: "", code: nil)
++got = [
++  { uri: nil, label: "x1", code: "z1" },
++  { uri: "u", label: "", code: "z2" },
++  { uri: "u2", label: "  ", code: "z3" },
++  { uri: "u3", label: "x3", code: nil },
++].map { |attrs| w = Widget.new(**attrs); w.valid?; w.errors.to_a }
++want = [[], [], [], ["Code has already been taken"]]
++raise "errors: #{got.inspect}" unless got == want
++puts "call-level allow options passed"
++"#,
++        )
++        .assert_passes();
++}
+diff --git a/tests/ingest.rs b/tests/ingest.rs
+index 61b1144fd..87250d9cd 100644
+--- a/tests/ingest.rs
++++ b/tests/ingest.rs
+@@ -1658,7 +1658,7 @@ fn unmodeled_validates_options_warn_and_drop_the_whole_call() {
+     let (model, warnings, gaps) = ingest_widget(
+         r#"
+ class Widget < ApplicationRecord
+-  validates :name, presence: true, uniqueness: true
++  validates :name, presence: true, uniqueness: { conditions: -> { where(active: true) } }
+   validates :stock, comparison: { less_than_or_equal_to: :max_stock }
+   validates :price, numericality: { greater_than: 0, odd: true }
+   validates :bounded, numericality: { equal_to: 1, other_than: 2 }
+@@ -3502,3 +3502,42 @@ end
+     assert!(rule("name").is_none(), "a custom context stays a gap: {rules:?}");
+     assert!(warnings.iter().any(|w| w.contains("validates :name, on:")), "{warnings:?}");
+ }
++
++/// `uniqueness:` becomes a `Uniqueness` rule with its options; `conditions:`
++/// and a model with its own `default_scope` stay the reported gap.
++#[test]
++fn uniqueness_options_lower_to_a_rule() {
++    let (model, warnings, _) = ingest_widget(
++        r#"
++class Widget < ApplicationRecord
++  validates :uri, uniqueness: true
++  validates :name, uniqueness: { scope: [:owner_id, :kind], case_sensitive: false, allow_blank: true }
++  validates :code, uniqueness: { conditions: -> { where(active: true) } }
++end
++"#,
++    );
++    let rules = validation_rules(&model);
++    let rule = |attr: &str| rules.iter().find(|v| v.attribute.as_str() == attr).copied();
++    assert!(
++        matches!(rule("uri").map(|v| v.rules.as_slice()), Some([roundhouse::dialect::ValidationRule::Uniqueness { scope, case_sensitive: true, allow_nil: false, allow_blank: false }]) if scope.is_empty()),
++        "{:?}", rule("uri")
++    );
++    assert!(
++        matches!(rule("name").map(|v| v.rules.as_slice()), Some([roundhouse::dialect::ValidationRule::Uniqueness { scope, case_sensitive: false, allow_blank: true, .. }]) if scope.len() == 2),
++        "{:?}", rule("name")
++    );
++    assert!(rule("code").is_none(), "conditions: stays a gap: {rules:?}");
++    assert!(warnings.iter().any(|w| w.contains("validates :code, uniqueness: conditions:")), "{warnings:?}");
++
++    let (model, warnings, _) = ingest_widget(
++        "class Widget < ApplicationRecord\n  default_scope { where(kept: true) }\n  validates :uri, uniqueness: true\nend\n",
++    );
++    assert!(validation_rules(&model).iter().all(|v| v.attribute.as_str() != "uri"), "default_scope keeps the gap");
++    assert!(warnings.iter().any(|w| w.contains("validates :uri, uniqueness:")), "{warnings:?}");
++
++    let (model, warnings, _) = ingest_widget(
++        "class Widget < ApplicationRecord\n  self.default_scope { where(kept: true) }\n  validates :uri, uniqueness: true\nend\n",
++    );
++    assert!(validation_rules(&model).iter().all(|v| v.attribute.as_str() != "uri"), "self.default_scope keeps the gap");
++    assert!(warnings.iter().any(|w| w.contains("validates :uri, uniqueness:")), "{warnings:?}");
++}

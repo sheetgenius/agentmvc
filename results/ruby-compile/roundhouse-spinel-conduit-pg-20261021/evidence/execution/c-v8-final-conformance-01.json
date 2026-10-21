@@ -1,0 +1,21 @@
+{
+  "label": "c-v8-final-conformance-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v9-v8-final-conformance",
+    "--mount",
+    "type=bind,source=.work/upstream/frontier/agents/sol-conduit-v9c/v8-final-conformance,target=/probes",
+    "-w",
+    "/probes",
+    "conduit-v9-control:v8",
+    "python3",
+    "run.py"
+  ],
+  "started": "2026-10-21T08:20:22.253168+00:00",
+  "finished": "2026-10-21T08:22:08.149850+00:00",
+  "exit": 0,
+  "log": "evidence/execution/c-v8-final-conformance-01.log"
+}

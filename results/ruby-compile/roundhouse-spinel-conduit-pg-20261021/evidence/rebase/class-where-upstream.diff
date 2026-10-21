@@ -1,0 +1,134 @@
+commit c234d6b98368fcfe0c8b991c084d2b9e44f21727
+Author: Eduard G. Castelló <[redacted-email]>
+Date:   Tue Oct 20 09:48:55 2026 +0200
+
+    Class-level where forwards every condition form; find_by takes SQL
+    
+    The ruby-family runtime's class-level `where` fallback, which a dynamic
+    call site reaches (a class held in a variable, so no lowering resolves
+    the call), called `.to_h` on its one argument. `Widget.where("score > 4")`
+    raised NoMethodError and `Widget.where("score > ?", 4)` raised
+    ArgumentError, where Rails answers both. It now forwards the condition
+    and any binds to `Relation#where`, which already takes every form; a
+    Hash behaves as before, scope seeding included.
+    
+    `find_by` had the same `.to_h`; Rails' `find_by` also takes a SQL
+    string, and `Relation#find_by` already handles one, so the fallback
+    forwards it unchanged too.
+    
+    Fixes #1129
+    
+    Co-Authored-By: Claude Opus 5.5 <[redacted-email]>
+
+diff --git a/runtime/ruby/active_record/connection.rb b/runtime/ruby/active_record/connection.rb
+index c69047188..a2425bd2a 100644
+--- a/runtime/ruby/active_record/connection.rb
++++ b/runtime/ruby/active_record/connection.rb
+@@ -959,16 +959,18 @@ module ActiveRecord
+     # version, which stays for the strict-target runtime transpiles
+     # (no Relation class in their tables); this file is walked only
+     # into the ruby-family trees. Lowered call-sites don't land here —
+-    # they drive a Relation or `_adapter_*` directly.
+-    def self.where(conditions)
+-      ActiveRecord::Relation.new(self).where(conditions.to_h)
++    # they drive a Relation or `_adapter_*` directly. Every form Rails
++    # takes forwards as written — a Hash, a SQL string, a string with
++    # positional or named binds — as `Relation#where` already takes them.
++    def self.where(condition = nil, *args)
++      ActiveRecord::Relation.new(self).where(condition, *args)
+     end
+ 
+-    # Model Hash finders use the relation's NULL / IN predicates too.
+-    # `.to_h` matches `where` above: Hash is a no-op (nil / Array values
+-    # survive); non-Hash inputs raise rather than reach Relation's SQL path.
++    # Model finders use the relation's NULL / IN predicates too. A SQL
++    # string reaches Relation#find_by's raw-SQL path, as Rails'
++    # `find_by("score > 6")` does.
+     def self.find_by(conditions)
+-      ActiveRecord::Relation.new(self).find_by(conditions.to_h)
++      ActiveRecord::Relation.new(self).find_by(conditions)
+     end
+ 
+     # `Model.find_or_initialize_by` / `find_or_create_by` /
+diff --git a/runtime/ruby/active_record/connection.rbs b/runtime/ruby/active_record/connection.rbs
+index a3253923e..2429365ea 100644
+--- a/runtime/ruby/active_record/connection.rbs
++++ b/runtime/ruby/active_record/connection.rbs
+@@ -95,8 +95,8 @@ module ActiveRecord
+     def self.exists?: (*(Integer | Float | String | nil) ids) -> bool
+     def self._exists_primary_key_input: (Integer | Float | String | nil id) -> bool
+     # Ruby-family overrides of base.rb's Array / COUNT fallbacks.
+-    def self.where: (Hash[Symbol, untyped] conditions) -> Relation
+-    def self.find_by: (Hash[String | Symbol, untyped] conditions) -> Base?
++    def self.where: (?(Hash[String | Symbol, untyped] | String | nil) condition, *untyped args) -> Relation
++    def self.find_by: (Hash[String | Symbol, untyped] | String | nil conditions) -> Base?
+     def self.find_sole_by: (Hash[String | Symbol, untyped] conditions) -> Base
+     def self.find_or_initialize_by: (Hash[Symbol, untyped] conditions) -> Base
+     def self.find_or_create_by: (Hash[Symbol, untyped] conditions) -> Base
+diff --git a/tests/emit_and_run.rs b/tests/emit_and_run.rs
+index 4e5b6b0bd..afa2d620a 100644
+--- a/tests/emit_and_run.rs
++++ b/tests/emit_and_run.rs
+@@ -17652,3 +17652,5 @@ mod private_calls;
+ mod inherited_visibility;
+ #[path = "emit_and_run/class_side_relations.rs"]
+ mod class_side_relations;
++#[path = "emit_and_run/dynamic_where_forms.rs"]
++mod dynamic_where_forms;
+diff --git a/tests/emit_and_run/dynamic_where_forms.rs b/tests/emit_and_run/dynamic_where_forms.rs
+new file mode 100644
+index 000000000..8e195670f
+--- /dev/null
++++ b/tests/emit_and_run/dynamic_where_forms.rs
+@@ -0,0 +1,51 @@
++use super::emit_and_run;
++
++/// A `widgets` table with an integer `score` and rows 3, 7, 5 and NULL,
++/// then `script` with `klass` holding the model: a class held in a
++/// variable is the dynamic call site no lowering resolves, so `where`
++/// and `find_by` reach the runtime fallbacks and Relation. Every
++/// expected value in the scripts below is what Rails 8.1.4 answers on
++/// the same rows.
++fn run_on_widgets(script: &str) {
++    let setup = r##"[3, 7, 5, nil].each do |s|
++  w = Widget.new
++  w.score = s
++  w.save!
++end
++klass = Widget
++def scores(rel)
++  rel.to_a.map(&:score).sort_by { |s| s.nil? ? -1 : s }
++end
++def expect(label, got, want)
++  raise "#{label}: got #{got.inspect}, Rails answers #{want.inspect}" unless got == want
++end
++
++"##;
++    emit_and_run::real_blog()
++        .edit(
++            "db/schema.rb",
++            "  create_table \"comments\"",
++            "  create_table \"widgets\", force: :cascade do |t|\n    t.integer \"score\"\n  end\n\n  create_table \"comments\"",
++        )
++        .write("app/models/widget.rb", "class Widget < ApplicationRecord\nend\n")
++        .run_ruby(&format!("{setup}{script}"))
++        .assert_passes();
++}
++
++/// #1129: the class-level `where` fallback forwards every condition
++/// form, and `find_by` takes a SQL string, as Rails' do.
++#[test]
++fn dynamic_where_takes_every_rails_condition_form() {
++    run_on_widgets(
++        r##"# #1129: the class-level fallback forwards every `where` form.
++expect "where(sql)", klass.where("score > 4").count, 2
++expect "where(sql, binds)", klass.where("score > ?", 4).count, 2
++expect "where(sql, named binds)", klass.where("score > :min", min: 4).count, 2
++expect "where(hash)", klass.where(score: 5).count, 1
++expect "where(hash) seeds", klass.where(score: 5).find_or_initialize_by(id: -1).score, 5
++expect "find_by(sql)", klass.find_by("score > 6").score, 7
++expect "find_by(hash)", klass.find_by(score: 3).score, 3
++"##,
++    );
++}
++

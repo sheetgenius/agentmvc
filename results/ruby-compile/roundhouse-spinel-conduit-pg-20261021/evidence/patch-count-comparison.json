@@ -1,0 +1,275 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v9-20261021-final",
+  "roundhouse_patches": 11,
+  "spinel_patches": 1,
+  "patches": [
+    {
+      "patch": "00-interval.patch",
+      "decision": "rebased",
+      "v8": {
+        "added": 10,
+        "removed": 1,
+        "files": 1
+      },
+      "oct16": {
+        "added": 10,
+        "removed": 1,
+        "files": 1
+      },
+      "v9": {
+        "added": 10,
+        "removed": 1,
+        "files": 1
+      },
+      "notes": "Interval remains string storage for GoodJob schema; clean application."
+    },
+    {
+      "patch": "10-api-mode-json.patch",
+      "decision": "conflicting; smallest faithful rebase",
+      "v8": {
+        "added": 333,
+        "removed": 60,
+        "files": 23
+      },
+      "oct16": {
+        "added": 155,
+        "removed": 45,
+        "files": 13
+      },
+      "v9": {
+        "added": 158,
+        "removed": 40,
+        "files": 14
+      },
+      "notes": "Preserve API statuses/headers, JSON callbacks/rescues, error side effects and peer address. Upstream UTC presentation supplies zoned UTC branch. #468 changes framing and supplies no peer propagation. Adapt dispatcher to shared AssocRegistry/variant parameters. Final rebase carries the existing req_headers String Hash contract in RBS; the unannotated current-head reader triggers a Struct diagnostic."
+    },
+    {
+      "patch": "20-raw-websocket.patch",
+      "decision": "conflicting; smallest faithful rebase",
+      "v8": {
+        "added": 350,
+        "removed": 17,
+        "files": 9
+      },
+      "oct16": {
+        "added": 347,
+        "removed": 17,
+        "files": 9
+      },
+      "v9": {
+        "added": 347,
+        "removed": 16,
+        "files": 9
+      },
+      "notes": "#468 supplies final keep-alive closure after upgrade/streaming. Drop redundant keep_alive hunk; preserve pending upgrade bytes in Connection.run while rebasing close lifecycle and Faye bridge."
+    },
+    {
+      "patch": "30-jobs-boot.patch",
+      "decision": "conflicting; smallest faithful rebase",
+      "v8": {
+        "added": 420,
+        "removed": 1,
+        "files": 8
+      },
+      "oct16": {
+        "added": 420,
+        "removed": 1,
+        "files": 8
+      },
+      "v9": {
+        "added": 420,
+        "removed": 1,
+        "files": 8
+      },
+      "notes": "Boot hooks unchanged; move initializer insertion and Application signature anchors."
+    },
+    {
+      "patch": "50-postgresql-lane.patch",
+      "decision": "conflicting; smallest faithful rebase",
+      "v8": {
+        "added": 967,
+        "removed": 29,
+        "files": 25
+      },
+      "oct16": {
+        "added": 973,
+        "removed": 25,
+        "files": 24
+      },
+      "v9": {
+        "added": 986,
+        "removed": 22,
+        "files": 22
+      },
+      "notes": "#405 supplies default read-bind policy, not libpq backend selection, arrays, or PostgreSQL locking. Keep default-on reads; adapt visitor and reload signatures; add optional-bind/uncached entry points to libpq contract. Upstream class where/select facades replace local copies. Preserve named binds when overriding PostgreSQL positional interpolation. Final rebase also carries upstream _txn_joinable_bits getter/setter, omitted in the initial libpq rebase. Correct the initial rebase that placed fixture TRUNCATE in per-record _adapter_delete; retain scoped DELETE and put TRUNCATE in _adapter_truncate."
+    },
+    {
+      "patch": "60-rails-surface.patch",
+      "decision": "conflicting; smallest faithful rebase",
+      "v8": {
+        "added": 359,
+        "removed": 46,
+        "files": 16
+      },
+      "oct16": {
+        "added": 284,
+        "removed": 41,
+        "files": 13
+      },
+      "v9": {
+        "added": 219,
+        "removed": 39,
+        "files": 11
+      },
+      "notes": "Upstream #1144 replaces uniqueness ingestion/lowering, including primary key and allow_nil/allow_blank. Upstream batch relation terminal replaces local find_each arm. Keep projection aliases, scoped class calls, branch-local relation copies and Set discovery."
+    },
+    {
+      "patch": "71-record-lock-and-error-predicate.patch",
+      "decision": "retired",
+      "v8": {
+        "added": 82,
+        "removed": 0,
+        "files": 5
+      },
+      "oct16": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "v9": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "notes": "Retired: upstream f89915e7 implements error predicate through ErrorDetail; already retired October 16."
+    },
+    {
+      "patch": "74-integer-query-range.patch",
+      "decision": "conflicting; smallest faithful rebase",
+      "v8": {
+        "added": 244,
+        "removed": 30,
+        "files": 11
+      },
+      "oct16": {
+        "added": 244,
+        "removed": 30,
+        "files": 11
+      },
+      "v9": {
+        "added": 238,
+        "removed": 27,
+        "files": 11
+      },
+      "notes": "Integer query widths remain local. Adapt to through-join schema parameter and variadic exists? facade; preserve default-on upstream reads except inherited PostgreSQL integer serialization."
+    },
+    {
+      "patch": "80-gradual-return-stabilization.patch",
+      "decision": "rebased",
+      "v8": {
+        "added": 87,
+        "removed": 40,
+        "files": 3
+      },
+      "oct16": {
+        "added": 87,
+        "removed": 40,
+        "files": 3
+      },
+      "v9": {
+        "added": 87,
+        "removed": 40,
+        "files": 3
+      },
+      "notes": "Retained unchanged: PR #1011 remains open/draft/unmerged; #964 unknown return arms are still stripped upstream."
+    },
+    {
+      "patch": "81-reload-receiver-type.patch",
+      "decision": "retired",
+      "v8": {
+        "added": 24,
+        "removed": 1,
+        "files": 2
+      },
+      "oct16": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "v9": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "notes": "Retired: upstream 6141f959 preserves model reload/lock! receiver; already retired October 16."
+    },
+    {
+      "patch": "82-upstream-regression-quoted-bulk-update.patch",
+      "decision": "new upstream regression repair",
+      "introducing_source_change": "d5bbeaaaa58c1213c6ff2429531d90ac8edf8378",
+      "v8": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "notes": "A bulk UPDATE quotes the already-quoted _table_sql name twice; retain it once.",
+      "v9": {
+        "added": 2,
+        "removed": 4,
+        "files": 1
+      }
+    },
+    {
+      "patch": "83-upstream-regression-temporal-initialize.patch",
+      "decision": "new upstream regression repair",
+      "introducing_source_change": "0b20a0f96a61d4fdcdc126180635c24bde1db7bc",
+      "v8": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "notes": "Restore pre-0b20 storage-default initialization before native Date/Time normalization. The same public-app create request returns 500 with zero rows before, and 201 with a row after. No first-bad Spinel revision is claimed.",
+      "v9": {
+        "added": 6,
+        "removed": 31,
+        "files": 1
+      }
+    },
+    {
+      "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+      "decision": "new upstream regression repair",
+      "introducing_source_change": "0714d4f2184e506a7835e5fd569da6a9170a029d",
+      "v8": {
+        "added": 0,
+        "removed": 0,
+        "files": 0
+      },
+      "v9": {
+        "added": 8,
+        "removed": 0,
+        "files": 1
+      },
+      "notes": "Do not narrow explicit mixed unknown return arms to a concrete Symbol parameter; v8 retained the arm. Restores conservative behavior, without a join-law proof.",
+      "introducing_commit": "0714d4f2184e506a7835e5fd569da6a9170a029d",
+      "adjacent_pair": "evidence/regressions/mixed-parameter/comparison.json"
+    }
+  ],
+  "net": {
+    "added": 2481,
+    "removed": 221,
+    "files": 66
+  },
+  "spinel_repairs": [
+    {
+      "patch": "91-upstream-regression-late-hash-return.patch",
+      "decision": "new upstream regression repair",
+      "introducing_commit": "a07741ff1fad0304029eb8f515ba042f73f42f7b",
+      "v9": {
+        "added": 11,
+        "removed": 0,
+        "files": 1
+      },
+      "evidence": "evidence/regressions/late-hash-final/"
+    }
+  ]
+}

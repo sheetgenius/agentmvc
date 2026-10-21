@@ -1,0 +1,132 @@
+class User < ApplicationRecord
+  attr_reader id: Integer
+  attr_writer id: Integer
+  def id?: () -> bool
+  attr_reader bio: String?
+  attr_writer bio: String?
+  def bio?: () -> bool
+  def bio_previously_changed?: () -> bool
+  def saved_change_to_bio?: () -> bool
+  def bio_previously_was: () -> untyped
+  attr_reader created_at: Time?
+  attr_reader created_at_raw: String
+  def created_at=: (Time value) -> nil
+  attr_writer created_at_raw: String
+  def created_at?: () -> bool
+  def created_at_previously_changed?: () -> bool
+  def saved_change_to_created_at?: () -> bool
+  def created_at_previously_was: () -> untyped
+  attr_reader email: String
+  attr_writer email: String
+  def email?: () -> bool
+  def email_previously_changed?: () -> bool
+  def saved_change_to_email?: () -> bool
+  def email_previously_was: () -> untyped
+  attr_reader image: String?
+  attr_writer image: String?
+  def image?: () -> bool
+  def image_previously_changed?: () -> bool
+  def saved_change_to_image?: () -> bool
+  def image_previously_was: () -> untyped
+  attr_reader password_digest: String
+  attr_writer password_digest: String
+  def password_digest?: () -> bool
+  def password_digest_previously_changed?: () -> bool
+  def saved_change_to_password_digest?: () -> bool
+  def password_digest_previously_was: () -> untyped
+  attr_reader updated_at: Time?
+  attr_reader updated_at_raw: String
+  def updated_at=: (Time value) -> nil
+  attr_writer updated_at_raw: String
+  def updated_at?: () -> bool
+  def updated_at_previously_changed?: () -> bool
+  def saved_change_to_updated_at?: () -> bool
+  def updated_at_previously_was: () -> untyped
+  attr_reader username: String
+  attr_writer username: String
+  def username?: () -> bool
+  def username_previously_changed?: () -> bool
+  def saved_change_to_username?: () -> bool
+  def username_previously_was: () -> untyped
+  def self.table_name: () -> String
+  def self._table_sql: () -> String
+  def self.schema_columns: () -> Array[Symbol]
+  def self.schema_time_columns: () -> Array[Symbol]
+  def self.schema_date_columns: () -> Array[Symbol]
+  def self.schema_boolean_columns: () -> Array[Symbol]
+  def self.schema_decimal_columns: () -> Array[Symbol]
+  def self.schema_integer_limits: () -> Hash[String, Integer]
+  def self.instantiate: (Hash[String, untyped] row) -> User
+  def attributes_before_type_cast: () -> Hash[String, untyped]
+  def self.from_row: (UserRow row) -> User
+  def self.from_stmt: (untyped stmt) -> User
+  def initialize: (?Hash[Symbol, untyped] attrs) -> nil
+  def attributes: () -> Hash[String, untyped]
+  def []: ((Symbol | String) name) -> untyped
+  def []=: (Symbol name, (Integer | String) value) -> (Integer | String | nil)
+  def update: (Hash[Symbol, untyped] attrs) -> bool
+  def update!: (Hash[Symbol, untyped] attrs) -> User
+  def fill_timestamps: (bool creating) -> nil
+  def self._find_primary_key_input: ((Integer | Float | String | nil) id) -> User?
+  def self._exists_primary_key_input: ((Integer | Float | String | nil) id) -> bool
+  def self._adapter_find_by_id: (Integer id) -> User?
+  def self._adapter_all: () -> Array[User]
+  def self._adapter_last: () -> User?
+  def _adapter_insert: () -> Integer
+  def _adapter_update: () -> nil
+  def _adapter_touch: () -> nil
+  def _adapter_delete: () -> nil
+  def self._adapter_count: () -> Integer
+  def self._adapter_any?: () -> bool
+  def self._adapter_exists_by_id?: (Integer id) -> bool
+  def self._adapter_truncate: () -> nil
+  def self.delete_all: () -> Integer
+  def _adapter_reload: () -> User
+  def _adapter_reload_lock: () -> User
+  def self._columns_sql: () -> String
+  def self._hydrate_all: (String sql) -> Array[User]
+  def validate: () -> nil
+  def articles: () -> Array[Article]
+  def _preload_articles: (Array[Article] list) -> nil
+  def articles_loaded?: () -> bool
+  def reload_articles: () -> Array[Article]
+  def articles_target: () -> Array[Article]
+  def article_ids: () -> Array[Integer]
+  def article_exports: () -> Array[ArticleExport]
+  def _preload_article_exports: (Array[ArticleExport] list) -> nil
+  def article_exports_loaded?: () -> bool
+  def reload_article_exports: () -> Array[ArticleExport]
+  def article_exports_target: () -> Array[ArticleExport]
+  def article_export_ids: () -> Array[Integer]
+  def self._association_names: () -> Array[Symbol]
+  def before_destroy: () -> nil
+  def authenticate: (String unencrypted_password) -> (User | bool)
+  attr_reader password: String?
+  attr_reader password_confirmation: String?
+  attr_writer password_confirmation: String
+  def password_reset_token: () -> String
+  def password_reset_token_expires_in: () -> Integer
+  def self.find_by_password_reset_token: (String token) -> User?
+  def self.find_by_password_reset_token!: (String token) -> User
+  def normalize_optional_fields: () -> untyped
+  def password_has_minimum_length: () -> untyped
+  def password_is_present_when_supplied: () -> untyped
+  def password=: (untyped value) -> untyped
+  def _secure_password_writer: (String unencrypted_password) -> nil
+  def dom_prefix: () -> String
+  def to_param: () -> String
+  def dom_record_key: () -> String
+  def cache_key: () -> String
+  def cache_key_with_version: () -> String
+  def before_validation: () -> nil
+  def reload: (?untyped options) -> User
+  def lock!: (?(bool | String | nil) lock) -> User
+  def to_gid_param: () -> untyped
+  def to_gid_uri: () -> untyped
+  def self._preload_batch_articles: (untyped records) -> untyped
+  def self._preload_batch_article_exports: (untyped records) -> untyped
+  def self._preload_dispatch: (untyped records, untyped name, untyped nested) -> untyped
+  def self.preload_associations: (untyped records, untyped specs) -> untyped
+  def __articles_cache: () -> untyped
+  def __article_exports_cache: () -> untyped
+end

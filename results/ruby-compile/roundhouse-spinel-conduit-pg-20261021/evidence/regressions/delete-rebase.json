@@ -1,0 +1,12 @@
+{
+  "classification": "rebase error",
+  "gate": "evidence/execution/c-compiled-gate-04.json",
+  "before_manifest": "3d66ee698bdf63fb48fa42de8e0e186248ac209a50d6d6eb3d7b8169460d91d0",
+  "after_manifest": "17cd1f4ef8531cbce62ebf5f2b6141c26495d3262ba1c67af6df8a49bc299748",
+  "symptom": "13/17 API files; a record delete removes other records; subsequent delete is 404",
+  "cause": "Patch 50 accidentally changed synth_adapter_delete instead of synth_adapter_truncate",
+  "correction": "Move PostgreSQL TRUNCATE override to synth_adapter_truncate; retain visitor-generated DELETE WHERE id for record deletion",
+  "new_patch": false,
+  "before_tree": "25bb473218b1e9784d7bef9e5bb69a9a9d16a922",
+  "after_tree": "424b2828b5e76a42dba68d7ff3d640ed9a1bfa54"
+}

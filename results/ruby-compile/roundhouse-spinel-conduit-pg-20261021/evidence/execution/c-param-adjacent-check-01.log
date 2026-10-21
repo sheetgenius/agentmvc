@@ -1,0 +1,7 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+roundhouse: treeshake (spinel): dropped 62 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: emitted 272 files to /out (spinel)
+roundhouse: treeshake (spinel): dropped 62 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: emitted 272 files to /out (spinel)
+{"condition": "parent", "emitted_signature": "class Probe\n  def self.pick: (bool flag) -> untyped\n  def self.consume: (untyped value) -> untyped\n  def self.run: () -> untyped\nend\n", "cruby": {"exit": 0, "stdout": "{\"n\" => 1}\n", "stderr": ""}, "compile": {"exit": 0, "stdout": "", "stderr": "parent/driver.rb -> /tmp/probe\n"}, "compiled": {"exit": 0, "stdout": "{\"n\" => 1}\n", "stderr": ""}, "matches_cruby": true}
+{"condition": "introduced", "emitted_signature": "class Probe\n  def self.pick: (bool flag) -> untyped\n  def self.consume: (untyped value) -> untyped\n  def self.run: () -> untyped\nend\n", "cruby": {"exit": 0, "stdout": "{\"n\" => 1}\n", "stderr": ""}, "compile": {"exit": 0, "stdout": "", "stderr": "introduced/driver.rb -> /tmp/probe\n"}, "compiled": {"exit": 0, "stdout": "{\"n\" => 1}\n", "stderr": ""}, "matches_cruby": true}
