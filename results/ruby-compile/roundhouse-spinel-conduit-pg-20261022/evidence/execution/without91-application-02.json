@@ -1,0 +1,25 @@
+{
+  "label": "without91-application-02",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-without91-application-02",
+    "-v",
+    "$SCRATCH/emitted-with-callbacks:/work/emitted",
+    "-w",
+    "/work/emitted",
+    "conduit-v10-toolchain:without-91",
+    "spin",
+    "build",
+    "--",
+    "--cc=clang",
+    "--jobs=8"
+  ],
+  "started": "2026-10-22T09:24:12.550553+00:00",
+  "finished": "2026-10-22T09:27:54.194858+00:00",
+  "elapsed_seconds": 221.641,
+  "exit": 1,
+  "log": "evidence/execution/without91-application-02.log"
+}

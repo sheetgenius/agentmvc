@@ -1,0 +1,84 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v10-20261022",
+  "scope": "Publication copy of the completed build record; original observations retained under their recorded conditions",
+  "retained": [
+    "README and run record",
+    "checksummed Roundhouse and Spinel patch series",
+    "reproduction scripts and Dockerfiles",
+    "unchanged compile variant",
+    "final, control and diagnostic gates, captured app evidence and binary identities",
+    "one-patch omission conditions: series, manifests, Dockerfiles, apply and recovery results",
+    "edge responses and comparison summaries",
+    "regression sources, bisect records, reductions and outcomes",
+    "upstream commit diffs, rejected rebase hunks and the final replay"
+  ],
+  "source": {
+    "files": 105054,
+    "logical_bytes": 338711221,
+    "allocated_kib": 679776
+  },
+  "v9_reference": {
+    "files": 422,
+    "logical_bytes": 1822463,
+    "allocated_kib": 2984
+  },
+  "omitted": {
+    "copy of the published v9 README and run record; the v9 record remains the source": {
+      "files": 2,
+      "bytes": 39421
+    },
+    "bulky uncited execution log; metadata retained with its size and SHA-256": {
+      "files": 17,
+      "bytes": 834910
+    },
+    "interrupted bisect-candidate build output; the completed rebuild record is retained": {
+      "files": 1,
+      "bytes": 52116
+    },
+    "superseded initial rebase patch set; pin summaries retained": {
+      "files": 15,
+      "bytes": 172758
+    },
+    "omission-condition copy byte-identical to the final record file of the same path": {
+      "files": 300,
+      "bytes": 1011219
+    },
+    "generated build contexts, copied dependencies, gate workspaces and container logs": {
+      "files": 104272,
+      "bytes": 334113217
+    },
+    "superseded pre-repair replay log; final replay retained": {
+      "files": 1,
+      "bytes": 353
+    }
+  },
+  "promoted_evidence": [
+    {
+      "source": "evidence/omissions/without-30/reproduce/build/container-logs/conduit-v10-gate-conduit-v10-ws-compiled-15505-app.log",
+      "destination": "evidence/execution/without-30-gate-01-app.log",
+      "bytes": 137,
+      "sha256": "75d3e9cf18f8a8e1a6f73c78ce7143786cb1cbe04f2e6485817bb242bcdfbb0e"
+    },
+    {
+      "source": "evidence/omissions/without-30/reproduce/build/container-logs/conduit-v10-gate-conduit-v10-ws-compiled-15505-app-binary.json",
+      "destination": "evidence/execution/without-30-gate-01-app-binary.json",
+      "bytes": 248,
+      "sha256": "3708c6d9026b7006d593e433d03c7aa65dec8ef35ddca9f6384b43dde4570795"
+    }
+  ],
+  "normalization": [
+    "Host checkout paths are repository-relative; the build record's own location is shown as this record's path.",
+    "$SCRATCH stands for the build's local working directory outside the record (emitted programs, bisect and toolchain contexts); it is not published.",
+    "Upstream author email addresses are redacted with the tools/scrub.py email rule; synthetic fixture addresses remain.",
+    "JSON HTTP routes use an equivalent slash escape; decoded values are unchanged.",
+    "Omission folders keep only the files that differ from the final record (series, SHA256SUMS, Dockerfiles, build and gate scripts) plus their apply and recovery results; byte-identical copies are omitted.",
+    "Seventeen bulky execution logs are omitted: eight bisect-candidate toolchain builds and nine probe logs whose rows equal retained results files. Each execution record keeps the log's size and SHA-256.",
+    "run.json describes the input series without its workspace path, keeps only the Docker lock, prefix and port constraints, and links this inventory; cleanup and retirement notes drop workspace wording and internal work-item labels.",
+    "The README states peak RSS in KiB as recorded. The MiB figures in the build notes (timing-vs-v9.json, run.json) are the KiB values divided by 1,000.",
+    "The README attributes the without-60 refusal to emission: in that build log roundhouse check exits 0 before roundhouse --target spinel refuses two controllers. The recorded finding text is unchanged.",
+    "The source variant, toolchain Dockerfiles, reproduction scripts and checksummed patches are byte-identical to the supplied record. The variant ledger, COMPILE-VARIANT.md, is the same file as in the v8 and v9 records."
+  ],
+  "verification": "evidence/publication-validation.json",
+  "excluded_results": "Intermediate, interrupted, cancelled and cached-build attempts remain diagnostics, not final passing conditions.",
+  "performance_benchmark": false
+}

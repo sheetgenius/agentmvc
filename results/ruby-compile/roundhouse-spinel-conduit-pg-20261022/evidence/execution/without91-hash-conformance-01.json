@@ -1,0 +1,25 @@
+{
+  "label": "without91-hash-conformance-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-without91-hash-conformance-01",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/conformance:/work/probe",
+    "-w",
+    "/work/probe",
+    "conduit-v10-toolchain:without-91",
+    "sh",
+    "-c",
+    "ruby late-hash.rb; spinel --cc=clang late-hash.rb -o /tmp/probe && /tmp/probe"
+  ],
+  "started": "2026-10-22T09:20:23.894979+00:00",
+  "finished": "2026-10-22T09:20:24.544387+00:00",
+  "elapsed_seconds": 0.649,
+  "exit": 0,
+  "log": "evidence/execution/without91-hash-conformance-01.log",
+  "used_as_evidence": false,
+  "exclusion": "Source/object timestamp cache error; see evidence/regressions/invalid-without91-cache.json"
+}

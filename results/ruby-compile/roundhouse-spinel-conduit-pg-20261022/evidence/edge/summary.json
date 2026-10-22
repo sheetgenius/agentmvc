@@ -1,0 +1,241 @@
+{
+  "condition": "v10 final vs fresh Rails reference-1, recorded v9, and Rails control",
+  "v10_image_id": "sha256:d60ff22cd936798b5f0b2763c46daeb69f0ff9ffc07b18c64504c719c290c2ed",
+  "rails_image_id": "sha256:ba9bcbac9a44c943649c2b3f1ac7fc32dac9086553b5eed994b6b95718bc757e",
+  "v10_vs_rails_reference_1": {
+    "responses": 166,
+    "differences": 8,
+    "rows": [
+      {
+        "name": "update_email_spaces",
+        "v10": {
+          "name": "update_email_spaces",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "   ",
+              "token": "<token>",
+              "username": "u14",
+              "bio": null,
+              "image": null
+            }
+          }
+        },
+        "rails": {
+          "name": "update_email_spaces",
+          "status": 422,
+          "body": {
+            "errors": {
+              "email": [
+                "can't be blank"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "after_email_spaces",
+        "v10": {
+          "name": "after_email_spaces",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "   ",
+              "token": "<token>",
+              "username": "u14",
+              "bio": null,
+              "image": null
+            }
+          }
+        },
+        "rails": {
+          "name": "after_email_spaces",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u14@example.com",
+              "token": "<token>",
+              "username": "u14",
+              "bio": null,
+              "image": null
+            }
+          }
+        }
+      },
+      {
+        "name": "login_email_spaces_password123",
+        "v10": {
+          "name": "login_email_spaces_password123",
+          "status": 401,
+          "body": {
+            "errors": {
+              "credentials": [
+                "invalid"
+              ]
+            }
+          }
+        },
+        "rails": {
+          "name": "login_email_spaces_password123",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u14@example.com",
+              "token": "<token>",
+              "username": "u14",
+              "bio": null,
+              "image": null
+            }
+          }
+        }
+      },
+      {
+        "name": "update_password_null",
+        "v10": {
+          "name": "update_password_null",
+          "status": 422,
+          "body": {
+            "errors": {
+              "password": [
+                "can't be blank"
+              ]
+            }
+          }
+        },
+        "rails": {
+          "name": "update_password_null",
+          "status": 422,
+          "body": {
+            "errors": {
+              "password": [
+                "can't be blank",
+                "can't be blank"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "update_password_number",
+        "v10": {
+          "name": "update_password_number",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u20@example.com",
+              "token": "<token>",
+              "username": "u20",
+              "bio": null,
+              "image": null
+            }
+          }
+        },
+        "rails": {
+          "name": "update_password_number",
+          "status": 500,
+          "body": {
+            "status": 500,
+            "error": "Internal Server Error"
+          }
+        }
+      },
+      {
+        "name": "login_password_number_password123",
+        "v10": {
+          "name": "login_password_number_password123",
+          "status": 401,
+          "body": {
+            "errors": {
+              "credentials": [
+                "invalid"
+              ]
+            }
+          }
+        },
+        "rails": {
+          "name": "login_password_number_password123",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u20@example.com",
+              "token": "<token>",
+              "username": "u20",
+              "bio": null,
+              "image": null
+            }
+          }
+        }
+      },
+      {
+        "name": "login_password_number_123456789",
+        "v10": {
+          "name": "login_password_number_123456789",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u20@example.com",
+              "token": "<token>",
+              "username": "u20",
+              "bio": null,
+              "image": null
+            }
+          }
+        },
+        "rails": {
+          "name": "login_password_number_123456789",
+          "status": 401,
+          "body": {
+            "errors": {
+              "credentials": [
+                "invalid"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "update_malformed",
+        "v10": {
+          "name": "update_malformed",
+          "status": 400,
+          "body": {
+            "_raw": "<h1>400 Bad Request</h1>"
+          }
+        },
+        "rails": {
+          "name": "update_malformed",
+          "status": 400,
+          "body": {
+            "errors": {
+              "body": [
+                "is invalid"
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "v10_vs_v9": {
+    "responses": 166,
+    "differences": 0,
+    "rows": []
+  },
+  "rails_v10_run_vs_rails_v9_run": {
+    "responses": 166,
+    "differences": 0,
+    "rows": []
+  },
+  "same_differences_as_v9": [
+    "after_email_spaces",
+    "login_email_spaces_password123",
+    "login_password_number_123456789",
+    "login_password_number_password123",
+    "update_email_spaces",
+    "update_malformed",
+    "update_password_null",
+    "update_password_number"
+  ],
+  "new_vs_v9_list": [],
+  "gone_vs_v9_list": []
+}

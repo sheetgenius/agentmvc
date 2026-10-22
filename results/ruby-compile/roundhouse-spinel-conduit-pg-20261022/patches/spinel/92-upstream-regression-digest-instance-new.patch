@@ -1,0 +1,14 @@
+diff --git a/packages/openssl/openssl/digest.rb b/packages/openssl/openssl/digest.rb
+index fd5363429..a3921cc5c 100644
+--- a/packages/openssl/openssl/digest.rb
++++ b/packages/openssl/openssl/digest.rb
+@@ -141,9 +141,6 @@ module OpenSSL
+     alias length digest_length
+     alias size digest_length
+ 
+-    # A fresh object for the same algorithm.
+-    def new = clone.reset
+-
+     def to_s = hexdigest
+     def inspect = "#<#{self.class.name}: #{hexdigest}>"
+ 

@@ -1,0 +1,73 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+Wrote /tmp/cache.rbs
+class Object
+  def __enumw_map: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)
+  def __enumw_select: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)
+  def __enumw_reject: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)
+  def __enumw_filter_map: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)
+  def __enumw_each_with_object: (untyped, untyped) -> void # spinel: widened to untyped (slow path)
+  def __enumw_inject0: (untyped) -> untyped # spinel: widened to untyped (slow path)
+  def __enumw_inject1: (untyped, untyped) -> untyped # spinel: widened to untyped (slow path)
+  def __enumw_with_index: (untyped, Integer) -> void # spinel: widened to untyped (slow path)
+  def __enumw_str_chars_with_index: (String, Integer) -> String
+  def __enumw_str_lines_with_index: (untyped, Integer) -> void # spinel: widened to untyped (slow path)
+  def __enumw_str_bytes_with_index: (untyped, Integer) -> void # spinel: widened to untyped (slow path)
+  def __enumw_str_codepoints_with_index: (String, Integer) -> String
+  def __enumw_each_slice: (untyped, untyped) -> void # spinel: widened to untyped (slow path)
+  def __enumw_each_cons: (untyped, untyped) -> void # spinel: widened to untyped (slow path)
+  def __enumw_each_entry: (untyped) -> void # spinel: widened to untyped (slow path)
+  def __enum___no_false__0: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)
+  def __enum___no_false__1: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)
+  def __enum___no_false__2: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)
+  def __enum___no_false__3: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)
+  def __enum_find__0: (untyped) -> untyped # spinel: widened to untyped (slow path)
+  def __enum_any?__0: (Array[String]) -> bool
+end
+
+class Tep
+  def self.decimal_byte_count: (String) -> Integer
+  def self.str_hash: () -> Hash[String, String]
+end
+
+class ThrusterCacheEntry
+  @status: Integer
+  @headers: Hash[String, String]
+  @body: String
+  @file_path: String
+  @vary_names: Array[String]
+  @vary_values: Array[String]
+  @expires_at: Float
+  @size: Integer
+  def initialize: (Integer, Hash[String, String], String, String, Array[String], Array[String], Float, Integer) -> Integer
+end
+
+class ThrusterCache
+  @capacity: Integer
+  @size: Integer
+  @enabled: bool
+  @items: Hash[untyped, untyped]
+  @lock: Thread::Mutex
+  def initialize: (Integer) -> Thread::Mutex
+  def enabled?: () -> bool
+  def enabled=: (untyped) -> bool # spinel: widened to untyped (slow path)
+  def lookup_key: (untyped) -> untyped # spinel: widened to untyped (slow path)
+  def answer: (untyped, untyped) -> bool # spinel: widened to untyped (slow path)
+  def store: (untyped, untyped) -> nil # spinel: widened to untyped (slow path)
+  def find: (untyped, untyped, Float) -> untyped # spinel: widened to untyped (slow path)
+  def store_key: (untyped, untyped, Float) -> untyped # spinel: widened to untyped (slow path)
+  def record: (untyped, untyped, untyped, Float) -> nil # spinel: widened to untyped (slow path)
+  def get: (untyped, Float) -> untyped # spinel: widened to untyped (slow path)
+  def set: (untyped, ThrusterCacheEntry) -> nil # spinel: widened to untyped (slow path)
+  def self.now: () -> Float
+  def self.lifetime: (untyped) -> Integer # spinel: widened to untyped (slow path)
+  def self.header: (Hash[String, String], String) -> String
+  def self.drop_header: (untyped, String) -> nil # spinel: widened to untyped (slow path)
+  def self.vary_names: (untyped) -> Array[String] # spinel: widened to untyped (slow path)
+  def self.variant_key: (untyped, untyped, untyped) -> untyped # spinel: widened to untyped (slow path)
+  def self.variant_matches?: (untyped, untyped) -> bool # spinel: widened to untyped (slow path)
+  def self.fill: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)
+  def self.not_modified?: (untyped, String) -> bool # spinel: widened to untyped (slow path)
+end
+
+with-cache.rb -> /tmp/probe
+true

@@ -1,0 +1,23 @@
+{
+  "label": "thruster-min-mixed-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-thruster-min-mixed-01",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/regressions/thruster-cache:/work/probe",
+    "-w",
+    "/work/probe",
+    "conduit-v10-toolchain:e2c34205cf6d",
+    "sh",
+    "-c",
+    "for f in mixed-before.rb mixed-after.rb two-methods.rb nested-before.rb require-before.rb require-after.rb; do echo \"$f\"; ruby \"$f\"; spinel --cc=clang \"$f\" -o /tmp/probe && /tmp/probe; done"
+  ],
+  "started": "2026-10-22T09:12:25.569673+00:00",
+  "finished": "2026-10-22T09:12:30.490688+00:00",
+  "elapsed_seconds": 4.921,
+  "exit": 0,
+  "log": "evidence/execution/thruster-min-mixed-01.log"
+}

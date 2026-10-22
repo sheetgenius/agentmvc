@@ -1,0 +1,102 @@
+[
+  {
+    "source": "a-no-digest.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=\"a\", members=nil>\n\"bc\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def build: (Class, Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Filename\n  @name: String\n  def initialize: (String) -> String\n  def append: (String) -> Filename\n  def to_s: () -> String\nend\n\nclass Room\n  @lock: String\n  @members: untyped\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[String]\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "a-no-digest.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=\"a\", members=nil>\n\"bc\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "b-no-mutation.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=\"a\", members=nil>\n\"b\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def build: (Class, Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Filename\n  @name: String\n  def initialize: (String) -> String\n  def to_s: () -> String\nend\n\nclass Room\n  @lock: String\n  @members: untyped\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[String]\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "b-no-mutation.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=\"a\", members=nil>\n\"b\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "c-string-class.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=\"a\", members=nil>\n\"b\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def build: (Class, Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Room\n  @lock: String\n  @members: untyped\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[String]\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "c-string-class.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=\"a\", members=nil>\n\"b\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "d-literal-arg.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=\"a\", members=nil>\n\"bc\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def build: (Class, String) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Filename\n  @name: String\n  def initialize: (String) -> String\n  def append: (String) -> Filename\n  def to_s: () -> String\nend\n\nclass Room\n  @lock: String\n  @members: untyped\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[String]\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "d-literal-arg.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=\"a\", members=nil>\n\"bc\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  }
+]

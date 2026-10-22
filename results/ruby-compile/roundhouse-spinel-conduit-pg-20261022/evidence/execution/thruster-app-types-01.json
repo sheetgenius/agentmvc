@@ -1,0 +1,27 @@
+{
+  "label": "thruster-app-types-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-thruster-app-types-01",
+    "-v",
+    "$SCRATCH/emitted-initial:/work/emitted",
+    "-w",
+    "/work/emitted",
+    "conduit-v10-toolchain:e2c34205cf6d",
+    "spinel",
+    "--emit-rbs",
+    "main.rb",
+    "--rbs",
+    "/work/emitted",
+    "-o",
+    "/work/emitted/inferred.rbs"
+  ],
+  "started": "2026-10-22T09:12:26.697797+00:00",
+  "finished": "2026-10-22T09:14:22.507483+00:00",
+  "elapsed_seconds": 115.808,
+  "exit": 0,
+  "log": "evidence/execution/thruster-app-types-01.log"
+}

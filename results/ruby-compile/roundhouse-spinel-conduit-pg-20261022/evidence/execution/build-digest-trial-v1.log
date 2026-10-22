@@ -1,0 +1,35 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 264B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/conduit-v10-toolchain:diagnostic
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [1/4] FROM docker.io/library/conduit-v10-toolchain:diagnostic
+#4 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 9.89kB done
+#5 DONE 0.0s
+
+#6 [2/4] COPY digest.rb /src/spinel/packages/openssl/openssl/digest.rb
+#6 DONE 0.1s
+
+#7 [3/4] RUN cp /src/spinel/packages/openssl/openssl/digest.rb /usr/local/lib/spinel/packages/openssl/openssl/digest.rb
+#7 DONE 0.2s
+
+#8 [4/4] WORKDIR /work
+#8 DONE 0.1s
+
+#9 exporting to image
+#9 exporting layers 0.1s done
+#9 writing image sha256:2e07e4ee927f00ecd70c7154b93ac44346e0d9f9d81e8a436ad3a79c4371d236 done
+#9 naming to docker.io/library/conduit-v10-trial:digest-no-instance-new done
+#9 DONE 0.1s

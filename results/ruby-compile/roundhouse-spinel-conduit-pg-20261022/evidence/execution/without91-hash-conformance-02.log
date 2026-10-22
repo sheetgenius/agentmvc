@@ -1,0 +1,11 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+{"n" => nil}
+Wrote /tmp/probe.rbs
+class Object
+  def pack: (Integer) -> Hash[String, Integer]
+  def relay: (Integer) -> Hash[String, Integer]
+end
+
+late-hash.rb:1: error: incompatible pointer types returning 'sp_StrPolyHash *' (aka 'struct sp_StrPolyHash *') from a function with result type 'sp_StrIntHash *' [-Werror,-Wincompatible-pointer-types]
+spinel: C compilation failed
+spinel: the generated C is kept at /tmp/spinel_out_11_0.c

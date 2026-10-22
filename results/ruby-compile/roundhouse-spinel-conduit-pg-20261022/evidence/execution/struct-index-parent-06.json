@@ -1,0 +1,24 @@
+{
+  "label": "struct-index-parent-06",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-struct-index-parent-06",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/regressions/struct-index-argument/round5:/work/probes",
+    "-w",
+    "/work/probes",
+    "conduit-v10-bisect:r2-449d8addb0fc",
+    "python3",
+    "run.py",
+    "results-parent.json"
+  ],
+  "started": "2026-10-22T11:07:19.718259+00:00",
+  "finished": "2026-10-22T11:07:40.758746+00:00",
+  "elapsed_seconds": 21.04,
+  "exit": 0,
+  "log": "evidence/execution/struct-index-parent-06.log",
+  "heavy_lock": true
+}

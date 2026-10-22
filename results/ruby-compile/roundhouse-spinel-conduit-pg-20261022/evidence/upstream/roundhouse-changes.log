@@ -1,0 +1,160 @@
+0f6fb0c7e7efa9b955c40bdd537b8a61fbe0486e 2026-10-22T10:44:23+02:00 Merge pull request #1210 from eddygarcas/validates-shapes
+64774de5c6a5090b780f9ec3819be153ead90db9 2026-10-22T10:44:07+02:00 Merge pull request #1205 from eddygarcas/fix/ingest-flash-filter-session
+d498a08484457f9b0231576547f29e4dea8de3fb 2026-10-22T10:43:49+02:00 Merge pull request #1204 from eddygarcas/enum-cross-class-mapping
+d212cc57fe52755951e2d801800df19cd6b800f9 2026-10-22T10:36:22+02:00 Merge pull request #1211 from eddygarcas/fix/wasm-lock-rubydex
+49fb90a0be9d4a41f036c412f5899f3671904ef6 2026-10-22T11:19:16+03:00 Merge pull request #1206 from thomasklemm/thomasklemm/prism-2-features-8786
+1c8510a15ddbad501e1d8731087dbf721ff361d2 2026-10-22T10:13:53+02:00 wasm: lock rubydex v0.4.2 and Prism 2.0.0 like the root crate
+2058b7fc51118b8c2fc0f50e10ed7bf8152f0ffc 2026-10-22T07:48:07Z Update recovery ledger pin for sharper Prism preview
+cf85497ca01636828b43318718563bd4585bfd26 2026-10-22T09:32:49+02:00 validates inclusion/exclusion: fold a Hash constant's keys
+0b0bc0b3d1d1bea09f4f252d3d65127b8845eae4 2026-10-22T09:32:49+02:00 validates format: fold `URI::DEFAULT_PARSER.make_regexp`
+cb0d069bc6aa802f819c49a257f0cd4f03b211f9 2026-10-22T09:32:49+02:00 validates/callbacks: read `if: :a? || :b?` as the Symbol Ruby yields
+84d0ab99ad569cf6d7f6a494d18d77d6e0900687 2026-10-22T09:29:30+02:00 filter_parameters: read an operand that follows a comment or blank line
+1d15589012ff82dbe07b6440c45876bd6ca2ad67 2026-10-22T07:22:46Z Fix parse-registry re-entrancy and finish Prism 2 feature CQ
+41bdb6615ff2cba0e79d0685cb1fd52e54057104 2026-10-22T06:52:52Z Audit StringQuery parity and route more parses through prism
+f68ba1394c7bdcfea0c38cfa257ee0dd62bed546 2026-10-22T06:52:52Z Sharpen ErrorRecoveryNode ingest diagnostics
+98623393a81f2dbd2c4e3e3f93ed7b5676d1c124 2026-10-22T06:52:52Z Use Prism line_offsets for parse line tables
+958b48fa0971719f75afddcb3e283f65bef2b53b 2026-10-22T09:48:21+03:00 Merge pull request #1194 from thomasklemm/thomasklemm/prism-2-prep-5ecc
+35a2b127a2c275f47307f66124e019a58cb45832 2026-10-22T02:46:11-04:00 Sidekiq set(): wait_until wins, honest priority note, doc placement
+45fbcb09a23a0d9d7bcb3aec9509e30a2b7f737f 2026-10-22T08:39:44+02:00 Follow a sent singleton definition instead of consumed-source reflection
+0cbaced2af8312e2bfdd90bb4b6201001efcf7ca 2026-10-22T02:38:28-04:00 Merge pull request #1202 from baron-hines/sidekiq-schedule
+5ab7b02e04ddd3b856c4a3374c2f953ace12eeee 2026-10-22T08:30:23+02:00 A consumed source that redefines an enum's method reports the gap
+41215038624feae783eac7a894d36429aaf73e0b 2026-10-22T06:29:31Z Fix Prism 2 Diagnostic::message in integration tests
+0667db4f8a7035763082077d0a1ce60c2a04cd5b 2026-10-22T08:28:11+02:00 filter_parameters: read Regexp filters and comments inside the list
+f417663687c84786afe3071551da9aca28b90c04 2026-10-22T08:24:29+02:00 A mapping read for another owner records no survey gap of its own
+10fcc5526c61d09c5d9be664030e30c1f981eb40 2026-10-22T06:14:32Z Thermos: converge PrismLocation API and block_parameter helper
+4d15eaca928101f2b037652c107aa5e9acba4557 2026-10-22T06:06:10Z Adapt Prism 2 node APIs at ingest call sites
+a8868e1b1d647b56c9e40d44ebce1c084bcdab2f 2026-10-22T06:06:10Z Bump ruby-prism to 2.0.0 and rubydex to v0.4.2
+2eaf6c04a34f1bddb298fc8eec8bf7ebc0e542c5 2026-10-22T08:00:56+02:00 session_store key: replay a String interpolating Rails.env
+3f22447a5b27c4a6bd6598ab222c0a67c801b723 2026-10-22T05:53:24Z Route remaining util.rs Prism offsets through prism_api
+4e4acf595e0b282afed3b0491bb2cb794d787737 2026-10-22T05:53:24Z Drop store-doc cross-reference from the Prism pin comment
+d44e87d9e54fc5a8fc1d10b813ba228aac652b46 2026-10-22T05:53:24Z Prepare Prism 2.0 adapters behind rubydex's 1.9 pin
+e3e24cb89cc71c106e58a2c9c6eb171b418af183 2026-10-22T07:39:08+02:00 An enum can take its mapping from another model
+ab9a6b64d5a6986bc8cf1743b0776499be0cf03d 2026-10-22T07:12:31+02:00 Merge pull request #1199 from eddygarcas/format-value-to-s
+1a990a8461ca697c53c4509991af5acc4991130d 2026-10-22T00:52:15-04:00 job_payload: name BuildTarget via build_target, not host-only project
+efc54fd90515dc4b0c127c7172247ece2bd25dc8 2026-10-21T19:10:40-05:00 Fresh names for the push path's at, queue and q
+d0d4c4d7378ca10be78a3e989581c93ac7894463 2026-10-21T19:58:01-04:00 campfire compare: the push-subscription session marker is per sign-in
+1b0c5a1b2aee7b27450b81a01bf016e99d892e95 2026-10-21T18:53:08-05:00 Honor set(wait:, wait_until:, queue:) under queue_adapter :sidekiq
+18d73f27465852094d3d5f890a68426aad75e947 2026-10-21T19:26:12-04:00 Pin campfire at c8f74a0, the script-source memo (once-campfire#370)
+2cd9e5d98bd0ddd69b418364a04284fe874cae09 2026-10-21T18:26:39-04:00 A stub names a scope-reached finder's arguments, and integration tests read flash
+dd8bdb23310b9298f96e40410700ce07749527ed 2026-10-21T18:26:39-04:00 A validate's lambda and on: guards run, and an empty password keeps its digest
+bb267fb7091b99a8929e03111e2966bb4836dd13 2026-10-21T18:20:45-04:00 Pin spinel-redis v0.3.0 from rubys/spinel-redis
+6217b0d60a835afdc43cde4bdc03b318d4c7aa96 2026-10-21T18:17:38-04:00 Merge pull request #1187 from baron-hines/sidekiq-push
+446c633d7ef9e4e3346b11c7be63c53421e73446 2026-10-22T00:14:50+02:00 go_validator_lowering: expect format to match nil as ""
+dae42a15ca2548b5c04c9801c29741a5bdad5dc6 2026-10-21T23:42:43+02:00 validates format: match value.to_s, as Rails does
+14eb0e871c1df9e5769f079cc5b47c801e64c167 2026-10-21T23:00:27+02:00 Merge pull request #1192 from eddygarcas/class-name-namespaced-unknown
+d196416d6a906ad293d7f2886ea25e2c0c12d7c3 2026-10-21T23:00:14+02:00 Merge pull request #1189 from eddygarcas/validates-attachment-presence
+26a0918669d7f284357a9ad8e77efaab19728f33 2026-10-21T23:00:00+02:00 Merge pull request #1177 from eddygarcas/cross-class-constants
+17f606ade2272d69d61c65028f1b0507e261f183 2026-10-21T15:54:49-04:00 Fractal: remove inline-enum-predicates (#1197)
+9a0ea72d191aba74d605332ce82a4f9c6132a17c 2026-10-21T15:52:01-04:00 A permit list compacted before its merge is still the typed record
+86fb43fc9fd88eb93b739d962749f32b0204547a 2026-10-21T15:21:15-04:00 Fractal: link the explorer from the site, and generic examples (#1196)
+5f0428141092c545406a4de659dcc13b1da7fa97 2026-10-21T14:58:56-04:00 A parked association finds or initializes, and a helper's read of it queries
+8645799587b7823fcc08d2e27cc66729ea412979 2026-10-21T14:51:58-04:00 Add site-only Pages publication (#1195)
+8b8dee70a790c7c458849d44925bce0b0455c3a2 2026-10-21T13:42:14-04:00 Fractal: compile the app in place instead of installing variants at load (#1193)
+56766ed75ada73aae23ace137782266a78e89418 2026-10-21T12:45:11-04:00 A concern's generates_token_for expands, and its finder keeps the scope
+cec792e98382d7c6ec9f8e5b7c3ab212c4e3a223 2026-10-21T12:45:11-04:00 has_secure_password defines password_salt and password_challenge
+cb6f251d2460bd1d19e69156d067677468b5b79f 2026-10-22T01:32:54+09:00 Merge pull request #1188 from dai199/liquid-upstream
+2155ed81a9c15e6a150add0a792b2c8a3f25732f 2026-10-22T01:30:44+09:00 Merge pull request #1183 from dai199/ipaddr-include
+7f38204e6ecb31788524270628469336655d0408 2026-10-22T01:17:51+09:00 Merge remote-tracking branch 'origin/main' into liquid-upstream
+9c8f2d6b4046cda9718d8cd177bed5601963dbc9 2026-10-22T00:54:06+09:00 Review: fold after the concern splices, in associations, without a platform suffix, reported where read
+283a543690de190f8abdd4daf87051df6ec21850 2026-10-22T00:48:29+09:00 The roundtrip test's App literal carries the extended-macro list
+7024398b50029f365d836944a3f971c2cc43536c 2026-10-21T17:03:16+02:00 Resolve a relation receiver by its exact class, not its last segment
+fa72edc14b2a4777b5f63673bb1aa7c8b7524d83 2026-10-21T17:02:46+02:00 Constants in parentheses fold like bare ones
+a993926a312c79aabbbf50c06206b51697f75bd7 2026-10-21T10:31:34-04:00 The cable heartbeat calls the app's beat; a connection can close itself
+268ac471617a0b546142c1bdb1078f18a114cb9d 2026-10-21T10:29:47-04:00 A module's mattr storage is the module's own instance variable
+0fe90bdf8a3cc56d6d3481ff2a35353c26948d1c 2026-10-21T10:27:27-04:00 current_transaction.after_commit runs its block once the transaction commits
+3f0ae4328fa4611230863f6618e80c5a8d833eee 2026-10-21T10:21:34-04:00 A model's uncached block reads past the query cache
+9b90bff6a845dfda11734a34a1252da79c91691a 2026-10-21T10:19:49-04:00 authenticate_by inlines inside a method's trailing rescue
+ca62a1fcd32f2d305a6a40b1dd952cceb3e98836 2026-10-21T23:16:01+09:00 Answer framework and gem versions from Gemfile.lock
+7369baa4d0bdb5f44da8485d6a754669d76bbc4f 2026-10-21T23:15:53+09:00 Gem::Version as a value class on the ruby family and spinel
+655ab61c446f04b2166915316b8fe3e8a040d093 2026-10-21T10:05:49-04:00 Writers in separate processes hand off SQLite's lock through a flock
+babf7f6d8be97f7516f67f785060689830246ca1 2026-10-21T23:00:57+09:00 IPAddr is a bundled constant: no strict runtime carries the port
+c3ee2199f6712b3097dd8b5dc58e645415920aa8 2026-10-21T22:53:56+09:00 Review: refuse a live class's mixin by receiver, not by method
+a5c067bd6485f643deed633d5b8f888f377b1ad6 2026-10-21T15:53:27+02:00 cross_class_constants: read the emitted .ts, not its sourcemap
+e9ab654c29089f5870e8724323593e8c42864cca 2026-10-21T15:53:27+02:00 Owner constants: const_get / constantize reach the owner; empty union is [^\s\S]
+00554e26ce77d3afe7ad03f09bea66432b7ce1fb 2026-10-21T15:53:27+02:00 TypeScript regex literal: escape a bare `/` outside a character class
+646560cb41f3cdacce77a3adaf30bc87fa046a72 2026-10-21T15:53:27+02:00 Owner constants: a body reopening a core or stdlib namespace never folds
+76d612e7d3a322c938c4e00d2d3186d03c50ddc9 2026-10-21T15:53:27+02:00 validates: read another class's or module's constants
+dd20165099e8120f51bf6c2dd8a93de8ec6b2f84 2026-10-21T15:46:13+02:00 Merge pull request #1186 from eddygarcas/pin-linkedom
+1895eaf74d2ce8fb04aa536713f3b2ccd768f42b 2026-10-21T15:45:26+02:00 Merge pull request #1176 from eddygarcas/format-allow-nil-blank
+af7210a8a3d7b83ab6075de1851dffd706afcce9 2026-10-21T22:43:26+09:00 A ClassMethods module another module names is emitted as a module
+ba864eb3f49cd0fcd35419ce07dcf691d118624b 2026-10-21T22:39:25+09:00 The Method class as a value; a class test against it is refused on spinel
+0a980e896b3ebccc7acc7124a886201ff28c013e 2026-10-21T22:39:25+09:00 Read a declaration behind its own reload guard
+53978863310a7a6a30e751864ad9a3ecfbffb55d 2026-10-21T22:37:00+09:00 A gem's model macro writes the modules it mixes in into its caller
+fd6a8b8537222b15cbee8f7dc67eef8f0c259fb3 2026-10-21T15:36:00+02:00 validates presence: an attachment asks its reader whether it is attached
+783fd7118510bb768b69d341256a415168d28587 2026-10-21T22:31:00+09:00 Review: report a test-local class over Hash too
+c654afdfaaa623ddc8d0996a8b90e690ca663c0c 2026-10-21T22:09:35+09:00 A mixin a method runs into a live class is refused at the call
+fa73ab2b01d11926608734ab1cecf674cffd256a 2026-10-21T22:09:34+09:00 FloatDomainError is a core exception the registry names
+e6936a3b7caf49c75f08b598574e9e0f04fa1b57 2026-10-21T21:55:16+09:00 include? on an app class over Hash is membership; strict targets report the subclass
+babac63f4b6b32c1e3c51019c73c420eaca353fc 2026-10-21T14:51:54+02:00 IDE studio: pin linkedom to 0.18.13
+3110cd311f5704f6b2246720ccd09eb28813b26a 2026-10-21T21:47:05+09:00 Review: a class object argument is no IPAddr instance
+d0e036290f6999ce4af3a9d5708b3691d96e7cf6 2026-10-21T07:44:24-05:00 Push with spinel-redis connect and read timeouts
+0b80f927c395c5f573fe7af81a46ca902fd4ea7c 2026-10-21T07:42:41-05:00 Announce the Sidekiq push at boot and recognize queue_adapter :sidekiq in the ledger
+66a6457360c2f9dd7357f9c0e322db2e7c4010e9 2026-10-21T07:42:41-05:00 Warn once on targets that don't honor queue_adapter :sidekiq
+e5186236fad2b02551278603bec60732a54c441d 2026-10-21T07:42:41-05:00 Require the redis gem at the first push on the ruby lanes
+dccf251f1773f2bcede43be2cae524f934ac470e 2026-10-21T07:42:41-05:00 Push jobs to Redis from perform_later under queue_adapter :sidekiq
+33b625a2a37cc994d27e6bcb3e8f511308e20cc0 2026-10-21T21:34:39+09:00 Type IPAddr#include? on an IPAddr argument
+e2432509c923d0a7cea0ed3e35d762af5e7746e2 2026-10-21T08:15:19-04:00 A belongs_to touch waits for the COMMIT; a required belongs_to reads its reader
+a59bb1c8027f174f7ada53da7c57ee01fdf69840 2026-10-21T07:44:29-04:00 BETS.md: contributors, not a single maintainer; refresh stale claims
+d567a1e5e98957320b6b3b623023d1a26c9217f8 2026-10-21T13:32:48+02:00 allow_blank: a strict Boolean column's false is blank
+1f89916280c2081fe3444e49e9cf1248aae2592b 2026-10-21T13:32:48+02:00 validates format: allow_nil / allow_blank skip the check
+c01fa0353afc74aa44a20e8bc689696f169d36d7 2026-10-21T07:29:44-04:00 Merge pull request #1182 from brodienguyen/fix/structure-sql-index-on-only
+61e8e2b4158fba802f4685adc0a91c923793a5ab 2026-10-21T13:00:06+02:00 Merge pull request #1161 from eddygarcas/constant-arithmetic-bounds
+1a3657ea1b64e7f0ff59d802c6e1d59fadb2ad27 2026-10-21T21:47:28+11:00 fix(ingest): read CREATE INDEX ON ONLY as the parent table's index
+0ff8398eb3f9443916ee90569f29de26f1382969 2026-10-21T12:20:02+02:00 Merge pull request #1167 from eddygarcas/go-validator-lowering
+5e4ef226557ffdf48bd101c2f72bff42d7d37e20 2026-10-21T06:09:43-04:00 Merge pull request #1179 from roger-wilco-forever/digest-uuid-v4
+29c6ffca86c892bb23219d5e208836e63ff3ed6f 2026-10-21T05:52:25-04:00 Merge pull request #1175 from brodienguyen/fix/structure-sql-named-not-null
+4fdceb455eeb99c8fc9f010e19268872ec9044e1 2026-10-21T11:45:38+02:00 Constant taint: unary minus, `*` and `**` leave the constant unchanged
+28e20e2008b5dd6972c3dbd712c48a40ff540d97 2026-10-21T11:45:38+02:00 validates numericality: Integer arithmetic bounds and the `in:` range
+c805aa91ebc955f0c9ec02879f4d55b0f86a3d93 2026-10-21T14:40:56+05:00 `Digest::UUID.uuid_v4` is `SecureRandom.uuid`
+0e8e6894b8b29c99598a3e445db06405fdc6a209 2026-10-21T11:33:10+02:00 Merge pull request #1162 from eddygarcas/validates-custom-message
+901e9aff173cef68262839de809e8d29c0f7eab6 2026-10-21T11:32:44+02:00 Merge pull request #1160 from eddygarcas/format-stdlib-email-regexp
+95fd69f8e2112799879826c394d0acef1100ffe8 2026-10-21T10:58:21+02:00 validates message: read placeholders with the I18n template parser
+3dca3f4017eea613233330da12da05008c43d82e 2026-10-21T10:45:04+02:00 validates message: I18n's `%%` escape, and `%<name>` stays the gap
+fa84d763fc7bee24f4340245357e7802f810c960 2026-10-21T10:45:04+02:00 Roda: emit a validation message through the Ruby string encoder
+9a8b504f1b8971d55681982ddeed2803c5548c45 2026-10-21T10:45:04+02:00 validates: a literal String `message:` in a validator's own hash
+660fa0e51724fe2a759b904b65384cbf092fd695 2026-10-21T17:43:30+09:00 Merge pull request #1174 from dai199/source-gems-stage1
+39d98566be2f0b6759916f741dcac2edfc6296a6 2026-10-21T19:43:12+11:00 fix: A named column constraint other than NOT NULL is refused
+af34c7fc862245655584da37cc2452d352648fb8 2026-10-21T17:22:53+09:00 source_gems: the engine rule is the PATH gems' own; app/ links stay out
+53fbaf4de68ec65f5eb8f49e63b85a79e1c5e915 2026-10-21T17:20:43+09:00 Merge pull request #1173 from dai199/ivar-flow
+aa333aead78c04aa8b6c1ee4c145e0dca7fdbffd 2026-10-21T18:59:55+11:00 fix(ingest): keep columns with a named NOT NULL in structure.sql
+82beb4c5eb11c512aaf0968f35f9d2c4a92873ff 2026-10-21T09:56:43+02:00 Merge pull request #1163 from eddygarcas/validates-rule-on
+53c93a3bab245c809082473aff584e610b53dbd0 2026-10-21T16:27:20+09:00 Review: also wrap class-object keyword values, defaults and Class/Module
+6b2d9a64b8d4d4ee60648d3ef6693b26a30a216a 2026-10-21T16:20:28+09:00 source_gems: an engine gem's app/ is compiled with the app
+b348b800591378ad26bbfff26cc67d83c7c49649 2026-10-21T03:13:35-04:00 The spinel binary answers a public response from Thruster's cache
+cf834b3a058476688d26c21e3c3c90d8af32abf8 2026-10-21T16:12:44+09:00 Carry a class object argument into its parameter as Class[C]
+d6ac1a0f2d9a74205fd3ea5cf5bb672ba7d34b7a 2026-10-21T16:03:27+09:00 Merge pull request #1172 from dai199/hole3
+878720d874a1ace9645d66f12daaa10916c1efe9 2026-10-21T08:56:57+02:00 validates presence: the rule's own allow_nil: false wins
+4773bcf0e948d5c8076b27135b1e2f177403eae2 2026-10-21T15:52:43+09:00 A devise declaration two models share is refused once
+72f2c71e89733fdccab66f6dd19d9fa70031ef66 2026-10-21T02:27:31-04:00 Name the ruby-family gems by their table, and keep FATES sorted
+4b7ea11d62d8fb2551248edd96dc2114cb5f2723 2026-10-21T02:24:26-04:00 Merge pull request #1171 from roger-wilco-forever/jwt
+0332aed19b78ff31bbeb82957f0e5a0e4570fa9d 2026-10-21T02:24:26-04:00 Merge pull request #1170 from roger-wilco-forever/ruby-family-gems
+9dc7484b61240bb7f8e5aa610e094833865d023f 2026-10-21T08:13:06+02:00 Fold neither EMAIL_REGEXP spelling when the app defines a top-level URI
+dce66c217d498431259a1f40b114e6670d1364d6 2026-10-21T08:13:02+02:00 Keep unrooted URI::MailTo::EMAIL_REGEXP a gap when an app ancestor may define URI
+90dda38203a3646843904a63a1c942a6b05f2319 2026-10-21T08:12:56+02:00 Fold unrooted URI::MailTo::EMAIL_REGEXP only at the top level
+43fe470a33f0582f2c57160a57004eb7b4909f88 2026-10-21T08:12:49+02:00 Fold URI::MailTo::EMAIL_REGEXP in format: validations
+152f1e7a2c5a7b22e229fda3f2504c40525b3d1e 2026-10-21T08:06:38+02:00 validates: presence with a call-level allow_nil
+c528688fc07f2447d8af3f28e57d0f2254c09874 2026-10-21T08:06:27+02:00 validates: `on:` inside a validator's own hash
+865d84e416447cc09fe3b7e7e3caf90b72ac4016 2026-10-21T08:05:01+02:00 Merge pull request #1159 from eddygarcas/numericality-allow-nil-blank
+52d37b5209831ab92b269b2a75e255081cccae9f 2026-10-21T08:04:36+02:00 Merge pull request #1148 from eddygarcas/validates-inclusion-constants
+67e206f40c140d9dbd99fbb5e79a2fd387d525bb 2026-10-21T11:00:17+05:00 JWT runs as the real gem on ruby and jruby, refused elsewhere
+f85d01a431051cd2a05f61513b2f64ab86f9ffda 2026-10-21T10:30:14+05:00 Retryable runs as the real gem on ruby and jruby, refused elsewhere
+9cf10b0d689674146d05d1540f4959260ea2a79c 2026-10-21T13:19:02+08:00 Merge pull request #969 from bunnykong/security-sponge-random-entropy
+136535060811f6759d370be41c038d54c0f8eb8c 2026-10-21T12:44:15+08:00 Merge upstream main into security-sponge-random-entropy
+e95fd0b3cececbba96124937cced6f4fc0ebe39a 2026-10-21T12:04:09+09:00 A devise declaration is refused where it is written
+d801357417d306a6d87611540b07442e67d959f6 2026-10-21T11:05:30+09:00 The pundit test's policy uses the scope forms real policies use
+cd04a9e319baf4e0a4db553a386070e7d689cbd5 2026-10-21T03:34:01+02:00 go: dispatch compiles without a format-dispatched action
+f1944b6d956cd33f67389bc2a12722da4ab52094 2026-10-21T03:34:01+02:00 go: format, numericality and inclusion checks compile on nullable columns
+edad2973959072638e9c47f26df5a0571151aa56 2026-10-21T01:01:41+02:00 numericality allow_blank: whitespace and false are blank; strict skip is nil?
+b2640e2f5024b55c1f7ace4702ed88aed2812b70 2026-10-21T00:11:58+02:00 numericality on an untyped attribute: refuse the whole validates call
+f38681756d6c78a2ee06c782d87689e9d1a80bec 2026-10-21T00:06:53+02:00 Roda: pass numericality allow_nil / allow_blank to Sequel's helpers
+c363b18d8146c737cb68d722fcf786e3facaeb7c 2026-10-20T23:56:27+02:00 validates numericality: allow_nil / allow_blank skip the check
+dc7942ecaf392c24fa84a2fdee84b879750d7a54 2026-10-20T23:51:36+02:00 Test: a mutated String piece leaves an interpolated regex unfoldable
+70ebf217170320c7dfaa5b915e72a517270cb2bc 2026-10-20T23:41:30+02:00 ClassConsts: a chain through a fresh result is not rooted at the constant
+588f901a61d2427fdbd5fbbffd402d40a83091d5 2026-10-20T23:41:30+02:00 ClassConsts: a mutation through an alias or a receiver chain taints
+8d5c8dd900220ffd01ec987c8ed848fcbfc98804 2026-10-20T23:41:30+02:00 ClassConsts: fold a constant only when nothing else writes or mutates it
+66731701cee26a4a6166fe83657cf74642b8ef29 2026-10-20T23:41:07+02:00 Test: exclusion: { in: NAME } reads a list constant too
+cbe68713ae38fa13782dfd8c8bc103f33b13377f 2026-10-20T23:41:07+02:00 ClassConsts: a compound constant write makes the name unfoldable
+caaa30d110c6a52b3ee2289a9270dc76bbfb921b 2026-10-20T23:41:01+02:00 ClassConsts: a constant assigned twice in the class body is not folded
+33bd7b82fee0b7ca48d4fdfe4b9b363a40b1118d 2026-10-20T23:40:41+02:00 validates: `inclusion: { in: NAME }` reads a list constant of the model
+297f8edd3d5945794183b082d58eb1aff89a581f 2026-10-15T08:16:59-06:00 spinel: preserve binary encoding for Sponge entropy
+0b2513376291ec54d00006854adf89a24663616d 2026-10-15T07:43:21-06:00 spinel: use native entropy for Sponge random bytes

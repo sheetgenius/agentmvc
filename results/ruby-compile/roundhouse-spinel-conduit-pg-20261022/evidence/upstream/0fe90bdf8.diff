@@ -1,0 +1,594 @@
+commit 0fe90bdf8a3cc56d6d3481ff2a35353c26948d1c
+Author:     Sam Ruby <[redacted-email]>
+AuthorDate: Wed Oct 21 10:27:27 2026 -0400
+Commit:     Sam Ruby <[redacted-email]>
+CommitDate: Wed Oct 21 10:27:27 2026 -0400
+
+    current_transaction.after_commit runs its block once the transaction commits
+    
+    Rails 7.2's `Model.current_transaction.after_commit { ... }` runs the
+    block after the open transaction commits, never for one that rolls back,
+    and at once where no transaction can hold it (NullTransaction, which is
+    also what an unjoinable transaction answers, as a transactional test's
+    does). Campfire's password change closes the user's live connections
+    this way since once-campfire c8f74a0; it was "no known method
+    current_transaction on User".
+    
+    Runtime: `ActiveRecord::Transaction#after_commit(work)` and
+    `Base._after_commit` hold the work on `Db._txn_callbacks` (thread/fiber
+    local in every Db shim, as `_txn_records` is); the outermost COMMIT runs
+    it after the records' commit callbacks, a savepoint that runs its own
+    callbacks runs its own, and a ROLLBACK (to a savepoint, too) drops it.
+    The work is a lambda, `^() -> nil`, as ActiveJob's queue holds work:
+    lower::transaction_after_commit turns the app's block into one, so the
+    runtime types fully on every lane. Only `after_commit` on a
+    `current_transaction` receiver is modeled; anything else on the handle
+    stays the analyzer's error.
+    
+    Ledgers: the RBS-paired gate stays at 860 (`Db._txn_callbacks` is typed
+    beside `_txn_records`); the RBS-less probe 1043 -> 1082 for the reads of
+    the held list.
+    
+    tests/emit_and_run.rs current_transaction_after_commit_waits_for_the_
+    commit: held until the enclosing COMMIT, dropped on rollback, run after
+    a save's own commit, run at once with no transaction (the hold and
+    rollback cases fail when the work always runs at once).
+    
+    Co-Authored-By: Claude Opus 5.5 <[redacted-email]>
+
+diff --git a/runtime/ruby/active_record/connection.rb b/runtime/ruby/active_record/connection.rb
+index b74d22277..b5c753e98 100644
+--- a/runtime/ruby/active_record/connection.rb
++++ b/runtime/ruby/active_record/connection.rb
+@@ -161,6 +161,17 @@ module ActiveRecord
+   # write yet: a `touch_later` the outermost transaction applies just
+   # before its COMMIT (`Base._flush_deferred_touches`), whose own touch
+   # then enlists as an update.
++  # Rails 7.2's `Model.current_transaction`: the open transaction, or
++  # none (Rails' NullTransaction), as far as `after_commit` is concerned.
++  # `after_commit` takes its work as a lambda, as ActiveJob's queue does:
++  # `lower::transaction_after_commit` turns the app's block into one, so
++  # the runtime types fully on every lane.
++  class Transaction
++    def after_commit(work)
++      ActiveRecord::Base._after_commit(work)
++    end
++  end
++
+   class EnlistedRecord
+     attr_reader :record, :kind
+ 
+@@ -508,6 +519,51 @@ module ActiveRecord
+       sanitize_sql(statement)
+     end
+ 
++    # Rails' `current_transaction`. One database, so every model's is the
++    # same; what `after_commit` asks of it is whether one is open.
++    def self.current_transaction
++      ActiveRecord::Transaction.new
++    end
++
++    # `current_transaction.after_commit { ... }`: run the work once the
++    # outermost transaction commits (`Base.transaction` runs what is held
++    # after the records' commit callbacks), drop it on a ROLLBACK, and
++    # run it at once when none is open, as Rails' NullTransaction does.
++    # Campfire's password change closes the user's live connections this
++    # way: a later save in the same transaction could undo the change an
++    # after_commit condition would read.
++    #
++    # A transaction that cannot be joined is no `current_transaction`
++    # either (Rails 7.2's `user_transaction` is NULL_TRANSACTION for it):
++    # a transactional test's own never commits, so work registered
++    # directly under it runs at once, as Rails runs it.
++    def self._after_commit(work)
++      depth = Db._txn_depth
++      if depth == 0 || !_txn_parent_joinable?(depth)
++        work.call
++      else
++        Db._txn_callbacks << work
++      end
++      nil
++    end
++
++    # The held work registered at and after `from`, run (a COMMIT) or
++    # dropped (a ROLLBACK).
++    def self._run_after_commits_from(from)
++      held = Db._txn_callbacks
++      return nil if held.length <= from
++      work = held[from, held.length - from]
++      held.pop while held.length > from
++      work.each { |w| w.call }
++      nil
++    end
++
++    def self._drop_after_commits_from(from)
++      held = Db._txn_callbacks
++      held.pop while held.length > from
++      nil
++    end
++
+     # Rails' `uncached { }`: the block's reads go to the database, not
+     # the per-request replay cache, which comes back on after it.
+     def self.uncached
+@@ -631,6 +687,7 @@ module ActiveRecord
+         # The writes a ROLLBACK TO this savepoint undoes are the ones
+         # enlisted after this mark.
+         mark = Db._txn_records.length
++        after_mark = Db._txn_callbacks.length
+         new_depth = depth + 1
+         Db._txn_depth = new_depth
+         if open_savepoint
+@@ -656,6 +713,7 @@ module ActiveRecord
+             unless savepoint.nil?
+               RawConnection._rollback_savepoint(savepoint)
+               ActiveRecord::Base._rollback_enlisted(mark)
++              ActiveRecord::Base._drop_after_commits_from(after_mark)
+             end
+             result = nil
+           rescue Exception => e
+@@ -663,6 +721,7 @@ module ActiveRecord
+             unless savepoint.nil?
+               RawConnection._rollback_savepoint(savepoint)
+               ActiveRecord::Base._rollback_enlisted(mark)
++              ActiveRecord::Base._drop_after_commits_from(after_mark)
+             end
+             raise e
+           end
+@@ -673,6 +732,7 @@ module ActiveRecord
+           # re-raises; `finished` is false on that path anyway.
+           if finished && run_callbacks
+             ActiveRecord::Base._commit_enlisted_from(mark)
++            ActiveRecord::Base._run_after_commits_from(after_mark)
+           end
+         end
+       elsif Db.transaction_open?
+@@ -707,6 +767,7 @@ module ActiveRecord
+             Db._txn_depth = 0
+             Db.exec("ROLLBACK")
+             ActiveRecord::Base._rollback_enlisted(0)
++            ActiveRecord::Base._drop_after_commits_from(0)
+             ActiveRecord::TransactionHooks.rolled_back
+             result = nil
+           rescue Exception => e
+@@ -721,6 +782,7 @@ module ActiveRecord
+               # ROLLBACK's own failure must not hide the real error below.
+             end
+             ActiveRecord::Base._rollback_enlisted(0)
++            ActiveRecord::Base._drop_after_commits_from(0)
+             ActiveRecord::TransactionHooks.rolled_back
+             raise e
+           end
+@@ -741,6 +803,7 @@ module ActiveRecord
+                 # Already ended; the COMMIT's error is the one to raise.
+               end
+               ActiveRecord::Base._rollback_enlisted(0)
++              ActiveRecord::Base._drop_after_commits_from(0)
+               ActiveRecord::TransactionHooks.rolled_back
+               raise e
+             end
+@@ -750,6 +813,7 @@ module ActiveRecord
+             # callback is skipped or left to fire at a later COMMIT.
+             begin
+               ActiveRecord::Base._commit_enlisted
++              ActiveRecord::Base._run_after_commits_from(0)
+             ensure
+               ActiveRecord::TransactionHooks.committed
+             end
+diff --git a/runtime/ruby/active_record/connection.rbs b/runtime/ruby/active_record/connection.rbs
+index 3348d8993..0f7522ff4 100644
+--- a/runtime/ruby/active_record/connection.rbs
++++ b/runtime/ruby/active_record/connection.rbs
+@@ -58,6 +58,10 @@ module ActiveRecord
+     def exec_insert: (String sql, ?String? name, ?Array[String | Integer | Float | bool | nil] binds) -> Result
+   end
+ 
++  class Transaction
++    def after_commit: (^() -> nil work) -> nil
++  end
++
+   class EnlistedRecord
+     @record: Base
+     @kind: Integer
+@@ -81,6 +85,10 @@ module ActiveRecord
+     def self.connection: () -> Connection
+     def self.sanitize_sql: (Array[untyped] statement) -> String
+     def self.sanitize_sql_array: (Array[untyped] statement) -> String
++    def self.current_transaction: () -> ActiveRecord::Transaction
++    def self._after_commit: (^() -> nil work) -> nil
++    def self._run_after_commits_from: (Integer from) -> nil
++    def self._drop_after_commits_from: (Integer from) -> nil
+     def self.uncached: () { () -> untyped } -> untyped
+     def self.clear_query_caches_for_current_thread: () -> nil
+     def self.transaction: (?isolation: untyped, ?requires_new: untyped, ?joinable: bool) { () -> untyped } -> untyped
+diff --git a/runtime/ruby/db.rbs b/runtime/ruby/db.rbs
+index 19ac8e803..60fe783b1 100644
+--- a/runtime/ruby/db.rbs
++++ b/runtime/ruby/db.rbs
+@@ -100,4 +100,5 @@ module Db
+   # (connection.rb's `_commit_enlisted`), per thread like the depth and
+   # boxed the same way. Empty outside a transaction.
+   def self._txn_records: () -> Array[ActiveRecord::EnlistedRecord]
++  def self._txn_callbacks: () -> Array[^() -> nil]
+ end
+diff --git a/runtime/spinel/db.rb b/runtime/spinel/db.rb
+index d7a36da34..d030c223f 100644
+--- a/runtime/spinel/db.rb
++++ b/runtime/spinel/db.rb
+@@ -1496,6 +1496,19 @@ module Db
+     records
+   end
+ 
++  # The work `current_transaction.after_commit` holds for the COMMIT
++  # (ActiveRecord::Base._after_commit), beside the records above. Seeded
++  # and cleared, as the records are, so the element type is the work's.
++  def self._txn_callbacks
++    work = Thread.current[:ar_txn_callbacks]
++    if work.nil?
++      work = [-> { nil }]
++      work.clear
++      Thread.current[:ar_txn_callbacks] = work
++    end
++    work
++  end
++
+   # Request-scoped connection lease for the thread-per-connection
+   # server. Leases a connection index (parking on the pool's condition
+   # variable while none is free), binds its DbConn to this thread's
+diff --git a/runtime/spinel/db_cruby.rb b/runtime/spinel/db_cruby.rb
+index 17e1c47e4..bff051aa8 100644
+--- a/runtime/spinel/db_cruby.rb
++++ b/runtime/spinel/db_cruby.rb
+@@ -292,6 +292,17 @@ module Db
+     records
+   end
+ 
++  # The work `current_transaction.after_commit` holds for the COMMIT
++  # (ActiveRecord::Base._after_commit), beside the records above.
++  def self._txn_callbacks
++    work = Fiber[:ar_txn_callbacks]
++    if work.nil?
++      work = []
++      Fiber[:ar_txn_callbacks] = work
++    end
++    work
++  end
++
+   # Request-scoped connection lease. Checks out a handle, binds it to
+   # this thread's fiber-storage so `current_dbh` resolves to it for the
+   # block's duration, and returns it on completion (even on raise).
+diff --git a/runtime/spinel/db_jruby.rb b/runtime/spinel/db_jruby.rb
+index 2d2ae0f24..8009a140f 100644
+--- a/runtime/spinel/db_jruby.rb
++++ b/runtime/spinel/db_jruby.rb
+@@ -201,6 +201,17 @@ module Db
+     records
+   end
+ 
++  # The work `current_transaction.after_commit` holds for the COMMIT
++  # (ActiveRecord::Base._after_commit), beside the records above.
++  def self._txn_callbacks
++    work = Fiber[:ar_txn_callbacks]
++    if work.nil?
++      work = []
++      Fiber[:ar_txn_callbacks] = work
++    end
++    work
++  end
++
+   # Request-scoped connection lease. Mirrors db_cruby.rb: checks out a
+   # Conn under @mutex (parking on @cv while the pool is momentarily
+   # exhausted), binds it to fiber-storage so `current_dbh` resolves to it
+diff --git a/runtime/spinel/db_pg.rb b/runtime/spinel/db_pg.rb
+index 1d3826374..8a975b3c0 100644
+--- a/runtime/spinel/db_pg.rb
++++ b/runtime/spinel/db_pg.rb
+@@ -858,6 +858,19 @@ module Db
+     records
+   end
+ 
++  # The work `current_transaction.after_commit` holds for the COMMIT
++  # (ActiveRecord::Base._after_commit), beside the records above. Seeded
++  # and cleared, as the records are, so the element type is the work's.
++  def self._txn_callbacks
++    work = Thread.current[:ar_txn_callbacks]
++    if work.nil?
++      work = [-> { nil }]
++      work.clear
++      Thread.current[:ar_txn_callbacks] = work
++    end
++    work
++  end
++
+   # Not PostgreSQL's DISABLE TRIGGER: its DDL here carries no foreign keys yet (emit::shared::schema_sql), so a fixture load has nothing to defer.
+   def self.without_foreign_keys
+     yield
+diff --git a/src/analyze/mod.rs b/src/analyze/mod.rs
+index 098e4c0dc..95aab36ec 100644
+--- a/src/analyze/mod.rs
++++ b/src/analyze/mod.rs
+@@ -330,6 +330,7 @@ impl Analyzer {
+             // `Base.uncached`), and its value is the block's, as
+             // `transaction`'s is.
+             cls.class_methods.insert(Symbol::from("uncached"), Ty::Untyped);
++            cls.class_methods.insert(Symbol::from("current_transaction"), registry::ar::transaction_ty());
+             cls.class_methods.insert(Symbol::from("connection"), registry::ar::connection_ty());
+             cls.class_methods.insert(Symbol::from("connection_pool"), Ty::Untyped);
+             cls.class_methods.insert(Symbol::from("establish_connection"), Ty::Untyped);
+diff --git a/src/analyze/registry/ar.rs b/src/analyze/registry/ar.rs
+index 8d1e91824..a0b0876dd 100644
+--- a/src/analyze/registry/ar.rs
++++ b/src/analyze/registry/ar.rs
+@@ -15,6 +15,13 @@ pub(in crate::analyze) fn connection_ty() -> Ty {
+     Ty::Class { id: ClassId(Symbol::from("ActiveRecord::Connection")), args: vec![].into() }
+ }
+ 
++/// `Model.current_transaction` — Rails 7.2's handle on the open
++/// transaction, whose `after_commit` the runtime implements
++/// (`runtime/ruby/active_record/connection.rb`).
++pub(in crate::analyze) fn transaction_ty() -> Ty {
++    Ty::Class { id: ClassId(Symbol::from("ActiveRecord::Transaction")), args: vec![].into() }
++}
++
+ /// `ActiveRecord::Connection` and `ActiveRecord::Result`, read from the
+ /// runtime's own signatures rather than restated here, so the analyzer
+ /// knows exactly the surface both lanes implement. `connection` used to
+@@ -25,7 +32,7 @@ pub(in crate::analyze) fn connection_ty() -> Ty {
+ fn register_connection_surface(classes: &mut HashMap<ClassId, ClassInfo>) {
+     const RBS: &str = include_str!("../../../runtime/ruby/active_record/connection.rbs");
+     let Ok(parsed) = crate::rbs::parse_app_signatures(RBS) else { return };
+-    for name in ["ActiveRecord::Connection", "ActiveRecord::Result"] {
++    for name in ["ActiveRecord::Connection", "ActiveRecord::Result", "ActiveRecord::Transaction"] {
+         let id = ClassId(Symbol::from(name));
+         let Some(methods) = parsed.get(&id) else { continue };
+         let cls = classes.entry(id).or_default();
+@@ -110,6 +117,9 @@ pub(in crate::analyze) fn register(classes: &mut HashMap<ClassId, ClassInfo>) {
+         ] {
+             base.class_methods.entry(Symbol::from(m)).or_insert(Ty::Untyped);
+         }
++        base.class_methods
++            .entry(Symbol::from("current_transaction"))
++            .or_insert_with(transaction_ty);
+         // Which database, and the pool's `with_connection` — served on the
+         // ruby family and spinel by runtime/spinel/active_record_db_config.rb.
+         base.class_methods
+diff --git a/src/lower/mod.rs b/src/lower/mod.rs
+index 30aad090d..2e77bccb0 100644
+--- a/src/lower/mod.rs
++++ b/src/lower/mod.rs
+@@ -99,6 +99,7 @@ pub mod attachable;
+ pub mod attachables_grep;
+ pub mod errors_index;
+ pub mod job_class_side;
++pub mod transaction_after_commit;
+ pub mod job_payload;
+ pub mod mailer_class_side;
+ pub mod mailer_templates;
+@@ -680,6 +681,10 @@ const POST_ANALYZE_PASS_ORDER: &[(&str, &[&str])] = &[
+     ("mailer_class_side", &[]),
+     ("mailer_templates", &[]),
+     ("job_class_side", &[]),
++    // `….current_transaction.after_commit { … }` -> the block as a lambda
++    // argument, the shape the runtime holds for the COMMIT. Consumes a
++    // shape no pass produces or reads; no constraints.
++    ("transaction_after_commit", &[]),
+     ("send_static_dispatch", &[]),
+     // Grounds the plural duration-unit calls that send_static_dispatch
+     // synthesizes into case arms, so it must observe that pass's output.
+@@ -1039,6 +1044,8 @@ pub fn apply_post_analyze_lowerings(
+     ran!("mailer_templates");
+     diags.extend(job_class_side::apply_job_class_side(app));
+     ran!("job_class_side");
++    transaction_after_commit::apply_transaction_after_commit(app);
++    ran!("transaction_after_commit");
+     diags.extend(crate::timings::phase("post-analyze: send_dispatch", || {
+         send_dispatch::apply_send_static_dispatch(app, registry)
+     }));
+diff --git a/src/lower/transaction_after_commit.rs b/src/lower/transaction_after_commit.rs
+new file mode 100644
+index 000000000..d0fad169a
+--- /dev/null
++++ b/src/lower/transaction_after_commit.rs
+@@ -0,0 +1,76 @@
++//! `….current_transaction.after_commit { body }` →
++//! `….current_transaction.after_commit(-> { body; nil })`.
++//!
++//! Rails 7.2's `current_transaction.after_commit` runs its block once the
++//! open transaction commits (at once when none is open). The runtime
++//! holds the work until the COMMIT (`ActiveRecord::Base._after_commit`,
++//! runtime/ruby/active_record/connection.rb), so it needs the block as a
++//! VALUE: `ActiveRecord::Transaction#after_commit` takes it as a lambda,
++//! `^() -> nil`, as `ActiveJob.enqueue` does (lower::job_class_side), and
++//! RBS has no syntax for naming a block. The trailing nil gives every
++//! held entry one type whatever the app's block answers.
++//!
++//! Only `after_commit` on a `current_transaction` receiver is rewritten.
++//! The runtime models nothing else on the transaction handle, so any
++//! other call on it stays the analyzer's error.
++
++use crate::app::App;
++use crate::expr::{BlockStyle, Expr, ExprNode, Literal};
++use crate::ty::Ty;
++
++pub fn apply_transaction_after_commit(app: &mut App) {
++    super::for_each_hook_body(app, &mut rewrite);
++}
++
++fn rewrite(expr: &mut Expr) {
++    expr.node.for_each_child_mut(&mut rewrite);
++    rewrite_node(expr);
++}
++
++fn rewrite_node(expr: &mut Expr) {
++    let ExprNode::Send { recv: Some(recv), method, args, block, parenthesized } = &mut *expr.node else {
++        return;
++    };
++    if method.as_str() != "after_commit" || !args.is_empty() {
++        return;
++    }
++    let ExprNode::Send { method: recv_method, .. } = &*recv.node else {
++        return;
++    };
++    if recv_method.as_str() != "current_transaction" {
++        return;
++    }
++    // A literal block taking no arguments; `after_commit(&work)` or a
++    // block with parameters is left as the app wrote it.
++    let Some(lambda) = block.as_ref() else {
++        return;
++    };
++    let ExprNode::Lambda { params, rest_param, block_param, extra_params, .. } = &*lambda.node else {
++        return;
++    };
++    if !params.is_empty() || rest_param.is_some() || block_param.is_some() || !extra_params.is_empty() {
++        return;
++    }
++    let lambda = block.take().expect("checked above");
++    let ExprNode::Lambda { body, .. } = *lambda.node else {
++        unreachable!("checked above");
++    };
++    let span = lambda.span;
++    let mut nil = Expr::new(span, ExprNode::Lit { value: Literal::Nil });
++    nil.ty = Some(Ty::Nil);
++    let mut work_body = Expr::new(span, ExprNode::Seq { exprs: vec![body, nil] });
++    work_body.ty = Some(Ty::Nil);
++    let work = Expr::new(
++        span,
++        ExprNode::Lambda {
++            extra_params: Vec::new(),
++            params: Vec::new(),
++            rest_param: None,
++            block_param: None,
++            body: work_body,
++            block_style: BlockStyle::Brace,
++        },
++    );
++    args.push(work);
++    *parenthesized = true;
++}
+diff --git a/src/lower/view_to_library/mod.rs b/src/lower/view_to_library/mod.rs
+index d358a5846..74928b76e 100644
+--- a/src/lower/view_to_library/mod.rs
++++ b/src/lower/view_to_library/mod.rs
+@@ -1185,6 +1185,23 @@ pub fn insert_db_stub(
+             },
+         ),
+     );
++    // The work `current_transaction.after_commit` holds for the COMMIT
++    // (connection.rb's `_after_commit`): `^() -> nil` lambdas, boxed per
++    // thread like the records above.
++    db_info.class_methods.insert(
++        Symbol::from("_txn_callbacks"),
++        fn_sig(
++            vec![],
++            Ty::Array {
++                elem: std::sync::Arc::new(Ty::Fn {
++                    params: vec![].into(),
++                    block: None,
++                    ret: std::sync::Arc::new(Ty::Nil),
++                    effects: crate::effect::EffectSet::default(),
++                }),
++            },
++        ),
++    );
+     classes.insert(ClassId(Symbol::from("Db")), db_info);
+ 
+     // MessageDigest — the keyed-digest primitive surface, same
+diff --git a/tests/emit_and_run.rs b/tests/emit_and_run.rs
+index 18b7a1e97..7e2c4fba6 100644
+--- a/tests/emit_and_run.rs
++++ b/tests/emit_and_run.rs
+@@ -1282,6 +1282,75 @@ end
+         .assert_passes();
+ }
+ 
++/// `current_transaction.after_commit { ... }` (Rails 7.2; campfire's
++/// password change closes the user's connections this way): the block
++/// runs once the transaction it was registered in commits, never for one
++/// that rolls back, and at once where no transaction can hold it.
++#[test]
++fn current_transaction_after_commit_waits_for_the_commit() {
++    emit_and_run::real_blog()
++        .edit(
++            "app/models/article.rb",
++            "  validates :title, presence: true\n",
++            "  validates :title, presence: true
++
++  LOG = []
++  after_update :note_on_commit
++
++  def self.note_now
++    current_transaction.after_commit { LOG << \"now\" }
++  end
++
++  private
++    def note_on_commit
++      self.class.current_transaction.after_commit { LOG << \"committed #{title}\" }
++    end
++
++  public
++",
++        )
++        .write(
++            "test/models/after_commit_test.rb",
++            r##"require "test_helper"
++
++class AfterCommitTest < ActiveSupport::TestCase
++  setup do
++    @article = Article.create!(title: "Start", body: "A sufficiently long article body.")
++    Article::LOG.clear
++  end
++
++  test "a save's own transaction runs the block once it commits" do
++    @article.update!(title: "Saved")
++    assert_equal [ "committed Saved" ], Article::LOG
++  end
++
++  test "an enclosing transaction holds the block until its commit" do
++    Article.transaction do
++      @article.update!(title: "Held")
++      assert_equal [], Article::LOG
++    end
++    assert_equal [ "committed Held" ], Article::LOG
++  end
++
++  test "a rolled back transaction never runs the block" do
++    Article.transaction do
++      @article.update!(title: "Undone")
++      raise ActiveRecord::Rollback
++    end
++    assert_equal [], Article::LOG
++  end
++
++  test "with no transaction to hold it the block runs at once" do
++    Article.note_now
++    assert_equal [ "now" ], Article::LOG
++  end
++end
++"##,
++        )
++        .run_test("test/models/after_commit_test.rb")
++        .assert_passes();
++}
++
+ /// `rescue URI::Error` catches `URI.parse`'s `URI::InvalidURIError`, and
+ /// `SocketError` resolves where the app names it without a require (Rails
+ /// has loaded socket); both lanes define the classes.
+diff --git a/tests/inference_on_spinel_blog_runtime.rs b/tests/inference_on_spinel_blog_runtime.rs
+index e437ae77f..a1aa75217 100644
+--- a/tests/inference_on_spinel_blog_runtime.rs
++++ b/tests/inference_on_spinel_blog_runtime.rs
+@@ -458,7 +458,13 @@ fn untyped_subexpressions_baseline() {
+     // `_commit_enlisted_from` skips them (+4) and `transaction` calls
+     // the flush (+1). Entry reads off `Db._txn_records` are vars on
+     // this RBS-less probe, as `_commit_enlisted_from`'s were already.
+-    const CEILING: usize = 1043;
++    // MEASURED 1082 on 2026-10-21: `current_transaction.after_commit`
++    // holds its work on `Db._txn_callbacks` until the COMMIT
++    // (`_run_after_commits_from` +20, `_drop_after_commits_from` +7,
++    // `_after_commit` +6, `transaction` +6 for the savepoint mark and
++    // the run/drop calls). The same untyped reads off a `Db` list as the
++    // records above.
++    const CEILING: usize = 1082;
+     assert!(
+         existing_untyped <= CEILING && like_untyped <= LIKE_CEILING,
+         "{} untyped sub-expressions on spinel-blog runtime — exceeds ledger: \

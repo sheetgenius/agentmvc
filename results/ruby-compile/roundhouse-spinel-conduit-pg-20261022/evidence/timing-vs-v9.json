@@ -1,0 +1,116 @@
+{
+  "kind": "wall-clock records from step logs on a shared host (other lanes' builds ran concurrently); not benchmarks",
+  "rows": [
+    {
+      "measure": "toolchain + compiled image build",
+      "v9": {
+        "seconds": 254.2,
+        "label": "c-build-final-06",
+        "note": "Spinel layer cached"
+      },
+      "v10": {
+        "seconds": 598.1,
+        "label": "build-final-01",
+        "note": "Spinel rebuilt for patch 92"
+      }
+    },
+    {
+      "measure": "Spinel make deps/make/install",
+      "v9": {
+        "seconds": null,
+        "note": "cached in c-build-final-06"
+      },
+      "v10": {
+        "seconds": 89.7,
+        "label": "build-final-01 #15"
+      }
+    },
+    {
+      "measure": "Roundhouse cargo build --release",
+      "v9": {
+        "seconds": 101.9,
+        "label": "c-build-final-06 #18"
+      },
+      "v10": {
+        "seconds": 164.6,
+        "label": "build-final-01 #18"
+      }
+    },
+    {
+      "measure": "app spin build in image build",
+      "v9": {
+        "seconds": 141.0,
+        "label": "c-build-final-06 #16"
+      },
+      "v10": {
+        "seconds": 285.0,
+        "label": "build-final-01 #18 (build stage)"
+      }
+    },
+    {
+      "measure": "compiled production gate",
+      "v9": {
+        "seconds": 244.4,
+        "label": "c-compiled-gate-06"
+      },
+      "v10": {
+        "seconds": 313.4,
+        "label": "compiled-gate-02",
+        "note": "includes about 14 s waiting for the Docker lock"
+      }
+    },
+    {
+      "measure": "app spin build inside the gate",
+      "v9": {
+        "seconds": 146.4,
+        "label": "c-compiled-gate-06 #16"
+      },
+      "v10": {
+        "seconds": 202.1,
+        "label": "compiled-gate-02 #16"
+      }
+    },
+    {
+      "measure": "Rails production gate",
+      "v9": {
+        "seconds": 28.4,
+        "label": "rails-gate-01"
+      },
+      "v10": {
+        "seconds": 45.1,
+        "label": "rails-gate-01"
+      }
+    },
+    {
+      "measure": "analysis / emission peak RSS in the gate (KiB)",
+      "v9": {
+        "analysis": 40328,
+        "emission": 52740
+      },
+      "v10": {
+        "analysis": 41124,
+        "emission": 51068
+      }
+    },
+    {
+      "measure": "same emitted app, spin build step, within one hour on this host",
+      "v9": {
+        "seconds": 124.0,
+        "label": "cache-loop-v9-spinel-01 (v9 Spinel, 09:29Z)"
+      },
+      "v10": {
+        "seconds_range": [
+          122.7,
+          285.0
+        ],
+        "labels": "string-bisect-r2-b432531fd5ff 122.7 s, -d79a003fbbd8 139.7 s, digest-trial-v1-app 233.4 s, build-final-01 285.0 s",
+        "note": "elapsed values of passing compiles; neighbouring Spinel revisions and the final toolchain"
+      }
+    }
+  ],
+  "compiled_image_bytes": {
+    "v9": 121130407,
+    "v10": 121329069
+  },
+  "reading": "Analysis and emission peak RSS move by +2% and -3% (41.1 and 51.1 MiB). Build and gate wall times rose, but the same emitted app's spin build ranged 123-285 s within one hour on this host, so the rise is within host-load noise and no compiler slowdown is claimed."
+}

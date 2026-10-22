@@ -1,0 +1,32 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+true
+Wrote /tmp/probe.rbs
+class Object
+  def __enumw_map: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)
+  def __enumw_select: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)
+  def __enumw_reject: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)
+  def __enumw_filter_map: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)
+  def __enumw_each_with_object: (untyped, untyped) -> void # spinel: widened to untyped (slow path)
+  def __enumw_inject0: (untyped) -> untyped # spinel: widened to untyped (slow path)
+  def __enumw_inject1: (untyped, untyped) -> untyped # spinel: widened to untyped (slow path)
+  def __enumw_with_index: (untyped, Integer) -> void # spinel: widened to untyped (slow path)
+  def __enumw_str_chars_with_index: (String, Integer) -> String
+  def __enumw_str_lines_with_index: (untyped, Integer) -> void # spinel: widened to untyped (slow path)
+  def __enumw_str_bytes_with_index: (untyped, Integer) -> void # spinel: widened to untyped (slow path)
+  def __enumw_str_codepoints_with_index: (String, Integer) -> String
+  def __enumw_each_slice: (untyped, untyped) -> void # spinel: widened to untyped (slow path)
+  def __enumw_each_cons: (untyped, untyped) -> void # spinel: widened to untyped (slow path)
+  def __enumw_each_entry: (untyped) -> void # spinel: widened to untyped (slow path)
+  def matches?: (untyped) -> bool # spinel: widened to untyped (slow path)
+  def __enum___no_false__0: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)
+  def __enum___no_false__1: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)
+  def __enum___no_false__2: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)
+  def __enum___no_false__3: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)
+  def __enum_any?__0: (Array[String]) -> bool
+end
+
+rbs-control/source.rb -> /tmp/probe
+true
+true
+with-cache-generic.rb -> /tmp/probe
+true

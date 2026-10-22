@@ -1,0 +1,25 @@
+{
+  "label": "cache-loop-isolated-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-cache-loop-isolated-01",
+    "-v",
+    "$SCRATCH/emitted-with-cache-loop:/work/emitted",
+    "-w",
+    "/work/emitted",
+    "conduit-v10-toolchain:e2c34205cf6d",
+    "spin",
+    "build",
+    "--",
+    "--cc=clang",
+    "--jobs=8"
+  ],
+  "started": "2026-10-22T09:24:11.476965+00:00",
+  "finished": "2026-10-22T09:26:02.077199+00:00",
+  "elapsed_seconds": 110.599,
+  "exit": 1,
+  "log": "evidence/execution/cache-loop-isolated-01.log"
+}

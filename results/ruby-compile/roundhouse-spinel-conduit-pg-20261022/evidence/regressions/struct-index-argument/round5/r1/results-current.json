@@ -1,0 +1,70 @@
+[
+  {
+    "source": "handle-arm-maker.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": ":fresh\n1\n\"s!\"\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Maker\n  def new: () -> Symbol\nend\n\nclass Store\n  def []: (String) -> String\nend\n\nclass Holder\n  @params: untyped\n  def initialize: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def param: (Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Room\n  @lock: untyped\n  @members: untyped\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[untyped] # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "handle-arm-maker.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": ":fresh\n1\n\"s!\"\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "handle-arm-no-new.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "1\n\"s!\"\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Store\n  def []: (String) -> String\nend\n\nclass Holder\n  @params: untyped\n  def initialize: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def param: (Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Room\n  @lock: untyped\n  @members: untyped\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[untyped] # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "handle-arm-no-new.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "1\n\"s!\"\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "handle-arm-openssl.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"e3b0c442\"\n1\n\"s!\"\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 1,
+      "stdout": "",
+      "stderr": "spinel: handle-arm-openssl.rb:3: this class shares its name with a native class declared under a qualified path (constant lookups are leaf-keyed, so the two would merge); rename the class\n"
+    },
+    "compile": {
+      "exit": 1,
+      "stdout": "",
+      "stderr": "spinel: handle-arm-openssl.rb:3: this class shares its name with a native class declared under a qualified path (constant lookups are leaf-keyed, so the two would merge); rename the class\n"
+    }
+  }
+]

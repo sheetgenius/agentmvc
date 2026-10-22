@@ -1,0 +1,23 @@
+{
+  "label": "thruster-min-many-sites-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-thruster-min-many-sites-01",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/regressions/thruster-cache:/work/probe",
+    "-w",
+    "/work/probe",
+    "conduit-v10-toolchain:diagnostic",
+    "sh",
+    "-c",
+    "for f in many-hash-sites.rb many-method-sites.rb; do echo \"$f\"; ruby \"$f\"; spinel --cc=clang \"$f\" -o /tmp/probe && /tmp/probe; done"
+  ],
+  "started": "2026-10-22T09:24:54.027097+00:00",
+  "finished": "2026-10-22T09:27:55.904311+00:00",
+  "elapsed_seconds": 181.875,
+  "exit": 0,
+  "log": "evidence/execution/thruster-min-many-sites-01.log"
+}

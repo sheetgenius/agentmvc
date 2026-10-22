@@ -1,0 +1,21 @@
+diff --git a/src/analyze.c b/src/analyze.c
+--- a/src/analyze.c
++++ b/src/analyze.c
+@@ -52818,6 +52818,17 @@
+   AN_PHASE("post_fixpoint", an_phase_post_fixpoint(c));
+   AN_PHASE("procs", an_phase_procs(c));
+   AN_PHASE("method_backstops", an_phase_method_backstops(c));
++  /* Settle nil evidence before deriving the final returns and their users. */
++  mark_nullable_int_locals(c);
++  sync_captured_nullable(c);
++  infer_memo_boundary();
++  for (int iter = 0; iter < 8; iter++) {
++    int ch = infer_return_types(c);
++    ch |= rejoin_local_writes(c);
++    ch |= infer_param_types(c);
++    ch |= infer_block_params(c);
++    if (!ch) break;
++  }
+   AN_PHASE("late_widen", an_phase_late_widen(c));
+   AN_PHASE("proc_returns", an_phase_proc_returns(c));
+   AN_PHASE("storage", an_phase_storage(c));

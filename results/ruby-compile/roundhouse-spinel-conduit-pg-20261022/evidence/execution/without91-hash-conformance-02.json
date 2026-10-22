@@ -1,0 +1,23 @@
+{
+  "label": "without91-hash-conformance-02",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-without91-hash-conformance-02",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/conformance:/work/probe",
+    "-w",
+    "/work/probe",
+    "conduit-v10-toolchain:without-91",
+    "sh",
+    "-c",
+    "ruby late-hash.rb; spinel --emit-rbs late-hash.rb -o /tmp/probe.rbs; cat /tmp/probe.rbs; spinel --cc=clang late-hash.rb -o /tmp/probe && /tmp/probe"
+  ],
+  "started": "2026-10-22T09:22:48.263704+00:00",
+  "finished": "2026-10-22T09:23:01.978219+00:00",
+  "elapsed_seconds": 13.714,
+  "exit": 1,
+  "log": "evidence/execution/without91-hash-conformance-02.log"
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "finding": "Prism 2 API drift in local boot_hooks module",
+    "classification": "rebase adaptation",
+    "upstream_commit": "a8868e1b1d647b56c9e40d44ebce1c084bcdab2f",
+    "repair": "30: import PrismLocation"
+  },
+  {
+    "finding": "Local libpq backend lacks new Db._txn_callbacks API",
+    "classification": "rebase adaptation",
+    "upstream_commit": "0fe90bdf8a3cc56d6d3481ff2a35353c26948d1c",
+    "repair": "50: mirror upstream db_pg shim method"
+  }
+]

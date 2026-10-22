@@ -1,0 +1,19 @@
+diff --git a/runtime/spinel/tep/thruster_cache.rb b/runtime/spinel/tep/thruster_cache.rb
+index 45a3a0665..5c32bebe1 100644
+--- a/runtime/spinel/tep/thruster_cache.rb
++++ b/runtime/spinel/tep/thruster_cache.rb
+@@ -241,7 +241,13 @@ module Tep
+     def self.not_modified?(entry, if_none_match)
+       etag = ThrusterCache.header(entry.headers, "etag")
+       return false if etag.length == 0 || if_none_match.length == 0
+-      if_none_match.split(",").any? { |candidate| candidate.strip == etag }
++      candidates = if_none_match.split(",")
++      i = 0
++      while i < candidates.length
++        return true if candidates[i].strip == etag
++        i += 1
++      end
++      false
+     end
+ 
+     def get(key, now)

@@ -1,0 +1,23 @@
+{
+  "label": "cache-etag-reduction-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-cache-etag-reduction-01",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/regressions/thruster-cache:/work/probe",
+    "-w",
+    "/work/probe",
+    "conduit-v10-toolchain:diagnostic",
+    "sh",
+    "-c",
+    "for f in etag-mutable.rb etag-hash.rb etag-json.rb etag-rbs.rb; do echo \"$f\"; ruby \"$f\"; spinel --cc=clang \"$f\" --rbs etag-seed -o /tmp/probe && /tmp/probe; done"
+  ],
+  "started": "2026-10-22T09:37:44.341133+00:00",
+  "finished": "2026-10-22T09:38:10.018180+00:00",
+  "elapsed_seconds": 25.677,
+  "exit": 0,
+  "log": "evidence/execution/cache-etag-reduction-01.log"
+}

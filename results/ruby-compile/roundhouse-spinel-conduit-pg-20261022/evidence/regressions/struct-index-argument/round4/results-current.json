@@ -1,0 +1,102 @@
+[
+  {
+    "source": "union-index-struct.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=\"a\", members=nil>\n\"b\"\n3\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def fetch: (untyped, Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Maker\n  def new: () -> Symbol\n  def []: (String) -> String\nend\n\nclass Room\n  @lock: untyped\n  @members: untyped\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[untyped] # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "union-index-struct.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=\"a\", members=nil>\n\"b\"\n3\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "union-new-digest.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\nArgumentError\nArgumentError\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def build: (untyped, Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Digest\n  def self.hexencode: (untyped) -> void # spinel: widened to untyped (slow path)\nend\n\nclass SHA256\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass SHA1\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass MD5\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass Instance\n  @algorithm: Symbol\n  @data: String\n  def initialize: (Symbol) -> String\n  def update: (untyped) -> Instance # spinel: widened to untyped (slow path)\n  def <<: (untyped) -> Instance # spinel: widened to untyped (slow path)\n  def reset: () -> Instance\n  def hexdigest: () -> String\n  def digest: () -> String\n  def base64digest: () -> String\nend\n\nclass FileResult\n  @hex: String\n  @bin: String\n  @b64: String\n  def initialize: (String, String, String) -> String\n  def hexdigest: () -> String\n  def to_s: () -> String\n  def digest: () -> String\n  def base64digest: () -> String\nend\n\nclass Filename\n  @name: String\n  def initialize: (String) -> String\n  def append: (String) -> Filename\n  def to_s: () -> String\nend\n\nclass Maker\n  def new: () -> Symbol\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "union-new-digest.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"ab\"\nArgumentError\nArgumentError\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "union-new-struct.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=\"a\", members=nil>\nArgumentError\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def build: (untyped, Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Maker\n  def new: () -> Symbol\nend\n\nclass Room\n  @lock: String\n  @members: untyped\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[String]\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "union-new-struct.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=\"a\", members=nil>\nArgumentError\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "union-new.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"a\"\nArgumentError\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def build: (untyped, Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Maker\n  def new: () -> Symbol\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "union-new.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"a\"\nArgumentError\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  }
+]

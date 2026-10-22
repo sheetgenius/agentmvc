@@ -1,0 +1,23 @@
+{
+  "label": "thruster-min-initial-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-thruster-min-initial",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/regressions/thruster-cache:/work/probe",
+    "-w",
+    "/work/probe",
+    "conduit-v10-toolchain:e2c34205cf6d",
+    "sh",
+    "-c",
+    "ruby source.rb; spinel --cc=clang source.rb -o /tmp/probe && /tmp/probe"
+  ],
+  "started": "2026-10-22T09:08:41.971332+00:00",
+  "finished": "2026-10-22T09:08:46.515490+00:00",
+  "elapsed_seconds": 4.544,
+  "exit": 0,
+  "log": "evidence/execution/thruster-min-initial-01.log"
+}

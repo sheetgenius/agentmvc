@@ -1,0 +1,37 @@
+{
+  "observed_utc": "2026-10-22T11:13:17.975974+00:00",
+  "removed_containers": [
+    "conduit-v10-without91-application-01 (cleanup-cancelled-without91-01, left by a cancelled probe)",
+    "conduit-v10-string-bisect-36da8ec3214b (cleanup-bisect-r1-01, left by an interrupted bisect step)"
+  ],
+  "removed_networks": [],
+  "remaining_task_containers": [],
+  "remaining_task_networks": [],
+  "retained_images": [
+    "conduit-v10-app:compiled",
+    "conduit-v10-app:cruby",
+    "conduit-v10-app:without-30",
+    "conduit-v10-bisect:36da8ec3214b",
+    "conduit-v10-bisect:d79a003fbbd8",
+    "conduit-v10-bisect:r2-2c6d6b7ff163",
+    "conduit-v10-bisect:r2-449d8addb0fc",
+    "conduit-v10-bisect:r2-4b3854cf705c",
+    "conduit-v10-bisect:r2-a2a87181b38c",
+    "conduit-v10-bisect:r2-b432531fd5ff",
+    "conduit-v10-bisect:r2-d79a003fbbd8",
+    "conduit-v10-browser:1.63.0",
+    "conduit-v10-hurl:gate",
+    "conduit-v10-postgres:17",
+    "conduit-v10-rails:reference-1",
+    "conduit-v10-toolchain:c59ded2830db",
+    "conduit-v10-toolchain:diagnostic",
+    "conduit-v10-toolchain:e2c34205cf6d",
+    "conduit-v10-toolchain:without-30",
+    "conduit-v10-toolchain:without-60",
+    "conduit-v10-toolchain:without-91",
+    "conduit-v10-trial:digest-no-instance-new"
+  ],
+  "image_policy": "Images kept: the task allows removing only containers, by name.",
+  "volume_operations": 0,
+  "prune_operations": 0
+}

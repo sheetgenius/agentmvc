@@ -1,0 +1,18 @@
+{
+  "label": "build-without91-probe-01",
+  "command": [
+    "docker",
+    "build",
+    "--progress=plain",
+    "-t",
+    "conduit-v10-toolchain:without-91",
+    "$SCRATCH/without91-context"
+  ],
+  "started": "2026-10-22T09:20:04.995024+00:00",
+  "finished": "2026-10-22T09:20:06.885246+00:00",
+  "elapsed_seconds": 1.89,
+  "exit": 0,
+  "log": "evidence/execution/build-without91-probe-01.log",
+  "used_as_evidence": false,
+  "exclusion": "Source/object timestamp cache error; see evidence/regressions/invalid-without91-cache.json"
+}

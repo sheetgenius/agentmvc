@@ -1,0 +1,519 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v10-20261022",
+  "date": "2026-10-22",
+  "previous": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261021 (v9; unchanged)",
+  "input_series": "v9.1: the v9 series with Roundhouse patch 00 retired upstream (#1145) and patches 10 and 60 trimmed; 10 Roundhouse patches + Spinel 91 (line counts in evidence/patch-count-comparison.json)",
+  "status": "complete",
+  "ruby": {
+    "variant": "4.0.7",
+    "toolchain": "4.0.7",
+    "frozen_rails_reference": "3.3.2",
+    "gemfile_changes": [],
+    "lockfile_changes": []
+  },
+  "source": {
+    "reference": "results/one-shot-v2-rails-expert/pilot-1/reference-1/source",
+    "variant": "variant/source (byte-identical gated app to v9)",
+    "gated_files": 75,
+    "all_byte_identical_v9": true,
+    "source_tree_sha256": "294038b23f5579c56b61809cb0db38a1cfa0b39b8b0d4de4d3a65720a76b50f2",
+    "verification": "evidence/source-final-verification.json"
+  },
+  "toolchain": {
+    "roundhouse_base": "0f6fb0c7e7efa9b955c40bdd537b8a61fbe0486e",
+    "roundhouse_patch_count": 11,
+    "roundhouse_patches": "patches/roundhouse/series",
+    "roundhouse_delta": {
+      "added": 2455,
+      "removed": 213,
+      "files": 63,
+      "source": "evidence/roundhouse-final-combined.diff"
+    },
+    "spinel_base": "ca971705427a40e5ef5472bf76f033abbc21da3a",
+    "spinel_version": "2026.09.12+12068",
+    "spinel_patch_count": 2,
+    "spinel_patches": "patches/spinel/series",
+    "spinel_delta": {
+      "added": 11,
+      "removed": 3,
+      "files": 2,
+      "source": "evidence/spinel-final-combined.diff"
+    },
+    "heads_observed_at": "2026-10-22T08:51:20Z (Roundhouse clone), 08:52:11Z (Spinel clone)",
+    "roundhouse_manifest_sha256": "c59ded2830dba4dc065fa6fe27ec84a596904caa00c77e602e43ad5b3f2d807c",
+    "spinel_manifest_sha256": "407222208f11b704f591e17e88b684fc55c0c0c85852209a469bfeedd99dd59c",
+    "vendor_tree_sha256": {
+      "roundhouse": "9d135ff04c578f201210a8f8d92ca04e34e2465accba8a14e162d8cc856ece50",
+      "spinel": "d71149cef1a98ae39e575224d43c8c5e9a0e096c1efddc3f558455426d4ce834"
+    },
+    "flags": "Ruby 4.0.7; Rust 1.98.1; RH_DATABASE_ADAPTER=postgresql; strict emit; spin build -- --cc=clang --jobs=8; SPINEL_WORKERS=4",
+    "scoreboard": "evidence/patch-count-comparison.json",
+    "fresh_replay": "evidence/rebase/fresh-replay-final.log"
+  },
+  "images": {
+    "toolchain": {
+      "tag": "conduit-v10-toolchain:c59ded2830db",
+      "id": "sha256:3f1a4035cf9a741a885c45a11a1075a75c7ecc372c2e441ab4052c1d96866dcb",
+      "bytes": 2065094544
+    },
+    "compiled": {
+      "tag": "conduit-v10-app:compiled",
+      "id": "sha256:d60ff22cd936798b5f0b2763c46daeb69f0ff9ffc07b18c64504c719c290c2ed",
+      "bytes": 121329069,
+      "server_sha256": "4a4b292bf6538f9a356e70b25d7acb79743f3fd4679a5322ed2bd18e061b65a2"
+    },
+    "variant_rails": {
+      "tag": "conduit-v10-app:cruby",
+      "id": "sha256:fb1caafbf7cd7dbdd9e95697a5e52b7c4b7fcd6c2fdfb513d9df5b7289a327d6",
+      "bytes": 318022561
+    },
+    "reference_rails": {
+      "tag": "conduit-v10-rails:reference-1",
+      "id": "sha256:ba9bcbac9a44c943649c2b3f1ac7fc32dac9086553b5eed994b6b95718bc757e",
+      "bytes": 324038403
+    },
+    "postgres": {
+      "tag": "conduit-v10-postgres:17",
+      "id": "sha256:b05fab95d0492cb222fbb8cd0e07707c2f3f778518e85b5a2600de8bc2d1450e",
+      "bytes": 290942266
+    },
+    "browser": {
+      "tag": "conduit-v10-browser:1.63.0",
+      "id": "sha256:d557691d34050eb14a8c312faab2b405d968d953ad4cca1a0f80d051ae91aacf",
+      "bytes": 2517082212
+    }
+  },
+  "gates": {
+    "compiled_production": {
+      "label": "compiled-gate-02",
+      "command": [
+        "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/reproduce/run-gate.sh",
+        "compiled",
+        "4471"
+      ],
+      "started": "2026-10-22T10:34:27.611133+00:00",
+      "finished": "2026-10-22T10:39:41.018756+00:00",
+      "elapsed_seconds": 313.403,
+      "exit": 0,
+      "log": "evidence/execution/compiled-gate-02.log"
+    },
+    "variant_rails_production": {
+      "label": "rails-gate-01",
+      "command": [
+        "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/reproduce/run-gate.sh",
+        "rails",
+        "4471"
+      ],
+      "started": "2026-10-22T09:01:29.247935+00:00",
+      "finished": "2026-10-22T09:02:14.303634+00:00",
+      "elapsed_seconds": 45.055,
+      "exit": 0,
+      "log": "evidence/execution/rails-gate-01.log"
+    },
+    "coverage_compiled": {
+      "api_files": "17/17",
+      "live_protocol": "pass",
+      "browser": "4/4",
+      "security": "13/13",
+      "exit_line": true
+    },
+    "coverage_rails": {
+      "api_files": "17/17",
+      "live_protocol": "pass",
+      "browser": "4/4",
+      "security": "13/13",
+      "exit_line": true
+    },
+    "common_http": {
+      "contract": "21/21",
+      "quality": "3/3",
+      "file": "evidence/compiled-v10-common-http-probe.json"
+    },
+    "boot_recovery": {
+      "condition": "supplemental-pending-export-boot-20261022",
+      "label": "final",
+      "image": "conduit-v10-app:compiled",
+      "expected": "done",
+      "procedure": "Seed a durable pending export before starting the compiled server; send no enqueue request.",
+      "image_id": "sha256:d60ff22cd936798b5f0b2763c46daeb69f0ff9ffc07b18c64504c719c290c2ed",
+      "before": "pending",
+      "after": "done",
+      "articles": "[]",
+      "completed": "t",
+      "server_sha256": "4a4b292bf6538f9a356e70b25d7acb79743f3fd4679a5322ed2bd18e061b65a2",
+      "pass": true
+    },
+    "compiled_binary": {
+      "container": "conduit-v10-gate-conduit-v10-ws-compiled-16118-app",
+      "image_id": "sha256:d60ff22cd936798b5f0b2763c46daeb69f0ff9ffc07b18c64504c719c290c2ed",
+      "server_sha256": "4a4b292bf6538f9a356e70b25d7acb79743f3fd4679a5322ed2bd18e061b65a2"
+    },
+    "earlier_failing_gate": {
+      "label": "compiled-gate-01",
+      "exit": 1,
+      "cause": "before 85, the Db._txn_callbacks shim and 92: five Spinel refusals"
+    }
+  },
+  "edge_comparison": {
+    "condition": "v10 final vs fresh Rails reference-1, recorded v9, and Rails control",
+    "v10_vs_rails_reference_differences": 8,
+    "v10_vs_v9_differences": 0,
+    "rails_control_differences": 0,
+    "responses": 166,
+    "same_differences_as_v9": [
+      "after_email_spaces",
+      "login_email_spaces_password123",
+      "login_password_number_123456789",
+      "login_password_number_password123",
+      "update_email_spaces",
+      "update_malformed",
+      "update_password_null",
+      "update_password_number"
+    ],
+    "new_vs_v9_list": [],
+    "gone_vs_v9_list": [],
+    "file": "evidence/edge/summary.json"
+  },
+  "retirements": {
+    "retired": [],
+    "checks": "evidence/retirement-checks.json",
+    "omission_gates": [
+      {
+        "omitted_patch": "30",
+        "condition": "compiled-conduit-v10-without-30",
+        "series": [
+          "10-api-mode-json.patch",
+          "20-raw-websocket.patch",
+          "50-postgresql-lane.patch",
+          "60-rails-surface.patch",
+          "74-integer-query-range.patch",
+          "80-gradual-return-stabilization.patch",
+          "82-upstream-regression-quoted-bulk-update.patch",
+          "83-upstream-regression-temporal-initialize.patch",
+          "84-upstream-regression-mixed-parameter-arm.patch",
+          "85-upstream-regression-thruster-cache-enumeration.patch"
+        ],
+        "build": {
+          "exit": 0,
+          "execution": "evidence/execution/build-without-30-build-01.json"
+        },
+        "gate": {
+          "exit": 0,
+          "execution": "evidence/execution/without-30-gate-01.json"
+        },
+        "recovery": {
+          "exit": 1,
+          "execution": "evidence/execution/without-30-recovery-01.json",
+          "record": "evidence/omissions/without-30/recovery.json",
+          "before": "pending",
+          "after": "pending"
+        },
+        "finding": "The frozen gate passes without 30 (17/17 API, live, 4/4 browser, 13/13 security) because it never restarts the server over a pending export; the boot-recovery probe fails (pending stays pending). 30 stays: upstream still runs no after_initialize callback at boot."
+      },
+      {
+        "omitted_patch": "50",
+        "condition": "compiled-conduit-v10-without-50",
+        "series": [
+          "10-api-mode-json.patch",
+          "20-raw-websocket.patch",
+          "30-jobs-boot.patch",
+          "60-rails-surface.patch",
+          "74-integer-query-range.patch",
+          "80-gradual-return-stabilization.patch",
+          "82-upstream-regression-quoted-bulk-update.patch",
+          "83-upstream-regression-temporal-initialize.patch",
+          "84-upstream-regression-mixed-parameter-arm.patch",
+          "85-upstream-regression-thruster-cache-enumeration.patch"
+        ],
+        "build": {
+          "exit": 1,
+          "execution": "evidence/execution/build-without-50-build-01.json"
+        },
+        "finding": "Roundhouse does not compile: `postgresql_enabled` (E0425) and runtime/spinel/db_libpq.rb are 50's, and 74 uses them. Upstream has no libpq lane; 50 stays.",
+        "gate": {
+          "run": false,
+          "reason": "the gate's first step builds the same image and cannot pass"
+        }
+      },
+      {
+        "omitted_patch": "60",
+        "condition": "compiled-conduit-v10-without-60",
+        "series": [
+          "10-api-mode-json.patch",
+          "20-raw-websocket.patch",
+          "30-jobs-boot.patch",
+          "50-postgresql-lane.patch",
+          "74-integer-query-range.patch",
+          "80-gradual-return-stabilization.patch",
+          "82-upstream-regression-quoted-bulk-update.patch",
+          "83-upstream-regression-temporal-initialize.patch",
+          "84-upstream-regression-mixed-parameter-arm.patch",
+          "85-upstream-regression-thruster-cache-enumeration.patch"
+        ],
+        "build": {
+          "exit": 1,
+          "execution": "evidence/execution/build-without-60-build-01.json"
+        },
+        "finding": "roundhouse check refuses favorites_controller.rb:5 and profiles_controller.rb:8: 'scoped find-or-create cannot be lowered safely: the runtime has no find_or_create_by!'. 60 stays.",
+        "gate": {
+          "run": false,
+          "reason": "the gate's first step builds the same image and cannot pass"
+        }
+      }
+    ]
+  },
+  "regressions": {
+    "roundhouse_85": {
+      "classification": "upstream Roundhouse change exposes a Spinel conversion gap in Conduit's whole program (with its local patches)",
+      "introducing_commit": "b348b800591378ad26bbfff26cc67d83c7c49649 (rubys/roundhouse: The spinel binary answers a public response from Thruster's cache; adds runtime/spinel/tep/thruster_cache.rb)",
+      "site": "runtime/spinel/tep/thruster_cache.rb:244 `if_none_match.split(\",\").any? { |candidate| candidate.strip == etag }` in ThrusterCache.not_modified?",
+      "symptom": "spinel refuses: argument __self of __enum_any?__24 (actual str_array, parameter strh_array) given a Array, which no conversion keeps in its sp_PtrArray * slot",
+      "observed_types": "In Conduit's program not_modified? is inferred (untyped, untyped) -> bool; the any? helper's receiver parameter is settled as a String-handle Array while split hands it a plain String Array.",
+      "not_a_spinel_regression": "The same emitted app is refused by v9's Spinel 6ca6d451b + 91 (cache-application-v9-spinel-01) and by v10's (callbacks-isolated-diagnostic-01, build-rebase-03).",
+      "repair": "patches/roundhouse/85-upstream-regression-thruster-cache-enumeration.patch replaces the any? block with an index loop (+7/-1); with it the same app compiles on v9 Spinel (cache-loop-v9-spinel-01) and the final v10 build passes (build-final-01, compiled-gate-02).",
+      "cruby_behavior": "Unchanged: the loop returns true on the first candidate equal to the ETag and false otherwise, as any? does.",
+      "standalone_minimal_ruby_reproducer": false,
+      "standalone_attempts": "29 files in thruster-cache/ (typed, untyped, JSON, mixed, RBS-seeded, threaded, mutex, many call sites, the whole cache file with a driver): none reproduces the refusal. Two harness attempts failed for unrelated reasons (thruster-min-context-01: missing Tep.decimal_byte_count; cache-tep-reduction-01: FFI-only runtime under CRuby).",
+      "upstream_tests": "Upstream's own tests/tep_thruster_cache.rs passes in its suite; the gap appears only in a program whose inference makes the helper parameter a handle array.",
+      "untested": "Upstream Roundhouse alone cannot build Conduit (no PostgreSQL lane), so an interaction with a local patch, such as 10's request header typing, is not excluded."
+    },
+    "spinel_92": {
+      "classification": "upstream Spinel regression (library change exposes an existing emitter defect)",
+      "symptom": "spin build of the emitted Conduit app fails in C compilation: app/app/controllers/application_controller.rb:70: error: incompatible pointer types initializing 'const char *' with an expression of type 'sp_String *' [-Werror,-Wincompatible-pointer-types]",
+      "failing_ruby_site": {
+        "original_source": "variant/source/app/controllers/application_controller.rb:70 `params[name]` in `def param(name)`",
+        "emitted_by_roundhouse": "@params[name.to_s] (emitted app/controllers/application_controller.rb:126)",
+        "line_mapping_note": "Spinel's #line directives name the original app source (#<SPINEL_SOURCE> markers). The earlier attribution to TokenCodec.decode read line 70 of the emitted file instead; see ../string-argument/classification.json."
+      },
+      "observed_types": "@params is boxed (untyped); the [] dispatch includes a Struct class arm (LiveRooms::Room = Struct.new(:lock, :members), Room[x] -> Room.new(x)), class-value .new(x) arms, and instance-method `new` arms for OpenSSL::Digest and its SHA256/SHA1/MD5 subclasses. In that combined dispatch the String argument is held as a shared String handle and then boxed through the C-string path.",
+      "first_bad_commit": "2c6d6b7ff1636163ec92722a66fb7b82dd9fc204",
+      "first_bad_subject": "Merge PR #9913: OpenSSL::Digest keeps its hash state and answers as CRuby's does",
+      "pull_request": "matz/spinel#9913",
+      "introducing_commit_in_pr": "2388b53aba302040f067b07086ca5289019c1a36 (openssl: Digest answers the rest of its API; adds `def new = clone.reset`)",
+      "last_good_first_parent": "449d8addb0fc374aa3290d64dbaf4ad7d9caca47",
+      "bisect": {
+        "file": "../string-argument/bisect-r2.json",
+        "range": "6ca6d451b (v9, good) .. ca971705427a (v10 pin, bad), --first-parent",
+        "conditions": "patch 91 applied to every candidate; frozen emitted app emitted-with-cache-loop (patch 85 loop + Db._txn_callbacks shim) held constant; only Spinel changes",
+        "verdicts": {
+          "d79a003fb": "good",
+          "a2a87181b": "bad",
+          "4b3854cf7": "good",
+          "2c6d6b7ff": "bad",
+          "b432531fd": "good",
+          "449d8addb": "good"
+        }
+      },
+      "ablation": {
+        "same_app_same_compiler_current": "string-c-capture-01: exit 1, the C error above",
+        "same_app_minus_OpenSSL_Digest_instance_new": "digest-trial-v1-app: exit 0 (only the 2-line `def new = clone.reset` removed from packages/openssl/openssl/digest.rb)",
+        "final_toolchain_with_92": "build-final-01: exit 0"
+      },
+      "repair": "patches/spinel/92-upstream-regression-digest-instance-new.patch removes OpenSSL::Digest#new (instance). Conduit never calls it; CRuby has it, so the repair trades that unused method for compilation. The emitter defect itself stays upstream.",
+      "standalone_minimal_ruby_reproducer": false,
+      "standalone_attempts": "struct-index-argument/ rounds 1-5 (results-*.json per compiler): Struct-class index on a boxed receiver, class-value new, an instance method named new (user class and OpenSSL::Digest), a String-mutating constructor, a String-mutating [] arm, and Digest modules, alone and combined. All compile on the v10 pin; the smallest failing input remains the emitted application. Some expose older wrong-value gaps (../existing-struct-gaps.json).",
+      "upstream_drift": "matz/spinel master at 2026-10-22T09:35Z (89100bf0f) has 9 more first-parent commits; none touches packages/openssl or names this dispatch.",
+      "probe_note": "OpenSSL::Digest#new itself now matches CRuby in small programs (round2 openssl-struct-index.rb: NoMethodError on the parent, correct on the pin)."
+    },
+    "existing_struct_gaps": "evidence/regressions/existing-struct-gaps.json",
+    "misattributed_string_argument": "evidence/regressions/string-argument/classification.json",
+    "invalid_without91_cache_probe": "evidence/regressions/invalid-without91-cache.json"
+  },
+  "rebase_corrections": [
+    "30: context rebase in runtime/spinel/scaffold/main.rb; import PrismLocation after the Prism 2 migration (a8868e1b1)",
+    "50: context rebase of the naming.rs test module; add Db._txn_callbacks to the local libpq backend, mirroring upstream db_pg (0fe90bdf8)",
+    "60: context rebase in src/lower/scope_chain.rs; find_or_create_by! still added (upstream added only find_or_initialize_by, 5f0428141)",
+    "all other inherited patches: identical +/- lines; hunk metadata refreshed"
+  ],
+  "conformance": [
+    {
+      "source": "late-hash.rb",
+      "matches_cruby": true,
+      "compile_exit": 0
+    },
+    {
+      "source": "literal-literal.rb",
+      "matches_cruby": false,
+      "compile_exit": 0
+    },
+    {
+      "source": "literal-mutable.rb",
+      "matches_cruby": true,
+      "compile_exit": 0
+    },
+    {
+      "source": "string-alias.rb",
+      "matches_cruby": false,
+      "compile_exit": 0
+    }
+  ],
+  "timing": {
+    "kind": "wall-clock records from step logs on a shared host (other lanes' builds ran concurrently); not benchmarks",
+    "rows": [
+      {
+        "measure": "toolchain + compiled image build",
+        "v9": {
+          "seconds": 254.2,
+          "label": "c-build-final-06",
+          "note": "Spinel layer cached"
+        },
+        "v10": {
+          "seconds": 598.1,
+          "label": "build-final-01",
+          "note": "Spinel rebuilt for patch 92"
+        }
+      },
+      {
+        "measure": "Spinel make deps/make/install",
+        "v9": {
+          "seconds": null,
+          "note": "cached in c-build-final-06"
+        },
+        "v10": {
+          "seconds": 89.7,
+          "label": "build-final-01 #15"
+        }
+      },
+      {
+        "measure": "Roundhouse cargo build --release",
+        "v9": {
+          "seconds": 101.9,
+          "label": "c-build-final-06 #18"
+        },
+        "v10": {
+          "seconds": 164.6,
+          "label": "build-final-01 #18"
+        }
+      },
+      {
+        "measure": "app spin build in image build",
+        "v9": {
+          "seconds": 141.0,
+          "label": "c-build-final-06 #16"
+        },
+        "v10": {
+          "seconds": 285.0,
+          "label": "build-final-01 #18 (build stage)"
+        }
+      },
+      {
+        "measure": "compiled production gate",
+        "v9": {
+          "seconds": 244.4,
+          "label": "c-compiled-gate-06"
+        },
+        "v10": {
+          "seconds": 313.4,
+          "label": "compiled-gate-02",
+          "note": "includes about 14 s waiting for the Docker lock"
+        }
+      },
+      {
+        "measure": "app spin build inside the gate",
+        "v9": {
+          "seconds": 146.4,
+          "label": "c-compiled-gate-06 #16"
+        },
+        "v10": {
+          "seconds": 202.1,
+          "label": "compiled-gate-02 #16"
+        }
+      },
+      {
+        "measure": "Rails production gate",
+        "v9": {
+          "seconds": 28.4,
+          "label": "rails-gate-01"
+        },
+        "v10": {
+          "seconds": 45.1,
+          "label": "rails-gate-01"
+        }
+      },
+      {
+        "measure": "analysis / emission peak RSS in the gate (KiB)",
+        "v9": {
+          "analysis": 40328,
+          "emission": 52740
+        },
+        "v10": {
+          "analysis": 41124,
+          "emission": 51068
+        }
+      },
+      {
+        "measure": "same emitted app, spin build step, within one hour on this host",
+        "v9": {
+          "seconds": 124.0,
+          "label": "cache-loop-v9-spinel-01 (v9 Spinel, 09:29Z)"
+        },
+        "v10": {
+          "seconds_range": [
+            122.7,
+            285.0
+          ],
+          "labels": "string-bisect-r2-b432531fd5ff 122.7 s, -d79a003fbbd8 139.7 s, digest-trial-v1-app 233.4 s, build-final-01 285.0 s",
+          "note": "elapsed values of passing compiles; neighbouring Spinel revisions and the final toolchain"
+        }
+      }
+    ],
+    "compiled_image_bytes": {
+      "v9": 121130407,
+      "v10": 121329069
+    },
+    "reading": "Analysis and emission peak RSS move by +2% and -3% (41.1 and 51.1 MiB). Build and gate wall times rose, but the same emitted app's spin build ranged 123-285 s within one hour on this host, so the rise is within host-load noise and no compiler slowdown is claimed."
+  },
+  "limits": [
+    "Neither new regression is reduced to a standalone Ruby program; both need the emitted application",
+    "Patch 92 removes OpenSSL::Digest#new, which CRuby has and Conduit does not call; the Spinel emitter defect stays",
+    "Timings come from a shared host under other lanes' load: wall-clock records, not benchmarks",
+    "No full upstream CI or broader v8 typing/validator suites rerun"
+  ],
+  "constraints": {
+    "docker_lock": ".work/lane-docker.lock",
+    "resource_prefix": "conduit-v10-",
+    "port": 4471
+  },
+  "cleanup": {
+    "observed_utc": "2026-10-22T11:13:17.975974+00:00",
+    "removed_containers": [
+      "conduit-v10-without91-application-01 (cleanup-cancelled-without91-01, left by a cancelled probe)",
+      "conduit-v10-string-bisect-36da8ec3214b (cleanup-bisect-r1-01, left by an interrupted bisect step)"
+    ],
+    "removed_networks": [],
+    "remaining_task_containers": [],
+    "remaining_task_networks": [],
+    "retained_images": [
+      "conduit-v10-app:compiled",
+      "conduit-v10-app:cruby",
+      "conduit-v10-app:without-30",
+      "conduit-v10-bisect:36da8ec3214b",
+      "conduit-v10-bisect:d79a003fbbd8",
+      "conduit-v10-bisect:r2-2c6d6b7ff163",
+      "conduit-v10-bisect:r2-449d8addb0fc",
+      "conduit-v10-bisect:r2-4b3854cf705c",
+      "conduit-v10-bisect:r2-a2a87181b38c",
+      "conduit-v10-bisect:r2-b432531fd5ff",
+      "conduit-v10-bisect:r2-d79a003fbbd8",
+      "conduit-v10-browser:1.63.0",
+      "conduit-v10-hurl:gate",
+      "conduit-v10-postgres:17",
+      "conduit-v10-rails:reference-1",
+      "conduit-v10-toolchain:c59ded2830db",
+      "conduit-v10-toolchain:diagnostic",
+      "conduit-v10-toolchain:e2c34205cf6d",
+      "conduit-v10-toolchain:without-30",
+      "conduit-v10-toolchain:without-60",
+      "conduit-v10-toolchain:without-91",
+      "conduit-v10-trial:digest-no-instance-new"
+    ],
+    "image_policy": "Images kept: the task allows removing only containers, by name.",
+    "volume_operations": 0,
+    "prune_operations": 0
+  },
+  "written_utc": "2026-10-22T11:13:18.459216+00:00",
+  "publication": {
+    "inventory": "evidence/publication.json",
+    "validation": "evidence/publication-validation.json"
+  }
+}

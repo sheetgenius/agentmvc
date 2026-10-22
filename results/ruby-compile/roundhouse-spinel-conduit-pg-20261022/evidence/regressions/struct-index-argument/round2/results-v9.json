@@ -1,0 +1,277 @@
+[
+  {
+    "source": "class-new-generic.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=1, members=2>\n\"xy\"\n\"e3b0c442\"\n#<struct Room lock=\"a\", members=nil>\n\"bc\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def build: (Class, Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Digest\n  def self.hexencode: (untyped) -> void # spinel: widened to untyped (slow path)\nend\n\nclass SHA256\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass SHA1\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass MD5\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass Instance\n  @algorithm: Symbol\n  @data: String\n  def initialize: (Symbol) -> String\n  def update: (untyped) -> Instance # spinel: widened to untyped (slow path)\n  def <<: (untyped) -> Instance # spinel: widened to untyped (slow path)\n  def reset: () -> Instance\n  def hexdigest: () -> String\n  def digest: () -> String\n  def base64digest: () -> String\nend\n\nclass FileResult\n  @hex: String\n  @bin: String\n  @b64: String\n  def initialize: (String, String, String) -> String\n  def hexdigest: () -> String\n  def to_s: () -> String\n  def digest: () -> String\n  def base64digest: () -> String\nend\n\nclass Filename\n  @name: String\n  def initialize: (String) -> String\n  def append: (String) -> Filename\n  def to_s: () -> String\nend\n\nclass Room\n  @lock: Integer\n  @members: Integer\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[Integer]\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "class-new-generic.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=1, members=2>\n\"xy\"\n\"e3b0c442\"\n#<struct Room lock=0, members=nil>\n\"bc\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": false
+  },
+  {
+    "source": "class-receiver.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "1\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Holder\n  @params: untyped\n  def initialize: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def param: (Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Room\n  @lock: untyped\n  @members: untyped\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[untyped] # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "class-receiver.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "1\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "digest-filename.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=1, members=2>\n\"xy\"\n\"e3b0c442\"\n1\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Digest\n  def self.hexencode: (untyped) -> void # spinel: widened to untyped (slow path)\nend\n\nclass SHA256\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass SHA1\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass MD5\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass Instance\n  @algorithm: Symbol\n  @data: String\n  def initialize: (Symbol) -> String\n  def update: (untyped) -> Instance # spinel: widened to untyped (slow path)\n  def <<: (untyped) -> Instance # spinel: widened to untyped (slow path)\n  def reset: () -> Instance\n  def hexdigest: () -> String\n  def digest: () -> String\n  def base64digest: () -> String\nend\n\nclass FileResult\n  @hex: String\n  @bin: String\n  @b64: String\n  def initialize: (String, String, String) -> String\n  def hexdigest: () -> String\n  def to_s: () -> String\n  def digest: () -> String\n  def base64digest: () -> String\nend\n\nclass Filename\n  @name: String\n  def initialize: (String) -> String\n  def append: (String) -> Filename\n  def to_s: () -> String\nend\n\nclass Holder\n  @params: untyped\n  def initialize: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def param: (Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Room\n  @lock: Integer\n  @members: Integer\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[Integer]\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "digest-filename.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=1, members=2>\n\"xy\"\n\"e3b0c442\"\n1\nnil\n",
+      "stderr": ""
+    },
+    "matches_cruby": false
+  },
+  {
+    "source": "instance-new-generic.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": ":fresh\n\"a\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def build: (Class, Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Maker\n  def new: () -> Symbol\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "instance-new-generic.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": ":fresh\n\"a\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "instance-new-index.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": ":fresh\n1\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Maker\n  def new: () -> Symbol\nend\n\nclass Holder\n  @params: untyped\n  def initialize: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def param: (Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Room\n  @lock: untyped\n  @members: untyped\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[untyped] # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "instance-new-index.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": ":fresh\n1\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "instance-new-mutable.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": ":fresh\n\"bc\"\n\"a\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def build: (Class, Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Filename\n  @name: String\n  def initialize: (String) -> String\n  def append: (String) -> Filename\n  def to_s: () -> String\nend\n\nclass Maker\n  def new: () -> Symbol\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "instance-new-mutable.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": ":fresh\n\"bc\"\n\"a\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "instance-new-struct-mutable.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": ":fresh\n\"xy\"\n1\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Filename\n  @name: String\n  def initialize: (String) -> String\n  def append: (String) -> Filename\n  def to_s: () -> String\nend\n\nclass Maker\n  def new: () -> Symbol\nend\n\nclass Holder\n  @params: untyped\n  def initialize: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def param: (Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Room\n  @lock: untyped\n  @members: untyped\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[untyped] # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "instance-new-struct-mutable.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": ":fresh\n\"xy\"\n1\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "json-receiver.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=1, members=2>\n1\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class JSON\n  def self.generate: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.__dump: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.parse: (String) -> untyped # spinel: widened to untyped (slow path)\n  def self.pretty_generate: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.dump: (untyped, untyped, untyped) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Holder\n  @params: untyped\n  def initialize: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def param: (Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Room\n  @lock: Integer\n  @members: Integer\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[Integer]\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "json-receiver.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=1, members=2>\n1\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "mixed-receiver.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=1, members=2>\n1\nTypeError\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Holder\n  @params: untyped\n  def initialize: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def param: (Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Room\n  @lock: Integer\n  @members: Integer\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[Integer]\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "mixed-receiver.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "#<struct Room lock=1, members=2>\n1\nTypeError\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "openssl-class-new.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"e3b0c442\"\n\"x\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def __enumw_map: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)\n  def __enumw_select: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)\n  def __enumw_reject: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)\n  def __enumw_filter_map: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)\n  def __enumw_each_with_object: (untyped, untyped) -> void # spinel: widened to untyped (slow path)\n  def __enumw_inject0: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def __enumw_inject1: (untyped, untyped) -> untyped # spinel: widened to untyped (slow path)\n  def __enumw_with_index: (untyped, Integer) -> void # spinel: widened to untyped (slow path)\n  def __enumw_str_chars_with_index: (String, Integer) -> String\n  def __enumw_str_lines_with_index: (untyped, Integer) -> void # spinel: widened to untyped (slow path)\n  def __enumw_str_bytes_with_index: (untyped, Integer) -> void # spinel: widened to untyped (slow path)\n  def __enumw_str_codepoints_with_index: (String, Integer) -> String\n  def __enumw_each_slice: (untyped, untyped) -> void # spinel: widened to untyped (slow path)\n  def __enumw_each_cons: (untyped, untyped) -> void # spinel: widened to untyped (slow path)\n  def __enumw_each_entry: (untyped) -> void # spinel: widened to untyped (slow path)\n  def make: (Class, Symbol) -> untyped # spinel: widened to untyped (slow path)\n  def __enum___no_false__0: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)\n  def __enum___no_false__1: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)\n  def __enum___no_false__2: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)\n  def __enum___no_false__3: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)\nend\n\nclass Digest\n  def self.hexencode: (untyped) -> void # spinel: widened to untyped (slow path)\nend\n\nclass Digest::::SHA256\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass Digest::::SHA1\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass Digest::::MD5\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass Instance\n  @algorithm: Symbol\n  @data: String\n  def initialize: (Symbol) -> String\n  def update: (untyped) -> Instance # spinel: widened to untyped (slow path)\n  def <<: (untyped) -> Instance # spinel: widened to untyped (slow path)\n  def reset: () -> Instance\n  def hexdigest: () -> String\n  def digest: () -> String\n  def base64digest: () -> String\nend\n\nclass FileResult\n  @hex: String\n  @bin: String\n  @b64: String\n  def initialize: (String, String, String) -> String\n  def hexdigest: () -> String\n  def to_s: () -> String\n  def digest: () -> String\n  def base64digest: () -> String\nend\n\nclass OpenSSL\nend\n\nclass Buffering\n  @eof: bool\n  @rbuffer: String\n  @wbuffer: String\n  @sync: untyped\n  def initialize: () -> untyped # spinel: widened to untyped (slow path)\n  def fill_rbuff: () -> untyped # spinel: widened to untyped (slow path)\n  def consume_rbuff: (Integer) -> String\n  def eof?: () -> bool\n  def eof: () -> bool\n  def read: (untyped) -> String # spinel: widened to untyped (slow path)\n  def readpartial: (untyped) -> String # spinel: widened to untyped (slow path)\n  def read_nonblock: (untyped, bool) -> String # spinel: widened to untyped (slow path)\n  def write_nonblock: (untyped, bool) -> void # spinel: widened to untyped (slow path)\n  def gets: (String, untyped, bool) -> String # spinel: widened to untyped (slow path)\n  def each_line: (String) -> Buffering\n  def readlines: (String) -> Array[untyped] # spinel: widened to untyped (slow path)\n  def readline: (String) -> String\n  def getc: () -> String\n  def readchar: () -> String\n  def getbyte: () -> Integer\n  def readbyte: () -> Integer\n  def each_byte: () -> Buffering\n  def do_write: (String) -> untyped # spinel: widened to untyped (slow path)\n  def write: (Array[untyped]) -> Integer # spinel: widened to untyped (slow path)\n  def <<: (untyped) -> Buffering # spinel: widened to untyped (slow path)\n  def print: (Array[untyped]) -> nil # spinel: widened to untyped (slow path)\n  def printf: (untyped, Array[untyped]) -> nil # spinel: widened to untyped (slow path)\n  def puts: (Array[untyped]) -> nil # spinel: widened to untyped (slow path)\n  def flush: () -> Buffering\n  def close: () -> nil\nend\n\nclass OpenSSLError\nend\n\nclass Crypto\n  def self.sha256_hex: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.sha256_bin: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.sha1_hex: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.sha1_bin: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.md5_hex: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.md5_bin: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.hmac_sha256_hex: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.hmac_sha1_hex: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.hmac_sha256_bin: (String, String) -> String\n  def self.hmac_sha1_bin: (String, String) -> String\n  def self.random_bin: (untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass OpenSSL::::Digest\n  @name: String\n  @buf: String\n  def initialize: (String, untyped) -> String # spinel: widened to untyped (slow path)\n  def name: () -> String\n  def digest_length: () -> Integer\n  def block_length: () -> Integer\n  def update: (untyped) -> OpenSSL::::Digest # spinel: widened to untyped (slow path)\n  def reset: () -> OpenSSL::::Digest\n  def digest: (untyped) -> String # spinel: widened to untyped (slow path)\n  def hexdigest: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def self.raw: (String, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.length_of: (String) -> Integer\nend\n\nclass DigestError < OpenSSLError\nend\n\nclass OpenSSL::::Digest::::SHA256 < OpenSSL::::Digest\n  @name: String\n  @buf: String\n  def initialize: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.hexdigest: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.digest: (untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass OpenSSL::::Digest::::SHA1 < OpenSSL::::Digest\n  @name: String\n  @buf: String\n  def initialize: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.hexdigest: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.digest: (untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass OpenSSL::::Digest::::MD5 < OpenSSL::::Digest\n  @name: String\n  @buf: String\n  def initialize: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.hexdigest: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.digest: (untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass HMAC\n  def self.hexdigest: (untyped, untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.digest: (String, String, String) -> String\n  def self.algorithm: (untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass CipherError < OpenSSLError\nend\n\nclass Cipher\n  @name: String\n  @encrypting: bool\n  @key: String\n  @iv: String\n  @auth_data: String\n  @parts: Array[untyped]\n  @auth_tag: String\n  @expected_tag: String\n  @done: bool\n  def initialize: (untyped) -> bool # spinel: widened to untyped (slow path)\n  def encrypt: () -> Cipher\n  def decrypt: () -> Cipher\n  def key_len: () -> untyped # spinel: widened to untyped (slow path)\n  def iv_len: () -> untyped # spinel: widened to untyped (slow path)\n  def key=: (String) -> String\n  def iv=: (String) -> String\n  def auth_data=: (untyped) -> String # spinel: widened to untyped (slow path)\n  def auth_tag=: (untyped) -> String # spinel: widened to untyped (slow path)\n  def random_key: () -> String\n  def random_iv: () -> String\n  def update: (untyped) -> String # spinel: widened to untyped (slow path)\n  def final: () -> String\n  def auth_tag: () -> String\n  def reason: (String) -> String\nend\n\nclass KDF\n  def self.hkdf: (untyped, untyped, untyped, untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.pbkdf2_hmac: (untyped, untyped, untyped, untyped, String) -> String # spinel: widened to untyped (slow path)\nend\n\nclass KDFError < OpenSSLError\nend\n\nclass PKCS5\n  def self.pbkdf2_hmac: (untyped, untyped, untyped, untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.pbkdf2_hmac_sha1: (untyped, untyped, untyped, untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass PKey\n  def self.read: (untyped) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass PKeyError < OpenSSLError\nend\n\nclass ECError < PKeyError\nend\n\nclass EC\n  @curve: String\n  @private_key_bytes: String\n  @public_key_bytes: String\n  def initialize: (String, String, String) -> nil\n  def public_only?: () -> bool\n  def private?: () -> bool\n  def public?: () -> bool\n  def dh_compute_key: (untyped) -> String # spinel: widened to untyped (slow path)\n  def sign_raw: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def verify_raw: (untyped, untyped, untyped) -> bool # spinel: widened to untyped (slow path)\n  def need_private!: (String) -> nil\n  def hash_of: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.generate: (untyped) -> EC # spinel: widened to untyped (slow path)\n  def self.from_private_bytes: (String, String) -> EC\n  def self.from_public_bytes: (String, String) -> EC\nend\n\nclass RSA\n  @n_bytes: String\n  @e_bytes: String\n  @private_der: String\n  def initialize: (String, String, String) -> String\n  def public?: () -> bool\n  def private?: () -> bool\n  def public_key: () -> RSA\n  def to_der: () -> String\n  def sign: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def sign_pss: (untyped, untyped, untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def verify: (untyped, untyped, untyped) -> bool # spinel: widened to untyped (slow path)\n  def verify_pss: (untyped, untyped, untyped, untyped, untyped) -> bool # spinel: widened to untyped (slow path)\n  def digest_name: (untyped) -> String # spinel: widened to untyped (slow path)\n  def rsa_sign: (String, untyped, Integer, String, Integer) -> String # spinel: widened to untyped (slow path)\n  def answer: (Integer, String, String) -> bool\n  def self.from_public_components: (untyped, untyped) -> RSA # spinel: widened to untyped (slow path)\n  def self.from_read: (String) -> RSA\nend\n\nclass X509\nend\n\nclass CertificateError < OpenSSLError\nend\n\nclass StoreError < OpenSSLError\nend\n\nclass Certificate\n  @der: String\n  def initialize: (String) -> nil\n  def to_der: () -> String\n  def to_pem: () -> String\n  def self.load: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)\nend\n\nclass Native\n  def self.pending: (Integer) -> Integer\n  def self.close: (Integer) -> Integer\n  def self.discard: (Integer) -> Integer\n  def self.last_error: () -> String\n  def self.peer_subject: (Integer) -> String\n  def self.version: (Integer) -> String\n  def self.cipher: (Integer) -> String\n  def self.connect_nb: (Integer, String, Integer, untyped, String, String, String) -> Integer # spinel: widened to untyped (slow path)\n  def self.handshake_cont: (Integer) -> Integer\n  def self.read_nb: (Integer, Integer) -> String\n  def self.want: () -> Integer\n  def self.write_nb: (Integer, String, Integer) -> Integer\n  def self.accept_nb: (Integer, String, String, String, Integer, untyped) -> Integer # spinel: widened to untyped (slow path)\n  def self.server_check: (String, String, String) -> Integer\n  def self.ec_generate: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.ec_public_bytes: (String, String) -> String\n  def self.ec_dh: (String, String, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.pkey_read: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.aes_gcm_encrypt: (String, String, String, String, String) -> String\n  def self.aes_gcm_decrypt: (String, String, String, String, String, String) -> String\n  def self.ecdsa_sign: (String, String, String) -> String\n  def self.ecdsa_verify: (String, String, String, untyped) -> Integer # spinel: widened to untyped (slow path)\n  def self.ec_check_point: (String, String) -> Integer\n  def self.rsa_verify: (String, String, String, untyped, untyped, Integer, String, Integer) -> Integer # spinel: widened to untyped (slow path)\n  def self.rsa_sign: (String, String, untyped, Integer, String, Integer) -> String # spinel: widened to untyped (slow path)\n  def self.rsa_public_der: (String, String) -> String\n  def self.x509_der: (String) -> String\n  def self.x509_load: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.x509_pem: (String) -> String\n  def self.x509_store_add: (Store, untyped) -> Integer # spinel: widened to untyped (slow path)\nend\n\nclass SSL\nend\n\nclass SSLError < OpenSSLError\nend\n\nclass SSLErrorWaitReadable < SSLError\nend\n\nclass SSLErrorWaitWritable < SSLError\nend\n\nclass SSLContext\n  @verify_mode: Integer\n  @verify_hostname: bool\n  @cert_store: untyped\n  @cert: untyped\n  @key: untyped\n  @extra_chain_cert: untyped\n  @added_chain: String\n  @added_key: untyped\n  @verify_mode_set: bool\n  def initialize: () -> bool\n  def verify_mode=: (Integer) -> bool\n  def set_params: (untyped) -> SSLContext # spinel: widened to untyped (slow path)\n  def accept_verify_mode: () -> Integer\n  def add_certificate: (untyped, untyped, untyped) -> SSLContext # spinel: widened to untyped (slow path)\n  def own_chain: () -> String\n  def own_key: () -> untyped # spinel: widened to untyped (slow path)\n  def self.key_curve: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.key_bytes: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.chain_bytes: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass SSLSocket\n  @io: untyped\n  @context: untyped\n  @handle: Integer\n  @hostname: String\n  @sync_close: bool\n  @eof: untyped\n  @rbuffer: String\n  @wbuffer: String\n  @sync: untyped\n  def initialize: (SSLSocket, untyped) -> bool # spinel: widened to untyped (slow path)\n  def context: () -> untyped # spinel: widened to untyped (slow path)\n  def to_io: () -> untyped # spinel: widened to untyped (slow path)\n  def setsockopt: (untyped, untyped, untyped) -> Integer # spinel: widened to untyped (slow path)\n  def connect: () -> SSLSocket\n  def accept: () -> SSLSocket\n  def accept_nonblock: (bool) -> untyped # spinel: widened to untyped (slow path)\n  def connect_nonblock: (bool) -> untyped # spinel: widened to untyped (slow path)\n  def sysread: (Integer) -> String\n  def syswrite: (String) -> Integer\n  def sysread_nonblock: (untyped, bool) -> untyped # spinel: widened to untyped (slow path)\n  def syswrite_nonblock: (untyped, bool) -> untyped # spinel: widened to untyped (slow path)\n  def pending: () -> Integer\n  def sysclose: () -> nil\n  def peer_subject: () -> String\n  def ssl_version: () -> String\n  def cipher_name: () -> String\n  def start_connect: () -> Integer\n  def start_accept: () -> Integer\n  def own_key: () -> untyped # spinel: widened to untyped (slow path)\n  def finish_handshake: (String) -> SSLSocket\n  def __inc 0 initialize: () -> untyped # spinel: widened to untyped (slow path)\n  def fill_rbuff: () -> untyped # spinel: widened to untyped (slow path)\n  def consume_rbuff: (untyped) -> String # spinel: widened to untyped (slow path)\n  def eof?: () -> untyped # spinel: widened to untyped (slow path)\n  def eof: () -> untyped # spinel: widened to untyped (slow path)\n  def read: (Integer) -> String\n  def readpartial: (untyped) -> String # spinel: widened to untyped (slow path)\n  def read_nonblock: (untyped, bool) -> untyped # spinel: widened to untyped (slow path)\n  def write_nonblock: (untyped, bool) -> untyped # spinel: widened to untyped (slow path)\n  def gets: (String, untyped, bool) -> String # spinel: widened to untyped (slow path)\n  def each_line: (String) -> SSLSocket\n  def readlines: (String) -> Array[untyped] # spinel: widened to untyped (slow path)\n  def readline: (String) -> String\n  def getc: () -> String\n  def readchar: () -> String\n  def getbyte: () -> Integer\n  def readbyte: () -> Integer\n  def each_byte: () -> SSLSocket\n  def do_write: (String) -> untyped # spinel: widened to untyped (slow path)\n  def write: (Array[untyped]) -> Integer # spinel: widened to untyped (slow path)\n  def <<: (untyped) -> SSLSocket # spinel: widened to untyped (slow path)\n  def print: (Array[untyped]) -> nil # spinel: widened to untyped (slow path)\n  def printf: (untyped, Array[untyped]) -> nil # spinel: widened to untyped (slow path)\n  def puts: (Array[untyped]) -> nil # spinel: widened to untyped (slow path)\n  def flush: () -> SSLSocket\n  def close: () -> nil\nend\n\nclass SSLServer\n  @svr: untyped\n  @ctx: untyped\n  @start_immediately: bool\n  def initialize: (untyped, untyped) -> bool # spinel: widened to untyped (slow path)\n  def to_io: () -> untyped # spinel: widened to untyped (slow path)\n  def listen: (untyped) -> void # spinel: widened to untyped (slow path)\n  def shutdown: (untyped) -> void # spinel: widened to untyped (slow path)\n  def accept: () -> SSLSocket\n  def close: () -> untyped # spinel: widened to untyped (slow path)\n  def addr: () -> void\n  def fileno: () -> Integer\n  def closed?: () -> bool\nend\n\nclass Store\n  def add_cert: (untyped) -> Store # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "openssl-class-new.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"e3b0c442\"\n\"x\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "openssl-struct-index.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"e3b0c442\"\n1\n#<struct Room lock=\"b\", members=nil>\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def __enumw_map: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)\n  def __enumw_select: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)\n  def __enumw_reject: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)\n  def __enumw_filter_map: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)\n  def __enumw_each_with_object: (untyped, untyped) -> void # spinel: widened to untyped (slow path)\n  def __enumw_inject0: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def __enumw_inject1: (untyped, untyped) -> untyped # spinel: widened to untyped (slow path)\n  def __enumw_with_index: (untyped, Integer) -> void # spinel: widened to untyped (slow path)\n  def __enumw_str_chars_with_index: (String, Integer) -> String\n  def __enumw_str_lines_with_index: (untyped, Integer) -> void # spinel: widened to untyped (slow path)\n  def __enumw_str_bytes_with_index: (untyped, Integer) -> void # spinel: widened to untyped (slow path)\n  def __enumw_str_codepoints_with_index: (String, Integer) -> String\n  def __enumw_each_slice: (untyped, untyped) -> void # spinel: widened to untyped (slow path)\n  def __enumw_each_cons: (untyped, untyped) -> void # spinel: widened to untyped (slow path)\n  def __enumw_each_entry: (untyped) -> void # spinel: widened to untyped (slow path)\n  def __enum___no_false__0: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)\n  def __enum___no_false__1: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)\n  def __enum___no_false__2: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)\n  def __enum___no_false__3: (untyped, untyped, untyped) -> nil # spinel: widened to untyped (slow path)\nend\n\nclass Digest\n  def self.hexencode: (untyped) -> void # spinel: widened to untyped (slow path)\nend\n\nclass Digest::::SHA256\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass Digest::::SHA1\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass Digest::::MD5\n  def self.hexdigest: (String) -> String\n  def self.digest: (String) -> String\n  def self.base64digest: (String) -> String\n  def self.new: () -> Instance\n  def self.file: (untyped) -> FileResult # spinel: widened to untyped (slow path)\nend\n\nclass Instance\n  @algorithm: Symbol\n  @data: String\n  def initialize: (Symbol) -> String\n  def update: (untyped) -> Instance # spinel: widened to untyped (slow path)\n  def <<: (untyped) -> Instance # spinel: widened to untyped (slow path)\n  def reset: () -> Instance\n  def hexdigest: () -> String\n  def digest: () -> String\n  def base64digest: () -> String\nend\n\nclass FileResult\n  @hex: String\n  @bin: String\n  @b64: String\n  def initialize: (String, String, String) -> String\n  def hexdigest: () -> String\n  def to_s: () -> String\n  def digest: () -> String\n  def base64digest: () -> String\nend\n\nclass OpenSSL\nend\n\nclass Buffering\n  @eof: bool\n  @rbuffer: String\n  @wbuffer: String\n  @sync: untyped\n  def initialize: () -> untyped # spinel: widened to untyped (slow path)\n  def fill_rbuff: () -> untyped # spinel: widened to untyped (slow path)\n  def consume_rbuff: (Integer) -> String\n  def eof?: () -> bool\n  def eof: () -> bool\n  def read: (untyped) -> String # spinel: widened to untyped (slow path)\n  def readpartial: (untyped) -> String # spinel: widened to untyped (slow path)\n  def read_nonblock: (untyped, bool) -> String # spinel: widened to untyped (slow path)\n  def write_nonblock: (untyped, bool) -> void # spinel: widened to untyped (slow path)\n  def gets: (String, untyped, bool) -> String # spinel: widened to untyped (slow path)\n  def each_line: (String) -> Buffering\n  def readlines: (String) -> Array[untyped] # spinel: widened to untyped (slow path)\n  def readline: (String) -> String\n  def getc: () -> String\n  def readchar: () -> String\n  def getbyte: () -> Integer\n  def readbyte: () -> Integer\n  def each_byte: () -> Buffering\n  def do_write: (String) -> untyped # spinel: widened to untyped (slow path)\n  def write: (Array[untyped]) -> Integer # spinel: widened to untyped (slow path)\n  def <<: (untyped) -> Buffering # spinel: widened to untyped (slow path)\n  def print: (Array[untyped]) -> nil # spinel: widened to untyped (slow path)\n  def printf: (untyped, Array[untyped]) -> nil # spinel: widened to untyped (slow path)\n  def puts: (Array[untyped]) -> nil # spinel: widened to untyped (slow path)\n  def flush: () -> Buffering\n  def close: () -> nil\nend\n\nclass OpenSSLError\nend\n\nclass Crypto\n  def self.sha256_hex: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.sha256_bin: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.sha1_hex: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.sha1_bin: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.md5_hex: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.md5_bin: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.hmac_sha256_hex: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.hmac_sha1_hex: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.hmac_sha256_bin: (String, String) -> String\n  def self.hmac_sha1_bin: (String, String) -> String\n  def self.random_bin: (untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass OpenSSL::::Digest\n  @name: String\n  @buf: String\n  def initialize: (String, untyped) -> String # spinel: widened to untyped (slow path)\n  def name: () -> String\n  def digest_length: () -> Integer\n  def block_length: () -> Integer\n  def update: (untyped) -> OpenSSL::::Digest # spinel: widened to untyped (slow path)\n  def reset: () -> OpenSSL::::Digest\n  def digest: (untyped) -> String # spinel: widened to untyped (slow path)\n  def hexdigest: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def self.raw: (String, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.length_of: (String) -> Integer\nend\n\nclass DigestError < OpenSSLError\nend\n\nclass OpenSSL::::Digest::::SHA256 < OpenSSL::::Digest\n  @name: String\n  @buf: String\n  def initialize: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.hexdigest: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.digest: (untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass OpenSSL::::Digest::::SHA1 < OpenSSL::::Digest\n  @name: String\n  @buf: String\n  def initialize: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.hexdigest: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.digest: (untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass OpenSSL::::Digest::::MD5 < OpenSSL::::Digest\n  @name: String\n  @buf: String\n  def initialize: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.hexdigest: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.digest: (untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass HMAC\n  def self.hexdigest: (untyped, untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.digest: (String, String, String) -> String\n  def self.algorithm: (untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass CipherError < OpenSSLError\nend\n\nclass Cipher\n  @name: String\n  @encrypting: bool\n  @key: String\n  @iv: String\n  @auth_data: String\n  @parts: Array[untyped]\n  @auth_tag: String\n  @expected_tag: String\n  @done: bool\n  def initialize: (untyped) -> bool # spinel: widened to untyped (slow path)\n  def encrypt: () -> Cipher\n  def decrypt: () -> Cipher\n  def key_len: () -> untyped # spinel: widened to untyped (slow path)\n  def iv_len: () -> untyped # spinel: widened to untyped (slow path)\n  def key=: (String) -> String\n  def iv=: (String) -> String\n  def auth_data=: (untyped) -> String # spinel: widened to untyped (slow path)\n  def auth_tag=: (untyped) -> String # spinel: widened to untyped (slow path)\n  def random_key: () -> String\n  def random_iv: () -> String\n  def update: (untyped) -> String # spinel: widened to untyped (slow path)\n  def final: () -> String\n  def auth_tag: () -> String\n  def reason: (String) -> String\nend\n\nclass KDF\n  def self.hkdf: (untyped, untyped, untyped, untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.pbkdf2_hmac: (untyped, untyped, untyped, untyped, String) -> String # spinel: widened to untyped (slow path)\nend\n\nclass KDFError < OpenSSLError\nend\n\nclass PKCS5\n  def self.pbkdf2_hmac: (untyped, untyped, untyped, untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.pbkdf2_hmac_sha1: (untyped, untyped, untyped, untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass PKey\n  def self.read: (untyped) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass PKeyError < OpenSSLError\nend\n\nclass ECError < PKeyError\nend\n\nclass EC\n  @curve: String\n  @private_key_bytes: String\n  @public_key_bytes: String\n  def initialize: (String, String, String) -> nil\n  def public_only?: () -> bool\n  def private?: () -> bool\n  def public?: () -> bool\n  def dh_compute_key: (untyped) -> String # spinel: widened to untyped (slow path)\n  def sign_raw: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def verify_raw: (untyped, untyped, untyped) -> bool # spinel: widened to untyped (slow path)\n  def need_private!: (String) -> nil\n  def hash_of: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.generate: (untyped) -> EC # spinel: widened to untyped (slow path)\n  def self.from_private_bytes: (String, String) -> EC\n  def self.from_public_bytes: (String, String) -> EC\nend\n\nclass RSA\n  @n_bytes: String\n  @e_bytes: String\n  @private_der: String\n  def initialize: (String, String, String) -> String\n  def public?: () -> bool\n  def private?: () -> bool\n  def public_key: () -> RSA\n  def to_der: () -> String\n  def sign: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def sign_pss: (untyped, untyped, untyped, untyped) -> String # spinel: widened to untyped (slow path)\n  def verify: (untyped, untyped, untyped) -> bool # spinel: widened to untyped (slow path)\n  def verify_pss: (untyped, untyped, untyped, untyped, untyped) -> bool # spinel: widened to untyped (slow path)\n  def digest_name: (untyped) -> String # spinel: widened to untyped (slow path)\n  def rsa_sign: (String, untyped, Integer, String, Integer) -> String # spinel: widened to untyped (slow path)\n  def answer: (Integer, String, String) -> bool\n  def self.from_public_components: (untyped, untyped) -> RSA # spinel: widened to untyped (slow path)\n  def self.from_read: (String) -> RSA\nend\n\nclass X509\nend\n\nclass CertificateError < OpenSSLError\nend\n\nclass StoreError < OpenSSLError\nend\n\nclass Certificate\n  @der: String\n  def initialize: (String) -> nil\n  def to_der: () -> String\n  def to_pem: () -> String\n  def self.load: (untyped) -> Array[untyped] # spinel: widened to untyped (slow path)\nend\n\nclass Native\n  def self.pending: (Integer) -> Integer\n  def self.close: (Integer) -> Integer\n  def self.discard: (Integer) -> Integer\n  def self.last_error: () -> String\n  def self.peer_subject: (Integer) -> String\n  def self.version: (Integer) -> String\n  def self.cipher: (Integer) -> String\n  def self.connect_nb: (Integer, String, Integer, untyped, String, String, String) -> Integer # spinel: widened to untyped (slow path)\n  def self.handshake_cont: (Integer) -> Integer\n  def self.read_nb: (Integer, Integer) -> String\n  def self.want: () -> Integer\n  def self.write_nb: (Integer, String, Integer) -> Integer\n  def self.accept_nb: (Integer, String, String, String, Integer, untyped) -> Integer # spinel: widened to untyped (slow path)\n  def self.server_check: (String, String, String) -> Integer\n  def self.ec_generate: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.ec_public_bytes: (String, String) -> String\n  def self.ec_dh: (String, String, untyped) -> String # spinel: widened to untyped (slow path)\n  def self.pkey_read: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.aes_gcm_encrypt: (String, String, String, String, String) -> String\n  def self.aes_gcm_decrypt: (String, String, String, String, String, String) -> String\n  def self.ecdsa_sign: (String, String, String) -> String\n  def self.ecdsa_verify: (String, String, String, untyped) -> Integer # spinel: widened to untyped (slow path)\n  def self.ec_check_point: (String, String) -> Integer\n  def self.rsa_verify: (String, String, String, untyped, untyped, Integer, String, Integer) -> Integer # spinel: widened to untyped (slow path)\n  def self.rsa_sign: (String, String, untyped, Integer, String, Integer) -> String # spinel: widened to untyped (slow path)\n  def self.rsa_public_der: (String, String) -> String\n  def self.x509_der: (String) -> String\n  def self.x509_load: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.x509_pem: (String) -> String\n  def self.x509_store_add: (Store, untyped) -> Integer # spinel: widened to untyped (slow path)\nend\n\nclass SSL\nend\n\nclass SSLError < OpenSSLError\nend\n\nclass SSLErrorWaitReadable < SSLError\nend\n\nclass SSLErrorWaitWritable < SSLError\nend\n\nclass SSLContext\n  @verify_mode: Integer\n  @verify_hostname: bool\n  @cert_store: untyped\n  @cert: untyped\n  @key: untyped\n  @extra_chain_cert: untyped\n  @added_chain: String\n  @added_key: untyped\n  @verify_mode_set: bool\n  def initialize: () -> bool\n  def verify_mode=: (Integer) -> bool\n  def set_params: (untyped) -> SSLContext # spinel: widened to untyped (slow path)\n  def accept_verify_mode: () -> Integer\n  def add_certificate: (untyped, untyped, untyped) -> SSLContext # spinel: widened to untyped (slow path)\n  def own_chain: () -> String\n  def own_key: () -> untyped # spinel: widened to untyped (slow path)\n  def self.key_curve: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.key_bytes: (untyped) -> String # spinel: widened to untyped (slow path)\n  def self.chain_bytes: (untyped, untyped) -> String # spinel: widened to untyped (slow path)\nend\n\nclass SSLSocket\n  @io: untyped\n  @context: untyped\n  @handle: Integer\n  @hostname: String\n  @sync_close: bool\n  @eof: untyped\n  @rbuffer: String\n  @wbuffer: String\n  @sync: untyped\n  def initialize: (SSLSocket, untyped) -> bool # spinel: widened to untyped (slow path)\n  def context: () -> untyped # spinel: widened to untyped (slow path)\n  def to_io: () -> untyped # spinel: widened to untyped (slow path)\n  def setsockopt: (untyped, untyped, untyped) -> Integer # spinel: widened to untyped (slow path)\n  def connect: () -> SSLSocket\n  def accept: () -> SSLSocket\n  def accept_nonblock: (bool) -> untyped # spinel: widened to untyped (slow path)\n  def connect_nonblock: (bool) -> untyped # spinel: widened to untyped (slow path)\n  def sysread: (Integer) -> String\n  def syswrite: (String) -> Integer\n  def sysread_nonblock: (untyped, bool) -> untyped # spinel: widened to untyped (slow path)\n  def syswrite_nonblock: (untyped, bool) -> untyped # spinel: widened to untyped (slow path)\n  def pending: () -> Integer\n  def sysclose: () -> nil\n  def peer_subject: () -> String\n  def ssl_version: () -> String\n  def cipher_name: () -> String\n  def start_connect: () -> Integer\n  def start_accept: () -> Integer\n  def own_key: () -> untyped # spinel: widened to untyped (slow path)\n  def finish_handshake: (String) -> SSLSocket\n  def __inc 0 initialize: () -> untyped # spinel: widened to untyped (slow path)\n  def fill_rbuff: () -> untyped # spinel: widened to untyped (slow path)\n  def consume_rbuff: (untyped) -> String # spinel: widened to untyped (slow path)\n  def eof?: () -> untyped # spinel: widened to untyped (slow path)\n  def eof: () -> untyped # spinel: widened to untyped (slow path)\n  def read: (Integer) -> String\n  def readpartial: (untyped) -> String # spinel: widened to untyped (slow path)\n  def read_nonblock: (untyped, bool) -> untyped # spinel: widened to untyped (slow path)\n  def write_nonblock: (untyped, bool) -> untyped # spinel: widened to untyped (slow path)\n  def gets: (String, untyped, bool) -> String # spinel: widened to untyped (slow path)\n  def each_line: (String) -> SSLSocket\n  def readlines: (String) -> Array[untyped] # spinel: widened to untyped (slow path)\n  def readline: (String) -> String\n  def getc: () -> String\n  def readchar: () -> String\n  def getbyte: () -> Integer\n  def readbyte: () -> Integer\n  def each_byte: () -> SSLSocket\n  def do_write: (String) -> untyped # spinel: widened to untyped (slow path)\n  def write: (Array[untyped]) -> Integer # spinel: widened to untyped (slow path)\n  def <<: (untyped) -> SSLSocket # spinel: widened to untyped (slow path)\n  def print: (Array[untyped]) -> nil # spinel: widened to untyped (slow path)\n  def printf: (untyped, Array[untyped]) -> nil # spinel: widened to untyped (slow path)\n  def puts: (Array[untyped]) -> nil # spinel: widened to untyped (slow path)\n  def flush: () -> SSLSocket\n  def close: () -> nil\nend\n\nclass SSLServer\n  @svr: untyped\n  @ctx: untyped\n  @start_immediately: bool\n  def initialize: (untyped, untyped) -> bool # spinel: widened to untyped (slow path)\n  def to_io: () -> untyped # spinel: widened to untyped (slow path)\n  def listen: (untyped) -> void # spinel: widened to untyped (slow path)\n  def shutdown: (untyped) -> void # spinel: widened to untyped (slow path)\n  def accept: () -> SSLSocket\n  def close: () -> untyped # spinel: widened to untyped (slow path)\n  def addr: () -> void\n  def fileno: () -> Integer\n  def closed?: () -> bool\nend\n\nclass Store\n  def add_cert: (untyped) -> Store # spinel: widened to untyped (slow path)\nend\n\nclass Holder\n  @params: untyped\n  def initialize: (untyped) -> untyped # spinel: widened to untyped (slow path)\n  def param: (Symbol) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Room\n  @lock: untyped\n  @members: untyped\n  def each: () -> Room\n  def each_pair: () -> Room\n  def each_with_index: () -> Room\n  def __enum_to_a: () -> Array[untyped] # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "openssl-struct-index.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 1,
+      "stdout": "",
+      "stderr": "undefined method 'new' for an instance of OpenSSL::Digest (NoMethodError)\n"
+    },
+    "matches_cruby": false
+  }
+]

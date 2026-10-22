@@ -1,0 +1,26 @@
+{
+  "label": "string-bisect-r2-b432531fd5ff",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-string-bisect-r2-b432531fd5ff",
+    "-v",
+    "$SCRATCH/emitted-with-cache-loop:/work/emitted",
+    "-w",
+    "/work/emitted",
+    "conduit-v10-bisect:r2-b432531fd5ff",
+    "spin",
+    "build",
+    "--",
+    "--cc=clang",
+    "--jobs=8"
+  ],
+  "started": "2026-10-22T10:09:43.055342+00:00",
+  "finished": "2026-10-22T10:11:45.779408+00:00",
+  "elapsed_seconds": 122.722,
+  "exit": 0,
+  "log": "evidence/execution/string-bisect-r2-b432531fd5ff.log",
+  "heavy_lock": true
+}

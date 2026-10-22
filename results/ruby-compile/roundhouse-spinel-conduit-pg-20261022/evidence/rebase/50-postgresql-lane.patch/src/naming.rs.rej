@@ -1,0 +1,18 @@
+diff a/src/naming.rs b/src/naming.rs	(rejected hunks)
+@@ -541,3 +544,16 @@ pub(crate) fn is_sqlite_keyword(name: &str) -> bool {
+             | "vacuum" | "values" | "view" | "virtual" | "when" | "where" | "window" | "with" | "without"
+     )
+ }
++
++#[cfg(test)]
++mod postgresql_tests {
++    #[test]
++    fn postgresql_identifier_quoting() {
++        if crate::postgresql_enabled() {
++            assert_eq!(super::sql_ident("user"), "\"user\"");
++            assert_eq!(super::sql_ident("a\"b"), "\"a\"\"b\"");
++        } else {
++            assert_eq!(super::sql_ident("user"), "user");
++        }
++    }
++}

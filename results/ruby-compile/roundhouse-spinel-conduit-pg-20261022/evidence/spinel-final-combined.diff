@@ -1,0 +1,36 @@
+diff --git a/packages/openssl/openssl/digest.rb b/packages/openssl/openssl/digest.rb
+index fd5363429..a3921cc5c 100644
+--- a/packages/openssl/openssl/digest.rb
++++ b/packages/openssl/openssl/digest.rb
+@@ -141,9 +141,6 @@ module OpenSSL
+     alias length digest_length
+     alias size digest_length
+ 
+-    # A fresh object for the same algorithm.
+-    def new = clone.reset
+-
+     def to_s = hexdigest
+     def inspect = "#<#{self.class.name}: #{hexdigest}>"
+ 
+diff --git a/src/analyze.c b/src/analyze.c
+index 984b44156..e2ba86eef 100644
+--- a/src/analyze.c
++++ b/src/analyze.c
+@@ -53086,6 +53086,17 @@ void analyze_program(Compiler *c) {
+   AN_PHASE("post_fixpoint", an_phase_post_fixpoint(c));
+   AN_PHASE("procs", an_phase_procs(c));
+   AN_PHASE("method_backstops", an_phase_method_backstops(c));
++  /* Settle nil evidence before deriving the final returns and their users. */
++  mark_nullable_int_locals(c);
++  sync_captured_nullable(c);
++  infer_memo_boundary();
++  for (int iter = 0; iter < 8; iter++) {
++    int ch = infer_return_types(c);
++    ch |= rejoin_local_writes(c);
++    ch |= infer_param_types(c);
++    ch |= infer_block_params(c);
++    if (!ch) break;
++  }
+   AN_PHASE("late_widen", an_phase_late_widen(c));
+   AN_PHASE("proc_returns", an_phase_proc_returns(c));
+   AN_PHASE("storage", an_phase_storage(c));

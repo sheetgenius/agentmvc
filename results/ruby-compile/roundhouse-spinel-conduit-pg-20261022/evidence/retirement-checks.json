@@ -1,0 +1,75 @@
+{
+  "retired": [],
+  "pins": {
+    "roundhouse": "0f6fb0c7e7efa9b955c40bdd537b8a61fbe0486e",
+    "spinel": "ca971705427a40e5ef5472bf76f033abbc21da3a"
+  },
+  "patches": [
+    {
+      "patch": "10-api-mode-json.patch",
+      "applies": "cleanly",
+      "covered": false,
+      "evidence": "No tracked PR for its behaviors merged in 1c84d346..0f6fb0c7 (#1128, #980, #843 absent). #1162 merged (0e8e6894b) but changes src/ingest/model/validations.rs (validates message:), not errors.add (src/lower/errors_add.rs)."
+    },
+    {
+      "patch": "20-raw-websocket.patch",
+      "applies": "cleanly",
+      "covered": false,
+      "evidence": "No upstream change to its files' context; its behaviors have no merged PR in range."
+    },
+    {
+      "patch": "30-jobs-boot.patch",
+      "applies": "context conflict (runtime/spinel/scaffold/main.rb:887)",
+      "covered": false,
+      "evidence": "0b80f927c adds two lines beside `ActiveJob.register_drain` (Sidekiq boot announcement). Upstream has no boot-time `run_after_initialize`; #902 not merged. Omission gate: evidence/omission-results.json (without-30)."
+    },
+    {
+      "patch": "50-postgresql-lane.patch",
+      "applies": "context conflict (src/naming.rs:541, test module only)",
+      "covered": false,
+      "evidence": "Upstream changed the end of naming.rs; the rejected hunk is a #[cfg(test)] module. No libpq lane selection upstream (#867, #877, #1141 not merged). Omission gate: without-50."
+    },
+    {
+      "patch": "60-rails-surface.patch",
+      "applies": "context conflict (src/lower/scope_chain.rs:2898)",
+      "covered": false,
+      "evidence": "5f0428141 adds `find_or_initialize_by` to is_relation_terminal; `find_or_create_by!` is still absent upstream. Omission gate: without-60."
+    },
+    {
+      "patch": "74-integer-query-range.patch",
+      "applies": "cleanly",
+      "covered": false,
+      "evidence": "Overlapping files changed (dd8bdb233, 0fe90bdf8, e2432509c) without touching its hunks; its behaviors are not covered."
+    },
+    {
+      "patch": "80-gradual-return-stabilization.patch",
+      "applies": "cleanly, byte-identical",
+      "covered": false,
+      "evidence": "#1011 (follows #964) not merged at the pin; src/analyze/harvest_return.rs unchanged in range."
+    },
+    {
+      "patch": "82-upstream-regression-quoted-bulk-update.patch",
+      "applies": "cleanly",
+      "covered": false,
+      "evidence": "The removed double-quoting lines in runtime/ruby/active_record/relation.rb are unchanged upstream."
+    },
+    {
+      "patch": "83-upstream-regression-temporal-initialize.patch",
+      "applies": "cleanly (offset 7)",
+      "covered": false,
+      "evidence": "The constructor lines it replaces in src/lower/model_to_library/schema.rs are unchanged upstream."
+    },
+    {
+      "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+      "applies": "cleanly (offset 17)",
+      "covered": false,
+      "evidence": "The parameter join in src/analyze/mod.rs still drops the explicit unknown arm; 8 later commits touch the file elsewhere."
+    },
+    {
+      "patch": "91-upstream-regression-late-hash-return.patch",
+      "applies": "cleanly, byte-identical",
+      "covered": false,
+      "evidence": "Without 91 the 3-line late-Hash program still fails C compilation at the pin (execution/without91-hash-conformance-02.log). The earlier pass (without91-*-01) reused a cached compiler and is excluded (regressions/invalid-without91-cache.json)."
+    }
+  ]
+}

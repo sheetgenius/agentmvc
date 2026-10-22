@@ -1,0 +1,25 @@
+{
+  "label": "cache-application-v9-spinel-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-cache-application-v9-spinel-01",
+    "-v",
+    "$SCRATCH/emitted-with-callbacks:/work/emitted",
+    "-w",
+    "/work/emitted",
+    "conduit-v9-toolchain:62835d93aa0a",
+    "spin",
+    "build",
+    "--",
+    "--cc=clang",
+    "--jobs=8"
+  ],
+  "started": "2026-10-22T09:25:49.695535+00:00",
+  "finished": "2026-10-22T09:29:31.779291+00:00",
+  "elapsed_seconds": 222.081,
+  "exit": 1,
+  "log": "evidence/execution/cache-application-v9-spinel-01.log"
+}

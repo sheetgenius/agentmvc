@@ -1,0 +1,23 @@
+{
+  "label": "cache-tep-reduction-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-cache-tep-reduction-01",
+    "-v",
+    "$SCRATCH/cache-tep-reduction:/work/probe",
+    "-w",
+    "/work/probe",
+    "conduit-v10-toolchain:diagnostic",
+    "sh",
+    "-c",
+    "ruby probe.rb; spinel -c probe.rb --rbs /work/probe -o /tmp/probe.c"
+  ],
+  "started": "2026-10-22T09:36:25.478498+00:00",
+  "finished": "2026-10-22T09:37:10.610141+00:00",
+  "elapsed_seconds": 45.131,
+  "exit": 0,
+  "log": "evidence/execution/cache-tep-reduction-01.log"
+}

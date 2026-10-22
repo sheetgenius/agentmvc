@@ -1,0 +1,16 @@
+{
+  "label": "build-diagnostic-01",
+  "command": [
+    "docker",
+    "build",
+    "--progress=plain",
+    "-t",
+    "conduit-v10-toolchain:diagnostic",
+    "$SCRATCH/diagnostic-context"
+  ],
+  "started": "2026-10-22T09:14:57.307884+00:00",
+  "finished": "2026-10-22T09:15:54.637273+00:00",
+  "elapsed_seconds": 57.329,
+  "exit": 0,
+  "log": "evidence/execution/build-diagnostic-01.log"
+}

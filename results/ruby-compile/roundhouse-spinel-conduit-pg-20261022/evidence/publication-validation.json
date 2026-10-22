@@ -1,0 +1,178 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v10-20261022",
+  "scope": "Publication evidence audit; no new Docker gate or benchmark",
+  "checks": {
+    "roundhouse_patches": {
+      "count": 11,
+      "checksums": "pass",
+      "line_counts": "pass",
+      "integrated_diff": {
+        "added": 2455,
+        "removed": 213,
+        "files": 63
+      }
+    },
+    "spinel_patches": {
+      "count": 2,
+      "checksums": "pass",
+      "line_counts": "pass",
+      "integrated_diff": {
+        "added": 11,
+        "removed": 3,
+        "files": 2
+      }
+    },
+    "readme_scoreboard_rows": {
+      "rows": 13,
+      "match_numstat": true
+    },
+    "source": {
+      "gated_files": 75,
+      "manifest_and_variant_match_v9": true,
+      "variant_toolchain_scripts_and_patches_match_supplied_record": true,
+      "app_delta": {
+        "files": 16,
+        "added": 180,
+        "removed": 44
+      }
+    },
+    "recorded_validation": {
+      "compiled_gate": "17 API / live / 4 browser / 13 security",
+      "rails_gate": "17 API / live / 4 browser / 13 security",
+      "common_probe": {
+        "contract_passed": 21,
+        "contract_total": 21,
+        "quality_passed": 3,
+        "quality_total": 3
+      },
+      "pending_export": "done",
+      "final_image_and_binary_match": true,
+      "earlier_gate_exit": 1
+    },
+    "omission_conditions": {
+      "30": {
+        "patches": 10,
+        "build_exit": 0,
+        "manifest_sha256": "f749cc48e60f6e9b7dbf9f9f9943f7f02007bbf228bd79be6c51b06d5ef58118",
+        "gate": "17 API / live / 4 browser / 13 security",
+        "recovery": "pending -> pending",
+        "gate_and_recovery_same_binary": true
+      },
+      "50": {
+        "patches": 10,
+        "build_exit": 1,
+        "manifest_sha256": "762e829bfe29960b71833bd85106d4cacf41703a4037c524cbfad2c8c9b3c12c",
+        "cause": "E0425 postgresql_enabled"
+      },
+      "60": {
+        "patches": 10,
+        "build_exit": 1,
+        "manifest_sha256": "f6bc741a4565e6af8d93c7219174693ace46cb19e058f11ffd08d826bbaaeec9",
+        "cause": "roundhouse check exits 0; emission refuses two find_or_create_by! calls"
+      }
+    },
+    "spinel_91": "without 91 the late-Hash program fails C compilation at the pin; cached probe excluded",
+    "roundhouse_85": {
+      "refusal_site": "thruster_cache.rb:244",
+      "v9_spinel_refuses_same_app": true,
+      "loop_compiles_on_v9_spinel": true,
+      "standalone_reductions": 29
+    },
+    "spinel_92": {
+      "first_bad": "2c6d6b7ff",
+      "last_good_parent": "449d8addb",
+      "verdicts": {
+        "d79a003fb": "good",
+        "a2a87181b": "bad",
+        "4b3854cf7": "good",
+        "2c6d6b7ff": "bad",
+        "b432531fd": "good",
+        "449d8addb": "good"
+      },
+      "ablation_compiles": true,
+      "final_build_exit": 0
+    },
+    "edge": {
+      "responses": 166,
+      "setup_requests": 25,
+      "scripted_requests": 191,
+      "rails_differences": [
+        "update_email_spaces",
+        "after_email_spaces",
+        "login_email_spaces_password123",
+        "update_password_null",
+        "update_password_number",
+        "login_password_number_password123",
+        "login_password_number_123456789",
+        "update_malformed"
+      ],
+      "v9_differences": [],
+      "rails_reference_drift_vs_v9": []
+    },
+    "timing": {
+      "kind": "wall-clock records, not benchmarks",
+      "peak_rss_kib": {
+        "v9": [
+          40328,
+          52740
+        ],
+        "v10": [
+          41124,
+          51068
+        ]
+      },
+      "elapsed_seconds_match_records": {
+        "build-final-01": 598.1,
+        "compiled-gate-02": 313.4,
+        "rails-gate-01": 45.1
+      }
+    },
+    "execution_records": {
+      "records": 87,
+      "omitted_logs_verified_against_supplied_bytes": 17
+    },
+    "readme_local_links": {
+      "checked": 65,
+      "missing": []
+    },
+    "structured_package_references": {
+      "checked": 175,
+      "missing": []
+    },
+    "publication_hygiene": {
+      "text_files_scanned": 448,
+      "oversized_files": 0,
+      "home_path_and_private_name_matches": 0,
+      "private_application_names": 0,
+      "jwts": 0,
+      "non_synthetic_emails": 0,
+      "credentials": "none; only placeholder database URLs postgres://postgres:postgres@, postgresql://user:password@, postgres://myuser:mypass@",
+      "agent_or_tool_names_outside_exceptions": 0,
+      "agent_or_tool_name_exceptions": {
+        "git bisect output quoting the upstream first-bad commit": [
+          "evidence/regressions/string-argument/bisect-r2.json"
+        ],
+        "upstream commit metadata (author and co-author trailers)": [
+          "evidence/upstream/0b80f927c.diff",
+          "evidence/upstream/0fe90bdf8.diff",
+          "evidence/upstream/41bdb6615.diff",
+          "evidence/upstream/5f0428141.diff",
+          "evidence/upstream/6141f959.diff",
+          "evidence/upstream/a8868e1b1.diff",
+          "evidence/upstream/b348b8005.diff",
+          "evidence/upstream/f89915e7.diff"
+        ],
+        "frozen variant ledger, the same Git blob as in the v8 and v9 records": [
+          "variant/source/COMPILE-VARIANT.md"
+        ]
+      },
+      "scrubber_flags_reviewed": {
+        "email": 8,
+        "secret": 7,
+        "sensitive assignment": 29
+      },
+      "scrubber_exceptions": "Synthetic fixture emails and database examples, placeholder tokens, and source-code identifiers; recorded behavior and checksummed code preserved."
+    },
+    "benchmark": "not run; no throughput result"
+  }
+}

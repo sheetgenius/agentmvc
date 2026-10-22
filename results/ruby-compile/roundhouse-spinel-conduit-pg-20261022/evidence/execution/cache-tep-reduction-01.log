@@ -1,0 +1,11 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+/work/probe/runtime/tep/net.rb:20:in '<module:Sock>': undefined method 'ffi_func' for module Sock (NoMethodError)
+
+  ffi_func :sp_net_listen,                [:int, :int],       :int
+  ^^^^^^^^
+	from /work/probe/runtime/tep/net.rb:15:in '<top (required)>'
+	from /work/probe/runtime/tep/tep.rb:6:in 'Kernel#require_relative'
+	from /work/probe/runtime/tep/tep.rb:6:in '<top (required)>'
+	from probe.rb:1:in 'Kernel#require_relative'
+	from probe.rb:1:in '<main>'
+Wrote /tmp/probe.c

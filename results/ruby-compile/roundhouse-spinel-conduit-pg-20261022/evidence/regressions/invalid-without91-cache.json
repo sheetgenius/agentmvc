@@ -1,0 +1,10 @@
+{
+  "classification": "invalid probe: cached compiler reused despite changed source",
+  "affected": [
+    "build-without91-probe-01",
+    "without91-hash-conformance-01",
+    "without91-application-01"
+  ],
+  "reason": "COPY preserved older source mtime than base-image object; make did not compile analyze.c. These results cannot support retirement.",
+  "correction": "Touch source before make, verify analyze.c compile in build log, rerun both probes."
+}

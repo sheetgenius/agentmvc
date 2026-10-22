@@ -1,0 +1,226 @@
+ca971705427a40e5ef5472bf76f033abbc21da3a 2026-10-22T16:44:48+09:00 A native class's Ruby-side def adds an arm only when the class is built
+41e32d30e458492d9b1353622d2070f04ed5442d 2026-10-22T16:44:48+09:00 An Array of objects read with a Range index stays boxed
+cb3e2b34a58b33466e56de33956492dd9f2678bd 2026-10-22T16:16:03+09:00 A Symbol block argument in parentheses or quoted is the block &:name is
+fc04f391412ef5c8dc6b549077701571caf33ca2 2026-10-22T16:16:03+09:00 On macOS a backtrace is taken by the unwinder, on the switched stacks too
+fabee734e4781127829423978af18695ed5bbfea 2026-10-22T16:16:03+09:00 A boxed Struct's deconstruct_keys takes a shared String key
+69fc3688a916cabd8dccf3e068071d675c393144 2026-10-22T16:16:03+09:00 An element store on a mixed Array as a statement reads its receiver first
+a9bc7a5162faa56f5abbb48eba2a0936815a649b 2026-10-22T15:48:49+09:00 Merge PR #9929: IO#pread raises ArgumentError for a negative length
+1d4fcbb1b0ca4c10ba017f1f917ea5e5f1b2c600 2026-10-22T15:48:44+09:00 Merge PR #9928: Planned reader, block and Object-result arms answer as their plans say
+82110ca1751d3615bdfde1848fd30a37f1853f9e 2026-10-22T15:48:31+09:00 A String Range's membership takes a shared String held boxed
+19fbce65f71301e9955b34e86d23a3226dbaaac3 2026-10-22T15:29:00+09:00 An Enumerator over a String Range reads its end through the handle it keeps
+90d2cc4e9c0a328c101cfd0e5b814e5cf9e9b552 2026-10-22T15:17:47+09:00 A String comparison takes a shared String a #to_str answers
+5878bd923b3643d6927ea164b51ea0c69482d98a 2026-10-22T06:33:19+01:00 Value-mode native block dispatch keeps the builtin arm's answer
+a3c8837893766ad65930e59adc294d55d8d174a9 2026-10-22T06:33:19+01:00 A value-less Object method result takes its slot's nil once
+e94acbe84e326d15ae2cef537adf81c1cbe746d8 2026-10-22T06:33:19+01:00 Reader overrides taking a block parameter receive the call's block
+0dbea4d18abbcd32eca2eb3778f600aa9c51d1c1 2026-10-22T14:20:13+09:00 Merge PR #9927: Boxed block calls and reader overrides return their planned user answers
+aec4e538392411b6a8b710d7c0b198f298472c09 2026-10-22T14:20:00+09:00 A call on a reader a descendant overrides shares the reader's field too
+722942f6e97dd350e2aa47fdeae3ba9d7634de15 2026-10-22T14:15:46+09:00 Merge PR #9926: Descendant calls and class queries retain their planned targets
+d5d987c1577fa7c865d3474f9d6c08f66e2c230f 2026-10-22T14:05:55+09:00 Merge PR #9925: Private-call visibility follows Prism's receiver permission
+64461cb8877a8d1eaf93706a053c2d9b37b7256a 2026-10-22T14:05:50+09:00 size, length, count and empty? read an OpenStruct's member where one reaches the receiver
+9e3fc7d92c7b5f18758e04753c4dc9009e93dc68 2026-10-22T05:37:13+01:00 Rebound self output calls return their planned method answer
+a73964a6faa6c79895b0e16bd6ac153b2fe1a69e 2026-10-22T05:37:13+01:00 Reader calls with blocks follow planned subclass overrides
+d756a206c6dc9dcd716f00de6c1ef91d1cc113aa 2026-10-22T05:37:13+01:00 Reopened class methods retain splat argument coverage
+eae544043b09669e9a78a0a742e242d1448e5c82 2026-10-22T05:37:13+01:00 Boxed copies retain their user override union
+355c71432290018f0e041d01d94e4ea8884db6b6 2026-10-22T05:37:13+01:00 Mixed IO returns retain their reopening targets
+726a92d8992337c4258a9270e9945323c8069efb 2026-10-22T05:37:13+01:00 Forwarded block uncertainty stays local to its invocation
+057be1fcd320ef7bbd2da9ae242bdf3a7901635e 2026-10-22T05:37:01+01:00 Boxed native block calls return their planned user answer
+aa2d1cc961db61a86d043f921cb5b68e269fa1d7 2026-10-22T13:36:52+09:00 Merge PR #9924: Call plans retain helper, Method and direct reflection targets
+ac707bebd85e519c5c10844aae1204b5c2bfe8ca 2026-10-22T13:36:48+09:00 Merge PR #9923: Boxed-guard temporaries are declared from the same Repr kind
+edcd88e1cd1bcc9012c43d5d3e23dc6267c960bd 2026-10-22T05:35:18+01:00 Own class queries return their user method result
+8292a97d66a23ed34261e10d54b273f9bae1a2d1 2026-10-22T05:35:18+01:00 Bare user constructors retain their planned class method
+ea60fc08cb08484a0a9b4ce092c7827278407021 2026-10-22T05:35:18+01:00 Module accessor unions share their planned receiver candidates
+8dd4136776728814e2fc8a6b39a8a28d1bd7d055 2026-10-22T05:35:18+01:00 Bare descendant calls retain their dispatch targets
+20ac5d99697b427627952ebdef68b00639169763 2026-10-22T05:35:18+01:00 Missing object calls resolve reopenings before descendants
+6d70171566f79a3a59da647ebfeec26488aadcc6 2026-10-21T23:15:37-05:00 IO#pread raises ArgumentError for a negative length
+09a2f66653b0a03aadbc4704ebad0a84b2abf865 2026-10-22T05:07:40+01:00 Method emission reads its source node from the call plan
+59aef3df3f7c4be25b881b1b09d54434627763fd 2026-10-22T05:07:40+01:00 Reflection inference answers with its selected user target
+f332c334c4b5a4bd3519ff36445520f79382a491 2026-10-22T05:07:40+01:00 Method calls and literal-name send arms retain their targets
+0fbeabdc70fdb56a3f919169d7e9a4b3a08abbc8 2026-10-22T05:07:28+01:00 Builtin family rows retain methods owned before Object
+6507cf5cd5c01eca3e30b70bdcff94e4fe43db8d 2026-10-22T05:07:28+01:00 Implicit conversions emit the targets their plans select
+70d01737591236a721de40ea71c5bfe86d20bc6e 2026-10-22T05:07:16+01:00 Exception renderers and Object fallbacks coerce their results
+35cd89226f688f5e54481fa21ab4b990261fda76 2026-10-22T05:05:25+01:00 Boxed-guard temporaries are declared from the same Repr kind
+d0e25c3448a18a770fcaa302b41371d1e71d2c8f 2026-10-22T13:04:25+09:00 Merge PR #9921: Boxed ordering requires Comparable on the receiver's class
+b621a2c04afadbe246a32270a82d7df0104463ad 2026-10-22T13:03:11+09:00 An object array keeps its narrowing through delete_at with a boxed index
+3471b77ce219e133e97a990052e4fc27bb0ed343 2026-10-22T13:03:10+09:00 Merge PR #9920: Keep an object array unboxed through pop, shift, delete_at and clear
+fdc6363e4b3d36ef4398131b590079c4ca58233a 2026-10-22T04:36:20+01:00 A BasicObject descendant does not take Comparable from Object
+d7527d13467e18cdb69dbae0ddda5a8969871c23 2026-10-22T12:32:48+09:00 Merge PR #9922: Dir.each_child without a block answers an Enumerator
+9b116531b22f84dadc1ecb0910e13194f9396af8 2026-10-22T12:32:44+09:00 Merge PR #9921: Boxed ordering requires Comparable on the receiver's class
+a84d3cadc6165c6c1132cb329a7d6f332897e108 2026-10-22T12:32:40+09:00 Merge PR #9919: A Hash subclass reader keeps its local's Hash type
+7a61010b610fb4fb444d388e09a4026a3d091099 2026-10-22T12:32:36+09:00 Merge PR #9918: Boxed-value layout guards read representation kinds
+714db8945e7f048006eaeae0289450fcef42d9e2 2026-10-22T12:32:23+09:00 Hash#fetch's block takes a key that can be nil as nil
+a2a87181b38cfd819e7964f01ae82c4bb94293f6 2026-10-22T12:32:23+09:00 A boxed Array argument makes a typed Array parameter's elements nullable
+7128803544bb8bd8119e6df51fe91abeca82da4f 2026-10-22T04:13:41+01:00 Private-call refusals preserve missing hooks and target permissions
+c413ad3ebd75fc53173cd788c8d057e164f493f6 2026-10-22T11:59:57+09:00 read_nonblock and sysread raise ArgumentError for a negative length too
+d1f46937f6ec1c1355e85683718294de726956f7 2026-10-22T11:54:51+09:00 Merge PR #9917: IO#readpartial raises ArgumentError for a negative length
+fe3041ad30981ce306214f55a69767d7df0a5c1e 2026-10-22T11:54:51+09:00 An object without #=== answers Kernel#=== beside a subclass, a boxed value and a when arm that define it
+a795915326eb58a8641dc1d07578f6d7644a859d 2026-10-22T11:54:51+09:00 A super with a literal block splices from a prepend's copy and runs the block before a given proc
+1efe4608c1b08111f1062419783353b17e18819f 2026-10-22T11:21:06+09:00 Merge PR #9916: The plan check reports each site's missing plan answers
+6e10ee8283f341037f031a5c6f1d6d038f631907 2026-10-22T11:21:02+09:00 Merge PR #9915: The conditional module_function test runs the first arm too
+2c6d6b7ff1636163ec92722a66fb7b82dd9fc204 2026-10-22T11:20:58+09:00 Merge PR #9913: OpenSSL::Digest keeps its hash state and answers as CRuby's does
+4ebb6ca969a7dee7e7ba3c081bc8d9489d962f40 2026-10-21T20:48:52-05:00 Dir.each_child without a block answers an Enumerator
+7985f715fcc0c7a7b71ffba0bb5fa4814df751d0 2026-10-22T02:47:04+01:00 The plan check reports each site's missing plan answers
+b8958022577a9cf0f48cc2a03d35eaca3b6abc8b 2026-10-22T02:25:28+01:00 Iteration and case boxing guards read Repr kinds
+d7cc6d124033ecfd4368ef70447809f28156d5c0 2026-10-22T02:25:27+01:00 Value emitter boxing guards read Repr kinds
+2cdff090ee016762a5247d5f425c7c11b45f0a83 2026-10-22T02:25:27+01:00 Call emitter boxing guards read Repr kinds
+3b0d4b0eaf00bf30c9610a7df992d87cc3a56e60 2026-10-22T10:19:21+09:00 The conditional module_function test runs the first arm too
+edb009255b0307b9fb305ab3634631e75b14634c 2026-10-21T22:15:29-03:00 Keep an object array unboxed through pop, shift, delete_at and clear
+22fe47ec08c4b3df128238e07490f60a1532bf1c 2026-10-21T22:15:23-03:00 A Hash subclass reader keeps its local's Hash type
+2febd79c93a24d80cbd30b4fcb8a0f290d1f70c4 2026-10-22T02:06:24+01:00 A prepended module keeps its equality ahead of its Comparable include
+2388b53aba302040f067b07086ca5289019c1a36 2026-10-21T22:06:11-03:00 openssl: Digest answers the rest of its API
+314639cb0153026e29a2a6edda5ad1b41d10470f 2026-10-22T02:04:23+01:00 Comparable's declined spaceship does not retry equality
+f9ac372e3f807a8300cfe8f52af2ac47735a3158 2026-10-22T02:04:23+01:00 Comparable's equality follows the recorded ancestor order
+7e8a7d9d8a0565bb88e78cf20f6c83116f0a9a63 2026-10-22T02:04:23+01:00 Boxed receivers use their class's Comparable and builtin comparison
+a4a92865b7988e106f504cb413f93803add60a0c 2026-10-22T02:04:22+01:00 Comparable membership is recorded with the class includes
+1bb63d075e2be1f2a5b2bf03eab610089d3407a6 2026-10-21T22:03:54-03:00 openssl: Digest#to_s, #inspect and #== answer from the digest
+449d8addb0fc374aa3290d64dbaf4ad7d9caca47 2026-10-22T10:03:35+09:00 Merge PR #9914: Calls take their targets from the call plan alone
+eeccaedfd2cde51077c97ffed60389412902c191 2026-10-21T22:02:03-03:00 openssl: Digest#digest given data resets the object
+4408342dfff9f025f32c36faf20f7ee4e8b41837 2026-10-21T19:57:14-05:00 IO#readpartial raises ArgumentError for a negative length
+b65c2c34fa2b01fa78cf3484c43c9d227c8694d9 2026-10-22T09:35:24+09:00 file_stat_device_real makes its file in a private temporary directory
+b432531fd5ff081777eb27ed45ec49f53100a3f4 2026-10-22T09:34:34+09:00 Merge PR #9912: File::Stat#dev_major, #dev_minor and #executable_real?
+e5ccdf8b9d051d1e51ab5eb0ce039efb066ac615 2026-10-22T01:23:56+01:00 Super inference and inline splicing share the plan's ancestry rule
+2c152bcc80ed77172f37decebd9daaaa370db7b7 2026-10-22T00:54:54+01:00 Private calls keep Prism's receiver permission through desugaring
+9bd652bbce2c077c36ad7fd897dc2303b9daf7e9 2026-10-22T00:54:54+01:00 Call nodes carry Prism's private-call permission
+ba0e32b078c06baed9b68a845b59d9c81cb8c8a6 2026-10-22T08:34:39+09:00 A boxed local is one class's evidence only when every value it takes is seen
+c78f461dd2f58fc2d82692359e7261fdf149b6ec 2026-10-21T18:33:44-05:00 File::Stat#dev_major, #dev_minor and #executable_real?
+f4f178bd606dda9830ee00aa9e7ebe9e31d8dd18 2026-10-22T08:29:44+09:00 Merge PR #9911: Take a boxed local's writes as evidence for an object array
+4b3854cf705cf5e05b24fbcd3982caeef84fb83f 2026-10-22T08:20:27+09:00 Hash#fetch and #dig look an Integer key that may be nil up as a miss
+9e23ecbcb987afbaa84b8bc633eb81f87955fa56 2026-10-21T20:03:28-03:00 openssl: Digest keeps the hash state, not its input
+4c84413dd7bedad411395b1d7116973c50c8f83b 2026-10-21T20:03:27-03:00 sp_crypto: SHA-256, SHA-1 and MD5 take their input in pieces
+42119419cc510dd3dcc12b9e1fbeb0e31a9febcd 2026-10-22T07:53:06+09:00 Merge PR #9910: OpenSSL::Digest::SHA256.file hashes a file given by path, File or Tempfile
+1f7e722b53bcdf1b54db324dbd0c09c6f46ad4c6 2026-10-22T07:53:01+09:00 Merge PR #9909: Nullable scalar layout decisions come from Repr
+4c51f7cb0c8b0c9ed3a6d03a5e13d700192b1225 2026-10-21T19:47:13-03:00 Take a boxed local's writes as evidence for an object array
+067281b8a20270b9ed6f6f0c5010635baf63d03f 2026-10-21T19:33:25-03:00 openssl: Digest::SHA256.file hashes a file by path or by to_path
+76d07464f31bb30d0e9dff237ba62b99827fb2e6 2026-10-22T07:21:37+09:00 Merge PR #9907: URI builds an Array's components in its own Hash
+9d49ade88c7cdffca5623bd1b786e83ec1c9fb77 2026-10-22T07:21:33+09:00 Merge PR #9906: Open3 takes a private copy of its tmpdir path
+b67772da5bd591047d5a1413116429bf697de378 2026-10-22T07:21:21+09:00 Dir.foreach's Enumerator roots its inspect label before to_s allocates
+3e7a03f2ab28f1216b703660b4daf959eb656db6 2026-10-22T07:20:14+09:00 Merge PR #9908: Dir.foreach without a block answers an Enumerator
+ca8e181ea1049de9e2b42d32e995ce8adf6c8e91 2026-10-21T22:41:26+01:00 Object calls take their contextual targets from the call plan alone
+3f85a559872ae18d66d42b2e926ccf90dfa549df 2026-10-21T16:14:10-05:00 Dir.foreach without a block answers an Enumerator
+2e7c34e67b35cb157fde9215c116dd10aa0befcb 2026-10-21T14:09:32-07:00 URI builds an Array's components in its own Hash
+94fa6c521797b8192b0335b7092faa77802d512f 2026-10-21T21:38:26+01:00 IO reopening refusals come only from the call plan
+fcc02e780d4e96f5d73a8270ac792ffd0e58286f 2026-10-21T21:38:26+01:00 Super calls take their targets from the call plan alone
+6577e8393ab31585968cfdaab29140e0c334bea6 2026-10-22T05:22:01+09:00 Merge PR #9905: File.pipe? takes an IO
+d956aa7dce11d6bceac668ce02f01ed4a66abf74 2026-10-22T05:21:56+09:00 Merge PR #9904: Kernel#select is IO.select
+fbb628c3b3ae9d8e9b00f3c5c17c2f5b4a430e27 2026-10-21T13:16:17-07:00 Open3 takes a private copy of its tmpdir path
+b9a02fa1f4cecf8ed5fe4958c7f562e5439e1018 2026-10-21T20:49:00+01:00 Poly calls take their zero-argument arms and receiver form from the plan
+e726295c3d3187e36e509777ab4cdbadee5579c0 2026-10-21T20:48:57+01:00 Nullable scalar emitters decide carriers from Repr
+6377d5b76be23d9e4371f84fa5d83e2d3b7e4561 2026-10-21T20:48:57+01:00 Nullable scalar producer predicates live in Repr
+13f33e7cbea890444a3f33a5d33fb50a00d8c4dc 2026-10-22T04:21:48+09:00 Merge PR #9903: Respect Ruby overrides, native method visibility and prepend order
+c8d565ae0ade8694a40ae59f9f186afbcb6989c3 2026-10-22T04:21:43+09:00 Merge PR #9901: A missing exception accessor is a NoMethodError with the call's metadata
+36da8ec3214b3132e1e9f43ce67b46ec2ad950b1 2026-10-22T04:21:38+09:00 Merge PR #9900: The calls-by-name index extends over cloned subtrees instead of rebuilding
+d79a003fbbd8557b13565ac88c27573dfb9c4c5a 2026-10-22T04:21:21+09:00 detailed_message(highlight: true) roots the class name it prints
+9922376e308dc4a6025472f716baeed4edaf4169 2026-10-22T04:20:41+09:00 Merge PR #9902: detailed_message(highlight: true) bolds the message and underlines the class
+3704d407ada0a3cce4cfd2f4024b5141054f3e9d 2026-10-22T04:20:41+09:00 Merge PR #9899: ruby.h brings in the libc headers CRuby's does for an extension
+ab26e3ecb0ae8f000689b79d3b70bbd7fdc9bb15 2026-10-22T03:59:34+09:00 The calls-by-name index extends over cloned subtrees instead of rebuilding
+0c6d1998b7e58fff5eac6e7d956abbb71a06b279 2026-10-21T15:46:51-03:00 ruby.h brings in the libc headers CRuby's does for an extension
+3a54c72da4fbad13f4537c8e86d0db644d654b75 2026-10-22T03:20:13+09:00 Merge PR #9897: Float#rationalize(eps) on a nullable Float asks for eps.abs
+22549d45ef7ace886b190c089e03f542a343f5dc 2026-10-21T12:32:59-05:00 Kernel#select is IO.select
+cd391d24e79fef8046c2e48803bd2a6d8fb6f1f1 2026-10-22T02:20:06+09:00 Merge PR #9896: The chain memo remembers the last four asks' slots
+629fcf3384a4f5f84895ea70fc05dcf86e36315f 2026-10-21T12:02:52-05:00 File.pipe? takes an IO
+78f9a35c0eb7567471549a45ea59f922e9ec82b9 2026-10-22T01:54:55+09:00 The chain memo remembers the last four asks' slots
+0acebc63f103d8c094ca01866323fba091928afe 2026-10-22T01:40:22+09:00 Merge PR #9895: an_local_array_changed keeps its answers by scope and name
+3d9235b97d0b25af81e09813fac02e0ad7bd0f59 2026-10-22T01:40:18+09:00 Merge PR #9894: refuse_callee_container_stores resolves a call's target only when the local is its argument
+f38e55d9ea18a8cb4f81efb475dd79348af84e3a 2026-10-22T01:40:14+09:00 Merge PR #9893: A def chosen under a run-time condition in a module_function module is callable on the module
+70acdfabf170cacc1560aa2999daf814a4fc06b9 2026-10-22T01:40:08+09:00 Merge PR #9892: class_includes_module_named reads an index of the literal includes, not every node
+3d3799dea2d951ec085efa826113e8060d62f3ef 2026-10-22T01:40:03+09:00 Merge PR #9891: The internals docs say codegen reads decisions, not types
+22c0f80724a1b392bd1479f0e3c8d9f14042e9eb 2026-10-22T01:39:34+09:00 A boxed receiver's checked collection is rooted while the count is converted
+01fe120d6830c648beee69f15515b5408467a6fd 2026-10-22T01:38:50+09:00 Merge PR #9890: An argument that can be nil is converted after a boxed receiver's dispatch
+306e890a01aa07de981123ce2b835aa2787812be 2026-10-21T11:24:18-05:00 detailed_message(highlight: true) bolds the message and underlines the class
+9b4ee0e71f78a9ae7dc6692ca2b3cac84f24c9ed 2026-10-22T01:16:11+09:00 an_local_array_changed keeps its answers by scope and name
+577e020caa08655bfeee77b2b760351c16f4c2b8 2026-10-22T01:15:48+09:00 refuse_callee_container_stores resolves a call's target only when the local is its argument
+6d46d274127c52d17fff942829f75fdf0231c61c 2026-10-21T17:10:50+01:00 The analyze-ir contract names its feature-gating exception
+5d4d1dd63ee023628c4bfe341f50ed890d6aca7e 2026-10-21T11:09:01-05:00 Float#rationalize(eps) on a nullable Float asks for eps.abs
+d24de292014a47547520856132a69691da7791ed 2026-10-21T11:05:13-05:00 A missing exception accessor is a NoMethodError with the call's metadata
+00b35f74adef733f382e012c2a217894cb5a048b 2026-10-22T00:57:53+09:00 A def chosen under a run-time condition in a module_function module is callable on the module
+df78f78b0b8821102b9d190414d5b54d8d7a1fb4 2026-10-22T00:51:22+09:00 class_includes_module_named reads an index of the literal includes, not every node
+331f43c18a178125477125b4d8a9f720267e3f34 2026-10-21T16:47:49+01:00 The internals docs say codegen reads decisions, not types
+1de53c0dc4adb5fb9567272b22087a6212761d4d 2026-10-21T23:23:24+09:00 Merge PR #9889: block_reach finds the methods of a forwarded call's name through the by-name table
+40dbbd12c38dc9a976e074be42858fb7d814635c 2026-10-21T23:23:21+09:00 Merge PR #9888: A reload guard around a nested declaration runs it on first load
+9ab6257e7c4d9c4a06460f3e79c07afb6e6be4e5 2026-10-21T23:23:17+09:00 Merge PR #9887: A bound Method object is a Method to when and is_a?
+40c99084a17482ca2c7d7515c0ca6cc3af8d1d86 2026-10-21T23:23:13+09:00 Merge PR #9886: Parenthesized value queries retain their producer and nil value
+aa8c2ae28832dd6a36201f33e4d9e2f1d7e458d1 2026-10-21T23:12:01+09:00 A method called through an alias of the name counts as the call's callee for forced inlining
+562e4f4500ee268a63c968e917baf71fa8613203 2026-10-21T22:58:12+09:00 block_reach finds the methods of a forwarded call's name through the by-name table
+5eaf8e64707f77e9a076dc444ee4fa9b7382646e 2026-10-21T22:54:09+09:00 A reload guard around a nested declaration runs it on first load
+6ae2c66f197340b26d99ee7eac59295e0fd14148 2026-10-21T22:51:26+09:00 A bound Method object is a Method to when and is_a?
+f25ab0ccea3c80a2f5f7ee641727b9d85c413257 2026-10-21T22:33:53+09:00 A class with <=> and no Comparable has no <, between? or clamp, and == is identity
+8aab4e3b059a0ccd9e66619dab4d73a9836ab5f9 2026-10-21T22:33:53+09:00 Merge PR #9883: A blockless all?/any?/none?/one? on a String Array reads its nil elements
+bd85ab144c9953aad2ba7b89799547e40ed80ec2 2026-10-21T22:33:52+09:00 Merge PR #9882: Delegated protocols and builtin Object calls retain their user targets
+079e0333b46c947a1eee31d240df60bd57979a04 2026-10-21T14:23:19+01:00 Empty parentheses supply nil to the Struct target check
+6cc951dbe1568343de299fe989ff526d3da3beeb 2026-10-21T14:23:18+01:00 Parenthesized String receivers reach the existing slice arms
+2b06c9766d8f12182689f7b5d0c9ab2df4eb42f4 2026-10-21T14:23:18+01:00 Hash fallbacks convert the boxed left arm to the result slot
+19ddcd1be3c18774e7395637b548611b485a1f06 2026-10-21T14:23:18+01:00 Parenthesized endless lazy sources retain their infinite size
+6739aabd2578539776b78cf1eec7b4c221a52cd7 2026-10-21T14:23:18+01:00 Parenthesized rescue values follow the inline block's type
+42596885fe34520265d9d90420839546a7af96ab 2026-10-21T22:06:07+09:00 Merge PR #9881: The architecture page explains views, and CONTRIBUTING points to them
+e43687ea492c342f819a0aa94e037836ef6303aa 2026-10-21T22:06:03+09:00 Merge PR #9880: an_rat_value finds a local's slot in the read's own scope
+5e3584f032db23a8eae1ae42edcac2d7552d3955 2026-10-21T22:04:38+09:00 plan_check.sh lists up to 20 of the poly-missing and of the poly-extra entries each
+d275de18dca413d7de77c2c0a208f4f2ef3f9564 2026-10-21T22:04:29+09:00 Merge PR #9864: The gate keeps the plan check's deviation counts at zero
+ae7693ac2141ab6097882669ef7b9908036e2278 2026-10-21T21:59:29+09:00 At SPINEL_WORKERS=1 the monitor times main from its first round
+b1025f37fcec7c78a86f69c29e47814125f7f028 2026-10-21T21:56:46+09:00 A class value takes its class method of a builtin's name, whatever the parameters
+0cf752717b7e1a9ab08874efdc9f0a16de8e8950 2026-10-21T21:53:02+09:00 An argument that can be nil is converted after a boxed receiver's dispatch
+3d6c44a6fe6e81ec99cb77cef400dc5543cbba94 2026-10-21T13:50:12+01:00 A poly dispatch's missing and extra arms fail the plan check too
+5409e348b5da8cf294ac5626b5d7d7e8e378d2d3 2026-10-21T09:46:35-03:00 A blockless all?/any?/none?/one? on a String Array reads its nil elements
+6bd8f5bbbb5ea31c73f33307c5763d8394dc8b8f 2026-10-21T21:38:19+09:00 A Hash subclass's store keeps the String it is handed
+357296ddb3401b0b2e237cf10fbbd828f66f01fd 2026-10-21T13:36:00+01:00 The architecture page explains views, and CONTRIBUTING points to them
+044cd83a75c4d066ee7abcd1fcb9362448748a89 2026-10-21T13:28:51+01:00 Boxed comparisons with no planned user arm use the builtin directly
+8879c59fb9d903593e31b046a61cb960c1949bdf 2026-10-21T21:27:57+09:00 an_rat_value finds a local's slot in the read's own scope
+671dc066dc9f693eef52aa4057659e084efdad7b 2026-10-21T13:25:00+01:00 The corpus leg reports --plan-check, and the gate reads it from the results
+b6aa7ce2554eb66a1612fcc7f0ff5743f7df1258 2026-10-21T13:25:00+01:00 The gate keeps the builtin-op plan deviations at zero
+383551f067f60bcc5d022ce9d402a726ede39a20 2026-10-21T21:13:34+09:00 const_defined? answers from the receiver's ancestors, not the whole program
+0a1c151d169e2fcbb6c5cb8cdc55b02fcb3e6716 2026-10-21T21:09:22+09:00 A raise used as a receiver answers the slot's zero into a typed local
+29c86865d3e729bafeb37eab51907779a96b6e95 2026-10-21T13:03:20+01:00 Rational producer queries use the value-position walker
+a013aae4b80dae8d5b404d3b9b7e118ca0c19126 2026-10-21T12:59:01+01:00 Parentheses callers use the shared syntax predicate
+be9c98daa0f4c10532600e3032594d0a7de45688 2026-10-21T12:58:58+01:00 Delegated conditions read their method target from an emission view
+a7661ddcf876abf99da6cf14f3cc46dfdd950b1f 2026-10-21T12:53:03+01:00 Boolean protocol plans use their reachable operator arms
+3435d5b51f993d553c5eae6b6daa0bc699c33f7d 2026-10-21T12:39:32+01:00 Poly protocol calls retain each class's operator override
+087e767120f89bab8e46b2a02a6d37c3f8443fe1 2026-10-21T20:38:34+09:00 SPINEL_WORKERS=N counts every OS worker, main among them
+b7798b0349a6e5d372054b7934c4804e75e8b151 2026-10-21T20:22:45+09:00 A `&.` String mutator statement calls the mutator the program defines
+ff53448706b2ac224875df81838f92a6cd2636d0 2026-10-21T20:20:40+09:00 Merge PR #9875: narrow_object_arrays asks a set of the program's Symbols, not every Symbol per slot
+3c8187b2f783a1f2482d5366ea5eba8916b65efa 2026-10-21T20:20:35+09:00 Merge PR #9874: The user-defines memos grow past 4,096 names instead of standing down
+5af9cd07502abd5e0cf3f396029dc90f4ff60198 2026-10-21T20:20:31+09:00 Merge PR #9873: The strbuf walks find the methods of a call's name through a table
+a54f7cc1980acbd924abeb3fdc01398fc71697a9 2026-10-21T20:20:27+09:00 Merge PR #9872: scope_is_shadowed answers from its table while the scope index is frozen
+e1683ea63e05355712b87d854082663c3893a73d 2026-10-21T20:20:22+09:00 Merge PR #9871: A `&.` String mutator statement over a variable changes the variable's String
+54f85ceb3558178005d0dfe52267aa8c90cfcae4 2026-10-21T20:20:17+09:00 Merge PR #9870: An exception's message compared by identity through a dispatch keeps its identity
+cbc87ecd2b6f38531015d220451216986d625849 2026-10-21T12:06:27+01:00 Delegated inequality tests the Ruby truth of equality's answer
+694842f7a7a59f7f32a4e0c54092f9d9520bdafd 2026-10-21T19:37:10+09:00 narrow_object_arrays asks a set of the program's Symbols, not every Symbol per slot
+2ed067d56e0d005a3bef938ec251b5aae4319020 2026-10-21T19:37:10+09:00 The user-defines memos grow past 4,096 names instead of standing down
+885cc2e54446967804cfb1d9f449fa40a9d0dc06 2026-10-21T19:37:09+09:00 The strbuf walks find the methods of a call's name through a table
+b70403861649478df3b3e66aa84383c10b9c18dd 2026-10-21T19:37:08+09:00 scope_is_shadowed answers from its table while the scope index is frozen
+689644e27588dec17cba5337cd1d2895ce874793 2026-10-21T18:30:18+08:00 Literal native queries preserve class-object dispatch
+111a7eba835f611905c66623449305042da3cdf3 2026-10-21T19:21:49+09:00 comp_name_responders finds the name's slot again after its walk
+bbef81adcbcd1e320e379660cefb2c3bd44c11e3 2026-10-21T19:20:53+09:00 Merge PR #9869: The classes whose chain answers a name come from a list beside the chain memo
+ae14eb9043c8d2cad6cef195ffbfc14769cd7908 2026-10-21T19:20:47+09:00 Merge PR #9868: hcp_compute finds a call's method by name instead of asking every scope
+83d32a30be13c3eb081ed13793e0ba7f9d93dace 2026-10-21T11:15:34+01:00 An exception's message compared by identity through a dispatch keeps its identity
+99b660d84605962bd90943e3e699d8b09dff0624 2026-10-21T18:14:21+08:00 Prepend arguments keep Ruby ancestor order
+6cab2743030c5d454653656a5128342dbad0b870 2026-10-21T18:14:21+08:00 Native objects dispatch Ruby protocol queries and inherit binding visibility
+f462912cef20525e86d372b889793cf3e388f152 2026-10-21T10:59:09+01:00 A `&.` String mutator statement over a variable changes the variable's String
+37498092f0878f8ded6b854b93303d18b90ef8f8 2026-10-21T18:38:13+09:00 Merge PR #9867: User-call inference keeps the targets already resolved by the call plan
+76abcc693621b4f0975571d71c0e28d1f75f3b22 2026-10-21T18:38:08+09:00 Merge PR #9866: The call plan records the poly arms that emission offers
+c07f0e05f4796dbfe1c8558dbb76bf27882df8e8 2026-10-21T18:17:47+09:00 The classes whose chain answers a name come from a list beside the chain memo
+c4687ad1e4d2b3ebfd6f5cd48e97a0799708425d 2026-10-21T10:11:13+01:00 Object calls retain their target on builtin receiver families
+78b690e3fb7d2a402e78fa170617245c8b5f8cce 2026-10-21T10:11:00+01:00 Protocol calls retain the user method they delegate to
+5d935dc76cd34132670357310daa35721319afcd 2026-10-21T09:42:49+01:00 Constant calls use their existing inference target records
+2f8e05ad1ba9781ec0de0ade4cecfe4b2a921281 2026-10-21T09:34:07+01:00 Class-valued target records keep the dispatch union
+5a6a5bcaef72d27b41edcd8eb71bbade55b6fa63 2026-10-21T09:34:07+01:00 Calls with a block break retain their planned target
+eae2bef941b502359ec845e592b761b6ce244f80 2026-10-21T09:34:07+01:00 Reader dispatch records its overriding methods
+76af8783c7b23ab9b43c01ff163e30a4d8d42832 2026-10-21T09:34:07+01:00 Comparison wrappers record their planned user target
+389481f2f93a7cf1e92398f90e5c8cb6247ea8e7 2026-10-21T09:34:07+01:00 Concrete operator calls retain their inferred user method
+66b774608263868fb3a70d63467e60bf38c312f2 2026-10-21T09:34:07+01:00 Class-value calls record the target union from the call plan
+0b0afd46f18091fe9bf4add7fd6fc24c87877308 2026-10-21T09:34:07+01:00 Pinned emission trials preserve the inferred user target
+4c706f160b23482c6d73c6bc176eb18620b0ee8f 2026-10-21T09:32:10+01:00 The call plan records the poly arms that emission offers
+6864ec3e1db4674d0ca43c1f98cdb92376253c4c 2026-10-21T16:58:18+09:00 Merge PR #9863: CONTRIBUTING and the architecture page state the String direction of #9258
+5664fc01e7bae8f1c3eb0fc0747bc344b784feb2 2026-10-21T16:58:14+09:00 Merge PR #9862: Shared String stores exclude Structs the receiver cannot hold
+85cba2d74abae43052a8010cf5eaae9022caa35e 2026-10-21T16:58:09+09:00 Merge PR #9861: Hash#replace with the receiver itself keeps its entries
+5c371177de23a70502ec7a327a30684fe9af80a3 2026-10-21T16:58:05+09:00 Merge PR #9860: A frozen Hash read out of a container refuses delete, clear and []=
+0ce4d2810d71e99e0fbce5e3d3ba8fb28c9c28b8 2026-10-21T16:58:00+09:00 Merge PR #9859: Math.log1p below -1 raises Math::DomainError
+f159fa5450f822aaeede82e99e2edc6486ad16d5 2026-10-21T16:57:56+09:00 Merge PR #9858: Integer.sqrt of a non-finite Float raises FloatDomainError
+90649c33a62b71fdce4a1e50702e31e7ea73471b 2026-10-21T08:18:29+01:00 CONTRIBUTING and the architecture page state the String direction of #9258
+fd0263d6e371ca3fbdc147e409512eac58ca9ae8 2026-10-21T15:22:29+09:00 hcp_compute finds a call's method by name instead of asking every scope
+f7920148bd1be421125a07b06ea800996b6b05f1 2026-10-21T14:25:01+09:00 Hash#replace with the receiver itself keeps its entries
+10f112c51666e7ffd308e0ab90a69c2184870c06 2026-10-21T14:20:54+09:00 Merge PR #9857: Set#min and #max name the operands in Enumerable's order
+2269855e5f02a1298ff0328fa09f280120c6f9aa 2026-10-21T14:20:49+09:00 Merge PR #9855: A class under a compact header below a builtin keeps the builtin's name
+28cb505bb0c6c7b56e51032729f52e27e00086fa 2026-10-21T12:52:21+09:00 A builtin-path class name keeps a __ written in its leaf
+1efe5dd723f8a0930285c6a9146e3749c6d2ff91 2026-10-20T22:23:38-05:00 Integer.sqrt of a non-finite Float raises FloatDomainError
+48ef4a8387de3c66a763a1b4a3c85c89e4e967f3 2026-10-20T22:16:34-05:00 Set#min and #max name the operands in Enumerable's order
+61bf7981e57fb9d8a57d354bfa7cd06a0b0da1e8 2026-10-20T17:46:48Z Shared String stores exclude Structs the receiver cannot hold
+3fbb53004037a7578cf14c2763876493f0803003 2026-10-20T10:04:41-05:00 A frozen Hash read out of a container refuses delete, clear and []=
+895f050ce879ded645ea337c1875829c16b91904 2026-10-20T07:44:38-05:00 Math.log1p below -1 raises Math::DomainError

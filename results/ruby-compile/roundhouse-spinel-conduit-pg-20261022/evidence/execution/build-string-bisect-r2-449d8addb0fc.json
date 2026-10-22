@@ -1,0 +1,22 @@
+{
+  "label": "build-string-bisect-r2-449d8addb0fc",
+  "command": [
+    "docker",
+    "build",
+    "--progress=plain",
+    "-t",
+    "conduit-v10-bisect:r2-449d8addb0fc",
+    "$SCRATCH/string-bisect-contexts-r2/449d8addb0fc"
+  ],
+  "started": "2026-10-22T10:11:50.697956+00:00",
+  "finished": "2026-10-22T10:12:50.209502+00:00",
+  "elapsed_seconds": 59.511,
+  "exit": 0,
+  "log": null,
+  "heavy_lock": true,
+  "log_omitted": {
+    "reason": "Bisect-candidate toolchain build output (make logs); command, exit and timing retained.",
+    "bytes": 54830,
+    "sha256": "a7d202803fde8a3eb143f68ac4fb8bf1767cbb0eb7cb375a6216e914054c6f70"
+  }
+}

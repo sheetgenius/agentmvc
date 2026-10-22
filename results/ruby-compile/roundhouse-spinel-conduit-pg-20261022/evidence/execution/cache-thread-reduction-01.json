@@ -1,0 +1,23 @@
+{
+  "label": "cache-thread-reduction-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-cache-thread-reduction-01",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/regressions/thruster-cache:/work/probe",
+    "-w",
+    "/work/probe",
+    "conduit-v10-toolchain:diagnostic",
+    "sh",
+    "-c",
+    "for f in threaded.rb mutex.rb threaded-mutex.rb; do echo \"$f\"; ruby \"$f\"; spinel --cc=clang \"$f\" -o /tmp/probe && /tmp/probe; done"
+  ],
+  "started": "2026-10-22T09:42:39.476690+00:00",
+  "finished": "2026-10-22T09:43:36.976988+00:00",
+  "elapsed_seconds": 57.499,
+  "exit": 0,
+  "log": "evidence/execution/cache-thread-reduction-01.log"
+}

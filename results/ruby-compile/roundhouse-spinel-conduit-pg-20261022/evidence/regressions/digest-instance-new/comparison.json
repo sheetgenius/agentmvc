@@ -1,0 +1,38 @@
+{
+  "classification": "upstream Spinel regression (library change exposes an existing emitter defect)",
+  "symptom": "spin build of the emitted Conduit app fails in C compilation: app/app/controllers/application_controller.rb:70: error: incompatible pointer types initializing 'const char *' with an expression of type 'sp_String *' [-Werror,-Wincompatible-pointer-types]",
+  "failing_ruby_site": {
+    "original_source": "variant/source/app/controllers/application_controller.rb:70 `params[name]` in `def param(name)`",
+    "emitted_by_roundhouse": "@params[name.to_s] (emitted app/controllers/application_controller.rb:126)",
+    "line_mapping_note": "Spinel's #line directives name the original app source (#<SPINEL_SOURCE> markers). The earlier attribution to TokenCodec.decode read line 70 of the emitted file instead; see ../string-argument/classification.json."
+  },
+  "observed_types": "@params is boxed (untyped); the [] dispatch includes a Struct class arm (LiveRooms::Room = Struct.new(:lock, :members), Room[x] -> Room.new(x)), class-value .new(x) arms, and instance-method `new` arms for OpenSSL::Digest and its SHA256/SHA1/MD5 subclasses. In that combined dispatch the String argument is held as a shared String handle and then boxed through the C-string path.",
+  "first_bad_commit": "2c6d6b7ff1636163ec92722a66fb7b82dd9fc204",
+  "first_bad_subject": "Merge PR #9913: OpenSSL::Digest keeps its hash state and answers as CRuby's does",
+  "pull_request": "matz/spinel#9913",
+  "introducing_commit_in_pr": "2388b53aba302040f067b07086ca5289019c1a36 (openssl: Digest answers the rest of its API; adds `def new = clone.reset`)",
+  "last_good_first_parent": "449d8addb0fc374aa3290d64dbaf4ad7d9caca47",
+  "bisect": {
+    "file": "../string-argument/bisect-r2.json",
+    "range": "6ca6d451b (v9, good) .. ca971705427a (v10 pin, bad), --first-parent",
+    "conditions": "patch 91 applied to every candidate; frozen emitted app emitted-with-cache-loop (patch 85 loop + Db._txn_callbacks shim) held constant; only Spinel changes",
+    "verdicts": {
+      "d79a003fb": "good",
+      "a2a87181b": "bad",
+      "4b3854cf7": "good",
+      "2c6d6b7ff": "bad",
+      "b432531fd": "good",
+      "449d8addb": "good"
+    }
+  },
+  "ablation": {
+    "same_app_same_compiler_current": "string-c-capture-01: exit 1, the C error above",
+    "same_app_minus_OpenSSL_Digest_instance_new": "digest-trial-v1-app: exit 0 (only the 2-line `def new = clone.reset` removed from packages/openssl/openssl/digest.rb)",
+    "final_toolchain_with_92": "build-final-01: exit 0"
+  },
+  "repair": "patches/spinel/92-upstream-regression-digest-instance-new.patch removes OpenSSL::Digest#new (instance). Conduit never calls it; CRuby has it, so the repair trades that unused method for compilation. The emitter defect itself stays upstream.",
+  "standalone_minimal_ruby_reproducer": false,
+  "standalone_attempts": "struct-index-argument/ rounds 1-5 (results-*.json per compiler): Struct-class index on a boxed receiver, class-value new, an instance method named new (user class and OpenSSL::Digest), a String-mutating constructor, a String-mutating [] arm, and Digest modules, alone and combined. All compile on the v10 pin; the smallest failing input remains the emitted application. Some expose older wrong-value gaps (../existing-struct-gaps.json).",
+  "upstream_drift": "matz/spinel master at 2026-10-22T09:35Z (89100bf0f) has 9 more first-parent commits; none touches packages/openssl or names this dispatch.",
+  "probe_note": "OpenSSL::Digest#new itself now matches CRuby in small programs (round2 openssl-struct-index.rb: NoMethodError on the parent, correct on the pin)."
+}

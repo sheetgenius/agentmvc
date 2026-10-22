@@ -1,0 +1,23 @@
+{
+  "label": "thruster-min-cache-02",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-thruster-min-cache-02",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/regressions/thruster-cache:/work/probe",
+    "-w",
+    "/work/probe",
+    "conduit-v10-toolchain:e2c34205cf6d",
+    "sh",
+    "-c",
+    "ruby with-cache.rb; spinel --emit-rbs with-cache.rb -o /tmp/cache.rbs; cat /tmp/cache.rbs; spinel --cc=clang with-cache.rb -o /tmp/probe && /tmp/probe"
+  ],
+  "started": "2026-10-22T09:11:14.942358+00:00",
+  "finished": "2026-10-22T09:11:15.962319+00:00",
+  "elapsed_seconds": 1.02,
+  "exit": 0,
+  "log": "evidence/execution/thruster-min-cache-02.log"
+}

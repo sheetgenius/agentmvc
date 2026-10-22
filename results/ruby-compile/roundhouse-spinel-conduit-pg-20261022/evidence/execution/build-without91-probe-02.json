@@ -1,0 +1,16 @@
+{
+  "label": "build-without91-probe-02",
+  "command": [
+    "docker",
+    "build",
+    "--progress=plain",
+    "-t",
+    "conduit-v10-toolchain:without-91",
+    "$SCRATCH/without91-context"
+  ],
+  "started": "2026-10-22T09:22:16.580874+00:00",
+  "finished": "2026-10-22T09:23:01.414180+00:00",
+  "elapsed_seconds": 44.833,
+  "exit": 0,
+  "log": "evidence/execution/build-without91-probe-02.log"
+}

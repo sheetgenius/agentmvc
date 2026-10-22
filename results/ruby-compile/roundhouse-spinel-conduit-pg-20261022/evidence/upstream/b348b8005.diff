@@ -1,0 +1,566 @@
+commit b348b800591378ad26bbfff26cc67d83c7c49649
+Author:     Sam Ruby <[redacted-email]>
+AuthorDate: Wed Oct 21 03:05:48 2026 -0400
+Commit:     Sam Ruby <[redacted-email]>
+CommitDate: Wed Oct 21 03:13:35 2026 -0400
+
+    The spinel binary answers a public response from Thruster's cache
+    
+    A Rails app deployed from its own Dockerfile runs Thruster in front of
+    Puma, and Thruster answers every `Cache-Control: public` response with a
+    positive max-age from memory after the first. The rails lane on the
+    campfire bench has Thruster, and the CRuby lanes carry its rules as
+    ThrusterCache middleware; the spinel binary had neither, so its avatar
+    cell ran the whole controller (before_actions, the CSP policy's 89
+    URI.joins, the SVG render) for a response every other lane answers from
+    memory: 5.6k req/s against ruby's 76k.
+    
+    Tep::ThrusterCache holds the same rules for the binary, which has no
+    Rack, and Tep::App#dispatch consults it before leasing a database
+    connection, as Thruster answers before Puma. A file the app sends is
+    stored as its path, so a hit is the same sendfile without the app.
+    
+    Measured on rubix2 (spinel 1f02852df), campfire at the pinned 11d3fb9:
+    the avatar route 5,952 -> 70,535 req/s, body byte-identical, X-Cache
+    hit, Set-Cookie dropped as Thruster drops it. /rooms/1 unchanged. /up,
+    which is never stored, pays the lookup a miss pays: 39.5k -> 37.5k
+    interleaved over three runs, as it does behind Thruster.
+    ROUNDHOUSE_RESPONSE_CACHE=0 turns it off, as for the CRuby lanes.
+    
+    tests/tep_thruster_cache.rs holds each rule (25 checks) through the real
+    threaded server over the scripted socket; the spinel toolchain suite
+    passes locally (62/62).
+    
+    Co-Authored-By: Claude Opus 5.5 <[redacted-email]>
+
+diff --git a/runtime/spinel/tep/app.rb b/runtime/spinel/tep/app.rb
+index e2edf25d6..713bb7549 100644
+--- a/runtime/spinel/tep/app.rb
++++ b/runtime/spinel/tep/app.rb
+@@ -109,7 +109,12 @@ module Tep
+     #
+     # A GET/HEAD reads through one SQLite snapshot (Db.read_snapshot_begin);
+     # any write still works, the shim ends the snapshot before it.
++    #
++    # Tep::THRUSTER_CACHE (thruster_cache.rb) answers first: a stored
++    # `Cache-Control: public` response goes back without a lease, as
++    # Thruster answers before Puma is reached.
+     def dispatch(req, res)
++      return true if Tep::THRUSTER_CACHE.answer(req, res)
+       Db.with_connection do
+         snapshot = req.verb == "GET" || req.verb == "HEAD"
+         Db.read_snapshot_begin if snapshot
+@@ -123,6 +128,8 @@ module Tep
+         # hold a void there.
+         true
+       end
++      Tep::THRUSTER_CACHE.store(req, res)
++      true
+     end
+   end
+ 
+diff --git a/runtime/spinel/tep/tep.rb b/runtime/spinel/tep/tep.rb
+index d09457e00..7db319817 100644
+--- a/runtime/spinel/tep/tep.rb
++++ b/runtime/spinel/tep/tep.rb
+@@ -20,6 +20,8 @@ require_relative "server"
+ # calls Tep::Presence.untrack_by_fd.
+ require_relative "presence"
+ require_relative "broadcast"
++# Thruster's response cache, which App#dispatch consults before the app.
++require_relative "thruster_cache"
+ # App owns the broadcast-subscriber registries (and the app's display
+ # name) on the Tep::APP singleton; broadcast.rb, cable.rb and the
+ # server read it.
+diff --git a/runtime/spinel/tep/thruster_cache.rb b/runtime/spinel/tep/thruster_cache.rb
+new file mode 100644
+index 000000000..45a3a0665
+--- /dev/null
++++ b/runtime/spinel/tep/thruster_cache.rb
+@@ -0,0 +1,284 @@
++# frozen_string_literal: true
++# Tep::ThrusterCache -- Thruster's response cache, in process, for the
++# spinel binary.
++#
++# A Rails app deployed from its own Dockerfile runs `thrust` in front of
++# Puma, and Thruster keeps every response that says `Cache-Control:
++# public` with a positive max-age in memory and answers repeats itself:
++# campfire's avatar route (`expires_in 30.minutes, public: true`) and
++# every `/assets/*` file after its first request. The CRuby trees carry
++# the same rules as Rack middleware (scaffold/ruby_overlay/runtime/
++# thruster_cache.rb, whose header gives Thruster's sources); this is that
++# store for the binary, which has no Rack. Without it the binary ran the
++# whole controller -- before_actions, CSP, the render -- for a response
++# every other lane on the bench page answers from memory.
++#
++# Thruster's rules (internal/cache_handler.go, memory_cache.go):
++#   * GET/HEAD only; not a WebSocket upgrade, not a Range request, and a
++#     path+query of at most 2,048 bytes;
++#   * stored when the status is 2xx/3xx other than 304, Cache-Control
++#     says `public` with a positive `s-max-age` or `max-age` and no
++#     `no-cache`, and Vary is not `*`; kept for that many seconds;
++#   * a stored response loses its Set-Cookie (so does the miss that
++#     stored it), and gains `Vary: Accept-Encoding` if it had no Vary;
++#   * a Vary'd response is keyed by the request's values for those
++#     headers, found through the entry at the plain key;
++#   * a hit answers 304 to an If-None-Match naming its ETag;
++#   * `X-Cache: hit | miss | bypass` on everything;
++#   * items up to 1 MiB, 64 MiB in all (CACHE_SIZE), least recently used
++#     evicted first.
++#
++# A file the app answers with `send_file` is stored as its path, not its
++# bytes: the hit is the same sendfile without the app, which is what
++# Thruster's copy saves too.
++#
++# OUTERMOST. Tep::App#dispatch looks here before it leases a database
++# connection, as Thruster answers before Puma is reached. One store per
++# process: the binary is one process whose OS worker threads share it
++# under the mutex.
++#
++# ROUNDHOUSE_RESPONSE_CACHE=0 turns it off, for A/B measurement.
++module Tep
++  class ThrusterCacheEntry
++    attr_reader :status, :headers, :body, :file_path, :vary_names, :vary_values, :expires_at, :size
++
++    def initialize(status, headers, body, file_path, vary_names, vary_values, expires_at, size)
++      @status = status
++      @headers = headers
++      @body = body
++      @file_path = file_path
++      @vary_names = vary_names
++      @vary_values = vary_values
++      @expires_at = expires_at
++      @size = size
++    end
++  end
++
++  class ThrusterCache
++    MAX_CACHEABLE_URI = 2048
++    MAX_ITEM = 1048576
++    ENTRY_OVERHEAD = 256
++
++    attr_reader :capacity, :size
++
++    def initialize(capacity)
++      @capacity = capacity
++      @size = 0
++      @enabled = (ENV["ROUNDHOUSE_RESPONSE_CACHE"] || "") != "0"
++      # Insertion-ordered: least recently used first.
++      @items = { "" => ThrusterCacheEntry.new(0, Tep.str_hash, "", "", [""], [""], 0.0, 0) }
++      @items.delete("")
++      @lock = Mutex.new
++    end
++
++    def enabled?
++      @enabled
++    end
++
++    def enabled=(value)
++      @enabled = value
++    end
++
++    def self.now
++      Process.clock_gettime(Process::CLOCK_MONOTONIC)
++    end
++
++    # The store key for a request Thruster would look up, or "" when it
++    # bypasses the cache.
++    def lookup_key(req)
++      return "" unless @enabled
++      return "" unless req.verb == "GET" || req.verb == "HEAD"
++      h = req.req_headers
++      return "" if h.fetch("upgrade", "").downcase == "websocket"
++      return "" if h.fetch("connection", "") == "Upgrade"
++      return "" if h.fetch("range", "").length > 0
++      target = req.raw_query.length > 0 ? req.path + "?" + req.raw_query : req.path
++      return "" unless target.bytesize < MAX_CACHEABLE_URI
++      req.verb + "\n" + target + "\n" + h.fetch("host", "")
++    end
++
++    # Answer `req` from the store into `res`. True when it did; false
++    # leaves `res` untouched for the app.
++    def answer(req, res)
++      key = lookup_key(req)
++      return false if key.length == 0
++      entry = find(key, req, ThrusterCache.now)
++      return false if entry.nil?
++      ThrusterCache.fill(entry, req, res)
++      true
++    end
++
++    # After the app ran: store `res` when Thruster would, and mark it.
++    def store(req, res)
++      key = lookup_key(req)
++      if key.length == 0
++        res.headers["X-Cache"] = "bypass"
++        return nil
++      end
++      lifetime = ThrusterCache.lifetime(res)
++      if lifetime <= 0
++        res.headers["X-Cache"] = "miss"
++        return nil
++      end
++      # The miss that stores loses Set-Cookie as the stored copy does.
++      res.set_cookies.pop while res.set_cookies.length > 0
++      ThrusterCache.drop_header(res.headers, "set-cookie")
++      res.headers["Vary"] = "Accept-Encoding" if ThrusterCache.header(res.headers, "vary").length == 0
++      now = ThrusterCache.now
++      record(store_key(key, req, now), req, res, now + lifetime)
++      res.headers["X-Cache"] = "miss"
++      nil
++    end
++
++    # Lifetime in seconds, or 0 when Thruster would not store it.
++    def self.lifetime(res)
++      return 0 if res.streaming || res.upgrading_ws
++      status = res.status
++      return 0 if status < 200 || status > 399 || status == 304
++      return 0 if ThrusterCache.header(res.headers, "vary").include?("*")
++      cc = ThrusterCache.header(res.headers, "cache-control")
++      return 0 if cc.length == 0
++      return 0 unless cc.match?(/\bpublic\b/) && !cc.match?(/\bno-cache\b/)
++      m = cc.match(/\bs-max-age=(\d+)\b/)
++      m = cc.match(/\bmax-age=(\d+)\b/) if m.nil?
++      return 0 if m.nil?
++      m[1].to_i
++    end
++
++    # A header's value by name, any case; "" when absent.
++    def self.header(headers, name)
++      found = ""
++      headers.each do |k, v|
++        found = v if k.downcase == name
++      end
++      found
++    end
++
++    def self.drop_header(headers, name)
++      doomed = headers.keys.select { |k| k.downcase == name }
++      doomed.each { |k| headers.delete(k) }
++      nil
++    end
++
++    def self.vary_names(headers)
++      vary = ThrusterCache.header(headers, "vary")
++      names = vary.split(",").map { |n| n.strip.downcase }.reject { |n| n.length == 0 }
++      names.sort
++    end
++
++    def self.variant_key(key, names, req)
++      out = +key
++      names.each do |name|
++        out << "\n" << name << "=" << req.req_headers.fetch(name, "")
++      end
++      out
++    end
++
++    def self.variant_matches?(entry, req)
++      i = 0
++      while i < entry.vary_names.length
++        return false if req.req_headers.fetch(entry.vary_names[i], "") != entry.vary_values[i]
++        i += 1
++      end
++      true
++    end
++
++    # The live entry for the request, found through the plain key's entry
++    # when it is Vary'd; nil when there is none.
++    def find(key, req, now)
++      entry = get(key, now)
++      return nil if entry.nil?
++      if entry.vary_names.length > 0 && !ThrusterCache.variant_matches?(entry, req)
++        return get(ThrusterCache.variant_key(key, entry.vary_names, req), now)
++      end
++      entry
++    end
++
++    # The key a miss is stored under, as `find` would look it up: the
++    # plain key, unless the entry there is Vary'd and another variant.
++    def store_key(key, req, now)
++      entry = get(key, now)
++      return key if entry.nil? || entry.vary_names.length == 0
++      return key if ThrusterCache.variant_matches?(entry, req)
++      ThrusterCache.variant_key(key, entry.vary_names, req)
++    end
++
++    def record(key, req, res, expires_at)
++      names = ThrusterCache.vary_names(res.headers)
++      values = names.map { |name| req.req_headers.fetch(name, "") }
++      headers = Tep.str_hash
++      size = res.body.bytesize + key.bytesize + ENTRY_OVERHEAD
++      res.headers.each do |k, v|
++        next if k.downcase == "x-cache"
++        headers[k] = v
++        size += k.bytesize + v.bytesize
++      end
++      entry = ThrusterCacheEntry.new(res.status, headers, res.body.dup, res.file_path.dup,
++                                     names, values, expires_at, size)
++      set(key, entry)
++      nil
++    end
++
++    # Copy a stored entry into the response the server writes.
++    def self.fill(entry, req, res)
++      res.set_status(entry.status)
++      entry.headers.each { |k, v| res.headers[k] = v }
++      res.headers["X-Cache"] = "hit"
++      if ThrusterCache.not_modified?(entry, req.req_headers.fetch("if-none-match", ""))
++        res.set_status(304)
++        ThrusterCache.drop_header(res.headers, "content-type")
++        ThrusterCache.drop_header(res.headers, "content-length")
++        return nil
++      end
++      if entry.file_path.length > 0
++        res.send_file(entry.file_path)
++      else
++        res.set_body_if_empty(entry.body)
++      end
++      nil
++    end
++
++    def self.not_modified?(entry, if_none_match)
++      etag = ThrusterCache.header(entry.headers, "etag")
++      return false if etag.length == 0 || if_none_match.length == 0
++      if_none_match.split(",").any? { |candidate| candidate.strip == etag }
++    end
++
++    def get(key, now)
++      found = nil
++      @lock.synchronize do
++        if @items.key?(key)
++          entry = @items[key]
++          @items.delete(key)
++          if entry.expires_at < now
++            @size -= entry.size
++          else
++            @items[key] = entry # most recently used last
++            found = entry
++          end
++        end
++      end
++      found
++    end
++
++    def set(key, entry)
++      return nil if entry.size > MAX_ITEM || entry.size > @capacity
++      @lock.synchronize do
++        if @items.key?(key)
++          @size -= @items[key].size
++          @items.delete(key)
++        end
++        while @size + entry.size > @capacity && @items.length > 0
++          oldest = @items.keys[0]
++          @size -= @items[oldest].size
++          @items.delete(oldest)
++        end
++        @items[key] = entry
++        @size += entry.size
++      end
++      nil
++    end
++  end
++
++  THRUSTER_CACHE = ThrusterCache.new(Tep.decimal_byte_count(ENV["CACHE_SIZE"] || "") > 0 ? Tep.decimal_byte_count(ENV["CACHE_SIZE"] || "") : 67108864)
++end
+diff --git a/scripts/bench-campfire b/scripts/bench-campfire
+index 323147d5f..86fe3a4a6 100755
+--- a/scripts/bench-campfire
++++ b/scripts/bench-campfire
+@@ -44,7 +44,10 @@
+ #                    adds it in a `Gemfile.falcon` beside the emit, at the
+ #                    version tobi's lock pins, so the two lanes run the
+ #                    same server.
+-#     spinel         the roundhouse spinel BINARY, workers autodetected
++#     spinel         the roundhouse spinel BINARY, workers autodetected,
++#                    with Thruster's response cache in process
++#                    (runtime/spinel/tep/thruster_cache.rb), as the
++#                    CRuby lanes carry it and the rails lane has Thruster
+ #     jruby          the roundhouse emit for the JVM (`--target jruby`:
+ #                    the same tree over JDBC), ONE process, one Puma
+ #                    thread per hardware thread — JRuby has no GVL, so
+diff --git a/tests/tep_thruster_cache.rb b/tests/tep_thruster_cache.rb
+new file mode 100644
+index 000000000..27866647c
+--- /dev/null
++++ b/tests/tep_thruster_cache.rb
+@@ -0,0 +1,139 @@
++# Driver for tests/tep_thruster_cache.rs — Tep::ThrusterCache, the spinel
++# binary's in-process Thruster cache, held to the rules its header claims
++# (the same list tests/thruster_cache.rs holds the CRuby overlay to).
++#
++# Run under plain CRuby through the real threaded server over the
++# scripted socket (tests/tep_server_harness.rb), so each check reads what
++# went out on the wire. The app consults the cache as Tep::App#dispatch
++# does: `answer` before the app, `store` after it.
++
++require_relative "tep_server_harness"
++require_relative "../runtime/spinel/tep/thruster_cache"
++
++$clock = 1000.0
++Tep::ThrusterCache.define_singleton_method(:now) { $clock }
++
++RESPONSES = {
++  "/public" => [200, { "Content-Type" => "text/css", "Cache-Control" => "public, max-age=60",
++                       "ETag" => "\"v1\"" }, "body-public"],
++  "/private" => [200, { "Cache-Control" => "max-age=0, private, must-revalidate" }, "body-private"],
++  "/nocache" => [200, { "Cache-Control" => "public, no-cache, max-age=60" }, "n"],
++  "/zero" => [200, { "Cache-Control" => "public, max-age=0" }, "z"],
++  "/star" => [200, { "Cache-Control" => "public, max-age=60", "Vary" => "*" }, "s"],
++  "/notfound" => [404, { "Cache-Control" => "public, max-age=60" }, "nf"],
++  "/smax" => [200, { "Cache-Control" => "public, s-max-age=60, max-age=0" }, "sm"],
++  "/vary" => [200, { "Cache-Control" => "public, max-age=60", "Vary" => "Accept" }, nil],
++  "/big" => [200, { "Cache-Control" => "public, max-age=60" }, "x" * ((1 << 20) + 1)],
++}
++
++class RecordingApp
++  attr_reader :calls
++
++  def dispatch(req, res)
++    return true if Tep::THRUSTER_CACHE.answer(req, res)
++    @calls ||= Hash.new(0)
++    @calls[req.path] += 1
++    status, headers, body = RESPONSES.fetch(req.path)
++    res.status = status
++    headers.each { |k, v| res.headers[k] = v }
++    res.set_cookie("s", "1", {})
++    res.body = body || "accept=#{req.req_headers.fetch("accept", "")}"
++    Tep::THRUSTER_CACHE.store(req, res)
++    true
++  end
++end
++
++def get(path, extra = "", verb: "GET")
++  bytes = "#{verb} #{path} HTTP/1.1\r\nHost: localhost\r\n#{extra}\r\n".b
++  status, = serve("threaded", bytes)
++  head, body = Sock.wire.out.split("\r\n\r\n", 2)
++  lines = head.to_s.split("\r\n")
++  [status, lines, body.to_s]
++end
++
++def header(lines, name)
++  line = lines.find { |l| l.downcase.start_with?("#{name.downcase}:") }
++  line && line.split(": ", 2)[1]
++end
++
++def calls(path) = APP.calls[path]
++
++# stored once, answered from memory after; Set-Cookie gone from both
++s, h, b = get("/public")
++check("first public GET is a miss", s == 200 && header(h, "x-cache") == "miss" && b == "body-public", h.inspect)
++check("a stored response's miss loses Set-Cookie", header(h, "set-cookie").nil?, h.inspect)
++check("a stored response without Vary gains Vary: Accept-Encoding", header(h, "vary") == "Accept-Encoding", h.inspect)
++s, h, b = get("/public")
++check("second public GET is a hit", calls("/public") == 1 && header(h, "x-cache") == "hit" && b == "body-public", h.inspect)
++check("a hit carries no Set-Cookie", header(h, "set-cookie").nil?, h.inspect)
++
++# 304 for a matching If-None-Match; HEAD has its own key and no body
++s, h, b = get("/public", "If-None-Match: \"v0\", \"v1\"\r\n")
++check("a hit answers 304 to its ETag", s == 304 && b.empty? && header(h, "content-type").nil?, [s, h, b].inspect)
++get("/public", verb: "HEAD")
++s, h, b = get("/public", verb: "HEAD")
++check("a HEAD hit has no body", s == 200 && header(h, "x-cache") == "hit" && b.empty? &&
++      header(h, "content-length") == "11", [s, h, b].inspect)
++
++# expiry
++$clock += 61
++_, h, = get("/public")
++check("an expired entry is fetched again", header(h, "x-cache") == "miss" && calls("/public") == 3, h.inspect)
++
++# s-max-age wins over max-age
++2.times { get("/smax") }
++check("s-max-age is the lifetime when present", calls("/smax") == 1)
++
++# never stored
++%w[/private /nocache /zero /star /notfound /big].each do |path|
++  2.times { get(path) }
++  check("#{path} is not stored", calls(path) == 2, calls(path).inspect)
++end
++_, h, b = get("/private")
++check("a response kept out of the store is a miss that keeps its Set-Cookie",
++      header(h, "x-cache") == "miss" && header(h, "set-cookie") == "s=1", h.inspect)
++_, _, b = get("/big")
++check("an oversized body is still served whole", b.bytesize == (1 << 20) + 1)
++
++# bypass: Range, upgrade, long URIs, disabled
++before = calls("/public")
++_, h, = get("/public", "Range: bytes=0-1\r\n")
++check("Range bypasses and says so", header(h, "x-cache") == "bypass", h.inspect)
++get("/public", "Upgrade: websocket\r\n")
++get("/public?" + "q" * 2048)
++check("Range, upgrade and a long URI reach the app", calls("/public") == before + 3, calls("/public").inspect)
++Tep::THRUSTER_CACHE.enabled = false
++get("/public")
++check("ROUNDHOUSE_RESPONSE_CACHE=0 turns it off", calls("/public") == before + 4)
++Tep::THRUSTER_CACHE.enabled = true
++
++# the query string is part of the key
++get("/public?a=1")
++get("/public?a=2")
++get("/public?a=1")
++check("each query string is its own entry", calls("/public") == before + 6, calls("/public").inspect)
++
++# Vary: keyed by the request's value for each named header
++a1 = get("/vary", "Accept: text/a\r\n")[2]
++b1 = get("/vary", "Accept: text/b\r\n")[2]
++a2 = get("/vary", "Accept: text/a\r\n")[2]
++b2 = get("/vary", "Accept: text/b\r\n")[2]
++check("variants are not crossed", a1 == "accept=text/a" && b1 == "accept=text/b", [a1, b1].inspect)
++check("each variant is stored once", a2 == a1 && b2 == b1 && calls("/vary") == 2, [a2, b2, calls("/vary")].inspect)
++
++# capacity: least recently used evicted first
++small = Tep::ThrusterCache.new(2000) # three ~630-byte entries fit, four do not
++Tep.send(:remove_const, :THRUSTER_CACHE)
++Tep.const_set(:THRUSTER_CACHE, small)
++4.times { |i| RESPONSES["/lru#{i}"] = [200, { "Cache-Control" => "public, max-age=60" }, "y" * 300] }
++%w[/lru0 /lru1 /lru2 /lru0 /lru3].each { |p| get(p) }
++get("/lru0")
++get("/lru1")
++check("the least recently used entry is evicted", calls("/lru0") == 1 && calls("/lru1") == 2,
++      [calls("/lru0"), calls("/lru1")].inspect)
++check("the store stays within its capacity", small.size <= small.capacity, small.size.inspect)
++
++total = CHECKS.length
++passed = CHECKS.count(true)
++puts "#{passed}/#{total} checks pass"
++puts "done"
+diff --git a/tests/tep_thruster_cache.rs b/tests/tep_thruster_cache.rs
+new file mode 100644
+index 000000000..5a99ebcfd
+--- /dev/null
++++ b/tests/tep_thruster_cache.rs
+@@ -0,0 +1,35 @@
++//! Tep::ThrusterCache: Thruster's response cache, in process, for the
++//! spinel binary (`runtime/spinel/tep/thruster_cache.rb`). Each rule the
++//! module's header claims, held to it through the real threaded server,
++//! by the driver `tests/tep_thruster_cache.rb` over the scripted socket
++//! in `tests/tep_server_harness.rb`. The CRuby overlay's copy of the same
++//! rules is `tests/thruster_cache.rs`.
++
++use std::path::Path;
++use std::process::Command;
++
++const CHECKS: usize = 25;
++
++#[test]
++fn the_binarys_response_cache_follows_thrusters_rules() {
++    let root = Path::new(env!("CARGO_MANIFEST_DIR"));
++    let out = Command::new("ruby")
++        .arg(root.join("tests/tep_thruster_cache.rb"))
++        .output()
++        .expect("ruby is on PATH");
++    let stdout = String::from_utf8_lossy(&out.stdout);
++    let stderr = String::from_utf8_lossy(&out.stderr);
++
++    // `done` is the last line; its absence means the driver died part
++    // way, which an absence of FAIL lines alone would read as a pass.
++    assert!(
++        stdout.lines().any(|l| l == "done"),
++        "driver did not finish\n=== stdout ===\n{stdout}\n=== stderr ===\n{stderr}"
++    );
++    let failed: Vec<&str> = stdout.lines().filter(|l| l.starts_with("FAIL")).collect();
++    assert!(failed.is_empty(), "{}\n=== stdout ===\n{stdout}", failed.join("\n"));
++    assert!(
++        stdout.lines().any(|l| l == format!("{CHECKS}/{CHECKS} checks pass")),
++        "fewer checks ran than the driver makes\n=== stdout ===\n{stdout}"
++    );
++}

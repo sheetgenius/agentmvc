@@ -1,0 +1,87 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 226B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/conduit-v10-toolchain:diagnostic
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/5] FROM docker.io/library/conduit-v10-toolchain:diagnostic
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 33B done
+#5 DONE 0.0s
+
+#6 [2/5] COPY analyze.c /src/spinel/src/analyze.c
+#6 CACHED
+
+#7 [3/5] WORKDIR /src/spinel
+#7 CACHED
+
+#8 [4/5] RUN touch src/analyze.c && make -j4 CC=clang && make install -j4 CC=clang
+#8 0.549 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze.c -o build/csrc/analyze.o
+#8 22.57 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  build/csrc/node_table.o build/csrc/types.o build/csrc/compiler.o build/csrc/ffi_spec.o build/csrc/analyze.o build/csrc/analyze_util.o build/csrc/analyze_infer.o build/csrc/analyze_infer_recv.o build/csrc/analyze_cext.o build/csrc/analyze_scope.o build/csrc/analyze_pass.o build/csrc/analyze_desugar.o build/csrc/analyze_nil.o build/csrc/analyze_cls.o build/csrc/analyze_arm.o build/csrc/analyze_const.o build/csrc/analyze_share.o build/csrc/repr.o build/csrc/holder.o build/csrc/codegen.o build/csrc/codegen_util.o build/csrc/ty_traits_check.o build/csrc/codegen_fold.o build/csrc/codegen_call.o build/csrc/codegen_call_poly.o build/csrc/codegen_call_method.o build/csrc/codegen_call_io.o build/csrc/codegen_call_kernel.o build/csrc/codegen_call_exception.o build/csrc/codegen_call_module.o build/csrc/codegen_call_string.o build/csrc/codegen_call_class.o build/csrc/codegen_call_operator.o build/csrc/codegen_call_object.o build/csrc/codegen_ops.o build/csrc/codegen_call_concurrency.o build/csrc/codegen_call_numeric.o build/csrc/codegen_call_hash.o build/csrc/codegen_call_array.o build/csrc/codegen_view.o build/csrc/builtin_ops.o build/csrc/builtin_names.o build/csrc/codegen_call_recv.o build/csrc/codegen_iter.o build/csrc/call_plan.o build/csrc/value_pos.o build/csrc/codegen_poly_plan.o build/csrc/share_check.o build/csrc/share_plan.o build/csrc/codegen_str.o build/csrc/codegen_expr.o build/csrc/codegen_stmt.o build/csrc/csplit.o build/csrc/main.o build/csrc/decide.o build/csrc/sp_parse_lib.o build/csrc/re_lit_check.o build/regexp/re_compile.o build/regexp/re_exec.o build/regexp/re_utf8.o build/regexp/unicase.o build/regexp/re_spinel.o build/libprism.a build/csrc/rbs_map.o build/librbs.a  -lm -lcrypt  -o bin/spinel
+#8 22.67 bin/spinel tools/doctor.rb -o bin/spinel-doctor
+#8 22.67 bin/spinel tools/reduce.rb -o bin/spinel-reduce
+#8 22.67 bin/spinel tools/flatten.rb -o bin/spinel-flatten
+#8 22.67 bin/spinel tools/diff.rb -o bin/spinel-diff
+#8 23.29 tools/flatten.rb -> bin/spinel-flatten
+#8 23.29 bin/spinel tools/bisect.rb -o bin/spinel-bisect
+#8 23.90 tools/reduce.rb -> bin/spinel-reduce
+#8 23.90 bin/spinel tools/cext-build.rb -o bin/spinel-cext-build
+#8 24.01 tools/doctor.rb -> bin/spinel-doctor
+#8 24.42 tools/diff.rb -> bin/spinel-diff
+#8 27.08 tools/bisect.rb -> bin/spinel-bisect
+#8 32.39 tools/cext-build.rb -> bin/spinel-cext-build
+#8 32.39 bin/spinel -I build tools/spin.rb -o bin/spin
+#8 43.62 tools/spin.rb -> bin/spin
+#8 43.62 build/spinel_rbs_extract -> bin/spinel_rbs_extract
+#8 43.95 install -d /usr/local/lib/spinel/lib
+#8 43.95 install -m 755 bin/spinel            /usr/local/lib/spinel/spinel
+#8 43.96 install -m 755 bin/spin             /usr/local/lib/spinel/spin
+#8 43.96 install -m 644 lib/libspinel_rt.a    /usr/local/lib/spinel/lib/
+#8 43.96 install -m 644 lib/libspinel_rt_mt.a /usr/local/lib/spinel/lib/
+#8 43.96 install -m 644 lib/libspinel_cext_rt.a lib/libspinel_cext_rt_mt.a /usr/local/lib/spinel/lib/
+#8 43.96 install -d /usr/local/lib/spinel/include/ruby /usr/local/lib/spinel/tools/cext /usr/local/lib/spinel/tools/spin
+#8 43.97 install -m 644 include/ruby.h /usr/local/lib/spinel/include/
+#8 43.97 for h in include/ruby/*.h; do install -m 644 $h /usr/local/lib/spinel/include/ruby/; done
+#8 43.97 install -m 644 tools/cext/recorder.c tools/cext/recorder.h /usr/local/lib/spinel/tools/cext/
+#8 43.97 install -m 644 tools/cext-record.rb tools/cext-build.rb tools/cext-extconf.rb /usr/local/lib/spinel/tools/
+#8 43.97 install -m 644 tools/spin/toml.rb /usr/local/lib/spinel/tools/spin/
+#8 43.97 for h in lib/*.h; do install -m 644 $h /usr/local/lib/spinel/lib/; done
+#8 43.98 install -d /usr/local/lib/spinel/lib/spinel
+#8 43.98 install -m 644 lib/spinel/runtime.h  /usr/local/lib/spinel/lib/spinel/
+#8 43.98 install -d /usr/local/lib/spinel/lib/wasi/sys
+#8 43.98 for h in lib/wasi/*.h; do install -m 644 $h /usr/local/lib/spinel/lib/wasi/; done
+#8 43.98 for h in lib/wasi/sys/*.h; do install -m 644 $h /usr/local/lib/spinel/lib/wasi/sys/; done
+#8 43.99 rm -rf /usr/local/lib/spinel/packages
+#8 44.01 cp -r packages /usr/local/lib/spinel/packages
+#8 44.03 rm -rf /usr/local/lib/spinel/builtins
+#8 44.03 cp -r builtins /usr/local/lib/spinel/builtins
+#8 44.03 rm -rf /usr/local/lib/spinel/packages/*/build
+#8 44.04 chmod -R a+rX /usr/local/lib/spinel/packages /usr/local/lib/spinel/builtins
+#8 44.04 install -d /usr/local/bin
+#8 44.04 ln -sf /usr/local/lib/spinel/spinel /usr/local/bin/spinel
+#8 44.04 ln -sf /usr/local/lib/spinel/spin   /usr/local/bin/spin
+#8 44.04 for t in doctor reduce flatten diff bisect; do \
+#8 44.04   install -m 755 bin/spinel-$t /usr/local/bin/spinel-$t; \
+#8 44.04 done
+#8 44.05 install -m 755 bin/spinel-cext-build /usr/local/lib/spinel/spinel-cext-build
+#8 44.05 ln -sf /usr/local/lib/spinel/spinel-cext-build /usr/local/bin/spinel-cext-build
+#8 DONE 44.1s
+
+#9 [5/5] WORKDIR /work
+#9 DONE 0.1s
+
+#10 exporting to image
+#10 exporting layers 0.1s done
+#10 writing image sha256:85cd7ec24976eeb0189dd93bcb43acb2bf4026f2010a4e4fa9783b8fb87f92d6 done
+#10 naming to docker.io/library/conduit-v10-toolchain:without-91 done
+#10 DONE 0.2s

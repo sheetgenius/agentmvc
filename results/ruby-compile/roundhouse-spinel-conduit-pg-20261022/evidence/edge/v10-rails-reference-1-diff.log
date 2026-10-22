@@ -1,0 +1,17 @@
+DIFF update_email_spaces: 200 {"user": {"email": "   ", "token": "<token>", "username": "u14", "bio": null, "image": null}}
+     vs 422 {"errors": {"email": ["can't be blank"]}}
+DIFF after_email_spaces: 200 {"user": {"email": "   ", "token": "<token>", "username": "u14", "bio": null, "image": null}}
+     vs 200 {"user": {"email": "u14@example.com", "token": "<token>", "username": "u14", "bio": null, "image": null}}
+DIFF login_email_spaces_password123: 401 {"errors": {"credentials": ["invalid"]}}
+     vs 200 {"user": {"email": "u14@example.com", "token": "<token>", "username": "u14", "bio": null, "image": null}}
+DIFF update_password_null: 422 {"errors": {"password": ["can't be blank"]}}
+     vs 422 {"errors": {"password": ["can't be blank", "can't be blank"]}}
+DIFF update_password_number: 200 {"user": {"email": "u20@example.com", "token": "<token>", "username": "u20", "bio": null, "image": null}}
+     vs 500 {"status": 500, "error": "Internal Server Error"}
+DIFF login_password_number_password123: 401 {"errors": {"credentials": ["invalid"]}}
+     vs 200 {"user": {"email": "u20@example.com", "token": "<token>", "username": "u20", "bio": null, "image": null}}
+DIFF login_password_number_123456789: 200 {"user": {"email": "u20@example.com", "token": "<token>", "username": "u20", "bio": null, "image": null}}
+     vs 401 {"errors": {"credentials": ["invalid"]}}
+DIFF update_malformed: 400 {"_raw": "<h1>400 Bad Request</h1>"}
+     vs 400 {"errors": {"body": ["is invalid"]}}
+8 of 166 differ (conduit-v10-app:compiled vs conduit-v10-rails:reference-1)

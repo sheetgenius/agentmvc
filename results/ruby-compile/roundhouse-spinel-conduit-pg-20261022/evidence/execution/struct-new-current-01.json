@@ -1,0 +1,24 @@
+{
+  "label": "struct-new-current-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-struct-new-current-01",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/regressions/struct-new-argument:/work/probes",
+    "-w",
+    "/work/probes",
+    "conduit-v10-toolchain:diagnostic",
+    "python3",
+    "run.py",
+    "results-current.json"
+  ],
+  "started": "2026-10-22T10:36:37.128276+00:00",
+  "finished": "2026-10-22T10:39:48.160403+00:00",
+  "elapsed_seconds": 191.029,
+  "exit": 0,
+  "log": "evidence/execution/struct-new-current-01.log",
+  "heavy_lock": true
+}

@@ -1,0 +1,23 @@
+{
+  "label": "thruster-min-context-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-thruster-min-context",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/regressions/thruster-cache:/work/probe",
+    "-w",
+    "/work/probe",
+    "conduit-v10-toolchain:e2c34205cf6d",
+    "sh",
+    "-c",
+    "for f in with-other-any.rb with-cache.rb; do echo \"$f\"; ruby \"$f\"; spinel --cc=clang \"$f\" -o /tmp/probe && /tmp/probe; done"
+  ],
+  "started": "2026-10-22T09:10:34.104926+00:00",
+  "finished": "2026-10-22T09:10:35.339417+00:00",
+  "elapsed_seconds": 1.234,
+  "exit": 1,
+  "log": "evidence/execution/thruster-min-context-01.log"
+}

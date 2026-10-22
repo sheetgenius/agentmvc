@@ -1,0 +1,309 @@
+commit 6141f959486b453e3f168667684b9d2fca2399bf
+Author:     bunnykong <[redacted-email]>
+AuthorDate: Sat Oct 10 05:06:46 2026 +0800
+Commit:     bunnykong <[redacted-email]>
+CommitDate: Sat Oct 10 05:06:46 2026 +0800
+
+    Keep the receiver's type for reload and lock!
+    
+    Fixes #721. #536 classified reload as the shared runtime's Base return,
+    and #671 copied that classification into lock!, so a model method called
+    on either result stopped resolving.
+    
+    Register both methods with the model's own type. Ruby-family emission
+    adds concrete forwarders that call the inherited operation and answer
+    self, keeping the emitted RBS promise true when Spinel loads the runtime's
+    Base declarations. Preserve source overrides and leave the save!/destroy
+    return classifications alone.
+    
+    Cover both method chains, direct returns, identity and refreshed attributes
+    on emitted Ruby and native Spinel with RBS seeds. Replace reload's old
+    Base-return expectation with receiver-return coverage; retain the save!,
+    destroy and destroy! regressions.
+    
+    Co-Authored-By: Claude Opus 5.5 <[redacted-email]>
+
+diff --git a/src/analyze/mod.rs b/src/analyze/mod.rs
+index 1adeae47e..7bc396493 100644
+--- a/src/analyze/mod.rs
++++ b/src/analyze/mod.rs
+@@ -699,7 +699,15 @@ impl Analyzer {
+                     continue;
+                 }
+                 let Some(kind) = entry.return_kind else { continue };
+-                cls.instance_methods.insert(Symbol::from(entry.name), instantiate(kind));
++                // The shared runtime types these as `() -> Base`, but in Rails
++                // `reload` and `lock!` answer `self`: keep the receiver's own
++                // class so its model methods still resolve on the result.
++                let ret = if matches!(entry.name, "reload" | "lock!") {
++                    self_ty.clone()
++                } else {
++                    instantiate(kind)
++                };
++                cls.instance_methods.insert(Symbol::from(entry.name), ret);
+             }
+             // AR instance methods not (yet) in the catalog: dirty-tracking
+             // snapshots, mass assignment, marked-for-destruction, and the
+diff --git a/src/emit/ruby.rs b/src/emit/ruby.rs
+index cb9098328..36dea1525 100644
+--- a/src/emit/ruby.rs
++++ b/src/emit/ruby.rs
+@@ -236,6 +236,7 @@ pub fn emit_lowered_models(app: &App) -> Vec<EmittedFile> {
+         app,
+         crate::lower::model_to_library::Materialization::Emit,
+     );
++    library::preserve_record_receiver_returns(&mut lcs, app);
+     // The sqlite statement handle `Db.prepare` returns is a per-target
+     // `Db` primitive: an integer cursor on most adapters (the shared
+     // model lowerer's `Ty::Int` default), but an opaque FFI `void *` on
+diff --git a/src/emit/ruby/library.rs b/src/emit/ruby/library.rs
+index 76e3750ce..c28421920 100644
+--- a/src/emit/ruby/library.rs
++++ b/src/emit/ruby/library.rs
+@@ -19,6 +19,76 @@ use crate::ident::{ClassId, Symbol, VarId};
+ use crate::span::Span;
+ use crate::ty::Ty;
+ 
++/// Base's shared methods return Base in the runtime sidecar. A concrete
++/// forwarder discards that ABI result and returns its own `self`, so the
++/// model type promised by analysis is also true with Spinel's RBS seeds.
++pub(super) fn preserve_record_receiver_returns(lcs: &mut [LibraryClass], app: &App) {
++    let templates = crate::runtime_src::parse_methods(
++        "def reload\n  super()\n  self\nend\ndef lock!(lock = nil)\n  super(lock)\n  self\nend\n",
++    ).expect("receiver-return forwarders parse");
++    for lc in lcs {
++        if !app.models.iter().any(|m| m.name == lc.name && app.schema.tables.contains_key(&m.table.0)) {
++            continue;
++        }
++        let self_ty = Ty::Class { id: lc.name.clone(), args: vec![] };
++        for template in &templates {
++            if lc.methods.iter().any(|m| m.name == template.name && m.receiver == MethodReceiver::Instance)
++                || record_return_overridden(app, &lc.name, template.name.as_str())
++            {
++                continue;
++            }
++            let mut method = template.clone();
++            method.name_span = Span::synthetic();
++            method.enclosing_class = Some(lc.name.0.clone());
++            method.body.ty = Some(self_ty.clone());
++            let params = method.params.iter().map(|p| crate::ty::Param {
++                name: p.name.clone(),
++                ty: Ty::Union { variants: vec![Ty::Bool, Ty::Str, Ty::Nil] },
++                kind: crate::ty::ParamKind::Optional,
++            }).collect();
++            method.signature = Some(Ty::Fn {
++                params,
++                ret: Box::new(self_ty.clone()),
++                block: None,
++                effects: crate::effect::EffectSet::default(),
++            });
++            lc.methods.push(method);
++        }
++    }
++}
++
++/// Source overrides, including those on ApplicationRecord or a mixin,
++/// may return a different object. Do not interpose a self-returning wrapper.
++fn record_return_overridden(app: &App, class: &ClassId, method: &str) -> bool {
++    let mut pending = vec![class.clone()];
++    let mut seen = BTreeSet::new();
++    while let Some(id) = pending.pop() {
++        if !seen.insert(id.clone()) { continue; }
++        let relevant = |m: &MethodDef| m.receiver == MethodReceiver::Instance
++            && (m.name.as_str() == method || (method == "lock!" && m.name.as_str() == "reload"));
++        if let Some(model) = app.models.iter().find(|m| m.name == id) {
++            if model.methods().any(relevant) { return true; }
++            pending.extend(model.parent.iter().cloned());
++            for item in &model.body {
++                let crate::dialect::ModelBodyItem::Unknown { expr, .. } = item else { continue };
++                let ExprNode::Send { recv: None, method, args, .. } = &*expr.node else { continue };
++                if method.as_str() != "include" { continue; }
++                for arg in args {
++                    if let ExprNode::Const { path } = &*arg.node {
++                        pending.push(ClassId(Symbol::from(path.iter().map(Symbol::as_str).collect::<Vec<_>>().join("::"))));
++                    }
++                }
++            }
++        }
++        if let Some(lc) = app.library_classes.iter().find(|lc| lc.name == id) {
++            if lc.methods.iter().any(relevant) { return true; }
++            pending.extend(lc.parent.iter().cloned());
++            pending.extend(lc.includes.iter().cloned());
++        }
++    }
++    false
++}
++
+ pub(super) fn emit_library_class_decls(app: &App) -> Vec<EmittedFile> {
+     let mut lcs: Vec<LibraryClass> = app.library_classes.clone();
+     // A block-taking tag helper gains a `<name>_into(io, …)` variant
+diff --git a/tests/reload_receiver.rs b/tests/reload_receiver.rs
+new file mode 100644
+index 000000000..9fe3e1713
+--- /dev/null
++++ b/tests/reload_receiver.rs
+@@ -0,0 +1,77 @@
++//! `reload` and `lock!` answer their receiver, so model-defined methods
++//! still resolve on the result.
++#[path = "support/emit_and_run.rs"]
++mod emit_and_run;
++
++const WIDGET: &str = "class Widget < ApplicationRecord
++  def label
++    name
++  end
++  def self.refreshed_label(id)
++    find(id).reload.label
++  end
++  def self.locked_label(id)
++    find(id).lock!.label
++  end
++end
++";
++
++const ASSERTIONS: &str = r#"
++widget = Widget.create!(name: 'fresh')
++raise unless Widget.refreshed_label(widget.id) == 'fresh'
++raise unless Widget.locked_label(widget.id) == 'fresh'
++stamp = WidgetStamp.new
++raise unless stamp.refreshed(widget.id).label == 'fresh'
++raise unless stamp.locked(widget.id).label == 'fresh'
++Db.exec("UPDATE widgets SET name = 'reloaded' WHERE id = #{widget.id}")
++raise unless widget.reload.equal?(widget) && widget.label == 'reloaded'
++Db.exec("UPDATE widgets SET name = 'locked' WHERE id = #{widget.id}")
++raise unless widget.lock!.equal?(widget) && widget.label == 'locked'
++"#;
++
++fn example() -> emit_and_run::Overlay {
++    emit_and_run::empty_app()
++        .write("db/schema.rb", "ActiveRecord::Schema.define do\n  create_table :widgets do |t|\n    t.string :name\n  end\nend\n")
++        .write("app/models/application_record.rb", "class ApplicationRecord < ActiveRecord::Base\n  primary_abstract_class\nend\n")
++        .write("app/models/widget.rb", WIDGET)
++        // A tail call also emits a model return signature. Exercise it
++        // natively: the inherited runtime methods are declared on Base.
++        .write("app/models/widget_stamp.rb", "class WidgetStamp\n  def refreshed(id)\n    Widget.find(id).reload\n  end\n  def locked(id)\n    Widget.find(id).lock!\n  end\nend\n")
++        .write("app/controllers/application_controller.rb", "class ApplicationController < ActionController::API\nend\n")
++        .write("config/routes.rb", "Rails.application.routes.draw do\nend\n")
++}
++
++#[test]
++fn reload_and_lock_keep_the_receiver_type_and_run() {
++    example().run_ruby(ASSERTIONS).assert_passes();
++}
++
++#[test]
++fn reload_and_lock_sidecars_keep_the_receiver_type() {
++    let (emitted, errors) = example().emit(roundhouse::project::BuildTarget::Spinel);
++    assert!(errors.is_empty(), "{errors:?}");
++    let widget = std::fs::read_to_string(emitted.join("app/models/widget.rbs")).unwrap();
++    assert!(widget.contains("def reload: () -> Widget"), "{widget}");
++    assert!(widget.lines().any(|line| line.contains("def lock!:") && line.ends_with("-> Widget")), "{widget}");
++    let stamp = std::fs::read_to_string(emitted.join("app/models/widget_stamp.rbs")).unwrap();
++    for method in ["refreshed", "locked"] {
++        assert!(stamp.lines().any(|line| {
++            line.trim_start().starts_with(&format!("def {method}:")) && line.ends_with("-> Widget")
++        }), "{stamp}");
++    }
++}
++
++#[test]
++fn source_reload_override_is_not_wrapped() {
++    example()
++        .write("app/models/application_record.rb", "class ApplicationRecord < ActiveRecord::Base\n  primary_abstract_class\n  def reload\n    Widget.create!(name: 'override')\n  end\nend\n")
++        .run_ruby("widget = Widget.create!(name: 'original')\nraise if widget.reload.equal?(widget)\nraise unless Widget.refreshed_label(widget.id) == 'override'\nraise unless Widget.locked_label(widget.id) == 'override'\n")
++        .assert_passes();
++}
++
++#[test]
++#[ignore = "requires the native Spinel compiler"]
++fn reload_and_lock_keep_the_receiver_type_natively() {
++    let script = format!("Db.configure(\":memory:\")\nDb.exec(\"CREATE TABLE widgets (id INTEGER PRIMARY KEY, name TEXT)\")\n{ASSERTIONS}");
++    example().run_spinel_with_rbs(&script).assert_passes();
++}
+diff --git a/tests/save_bang_return_type_matches_runtime.rs b/tests/save_bang_return_type_matches_runtime.rs
+index f308f2d40..3cb16f8fe 100644
+--- a/tests/save_bang_return_type_matches_runtime.rs
++++ b/tests/save_bang_return_type_matches_runtime.rs
+@@ -1,14 +1,14 @@
+ //! Regression test for roundhouse#296.
+ //!
+-//! `save!`/`destroy`/`destroy!`/`reload` are declared `() -> Base` in
++//! `save!`/`destroy`/`destroy!` are declared `() -> Base` in
+ //! `runtime/ruby/active_record/base.rbs`, literally — not a self-type
+ //! (RBS self-types the parser doesn't read yet, per that file's own
+-//! comment). Unlike `find`/`create!`, these four are never
++//! comment). Unlike `find`/`create!`, these three are never
+ //! monomorphized per model at emit time: every model shares the one
+ //! compiled `Base` method, which returns a `Base`-typed value no
+ //! matter which subclass calls it.
+ //!
+-//! Before the fix, the catalog seeded all four as `ReturnKind::SelfType`
++//! Before the fix, the catalog seeded all three as `ReturnKind::SelfType`
+ //! (the receiver's own class), so a plain method whose tail calls one
+ //! of them — `WidgetStamp#run` below, lifted from the issue — got an
+ //! emitted `.rbs` claiming `-> Widget`. Spinel's AOT build refused that:
+@@ -17,6 +17,8 @@
+ //! binary required — see `tests/testing.md`'s ".rbs-assertion" lane),
+ //! so it fails on main for the same reason the real build does: a
+ //! false claim in the emitted signature, not merely a missing feature.
++//! `reload` and `lock!` now have concrete receiver-returning forwarders;
++//! `tests/reload_receiver.rs` checks their sidecars and native execution.
+ 
+ #[path = "support/emit_and_run.rs"]
+ mod emit_and_run;
+@@ -78,14 +80,13 @@ fn save_bang_tail_seeds_the_runtime_base_type_not_the_record_class() {
+     );
+ }
+ 
+-/// `destroy`, `destroy!` and `reload` are declared `() -> Base` the
++/// `destroy` and `destroy!` are declared `() -> Base` the
+ /// same way `save!` is (same file, same reasoning) — same bug, same fix.
+ #[test]
+-fn destroy_destroy_bang_and_reload_tails_also_seed_the_runtime_base_type() {
++fn destroy_and_destroy_bang_tails_keep_the_runtime_base_type() {
+     for (method, name) in [
+         ("destroy", "widget_destroy"),
+         ("destroy!", "widget_destroy_bang"),
+-        ("reload", "widget_reload"),
+     ] {
+         let app = widget_app().write(
+             "app/models/widget_stamp.rb",
+diff --git a/tests/support/emit_and_run.rs b/tests/support/emit_and_run.rs
+index 0ad48acf0..fa8e5e88e 100644
+--- a/tests/support/emit_and_run.rs
++++ b/tests/support/emit_and_run.rs
+@@ -163,20 +163,31 @@ impl Overlay {
+     /// Compile the unchanged Spinel output and run its native binary.
+     /// The consumer boots libraries, not the HTTP server or a database.
+     pub fn run_spinel(self, script: &str) -> Run {
++        self.run_spinel_with_flags(script, &[])
++    }
++
++    /// Also enforce the emitted sidecars, as the shipped Makefile does.
++    pub fn run_spinel_with_rbs(self, script: &str) -> Run {
++        self.run_spinel_with_flags(script, &["--rbs", "."])
++    }
++
++    fn run_spinel_with_flags(self, script: &str, flags: &[&str]) -> Run {
+         let (emitted, errors) = self.emit_tree(BuildTarget::Spinel);
+         std::fs::write(emitted.join("contract.rb"), format!("require_relative \"boot\"\n{script}"))
+             .expect("write native consumer");
+         let compiler = std::env::var("SPINEL").unwrap_or_else(|_| "spinel".into());
+-        let compiled = Command::new(&compiler).args(["contract.rb", "-o", "contract"])
++        let command = std::iter::once(compiler.as_str()).chain(flags.iter().copied())
++            .chain(["contract.rb", "-o", "contract"]).collect::<Vec<_>>().join(" ");
++        let compiled = Command::new(&compiler).args(flags).args(["contract.rb", "-o", "contract"])
+             .current_dir(&emitted).output().expect("spawn spinel");
+         std::fs::write(emitted.join("compile.stdout"), &compiled.stdout).expect("write compile stdout");
+         std::fs::write(emitted.join("compile.stderr"), &compiled.stderr).expect("write compile stderr");
+         if !compiled.status.success() {
+-            return Run::new(format!("{compiler} contract.rb -o contract"), emitted, errors, compiled);
++            return Run::new(command, emitted, errors, compiled);
+         }
+         let output = Command::new(emitted.join("contract")).current_dir(&emitted)
+             .output().expect("run native consumer");
+-        Run::new(format!("{compiler} contract.rb -o contract && ./contract"), emitted, errors, output)
++        Run::new(format!("{command} && ./contract"), emitted, errors, output)
+     }
+ 
+     /// Copy the fixture, apply the edits, analyze, and write the Ruby

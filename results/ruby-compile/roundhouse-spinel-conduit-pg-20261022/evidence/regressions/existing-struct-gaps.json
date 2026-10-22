@@ -1,0 +1,31 @@
+{
+  "classification": "existing Spinel gaps found while reducing patch 92; identical on v9 Spinel 6ca6d451b+91, the 449d8addb parent, 2c6d6b7ff and the v10 pin; no new patch",
+  "cases": [
+    {
+      "source": "struct-index-argument/class-new-generic.rb",
+      "ruby": "Room = Struct.new(:lock, :members); def build(klass, name) = klass.new(name.to_s); with Room[1, 2], a Filename class that appends to its String, and Digest::SHA256 in the program",
+      "cruby": "#<struct Room lock=\"a\", members=nil>",
+      "compiled": "#<struct Room lock=0, members=nil>",
+      "kind": "wrong value",
+      "results": "struct-index-argument/round2/results-{v9,parent,firstbad,current}.json"
+    },
+    {
+      "source": "struct-index-argument/digest-filename.rb and round3/combo-*.rb",
+      "ruby": "Holder.new(Room).param(:b) where param(name) is @params[name.to_s], with Room[1, 2], Filename and Digest in the program",
+      "cruby": "#<struct Room lock=\"b\", members=nil>",
+      "compiled": "nil",
+      "kind": "wrong value",
+      "results": "struct-index-argument/round2/, round3/"
+    },
+    {
+      "source": "struct-new-argument/int-then-string-index.rb",
+      "ruby": "6 lines: Room[1, 2] then Holder.new(Room).param(:b)",
+      "cruby": "#<struct Room lock=\"b\", members=nil>",
+      "compiled": "refused: undefined method '[]' for a Class: no class in the program defines a class method '[]'",
+      "inferred": "Holder @params: Class, param: (Symbol) -> void, Room @lock: Integer",
+      "kind": "refusal",
+      "results": "struct-new-argument/results-{v9,current}.json"
+    }
+  ],
+  "controls": "Without the Integer write (class-receiver.rb) or without Filename and Digest (round1/), the same calls compile and match CRuby."
+}

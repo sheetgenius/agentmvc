@@ -1,0 +1,127 @@
+commit 41bdb6615ff2cba0e79d0685cb1fd52e54057104
+Author:     Cursor Agent <[redacted-email]>
+AuthorDate: Thu Oct 22 06:52:52 2026 +0000
+Commit:     Cursor Agent <[redacted-email]>
+CommitDate: Thu Oct 22 06:52:52 2026 +0000
+
+    Audit StringQuery parity and route more parses through prism
+    
+    Pin RESERVED_LOCALS vs StringQuery::is_keyword (Prism is a superset;
+    do not replace the table yet). Send visibility through prism::parse so
+    syntax errors surface; classification scans use parse_silent.
+    
+    Co-Authored-By: Cursor <[redacted-email]>
+    
+    Co-authored-by: github <[redacted-email]>
+
+diff --git a/src/ingest/alba.rs b/src/ingest/alba.rs
+index 389081f7d..e8d8b6e7f 100644
+--- a/src/ingest/alba.rs
++++ b/src/ingest/alba.rs
+@@ -245,7 +245,7 @@ fn collect_resource_declarations(
+         {
+             continue;
+         }
+-        let parsed = ruby_prism::parse(source.text.as_bytes());
++        let parsed = super::prism::parse_silent(source.text.as_bytes());
+         let mut guard = SourceGuard {
+             resources,
+             counts: HashMap::new(),
+diff --git a/src/ingest/concern_accessors.rs b/src/ingest/concern_accessors.rs
+index 13e939fcc..38c78f2d8 100644
+--- a/src/ingest/concern_accessors.rs
++++ b/src/ingest/concern_accessors.rs
+@@ -192,7 +192,7 @@ fn validate_activation(
+         })))
+         .collect();
+     for (index, source) in app.sources.iter().enumerate().filter(|(_, s)| s.path.ends_with(".rb")) {
+-        let parsed = ruby_prism::parse(source.text.as_bytes());
++        let parsed = super::prism::parse_silent(source.text.as_bytes());
+         let root = parsed.node();
+         let bodies = find_all_classes_with_scope(&root).into_iter()
+             .filter_map(|(scope, class)| Some((scope, class_name_path(&class)?, class.body()?, false)))
+diff --git a/src/ingest/rake_tasks.rs b/src/ingest/rake_tasks.rs
+index b2484ff79..3340801a0 100644
+--- a/src/ingest/rake_tasks.rs
++++ b/src/ingest/rake_tasks.rs
+@@ -81,7 +81,7 @@ pub(crate) fn gap_diagnostics(app: &App) -> Vec<Diagnostic> {
+ }
+ 
+ fn classify(text: &str) -> Result<Hook, String> {
+-    let parsed = ruby_prism::parse(text.as_bytes());
++    let parsed = super::prism::parse_silent(text.as_bytes());
+     let root = parsed.node();
+     let Some(program) = root.as_program_node() else {
+         return Err("it is not a Ruby program".into());
+diff --git a/src/ingest/representable.rs b/src/ingest/representable.rs
+index e794ad604..09aa19b97 100644
+--- a/src/ingest/representable.rs
++++ b/src/ingest/representable.rs
+@@ -94,7 +94,7 @@ pub(super) fn lower_representable_decorators(
+         if !source.text.contains(DECORATOR) {
+             continue;
+         }
+-        let parsed = ruby_prism::parse(source.text.as_bytes());
++        let parsed = super::prism::parse_silent(source.text.as_bytes());
+         let mut found = Vec::new();
+         collect_classes(&parsed.node(), &mut Vec::new(), &mut found);
+         for (path, class) in found {
+diff --git a/src/ingest/visibility.rs b/src/ingest/visibility.rs
+index 71ba33f31..6b01b9cd7 100644
+--- a/src/ingest/visibility.rs
++++ b/src/ingest/visibility.rs
+@@ -183,7 +183,7 @@ impl Visibility {
+         source: &str,
+         file: &str,
+     ) -> HashMap<usize, MethodVisibility> {
+-        let parsed = ruby_prism::parse(source.as_bytes());
++        let parsed = super::prism::parse(source.as_bytes(), file);
+         let root = parsed.node();
+         let mut defaults = HashMap::new();
+         let bodies = super::util::find_all_classes_with_scope(&root)
+diff --git a/src/naming.rs b/src/naming.rs
+index 85b716898..3013221b5 100644
+--- a/src/naming.rs
++++ b/src/naming.rs
+@@ -541,3 +541,41 @@ pub(crate) fn is_sqlite_keyword(name: &str) -> bool {
+             | "vacuum" | "values" | "view" | "virtual" | "when" | "where" | "window" | "with" | "without"
+     )
+ }
++
++#[cfg(test)]
++mod string_query_parity {
++    use super::{is_reserved_local, RESERVED_LOCALS};
++    use ruby_prism::StringQuery;
++
++    /// Prism's `StringQuery::is_keyword` is a *superset* of
++    /// [`RESERVED_LOCALS`]: it also treats `__FILE__` / `__LINE__` /
++    /// `__ENCODING__` as keywords. Pseudo-vars stay in the table for
++    /// `safe_local` but are excluded from [`is_reserved_local`]. Until
++    /// those differences are modeled explicitly, do not replace the
++    /// table with StringQuery.
++    #[test]
++    fn reserved_locals_are_prism_keywords_but_prism_has_extras() {
++        for name in RESERVED_LOCALS {
++            assert_eq!(
++                StringQuery::new(name.as_bytes()).is_keyword(),
++                Ok(true),
++                "{name} should be a Prism keyword"
++            );
++        }
++        for magic in ["__FILE__", "__LINE__", "__ENCODING__"] {
++            assert_eq!(
++                StringQuery::new(magic.as_bytes()).is_keyword(),
++                Ok(true),
++                "{magic}"
++            );
++            assert!(
++                !RESERVED_LOCALS.contains(&magic),
++                "{magic} is intentionally absent from RESERVED_LOCALS"
++            );
++        }
++        for pseudo in ["self", "nil", "true", "false"] {
++            assert!(RESERVED_LOCALS.contains(&pseudo));
++            assert!(!is_reserved_local(pseudo));
++        }
++    }
++}

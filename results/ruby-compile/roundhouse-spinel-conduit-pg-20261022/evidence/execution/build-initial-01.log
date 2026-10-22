@@ -1,0 +1,1019 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.89kB done
+#1 DONE 0.1s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 2.9s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/ruby:4.0.7-slim-trixie
+#4 ...
+
+#5 [internal] load metadata for docker.io/library/rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546
+#5 DONE 2.0s
+
+#4 [internal] load metadata for docker.io/library/ruby:4.0.7-slim-trixie
+#4 DONE 5.1s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [builder  1/11] FROM docker.io/library/rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546
+#7 CACHED
+
+#8 [ruby407 1/1] FROM docker.io/library/ruby:4.0.7-slim-trixie@sha256:6c6b7b8c7d750604178aa60c2fa436890cd17c5695bdbd3213db2e4efbf98eb9
+#8 resolve docker.io/library/ruby:4.0.7-slim-trixie@sha256:6c6b7b8c7d750604178aa60c2fa436890cd17c5695bdbd3213db2e4efbf98eb9 0.0s done
+#8 sha256:6c6b7b8c7d750604178aa60c2fa436890cd17c5695bdbd3213db2e4efbf98eb9 10.32kB / 10.32kB done
+#8 sha256:3a7eef4cbb4190941ec5dac45ce019be4ec604da48d103de15c114644c7657ec 1.93kB / 1.93kB done
+#8 sha256:56fbc9d3e36ae291225221261a63ad0bd685a94e7374fbda024d4552b1d9166b 6.00kB / 6.00kB done
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 0B / 30.20MB 0.1s
+#8 sha256:24958a6deb00f6a19af128d1a400e1a82a53c0882146f25d757f4dec05d5f018 0B / 1.26MB 0.1s
+#8 sha256:973552da4b0dff368cb2bb1cef4c9e76b027d227e671b998ba3e00c85fac8e0d 0B / 189B 0.1s
+#8 ...
+
+#9 [internal] load build context
+#9 transferring context: 83.49MB 1.2s done
+#9 DONE 1.3s
+
+#8 [ruby407 1/1] FROM docker.io/library/ruby:4.0.7-slim-trixie@sha256:6c6b7b8c7d750604178aa60c2fa436890cd17c5695bdbd3213db2e4efbf98eb9
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 2.10MB / 30.20MB 2.1s
+#8 sha256:973552da4b0dff368cb2bb1cef4c9e76b027d227e671b998ba3e00c85fac8e0d 189B / 189B 2.1s done
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 0B / 49.52MB 2.2s
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 4.19MB / 30.20MB 2.4s
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 6.29MB / 30.20MB 3.0s
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 8.39MB / 30.20MB 3.5s
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 12.58MB / 30.20MB 4.2s
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 14.68MB / 30.20MB 4.5s
+#8 sha256:24958a6deb00f6a19af128d1a400e1a82a53c0882146f25d757f4dec05d5f018 1.05MB / 1.26MB 4.5s
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 17.83MB / 30.20MB 4.9s
+#8 sha256:24958a6deb00f6a19af128d1a400e1a82a53c0882146f25d757f4dec05d5f018 1.26MB / 1.26MB 4.8s done
+#8 sha256:147f10116f7eb27fc8fa80874c68399c17815e7a7ecc6b82a8172657bdedbfc1 0B / 142B 4.9s
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 19.92MB / 30.20MB 5.3s
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 22.02MB / 30.20MB 5.5s
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 24.12MB / 30.20MB 5.7s
+#8 sha256:147f10116f7eb27fc8fa80874c68399c17815e7a7ecc6b82a8172657bdedbfc1 142B / 142B 5.6s done
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 26.21MB / 30.20MB 6.0s
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 28.31MB / 30.20MB 6.2s
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 30.20MB / 30.20MB 6.4s
+#8 sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 30.20MB / 30.20MB 6.4s done
+#8 extracting sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 0.1s
+#8 extracting sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62 0.5s done
+#8 extracting sha256:24958a6deb00f6a19af128d1a400e1a82a53c0882146f25d757f4dec05d5f018 0.0s done
+#8 extracting sha256:973552da4b0dff368cb2bb1cef4c9e76b027d227e671b998ba3e00c85fac8e0d done
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 3.15MB / 49.52MB 7.4s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 6.29MB / 49.52MB 7.7s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 9.44MB / 49.52MB 8.3s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 12.58MB / 49.52MB 9.1s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 16.78MB / 49.52MB 9.7s
+#8 ...
+
+#10 [builder  2/11] RUN apt-get update && apt-get install -y --no-install-recommends     clang make git pkg-config libsqlite3-dev sqlite3 libjemalloc-dev     libpq-dev postgresql-client curl ca-certificates libssl-dev libcrypt-dev     libyaml-0-2 libgmp10 file time && rm -rf /var/lib/apt/lists/*
+#10 0.896 Hit:1 http://deb.debian.org/debian trixie InRelease
+#10 1.074 Get:2 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]
+#10 1.663 Get:3 http://deb.debian.org/debian-security trixie-security InRelease [43.4 kB]
+#10 2.038 Get:4 http://deb.debian.org/debian trixie/main arm64 Packages [9614 kB]
+#10 ...
+
+#8 [ruby407 1/1] FROM docker.io/library/ruby:4.0.7-slim-trixie@sha256:6c6b7b8c7d750604178aa60c2fa436890cd17c5695bdbd3213db2e4efbf98eb9
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 19.92MB / 49.52MB 10.3s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 23.07MB / 49.52MB 10.6s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 26.21MB / 49.52MB 11.0s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 29.36MB / 49.52MB 11.3s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 32.51MB / 49.52MB 11.8s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 35.65MB / 49.52MB 12.4s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 41.94MB / 49.52MB 13.0s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 45.09MB / 49.52MB 13.5s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 48.23MB / 49.52MB 13.9s
+#8 sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 49.52MB / 49.52MB 14.0s done
+#8 extracting sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a
+#8 extracting sha256:d156065961a6d707cec954f66e371724e1dd7b5725698776e08e6c4aa4d35f1a 0.5s done
+#8 extracting sha256:147f10116f7eb27fc8fa80874c68399c17815e7a7ecc6b82a8172657bdedbfc1 done
+#8 DONE 14.9s
+
+#10 [builder  2/11] RUN apt-get update && apt-get install -y --no-install-recommends     clang make git pkg-config libsqlite3-dev sqlite3 libjemalloc-dev     libpq-dev postgresql-client curl ca-certificates libssl-dev libcrypt-dev     libyaml-0-2 libgmp10 file time && rm -rf /var/lib/apt/lists/*
+#10 18.27 Get:5 http://deb.debian.org/debian trixie-updates/main arm64 Packages [4424 B]
+#10 18.45 Get:6 http://deb.debian.org/debian-security trixie-security/main arm64 Packages [271 kB]
+#10 18.78 Fetched 9980 kB in 19s (536 kB/s)
+#10 18.78 Reading package lists...
+#10 19.00 Reading package lists...
+#10 19.22 Building dependency tree...
+#10 19.28 Reading state information...
+#10 19.38 make is already the newest version (4.4.1-2).
+#10 19.38 git is already the newest version (1:2.47.3-0+deb13u1).
+#10 19.38 libsqlite3-dev is already the newest version (3.46.1-7+deb13u2).
+#10 19.38 libpq-dev is already the newest version (17.11-0+deb13u1).
+#10 19.38 libcrypt-dev is already the newest version (1:4.4.38-1).
+#10 19.38 libcrypt-dev set to manually installed.
+#10 19.38 libyaml-0-2 is already the newest version (0.2.5-2).
+#10 19.38 libyaml-0-2 set to manually installed.
+#10 19.38 libgmp10 is already the newest version (2:6.3.0+dfsg-3).
+#10 19.38 libgmp10 set to manually installed.
+#10 19.38 file is already the newest version (1:5.46-5).
+#10 19.38 The following additional packages will be installed:
+#10 19.38   clang-19 libclang-common-19-dev libclang-cpp19 libclang1-19
+#10 19.38   libcurl3t64-gnutls libcurl4-openssl-dev libcurl4t64 libgc1 libjemalloc2
+#10 19.38   libllvm19 libobjc-14-dev libobjc4 libssl3t64 libz3-4 llvm-19-linker-tools
+#10 19.39   openssl openssl-provider-legacy postgresql-client-17
+#10 19.39   postgresql-client-common
+#10 19.39 Suggested packages:
+#10 19.39   clang-19-doc wasi-libc postgresql-17 postgresql-doc-17 sqlite3-doc
+#10 19.39 Recommended packages:
+#10 19.39   llvm-19-dev clang-tools-19 libclang-rt-19-dev
+#10 19.47 The following NEW packages will be installed:
+#10 19.47   clang clang-19 libclang-common-19-dev libclang-cpp19 libclang1-19 libgc1
+#10 19.47   libjemalloc-dev libjemalloc2 libllvm19 libobjc-14-dev libobjc4 libz3-4
+#10 19.47   llvm-19-linker-tools pkg-config postgresql-client postgresql-client-17
+#10 19.47   postgresql-client-common sqlite3 time
+#10 19.47 The following packages will be upgraded:
+#10 19.47   ca-certificates curl libcurl3t64-gnutls libcurl4-openssl-dev libcurl4t64
+#10 19.47   libssl-dev libssl3t64 openssl openssl-provider-legacy
+#10 19.88 9 upgraded, 19 newly installed, 0 to remove and 21 not upgraded.
+#10 19.88 Need to get 64.7 MB of archives.
+#10 19.88 After this operation, 293 MB of additional disk space will be used.
+#10 19.88 Get:1 http://deb.debian.org/debian-security trixie-security/main arm64 openssl-provider-legacy arm64 3.5.7-1~deb13u3 [314 kB]
+#10 20.98 Get:2 http://deb.debian.org/debian-security trixie-security/main arm64 libssl-dev arm64 3.5.7-1~deb13u3 [3399 kB]
+#10 22.30 Get:3 http://deb.debian.org/debian-security trixie-security/main arm64 libssl3t64 arm64 3.5.7-1~deb13u3 [2770 kB]
+#10 22.70 Get:4 http://deb.debian.org/debian-security trixie-security/main arm64 openssl arm64 3.5.7-1~deb13u3 [1473 kB]
+#10 23.35 Get:5 http://deb.debian.org/debian-security trixie-security/main arm64 ca-certificates all 20250419+deb13u1 [161 kB]
+#10 23.35 Get:6 http://deb.debian.org/debian trixie/main arm64 libz3-4 arm64 4.13.3-1 [7507 kB]
+#10 24.06 Get:7 http://deb.debian.org/debian trixie/main arm64 libllvm19 arm64 1:19.1.7-3+b1 [23.3 MB]
+#10 27.72 Get:8 http://deb.debian.org/debian trixie/main arm64 libclang-cpp19 arm64 1:19.1.7-3+b1 [12.0 MB]
+#10 29.91 Get:9 http://deb.debian.org/debian trixie/main arm64 libgc1 arm64 1:8.2.8-1 [241 kB]
+#10 29.93 Get:10 http://deb.debian.org/debian trixie/main arm64 libobjc4 arm64 14.2.0-19 [39.4 kB]
+#10 29.94 Get:11 http://deb.debian.org/debian trixie/main arm64 libobjc-14-dev arm64 14.2.0-19 [166 kB]
+#10 29.95 Get:12 http://deb.debian.org/debian trixie/main arm64 libclang-common-19-dev arm64 1:19.1.7-3+b1 [740 kB]
+#10 30.03 Get:13 http://deb.debian.org/debian trixie/main arm64 llvm-19-linker-tools arm64 1:19.1.7-3+b1 [1100 kB]
+#10 30.13 Get:14 http://deb.debian.org/debian trixie/main arm64 libclang1-19 arm64 1:19.1.7-3+b1 [6866 kB]
+#10 31.35 Get:15 http://deb.debian.org/debian trixie/main arm64 clang-19 arm64 1:19.1.7-3+b1 [113 kB]
+#10 31.36 Get:16 http://deb.debian.org/debian trixie/main arm64 clang arm64 1:19.0-63 [6244 B]
+#10 31.36 Get:17 http://deb.debian.org/debian-security trixie-security/main arm64 libcurl4-openssl-dev arm64 8.14.1-2+deb13u7 [496 kB]
+#10 31.41 Get:18 http://deb.debian.org/debian-security trixie-security/main arm64 curl arm64 8.14.1-2+deb13u7 [263 kB]
+#10 31.44 Get:19 http://deb.debian.org/debian-security trixie-security/main arm64 libcurl4t64 arm64 8.14.1-2+deb13u7 [361 kB]
+#10 31.47 Get:20 http://deb.debian.org/debian-security trixie-security/main arm64 libcurl3t64-gnutls arm64 8.14.1-2+deb13u7 [354 kB]
+#10 31.50 Get:21 http://deb.debian.org/debian trixie/main arm64 libjemalloc2 arm64 5.3.0-3 [216 kB]
+#10 31.53 Get:22 http://deb.debian.org/debian trixie/main arm64 libjemalloc-dev arm64 5.3.0-3 [356 kB]
+#10 31.56 Get:23 http://deb.debian.org/debian trixie/main arm64 pkg-config arm64 1.8.1-4 [14.0 kB]
+#10 31.64 Get:24 http://deb.debian.org/debian trixie/main arm64 postgresql-client-common all 278 [47.1 kB]
+#10 31.66 Get:25 http://deb.debian.org/debian trixie/main arm64 postgresql-client-17 arm64 17.11-0+deb13u1 [2019 kB]
+#10 31.87 Get:26 http://deb.debian.org/debian trixie/main arm64 postgresql-client all 17+278 [14.0 kB]
+#10 31.87 Get:27 http://deb.debian.org/debian trixie/main arm64 sqlite3 arm64 3.46.1-7+deb13u2 [373 kB]
+#10 31.90 Get:28 http://deb.debian.org/debian trixie/main arm64 time arm64 1.9-0.2+b1 [48.1 kB]
+#10 32.20 Preconfiguring packages ...
+#10 32.43 Fetched 64.7 MB in 12s (5211 kB/s)
+#10 32.44 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 26155 files and directories currently installed.)
+#10 32.50 Preparing to unpack .../openssl-provider-legacy_3.5.7-1~deb13u3_arm64.deb ...
+#10 32.54 Unpacking openssl-provider-legacy (3.5.7-1~deb13u3) over (3.5.7-1~deb13u2) ...
+#10 32.59 Setting up openssl-provider-legacy (3.5.7-1~deb13u3) ...
+#10 32.62 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 26155 files and directories currently installed.)
+#10 32.63 Preparing to unpack .../libssl-dev_3.5.7-1~deb13u3_arm64.deb ...
+#10 32.63 Unpacking libssl-dev:arm64 (3.5.7-1~deb13u3) over (3.5.7-1~deb13u2) ...
+#10 32.79 Preparing to unpack .../libssl3t64_3.5.7-1~deb13u3_arm64.deb ...
+#10 32.80 Unpacking libssl3t64:arm64 (3.5.7-1~deb13u3) over (3.5.7-1~deb13u2) ...
+#10 32.90 Setting up libssl3t64:arm64 (3.5.7-1~deb13u3) ...
+#10 32.93 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 26155 files and directories currently installed.)
+#10 32.94 Preparing to unpack .../00-openssl_3.5.7-1~deb13u3_arm64.deb ...
+#10 32.95 Unpacking openssl (3.5.7-1~deb13u3) over (3.5.7-1~deb13u2) ...
+#10 33.06 Preparing to unpack .../01-ca-certificates_20250419+deb13u1_all.deb ...
+#10 33.07 Unpacking ca-certificates (20250419+deb13u1) over (20250419) ...
+#10 33.18 Selecting previously unselected package libz3-4:arm64.
+#10 33.18 Preparing to unpack .../02-libz3-4_4.13.3-1_arm64.deb ...
+#10 33.19 Unpacking libz3-4:arm64 (4.13.3-1) ...
+#10 33.46 Selecting previously unselected package libllvm19:arm64.
+#10 33.46 Preparing to unpack .../03-libllvm19_1%3a19.1.7-3+b1_arm64.deb ...
+#10 33.46 Unpacking libllvm19:arm64 (1:19.1.7-3+b1) ...
+#10 33.86 Selecting previously unselected package libclang-cpp19.
+#10 33.86 Preparing to unpack .../04-libclang-cpp19_1%3a19.1.7-3+b1_arm64.deb ...
+#10 33.86 Unpacking libclang-cpp19 (1:19.1.7-3+b1) ...
+#10 34.12 Selecting previously unselected package libgc1:arm64.
+#10 34.13 Preparing to unpack .../05-libgc1_1%3a8.2.8-1_arm64.deb ...
+#10 34.13 Unpacking libgc1:arm64 (1:8.2.8-1) ...
+#10 34.16 Selecting previously unselected package libobjc4:arm64.
+#10 34.16 Preparing to unpack .../06-libobjc4_14.2.0-19_arm64.deb ...
+#10 34.16 Unpacking libobjc4:arm64 (14.2.0-19) ...
+#10 34.18 Selecting previously unselected package libobjc-14-dev:arm64.
+#10 34.18 Preparing to unpack .../07-libobjc-14-dev_14.2.0-19_arm64.deb ...
+#10 34.19 Unpacking libobjc-14-dev:arm64 (14.2.0-19) ...
+#10 34.21 Selecting previously unselected package libclang-common-19-dev:arm64.
+#10 34.21 Preparing to unpack .../08-libclang-common-19-dev_1%3a19.1.7-3+b1_arm64.deb ...
+#10 34.21 Unpacking libclang-common-19-dev:arm64 (1:19.1.7-3+b1) ...
+#10 34.28 Selecting previously unselected package llvm-19-linker-tools.
+#10 34.28 Preparing to unpack .../09-llvm-19-linker-tools_1%3a19.1.7-3+b1_arm64.deb ...
+#10 34.28 Unpacking llvm-19-linker-tools (1:19.1.7-3+b1) ...
+#10 34.35 Selecting previously unselected package libclang1-19.
+#10 34.35 Preparing to unpack .../10-libclang1-19_1%3a19.1.7-3+b1_arm64.deb ...
+#10 34.35 Unpacking libclang1-19 (1:19.1.7-3+b1) ...
+#10 34.58 Selecting previously unselected package clang-19.
+#10 34.58 Preparing to unpack .../11-clang-19_1%3a19.1.7-3+b1_arm64.deb ...
+#10 34.58 Unpacking clang-19 (1:19.1.7-3+b1) ...
+#10 34.62 Selecting previously unselected package clang.
+#10 34.62 Preparing to unpack .../12-clang_1%3a19.0-63_arm64.deb ...
+#10 34.62 Unpacking clang (1:19.0-63) ...
+#10 34.64 Preparing to unpack .../13-libcurl4-openssl-dev_8.14.1-2+deb13u7_arm64.deb ...
+#10 34.65 Unpacking libcurl4-openssl-dev:arm64 (8.14.1-2+deb13u7) over (8.14.1-2+deb13u5) ...
+#10 34.69 Preparing to unpack .../14-curl_8.14.1-2+deb13u7_arm64.deb ...
+#10 34.71 Unpacking curl (8.14.1-2+deb13u7) over (8.14.1-2+deb13u5) ...
+#10 34.75 Preparing to unpack .../15-libcurl4t64_8.14.1-2+deb13u7_arm64.deb ...
+#10 34.76 Unpacking libcurl4t64:arm64 (8.14.1-2+deb13u7) over (8.14.1-2+deb13u5) ...
+#10 34.80 Preparing to unpack .../16-libcurl3t64-gnutls_8.14.1-2+deb13u7_arm64.deb ...
+#10 34.80 Unpacking libcurl3t64-gnutls:arm64 (8.14.1-2+deb13u7) over (8.14.1-2+deb13u5) ...
+#10 34.85 Selecting previously unselected package libjemalloc2:arm64.
+#10 34.85 Preparing to unpack .../17-libjemalloc2_5.3.0-3_arm64.deb ...
+#10 34.85 Unpacking libjemalloc2:arm64 (5.3.0-3) ...
+#10 34.88 Selecting previously unselected package libjemalloc-dev.
+#10 34.88 Preparing to unpack .../18-libjemalloc-dev_5.3.0-3_arm64.deb ...
+#10 34.88 Unpacking libjemalloc-dev (5.3.0-3) ...
+#10 34.92 Selecting previously unselected package pkg-config:arm64.
+#10 34.92 Preparing to unpack .../19-pkg-config_1.8.1-4_arm64.deb ...
+#10 34.92 Unpacking pkg-config:arm64 (1.8.1-4) ...
+#10 34.95 Selecting previously unselected package postgresql-client-common.
+#10 34.95 Preparing to unpack .../20-postgresql-client-common_278_all.deb ...
+#10 34.96 Unpacking postgresql-client-common (278) ...
+#10 34.98 Selecting previously unselected package postgresql-client-17.
+#10 34.98 Preparing to unpack .../21-postgresql-client-17_17.11-0+deb13u1_arm64.deb ...
+#10 34.99 Unpacking postgresql-client-17 (17.11-0+deb13u1) ...
+#10 35.08 Selecting previously unselected package postgresql-client.
+#10 35.08 Preparing to unpack .../22-postgresql-client_17+278_all.deb ...
+#10 35.09 Unpacking postgresql-client (17+278) ...
+#10 35.11 Selecting previously unselected package sqlite3.
+#10 35.11 Preparing to unpack .../23-sqlite3_3.46.1-7+deb13u2_arm64.deb ...
+#10 35.11 Unpacking sqlite3 (3.46.1-7+deb13u2) ...
+#10 35.14 Selecting previously unselected package time.
+#10 35.14 Preparing to unpack .../24-time_1.9-0.2+b1_arm64.deb ...
+#10 35.14 Unpacking time (1.9-0.2+b1) ...
+#10 35.17 Setting up postgresql-client-common (278) ...
+#10 35.18 Setting up time (1.9-0.2+b1) ...
+#10 35.19 Setting up libcurl4t64:arm64 (8.14.1-2+deb13u7) ...
+#10 35.20 Setting up libclang-common-19-dev:arm64 (1:19.1.7-3+b1) ...
+#10 35.20 Setting up postgresql-client-17 (17.11-0+deb13u1) ...
+#10 35.31 update-alternatives: using /usr/share/postgresql/17/man/man1/psql.1.gz to provide /usr/share/man/man1/psql.1.gz (psql.1.gz) in auto mode
+#10 35.33 Setting up libcurl3t64-gnutls:arm64 (8.14.1-2+deb13u7) ...
+#10 35.35 Setting up libjemalloc2:arm64 (5.3.0-3) ...
+#10 35.36 Setting up libjemalloc-dev (5.3.0-3) ...
+#10 35.36 Setting up libz3-4:arm64 (4.13.3-1) ...
+#10 35.37 Setting up libssl-dev:arm64 (3.5.7-1~deb13u3) ...
+#10 35.38 Setting up pkg-config:arm64 (1.8.1-4) ...
+#10 35.39 Setting up libgc1:arm64 (1:8.2.8-1) ...
+#10 35.39 Setting up curl (8.14.1-2+deb13u7) ...
+#10 35.40 Setting up openssl (3.5.7-1~deb13u3) ...
+#10 35.41 Setting up sqlite3 (3.46.1-7+deb13u2) ...
+#10 35.42 Setting up libllvm19:arm64 (1:19.1.7-3+b1) ...
+#10 35.42 Setting up libclang1-19 (1:19.1.7-3+b1) ...
+#10 35.43 Setting up postgresql-client (17+278) ...
+#10 35.44 Setting up libobjc4:arm64 (14.2.0-19) ...
+#10 35.44 Setting up libobjc-14-dev:arm64 (14.2.0-19) ...
+#10 35.45 Setting up ca-certificates (20250419+deb13u1) ...
+#10 35.83 Updating certificates in /etc/ssl/certs...
+#10 36.02 rehash: warning: skipping ca-certificates.crt, it does not contain exactly one certificate or CRL
+#10 36.02 0 added, 2 removed; done.
+#10 36.05 Setting up libcurl4-openssl-dev:arm64 (8.14.1-2+deb13u7) ...
+#10 36.06 Setting up llvm-19-linker-tools (1:19.1.7-3+b1) ...
+#10 36.07 Setting up libclang-cpp19 (1:19.1.7-3+b1) ...
+#10 36.07 Setting up clang-19 (1:19.1.7-3+b1) ...
+#10 36.08 Setting up clang (1:19.0-63) ...
+#10 36.10 Processing triggers for libc-bin (2.41-12+deb13u4) ...
+#10 36.24 Processing triggers for ca-certificates (20250419+deb13u1) ...
+#10 36.24 Updating certificates in /etc/ssl/certs...
+#10 36.36 0 added, 0 removed; done.
+#10 36.36 Running hooks in /etc/ca-certificates/update.d...
+#10 36.36 done.
+#10 DONE 36.7s
+
+#11 [builder  3/11] COPY --from=ruby407 /usr/local/ /usr/local/
+#11 DONE 0.2s
+
+#12 [builder  4/11] RUN ruby --version
+#12 0.133 ruby 4.0.7 (2026-09-15 revision 229531a6cf) +PRISM [aarch64-linux]
+#12 DONE 0.2s
+
+#13 [builder  5/11] COPY vendor/spinel /src/spinel
+#13 DONE 1.4s
+
+#14 [builder  6/11] WORKDIR /src/spinel
+#14 DONE 0.1s
+
+#15 [builder  7/11] RUN make deps -j8 && make -j8 CC=clang && make install -j8 CC=clang
+#15 0.587 Fetching prism v1.9.0 from rubygems.org...
+#15 0.587 Fetching rbs v4.0.1 from rubygems.org...
+#15 2.684 prism v1.9.0 ready at vendor/prism
+#15 3.018 rbs v4.0.1 ready at vendor/rbs
+#15 3.247 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_compile.c -o build/regexp/re_compile.o
+#15 3.247 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_exec.c -o build/regexp/re_exec.o
+#15 3.247 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_utf8.c -o build/regexp/re_utf8.o
+#15 3.249 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/unicase.c -o build/regexp/unicase.o
+#15 3.249 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_spinel.c -o build/regexp/re_spinel.o
+#15 3.252 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_compile.c -o build/mt/regexp/re_compile.o
+#15 3.252 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_exec.c -o build/mt/regexp/re_exec.o
+#15 3.275 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_utf8.c -o build/mt/regexp/re_utf8.o
+#15 3.298 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/unicase.c -o build/mt/regexp/unicase.o
+#15 3.308 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_spinel.c -o build/mt/regexp/re_spinel.o
+#15 3.319 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/diagnostic.c -o build/prism/diagnostic.o
+#15 3.345 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/encoding.c -o build/prism/encoding.o
+#15 3.356 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/node.c -o build/prism/node.o
+#15 3.367 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/options.c -o build/prism/options.o
+#15 3.406 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/pack.c -o build/prism/pack.o
+#15 3.431 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/prettyprint.c -o build/prism/prettyprint.o
+#15 3.437 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/prism.c -o build/prism/prism.o
+#15 3.469 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/regexp.c -o build/prism/regexp.o
+#15 3.472 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/serialize.c -o build/prism/serialize.o
+#15 3.477 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/static_literals.c -o build/prism/static_literals.o
+#15 3.524 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/token_type.c -o build/prism/token_type.o
+#15 3.533 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_buffer.c -o build/prism/util/pm_buffer.o
+#15 3.564 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_char.c -o build/prism/util/pm_char.o
+#15 3.584 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_constant_pool.c -o build/prism/util/pm_constant_pool.o
+#15 3.605 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_integer.c -o build/prism/util/pm_integer.o
+#15 3.610 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_list.c -o build/prism/util/pm_list.o
+#15 3.626 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_memchr.c -o build/prism/util/pm_memchr.o
+#15 3.631 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_newline_list.c -o build/prism/util/pm_newline_list.o
+#15 3.648 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_string.c -o build/prism/util/pm_string.o
+#15 3.650 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_strncasecmp.c -o build/prism/util/pm_strncasecmp.o
+#15 3.657 clang -c -O2 -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_strpbrk.c -o build/prism/util/pm_strpbrk.o
+#15 3.669 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Ilib/regexp -Ilib/regexp/shim -c src/re_lit_check.c -o build/csrc/re_lit_check.o
+#15 3.672 clang -c -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Ivendor/rbs/include src/rbs_map.c -o build/csrc/rbs_map.o
+#15 3.674 clang -c -O2 -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/ast.c -o build/rbs/ast.o
+#15 3.691 clang -c -O2 -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/lexer.c -o build/rbs/lexer.o
+#15 3.693 clang -c -O2 -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/lexstate.c -o build/rbs/lexstate.o
+#15 3.715 clang -c -O2 -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/location.c -o build/rbs/location.o
+#15 3.727 clang -c -O2 -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/parser.c -o build/rbs/parser.o
+#15 3.730 clang -c -O2 -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/string.c -o build/rbs/string.o
+#15 3.743 clang -c -O2 -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_allocator.c -o build/rbs/util/rbs_allocator.o
+#15 3.745 clang -c -O2 -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_assert.c -o build/rbs/util/rbs_assert.o
+#15 3.747 clang -c -O2 -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_buffer.c -o build/rbs/util/rbs_buffer.o
+#15 3.755 clang -c -O2 -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_constant_pool.c -o build/rbs/util/rbs_constant_pool.o
+#15 3.760 clang -c -O2 -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_encoding.c -o build/rbs/util/rbs_encoding.o
+#15 3.767 clang -c -O2 -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_unescape.c -o build/rbs/util/rbs_unescape.o
+#15 3.767 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_poly_cold.c -o build/cext/sp_poly_cold.o
+#15 3.768 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Ilib lib/sp_gc.c -o build/cext/sp_gc.o
+#15 3.774 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_exc.c -o build/cext/sp_exc.o
+#15 3.781 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_cext.c -o build/cext/sp_cext.o
+#15 3.800 In file included from lib/sp_poly_cold.c:23:
+#15 3.800 lib/spinel_rt.h:18:92: warning: '/*' within block comment [-Wcomment]
+#15 3.800    18 | #include "sp_re.h"      /* regexp wrappers + MatchData (lib/sp_re.c); engine = build/regexp/*.o */
+#15 3.801       |                                                                                            ^
+#15 3.801 In file included from lib/sp_poly_cold.c:23:
+#15 3.801 In file included from lib/spinel_rt.h:18:
+#15 3.801 lib/sp_re.h:6:16: warning: '/*' within block comment [-Wcomment]
+#15 3.801     6 |  * build/regexp/*.o library; this layer is spinel's Ruby-facing surface
+#15 3.801       |                ^
+#15 3.801 lib/sp_re.h:27:55: warning: '/*' within block comment [-Wcomment]
+#15 3.801    27 | /* ---- regexp engine ABI (implemented in build/regexp/*.o) ---- */
+#15 3.801       |                                                       ^
+#15 3.802 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_cext_exc.c -o build/cext/sp_cext_exc.o
+#15 3.848 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_cext_bridge.c -o build/cext/sp_cext_bridge.o
+#15 3.857 clang -c -O2 -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_cext_thread.c -o build/cext/sp_cext_thread.o
+#15 3.867 In file included from lib/sp_poly_cold.c:23:
+#15 3.867 lib/spinel_rt.h:14388:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 3.867  14388 | }
+#15 3.867        | ^
+#15 3.868 lib/spinel_rt.h:14480:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 3.868  14480 | }
+#15 3.868        | ^
+#15 3.868 lib/spinel_rt.h:14509:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 3.868  14509 | }
+#15 3.868        | ^
+#15 3.868 lib/spinel_rt.h:14603:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 3.868  14603 | }
+#15 3.868        | ^
+#15 3.868 lib/spinel_rt.h:14619:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 3.868  14619 | }
+#15 3.868        | ^
+#15 3.870 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_bigint.c -o build/cext-mt/sp_bigint.o
+#15 3.904 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_crypto.c -o build/cext-mt/sp_crypto.o
+#15 3.906 lib/sp_poly_cold.c:997:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 3.906   997 | }
+#15 3.906       | ^
+#15 3.910 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_pack.c -o build/cext-mt/sp_pack.o
+#15 3.935 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_time.c -o build/cext-mt/sp_time.o
+#15 3.975 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_core.c -o build/cext-mt/sp_core.o
+#15 3.988 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_net.c -o build/cext-mt/sp_net.o
+#15 4.043 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_system.c -o build/cext-mt/sp_system.o
+#15 4.064 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_gc.c -o build/cext-mt/sp_gc.o
+#15 4.081 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_slab.c -o build/cext-mt/sp_slab.o
+#15 4.107 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_alloc.c -o build/cext-mt/sp_alloc.o
+#15 4.160 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_dtoa.c -o build/cext-mt/sp_dtoa.o
+#15 4.179 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_marshal.c -o build/cext-mt/sp_marshal.o
+#15 4.213 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_format.c -o build/cext-mt/sp_format.o
+#15 4.230 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_string.c -o build/cext-mt/sp_string.o
+#15 4.246 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_inspect.c -o build/cext-mt/sp_inspect.o
+#15 4.265 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_poly_cold.c -o build/cext-mt/sp_poly_cold.o
+#15 4.281 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_array.c -o build/cext-mt/sp_array.o
+#15 4.329 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str.c -o build/cext-mt/sp_str.o
+#15 4.350 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str_cold.c -o build/cext-mt/sp_str_cold.o
+#15 4.382 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str_crypt.c -o build/cext-mt/sp_str_crypt.o
+#15 4.427 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_hash.c -o build/cext-mt/sp_hash.o
+#15 4.483 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_proc.c -o build/cext-mt/sp_proc.o
+#15 4.534 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_exc.c -o build/cext-mt/sp_exc.o
+#15 4.593 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_re.c -o build/cext-mt/sp_re.o
+#15 4.669 9 warnings generated.
+#15 4.672 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_random.c -o build/cext-mt/sp_random.o
+#15 4.697 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_fiber.c -o build/cext-mt/sp_fiber.o
+#15 4.737 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_sched.c -o build/cext-mt/sp_sched.o
+#15 4.746 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_io.c -o build/cext-mt/sp_io.o
+#15 4.775 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_iobuffer.c -o build/cext-mt/sp_iobuffer.o
+#15 4.828 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cold.c -o build/cext-mt/sp_cold.o
+#15 4.831 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_enum_str.c -o build/cext-mt/sp_enum_str.o
+#15 4.901 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_process.c -o build/cext-mt/sp_process.o
+#15 4.902 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_process_status.c -o build/cext-mt/sp_process_status.o
+#15 4.918 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cext.c -o build/cext-mt/sp_cext.o
+#15 4.940 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cext_exc.c -o build/cext-mt/sp_cext_exc.o
+#15 4.944 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cext_bridge.c -o build/cext-mt/sp_cext_bridge.o
+#15 4.979 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cext_thread.c -o build/cext-mt/sp_cext_thread.o
+#15 4.988 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib -Ipackages/json packages/json/sp_json.c -o packages/json/sp_json.o
+#15 4.996 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib -Ipackages/stringio packages/stringio/sp_stringio.c -o packages/stringio/sp_stringio.o
+#15 5.039 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/strscan/sp_strscan.c -o packages/strscan/sp_strscan.o
+#15 5.042 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/base64/sp_base64.c -o packages/base64/sp_base64.o
+#15 5.078 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/tmpdir/sp_tmpdir.c -o packages/tmpdir/sp_tmpdir.o
+#15 5.085 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/zlib/sp_zlib.c -o packages/zlib/sp_zlib.o
+#15 5.112 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/pty/sp_pty.c -o packages/pty/sp_pty.o
+#15 5.121 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib -Ipackages/openssl packages/openssl/sp_openssl.c -o packages/openssl/sp_openssl.o
+#15 5.134 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib -Ipackages/ffi packages/ffi/sp_ffi.c -o packages/ffi/sp_ffi.o
+#15 5.135 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ipackages/json packages/json/sp_json.c -o packages/json/sp_json_mt.o
+#15 5.170 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ipackages/stringio packages/stringio/sp_stringio.c -o packages/stringio/sp_stringio_mt.o
+#15 5.174 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/strscan/sp_strscan.c -o packages/strscan/sp_strscan_mt.o
+#15 5.174 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/base64/sp_base64.c -o packages/base64/sp_base64_mt.o
+#15 5.225 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/tmpdir/sp_tmpdir.c -o packages/tmpdir/sp_tmpdir_mt.o
+#15 5.244 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/zlib/sp_zlib.c -o packages/zlib/sp_zlib_mt.o
+#15 5.265 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/pty/sp_pty.c -o packages/pty/sp_pty_mt.o
+#15 5.272 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec  -Ilib -Ipackages/openssl packages/openssl/sp_openssl.c -o packages/openssl/sp_openssl_mt.o
+#15 5.273 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec  -Ilib -Ipackages/ffi packages/ffi/sp_ffi.c -o packages/ffi/sp_ffi_mt.o
+#15 5.275 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_bigint.c -o build/sp_bigint.o
+#15 5.290 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_crypto.c -o build/sp_crypto.o
+#15 5.309 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_pack.c -o build/sp_pack.o
+#15 5.331 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_time.c -o build/sp_time.o
+#15 5.354 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_core.c -o build/sp_core.o
+#15 5.426 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_net.c -o build/sp_net.o
+#15 5.437 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_system.c -o build/sp_system.o
+#15 5.438 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_gc.c -o build/sp_gc.o
+#15 5.455 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_slab.c -o build/sp_slab.o
+#15 5.459 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_alloc.c -o build/sp_alloc.o
+#15 5.538 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_dtoa.c -o build/sp_dtoa.o
+#15 5.545 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_marshal.c -o build/sp_marshal.o
+#15 5.552 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_format.c -o build/sp_format.o
+#15 5.566 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_string.c -o build/sp_string.o
+#15 5.597 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_inspect.c -o build/sp_inspect.o
+#15 5.618 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_poly_cold.c -o build/sp_poly_cold.o
+#15 5.623 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_array.c -o build/sp_array.o
+#15 5.630 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_str.c -o build/sp_str.o
+#15 5.685 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_str_cold.c -o build/sp_str_cold.o
+#15 5.705 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_str_crypt.c -o build/sp_str_crypt.o
+#15 5.727 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_hash.c -o build/sp_hash.o
+#15 5.746 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_proc.c -o build/sp_proc.o
+#15 5.852 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_exc.c -o build/sp_exc.o
+#15 5.873 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_re.c -o build/sp_re.o
+#15 5.892 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_random.c -o build/sp_random.o
+#15 5.915 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_fiber.c -o build/sp_fiber.o
+#15 5.952 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_sched.c -o build/sp_sched.o
+#15 5.999 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_io.c -o build/sp_io.o
+#15 6.031 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_iobuffer.c -o build/sp_iobuffer.o
+#15 6.036 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cold.c -o build/sp_cold.o
+#15 6.105 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_enum_str.c -o build/sp_enum_str.o
+#15 6.177 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_process.c -o build/sp_process.o
+#15 6.180 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_process_status.c -o build/sp_process_status.o
+#15 6.188 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_bigint.c -o build/mt/sp_bigint.o
+#15 6.188 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_crypto.c -o build/mt/sp_crypto.o
+#15 6.210 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_pack.c -o build/mt/sp_pack.o
+#15 6.238 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_time.c -o build/mt/sp_time.o
+#15 6.262 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_core.c -o build/mt/sp_core.o
+#15 6.286 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_net.c -o build/mt/sp_net.o
+#15 6.325 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_system.c -o build/mt/sp_system.o
+#15 6.349 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_gc.c -o build/mt/sp_gc.o
+#15 6.367 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_slab.c -o build/mt/sp_slab.o
+#15 6.395 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_alloc.c -o build/mt/sp_alloc.o
+#15 6.459 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_dtoa.c -o build/mt/sp_dtoa.o
+#15 6.476 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_marshal.c -o build/mt/sp_marshal.o
+#15 6.500 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_format.c -o build/mt/sp_format.o
+#15 6.502 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_string.c -o build/mt/sp_string.o
+#15 6.507 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_inspect.c -o build/mt/sp_inspect.o
+#15 6.540 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_poly_cold.c -o build/mt/sp_poly_cold.o
+#15 6.544 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_array.c -o build/mt/sp_array.o
+#15 6.561 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str.c -o build/mt/sp_str.o
+#15 6.594 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str_cold.c -o build/mt/sp_str_cold.o
+#15 6.652 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str_crypt.c -o build/mt/sp_str_crypt.o
+#15 6.687 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_hash.c -o build/mt/sp_hash.o
+#15 6.690 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_proc.c -o build/mt/sp_proc.o
+#15 6.778 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_exc.c -o build/mt/sp_exc.o
+#15 6.787 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_re.c -o build/mt/sp_re.o
+#15 6.800 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_random.c -o build/mt/sp_random.o
+#15 6.865 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_fiber.c -o build/mt/sp_fiber.o
+#15 6.941 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_sched.c -o build/mt/sp_sched.o
+#15 6.991 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_io.c -o build/mt/sp_io.o
+#15 6.995 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_iobuffer.c -o build/mt/sp_iobuffer.o
+#15 7.081 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cold.c -o build/mt/sp_cold.o
+#15 7.099 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_enum_str.c -o build/mt/sp_enum_str.o
+#15 7.161 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_process.c -o build/mt/sp_process.o
+#15 7.167 clang -c -O2 -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_process_status.c -o build/mt/sp_process_status.o
+#15 7.177 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/node_table.c -o build/csrc/node_table.o
+#15 7.196 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/types.c -o build/csrc/types.o
+#15 7.198 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/compiler.c -o build/csrc/compiler.o
+#15 7.240 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/ffi_spec.c -o build/csrc/ffi_spec.o
+#15 7.264 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze.c -o build/csrc/analyze.o
+#15 7.267 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_util.c -o build/csrc/analyze_util.o
+#15 7.271 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_infer.c -o build/csrc/analyze_infer.o
+#15 7.299 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_infer_recv.c -o build/csrc/analyze_infer_recv.o
+#15 7.418 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_cext.c -o build/csrc/analyze_cext.o
+#15 7.448 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_scope.c -o build/csrc/analyze_scope.o
+#15 7.628 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_pass.c -o build/csrc/analyze_pass.o
+#15 7.807 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_desugar.c -o build/csrc/analyze_desugar.o
+#15 8.166 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_nil.c -o build/csrc/analyze_nil.o
+#15 8.182 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_cls.c -o build/csrc/analyze_cls.o
+#15 8.345 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_arm.c -o build/csrc/analyze_arm.o
+#15 8.447 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_const.c -o build/csrc/analyze_const.o
+#15 8.609 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_share.c -o build/csrc/analyze_share.o
+#15 8.978 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/repr.c -o build/csrc/repr.o
+#15 9.481 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/holder.c -o build/csrc/holder.o
+#15 9.538 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen.c -o build/csrc/codegen.o
+#15 9.821 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/ty_traits_check.c -o build/csrc/ty_traits_check.o
+#15 9.867 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_fold.c -o build/csrc/codegen_fold.o
+#15 10.33 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call.c -o build/csrc/codegen_call.o
+#15 10.67 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_poly.c -o build/csrc/codegen_call_poly.o
+#15 10.75 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_method.c -o build/csrc/codegen_call_method.o
+#15 11.04 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_io.c -o build/csrc/codegen_call_io.o
+#15 11.12 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_kernel.c -o build/csrc/codegen_call_kernel.o
+#15 11.39 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_exception.c -o build/csrc/codegen_call_exception.o
+#15 11.43 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_module.c -o build/csrc/codegen_call_module.o
+#15 11.60 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_string.c -o build/csrc/codegen_call_string.o
+#15 11.88 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_class.c -o build/csrc/codegen_call_class.o
+#15 11.92 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_operator.c -o build/csrc/codegen_call_operator.o
+#15 12.20 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_object.c -o build/csrc/codegen_call_object.o
+#15 12.21 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_ops.c -o build/csrc/codegen_ops.o
+#15 12.28 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_concurrency.c -o build/csrc/codegen_call_concurrency.o
+#15 12.36 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_numeric.c -o build/csrc/codegen_call_numeric.o
+#15 12.50 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_hash.c -o build/csrc/codegen_call_hash.o
+#15 12.65 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_array.c -o build/csrc/codegen_call_array.o
+#15 12.80 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_view.c -o build/csrc/codegen_view.o
+#15 12.88 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/builtin_ops.c -o build/csrc/builtin_ops.o
+#15 12.89 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/builtin_names.c -o build/csrc/builtin_names.o
+#15 13.05 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_recv.c -o build/csrc/codegen_call_recv.o
+#15 13.17 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_iter.c -o build/csrc/codegen_iter.o
+#15 13.41 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/call_plan.c -o build/csrc/call_plan.o
+#15 13.60 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/value_pos.c -o build/csrc/value_pos.o
+#15 13.96 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_poly_plan.c -o build/csrc/codegen_poly_plan.o
+#15 14.02 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/share_check.c -o build/csrc/share_check.o
+#15 14.26 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/share_plan.c -o build/csrc/share_plan.o
+#15 14.52 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_str.c -o build/csrc/codegen_str.o
+#15 14.64 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_expr.c -o build/csrc/codegen_expr.o
+#15 14.65 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_stmt.c -o build/csrc/codegen_stmt.o
+#15 14.79 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/csplit.c -o build/csrc/csplit.o
+#15 14.91 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/decide.c -o build/csrc/decide.o
+#15 14.95 ZERO_AR_DATE=1 ar rcs build/libprism.a build/prism/diagnostic.o build/prism/encoding.o build/prism/node.o build/prism/options.o build/prism/pack.o build/prism/prettyprint.o build/prism/prism.o build/prism/regexp.o build/prism/serialize.o build/prism/static_literals.o build/prism/token_type.o build/prism/util/pm_buffer.o build/prism/util/pm_char.o build/prism/util/pm_constant_pool.o build/prism/util/pm_integer.o build/prism/util/pm_list.o build/prism/util/pm_memchr.o build/prism/util/pm_newline_list.o build/prism/util/pm_string.o build/prism/util/pm_strncasecmp.o build/prism/util/pm_strpbrk.o
+#15 14.97 ZERO_AR_DATE=1 ar rcs build/librbs.a build/rbs/ast.o build/rbs/lexer.o build/rbs/lexstate.o build/rbs/location.o build/rbs/parser.o build/rbs/string.o build/rbs/util/rbs_allocator.o build/rbs/util/rbs_assert.o build/rbs/util/rbs_buffer.o build/rbs/util/rbs_constant_pool.o build/rbs/util/rbs_encoding.o build/rbs/util/rbs_unescape.o
+#15 14.98 ZERO_AR_DATE=1 ar rcs lib/libspinel_cext_rt.a build/regexp/re_compile.o build/regexp/re_exec.o build/regexp/re_utf8.o build/regexp/unicase.o build/regexp/re_spinel.o build/sp_bigint.o build/sp_crypto.o build/sp_pack.o build/sp_time.o build/sp_core.o build/sp_net.o build/sp_system.o build/sp_slab.o build/sp_alloc.o build/sp_dtoa.o build/sp_marshal.o build/sp_format.o build/sp_string.o build/sp_inspect.o build/sp_array.o build/sp_str.o build/sp_str_cold.o build/sp_str_crypt.o build/sp_hash.o build/sp_proc.o build/sp_re.o build/sp_random.o build/sp_fiber.o build/sp_sched.o build/sp_io.o build/sp_iobuffer.o build/sp_cold.o build/sp_enum_str.o build/sp_process.o build/sp_process_status.o build/cext/sp_poly_cold.o build/cext/sp_gc.o build/cext/sp_exc.o build/cext/sp_cext.o build/cext/sp_cext_exc.o build/cext/sp_cext_bridge.o build/cext/sp_cext_thread.o
+#15 15.00 ZERO_AR_DATE=1 ar rcs lib/libspinel_cext_rt_mt.a build/mt/regexp/re_compile.o build/mt/regexp/re_exec.o build/mt/regexp/re_utf8.o build/mt/regexp/unicase.o build/mt/regexp/re_spinel.o build/cext-mt/sp_bigint.o build/cext-mt/sp_crypto.o build/cext-mt/sp_pack.o build/cext-mt/sp_time.o build/cext-mt/sp_core.o build/cext-mt/sp_net.o build/cext-mt/sp_system.o build/cext-mt/sp_gc.o build/cext-mt/sp_slab.o build/cext-mt/sp_alloc.o build/cext-mt/sp_dtoa.o build/cext-mt/sp_marshal.o build/cext-mt/sp_format.o build/cext-mt/sp_string.o build/cext-mt/sp_inspect.o build/cext-mt/sp_poly_cold.o build/cext-mt/sp_array.o build/cext-mt/sp_str.o build/cext-mt/sp_str_cold.o build/cext-mt/sp_str_crypt.o build/cext-mt/sp_hash.o build/cext-mt/sp_proc.o build/cext-mt/sp_exc.o build/cext-mt/sp_re.o build/cext-mt/sp_random.o build/cext-mt/sp_fiber.o build/cext-mt/sp_sched.o build/cext-mt/sp_io.o build/cext-mt/sp_iobuffer.o build/cext-mt/sp_cold.o build/cext-mt/sp_enum_str.o build/cext-mt/sp_process.o build/cext-mt/sp_process_status.o build/cext-mt/sp_cext.o build/cext-mt/sp_cext_exc.o build/cext-mt/sp_cext_bridge.o build/cext-mt/sp_cext_thread.o
+#15 15.00 ZERO_AR_DATE=1 ar rcs lib/libspinel_rt.a build/regexp/re_compile.o build/regexp/re_exec.o build/regexp/re_utf8.o build/regexp/unicase.o build/regexp/re_spinel.o build/sp_bigint.o build/sp_crypto.o build/sp_pack.o build/sp_time.o build/sp_core.o build/sp_net.o build/sp_system.o build/sp_gc.o build/sp_slab.o build/sp_alloc.o build/sp_dtoa.o build/sp_marshal.o build/sp_format.o build/sp_string.o build/sp_inspect.o build/sp_poly_cold.o build/sp_array.o build/sp_str.o build/sp_str_cold.o build/sp_str_crypt.o build/sp_hash.o build/sp_proc.o build/sp_exc.o build/sp_re.o build/sp_random.o build/sp_fiber.o build/sp_sched.o build/sp_io.o build/sp_iobuffer.o build/sp_cold.o build/sp_enum_str.o build/sp_process.o build/sp_process_status.o
+#15 15.02 ZERO_AR_DATE=1 ar rcs lib/libspinel_rt_mt.a build/mt/regexp/re_compile.o build/mt/regexp/re_exec.o build/mt/regexp/re_utf8.o build/mt/regexp/unicase.o build/mt/regexp/re_spinel.o build/mt/sp_bigint.o build/mt/sp_crypto.o build/mt/sp_pack.o build/mt/sp_time.o build/mt/sp_core.o build/mt/sp_net.o build/mt/sp_system.o build/mt/sp_gc.o build/mt/sp_slab.o build/mt/sp_alloc.o build/mt/sp_dtoa.o build/mt/sp_marshal.o build/mt/sp_format.o build/mt/sp_string.o build/mt/sp_inspect.o build/mt/sp_poly_cold.o build/mt/sp_array.o build/mt/sp_str.o build/mt/sp_str_cold.o build/mt/sp_str_crypt.o build/mt/sp_hash.o build/mt/sp_proc.o build/mt/sp_exc.o build/mt/sp_re.o build/mt/sp_random.o build/mt/sp_fiber.o build/mt/sp_sched.o build/mt/sp_io.o build/mt/sp_iobuffer.o build/mt/sp_cold.o build/mt/sp_enum_str.o build/mt/sp_process.o build/mt/sp_process_status.o
+#15 15.02 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_util.c -o build/csrc/codegen_util.o
+#15 15.03 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/main.c -o build/csrc/main.o
+#15 15.31 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Ivendor/prism/include -DSPINEL_INLINE_RBS -Ivendor/rbs/include -c src/spinel_parse.c -o build/csrc/sp_parse_lib.o
+#15 16.17 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Ivendor/rbs/include -Isrc tools/spinel_rbs_extract.c build/csrc/rbs_map.o build/librbs.a   -o build/spinel_rbs_extract
+#15 29.35 clang -O2 -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  build/csrc/node_table.o build/csrc/types.o build/csrc/compiler.o build/csrc/ffi_spec.o build/csrc/analyze.o build/csrc/analyze_util.o build/csrc/analyze_infer.o build/csrc/analyze_infer_recv.o build/csrc/analyze_cext.o build/csrc/analyze_scope.o build/csrc/analyze_pass.o build/csrc/analyze_desugar.o build/csrc/analyze_nil.o build/csrc/analyze_cls.o build/csrc/analyze_arm.o build/csrc/analyze_const.o build/csrc/analyze_share.o build/csrc/repr.o build/csrc/holder.o build/csrc/codegen.o build/csrc/codegen_util.o build/csrc/ty_traits_check.o build/csrc/codegen_fold.o build/csrc/codegen_call.o build/csrc/codegen_call_poly.o build/csrc/codegen_call_method.o build/csrc/codegen_call_io.o build/csrc/codegen_call_kernel.o build/csrc/codegen_call_exception.o build/csrc/codegen_call_module.o build/csrc/codegen_call_string.o build/csrc/codegen_call_class.o build/csrc/codegen_call_operator.o build/csrc/codegen_call_object.o build/csrc/codegen_ops.o build/csrc/codegen_call_concurrency.o build/csrc/codegen_call_numeric.o build/csrc/codegen_call_hash.o build/csrc/codegen_call_array.o build/csrc/codegen_view.o build/csrc/builtin_ops.o build/csrc/builtin_names.o build/csrc/codegen_call_recv.o build/csrc/codegen_iter.o build/csrc/call_plan.o build/csrc/value_pos.o build/csrc/codegen_poly_plan.o build/csrc/share_check.o build/csrc/share_plan.o build/csrc/codegen_str.o build/csrc/codegen_expr.o build/csrc/codegen_stmt.o build/csrc/csplit.o build/csrc/main.o build/csrc/decide.o build/csrc/sp_parse_lib.o build/csrc/re_lit_check.o build/regexp/re_compile.o build/regexp/re_exec.o build/regexp/re_utf8.o build/regexp/unicase.o build/regexp/re_spinel.o build/libprism.a build/csrc/rbs_map.o build/librbs.a  -lm -lcrypt  -o bin/spinel
+#15 29.44 bin/spinel tools/doctor.rb -o bin/spinel-doctor
+#15 29.44 bin/spinel tools/reduce.rb -o bin/spinel-reduce
+#15 29.44 bin/spinel tools/flatten.rb -o bin/spinel-flatten
+#15 29.44 bin/spinel tools/diff.rb -o bin/spinel-diff
+#15 29.44 bin/spinel tools/bisect.rb -o bin/spinel-bisect
+#15 29.44 bin/spinel tools/cext-build.rb -o bin/spinel-cext-build
+#15 30.05 tools/flatten.rb -> bin/spinel-flatten
+#15 30.61 tools/reduce.rb -> bin/spinel-reduce
+#15 30.73 tools/doctor.rb -> bin/spinel-doctor
+#15 31.08 tools/diff.rb -> bin/spinel-diff
+#15 32.76 tools/bisect.rb -> bin/spinel-bisect
+#15 36.63 tools/cext-build.rb -> bin/spinel-cext-build
+#15 36.63 bin/spinel -I build tools/spin.rb -o bin/spin
+#15 44.65 tools/spin.rb -> bin/spin
+#15 44.66 build/spinel_rbs_extract -> bin/spinel_rbs_extract
+#15 45.02 install -d /usr/local/lib/spinel/lib
+#15 45.02 install -m 755 bin/spinel            /usr/local/lib/spinel/spinel
+#15 45.04 install -m 755 bin/spin             /usr/local/lib/spinel/spin
+#15 45.04 install -m 644 lib/libspinel_rt.a    /usr/local/lib/spinel/lib/
+#15 45.04 install -m 644 lib/libspinel_rt_mt.a /usr/local/lib/spinel/lib/
+#15 45.04 install -m 644 lib/libspinel_cext_rt.a lib/libspinel_cext_rt_mt.a /usr/local/lib/spinel/lib/
+#15 45.04 install -d /usr/local/lib/spinel/include/ruby /usr/local/lib/spinel/tools/cext /usr/local/lib/spinel/tools/spin
+#15 45.04 install -m 644 include/ruby.h /usr/local/lib/spinel/include/
+#15 45.04 for h in include/ruby/*.h; do install -m 644 $h /usr/local/lib/spinel/include/ruby/; done
+#15 45.05 install -m 644 tools/cext/recorder.c tools/cext/recorder.h /usr/local/lib/spinel/tools/cext/
+#15 45.05 install -m 644 tools/cext-record.rb tools/cext-build.rb tools/cext-extconf.rb /usr/local/lib/spinel/tools/
+#15 45.05 install -m 644 tools/spin/toml.rb /usr/local/lib/spinel/tools/spin/
+#15 45.05 for h in lib/*.h; do install -m 644 $h /usr/local/lib/spinel/lib/; done
+#15 45.06 install -d /usr/local/lib/spinel/lib/spinel
+#15 45.06 install -m 644 lib/spinel/runtime.h  /usr/local/lib/spinel/lib/spinel/
+#15 45.06 install -d /usr/local/lib/spinel/lib/wasi/sys
+#15 45.06 for h in lib/wasi/*.h; do install -m 644 $h /usr/local/lib/spinel/lib/wasi/; done
+#15 45.07 for h in lib/wasi/sys/*.h; do install -m 644 $h /usr/local/lib/spinel/lib/wasi/sys/; done
+#15 45.07 rm -rf /usr/local/lib/spinel/packages
+#15 45.07 cp -r packages /usr/local/lib/spinel/packages
+#15 45.12 rm -rf /usr/local/lib/spinel/builtins
+#15 45.12 cp -r builtins /usr/local/lib/spinel/builtins
+#15 45.12 rm -rf /usr/local/lib/spinel/packages/*/build
+#15 45.12 chmod -R a+rX /usr/local/lib/spinel/packages /usr/local/lib/spinel/builtins
+#15 45.12 install -d /usr/local/bin
+#15 45.12 ln -sf /usr/local/lib/spinel/spinel /usr/local/bin/spinel
+#15 45.12 ln -sf /usr/local/lib/spinel/spin   /usr/local/bin/spin
+#15 45.12 for t in doctor reduce flatten diff bisect; do \
+#15 45.12   install -m 755 bin/spinel-$t /usr/local/bin/spinel-$t; \
+#15 45.12 done
+#15 45.14 install -m 755 bin/spinel-cext-build /usr/local/lib/spinel/spinel-cext-build
+#15 45.14 ln -sf /usr/local/lib/spinel/spinel-cext-build /usr/local/bin/spinel-cext-build
+#15 DONE 45.3s
+
+#16 [builder  8/11] COPY vendor/roundhouse /src/roundhouse
+#16 DONE 0.7s
+
+#17 [builder  9/11] WORKDIR /src/roundhouse
+#17 DONE 0.1s
+
+#18 [builder 10/11] RUN --mount=type=cache,id=conduit-v10-cargo-registry,target=/usr/local/cargo/registry     --mount=type=cache,id=conduit-v10-cargo-git,target=/usr/local/cargo/git     --mount=type=cache,id=conduit-v10-cargo-target,target=/src/roundhouse/target     ROUNDHOUSE_COMMIT=$(echo 0f6fb0c7e7efa9b955c40bdd537b8a61fbe0486e | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse
+#18 1.276 info: syncing channel updates for 1.98.1-aarch64-unknown-linux-gnu
+#18 4.556 info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+#18 4.561 info: downloading 2 components
+#18 7.370     Updating crates.io index
+#18 7.370     Updating git repository `https://github.com/Shopify/rubydex`
+#18 17.12  Downloading crates ...
+#18 19.69   Downloaded arraydeque v0.5.1
+#18 20.10   Downloaded text-size v1.1.1
+#18 20.10   Downloaded block-buffer v0.10.4
+#18 20.23   Downloaded adler2 v2.0.1
+#18 20.33   Downloaded anstream v1.0.0
+#18 20.50   Downloaded anstyle-query v1.1.5
+#18 20.52   Downloaded anstyle v1.0.14
+#18 20.52   Downloaded anstyle-parse v1.0.0
+#18 20.59   Downloaded bitflags v1.3.2
+#18 20.64   Downloaded bitflags v2.11.1
+#18 20.69   Downloaded unsafe-libyaml v0.2.11
+#18 20.70   Downloaded xxhash-rust v0.8.19
+#18 20.74   Downloaded version_check v0.9.5
+#18 20.77   Downloaded utf8parse v0.2.2
+#18 20.81   Downloaded aho-corasick v1.1.4
+#18 20.82   Downloaded thiserror-impl v2.0.18
+#18 20.84   Downloaded bindgen v0.72.1
+#18 20.85   Downloaded bumpalo v3.20.2
+#18 20.87   Downloaded cfg-if v1.0.4
+#18 20.88   Downloaded crc32fast v1.5.0
+#18 20.88   Downloaded clap_lex v1.1.1
+#18 20.89   Downloaded bytecount v0.6.9
+#18 20.89   Downloaded toml_writer v1.1.2+spec-1.1.0
+#18 20.91   Downloaded clap v4.6.7
+#18 20.94   Downloaded cpufeatures v0.2.17
+#18 20.94   Downloaded cexpr v0.6.0
+#18 20.95   Downloaded fluent-uri v0.1.4
+#18 20.95   Downloaded cc v1.2.60
+#18 20.95   Downloaded colorchoice v1.0.5
+#18 20.96   Downloaded equivalent v1.0.2
+#18 20.96   Downloaded glob v0.3.3
+#18 20.96   Downloaded utf8_iter v1.0.4
+#18 20.96   Downloaded heck v0.5.0
+#18 20.97   Downloaded generic-array v0.14.7
+#18 20.97   Downloaded displaydoc v0.2.5
+#18 20.98   Downloaded form_urlencoded v1.2.2
+#18 20.99   Downloaded crossbeam-deque v0.8.8
+#18 21.00   Downloaded clap_derive v4.6.7
+#18 21.00   Downloaded filetime v0.2.27
+#18 21.01   Downloaded errno v0.3.14
+#18 21.02   Downloaded find-msvc-tools v0.1.9
+#18 21.02   Downloaded hashlink v0.12.2
+#18 21.03   Downloaded cypher-parser v0.8.1
+#18 21.03   Downloaded foldhash v0.2.0
+#18 21.05   Downloaded icu_locale_core v2.3.0
+#18 21.06   Downloaded either v1.15.0
+#18 21.06   Downloaded flate2 v1.1.9
+#18 21.09   Downloaded clap_builder v4.6.7
+#18 21.10   Downloaded toml_parser v1.1.3+spec-1.1.0
+#18 21.11   Downloaded digest v0.10.7
+#18 21.12   Downloaded winnow v1.0.4
+#18 21.13   Downloaded hashbrown v0.17.0
+#18 21.13   Downloaded crossbeam-epoch v0.9.21
+#18 21.15   Downloaded crossbeam-utils v0.8.21
+#18 21.15   Downloaded icu_collections v2.3.0
+#18 21.16   Downloaded crypto-common v0.1.7
+#18 21.20   Downloaded tinystr v0.8.4
+#18 21.20   Downloaded crossbeam-channel v0.5.15
+#18 21.21   Downloaded url v2.5.8
+#18 21.22   Downloaded toml v1.1.6+spec-1.1.0
+#18 21.24   Downloaded clang-sys v1.8.1
+#18 21.24   Downloaded icu_normalizer v2.3.0
+#18 21.26   Downloaded icu_provider v2.3.1
+#18 21.26   Downloaded itoa v1.0.18
+#18 21.27   Downloaded unicode-ident v1.0.24
+#18 21.27   Downloaded icu_properties v2.3.0
+#18 21.29   Downloaded libloading v0.8.9
+#18 21.30   Downloaded idna_adapter v1.2.2
+#18 21.31   Downloaded idna v1.1.0
+#18 21.33   Downloaded indexmap v2.14.0
+#18 21.34   Downloaded is_terminal_polyfill v1.70.2
+#18 21.35   Downloaded icu_normalizer_data v2.3.0
+#18 21.43   Downloaded icu_properties_data v2.3.0
+#18 21.59   Downloaded itertools v0.13.0
+#18 21.63   Downloaded libc v0.2.185
+#18 21.66   Downloaded potential_utf v0.1.6
+#18 21.66   Downloaded shlex v2.0.1
+#18 21.66   Downloaded line-index v0.1.2
+#18 21.66   Downloaded serde_yaml_ng v0.10.0
+#18 21.66   Downloaded sha1 v0.10.7
+#18 21.66   Downloaded syn v3.0.6
+#18 21.67   Downloaded ruby-prism v2.0.0
+#18 21.67   Downloaded serde_repr v0.1.20
+#18 21.67   Downloaded serde v1.0.228
+#18 21.68   Downloaded synstructure v0.14.0
+#18 21.68   Downloaded tar v0.4.45
+#18 21.69   Downloaded percent-encoding v2.3.2
+#18 21.69   Downloaded simd-adler32 v0.3.9
+#18 21.70   Downloaded serde_spanned v1.1.1
+#18 21.71   Downloaded regex v1.12.3
+#18 21.71   Downloaded smallvec v1.16.2
+#18 21.71   Downloaded writeable v0.6.4
+#18 21.72   Downloaded unicase v2.9.0
+#18 21.73   Downloaded ryu v1.0.23
+#18 21.74   Downloaded serde_yaml v0.9.34+deprecated
+#18 21.74   Downloaded xattr v1.6.1
+#18 21.74   Downloaded nohash-hasher v0.2.0
+#18 22.10   Downloaded lsp-server v0.7.9
+#18 22.11   Downloaded miniz_oxide v0.8.9
+#18 22.11   Downloaded prettyplease v0.2.37
+#18 22.12   Downloaded minimal-lexical v0.2.1
+#18 22.12   Downloaded pulldown-cmark-escape v0.11.0
+#18 22.12   Downloaded typenum v1.20.1
+#18 22.13   Downloaded toml_datetime v1.1.1+spec-1.1.0
+#18 22.13   Downloaded serde_core v1.0.228
+#18 22.13   Downloaded litemap v0.8.3
+#18 22.13   Downloaded shlex v1.3.0
+#18 22.13   Downloaded thiserror v2.0.18
+#18 22.14   Downloaded proc-macro2 v1.0.106
+#18 22.14   Downloaded quote v1.0.45
+#18 22.18   Downloaded lsp-types v0.97.0
+#18 22.18   Downloaded ruby-rbs-sys v0.3.0
+#18 22.19   Downloaded log v0.4.29
+#18 22.20   Downloaded nom v7.1.3
+#18 22.20   Downloaded serde_derive v1.0.228
+#18 22.21   Downloaded zmij v1.0.21
+#18 22.22   Downloaded ruby-rbs v0.3.0
+#18 22.22   Downloaded zopfli v0.8.3
+#18 22.22   Downloaded serde_json v1.0.149
+#18 22.22   Downloaded memchr v2.8.0
+#18 22.27   Downloaded pulldown-cmark v0.13.4
+#18 22.27   Downloaded zip v2.4.2
+#18 22.35   Downloaded zerovec v0.11.8
+#18 22.35   Downloaded stable_deref_trait v1.2.1
+#18 22.35   Downloaded zerofrom v0.1.8
+#18 22.35   Downloaded zerovec-derive v0.11.6
+#18 22.35   Downloaded yaml-rust2 v0.13.0
+#18 22.36   Downloaded yoke v0.8.3
+#18 22.36   Downloaded yoke-derive v0.8.3
+#18 22.36   Downloaded zerofrom-derive v0.1.8
+#18 22.36   Downloaded zerotrie v0.2.5
+#18 22.36   Downloaded regex-syntax v0.8.10
+#18 22.37   Downloaded rustix v1.1.4
+#18 22.38   Downloaded ruby-prism-sys v2.0.0
+#18 22.39   Downloaded rustc-hash v2.1.2
+#18 22.39   Downloaded regex-automata v0.4.14
+#18 22.40   Downloaded syn v2.0.117
+#18 22.40   Downloaded strsim v0.11.1
+#18 22.76   Downloaded linux-raw-sys v0.12.1
+#18 22.88    Compiling proc-macro2 v1.0.106
+#18 22.88    Compiling quote v1.0.45
+#18 22.88    Compiling unicode-ident v1.0.24
+#18 22.88    Compiling stable_deref_trait v1.2.1
+#18 23.00    Compiling serde_core v1.0.228
+#18 23.01    Compiling zmij v1.0.21
+#18 23.09    Compiling shlex v1.3.0
+#18 23.09    Compiling memchr v2.8.0
+#18 23.16    Compiling find-msvc-tools v0.1.9
+#18 23.22    Compiling cc v1.2.60
+#18 23.35    Compiling syn v2.0.117
+#18 23.59    Compiling syn v3.0.6
+#18 23.76    Compiling glob v0.3.3
+#18 23.77    Compiling serde_json v1.0.149
+#18 23.81    Compiling serde v1.0.228
+#18 23.85    Compiling clang-sys v1.8.1
+#18 23.88    Compiling itoa v1.0.18
+#18 23.92    Compiling prettyplease v0.2.37
+#18 23.92    Compiling libc v0.2.185
+#18 23.96    Compiling litemap v0.8.3
+#18 24.00    Compiling minimal-lexical v0.2.1
+#18 24.01    Compiling writeable v0.6.4
+#18 24.05    Compiling regex-syntax v0.8.10
+#18 24.07    Compiling cfg-if v1.0.4
+#18 24.31    Compiling libloading v0.8.9
+#18 24.35    Compiling nom v7.1.3
+#18 24.55    Compiling synstructure v0.14.0
+#18 24.58    Compiling serde_derive v1.0.228
+#18 24.70    Compiling displaydoc v0.2.5
+#18 24.76    Compiling regex-automata v0.4.14
+#18 24.91    Compiling zerofrom-derive v0.1.8
+#18 24.91    Compiling yoke-derive v0.8.3
+#18 25.30    Compiling zerovec-derive v0.11.6
+#18 25.32    Compiling zerofrom v0.1.8
+#18 25.34    Compiling yoke v0.8.3
+#18 25.38    Compiling zerotrie v0.2.5
+#18 25.50    Compiling crossbeam-utils v0.8.21
+#18 25.56    Compiling either v1.15.0
+#18 25.59    Compiling icu_properties_data v2.3.0
+#18 25.59    Compiling utf8_iter v1.0.4
+#18 25.62    Compiling zerovec v0.11.8
+#18 25.63    Compiling icu_normalizer_data v2.3.0
+#18 25.64    Compiling bindgen v0.72.1
+#18 25.68    Compiling version_check v0.9.5
+#18 25.70    Compiling itertools v0.13.0
+#18 25.75    Compiling generic-array v0.14.7
+#18 25.80    Compiling regex v1.12.3
+#18 25.81    Compiling tinystr v0.8.4
+#18 25.85    Compiling icu_locale_core v2.3.0
+#18 25.90    Compiling potential_utf v0.1.6
+#18 25.93    Compiling icu_collections v2.3.0
+#18 25.97    Compiling cexpr v0.6.0
+#18 26.14    Compiling icu_provider v2.3.1
+#18 26.32    Compiling rustc-hash v2.1.2
+#18 26.34    Compiling bitflags v2.11.1
+#18 26.38    Compiling log v0.4.29
+#18 26.41    Compiling hashbrown v0.17.0
+#18 26.46    Compiling equivalent v1.0.2
+#18 26.47    Compiling shlex v2.0.1
+#18 26.56    Compiling foldhash v0.2.0
+#18 26.58    Compiling indexmap v2.14.0
+#18 26.64    Compiling ruby-prism-sys v2.0.0
+#18 26.94    Compiling crc32fast v1.5.0
+#18 26.97    Compiling unsafe-libyaml v0.2.11
+#18 27.00    Compiling utf8parse v0.2.2
+#18 27.01    Compiling ryu v1.0.23
+#18 27.02    Compiling typenum v1.20.1
+#18 27.05    Compiling smallvec v1.16.2
+#18 27.10    Compiling icu_normalizer v2.3.0
+#18 27.17    Compiling serde_yaml v0.9.34+deprecated
+#18 27.34    Compiling anstyle-parse v1.0.0
+#18 27.53    Compiling icu_properties v2.3.0
+#18 27.86    Compiling is_terminal_polyfill v1.70.2
+#18 27.87    Compiling colorchoice v1.0.5
+#18 27.94    Compiling crossbeam-epoch v0.9.21
+#18 27.98    Compiling anstyle v1.0.14
+#18 28.00    Compiling rustix v1.1.4
+#18 28.04    Compiling anstyle-query v1.1.5
+#18 28.06    Compiling simd-adler32 v0.3.9
+#18 28.10    Compiling anstream v1.0.0
+#18 28.29    Compiling idna_adapter v1.2.2
+#18 28.31    Compiling ruby-prism v2.0.0
+#18 28.33    Compiling ruby-rbs v0.3.0
+#18 28.38    Compiling ruby-rbs-sys v0.3.0
+#18 28.56    Compiling linux-raw-sys v0.12.1
+#18 28.60    Compiling thiserror v2.0.18
+#18 28.68    Compiling percent-encoding v2.3.2
+#18 28.70    Compiling strsim v0.11.1
+#18 28.74    Compiling winnow v1.0.4
+#18 28.86    Compiling adler2 v2.0.1
+#18 28.90    Compiling heck v0.5.0
+#18 28.95    Compiling crossbeam-deque v0.8.8
+#18 28.97    Compiling clap_lex v1.1.1
+#18 29.00    Compiling clap_derive v4.6.7
+#18 29.06    Compiling clap_builder v4.6.7
+#18 29.77    Compiling miniz_oxide v0.8.9
+#18 30.02    Compiling toml_parser v1.1.3+spec-1.1.0
+#18 30.32    Compiling form_urlencoded v1.2.2
+#18 31.17    Compiling idna v1.1.0
+#18 31.47    Compiling crypto-common v0.1.7
+#18 31.49    Compiling block-buffer v0.10.4
+#18 31.49    Compiling crossbeam-channel v0.5.15
+#18 31.52    Compiling thiserror-impl v2.0.18
+#18 31.69    Compiling aho-corasick v1.1.4
+#18 31.91    Compiling toml_datetime v1.1.1+spec-1.1.0
+#18 31.96    Compiling serde_spanned v1.1.1
+#18 32.03    Compiling toml_writer v1.1.2+spec-1.1.0
+#18 32.09    Compiling bitflags v1.3.2
+#18 32.10    Compiling nohash-hasher v0.2.0
+#18 32.11    Compiling pulldown-cmark v0.13.4
+#18 32.15    Compiling text-size v1.1.1
+#18 32.18    Compiling zip v2.4.2
+#18 32.22    Compiling bumpalo v3.20.2
+#18 32.29    Compiling zopfli v0.8.3
+#18 33.04    Compiling line-index v0.1.2
+#18 33.22    Compiling fluent-uri v0.1.4
+#18 33.26    Compiling toml v1.1.6+spec-1.1.0
+#18 33.39    Compiling digest v0.10.7
+#18 34.09    Compiling url v2.5.8
+#18 34.72    Compiling xattr v1.6.1
+#18 34.78    Compiling flate2 v1.1.9
+#18 34.90    Compiling clap v4.6.7
+#18 34.91    Compiling filetime v0.2.27
+#18 34.93    Compiling cpufeatures v0.2.17
+#18 34.93    Compiling hashlink v0.12.2
+#18 34.94    Compiling serde_repr v0.1.20
+#18 35.05    Compiling pulldown-cmark-escape v0.11.0
+#18 35.08    Compiling cypher-parser v0.8.1
+#18 35.10    Compiling bytecount v0.6.9
+#18 35.15    Compiling arraydeque v0.5.1
+#18 35.20    Compiling roundhouse v2026.9.18 (/src/roundhouse)
+#18 35.30    Compiling xxhash-rust v0.8.19
+#18 35.33    Compiling unicase v2.9.0
+#18 36.22    Compiling serde_yaml_ng v0.10.0
+#18 36.24    Compiling rubydex v0.4.2 (https://github.com/Shopify/rubydex?tag=v0.4.2#c69a742c)
+#18 36.94    Compiling yaml-rust2 v0.13.0
+#18 37.06    Compiling lsp-types v0.97.0
+#18 37.52    Compiling tar v0.4.45
+#18 38.29    Compiling sha1 v0.10.7
+#18 38.90    Compiling lsp-server v0.7.9
+#18 43.96 error[E0599]: no method named `start_offset` found for struct `ruby_prism::Location<'pr>` in the current scope
+#18 43.96   --> src/ingest/boot_hooks.rs:44:44
+#18 43.96    |
+#18 43.96 44 |                 let text: String = src[loc.start_offset()..loc.end_offset()]
+#18 43.96    |                                            ^^^^^^^^^^^^
+#18 43.96    |
+#18 43.96   ::: src/ingest/prism_api.rs:75:8
+#18 43.96    |
+#18 43.96 75 |     fn start_offset(&self) -> usize;
+#18 43.96    |        ------------ the method is available for `ruby_prism::Location<'_>` here
+#18 43.96    |
+#18 43.96    = help: items from traits can only be used if the trait is in scope
+#18 43.96 help: trait `PrismLocation` which provides `start_offset` is implemented but not in scope; perhaps you want to import it
+#18 43.96    |
+#18 43.96  6 + use crate::ingest::prism_api::PrismLocation;
+#18 43.96    |
+#18 43.96 help: there is a method `end_offset` with a similar name
+#18 43.96    |
+#18 43.96 44 -                 let text: String = src[loc.start_offset()..loc.end_offset()]
+#18 43.96 44 +                 let text: String = src[loc.end_offset()..loc.end_offset()]
+#18 43.96    |
+#18 43.96 
+#18 43.96 error[E0599]: no method named `end_offset` found for struct `ruby_prism::Location<'pr>` in the current scope
+#18 43.96   --> src/ingest/boot_hooks.rs:44:64
+#18 43.96    |
+#18 43.96 44 |                 let text: String = src[loc.start_offset()..loc.end_offset()]
+#18 43.96    |                                                                ^^^^^^^^^^ method not found in `ruby_prism::Location<'_>`
+#18 43.96    |
+#18 43.96   ::: src/ingest/prism_api.rs:76:8
+#18 43.96    |
+#18 43.96 76 |     fn end_offset(&self) -> usize;
+#18 43.96    |        ---------- the method is available for `ruby_prism::Location<'_>` here
+#18 43.96    |
+#18 43.96    = help: items from traits can only be used if the trait is in scope
+#18 43.96 help: trait `PrismLocation` which provides `end_offset` is implemented but not in scope; perhaps you want to import it
+#18 43.96    |
+#18 43.96  6 + use crate::ingest::prism_api::PrismLocation;
+#18 43.96    |
+#18 43.96 
+#18 43.97 error[E0599]: no method named `start_offset` found for struct `ruby_prism::Location<'pr>` in the current scope
+#18 43.97    --> src/ingest/boot_hooks.rs:151:29
+#18 43.97     |
+#18 43.97 151 |                     src[loc.start_offset()..loc.end_offset()].to_string()
+#18 43.97     |                             ^^^^^^^^^^^^
+#18 43.97     |
+#18 43.97    ::: src/ingest/prism_api.rs:75:8
+#18 43.97     |
+#18 43.97  75 |     fn start_offset(&self) -> usize;
+#18 43.97     |        ------------ the method is available for `ruby_prism::Location<'_>` here
+#18 43.97     |
+#18 43.97     = help: items from traits can only be used if the trait is in scope
+#18 43.97 help: trait `PrismLocation` which provides `start_offset` is implemented but not in scope; perhaps you want to import it
+#18 43.97     |
+#18 43.97   6 + use crate::ingest::prism_api::PrismLocation;
+#18 43.97     |
+#18 43.97 help: there is a method `end_offset` with a similar name
+#18 43.97     |
+#18 43.97 151 -                     src[loc.start_offset()..loc.end_offset()].to_string()
+#18 43.97 151 +                     src[loc.end_offset()..loc.end_offset()].to_string()
+#18 43.97     |
+#18 43.97 
+#18 43.97 error[E0599]: no method named `end_offset` found for struct `ruby_prism::Location<'pr>` in the current scope
+#18 43.97    --> src/ingest/boot_hooks.rs:151:49
+#18 43.97     |
+#18 43.97 151 |                     src[loc.start_offset()..loc.end_offset()].to_string()
+#18 43.97     |                                                 ^^^^^^^^^^ method not found in `ruby_prism::Location<'_>`
+#18 43.97     |
+#18 43.97    ::: src/ingest/prism_api.rs:76:8
+#18 43.97     |
+#18 43.97  76 |     fn end_offset(&self) -> usize;
+#18 43.97     |        ---------- the method is available for `ruby_prism::Location<'_>` here
+#18 43.97     |
+#18 43.97     = help: items from traits can only be used if the trait is in scope
+#18 43.97 help: trait `PrismLocation` which provides `end_offset` is implemented but not in scope; perhaps you want to import it
+#18 43.97     |
+#18 43.97   6 + use crate::ingest::prism_api::PrismLocation;
+#18 43.97     |
+#18 43.97 
+#18 55.40 For more information about this error, try `rustc --explain E0599`.
+#18 55.42 error: could not compile `roundhouse` (lib) due to 4 previous errors
+#18 ERROR: process "/bin/sh -c ROUNDHOUSE_COMMIT=$(echo 0f6fb0c7e7efa9b955c40bdd537b8a61fbe0486e | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse" did not complete successfully: exit code: 101
+------
+ > [builder 10/11] RUN --mount=type=cache,id=conduit-v10-cargo-registry,target=/usr/local/cargo/registry     --mount=type=cache,id=conduit-v10-cargo-git,target=/usr/local/cargo/git     --mount=type=cache,id=conduit-v10-cargo-target,target=/src/roundhouse/target     ROUNDHOUSE_COMMIT=$(echo 0f6fb0c7e7efa9b955c40bdd537b8a61fbe0486e | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse:
+43.97     |        ---------- the method is available for `ruby_prism::Location<'_>` here
+43.97     |
+43.97     = help: items from traits can only be used if the trait is in scope
+43.97 help: trait `PrismLocation` which provides `end_offset` is implemented but not in scope; perhaps you want to import it
+43.97     |
+43.97   6 + use crate::ingest::prism_api::PrismLocation;
+43.97     |
+43.97 
+55.40 For more information about this error, try `rustc --explain E0599`.
+55.42 error: could not compile `roundhouse` (lib) due to 4 previous errors
+------
+Dockerfile:20
+--------------------
+  19 |     WORKDIR /src/roundhouse
+  20 | >>> RUN --mount=type=cache,id=conduit-v10-cargo-registry,target=/usr/local/cargo/registry \
+  21 | >>>     --mount=type=cache,id=conduit-v10-cargo-git,target=/usr/local/cargo/git \
+  22 | >>>     --mount=type=cache,id=conduit-v10-cargo-target,target=/src/roundhouse/target \
+  23 | >>>     ROUNDHOUSE_COMMIT=$(echo 0f6fb0c7e7efa9b955c40bdd537b8a61fbe0486e | cut -c1-8) cargo build --locked --release --bin roundhouse -j4 \
+  24 | >>>     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse
+  25 |     RUN roundhouse --version && spinel --version && spin --version
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c ROUNDHOUSE_COMMIT=$(echo 0f6fb0c7e7efa9b955c40bdd537b8a61fbe0486e | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse" did not complete successfully: exit code: 101

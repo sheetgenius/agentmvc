@@ -1,0 +1,46 @@
+# syntax=docker/dockerfile:1
+# Toolchain for compile variant v10: Roundhouse main 0f6fb0c7 + patches/series (10, without 30), Spinel master ca9717054 + two regression repairs.
+# Source exports are frozen by ../reproduce/prepare-toolchain.sh; see patches/SHA256SUMS. Spinel is built before
+# Roundhouse so that a Roundhouse patch change does not rebuild Spinel.
+FROM ruby:4.0.7-slim-trixie AS ruby407
+
+FROM rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546 AS builder
+ENV DEBIAN_FRONTEND=noninteractive CC=clang CARGO_BUILD_JOBS=4 MAKEFLAGS=-j8
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    clang make git pkg-config libsqlite3-dev sqlite3 libjemalloc-dev \
+    libpq-dev postgresql-client curl ca-certificates libssl-dev libcrypt-dev \
+    libyaml-0-2 libgmp10 file time && rm -rf /var/lib/apt/lists/*
+COPY --from=ruby407 /usr/local/ /usr/local/
+RUN ruby --version
+COPY vendor/spinel /src/spinel
+WORKDIR /src/spinel
+RUN make deps -j8 && make -j8 CC=clang && make install -j8 CC=clang
+COPY vendor/roundhouse /src/roundhouse
+WORKDIR /src/roundhouse
+RUN --mount=type=cache,id=conduit-v10-cargo-registry,target=/usr/local/cargo/registry \
+    --mount=type=cache,id=conduit-v10-cargo-git,target=/usr/local/cargo/git \
+    --mount=type=cache,id=conduit-v10-cargo-target,target=/src/roundhouse/target \
+    ROUNDHOUSE_COMMIT=$(echo 0f6fb0c7e7efa9b955c40bdd537b8a61fbe0486e | cut -c1-8) cargo build --locked --release --bin roundhouse -j4 \
+    && install -m755 target/release/roundhouse /usr/local/bin/roundhouse
+RUN roundhouse --version && spinel --version && spin --version
+
+FROM rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546
+ENV DEBIAN_FRONTEND=noninteractive CC=clang CARGO_BUILD_JOBS=4 MAKEFLAGS=-j8
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    clang make git pkg-config libsqlite3-dev sqlite3 libjemalloc-dev \
+    libpq-dev postgresql-client curl ca-certificates libssl-dev libcrypt-dev \
+    libyaml-0-2 libgmp10 file time && rm -rf /var/lib/apt/lists/*
+COPY --from=ruby407 /usr/local/ /usr/local/
+RUN ruby --version
+COPY --from=builder /usr/local/lib/spinel /usr/local/lib/spinel
+COPY --from=builder /usr/local/bin/roundhouse /usr/local/bin/roundhouse
+COPY patches /usr/local/share/roundhouse-patches
+COPY spinel-patches /usr/local/share/spinel-patches
+RUN ln -s /usr/local/lib/spinel/spinel /usr/local/bin/spinel \
+    && ln -s /usr/local/lib/spinel/spin /usr/local/bin/spin
+LABEL org.opencontainers.image.title="conduit-v10-toolchain" \
+    roundhouse.commit="0f6fb0c7e7efa9b955c40bdd537b8a61fbe0486e" \
+    roundhouse.patches="/usr/local/share/roundhouse-patches/SHA256SUMS" \
+    spinel.commit="ca971705427a40e5ef5472bf76f033abbc21da3a" \
+    spinel.patches="/usr/local/share/spinel-patches/SHA256SUMS"
+WORKDIR /work

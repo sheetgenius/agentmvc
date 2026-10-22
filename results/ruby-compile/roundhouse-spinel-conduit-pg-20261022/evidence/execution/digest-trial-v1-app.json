@@ -1,0 +1,22 @@
+{
+  "label": "digest-trial-v1-app",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-digest-trial-v1-app",
+    "-v",
+    "$SCRATCH/emitted-with-cache-loop:/work/src:ro",
+    "conduit-v10-trial:digest-no-instance-new",
+    "sh",
+    "-c",
+    "cp -a /work/src /tmp/app && rm -rf /tmp/app/build && cd /tmp/app && spin build -- --cc=clang --jobs=8"
+  ],
+  "started": "2026-10-22T10:16:45.415745+00:00",
+  "finished": "2026-10-22T10:20:38.818536+00:00",
+  "elapsed_seconds": 233.4,
+  "exit": 0,
+  "log": "evidence/execution/digest-trial-v1-app.log",
+  "heavy_lock": true
+}

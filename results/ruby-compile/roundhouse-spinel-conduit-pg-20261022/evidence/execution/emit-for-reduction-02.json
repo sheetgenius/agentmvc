@@ -1,0 +1,28 @@
+{
+  "label": "emit-for-reduction-02",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-emit-for-reduction-02",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/variant/source:/src/app:ro",
+    "-v",
+    "$SCRATCH/emitted-initial:/work/emitted",
+    "-e",
+    "RH_DATABASE_ADAPTER=postgresql",
+    "conduit-v10-toolchain:e2c34205cf6d",
+    "roundhouse",
+    "--target",
+    "spinel",
+    "-o",
+    "/work/emitted",
+    "/src/app"
+  ],
+  "started": "2026-10-22T09:09:34.576192+00:00",
+  "finished": "2026-10-22T09:09:35.130766+00:00",
+  "elapsed_seconds": 0.555,
+  "exit": 1,
+  "log": "evidence/execution/emit-for-reduction-02.log"
+}

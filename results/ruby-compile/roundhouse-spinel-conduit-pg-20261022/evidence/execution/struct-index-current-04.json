@@ -1,0 +1,29 @@
+{
+  "label": "struct-index-current-04",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-struct-index-current-04",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/regressions/struct-index-argument/round3:/work/probes",
+    "-w",
+    "/work/probes",
+    "conduit-v10-toolchain:diagnostic",
+    "python3",
+    "run.py",
+    "results-current.json"
+  ],
+  "started": "2026-10-22T10:23:07.703290+00:00",
+  "finished": "2026-10-22T10:23:15.103119+00:00",
+  "elapsed_seconds": 7.4,
+  "exit": 0,
+  "log": null,
+  "heavy_lock": true,
+  "log_omitted": {
+    "reason": "Probe log omitted: its result rows are identical to evidence/regressions/struct-index-argument/round3/results-current.json.",
+    "bytes": 27094,
+    "sha256": "e504ce6bb02f07d6bc6760a439f12937f69ebe11a15d619b622c3b4f0d313886"
+  }
+}

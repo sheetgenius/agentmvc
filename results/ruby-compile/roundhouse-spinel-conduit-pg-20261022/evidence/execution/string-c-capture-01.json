@@ -1,0 +1,24 @@
+{
+  "label": "string-c-capture-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-string-c-capture-01",
+    "-v",
+    "$SCRATCH/emitted-with-cache-loop:/work/src:ro",
+    "-v",
+    "$SCRATCH/string-c-capture:/work/out",
+    "conduit-v10-toolchain:diagnostic",
+    "sh",
+    "-c",
+    "cp -a /work/src /tmp/app && rm -rf /tmp/app/build && cd /tmp/app && spin build -- --cc=clang --jobs=8; status=$?; cp /tmp/spinel_out_*.c /work/out/ 2>/dev/null; ls -la /work/out; exit $status"
+  ],
+  "started": "2026-10-22T10:03:43.302511+00:00",
+  "finished": "2026-10-22T10:06:07.611978+00:00",
+  "elapsed_seconds": 144.308,
+  "exit": 1,
+  "log": "evidence/execution/string-c-capture-01.log",
+  "heavy_lock": true
+}

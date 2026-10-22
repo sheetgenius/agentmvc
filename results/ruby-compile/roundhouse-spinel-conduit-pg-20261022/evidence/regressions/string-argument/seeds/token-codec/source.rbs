@@ -1,0 +1,8 @@
+class TokenCodec
+  class DecodeError < StandardError
+  end
+  def self.encode: (Hash[Symbol, Integer] payload, untyped secret) -> String
+  def self.decode: (String token, untyped secret) -> Hash[untyped, untyped]
+  def self.encode_segment: (String bytes) -> String
+  def self.hmac: (untyped secret, String input) -> String
+end

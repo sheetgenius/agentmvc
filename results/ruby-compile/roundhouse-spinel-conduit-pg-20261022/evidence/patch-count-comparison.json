@@ -1,0 +1,218 @@
+{
+  "roundhouse": {
+    "input_v9_1": {
+      "count": 10,
+      "patches": [
+        {
+          "patch": "10-api-mode-json.patch",
+          "added": 152,
+          "removed": 39,
+          "files": 13,
+          "decision": "retained; applies cleanly (hunk metadata refreshed)"
+        },
+        {
+          "patch": "20-raw-websocket.patch",
+          "added": 347,
+          "removed": 16,
+          "files": 9,
+          "decision": "retained; applies cleanly (hunk metadata refreshed)"
+        },
+        {
+          "patch": "30-jobs-boot.patch",
+          "added": 420,
+          "removed": 1,
+          "files": 8,
+          "decision": "retained; context rebase in scaffold/main.rb + Prism 2 PrismLocation import"
+        },
+        {
+          "patch": "50-postgresql-lane.patch",
+          "added": 986,
+          "removed": 22,
+          "files": 22,
+          "decision": "retained; context rebase in naming.rs test + Db._txn_callbacks shim"
+        },
+        {
+          "patch": "60-rails-surface.patch",
+          "added": 190,
+          "removed": 32,
+          "files": 8,
+          "decision": "retained; context rebase in scope_chain.rs (find_or_create_by!)"
+        },
+        {
+          "patch": "74-integer-query-range.patch",
+          "added": 238,
+          "removed": 27,
+          "files": 11,
+          "decision": "retained; applies cleanly (hunk metadata refreshed)"
+        },
+        {
+          "patch": "80-gradual-return-stabilization.patch",
+          "added": 87,
+          "removed": 40,
+          "files": 3,
+          "decision": "retained; byte-identical"
+        },
+        {
+          "patch": "82-upstream-regression-quoted-bulk-update.patch",
+          "added": 2,
+          "removed": 4,
+          "files": 1,
+          "decision": "retained; applies cleanly (hunk metadata refreshed)"
+        },
+        {
+          "patch": "83-upstream-regression-temporal-initialize.patch",
+          "added": 6,
+          "removed": 31,
+          "files": 1,
+          "decision": "retained; applies cleanly (hunk metadata refreshed)"
+        },
+        {
+          "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+          "added": 8,
+          "removed": 0,
+          "files": 1,
+          "decision": "retained; applies cleanly (hunk metadata refreshed)"
+        }
+      ],
+      "net": {
+        "added": 2436,
+        "removed": 212
+      }
+    },
+    "final_v10": {
+      "count": 11,
+      "patches": [
+        {
+          "patch": "10-api-mode-json.patch",
+          "added": 152,
+          "removed": 39,
+          "files": 13,
+          "decision": "retained; applies cleanly (hunk metadata refreshed)"
+        },
+        {
+          "patch": "20-raw-websocket.patch",
+          "added": 347,
+          "removed": 16,
+          "files": 9,
+          "decision": "retained; applies cleanly (hunk metadata refreshed)"
+        },
+        {
+          "patch": "30-jobs-boot.patch",
+          "added": 419,
+          "removed": 1,
+          "files": 8,
+          "decision": "retained; context rebase in scaffold/main.rb + Prism 2 PrismLocation import"
+        },
+        {
+          "patch": "50-postgresql-lane.patch",
+          "added": 999,
+          "removed": 22,
+          "files": 22,
+          "decision": "retained; context rebase in naming.rs test + Db._txn_callbacks shim"
+        },
+        {
+          "patch": "60-rails-surface.patch",
+          "added": 190,
+          "removed": 32,
+          "files": 8,
+          "decision": "retained; context rebase in scope_chain.rs (find_or_create_by!)"
+        },
+        {
+          "patch": "74-integer-query-range.patch",
+          "added": 238,
+          "removed": 27,
+          "files": 11,
+          "decision": "retained; applies cleanly (hunk metadata refreshed)"
+        },
+        {
+          "patch": "80-gradual-return-stabilization.patch",
+          "added": 87,
+          "removed": 40,
+          "files": 3,
+          "decision": "retained; byte-identical"
+        },
+        {
+          "patch": "82-upstream-regression-quoted-bulk-update.patch",
+          "added": 2,
+          "removed": 4,
+          "files": 1,
+          "decision": "retained; applies cleanly (hunk metadata refreshed)"
+        },
+        {
+          "patch": "83-upstream-regression-temporal-initialize.patch",
+          "added": 6,
+          "removed": 31,
+          "files": 1,
+          "decision": "retained; applies cleanly (hunk metadata refreshed)"
+        },
+        {
+          "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+          "added": 8,
+          "removed": 0,
+          "files": 1,
+          "decision": "retained; applies cleanly (hunk metadata refreshed)"
+        },
+        {
+          "patch": "85-upstream-regression-thruster-cache-enumeration.patch",
+          "added": 7,
+          "removed": 1,
+          "files": 1,
+          "decision": "new; upstream Roundhouse b348b8005 Thruster cache"
+        }
+      ],
+      "net": {
+        "added": 2455,
+        "removed": 213
+      }
+    },
+    "retired": [],
+    "new": [
+      "85-upstream-regression-thruster-cache-enumeration.patch"
+    ]
+  },
+  "spinel": {
+    "input_v9_1": {
+      "count": 1,
+      "patches": [
+        {
+          "patch": "91-upstream-regression-late-hash-return.patch",
+          "added": 11,
+          "removed": 0,
+          "files": 1,
+          "decision": "retained; byte-identical; still required"
+        }
+      ],
+      "net": {
+        "added": 11,
+        "removed": 0
+      }
+    },
+    "final_v10": {
+      "count": 2,
+      "patches": [
+        {
+          "patch": "91-upstream-regression-late-hash-return.patch",
+          "added": 11,
+          "removed": 0,
+          "files": 1,
+          "decision": "retained; byte-identical; still required"
+        },
+        {
+          "patch": "92-upstream-regression-digest-instance-new.patch",
+          "added": 0,
+          "removed": 3,
+          "files": 1,
+          "decision": "new; upstream Spinel 2c6d6b7ff (PR #9913, 2388b53ab)"
+        }
+      ],
+      "net": {
+        "added": 11,
+        "removed": 3
+      }
+    },
+    "retired": [],
+    "new": [
+      "92-upstream-regression-digest-instance-new.patch"
+    ]
+  }
+}

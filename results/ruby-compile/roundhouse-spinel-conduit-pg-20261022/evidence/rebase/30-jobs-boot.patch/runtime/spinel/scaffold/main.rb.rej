@@ -1,0 +1,12 @@
+diff a/runtime/spinel/scaffold/main.rb b/runtime/spinel/scaffold/main.rb	(rejected hunks)
+@@ -887,6 +887,10 @@ Broadcasts.set_transport(Cable::Transport.new)
+ # reaches this line keeps the inline behaviour rather than dropping work
+ # into an Array nobody reads.
+ ActiveJob.register_drain
++# Fail boot visibly if a callback fails. Recovery runs with a DB lease
++# after queue registration, before the drain or listener starts, so all
++# recovered jobs are enqueued rather than executed in this boot thread.
++Db.with_connection { Rails.application.run_after_initialize }
+ Thread.new do
+   Main.job_loop
+ end

@@ -1,0 +1,23 @@
+{
+  "label": "rescue-reduction-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v10-rescue-reduction-01",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/evidence/regressions:/work/probes",
+    "-w",
+    "/work/probes",
+    "conduit-v10-toolchain:diagnostic",
+    "sh",
+    "-c",
+    "for f in string-argument/rescue.rb string-argument/method-rescue.rb string-argument/thread.rb thruster-cache/guarded.rb thruster-cache/guarded-frozen.rb; do echo \"$f\"; ruby \"$f\"; spinel --cc=clang \"$f\" -o /tmp/probe && /tmp/probe; done"
+  ],
+  "started": "2026-10-22T09:40:58.466233+00:00",
+  "finished": "2026-10-22T09:41:18.229816+00:00",
+  "elapsed_seconds": 19.763,
+  "exit": 0,
+  "log": "evidence/execution/rescue-reduction-01.log"
+}

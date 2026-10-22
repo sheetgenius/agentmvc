@@ -1,0 +1,9 @@
+diff a/src/lower/scope_chain.rs b/src/lower/scope_chain.rs	(rejected hunks)
+@@ -2898,6 +2911,7 @@ fn is_relation_terminal(name: &str, args: &[Expr], block: Option<&Expr>) -> bool
+                 // `merge_scope_attributes`', because the query half needs
+                 // the same conditions anyway.
+                 | "find_or_create_by"
++                | "find_or_create_by!"
+         ),
+     }
+ }

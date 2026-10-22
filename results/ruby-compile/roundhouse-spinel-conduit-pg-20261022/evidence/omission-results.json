@@ -1,0 +1,84 @@
+[
+  {
+    "omitted_patch": "30",
+    "condition": "compiled-conduit-v10-without-30",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch",
+      "85-upstream-regression-thruster-cache-enumeration.patch"
+    ],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-30-build-01.json"
+    },
+    "gate": {
+      "exit": 0,
+      "execution": "evidence/execution/without-30-gate-01.json"
+    },
+    "recovery": {
+      "exit": 1,
+      "execution": "evidence/execution/without-30-recovery-01.json",
+      "record": "evidence/omissions/without-30/recovery.json",
+      "before": "pending",
+      "after": "pending"
+    },
+    "finding": "The frozen gate passes without 30 (17/17 API, live, 4/4 browser, 13/13 security) because it never restarts the server over a pending export; the boot-recovery probe fails (pending stays pending). 30 stays: upstream still runs no after_initialize callback at boot."
+  },
+  {
+    "omitted_patch": "50",
+    "condition": "compiled-conduit-v10-without-50",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch",
+      "85-upstream-regression-thruster-cache-enumeration.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-50-build-01.json"
+    },
+    "finding": "Roundhouse does not compile: `postgresql_enabled` (E0425) and runtime/spinel/db_libpq.rb are 50's, and 74 uses them. Upstream has no libpq lane; 50 stays.",
+    "gate": {
+      "run": false,
+      "reason": "the gate's first step builds the same image and cannot pass"
+    }
+  },
+  {
+    "omitted_patch": "60",
+    "condition": "compiled-conduit-v10-without-60",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch",
+      "85-upstream-regression-thruster-cache-enumeration.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-60-build-01.json"
+    },
+    "finding": "roundhouse check refuses favorites_controller.rb:5 and profiles_controller.rb:8: 'scoped find-or-create cannot be lowered safely: the runtime has no find_or_create_by!'. 60 stays.",
+    "gate": {
+      "run": false,
+      "reason": "the gate's first step builds the same image and cannot pass"
+    }
+  }
+]

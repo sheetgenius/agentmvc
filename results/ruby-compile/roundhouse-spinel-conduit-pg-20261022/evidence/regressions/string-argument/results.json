@@ -1,0 +1,277 @@
+[
+  {
+    "source": "basic.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"a\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def take: (String) -> String\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "basic.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"a\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "env-secret.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def take: (String, String) -> String\nend\n\nclass Config\n  @key: String\n  def initialize: () -> String\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "env-secret.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "hash.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"a\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def take: (String) -> String\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "hash.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"a\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "mutable.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"a\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def take: (String) -> String\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "mutable.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"a\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "mutating-callee.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def take: (String) -> String\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "mutating-callee.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "reader.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"a\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def take: (String) -> String\nend\n\nclass Header\n  @value: String\n  def initialize: (String) -> String\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "reader.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"a\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "two-args.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def take: (String, String) -> String\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "two-args.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "typed-mutate.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Decoder\n  def self.decode: (String, untyped) -> String # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "typed-mutate.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "typed-reader.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def read: (Header, Config) -> String\nend\n\nclass Config\n  @key: String\n  def initialize: () -> String\nend\n\nclass Header\n  @value: String\n  def initialize: () -> String\nend\n\nclass Decoder\n  def self.decode: (String, untyped) -> String # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "typed-reader.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "typed-seed.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Decoder\n  def self.decode: (String, untyped) -> String # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "typed-seed.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "typed.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Decoder\n  def self.decode: (String, String) -> String\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "typed.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "classification": "upstream Roundhouse change exposes a Spinel conversion gap in Conduit's whole program (with its local patches)",
+  "introducing_commit": "b348b800591378ad26bbfff26cc67d83c7c49649 (rubys/roundhouse: The spinel binary answers a public response from Thruster's cache; adds runtime/spinel/tep/thruster_cache.rb)",
+  "site": "runtime/spinel/tep/thruster_cache.rb:244 `if_none_match.split(\",\").any? { |candidate| candidate.strip == etag }` in ThrusterCache.not_modified?",
+  "symptom": "spinel refuses: argument __self of __enum_any?__24 (actual str_array, parameter strh_array) given a Array, which no conversion keeps in its sp_PtrArray * slot",
+  "observed_types": "In Conduit's program not_modified? is inferred (untyped, untyped) -> bool; the any? helper's receiver parameter is settled as a String-handle Array while split hands it a plain String Array.",
+  "not_a_spinel_regression": "The same emitted app is refused by v9's Spinel 6ca6d451b + 91 (cache-application-v9-spinel-01) and by v10's (callbacks-isolated-diagnostic-01, build-rebase-03).",
+  "repair": "patches/roundhouse/85-upstream-regression-thruster-cache-enumeration.patch replaces the any? block with an index loop (+7/-1); with it the same app compiles on v9 Spinel (cache-loop-v9-spinel-01) and the final v10 build passes (build-final-01, compiled-gate-02).",
+  "cruby_behavior": "Unchanged: the loop returns true on the first candidate equal to the ETag and false otherwise, as any? does.",
+  "standalone_minimal_ruby_reproducer": false,
+  "standalone_attempts": "29 files in thruster-cache/ (typed, untyped, JSON, mixed, RBS-seeded, threaded, mutex, many call sites, the whole cache file with a driver): none reproduces the refusal. Two harness attempts failed for unrelated reasons (thruster-min-context-01: missing Tep.decimal_byte_count; cache-tep-reduction-01: FFI-only runtime under CRuby).",
+  "upstream_tests": "Upstream's own tests/tep_thruster_cache.rs passes in its suite; the gap appears only in a program whose inference makes the helper parameter a handle array.",
+  "untested": "Upstream Roundhouse alone cannot build Conduit (no PostgreSQL lane), so an interaction with a local patch, such as 10's request header typing, is not excluded."
+}

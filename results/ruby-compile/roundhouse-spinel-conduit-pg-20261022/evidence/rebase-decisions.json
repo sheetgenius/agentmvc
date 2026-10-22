@@ -1,0 +1,73 @@
+[
+  {
+    "patch": "10-api-mode-json.patch",
+    "decision": "retained unchanged",
+    "rebased": false,
+    "bytes": 18162,
+    "log": "Checking patch runtime/ruby/action_controller/base.rb...\nChecking patch runtime/ruby/action_controller/base.rbs...\nChecking patch runtime/ruby/action_controller/parameter_missing.rb...\nChecking patch runtime/ruby/action_controller/parameter_missing.rbs...\nChecking patch runtime/spinel/scaffold/main.rb...\nChecking patch runtime/spinel/tep/net.rb...\nChecking patch runtime/spinel/tep/request.rbs...\nChecking patch runtime/spinel/tep/server.rb...\nChecking patch runtime/spinel/tep/server_scheduled.rb...\nChecking patch runtime/spinel/tep/server_threaded.rb...\nChecking patch src/lower/controller_to_library/mod.rs...\nChecking patch src/lower/errors_add.rs...\nChecking patch tests/api_mode.rs...\nApplied patch runtime/ruby/action_controller/base.rb cleanly.\nApplied patch runtime/ruby/action_controller/base.rbs cleanly.\nApplied patch runtime/ruby/action_controller/parameter_missing.rb cleanly.\nApplied patch runtime/ruby/action_controller/parameter_missing.rbs cleanly.\nApplied patch runtime/spinel/scaffold/main.rb cleanly.\nApplied patch runtime/spinel/tep/net.rb cleanly.\nApplied patch runtime/spinel/tep/request.rbs cleanly.\nApplied patch runtime/spinel/tep/server.rb cleanly.\nApplied patch runtime/spinel/tep/server_scheduled.rb cleanly.\nApplied patch runtime/spinel/tep/server_threaded.rb cleanly.\nApplied patch src/lower/controller_to_library/mod.rs cleanly.\nApplied patch src/lower/errors_add.rs cleanly.\nApplied patch tests/api_mode.rs cleanly.\n"
+  },
+  {
+    "patch": "20-raw-websocket.patch",
+    "decision": "retained unchanged",
+    "rebased": false,
+    "bytes": 18293,
+    "log": "Checking patch runtime/spinel/faye_websocket.rb...\nChecking patch runtime/spinel/scaffold/boot.rb...\nChecking patch runtime/spinel/scaffold/main.rb...\nChecking patch runtime/spinel/tep/net.rb...\nChecking patch runtime/spinel/tep/server_threaded.rb...\nChecking patch runtime/spinel/tep/websocket/connection.rb...\nChecking patch runtime/spinel/tep/websocket/driver.rb...\nChecking patch tests/spinel_raw_websocket.rb...\nChecking patch tests/spinel_raw_websocket.rs...\nApplied patch runtime/spinel/faye_websocket.rb cleanly.\nApplied patch runtime/spinel/scaffold/boot.rb cleanly.\nApplied patch runtime/spinel/scaffold/main.rb cleanly.\nApplied patch runtime/spinel/tep/net.rb cleanly.\nApplied patch runtime/spinel/tep/server_threaded.rb cleanly.\nApplied patch runtime/spinel/tep/websocket/connection.rb cleanly.\nApplied patch runtime/spinel/tep/websocket/driver.rb cleanly.\nApplied patch tests/spinel_raw_websocket.rb cleanly.\nApplied patch tests/spinel_raw_websocket.rs cleanly.\n"
+  },
+  {
+    "patch": "30-jobs-boot.patch",
+    "decision": "faithful context rebase",
+    "rebased": true,
+    "bytes": 21309,
+    "log": "Checking patch docs/guide/spinel-jobs.md...\nChecking patch runtime/ruby/rails.rb...\nChecking patch runtime/ruby/rails.rbs...\nChecking patch runtime/spinel/scaffold/main.rb...\nerror: while searching for:\n# reaches this line keeps the inline behaviour rather than dropping work\n# into an Array nobody reads.\nActiveJob.register_drain\nThread.new do\n  Main.job_loop\nend\n\nerror: patch failed: runtime/spinel/scaffold/main.rb:887\nChecking patch src/ingest/app.rs...\nHunk #1 succeeded at 1417 (offset 3 lines).\nHunk #2 succeeded at 9423 (offset 139 lines).\nChecking patch src/ingest/boot_hooks.rs...\nChecking patch src/ingest/mod.rs...\nHunk #1 succeeded at 39 (offset 1 line).\nChecking patch tests/boot_hooks.rs...\nApplied patch docs/guide/spinel-jobs.md cleanly.\nApplied patch runtime/ruby/rails.rb cleanly.\nApplied patch runtime/ruby/rails.rbs cleanly.\nApplying patch runtime/spinel/scaffold/main.rb with 1 reject...\nRejected hunk #1.\nApplied patch src/ingest/app.rs cleanly.\nApplied patch src/ingest/boot_hooks.rs cleanly.\nApplied patch src/ingest/mod.rs cleanly.\nApplied patch tests/boot_hooks.rs cleanly.\n",
+    "api_adaptation": "Import upstream PrismLocation trait after Prism 2 migration (a8868e1b1; d44e87d9e). Initial build fails E0599 on local module only; not a new standalone upstream regression."
+  },
+  {
+    "patch": "50-postgresql-lane.patch",
+    "decision": "faithful context rebase",
+    "rebased": true,
+    "bytes": 54614,
+    "log": "Checking patch docs/guide/spinel.md...\nChecking patch runtime/ruby/active_record/base.rb...\nHunk #2 succeeded at 1256 (offset 9 lines).\nHunk #3 succeeded at 1278 (offset 9 lines).\nChecking patch runtime/ruby/active_record/base.rbs...\nChecking patch runtime/spinel/db_libpq.rb...\nChecking patch src/emit/roda.rs...\nChecking patch src/emit/ruby.rs...\nChecking patch src/emit/ruby/library.rs...\nChecking patch src/emit/shared/schema_sql.rs...\nChecking patch src/ingest/model.rs...\nHunk #1 succeeded at 3984 (offset 761 lines).\nChecking patch src/ingest/schema.rs...\nChecking patch src/ingest/structure_sql.rs...\nHunk #1 succeeded at 515 (offset 6 lines).\nHunk #2 succeeded at 1617 (offset 51 lines).\nChecking patch src/lib.rs...\nChecking patch src/lower/arel/ir.rs...\nChecking patch src/lower/arel/ruby_values.rs...\nChecking patch src/lower/arel/visitor.rs...\nChecking patch src/lower/group_count.rs...\nChecking patch src/lower/model_to_library/adapter_emit/mod.rs...\nChecking patch src/lower/model_to_library/mod.rs...\nHunk #1 succeeded at 3009 (offset 1 line).\nChecking patch src/lower/model_to_library/schema.rs...\nChecking patch src/naming.rs...\nerror: while searching for:\n            | \"vacuum\" | \"values\" | \"view\" | \"virtual\" | \"when\" | \"where\" | \"window\" | \"with\" | \"without\"\n    )\n}\n\nerror: patch failed: src/naming.rs:541\nChecking patch src/project.rs...\nHunk #2 succeeded at 2124 (offset 1 line).\nHunk #3 succeeded at 6692 (offset 65 lines).\nHunk #4 succeeded at 12015 (offset 66 lines).\nChecking patch src/schema.rs...\nApplied patch docs/guide/spinel.md cleanly.\nApplied patch runtime/ruby/active_record/base.rb cleanly.\nApplied patch runtime/ruby/active_record/base.rbs cleanly.\nApplied patch runtime/spinel/db_libpq.rb cleanly.\nApplied patch src/emit/roda.rs cleanly.\nApplied patch src/emit/ruby.rs cleanly.\nApplied patch src/emit/ruby/library.rs cleanly.\nApplied patch src/emit/shared/schema_sql.rs cleanly.\nApplied patch src/ingest/model.rs cleanly.\nApplied patch src/ingest/schema.rs cleanly.\nApplied patch src/ingest/structure_sql.rs cleanly.\nApplied patch src/lib.rs cleanly.\nApplied patch src/lower/arel/ir.rs cleanly.\nApplied patch src/lower/arel/ruby_values.rs cleanly.\nApplied patch src/lower/arel/visitor.rs cleanly.\nApplied patch src/lower/group_count.rs cleanly.\nApplied patch src/lower/model_to_library/adapter_emit/mod.rs cleanly.\nApplied patch src/lower/model_to_library/mod.rs cleanly.\nApplied patch src/lower/model_to_library/schema.rs cleanly.\nApplying patch src/naming.rs with 1 reject...\nHunk #1 applied cleanly.\nRejected hunk #2.\nApplied patch src/project.rs cleanly.\nApplied patch src/schema.rs cleanly.\n"
+  },
+  {
+    "patch": "60-rails-surface.patch",
+    "decision": "faithful context rebase",
+    "rebased": true,
+    "bytes": 22166,
+    "log": "Checking patch runtime/ruby/active_record/base.rb...\nChecking patch runtime/ruby/active_record/base.rbs...\nChecking patch src/lower/assoc_attr_key.rs...\nChecking patch src/lower/first_or_create.rs...\nChecking patch src/lower/model_to_library/schema.rs...\nHunk #2 succeeded at 3146 (offset 13 lines).\nHunk #3 succeeded at 3180 (offset 13 lines).\nHunk #4 succeeded at 3211 (offset 13 lines).\nChecking patch src/lower/scope_chain.rs...\nHunk #1 succeeded at 2766 (offset 24 lines).\nHunk #2 succeeded at 2884 (offset 24 lines).\nerror: while searching for:\n                // `merge_scope_attributes`', because the query half needs\n                // the same conditions anyway.\n                | \"find_or_create_by\"\n        ),\n    }\n}\n\nerror: patch failed: src/lower/scope_chain.rs:2898\nHunk #4 succeeded at 3486 (offset 30 lines).\nHunk #5 succeeded at 3602 (offset 30 lines).\nHunk #6 succeeded at 4683 (offset 30 lines).\nHunk #7 succeeded at 4857 (offset 30 lines).\nHunk #8 succeeded at 6074 (offset 124 lines).\nChecking patch src/project.rs...\nHunk #1 succeeded at 9242 (offset 65 lines).\nChecking patch tests/rails_surface.rs...\nApplied patch runtime/ruby/active_record/base.rb cleanly.\nApplied patch runtime/ruby/active_record/base.rbs cleanly.\nApplied patch src/lower/assoc_attr_key.rs cleanly.\nApplied patch src/lower/first_or_create.rs cleanly.\nApplied patch src/lower/model_to_library/schema.rs cleanly.\nApplying patch src/lower/scope_chain.rs with 1 reject...\nHunk #1 applied cleanly.\nHunk #2 applied cleanly.\nRejected hunk #3.\nHunk #4 applied cleanly.\nHunk #5 applied cleanly.\nHunk #6 applied cleanly.\nHunk #7 applied cleanly.\nHunk #8 applied cleanly.\nApplied patch src/project.rs cleanly.\nApplied patch tests/rails_surface.rs cleanly.\n"
+  },
+  {
+    "patch": "74-integer-query-range.patch",
+    "decision": "retained unchanged",
+    "rebased": false,
+    "bytes": 21725,
+    "log": "Checking patch runtime/ruby/active_record/base.rb...\nChecking patch runtime/ruby/active_record/base.rbs...\nChecking patch runtime/ruby/active_record/connection.rb...\nHunk #1 succeeded at 423 (offset 14 lines).\nChecking patch runtime/ruby/active_record/connection.rbs...\nHunk #1 succeeded at 106 (offset 8 lines).\nChecking patch runtime/ruby/active_record/relation.rb...\nChecking patch runtime/ruby/active_record/relation.rbs...\nChecking patch src/lower/arel/visitor.rs...\nChecking patch src/lower/model_to_library/mod.rs...\nHunk #1 succeeded at 1238 (offset 1 line).\nChecking patch src/lower/model_to_library/schema.rs...\nChecking patch tests/integer_query_predicates.rb...\nChecking patch tests/integer_query_predicates.rs...\nApplied patch runtime/ruby/active_record/base.rb cleanly.\nApplied patch runtime/ruby/active_record/base.rbs cleanly.\nApplied patch runtime/ruby/active_record/connection.rb cleanly.\nApplied patch runtime/ruby/active_record/connection.rbs cleanly.\nApplied patch runtime/ruby/active_record/relation.rb cleanly.\nApplied patch runtime/ruby/active_record/relation.rbs cleanly.\nApplied patch src/lower/arel/visitor.rs cleanly.\nApplied patch src/lower/model_to_library/mod.rs cleanly.\nApplied patch src/lower/model_to_library/schema.rs cleanly.\nApplied patch tests/integer_query_predicates.rb cleanly.\nApplied patch tests/integer_query_predicates.rs cleanly.\n"
+  },
+  {
+    "patch": "80-gradual-return-stabilization.patch",
+    "decision": "retained unchanged",
+    "rebased": false,
+    "bytes": 9729,
+    "log": "Checking patch src/analyze/harvest_return.rs...\nChecking patch tests/harvest_return_oscillation.rs...\nChecking patch tests/library_class_inferred_signatures.rs...\nApplied patch src/analyze/harvest_return.rs cleanly.\nApplied patch tests/harvest_return_oscillation.rs cleanly.\nApplied patch tests/library_class_inferred_signatures.rs cleanly.\n"
+  },
+  {
+    "patch": "82-upstream-regression-quoted-bulk-update.patch",
+    "decision": "retained unchanged",
+    "rebased": false,
+    "bytes": 815,
+    "log": "Checking patch runtime/ruby/active_record/relation.rb...\nApplied patch runtime/ruby/active_record/relation.rb cleanly.\n"
+  },
+  {
+    "patch": "83-upstream-regression-temporal-initialize.patch",
+    "decision": "retained unchanged",
+    "rebased": false,
+    "bytes": 2553,
+    "log": "Checking patch src/lower/model_to_library/schema.rs...\nHunk #1 succeeded at 2546 (offset 7 lines).\nApplied patch src/lower/model_to_library/schema.rs cleanly.\n"
+  },
+  {
+    "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+    "decision": "retained unchanged",
+    "rebased": false,
+    "bytes": 970,
+    "log": "Checking patch src/analyze/mod.rs...\nHunk #1 succeeded at 7478 (offset 17 lines).\nApplied patch src/analyze/mod.rs cleanly.\n"
+  }
+]

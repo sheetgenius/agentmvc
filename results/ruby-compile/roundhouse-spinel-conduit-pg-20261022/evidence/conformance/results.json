@@ -1,0 +1,102 @@
+[
+  {
+    "source": "late-hash.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "{\"n\" => nil}\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def pack: (Integer) -> Hash[String, untyped] # spinel: widened to untyped (slow path)\n  def relay: (Integer) -> Hash[String, untyped] # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "late-hash.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "{\"n\" => nil}\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "literal-literal.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "literal-literal.rb:1: warning: `value` only ever holds frozen string literals, so this `<<` raises FrozenError at run time (string literals are frozen in spinel; build a mutable string with +\"...\", String.new, or interpolation -- see docs/limitations.md)\nWrote /tmp/types.rbs\n"
+    },
+    "inferred": "",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "literal-literal.rb:1: warning: `value` only ever holds frozen string literals, so this `<<` raises FrozenError at run time (string literals are frozen in spinel; build a mutable string with +\"...\", String.new, or interpolation -- see docs/limitations.md)\nliteral-literal.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 1,
+      "stdout": "",
+      "stderr": "can't modify frozen String: \"a\" (FrozenError)\n"
+    },
+    "matches_cruby": false
+  },
+  {
+    "source": "literal-mutable.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "literal-mutable.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "string-alias.rb",
+    "cruby": {
+      "exit": 0,
+      "stdout": "\"ab\"\n",
+      "stderr": ""
+    },
+    "types": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Wrote /tmp/types.rbs\n"
+    },
+    "inferred": "class Object\n  def put: (Box, String) -> untyped # spinel: widened to untyped (slow path)\nend\n\nclass Box\n  @data: Hash[String, untyped]\n  def initialize: () -> Hash[String, untyped] # spinel: widened to untyped (slow path)\nend\n\n",
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "string-alias.rb -> /tmp/probe\n"
+    },
+    "compiled": {
+      "exit": 0,
+      "stdout": "\"a\"\n",
+      "stderr": ""
+    },
+    "matches_cruby": false
+  }
+]

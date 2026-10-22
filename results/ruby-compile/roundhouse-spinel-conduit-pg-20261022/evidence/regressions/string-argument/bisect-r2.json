@@ -1,0 +1,42 @@
+{
+  "rows": [
+    {
+      "sha": "d79a003fbbd8557b13565ac88c27573dfb9c4c5a",
+      "verdict": "good",
+      "label": "string-bisect-r2-d79a003fbbd8",
+      "patch91_included": true
+    },
+    {
+      "sha": "a2a87181b38cfd819e7964f01ae82c4bb94293f6",
+      "verdict": "bad",
+      "label": "string-bisect-r2-a2a87181b38c",
+      "patch91_included": true
+    },
+    {
+      "sha": "4b3854cf705cf5e05b24fbcd3982caeef84fb83f",
+      "verdict": "good",
+      "label": "string-bisect-r2-4b3854cf705c",
+      "patch91_included": true
+    },
+    {
+      "sha": "2c6d6b7ff1636163ec92722a66fb7b82dd9fc204",
+      "verdict": "bad",
+      "label": "string-bisect-r2-2c6d6b7ff163",
+      "patch91_included": true
+    },
+    {
+      "sha": "b432531fd5ff081777eb27ed45ec49f53100a3f4",
+      "verdict": "good",
+      "label": "string-bisect-r2-b432531fd5ff",
+      "patch91_included": true
+    },
+    {
+      "sha": "449d8addb0fc374aa3290d64dbaf4ad7d9caca47",
+      "verdict": "good",
+      "label": "string-bisect-r2-449d8addb0fc",
+      "patch91_included": true
+    }
+  ],
+  "last_answer": "2c6d6b7ff1636163ec92722a66fb7b82dd9fc204 is the first bad commit\ncommit 2c6d6b7ff1636163ec92722a66fb7b82dd9fc204\nMerge: 449d8addb 2388b53ab\nAuthor: Yukihiro \"Matz\" Matsumoto <[redacted-email]>\nDate:   Thu Oct 22 11:20:58 2026 +0900\n\n    Merge PR #9913: OpenSSL::Digest keeps its hash state and answers as CRuby's does\n    \n    Co-Authored-By: Claude <[redacted-email]>\n\n docs/limitations.md                                |  14 +-\n lib/sp_crypto.c                                    | 175 +++++++++++++++++++++\n lib/sp_crypto.h                                    |  13 ++\n packages/openssl/openssl/digest.rb                 | 114 +++++++++++---\n packages/openssl/test/openssl_digest_api.rb        |  46 ++++++\n .../openssl/test/openssl_digest_api.rb.expected    |  54 +++++++\n packages/openssl/test/openssl_digest_stream.rb     |  63 ++++++++\n .../openssl/test/openssl_digest_stream.rb.expected |  52 ++++++\n packages/openssl/test/openssl_digest_to_s.rb       |  23 +++\n .../openssl/test/openssl_digest_to_s.rb.expected   |  16 ++\n packages/openssl/test/openssl_digest_with_data.rb  |  15 ++\n .../test/openssl_digest_with_data.rb.expected      |  15 ++\n 12 files changed, 574 insertions(+), 26 deletions(-)\n create mode 100644 packages/openssl/test/openssl_digest_api.rb\n create mode 100644 packages/openssl/test/openssl_digest_api.rb.expected\n create mode 100644 packages/openssl/test/openssl_digest_stream.rb\n create mode 100644 packages/openssl/test/openssl_digest_stream.rb.expected\n create mode 100644 packages/openssl/test/openssl_digest_to_s.rb\n create mode 100644 packages/openssl/test/openssl_digest_to_s.rb.expected\n create mode 100644 packages/openssl/test/openssl_digest_with_data.rb\n create mode 100644 packages/openssl/test/openssl_digest_with_data.rb.expected",
+  "bisect_log": "# bad: [ca971705427a40e5ef5472bf76f033abbc21da3a] A native class's Ruby-side def adds an arm only when the class is built\n# good: [6ca6d451b97452d8a8b9dd8f6af51a391f060570] Merge PR #9856: A reflective read of an identity Set's variable is followed as a read of it\ngit bisect start '--first-parent' 'ca971705427a40e5ef5472bf76f033abbc21da3a' '6ca6d451b97452d8a8b9dd8f6af51a391f060570'\n# good: [d79a003fbbd8557b13565ac88c27573dfb9c4c5a] detailed_message(highlight: true) roots the class name it prints\ngit bisect good d79a003fbbd8557b13565ac88c27573dfb9c4c5a\n# bad: [a2a87181b38cfd819e7964f01ae82c4bb94293f6] A boxed Array argument makes a typed Array parameter's elements nullable\ngit bisect bad a2a87181b38cfd819e7964f01ae82c4bb94293f6\n# good: [4b3854cf705cf5e05b24fbcd3982caeef84fb83f] Hash#fetch and #dig look an Integer key that may be nil up as a miss\ngit bisect good 4b3854cf705cf5e05b24fbcd3982caeef84fb83f\n# bad: [2c6d6b7ff1636163ec92722a66fb7b82dd9fc204] Merge PR #9913: OpenSSL::Digest keeps its hash state and answers as CRuby's does\ngit bisect bad 2c6d6b7ff1636163ec92722a66fb7b82dd9fc204\n# good: [b432531fd5ff081777eb27ed45ec49f53100a3f4] Merge PR #9912: File::Stat#dev_major, #dev_minor and #executable_real?\ngit bisect good b432531fd5ff081777eb27ed45ec49f53100a3f4\n# good: [449d8addb0fc374aa3290d64dbaf4ad7d9caca47] Merge PR #9914: Calls take their targets from the call plan alone\ngit bisect good 449d8addb0fc374aa3290d64dbaf4ad7d9caca47\n# first bad commit: [2c6d6b7ff1636163ec92722a66fb7b82dd9fc204] Merge PR #9913: OpenSSL::Digest keeps its hash state and answers as CRuby's does"
+}

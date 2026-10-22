@@ -1,0 +1,15 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+with-other-any.rb
+false
+true
+with-other-any.rb -> /tmp/probe
+false
+true
+with-cache.rb
+with-cache.rb:286:in '<module:Tep>': undefined method 'decimal_byte_count' for module Tep (NoMethodError)
+
+  THRUSTER_CACHE = ThrusterCache.new(Tep.decimal_byte_count(ENV["CACHE_SIZE"] || "") > 0 ? Tep.decimal_byte_count(ENV["CACHE_SIZE"] || "") : 67108864)
+                                        ^^^^^^^^^^^^^^^^^^^
+	from with-cache.rb:44:in '<main>'
+spinel: with-cache.rb:286: undefined method 'decimal_byte_count' for a Class: no class in the program defines a class method 'decimal_byte_count' (NoMethodError)
+spinel: 1 refusal, nothing written

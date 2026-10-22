@@ -1,0 +1,93 @@
+commit 0b80f927c395c5f573fe7af81a46ca902fd4ea7c
+Author:     Baron Hines <[redacted-email]>
+AuthorDate: Wed Oct 21 11:01:02 2026 +0000
+Commit:     Baron Hines <[redacted-email]>
+CommitDate: Wed Oct 21 07:42:41 2026 -0500
+
+    Announce the Sidekiq push at boot and recognize queue_adapter :sidekiq in the ledger
+    
+    Now that perform_later pushes to Redis under :sidekiq, the boot line
+    that says where jobs go is true, and the initializer ledger can count
+    config.active_job.queue_adapter = :sidekiq as honored instead of
+    dropped. Both were held back from #901 until this wiring existed.
+    
+    Co-Authored-By: Claude Opus 5.5 (1M context) <[redacted-email]>
+
+diff --git a/runtime/spinel/scaffold/main.rb b/runtime/spinel/scaffold/main.rb
+index ca7025438..376369da1 100644
+--- a/runtime/spinel/scaffold/main.rb
++++ b/runtime/spinel/scaffold/main.rb
+@@ -878,6 +878,8 @@ Broadcasts.set_transport(Cable::Transport.new)
+ # reaches this line keeps the inline behaviour rather than dropping work
+ # into an Array nobody reads.
+ ActiveJob.register_drain
++# Under queue_adapter :sidekiq jobs go to Redis instead; say where.
++SidekiqPush.announce if JobRegistry.sidekiq?
+ Thread.new do
+   Main.job_loop
+ end
+diff --git a/runtime/spinel/scaffold/ruby_overlay/config.ru b/runtime/spinel/scaffold/ruby_overlay/config.ru
+index f3d66389c..4f57f74b7 100644
+--- a/runtime/spinel/scaffold/ruby_overlay/config.ru
++++ b/runtime/spinel/scaffold/ruby_overlay/config.ru
+@@ -40,6 +40,8 @@ Db.checkpoint_in_background!
+ # thread in each serving process instead of running it inside the
+ # request (ActiveJob.drain_in_background!).
+ ActiveJob.drain_in_background!
++# Under queue_adapter :sidekiq jobs go to Redis instead; say where.
++SidekiqPush.announce if JobRegistry.sidekiq?
+ 
+ # Register the Cable registry as the broadcasts transport: every
+ # `Broadcasts.record` call from model callbacks now also fans out
+diff --git a/src/ingest/initializer_ledger.rs b/src/ingest/initializer_ledger.rs
+index aa766fa6a..7c398ddd0 100644
+--- a/src/ingest/initializer_ledger.rs
++++ b/src/ingest/initializer_ledger.rs
+@@ -97,7 +97,7 @@ use super::app::{
+     extract_time_formats, extract_variable_content_type_exclusions,
+     extract_video_preview_arguments, extract_video_previewer_replacement,
+     extract_vips_loader_policy, forgery_strategy_line, kaminari_default_per_page,
+-    load_defaults_version, raise_on_missing_line, read_rb_files, wrap_parameters_line,
++    load_defaults_version, queue_adapter_line, raise_on_missing_line, read_rb_files, wrap_parameters_line,
+     FilterParametersLine, InflectEffect, VideoPreviewArgsExtract, FRAMEWORK_CONFIG_KEYS,
+ };
+ use super::util::{
+@@ -304,6 +304,14 @@ const RECOGNIZERS: &[Recognizer] = &[
+         levels: ANY,
+         reads: |p| code_lines(p.text).any(|l| wrap_parameters_line(l).is_some()),
+     },
++    Recognizer {
++        name: "queue_adapter :sidekiq (config.active_job.queue_adapter =)",
++        origins: INIT_APP,
++        levels: ANY,
++        reads: |p| {
++            code_lines(p.text).any(|l| queue_adapter_line(l).flatten().as_deref() == Some("sidekiq"))
++        },
++    },
+     Recognizer {
+         name: "forgery_protection_verification_strategy",
+         origins: INIT_APP,
+diff --git a/tests/queue_adapter.rs b/tests/queue_adapter.rs
+index d04726d1c..064f25f2d 100644
+--- a/tests/queue_adapter.rs
++++ b/tests/queue_adapter.rs
+@@ -129,9 +129,7 @@ fn solid_queue_is_stored_and_changes_nothing_else() {
+ }
+ 
+ #[test]
+-/// Jobs still run in process until `perform_later` pushes, so the
+-/// ledger keeps reporting a `:sidekiq` line as it does any adapter.
+-fn the_ledger_still_reports_a_sidekiq_line() {
++fn the_ledger_reads_a_sidekiq_line_and_still_reports_other_adapters() {
+     let ledger = |init: &str| -> Vec<String> {
+         let (_, diags) = ingest(&[("config/initializers/active_job.rb", init)]);
+         diags
+@@ -142,7 +140,7 @@ fn the_ledger_still_reports_a_sidekiq_line() {
+             })
+             .collect()
+     };
+-    assert_eq!(ledger("Rails.application.config.active_job.queue_adapter = :sidekiq\n").len(), 1);
++    assert!(ledger("Rails.application.config.active_job.queue_adapter = :sidekiq\n").is_empty());
+     assert_eq!(ledger("Rails.application.config.active_job.queue_adapter = :resque\n").len(), 1);
+ }
+ 

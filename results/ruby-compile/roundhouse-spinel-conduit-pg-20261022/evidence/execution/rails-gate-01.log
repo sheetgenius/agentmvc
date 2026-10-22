@@ -1,0 +1,210 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+gate inputs: 72 files, sha256 a8999f01c936cc37fe182c314c7a9a602b62611c1a15dc8338e7853d30831710 (matches the published workspace)
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.browser
+#1 transferring dockerfile: 435B done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [internal] load build context
+#4 transferring context: 39.65kB done
+#4 DONE 0.1s
+
+#5 [1/4] FROM mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
+#5 DONE 0.3s
+
+#6 [2/4] WORKDIR /opt/agentmvc
+#6 DONE 0.1s
+
+#7 [3/4] COPY frontend/package.json frontend/package-lock.json ./
+#7 DONE 0.1s
+
+#8 [4/4] RUN npm ci --no-audit --no-fund &&     node -e "if (require('./node_modules/@playwright/test/package.json').version !== '1.63.0') process.exit(1)"
+#8 3.927 
+#8 3.927 added 24 packages in 4s
+#8 3.928 npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+#8 3.928 npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+#8 3.928 npm warn install-scripts
+#8 3.928 npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+#8 3.930 npm notice
+#8 3.930 npm notice New major version of npm available! 11.19.0 -> 12.2.1
+#8 3.930 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#8 3.930 npm notice To update run: npm install -g npm@12.2.1
+#8 3.930 npm notice
+#8 DONE 4.4s
+
+#9 exporting to image
+#9 exporting layers 0.1s done
+#9 writing image sha256:d557691d34050eb14a8c312faab2b405d968d953ad4cca1a0f80d051ae91aacf
+#9 writing image sha256:d557691d34050eb14a8c312faab2b405d968d953ad4cca1a0f80d051ae91aacf done
+#9 naming to docker.io/library/conduit-v10-browser:1.63.0 done
+#9 DONE 0.2s
+workspace: results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/reproduce/build/conduit-v10-ws-rails
+log: results/ruby-compile/roundhouse-spinel-conduit-pg-20261022/reproduce/build/gate-rails.log
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.09kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 2.5s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/ruby:4.0.7-slim
+#4 DONE 0.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context:
+#5 transferring context: 210B done
+#5 DONE 0.0s
+
+#6 [base 1/3] FROM docker.io/library/ruby:4.0.7-slim
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 137.20kB done
+#7 DONE 0.0s
+
+#8 [build 4/5] COPY . .
+#8 CACHED
+
+#9 [base 2/3] WORKDIR /rails
+#9 CACHED
+
+#10 [build 1/5] RUN apt-get update -qq && apt-get install --no-install-recommends -y     build-essential libpq-dev git && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [stage-2 2/3] COPY --from=build --chown=rails:rails /usr/local/bundle /usr/local/bundle
+#11 CACHED
+
+#12 [build 2/5] COPY Gemfile Gemfile.lock ./
+#12 CACHED
+
+#13 [stage-2 1/3] RUN groupadd --system --gid 1000 rails &&     useradd rails --uid 1000 --gid 1000 --create-home
+#13 CACHED
+
+#14 [build 5/5] RUN bundle exec bootsnap precompile -j 1 --gemfile &&     bundle exec bootsnap precompile -j 1 app/ lib/
+#14 CACHED
+
+#15 [base 3/3] RUN apt-get update -qq && apt-get install --no-install-recommends -y     libpq5 ca-certificates && rm -rf /var/lib/apt/lists/*
+#15 CACHED
+
+#16 [build 3/5] RUN bundle install && rm -rf /usr/local/bundle/ruby/*/cache
+#16 CACHED
+
+#17 [stage-2 3/3] COPY --from=build --chown=rails:rails /rails /rails
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers done
+#18 writing image sha256:fb1caafbf7cd7dbdd9e95697a5e52b7c4b7fcd6c2fdfb513d9df5b7289a327d6 done
+#18 naming to docker.io/library/conduit-v10-gate-conduit-v10-ws-rails-18284:latest done
+#18 DONE 0.0s
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 133B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/postgres:17-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/1] FROM docker.io/library/postgres:17-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193
+#4 DONE 0.3s
+
+#5 exporting to image
+#5 exporting layers done
+#5 writing image sha256:b05fab95d0492cb222fbb8cd0e07707c2f3f778518e85b5a2600de8bc2d1450e done
+#5 naming to docker.io/library/conduit-v10-postgres:17 done
+#5 DONE 0.0s
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 145B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for ghcr.io/orange-opensource/hurl@sha256:d7727dcc0166de8aea88916e73ea435ee09bfecb8ba0c281200206b6cf37cf64
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/1] FROM ghcr.io/orange-opensource/hurl@sha256:d7727dcc0166de8aea88916e73ea435ee09bfecb8ba0c281200206b6cf37cf64
+#4 DONE 0.4s
+
+#5 exporting to image
+#5 exporting layers done
+#5 writing image sha256:aa1df1e40ed0f666ae2b30a63b076f748e4340a54043fdc2c334d89d9e643790 done
+#5 naming to docker.io/library/conduit-v10-hurl:gate done
+#5 DONE 0.0s
+Success api/hurl/articles.hurl (17 request(s) in 584 ms)
+Success api/hurl/auth.hurl (20 request(s) in 498 ms)
+Success api/hurl/comments.hurl (13 request(s) in 253 ms)
+Success api/hurl/errors_articles.hurl (20 request(s) in 250 ms)
+Success api/hurl/errors_auth.hurl (20 request(s) in 1720 ms)
+Success api/hurl/errors_authorization.hurl (9 request(s) in 409 ms)
+Success api/hurl/errors_comments.hurl (10 request(s) in 211 ms)
+Success api/hurl/errors_profiles.hurl (6 request(s) in 206 ms)
+Success api/hurl/favorites.hurl (9 request(s) in 259 ms)
+Success api/hurl/feed.hurl (12 request(s) in 423 ms)
+Success api/hurl/pagination.hurl (7 request(s) in 214 ms)
+Success api/hurl/profiles.hurl (7 request(s) in 374 ms)
+Success api/hurl/tags.hurl (4 request(s) in 203 ms)
+Success features/drafts/hurl/drafts.hurl (23 request(s) in 413 ms)
+Success features/drafts/hurl/errors_drafts.hurl (24 request(s) in 396 ms)
+Success features/exports/hurl/exports.hurl (18 request(s) in 709 ms)
+Success features/live-editing/hurl/live-editing.hurl (18 request(s) in 430 ms)
+--------------------------------------------------------------------------------
+Executed files:    17
+Executed requests: 237 (31.3/s)
+Succeeded files:   17 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          7577 ms (0h:0m:7s:577ms)
+
+PASS live protocol: authorization, presence, updates, conflict, reconnect, revocation
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/editor.spec.js:7:1 › three independent browsers share edits and presence without losing a dirty draft (887ms)
+  ✓  2 tests/editor.spec.js:42:1 › the 101st editor sees Room full and can retry after a slot opens (788ms)
+  ✓  3 tests/editor.spec.js:70:1 › revoking the link ends access to the editor (363ms)
+  ✓  4 tests/editor.spec.js:84:1 › a delayed save response preserves newer typing and socket state (455ms)
+
+  4 passed (3.2s)
+Success s01_jwt_alg_none.hurl (1 request(s) in 3 ms)
+Success s02_jwt_signature_stripped.hurl (3 request(s) in 186 ms)
+Success s03_jwt_garbage.hurl (2 request(s) in 1 ms)
+Success s04_mass_assignment_user.hurl (2 request(s) in 186 ms)
+Success s05_mass_assignment_article.hurl (2 request(s) in 202 ms)
+Success s06_injection_filters.hurl (4 request(s) in 17 ms)
+Success s07_malformed_json.hurl (1 request(s) in 2 ms)
+Success s08_wrong_types.hurl (8 request(s) in 198 ms)
+Success s09_oversized_body.hurl (2 request(s) in 260 ms)
+Success s10_unknown_route.hurl (1 request(s) in 5 ms)
+Success s11_login_enumeration.hurl (3 request(s) in 376 ms)
+Success s12_nosniff_header.hurl (1 request(s) in 3 ms)
+Success s13_login_rate_limit.hurl (22 request(s) in 4034 ms)
+--------------------------------------------------------------------------------
+Executed files:    13
+Executed requests: 52 (9.5/s)
+Succeeded files:   13 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          5485 ms (0h:0m:5s:485ms)
+
+check-production.sh exit 0
