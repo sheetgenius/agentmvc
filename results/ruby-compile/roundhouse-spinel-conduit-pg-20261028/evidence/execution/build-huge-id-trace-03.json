@@ -1,0 +1,17 @@
+{
+  "label": "build-huge-id-trace-03",
+  "command": [
+    "docker",
+    "build",
+    "--progress=plain",
+    "-t",
+    "conduit-v11-app:huge-id-trace-03",
+    "$SCRATCH/trace-context"
+  ],
+  "started": "2026-10-28T09:24:04.894073+00:00",
+  "finished": "2026-10-28T09:24:51.037021+00:00",
+  "elapsed_seconds": 46.143,
+  "exit": 0,
+  "log": "evidence/execution/build-huge-id-trace-03.log",
+  "heavy_lock": true
+}

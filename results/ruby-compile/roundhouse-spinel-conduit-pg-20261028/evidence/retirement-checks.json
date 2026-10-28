@@ -1,0 +1,64 @@
+{
+  "condition": "Each retired patch or hunk is absent from the final v11 series (Roundhouse 295abf08 + 10, Spinel 3b397d7bc + 93); the final build and full compiled gate (compiled-gate-04) pass without it.",
+  "final_build": "evidence/execution/build-final-01.json",
+  "final_gate": "evidence/execution/compiled-gate-04.json",
+  "retired": [
+    {
+      "item": "Spinel 91 (late-Hash return)",
+      "upstream": "https://github.com/matz/spinel/pull/10012",
+      "merge_commit": "1f21920b5844896c27788f1ee406bba855d71d6c",
+      "ancestor_of_v11_pin": true,
+      "in_v10_pin": false,
+      "coverage": "final build and gate pass without 91; the three-line late-Hash program matches CRuby on the final toolchain (conformance-02)"
+    },
+    {
+      "item": "Spinel 92 (drop OpenSSL::Digest#new)",
+      "upstream": "https://github.com/matz/spinel/pull/10041",
+      "merge_commit": "d822290a63acd0d098ab904002b68b7779d1fab8",
+      "ancestor_of_v11_pin": true,
+      "in_v10_pin": false,
+      "coverage": "def new = clone.reset is still at packages/openssl/openssl/digest.rb:149 and the app compiles (v10 failed C compilation at application_controller.rb:70); nothing of 92 remains needed"
+    },
+    {
+      "item": "Roundhouse 85 (Thruster cache index loop)",
+      "upstream": "https://github.com/matz/spinel/commit/e38e53c220f37c77d2636e3ad77c1dbaa9be5325",
+      "merge_commit": "e38e53c220f37c77d2636e3ad77c1dbaa9be5325",
+      "ancestor_of_v11_pin": true,
+      "in_v10_pin": false,
+      "coverage": "thruster_cache.rb:244 split(\",\").any? is unchanged at 295abf08; with the handle as the only String representation Spinel accepts it and the final build passes"
+    },
+    {
+      "item": "Roundhouse 10, response hunks (set_header, computed Integer status)",
+      "upstream": "https://github.com/rubys/roundhouse/pull/1198",
+      "merge_commit": "2eed91cb61a272d33a2fda4bb7751bd1ce081f8e",
+      "ancestor_of_v11_pin": true,
+      "in_v10_pin": false,
+      "coverage": "runtime/ruby/action_controller/base.rb(.rbs) hunks dropped; gate passes"
+    },
+    {
+      "item": "Roundhouse 10, rescue hunks (ParseError, rescue_from order)",
+      "upstream": "https://github.com/rubys/roundhouse/pull/1201",
+      "merge_commit": "ec015623406f91b71cb1db96b6b2176757e16cab",
+      "ancestor_of_v11_pin": true,
+      "in_v10_pin": false,
+      "coverage": "parameter_missing.rb(.rbs) and rescue hunks dropped; gate passes (incl. s07 malformed JSON, s08 wrong types)"
+    },
+    {
+      "item": "Roundhouse 10, computed errors.add message (src/lower/errors_add.rs)",
+      "upstream": "https://github.com/rubys/roundhouse/pull/1352",
+      "merge_commit": "d12fae714526f57eecc04cbfe79b969839be459d",
+      "ancestor_of_v11_pin": true,
+      "in_v10_pin": false,
+      "coverage": "hunk dropped; gate passes",
+      "commit": "07a85824d, \"models: errors.add with a computed message is grounded (#1348)\""
+    },
+    {
+      "item": "Roundhouse 74, Hash exists? hunks",
+      "upstream": "https://github.com/rubys/roundhouse/pull/1218",
+      "merge_commit": "4075b9c75b7410632341fddc50eb1130a3183916",
+      "ancestor_of_v11_pin": true,
+      "in_v10_pin": false,
+      "coverage": "connection.rb(.rbs) hunks dropped from 74; gate passes"
+    }
+  ]
+}

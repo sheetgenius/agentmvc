@@ -1,0 +1,18 @@
+Checking patch src/analyze/harvest_return.rs...
+Checking patch tests/harvest_return_oscillation.rs...
+error: while searching for:
+"#;
+
+#[test]
+fn circular_config_load_emits_configuration_not_gradual_churn() {
+    let mut tree: HashMap<PathBuf, Vec<u8>> = HashMap::default();
+    tree.insert(
+        PathBuf::from("db/schema.rb"),
+
+error: patch failed: tests/harvest_return_oscillation.rs:44
+Checking patch tests/library_class_inferred_signatures.rs...
+Applied patch src/analyze/harvest_return.rs cleanly.
+Applying patch tests/harvest_return_oscillation.rs with 1 reject...
+Rejected hunk #1.
+Hunk #2 applied cleanly.
+Applied patch tests/library_class_inferred_signatures.rs cleanly.

@@ -1,0 +1,165 @@
+{
+  "condition": "native macOS arm64 host build of each Spinel commit; probe reduce-final/r1-proc-call-boxed.rb; CRuby 4.0.7 prints the 100-digit String",
+  "good": "ca971705427a40e5ef5472bf76f033abbc21da3a",
+  "bad": "3b397d7bc96c2324190c0f2f857e1973e24dca84",
+  "rows": [
+    {
+      "sha": "ca971705427a40e5ef5472bf76f033abbc21da3a",
+      "clean": false,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 0,
+      "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n",
+      "stderr": "",
+      "verdict": "good"
+    },
+    {
+      "sha": "3b397d7bc96c2324190c0f2f857e1973e24dca84",
+      "clean": false,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n",
+      "verdict": "bad"
+    },
+    {
+      "sha": "aa06013aa1f1a028da738b6249b8cedac86579cd",
+      "clean": false,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n",
+      "verdict": "bad"
+    },
+    {
+      "sha": "e27afa2d246ab0f84de20523d78d2890bdcde447",
+      "clean": false,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n",
+      "verdict": "bad"
+    },
+    {
+      "sha": "3bdedee6fa4550f120aeba1bd110e381f0d2b13f",
+      "clean": false,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n",
+      "verdict": "bad"
+    },
+    {
+      "sha": "08560f31e6a4367a97c9edcfcfd651538f412318",
+      "clean": false,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n",
+      "verdict": "bad"
+    },
+    {
+      "sha": "03b204e8cc6619773154f5e00f78005b82476756",
+      "clean": false,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n",
+      "verdict": "bad"
+    },
+    {
+      "sha": "df6c98168d0b0c74e8a64f4195d5d0afda356d5b",
+      "clean": false,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 0,
+      "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n",
+      "stderr": "",
+      "verdict": "good"
+    },
+    {
+      "sha": "223355ecbe5f0a3094392a1af6a64fb72bc1e245",
+      "clean": false,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n",
+      "verdict": "bad"
+    },
+    {
+      "sha": "74bea107f378fafdf0038fe0be261467387012b1",
+      "clean": false,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n",
+      "verdict": "bad"
+    },
+    {
+      "sha": "0e7b469de6948268aed3986628dc4830df01bbcc",
+      "clean": false,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n",
+      "verdict": "bad"
+    },
+    {
+      "sha": "b9baf92b3f14d9ba1c43f40073b971038d8854c2",
+      "clean": false,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 0,
+      "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n",
+      "stderr": "",
+      "verdict": "good"
+    },
+    {
+      "sha": "b9baf92b3f14d9ba1c43f40073b971038d8854c2",
+      "clean": true,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 0,
+      "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n",
+      "stderr": "",
+      "verdict": "good"
+    },
+    {
+      "sha": "0e7b469de6948268aed3986628dc4830df01bbcc",
+      "clean": true,
+      "build_exit": 0,
+      "compile_exit": 0,
+      "native_exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n",
+      "verdict": "bad"
+    }
+  ],
+  "last_answer": "0e7b469de6948268aed3986628dc4830df01bbcc is the first bad commit\ncommit 0e7b469de6948268aed3986628dc4830df01bbcc\nAuthor: Yukihiro \"Matz\" Matsumoto <[redacted-email]>\nDate:   Thu Oct 22 19:39:27 2026 +0900\n\n    A boxed String's to_i parses as a typed one's does\n    \n    sp_poly_to_i_cold read a boxed String with strtoll, which stops at the\n    first `_` and saturates silently past the Integer word, where the\n    typed String#to_i (sp_str_to_i_cruby) reads `_` between digits and\n    raises RangeError: `[\"1_000\", 2][0].to_i` answered 1, and an\n    out-of-range number came back as INT64_MAX, so the answer depended on\n    what inference decided about the receiver. The boxed arm now calls the\n    typed parser.\n    \n    The test keeps to the inputs CRuby answers the same way; past the word\n    CRuby answers a Bignum, where both of Spinel's paths now raise.\n    \n    Fixes #9941\n    \n    Co-Authored-By: Claude <[redacted-email]>\n\n lib/spinel_rt.h                          |  4 +++-\n test/boxed_string_to_i_cruby.rb          | 11 +++++++++++\n test/boxed_string_to_i_cruby.rb.expected |  4 ++++\n 3 files changed, 18 insertions(+), 1 deletion(-)\n create mode 100644 test/boxed_string_to_i_cruby.rb\n create mode 100644 test/boxed_string_to_i_cruby.rb.expected",
+  "first_bad": "0e7b469de6948268aed3986628dc4830df01bbcc",
+  "first_bad_parents": [
+    "b9baf92b3f14d9ba1c43f40073b971038d8854c2"
+  ],
+  "clean_boundary": [
+    {
+      "sha": "b9baf92b3f14d9ba1c43f40073b971038d8854c2",
+      "verdict": "good"
+    },
+    {
+      "sha": "0e7b469de6948268aed3986628dc4830df01bbcc",
+      "verdict": "bad"
+    }
+  ],
+  "first_parent_landing": "14f70d7a574a8a7f3890bdc1e8d7f5f5fb461fe1",
+  "first_bad_subject": "A boxed String's to_i parses as a typed one's does",
+  "landing_subject": "Merge remote-tracking branch 'origin/master' into one-string"
+}

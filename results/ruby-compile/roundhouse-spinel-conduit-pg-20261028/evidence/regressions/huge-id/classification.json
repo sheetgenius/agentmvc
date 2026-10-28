@@ -1,0 +1,27 @@
+{
+  "regression": "common HTTP 19/21: GET /api/user/exports/<100 digits> and DELETE .../comments/<100 digits> answer 500 (RangeError: integer overflow parsing) instead of 404",
+  "first_seen": "evidence/compiled-v11-common-http-probe.json (candidate-01, no Spinel 93)",
+  "repo": "spinel",
+  "first_bad": "0e7b469de6948268aed3986628dc4830df01bbcc",
+  "good_parent": [
+    "b9baf92b3f14d9ba1c43f40073b971038d8854c2"
+  ],
+  "first_bad_subject": "A boxed String's to_i parses as a typed one's does",
+  "first_parent_landing": "14f70d7a574a8a7f3890bdc1e8d7f5f5fb461fe1",
+  "landing_subject": "Merge remote-tracking branch 'origin/master' into one-string",
+  "upstream_issue_fixed_by_first_bad": "https://github.com/matz/spinel/issues/9941",
+  "bisect": "bisect.json (full DAG, native host builds, v10 pin good, v11 pin bad; boundary rebuilt clean)",
+  "path_in_app": "Relation#hash_conditions: hash.each do |key, val| runs a codegen proc call whose argument slots are filled with sp_poly_slot_arg(val); for a boxed String that parses with the raising to_i. Traced by header instrumentation (header-trace-common.json; caller resolved to _proc_Relation_hash_conditions_1).",
+  "mechanism": "sp_poly_slot_arg -> sp_poly_slot_i -> sp_poly_to_i -> sp_poly_to_i_cold, which since 0e7b469de calls sp_str_to_i_cruby (RangeError past the word) instead of the saturating strtoll",
+  "repro": "reduce-final/r1-proc-call-boxed.rb: pr = proc { |a| puts a }; pr.call([\"9\" * 100, 1][0])",
+  "cruby": "the repro prints the 100 digits (CRuby 4.0.7). Rails reference-1 answers both huge IDs with 404 {\"errors\": {\"export\"|\"comment\": [\"not found\"]}} (results/v2-expert-symmetry/references/rails-reference-1/common-http.json, 21/21)",
+  "spinel": {
+    "v10 ca9717054": "matches CRuby",
+    "v11 3b397d7bc": "RangeError",
+    "master b41d475f5 (2026-10-28 09:17Z)": "RangeError",
+    "v11 + 93": "matches CRuby (huge-id-reduce-final-93-01)"
+  },
+  "decision": "upstream Spinel defect (speculative slot fills must not raise; #9298 precedent for Float). Local Spinel patch 93 until fixed upstream.",
+  "not_the_cause": "Roundhouse runtime/emission: the same emitted hash_conditions passes when only the Spinel slot read changes (final series = candidate-01 Roundhouse + 93)",
+  "final_condition": "common-02: 21/21 contract, 3/3 quality (compiled-v11-common-http-probe-final.json)"
+}

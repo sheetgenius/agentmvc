@@ -1,0 +1,47 @@
+{
+ "tree": "$SCRATCH/native-spinel-bisect",
+ "head": "3b397d7bc96c2324190c0f2f857e1973e24dca84",
+ "local_diff": "",
+ "tests": 9,
+ "counts": {
+  "fail": 9
+ },
+ "rows": {
+  "loop_yield_root.rb": {
+   "verdict": "fail",
+   "detail": ""
+  },
+  "promote_array_slot_rederive.rb": {
+   "verdict": "fail",
+   "detail": "integer overflow in * (RangeError)\n"
+  },
+  "promote_bigrational_to_i.rb": {
+   "verdict": "fail",
+   "detail": "bignum too big to convert into 'long' (RangeError)\n"
+  },
+  "promote_block_loop_bigint.rb": {
+   "verdict": "fail",
+   "detail": "integer overflow in * (RangeError)\n"
+  },
+  "promote_float_to_int.rb": {
+   "verdict": "fail",
+   "detail": "float out of Integer range (Bignum promotion pending) (RangeError)\n"
+  },
+  "promote_str_to_i_bigint.rb": {
+   "verdict": "fail",
+   "detail": "integer overflow parsing \"9223372036854775808\" (RangeError)\n"
+  },
+  "promote_yield_operator_diverging_block_types.rb": {
+   "verdict": "fail",
+   "detail": "integer overflow in + (RangeError)\n"
+  },
+  "promote_yield_receiver_builtin_pred_div.rb": {
+   "verdict": "fail",
+   "detail": "integer overflow in - (RangeError)\n"
+  },
+  "promote_yield_receiver_builtin_sum_succ.rb": {
+   "verdict": "fail",
+   "detail": "integer overflow in + (RangeError)\n"
+  }
+ }
+}

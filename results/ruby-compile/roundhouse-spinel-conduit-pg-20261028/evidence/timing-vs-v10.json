@@ -1,0 +1,125 @@
+{
+  "kind": "wall-clock records from step logs on a shared host (other lanes ran concurrently); not benchmarks",
+  "rows": [
+    {
+      "measure": "toolchain + compiled image build",
+      "v10": {
+        "seconds": 598.1,
+        "label": "build-final-01",
+        "note": "Spinel rebuilt for patch 92"
+      },
+      "v11": {
+        "seconds": 234.1,
+        "label": "build-final-01",
+        "note": "Spinel rebuilt for patch 93"
+      }
+    },
+    {
+      "measure": "Spinel make deps/make/install",
+      "v10": {
+        "seconds": 89.7,
+        "label": "build-final-01 #15"
+      },
+      "v11": {
+        "seconds": 59.3,
+        "label": "build-final-01 #15"
+      }
+    },
+    {
+      "measure": "Roundhouse cargo build --release",
+      "v10": {
+        "seconds": 164.6,
+        "label": "build-final-01 #18"
+      },
+      "v11": {
+        "seconds": 103.7,
+        "label": "build-final-01 #18"
+      }
+    },
+    {
+      "measure": "app spin build in image build",
+      "v10": {
+        "seconds": 285.0,
+        "label": "build-final-01 #18 (build stage)"
+      },
+      "v11": {
+        "seconds": 55.5,
+        "label": "build-final-01 #16 (build stage)"
+      }
+    },
+    {
+      "measure": "compiled production gate",
+      "v10": {
+        "seconds": 313.4,
+        "label": "compiled-gate-02",
+        "note": "includes about 14 s waiting for the Docker lock"
+      },
+      "v11": {
+        "seconds": 264.7,
+        "label": "compiled-gate-04",
+        "note": "s09 oversized body alone took 181.9 s (v10: 64.9 s)"
+      }
+    },
+    {
+      "measure": "app spin build inside the gate",
+      "v10": {
+        "seconds": 202.1,
+        "label": "compiled-gate-02 #16"
+      },
+      "v11": {
+        "seconds": 61.0,
+        "label": "compiled-gate-04 #16"
+      }
+    },
+    {
+      "measure": "Rails production gate",
+      "v10": {
+        "seconds": 45.1,
+        "label": "rails-gate-01"
+      },
+      "v11": {
+        "seconds": 21.8,
+        "label": "rails-gate-01"
+      }
+    },
+    {
+      "measure": "analysis / emission peak RSS (MiB)",
+      "v10": {
+        "analysis": 41.1,
+        "emission": 51.1
+      },
+      "v11": {
+        "analysis": 43.3,
+        "emission": 55.8,
+        "label": "build-final-01"
+      }
+    },
+    {
+      "measure": "compiled image bytes",
+      "v10": {
+        "bytes": 121300000.0
+      },
+      "v11": {
+        "bytes": 121328927
+      }
+    },
+    {
+      "measure": "hardening s09 oversized body",
+      "v10": {
+        "seconds": 64.9,
+        "label": "compiled-gate-02"
+      },
+      "v11": {
+        "seconds": [
+          121.4,
+          181.9
+        ],
+        "labels": [
+          "compiled-gate-03 (candidate-01)",
+          "compiled-gate-04 (final)"
+        ],
+        "note": "passes; Rails 0.2 s. Not investigated: wall time on a shared host"
+      }
+    }
+  ]
+}

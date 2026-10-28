@@ -1,0 +1,23 @@
+{
+  "label": "conformance-02",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v11-conformance-02",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261028/evidence/conformance:/work/probes",
+    "-w",
+    "/work/probes",
+    "conduit-v11-toolchain:0a15b9024094",
+    "python3",
+    "run.py"
+  ],
+  "started": "2026-10-28T10:04:36.992159+00:00",
+  "finished": "2026-10-28T10:04:38.638437+00:00",
+  "elapsed_seconds": 1.646,
+  "exit": 0,
+  "log": "evidence/execution/conformance-02.log",
+  "heavy_lock": true
+}

@@ -1,0 +1,104 @@
+{
+  "condition": "v10 keyless guard held constant; actual Ruby runtime methods; stubbed DB/callbacks",
+  "good": "7f20914d537a184a88cf976454629a56cec0af51",
+  "first_bad": "f6aa93ef37ab528b576830bb2f1879ac4bd6f0d3",
+  "ruby": "ruby 4.0.7 (2026-09-15 revision 229531a6cf) +PRISM [arm64-darwin25]",
+  "steps": [
+    {
+      "commit": "0f6fb0c7e7efa9b955c40bdd537b8a61fbe0486e",
+      "exit": 0,
+      "stdout": "true\n",
+      "stderr": "",
+      "source": "0f6fb0c7e7ef.rb",
+      "overlay_present": false
+    },
+    {
+      "commit": "295abf08bd5004922669f73bf090def8e3852fe6",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "NotImplementedError: id=: subclasses must override\n",
+      "source": "295abf08bd50.rb",
+      "overlay_present": true
+    },
+    {
+      "commit": "e6f2ba58747ea41d68f5ef88ab2102dab22438bc",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "NotImplementedError: id=: subclasses must override\n",
+      "source": "e6f2ba58747e.rb",
+      "overlay_present": true
+    },
+    {
+      "commit": "722097b840f0a6e1aeeaf00358af87aaabf3106d",
+      "exit": 0,
+      "stdout": "true\n",
+      "stderr": "",
+      "source": "722097b840f0.rb",
+      "overlay_present": false
+    },
+    {
+      "commit": "47dadfb66a115319f2eda89519ab51c9fcd29890",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "NotImplementedError: id=: subclasses must override\n",
+      "source": "47dadfb66a11.rb",
+      "overlay_present": true
+    },
+    {
+      "commit": "511b7db91299b0f3b99806cde03aa08999e36aa3",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "NotImplementedError: id=: subclasses must override\n",
+      "source": "511b7db91299.rb",
+      "overlay_present": true
+    },
+    {
+      "commit": "faa789b5e038ed5f45f32ccd682804ef62eb51ba",
+      "exit": 0,
+      "stdout": "true\n",
+      "stderr": "",
+      "source": "faa789b5e038.rb",
+      "overlay_present": false
+    },
+    {
+      "commit": "f6aa93ef37ab528b576830bb2f1879ac4bd6f0d3",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "NotImplementedError: id=: subclasses must override\n",
+      "source": "f6aa93ef37ab.rb",
+      "overlay_present": true
+    },
+    {
+      "commit": "5a537b5a3eb700a89f31d563de205ff40b92e5db",
+      "exit": 0,
+      "stdout": "true\n",
+      "stderr": "",
+      "source": "5a537b5a3eb7.rb",
+      "overlay_present": false
+    },
+    {
+      "commit": "7f20914d537a184a88cf976454629a56cec0af51",
+      "exit": 0,
+      "stdout": "true\n",
+      "stderr": "",
+      "source": "7f20914d537a.rb",
+      "overlay_present": false
+    },
+    {
+      "commit": "7f20914d537a184a88cf976454629a56cec0af51",
+      "exit": 0,
+      "stdout": "true\n",
+      "stderr": "",
+      "source": "7f20914d537a.rb",
+      "overlay_present": false
+    },
+    {
+      "commit": "f6aa93ef37ab528b576830bb2f1879ac4bd6f0d3",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "NotImplementedError: id=: subclasses must override\n",
+      "source": "f6aa93ef37ab.rb",
+      "overlay_present": true
+    }
+  ]
+}

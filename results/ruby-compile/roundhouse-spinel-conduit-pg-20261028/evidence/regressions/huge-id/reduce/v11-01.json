@@ -1,0 +1,154 @@
+[
+  {
+    "source": "c1-hash-each-param.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "id=9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\nuser_id=1\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/c1-hash-each-param.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 0,
+      "stdout": "id=9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\nuser_id=1\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "c2-hash-each-untyped.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "id=9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999 AND n=1\nid=1.5 AND n=\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/c2-hash-each-untyped.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 0,
+      "stdout": "id=9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999 AND n=1\nid=1.5 AND n=\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "c3-proc-call.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n1\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/c3-proc-call.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n"
+    },
+    "matches_cruby": false
+  },
+  {
+    "source": "c4-yield-poly.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n1\na\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/c4-yield-poly.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 0,
+      "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n1\na\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "c5-poly-receiver-each.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "id: 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\na: 1\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/c5-poly-receiver-each.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 0,
+      "stdout": "id: 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\na: 1\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "c6-each-with-index.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "0 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n1 1\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/c6-each-with-index.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 0,
+      "stdout": "0 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n1 1\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "c7-all.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "true\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/c7-all.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 0,
+      "stdout": "true\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "c8-where-like.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "id = 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\ncomments.id = 1\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/c8-where-like.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 0,
+      "stdout": "id = 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\ncomments.id = 1\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  }
+]

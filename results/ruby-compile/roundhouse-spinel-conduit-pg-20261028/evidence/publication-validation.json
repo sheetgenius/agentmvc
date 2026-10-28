@@ -1,0 +1,294 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v11-20261028",
+  "scope": "Publication evidence audit; no new Docker gate or benchmark",
+  "checks": {
+    "roundhouse_patches": {
+      "count": 10,
+      "checksums": "pass",
+      "line_counts": "pass",
+      "integrated_diff": {
+        "added": 2394,
+        "removed": 175,
+        "files": 56
+      }
+    },
+    "spinel_patches": {
+      "count": 1,
+      "checksums": "pass",
+      "line_counts": "pass",
+      "integrated_diff": {
+        "added": 5,
+        "removed": 0,
+        "files": 1
+      }
+    },
+    "readme_scoreboard_rows": {
+      "rows": 14,
+      "match_numstat": true,
+      "retired_rows_link_v10_record": 3
+    },
+    "source": {
+      "gated_files": 75,
+      "manifest_and_variant_match_v10": true,
+      "variant_toolchain_scripts_and_patches_match_supplied_record": true,
+      "variant_ledger_same_blob_as_v8_v9_v10": true,
+      "app_delta": {
+        "files": 16,
+        "added": 180,
+        "removed": 44
+      }
+    },
+    "integrated_diffs": {
+      "replayed_on_pinned_heads": true,
+      "vendor_tree_digests_match": true,
+      "numstat_matches_run_json": true
+    },
+    "recorded_validation": {
+      "compiled_gate": "17 API / live / 4 browser / 13 security",
+      "rails_gate": "17 API / live / 4 browser / 13 security",
+      "common_probe": {
+        "contract_passed": 21,
+        "contract_total": 21,
+        "quality_passed": 3,
+        "quality_total": 3
+      },
+      "common_probe_without_93": {
+        "contract_passed": 19,
+        "contract_total": 21,
+        "quality_passed": 3,
+        "quality_total": 3
+      },
+      "pending_export": "done",
+      "final_image_and_binary_match": true,
+      "earlier_gates": {
+        "compiled-gate-02": "13/17 API, keyless inserts raise",
+        "compiled-gate-03": "candidate-01 passes"
+      }
+    },
+    "omission_conditions": {
+      "10": {
+        "patches": 9,
+        "build_exit": 0,
+        "manifest_sha256": "877fc263c0850dd96cea0cd179d615cc6e9b9192ee8eb54c5535ecbbd6d9615b",
+        "gate_api_files": "8/17",
+        "live_protocol": false,
+        "app_log_cause": "ArgumentError: wrong number of arguments (given 0, expected 1)"
+      },
+      "20": {
+        "patches": 9,
+        "build_exit": 1,
+        "manifest_sha256": "b87f355bfa72f870811231d0b31475c76a1bb5410bd3488011c8b16d16483c53",
+        "cause": "roundhouse check exits 1: EventMachine and Faye::WebSocket constants"
+      },
+      "30": {
+        "patches": 9,
+        "build_exit": 0,
+        "manifest_sha256": "8f55b44a76669c5fa02879fb4e332cb41dd05199216d903435685d67cccb26d6",
+        "gate_api_files": "17/17",
+        "live_protocol": true,
+        "app_log_cause": null,
+        "common": "21/21",
+        "edge_vs_final": "0/166",
+        "recovery": "pending -> pending",
+        "gate_and_recovery_same_binary": true
+      },
+      "50": {
+        "patches": 9,
+        "build_exit": 1,
+        "manifest_sha256": "7f32208a7f343d5a06526b74e94c3d4f18ef38b6586fa5fc2ed8f946fbe7bde6",
+        "cause": "E0425 postgresql_enabled"
+      },
+      "60": {
+        "patches": 9,
+        "build_exit": 1,
+        "manifest_sha256": "0abe643944bc4e7600987c79103529d8f6d7099278501cb1555ded71f6262c26",
+        "cause": "roundhouse check exits 0; emission refuses two find_or_create_by! calls"
+      },
+      "74": {
+        "patches": 9,
+        "build_exit": 0,
+        "manifest_sha256": "7e2264fd2f5d2859e91919761db20a38f9729d56804e056b2d4113a9fb7764dc",
+        "gate_api_files": "16/17",
+        "live_protocol": false,
+        "app_log_cause": "invalid input syntax for type bigint: \"not-an-export\""
+      },
+      "80": {
+        "patches": 9,
+        "build_exit": 0,
+        "manifest_sha256": "ec86c324546ff794d16a0f6c3645f32f8070ebb8f86e64f8d87f6125658ebc15",
+        "gate_api_files": "17/17",
+        "live_protocol": false,
+        "app_log_cause": "TypeError: no implicit conversion of LiveRooms::Room into Integer"
+      },
+      "82": {
+        "patches": 9,
+        "build_exit": 0,
+        "manifest_sha256": "33c6345d808d55d409c17780c230744af15dc6c55d002809f20013569b1dfaa3",
+        "gate_api_files": "16/17",
+        "live_protocol": false,
+        "app_log_cause": "zero-length delimited identifier"
+      },
+      "83": {
+        "patches": 9,
+        "build_exit": 0,
+        "manifest_sha256": "d4f09ea547cc072656dc767e9a42237ecb0642be828306120d4370012dfc907d",
+        "gate_api_files": "5/17",
+        "live_protocol": false,
+        "app_log_cause": "TypeError: no implicit conversion of Time into String"
+      },
+      "84": {
+        "patches": 9,
+        "build_exit": 0,
+        "manifest_sha256": "a44ccda61a50367f4816952a2eb170a0850cb55d8e8c7979dcbfacc6343eae71",
+        "gate_api_files": "17/17",
+        "live_protocol": false,
+        "app_log_cause": "TypeError: no implicit conversion of LiveRooms::Room into Integer"
+      }
+    },
+    "omission_binaries": {
+      "distinct_toolchain_binaries": 9,
+      "final_binary_absent": true,
+      "final_equals_candidate_01": true
+    },
+    "excluded_candidate_01_omissions": {
+      "rows": 10,
+      "never_compiled_roundhouse": 5,
+      "superseded_by": "evidence/omission-results.json"
+    },
+    "retirements": {
+      "items": 7,
+      "ancestor_of_v11_pin_not_v10_pin": {
+        "1f21920b5": "spinel",
+        "d822290a6": "spinel",
+        "e38e53c22": "spinel",
+        "2eed91cb6": "roundhouse",
+        "ec0156234": "roundhouse",
+        "d12fae714": "roundhouse",
+        "4075b9c75": "roundhouse"
+      },
+      "digest_new_still_upstream": true,
+      "thruster_cache_line_unchanged": true
+    },
+    "spinel_93": {
+      "first_bad": "0e7b469de",
+      "good_parent": "b9baf92b3",
+      "clean_boundary": true,
+      "reductions": {
+        "v10": {
+          "c3-proc-call.rb": true,
+          "r1-proc-call-boxed.rb": true,
+          "r2-proc-call-typed.rb": true,
+          "r3-lambda-boxed.rb": true,
+          "r4-proc-call-boxed-short.rb": true
+        },
+        "v11": {
+          "c3-proc-call.rb": false,
+          "r1-proc-call-boxed.rb": false,
+          "r2-proc-call-typed.rb": true,
+          "r3-lambda-boxed.rb": false,
+          "r4-proc-call-boxed-short.rb": true
+        },
+        "v11-93": {
+          "c3-proc-call.rb": true,
+          "r1-proc-call-boxed.rb": true,
+          "r2-proc-call-typed.rb": true,
+          "r3-lambda-boxed.rb": true,
+          "r4-proc-call-boxed-short.rb": true
+        }
+      },
+      "subset": {
+        "tests": 1844,
+        "pass_with_93": 1835,
+        "same_9_fail_without_93": true
+      }
+    },
+    "keyless_save": {
+      "first_bad_merge": "f6aa93ef3",
+      "good_parent": "7f20914d5",
+      "patch_50_guards_base_and_override": true
+    },
+    "edge": {
+      "responses": 166,
+      "setup_requests": 25,
+      "scripted_requests": 191,
+      "rails_differences": [
+        "update_password_null",
+        "update_password_number",
+        "login_password_number_password123",
+        "login_password_number_123456789",
+        "update_malformed"
+      ],
+      "v10_differences": [
+        "update_email_spaces",
+        "after_email_spaces",
+        "login_email_spaces_password123"
+      ],
+      "candidate_01_differences": [],
+      "rails_reference_drift_vs_v10": []
+    },
+    "timing": {
+      "kind": "wall-clock records, not benchmarks",
+      "gate_peak_rss_kib": {
+        "v10": [
+          41124,
+          51068
+        ],
+        "v11": [
+          45492,
+          55656
+        ]
+      },
+      "elapsed_seconds_match_records": {
+        "build-final-01": 234.1,
+        "compiled-gate-04": 264.7,
+        "rails-gate-01": 21.8
+      },
+      "s09_oversized_body_ms": {
+        "v11-final": 181859,
+        "v11-candidate-01": 121384,
+        "rails": 208,
+        "v10-final": 64944
+      },
+      "mib_row_sources": "v10 gate KiB / 1,000; v11 build-final-01 KiB / 1,024"
+    },
+    "execution_records": {
+      "records": 102,
+      "logs_present": true
+    },
+    "readme_local_links": {
+      "checked": 64,
+      "missing": []
+    },
+    "structured_package_references": {
+      "checked": 254,
+      "missing": [],
+      "skipped": "generated reproduce/build paths, the omitted candidate-01 omission folders, and the 15 candidate-01 omission execution records, whose paths name where those inputs lived when they ran"
+    },
+    "publication_hygiene": {
+      "text_files_scanned": 513,
+      "oversized_files": 0,
+      "home_path_and_private_name_matches": 0,
+      "private_application_names": 0,
+      "jwts": 0,
+      "non_synthetic_emails": 0,
+      "internal_work_item_labels": 0,
+      "credentials": "none; only placeholder database URLs postgres://postgres:postgres@, postgresql://user:password@, postgres://myuser:mypass@",
+      "agent_or_tool_names_outside_exceptions": 0,
+      "agent_or_tool_name_exceptions": {
+        "upstream commit metadata in the quoted first-bad commit (co-author trailer)": [
+          "evidence/regressions/huge-id/bisect.json"
+        ],
+        "frozen variant ledger, the same Git blob as in the v8, v9 and v10 records": [
+          "variant/source/COMPILE-VARIANT.md"
+        ]
+      },
+      "scrubber_flags_reviewed": {
+        "email": 9,
+        "secret": 8,
+        "sensitive assignment": 20
+      },
+      "scrubber_exceptions": "Synthetic fixture emails and database examples, placeholder tokens, and source-code identifiers; recorded behavior and checksummed code preserved."
+    },
+    "benchmark": "not run; no throughput result"
+  }
+}

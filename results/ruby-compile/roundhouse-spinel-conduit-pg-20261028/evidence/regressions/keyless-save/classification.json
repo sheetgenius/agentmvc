@@ -1,0 +1,15 @@
+{
+  "regression": "favorite/follow inserts raise NotImplementedError: id=: subclasses must override (4 of 17 API files fail)",
+  "first_seen": "evidence/execution/compiled-gate-02.log (candidate before the guard)",
+  "repo": "roundhouse",
+  "first_bad_merge": "f6aa93ef37ab528b576830bb2f1879ac4bd6f0d3",
+  "first_bad_branch_commit": "e7d195bca40f7f74752bc6d60bf65885d4177172",
+  "good_parent": "7f20914d537a184a88cf976454629a56cec0af51",
+  "upstream_link": "https://github.com/rubys/roundhouse/pull/1295",
+  "bisect": "bisect.json (first-parent, actual runtime method bodies, v10 guard held constant), branch-and-fix.json",
+  "mechanism": "#1295 adds a Ruby-family save_after_validation override in runtime/ruby/active_record/connection.rb that assigns self.id = _adapter_insert unconditionally. Patch 50 guards that assignment for keyless tables only in base.rb, so the override bypasses the guard and the keyless join model raises.",
+  "repro": "reduced.rb (CRuby 4.0.7: true, then NotImplementedError)",
+  "decision": "local adaptation, not an upstream defect: upstream never guarded keyless inserts (base.rb:921 also assigns unconditionally). Patch 50 now applies its keyless guard to the override too.",
+  "upstream_note": "Open rubys/roundhouse#1263 (\"keyless saves skip id=\") guards base.rb only and predates #1295 (updated 2026-10-23T06:11Z, now CONFLICTING). Rebased, it also needs the guard in the connection.rb override, or keyless saves on the Ruby targets still raise.",
+  "fixed_condition": "final v11 series: compiled-gate-04 17/17 API (favorites.hurl, profiles.hurl pass)"
+}

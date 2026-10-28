@@ -1,0 +1,48 @@
+Checking patch src/analyze/harvest_return.rs...
+error: while searching for:
+    use crate::ident::{ClassId, TyVar};
+    use std::collections::HashMap;
+
+    fn cfg() -> Ty {
+        Ty::Class {
+            id: ClassId(Symbol::from("Probe::Configuration")),
+
+error: patch failed: src/analyze/harvest_return.rs:174
+Hunk #5 succeeded at 167 (offset -4 lines).
+error: while searching for:
+        let mut table = HashMap::new();
+        insert_inferred_return(&mut table, &method, cfg());
+        insert_inferred_return(&mut table, &method, body::union_of(cfg(), Ty::Untyped));
+        assert_eq!(table.get(&method), Some(&cfg()));
+    }
+
+    #[test]
+
+error: patch failed: src/analyze/harvest_return.rs:246
+error: while searching for:
+    }
+
+    #[test]
+    fn insert_gradual_first_write_then_same_core_concrete_narrows() {
+        let method = Symbol::from("config");
+        let mut table = HashMap::new();
+        insert_inferred_return(&mut table, &method, body::union_of(cfg(), Ty::Untyped));
+        insert_inferred_return(&mut table, &method, cfg());
+        assert_eq!(table.get(&method), Some(&cfg()));
+    }
+
+    #[test]
+
+error: patch failed: src/analyze/harvest_return.rs:259
+Checking patch tests/harvest_return_oscillation.rs...
+Checking patch tests/library_class_inferred_signatures.rs...
+Applying patch src/analyze/harvest_return.rs with 3 rejects...
+Hunk #1 applied cleanly.
+Hunk #2 applied cleanly.
+Hunk #3 applied cleanly.
+Rejected hunk #4.
+Hunk #5 applied cleanly.
+Rejected hunk #6.
+Rejected hunk #7.
+Applied patch tests/harvest_return_oscillation.rs cleanly.
+Applied patch tests/library_class_inferred_signatures.rs cleanly.

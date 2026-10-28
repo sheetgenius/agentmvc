@@ -1,0 +1,86 @@
+Checking patch runtime/ruby/active_record/base.rb...
+Hunk #2 succeeded at 570 (offset 5 lines).
+Checking patch runtime/ruby/active_record/base.rbs...
+Hunk #2 succeeded at 169 (offset 5 lines).
+Checking patch runtime/ruby/active_record/connection.rb...
+error: while searching for:
+      return all.exists? if ids.empty?
+      raise ArgumentError, "wrong number of arguments (given #{ids.length}, expected 0..1)" if ids.length > 1
+      id = ids[0]
+      return false if id.nil?
+      _exists_primary_key_input(id)
+    end
+
+error: patch failed: runtime/ruby/active_record/connection.rb:423
+Checking patch runtime/ruby/active_record/connection.rbs...
+error: while searching for:
+    def _as_json_only: (Array[Symbol] only) -> Hash[String, untyped]
+    # Nil and uncastable request keys reject before the scalar adapter.
+    # Not `?id`: the def takes `*ids`, and spinel types a positional field by the def's own slot.
+    def self.exists?: (*(Integer | Float | String | nil) ids) -> bool
+    def self._exists_primary_key_input: (Integer | Float | String | nil id) -> bool
+    # Ruby-family overrides of base.rb's Array / COUNT fallbacks.
+    def self.where: (?(Hash[String | Symbol, untyped] | String | nil) condition, *untyped args) -> Relation
+
+error: patch failed: runtime/ruby/active_record/connection.rbs:106
+Checking patch runtime/ruby/active_record/relation.rb...
+Hunk #1 succeeded at 2204 (offset 113 lines).
+Hunk #2 succeeded at 3023 (offset 117 lines).
+Hunk #3 succeeded at 3126 (offset 125 lines).
+Checking patch runtime/ruby/active_record/relation.rbs...
+error: while searching for:
+    def exists_sql: (Integer n) -> String
+    def bound_exists_sql: (Integer n) -> String
+    def hash_conditions: (Hash[String | Symbol, untyped] hash) -> String
+    def column_predicate: (String col, Relation | Array[untyped] | Base | String | Integer | Float | bool | nil val) -> String
+    def range_predicate: (String qcol, untyped range) -> String
+    def range_bound_sql: (untyped bound) -> String?
+
+error: patch failed: runtime/ruby/active_record/relation.rbs:342
+Checking patch src/lower/arel/visitor.rs...
+Hunk #4 succeeded at 1884 (offset 4 lines).
+Hunk #5 succeeded at 1901 (offset 4 lines).
+Hunk #6 succeeded at 1944 (offset 4 lines).
+Hunk #7 succeeded at 1963 (offset 4 lines).
+Checking patch src/lower/model_to_library/mod.rs...
+error: while searching for:
+        let writable_fields =
+            permitted_fields.map(|fields| writable_permit_fields(model, table, fields));
+        let permitted_fields = writable_fields.as_deref();
+        push_schema_methods(&mut methods, model, models, table, &through_joins);
+        // Per-model Level-3 adapter primitives (`_adapter_find_by_id`, etc.)
+        // — typed methods that go directly from SQL composition to typed
+        // model instances over the `Sqlite` primitive surface. See
+
+error: patch failed: src/lower/model_to_library/mod.rs:1238
+Checking patch src/lower/model_to_library/schema.rs...
+error: while searching for:
+    models: &[Model],
+    table: &Table,
+    through_joins: &super::associations::ThroughJoins,
+) {
+    let owner = &model.name;
+
+
+error: patch failed: src/lower/model_to_library/schema.rs:64
+Hunk #3 succeeded at 516 (offset 140 lines).
+Checking patch tests/integer_query_predicates.rb...
+Checking patch tests/integer_query_predicates.rs...
+Applied patch runtime/ruby/active_record/base.rb cleanly.
+Applied patch runtime/ruby/active_record/base.rbs cleanly.
+Applying patch runtime/ruby/active_record/connection.rb with 1 reject...
+Rejected hunk #1.
+Applying patch runtime/ruby/active_record/connection.rbs with 1 reject...
+Rejected hunk #1.
+Applied patch runtime/ruby/active_record/relation.rb cleanly.
+Applying patch runtime/ruby/active_record/relation.rbs with 1 reject...
+Rejected hunk #1.
+Applied patch src/lower/arel/visitor.rs cleanly.
+Applying patch src/lower/model_to_library/mod.rs with 1 reject...
+Rejected hunk #1.
+Applying patch src/lower/model_to_library/schema.rs with 1 reject...
+Hunk #1 applied cleanly.
+Rejected hunk #2.
+Hunk #3 applied cleanly.
+Applied patch tests/integer_query_predicates.rb cleanly.
+Applied patch tests/integer_query_predicates.rs cleanly.

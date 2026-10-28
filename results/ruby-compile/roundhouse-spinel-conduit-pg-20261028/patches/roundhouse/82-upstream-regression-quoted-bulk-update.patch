@@ -1,0 +1,17 @@
+diff --git a/runtime/ruby/active_record/relation.rb b/runtime/ruby/active_record/relation.rb
+index 7588b8010..1b32da1f5 100644
+--- a/runtime/ruby/active_record/relation.rb
++++ b/runtime/ruby/active_record/relation.rb
+@@ -2315,10 +2315,8 @@ module ActiveRecord
+       else
+         updates.to_s
+       end
+-      # The table quoted, as Rails' Arel renders it (`UPDATE "memberships"
+-      # SET ...`): a test that picks the statement out of the SQL log
+-      # (campfire's creation-commit test) matches that spelling.
+-      sql = "UPDATE \"#{@table}\" SET #{set_sql}#{scoped_write_where}"
++      # _table_sql already quotes the stored physical table name.
++      sql = "UPDATE #{@table} SET #{set_sql}#{scoped_write_where}"
+       ActiveRecord.adapter.execute_ddl(sql)
+       ActiveRecord.adapter.changes
+     end

@@ -1,0 +1,212 @@
+[
+  {
+    "omitted_patch": "10",
+    "condition": "compiled-conduit-v11-without-10",
+    "series": [
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-10-build-01.json"
+    },
+    "gate": {
+      "exit": 4,
+      "execution": "evidence/execution/without-10-gate-01.json"
+    }
+  },
+  {
+    "omitted_patch": "20",
+    "condition": "compiled-conduit-v11-without-20",
+    "series": [
+      "10-api-mode-json.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-20-build-01.json"
+    }
+  },
+  {
+    "omitted_patch": "30",
+    "condition": "compiled-conduit-v11-without-30",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-30-build-01.json"
+    },
+    "gate": {
+      "exit": 0,
+      "execution": "evidence/execution/without-30-gate-01.json"
+    },
+    "common": {
+      "exit": 1,
+      "execution": "evidence/execution/without-30-common-01.json"
+    },
+    "edge": {
+      "exit": 0,
+      "execution": "evidence/execution/without-30-edge-01.json"
+    },
+    "recovery": {
+      "exit": 1,
+      "execution": "evidence/execution/without-30-recovery-01.json"
+    }
+  },
+  {
+    "omitted_patch": "50",
+    "condition": "compiled-conduit-v11-without-50",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-50-build-01.json"
+    }
+  },
+  {
+    "omitted_patch": "60",
+    "condition": "compiled-conduit-v11-without-60",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-60-build-01.json"
+    }
+  },
+  {
+    "omitted_patch": "74",
+    "condition": "compiled-conduit-v11-without-74",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-74-build-01.json"
+    }
+  },
+  {
+    "omitted_patch": "80",
+    "condition": "compiled-conduit-v11-without-80",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-80-build-01.json"
+    }
+  },
+  {
+    "omitted_patch": "82",
+    "condition": "compiled-conduit-v11-without-82",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-82-build-01.json"
+    }
+  },
+  {
+    "omitted_patch": "83",
+    "condition": "compiled-conduit-v11-without-83",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-83-build-01.json"
+    }
+  },
+  {
+    "omitted_patch": "84",
+    "condition": "compiled-conduit-v11-without-84",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-84-build-01.json"
+    }
+  }
+]

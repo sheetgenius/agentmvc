@@ -1,0 +1,17 @@
+{
+  "condition": "v11 initial guarded condition, common-HTTP regression not repaired yet",
+  "responses": 166,
+  "v11_vs_rails": [
+    "update_password_null",
+    "update_password_number",
+    "login_password_number_password123",
+    "login_password_number_123456789",
+    "update_malformed"
+  ],
+  "v11_vs_v10": [
+    "update_email_spaces",
+    "after_email_spaces",
+    "login_email_spaces_password123"
+  ],
+  "rails_v11_vs_v10": []
+}

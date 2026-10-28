@@ -1,0 +1,96 @@
+{
+  "condition": "candidate-01 one-patch omissions (Roundhouse 10, no Spinel 93), run 09:03-09:18Z",
+  "finding": "Seven of ten candidate-01 omission builds read stale state from the shared Cargo target cache, because their sources were touched at prepare time, before other conditions compiled into the same cache. 74, 80, 82, 83 and 84 did not compile Roundhouse at all (Cargo Finished in under 0.2 s) and failed with without-60's find_or_create_by! refusal. 20 and 50 compiled, but build.rs did not rerun: the stale generated runtime_files.rs still listed runtime/spinel/faye_websocket.rb (20) and runtime/spinel/db_libpq.rb (50), files their omitted patch adds. 50 also failed with a real E0425 (74 calls 50's postgresql_enabled). All candidate-01 omission rows are superseded; v10 excluded a cached without-91 probe the same way.",
+  "repair": "fresh-build.sh refreshes source mtimes inside the Docker lock, immediately before each build; the final omission validation marks any build log without \"Compiling roundhouse\" invalid and records each toolchain's roundhouse sha256.",
+  "valid_candidate_01_rows": [
+    "10",
+    "30",
+    "60"
+  ],
+  "rows": [
+    {
+      "omitted": "10",
+      "label": "build-without-10-build-01",
+      "exit": 0,
+      "compiling_roundhouse": true,
+      "cargo_finished_in": "1m 19s",
+      "refused_like_without_60": false
+    },
+    {
+      "omitted": "20",
+      "label": "build-without-20-build-01",
+      "exit": 1,
+      "compiling_roundhouse": true,
+      "cargo_finished_in": null,
+      "refused_like_without_60": false,
+      "stale_build_script": "couldn't read runtime/spinel/faye_websocket.rb (out/runtime_files.rs:317)"
+    },
+    {
+      "omitted": "30",
+      "label": "build-without-30-build-01",
+      "exit": 0,
+      "compiling_roundhouse": true,
+      "cargo_finished_in": "1m 20s",
+      "refused_like_without_60": false
+    },
+    {
+      "omitted": "50",
+      "label": "build-without-50-build-01",
+      "exit": 1,
+      "compiling_roundhouse": true,
+      "cargo_finished_in": null,
+      "refused_like_without_60": false,
+      "stale_build_script": "couldn't read runtime/spinel/db_libpq.rb (out/runtime_files.rs:299); E0425 postgresql_enabled is real"
+    },
+    {
+      "omitted": "60",
+      "label": "build-without-60-build-01",
+      "exit": 1,
+      "compiling_roundhouse": true,
+      "cargo_finished_in": "1m 21s",
+      "refused_like_without_60": false
+    },
+    {
+      "omitted": "74",
+      "label": "build-without-74-build-01",
+      "exit": 1,
+      "compiling_roundhouse": false,
+      "cargo_finished_in": "0.09s",
+      "refused_like_without_60": true
+    },
+    {
+      "omitted": "80",
+      "label": "build-without-80-build-01",
+      "exit": 1,
+      "compiling_roundhouse": false,
+      "cargo_finished_in": "0.09s",
+      "refused_like_without_60": true
+    },
+    {
+      "omitted": "82",
+      "label": "build-without-82-build-01",
+      "exit": 1,
+      "compiling_roundhouse": false,
+      "cargo_finished_in": "0.07s",
+      "refused_like_without_60": true
+    },
+    {
+      "omitted": "83",
+      "label": "build-without-83-build-01",
+      "exit": 1,
+      "compiling_roundhouse": false,
+      "cargo_finished_in": "0.08s",
+      "refused_like_without_60": true
+    },
+    {
+      "omitted": "84",
+      "label": "build-without-84-build-01",
+      "exit": 1,
+      "compiling_roundhouse": false,
+      "cargo_finished_in": "0.15s",
+      "refused_like_without_60": true
+    }
+  ],
+  "superseded_by": "evidence/omission-results.json (final series, Spinel 93 included)",
+  "v10_note": "v10 recorded \"without 50, Roundhouse does not compile (74 uses its postgresql_enabled and db_libpq.rb)\". The E0425 part is real; the db_libpq.rb read may have been the same stale build-script artifact."
+}

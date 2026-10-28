@@ -1,0 +1,464 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.88kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 3.6s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546
+#4 DONE 1.9s
+
+#5 [internal] load metadata for docker.io/library/ruby:4.0.7-slim-trixie
+#5 DONE 2.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [ruby407 1/1] FROM docker.io/library/ruby:4.0.7-slim-trixie@sha256:6c6b7b8c7d750604178aa60c2fa436890cd17c5695bdbd3213db2e4efbf98eb9
+#7 DONE 0.0s
+
+#8 [builder  1/11] FROM docker.io/library/rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 89.09MB 1.3s done
+#9 DONE 1.3s
+
+#10 [builder  2/11] RUN apt-get update && apt-get install -y --no-install-recommends     clang make git pkg-config libsqlite3-dev sqlite3 libjemalloc-dev     libpq-dev postgresql-client curl ca-certificates libssl-dev libcrypt-dev     libyaml-0-2 libgmp10 file time && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [builder  3/11] COPY --from=ruby407 /usr/local/ /usr/local/
+#11 CACHED
+
+#12 [builder  4/11] RUN ruby --version
+#12 CACHED
+
+#13 [builder  5/11] COPY vendor/spinel /src/spinel
+#13 DONE 3.3s
+
+#14 [builder  6/11] WORKDIR /src/spinel
+#14 DONE 0.1s
+
+#15 [builder  7/11] RUN make deps -j8 && make -j8 CC=clang && make install -j8 CC=clang
+#15 1.214 Fetching prism v1.9.0 from rubygems.org...
+#15 1.214 Fetching rbs v4.0.1 from rubygems.org...
+#15 3.884 prism v1.9.0 ready at vendor/prism
+#15 3.973 rbs v4.0.1 ready at vendor/rbs
+#15 4.263 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_compile.c -o build/regexp/re_compile.o
+#15 4.263 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_exec.c -o build/regexp/re_exec.o
+#15 4.264 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_utf8.c -o build/regexp/re_utf8.o
+#15 4.265 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/unicase.c -o build/regexp/unicase.o
+#15 4.265 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_spinel.c -o build/regexp/re_spinel.o
+#15 4.268 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_compile.c -o build/mt/regexp/re_compile.o
+#15 4.270 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_exec.c -o build/mt/regexp/re_exec.o
+#15 4.297 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_utf8.c -o build/mt/regexp/re_utf8.o
+#15 4.320 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/unicase.c -o build/mt/regexp/unicase.o
+#15 4.328 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_spinel.c -o build/mt/regexp/re_spinel.o
+#15 4.339 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/diagnostic.c -o build/prism/diagnostic.o
+#15 4.369 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/encoding.c -o build/prism/encoding.o
+#15 4.376 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/node.c -o build/prism/node.o
+#15 4.385 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/options.c -o build/prism/options.o
+#15 4.418 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/pack.c -o build/prism/pack.o
+#15 4.451 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/prettyprint.c -o build/prism/prettyprint.o
+#15 4.459 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/prism.c -o build/prism/prism.o
+#15 4.490 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/regexp.c -o build/prism/regexp.o
+#15 4.496 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/serialize.c -o build/prism/serialize.o
+#15 4.498 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/static_literals.c -o build/prism/static_literals.o
+#15 4.542 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/token_type.c -o build/prism/token_type.o
+#15 4.552 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_buffer.c -o build/prism/util/pm_buffer.o
+#15 4.586 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_char.c -o build/prism/util/pm_char.o
+#15 4.606 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_constant_pool.c -o build/prism/util/pm_constant_pool.o
+#15 4.621 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_integer.c -o build/prism/util/pm_integer.o
+#15 4.631 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_list.c -o build/prism/util/pm_list.o
+#15 4.647 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_memchr.c -o build/prism/util/pm_memchr.o
+#15 4.654 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_newline_list.c -o build/prism/util/pm_newline_list.o
+#15 4.670 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_string.c -o build/prism/util/pm_string.o
+#15 4.680 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_strncasecmp.c -o build/prism/util/pm_strncasecmp.o
+#15 4.681 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_strpbrk.c -o build/prism/util/pm_strpbrk.o
+#15 4.693 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Ilib/regexp -Ilib/regexp/shim -c src/re_lit_check.c -o build/csrc/re_lit_check.o
+#15 4.697 clang -c -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Ivendor/rbs/include src/rbs_map.c -o build/csrc/rbs_map.o
+#15 4.703 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/ast.c -o build/rbs/ast.o
+#15 4.714 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/lexer.c -o build/rbs/lexer.o
+#15 4.717 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/lexstate.c -o build/rbs/lexstate.o
+#15 4.734 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/location.c -o build/rbs/location.o
+#15 4.749 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/parser.c -o build/rbs/parser.o
+#15 4.757 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/string.c -o build/rbs/string.o
+#15 4.761 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_allocator.c -o build/rbs/util/rbs_allocator.o
+#15 4.763 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_assert.c -o build/rbs/util/rbs_assert.o
+#15 4.767 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_buffer.c -o build/rbs/util/rbs_buffer.o
+#15 4.777 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_constant_pool.c -o build/rbs/util/rbs_constant_pool.o
+#15 4.779 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_encoding.c -o build/rbs/util/rbs_encoding.o
+#15 4.782 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_unescape.c -o build/rbs/util/rbs_unescape.o
+#15 4.786 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib -Ipackages/json packages/json/sp_json.c -o packages/json/sp_json.o
+#15 4.793 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib -Ipackages/stringio packages/stringio/sp_stringio.c -o packages/stringio/sp_stringio.o
+#15 4.796 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/strscan/sp_strscan.c -o packages/strscan/sp_strscan.o
+#15 4.804 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/base64/sp_base64.c -o packages/base64/sp_base64.o
+#15 4.814 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/tmpdir/sp_tmpdir.c -o packages/tmpdir/sp_tmpdir.o
+#15 4.853 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/zlib/sp_zlib.c -o packages/zlib/sp_zlib.o
+#15 4.860 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/pty/sp_pty.c -o packages/pty/sp_pty.o
+#15 4.868 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib -Ipackages/openssl packages/openssl/sp_openssl.c -o packages/openssl/sp_openssl.o
+#15 4.887 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib -Ipackages/ffi packages/ffi/sp_ffi.c -o packages/ffi/sp_ffi.o
+#15 4.927 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ipackages/json packages/json/sp_json.c -o packages/json/sp_json_mt.o
+#15 4.929 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ipackages/stringio packages/stringio/sp_stringio.c -o packages/stringio/sp_stringio_mt.o
+#15 4.930 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/strscan/sp_strscan.c -o packages/strscan/sp_strscan_mt.o
+#15 4.986 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/base64/sp_base64.c -o packages/base64/sp_base64_mt.o
+#15 5.002 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/tmpdir/sp_tmpdir.c -o packages/tmpdir/sp_tmpdir_mt.o
+#15 5.008 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/zlib/sp_zlib.c -o packages/zlib/sp_zlib_mt.o
+#15 5.038 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/pty/sp_pty.c -o packages/pty/sp_pty_mt.o
+#15 5.045 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec  -Ilib -Ipackages/openssl packages/openssl/sp_openssl.c -o packages/openssl/sp_openssl_mt.o
+#15 5.046 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec  -Ilib -Ipackages/ffi packages/ffi/sp_ffi.c -o packages/ffi/sp_ffi_mt.o
+#15 5.058 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_poly_cold.c -o build/cext/sp_poly_cold.o
+#15 5.074 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Ilib lib/sp_gc.c -o build/cext/sp_gc.o
+#15 5.087 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_exc.c -o build/cext/sp_exc.o
+#15 5.090 In file included from lib/sp_poly_cold.c:23:
+#15 5.090 lib/spinel_rt.h:18:92: warning: '/*' within block comment [-Wcomment]
+#15 5.090    18 | #include "sp_re.h"      /* regexp wrappers + MatchData (lib/sp_re.c); engine = build/regexp/*.o */
+#15 5.090       |                                                                                            ^
+#15 5.090 In file included from lib/sp_poly_cold.c:23:
+#15 5.090 In file included from lib/spinel_rt.h:18:
+#15 5.090 lib/sp_re.h:6:16: warning: '/*' within block comment [-Wcomment]
+#15 5.090     6 |  * build/regexp/*.o library; this layer is spinel's Ruby-facing surface
+#15 5.090       |                ^
+#15 5.090 lib/sp_re.h:27:55: warning: '/*' within block comment [-Wcomment]
+#15 5.090    27 | /* ---- regexp engine ABI (implemented in build/regexp/*.o) ---- */
+#15 5.090       |                                                       ^
+#15 5.103 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_cext.c -o build/cext/sp_cext.o
+#15 5.132 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_cext_exc.c -o build/cext/sp_cext_exc.o
+#15 5.158 In file included from lib/sp_poly_cold.c:23:
+#15 5.158 lib/spinel_rt.h:14689:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 5.158  14689 | }
+#15 5.158        | ^
+#15 5.159 lib/spinel_rt.h:14783:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 5.159  14783 | }
+#15 5.159        | ^
+#15 5.159 lib/spinel_rt.h:14812:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 5.159  14812 | }
+#15 5.159        | ^
+#15 5.159 lib/spinel_rt.h:14906:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 5.159  14906 | }
+#15 5.159        | ^
+#15 5.159 lib/spinel_rt.h:14922:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 5.159  14922 | }
+#15 5.159        | ^
+#15 5.166 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_cext_bridge.c -o build/cext/sp_cext_bridge.o
+#15 5.196 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_cext_thread.c -o build/cext/sp_cext_thread.o
+#15 5.198 lib/sp_poly_cold.c:1205:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 5.198  1205 | }
+#15 5.198       | ^
+#15 5.215 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_bigint.c -o build/cext-mt/sp_bigint.o
+#15 5.215 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_crypto.c -o build/cext-mt/sp_crypto.o
+#15 5.215 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_pack.c -o build/cext-mt/sp_pack.o
+#15 5.248 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_time.c -o build/cext-mt/sp_time.o
+#15 5.271 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_core.c -o build/cext-mt/sp_core.o
+#15 5.351 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_net.c -o build/cext-mt/sp_net.o
+#15 5.368 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_system.c -o build/cext-mt/sp_system.o
+#15 5.376 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_gc.c -o build/cext-mt/sp_gc.o
+#15 5.399 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_slab.c -o build/cext-mt/sp_slab.o
+#15 5.471 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_alloc.c -o build/cext-mt/sp_alloc.o
+#15 5.485 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_dtoa.c -o build/cext-mt/sp_dtoa.o
+#15 5.496 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_marshal.c -o build/cext-mt/sp_marshal.o
+#15 5.540 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_format.c -o build/cext-mt/sp_format.o
+#15 5.568 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_string.c -o build/cext-mt/sp_string.o
+#15 5.583 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_inspect.c -o build/cext-mt/sp_inspect.o
+#15 5.611 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_poly_cold.c -o build/cext-mt/sp_poly_cold.o
+#15 5.652 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_array.c -o build/cext-mt/sp_array.o
+#15 5.672 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str.c -o build/cext-mt/sp_str.o
+#15 5.681 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str_cold.c -o build/cext-mt/sp_str_cold.o
+#15 5.726 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str_crypt.c -o build/cext-mt/sp_str_crypt.o
+#15 5.769 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_hash.c -o build/cext-mt/sp_hash.o
+#15 5.788 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_proc.c -o build/cext-mt/sp_proc.o
+#15 5.824 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_exc.c -o build/cext-mt/sp_exc.o
+#15 5.887 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_re.c -o build/cext-mt/sp_re.o
+#15 5.898 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_random.c -o build/cext-mt/sp_random.o
+#15 5.960 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_fiber.c -o build/cext-mt/sp_fiber.o
+#15 6.008 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_sched.c -o build/cext-mt/sp_sched.o
+#15 6.026 9 warnings generated.
+#15 6.030 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_io.c -o build/cext-mt/sp_io.o
+#15 6.092 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_iobuffer.c -o build/cext-mt/sp_iobuffer.o
+#15 6.095 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cold.c -o build/cext-mt/sp_cold.o
+#15 6.217 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_enum_str.c -o build/cext-mt/sp_enum_str.o
+#15 6.242 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_process.c -o build/cext-mt/sp_process.o
+#15 6.250 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_process_status.c -o build/cext-mt/sp_process_status.o
+#15 6.284 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cext.c -o build/cext-mt/sp_cext.o
+#15 6.288 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cext_exc.c -o build/cext-mt/sp_cext_exc.o
+#15 6.297 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cext_bridge.c -o build/cext-mt/sp_cext_bridge.o
+#15 6.327 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cext_thread.c -o build/cext-mt/sp_cext_thread.o
+#15 6.331 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_bigint.c -o build/sp_bigint.o
+#15 6.353 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_crypto.c -o build/sp_crypto.o
+#15 6.370 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_pack.c -o build/sp_pack.o
+#15 6.384 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_time.c -o build/sp_time.o
+#15 6.485 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_core.c -o build/sp_core.o
+#15 6.501 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_net.c -o build/sp_net.o
+#15 6.511 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_system.c -o build/sp_system.o
+#15 6.533 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_gc.c -o build/sp_gc.o
+#15 6.541 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_slab.c -o build/sp_slab.o
+#15 6.592 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_alloc.c -o build/sp_alloc.o
+#15 6.611 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_dtoa.c -o build/sp_dtoa.o
+#15 6.634 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_marshal.c -o build/sp_marshal.o
+#15 6.639 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_format.c -o build/sp_format.o
+#15 6.672 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_string.c -o build/sp_string.o
+#15 6.692 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_inspect.c -o build/sp_inspect.o
+#15 6.715 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_poly_cold.c -o build/sp_poly_cold.o
+#15 6.716 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_array.c -o build/sp_array.o
+#15 6.744 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_str.c -o build/sp_str.o
+#15 6.774 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_str_cold.c -o build/sp_str_cold.o
+#15 6.799 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_str_crypt.c -o build/sp_str_crypt.o
+#15 6.812 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_hash.c -o build/sp_hash.o
+#15 6.836 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_proc.c -o build/sp_proc.o
+#15 6.938 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_exc.c -o build/sp_exc.o
+#15 6.948 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_re.c -o build/sp_re.o
+#15 6.979 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_random.c -o build/sp_random.o
+#15 7.039 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_fiber.c -o build/sp_fiber.o
+#15 7.116 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_sched.c -o build/sp_sched.o
+#15 7.143 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_io.c -o build/sp_io.o
+#15 7.159 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_iobuffer.c -o build/sp_iobuffer.o
+#15 7.259 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cold.c -o build/sp_cold.o
+#15 7.274 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_enum_str.c -o build/sp_enum_str.o
+#15 7.279 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_process.c -o build/sp_process.o
+#15 7.298 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_process_status.c -o build/sp_process_status.o
+#15 7.303 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_bigint.c -o build/mt/sp_bigint.o
+#15 7.329 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_crypto.c -o build/mt/sp_crypto.o
+#15 7.332 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_pack.c -o build/mt/sp_pack.o
+#15 7.355 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_time.c -o build/mt/sp_time.o
+#15 7.364 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_core.c -o build/mt/sp_core.o
+#15 7.435 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_net.c -o build/mt/sp_net.o
+#15 7.463 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_system.c -o build/mt/sp_system.o
+#15 7.470 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_gc.c -o build/mt/sp_gc.o
+#15 7.492 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_slab.c -o build/mt/sp_slab.o
+#15 7.549 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_alloc.c -o build/mt/sp_alloc.o
+#15 7.610 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_dtoa.c -o build/mt/sp_dtoa.o
+#15 7.615 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_marshal.c -o build/mt/sp_marshal.o
+#15 7.615 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_format.c -o build/mt/sp_format.o
+#15 7.636 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_string.c -o build/mt/sp_string.o
+#15 7.677 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_inspect.c -o build/mt/sp_inspect.o
+#15 7.682 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_poly_cold.c -o build/mt/sp_poly_cold.o
+#15 7.688 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_array.c -o build/mt/sp_array.o
+#15 7.711 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str.c -o build/mt/sp_str.o
+#15 7.762 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str_cold.c -o build/mt/sp_str_cold.o
+#15 7.777 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str_crypt.c -o build/mt/sp_str_crypt.o
+#15 7.793 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_hash.c -o build/mt/sp_hash.o
+#15 7.814 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_proc.c -o build/mt/sp_proc.o
+#15 7.908 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_exc.c -o build/mt/sp_exc.o
+#15 7.926 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_re.c -o build/mt/sp_re.o
+#15 7.967 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_random.c -o build/mt/sp_random.o
+#15 8.028 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_fiber.c -o build/mt/sp_fiber.o
+#15 8.092 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_sched.c -o build/mt/sp_sched.o
+#15 8.126 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_io.c -o build/mt/sp_io.o
+#15 8.156 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_iobuffer.c -o build/mt/sp_iobuffer.o
+#15 8.270 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cold.c -o build/mt/sp_cold.o
+#15 8.290 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_enum_str.c -o build/mt/sp_enum_str.o
+#15 8.310 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_process.c -o build/mt/sp_process.o
+#15 8.341 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_process_status.c -o build/mt/sp_process_status.o
+#15 8.366 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/node_table.c -o build/csrc/node_table.o
+#15 8.376 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/types.c -o build/csrc/types.o
+#15 8.400 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/compiler.c -o build/csrc/compiler.o
+#15 8.415 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/ffi_spec.c -o build/csrc/ffi_spec.o
+#15 8.433 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/ct_value.c -o build/csrc/ct_value.o
+#15 8.437 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/ct_eval.c -o build/csrc/ct_eval.o
+#15 8.440 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_ct.c -o build/csrc/analyze_ct.o
+#15 8.504 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze.c -o build/csrc/analyze.o
+#15 8.556 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_util.c -o build/csrc/analyze_util.o
+#15 8.577 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_infer.c -o build/csrc/analyze_infer.o
+#15 8.581 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_infer_recv.c -o build/csrc/analyze_infer_recv.o
+#15 8.609 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_cext.c -o build/csrc/analyze_cext.o
+#15 8.681 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_scope.c -o build/csrc/analyze_scope.o
+#15 8.846 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_pass.c -o build/csrc/analyze_pass.o
+#15 9.061 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_desugar.c -o build/csrc/analyze_desugar.o
+#15 9.426 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_nil.c -o build/csrc/analyze_nil.o
+#15 9.455 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_cls.c -o build/csrc/analyze_cls.o
+#15 9.643 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_arm.c -o build/csrc/analyze_arm.o
+#15 9.715 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_const.c -o build/csrc/analyze_const.o
+#15 9.841 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_program.c -o build/csrc/analyze_program.o
+#15 9.999 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_elab.c -o build/csrc/analyze_elab.o
+#15 10.13 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_lower.c -o build/csrc/analyze_lower.o
+#15 10.19 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_share.c -o build/csrc/analyze_share.o
+#15 10.67 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/repr.c -o build/csrc/repr.o
+#15 10.77 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/holder.c -o build/csrc/holder.o
+#15 10.82 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen.c -o build/csrc/codegen.o
+#15 11.05 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/ty_traits_check.c -o build/csrc/ty_traits_check.o
+#15 11.10 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_fold.c -o build/csrc/codegen_fold.o
+#15 11.37 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call.c -o build/csrc/codegen_call.o
+#15 11.42 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_poly.c -o build/csrc/codegen_call_poly.o
+#15 11.50 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_method.c -o build/csrc/codegen_call_method.o
+#15 11.84 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_io.c -o build/csrc/codegen_call_io.o
+#15 12.21 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_kernel.c -o build/csrc/codegen_call_kernel.o
+#15 12.26 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_exception.c -o build/csrc/codegen_call_exception.o
+#15 12.46 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_module.c -o build/csrc/codegen_call_module.o
+#15 12.49 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_string.c -o build/csrc/codegen_call_string.o
+#15 12.81 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_class.c -o build/csrc/codegen_call_class.o
+#15 12.90 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_operator.c -o build/csrc/codegen_call_operator.o
+#15 13.16 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_object.c -o build/csrc/codegen_call_object.o
+#15 13.36 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_ops.c -o build/csrc/codegen_ops.o
+#15 13.43 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_concurrency.c -o build/csrc/codegen_call_concurrency.o
+#15 13.50 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_numeric.c -o build/csrc/codegen_call_numeric.o
+#15 13.53 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_hash.c -o build/csrc/codegen_call_hash.o
+#15 13.62 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_array.c -o build/csrc/codegen_call_array.o
+#15 13.64 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_view.c -o build/csrc/codegen_view.o
+#15 13.70 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/builtin_ops.c -o build/csrc/builtin_ops.o
+#15 13.71 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/builtin_names.c -o build/csrc/builtin_names.o
+#15 13.82 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_recv.c -o build/csrc/codegen_call_recv.o
+#15 14.02 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_iter.c -o build/csrc/codegen_iter.o
+#15 14.15 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/call_plan.c -o build/csrc/call_plan.o
+#15 14.52 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/value_pos.c -o build/csrc/value_pos.o
+#15 14.78 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_poly_plan.c -o build/csrc/codegen_poly_plan.o
+#15 15.04 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/share_plan.c -o build/csrc/share_plan.o
+#15 15.11 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_str.c -o build/csrc/codegen_str.o
+#15 15.21 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_expr.c -o build/csrc/codegen_expr.o
+#15 15.25 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_stmt.c -o build/csrc/codegen_stmt.o
+#15 15.30 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/csplit.c -o build/csrc/csplit.o
+#15 15.52 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/decide.c -o build/csrc/decide.o
+#15 15.56 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/sha256.c -o build/csrc/sha256.o
+#15 15.59 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/unit_cache.c -o build/csrc/unit_cache.o
+#15 15.68 ZERO_AR_DATE=1 ar rcs build/libprism.a build/prism/diagnostic.o build/prism/encoding.o build/prism/node.o build/prism/options.o build/prism/pack.o build/prism/prettyprint.o build/prism/prism.o build/prism/regexp.o build/prism/serialize.o build/prism/static_literals.o build/prism/token_type.o build/prism/util/pm_buffer.o build/prism/util/pm_char.o build/prism/util/pm_constant_pool.o build/prism/util/pm_integer.o build/prism/util/pm_list.o build/prism/util/pm_memchr.o build/prism/util/pm_newline_list.o build/prism/util/pm_string.o build/prism/util/pm_strncasecmp.o build/prism/util/pm_strpbrk.o
+#15 15.70 ZERO_AR_DATE=1 ar rcs build/librbs.a build/rbs/ast.o build/rbs/lexer.o build/rbs/lexstate.o build/rbs/location.o build/rbs/parser.o build/rbs/string.o build/rbs/util/rbs_allocator.o build/rbs/util/rbs_assert.o build/rbs/util/rbs_buffer.o build/rbs/util/rbs_constant_pool.o build/rbs/util/rbs_encoding.o build/rbs/util/rbs_unescape.o
+#15 15.70 ZERO_AR_DATE=1 ar rcs lib/libspinel_cext_rt.a build/regexp/re_compile.o build/regexp/re_exec.o build/regexp/re_utf8.o build/regexp/unicase.o build/regexp/re_spinel.o build/sp_bigint.o build/sp_crypto.o build/sp_pack.o build/sp_time.o build/sp_core.o build/sp_net.o build/sp_system.o build/sp_slab.o build/sp_alloc.o build/sp_dtoa.o build/sp_marshal.o build/sp_format.o build/sp_string.o build/sp_inspect.o build/sp_array.o build/sp_str.o build/sp_str_cold.o build/sp_str_crypt.o build/sp_hash.o build/sp_proc.o build/sp_re.o build/sp_random.o build/sp_fiber.o build/sp_sched.o build/sp_io.o build/sp_iobuffer.o build/sp_cold.o build/sp_enum_str.o build/sp_process.o build/sp_process_status.o build/cext/sp_poly_cold.o build/cext/sp_gc.o build/cext/sp_exc.o build/cext/sp_cext.o build/cext/sp_cext_exc.o build/cext/sp_cext_bridge.o build/cext/sp_cext_thread.o
+#15 15.71 ZERO_AR_DATE=1 ar rcs lib/libspinel_cext_rt_mt.a build/mt/regexp/re_compile.o build/mt/regexp/re_exec.o build/mt/regexp/re_utf8.o build/mt/regexp/unicase.o build/mt/regexp/re_spinel.o build/cext-mt/sp_bigint.o build/cext-mt/sp_crypto.o build/cext-mt/sp_pack.o build/cext-mt/sp_time.o build/cext-mt/sp_core.o build/cext-mt/sp_net.o build/cext-mt/sp_system.o build/cext-mt/sp_gc.o build/cext-mt/sp_slab.o build/cext-mt/sp_alloc.o build/cext-mt/sp_dtoa.o build/cext-mt/sp_marshal.o build/cext-mt/sp_format.o build/cext-mt/sp_string.o build/cext-mt/sp_inspect.o build/cext-mt/sp_poly_cold.o build/cext-mt/sp_array.o build/cext-mt/sp_str.o build/cext-mt/sp_str_cold.o build/cext-mt/sp_str_crypt.o build/cext-mt/sp_hash.o build/cext-mt/sp_proc.o build/cext-mt/sp_exc.o build/cext-mt/sp_re.o build/cext-mt/sp_random.o build/cext-mt/sp_fiber.o build/cext-mt/sp_sched.o build/cext-mt/sp_io.o build/cext-mt/sp_iobuffer.o build/cext-mt/sp_cold.o build/cext-mt/sp_enum_str.o build/cext-mt/sp_process.o build/cext-mt/sp_process_status.o build/cext-mt/sp_cext.o build/cext-mt/sp_cext_exc.o build/cext-mt/sp_cext_bridge.o build/cext-mt/sp_cext_thread.o
+#15 15.71 ZERO_AR_DATE=1 ar rcs lib/libspinel_rt.a build/regexp/re_compile.o build/regexp/re_exec.o build/regexp/re_utf8.o build/regexp/unicase.o build/regexp/re_spinel.o build/sp_bigint.o build/sp_crypto.o build/sp_pack.o build/sp_time.o build/sp_core.o build/sp_net.o build/sp_system.o build/sp_gc.o build/sp_slab.o build/sp_alloc.o build/sp_dtoa.o build/sp_marshal.o build/sp_format.o build/sp_string.o build/sp_inspect.o build/sp_poly_cold.o build/sp_array.o build/sp_str.o build/sp_str_cold.o build/sp_str_crypt.o build/sp_hash.o build/sp_proc.o build/sp_exc.o build/sp_re.o build/sp_random.o build/sp_fiber.o build/sp_sched.o build/sp_io.o build/sp_iobuffer.o build/sp_cold.o build/sp_enum_str.o build/sp_process.o build/sp_process_status.o
+#15 15.72 ZERO_AR_DATE=1 ar rcs lib/libspinel_rt_mt.a build/mt/regexp/re_compile.o build/mt/regexp/re_exec.o build/mt/regexp/re_utf8.o build/mt/regexp/unicase.o build/mt/regexp/re_spinel.o build/mt/sp_bigint.o build/mt/sp_crypto.o build/mt/sp_pack.o build/mt/sp_time.o build/mt/sp_core.o build/mt/sp_net.o build/mt/sp_system.o build/mt/sp_gc.o build/mt/sp_slab.o build/mt/sp_alloc.o build/mt/sp_dtoa.o build/mt/sp_marshal.o build/mt/sp_format.o build/mt/sp_string.o build/mt/sp_inspect.o build/mt/sp_poly_cold.o build/mt/sp_array.o build/mt/sp_str.o build/mt/sp_str_cold.o build/mt/sp_str_crypt.o build/mt/sp_hash.o build/mt/sp_proc.o build/mt/sp_exc.o build/mt/sp_re.o build/mt/sp_random.o build/mt/sp_fiber.o build/mt/sp_sched.o build/mt/sp_io.o build/mt/sp_iobuffer.o build/mt/sp_cold.o build/mt/sp_enum_str.o build/mt/sp_process.o build/mt/sp_process_status.o
+#15 15.73 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_util.c -o build/csrc/codegen_util.o
+#15 15.74 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/main.c -o build/csrc/main.o
+#15 15.98 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Ivendor/prism/include -DSPINEL_INLINE_RBS -Ivendor/rbs/include -c src/spinel_parse.c -o build/csrc/sp_parse_lib.o
+#15 16.34 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Ivendor/rbs/include -Isrc tools/spinel_rbs_extract.c build/csrc/rbs_map.o build/librbs.a   -o build/spinel_rbs_extract
+#15 27.79 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  build/csrc/node_table.o build/csrc/types.o build/csrc/compiler.o build/csrc/ffi_spec.o build/csrc/ct_value.o build/csrc/ct_eval.o build/csrc/analyze_ct.o build/csrc/analyze.o build/csrc/analyze_util.o build/csrc/analyze_infer.o build/csrc/analyze_infer_recv.o build/csrc/analyze_cext.o build/csrc/analyze_scope.o build/csrc/analyze_pass.o build/csrc/analyze_desugar.o build/csrc/analyze_nil.o build/csrc/analyze_cls.o build/csrc/analyze_arm.o build/csrc/analyze_const.o build/csrc/analyze_program.o build/csrc/analyze_elab.o build/csrc/analyze_lower.o build/csrc/analyze_share.o build/csrc/repr.o build/csrc/holder.o build/csrc/codegen.o build/csrc/codegen_util.o build/csrc/ty_traits_check.o build/csrc/codegen_fold.o build/csrc/codegen_call.o build/csrc/codegen_call_poly.o build/csrc/codegen_call_method.o build/csrc/codegen_call_io.o build/csrc/codegen_call_kernel.o build/csrc/codegen_call_exception.o build/csrc/codegen_call_module.o build/csrc/codegen_call_string.o build/csrc/codegen_call_class.o build/csrc/codegen_call_operator.o build/csrc/codegen_call_object.o build/csrc/codegen_ops.o build/csrc/codegen_call_concurrency.o build/csrc/codegen_call_numeric.o build/csrc/codegen_call_hash.o build/csrc/codegen_call_array.o build/csrc/codegen_view.o build/csrc/builtin_ops.o build/csrc/builtin_names.o build/csrc/codegen_call_recv.o build/csrc/codegen_iter.o build/csrc/call_plan.o build/csrc/value_pos.o build/csrc/codegen_poly_plan.o build/csrc/share_plan.o build/csrc/codegen_str.o build/csrc/codegen_expr.o build/csrc/codegen_stmt.o build/csrc/csplit.o build/csrc/main.o build/csrc/decide.o build/csrc/sha256.o build/csrc/unit_cache.o build/csrc/sp_parse_lib.o build/csrc/re_lit_check.o build/regexp/re_compile.o build/regexp/re_exec.o build/regexp/re_utf8.o build/regexp/unicase.o build/regexp/re_spinel.o build/libprism.a build/csrc/rbs_map.o build/librbs.a  -lm -lcrypt  -o bin/spinel
+#15 27.86 bin/spinel tools/doctor.rb -o bin/spinel-doctor
+#15 27.86 bin/spinel tools/reduce.rb -o bin/spinel-reduce
+#15 27.86 bin/spinel tools/flatten.rb -o bin/spinel-flatten
+#15 27.86 bin/spinel tools/diff.rb -o bin/spinel-diff
+#15 27.86 bin/spinel tools/bisect.rb -o bin/spinel-bisect
+#15 27.86 bin/spinel tools/cext-build.rb -o bin/spinel-cext-build
+#15 28.91 tools/flatten.rb -> bin/spinel-flatten
+#15 29.10 tools/reduce.rb -> bin/spinel-reduce
+#15 29.25 tools/doctor.rb -> bin/spinel-doctor
+#15 29.86 tools/diff.rb -> bin/spinel-diff
+#15 31.54 tools/bisect.rb -> bin/spinel-bisect
+#15 35.03 tools/cext-build.rb -> bin/spinel-cext-build
+#15 35.03 bin/spinel -I build tools/spin.rb -o bin/spin
+#15 35.03 bin/spinel-cext-build --bundle packages/racc packages/racc/build/cext "clang"
+#15 35.03 bin/spinel-cext-build --bundle packages/sqlite3 packages/sqlite3/build/cext "clang"
+#15 44.64 tools/spin.rb -> bin/spin
+#15 44.65 build/spinel_rbs_extract -> bin/spinel_rbs_extract
+#15 44.90 install -d /usr/local/lib/spinel/lib
+#15 44.90 install -m 755 bin/spinel            /usr/local/lib/spinel/spinel
+#15 44.91 install -m 755 bin/spin             /usr/local/lib/spinel/spin
+#15 44.91 install -m 644 lib/libspinel_rt.a    /usr/local/lib/spinel/lib/
+#15 44.91 install -m 644 lib/libspinel_rt_mt.a /usr/local/lib/spinel/lib/
+#15 44.91 install -m 644 lib/libspinel_cext_rt.a lib/libspinel_cext_rt_mt.a /usr/local/lib/spinel/lib/
+#15 44.91 install -d /usr/local/lib/spinel/include/ruby /usr/local/lib/spinel/tools/cext /usr/local/lib/spinel/tools/spin
+#15 44.91 install -m 644 include/ruby.h /usr/local/lib/spinel/include/
+#15 44.91 for h in include/ruby/*.h; do install -m 644 $h /usr/local/lib/spinel/include/ruby/; done
+#15 44.92 install -m 644 tools/cext/recorder.c tools/cext/recorder.h /usr/local/lib/spinel/tools/cext/
+#15 44.92 install -m 644 tools/cext-record.rb tools/cext-build.rb tools/cext-extconf.rb /usr/local/lib/spinel/tools/
+#15 44.92 install -m 644 tools/spin/toml.rb /usr/local/lib/spinel/tools/spin/
+#15 44.92 for h in lib/*.h; do install -m 644 $h /usr/local/lib/spinel/lib/; done
+#15 44.93 install -d /usr/local/lib/spinel/lib/spinel
+#15 44.93 install -m 644 lib/spinel/runtime.h  /usr/local/lib/spinel/lib/spinel/
+#15 44.93 install -d /usr/local/lib/spinel/lib/wasi/sys
+#15 44.93 for h in lib/wasi/*.h; do install -m 644 $h /usr/local/lib/spinel/lib/wasi/; done
+#15 44.93 for h in lib/wasi/sys/*.h; do install -m 644 $h /usr/local/lib/spinel/lib/wasi/sys/; done
+#15 44.93 rm -rf /usr/local/lib/spinel/packages
+#15 44.93 cp -r packages /usr/local/lib/spinel/packages
+#15 44.97 rm -rf /usr/local/lib/spinel/builtins
+#15 44.97 cp -r builtins /usr/local/lib/spinel/builtins
+#15 44.97 rm -rf /usr/local/lib/spinel/packages/*/build
+#15 44.97 for p in racc sqlite3; do \
+#15 44.97   if [ -d packages/$p/build/cext ]; then \
+#15 44.97     install -d /usr/local/lib/spinel/packages/$p/build/cext; \
+#15 44.97     for a in packages/$p/build/cext/*.a; do install -m 644 $a /usr/local/lib/spinel/packages/$p/build/cext/; done; \
+#15 44.97   fi; \
+#15 44.97 done
+#15 44.97 chmod -R a+rX /usr/local/lib/spinel/packages /usr/local/lib/spinel/builtins
+#15 44.97 install -d /usr/local/bin
+#15 44.97 ln -sf /usr/local/lib/spinel/spinel /usr/local/bin/spinel
+#15 44.97 ln -sf /usr/local/lib/spinel/spin   /usr/local/bin/spin
+#15 44.97 for t in doctor reduce flatten diff bisect; do \
+#15 44.97   install -m 755 bin/spinel-$t /usr/local/bin/spinel-$t; \
+#15 44.97 done
+#15 44.98 install -m 755 bin/spinel-cext-build /usr/local/lib/spinel/spinel-cext-build
+#15 44.98 ln -sf /usr/local/lib/spinel/spinel-cext-build /usr/local/bin/spinel-cext-build
+#15 DONE 45.2s
+
+#16 [builder  8/11] COPY vendor/roundhouse /src/roundhouse
+#16 DONE 0.6s
+
+#17 [builder  9/11] WORKDIR /src/roundhouse
+#17 DONE 0.1s
+
+#18 [builder 10/11] RUN --mount=type=cache,id=conduit-v10-cargo-registry,target=/usr/local/cargo/registry     --mount=type=cache,id=conduit-v10-cargo-git,target=/usr/local/cargo/git     --mount=type=cache,id=conduit-v10-cargo-target,target=/src/roundhouse/target     ROUNDHOUSE_COMMIT=$(echo 295abf08bd5004922669f73bf090def8e3852fe6 | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse
+#18 0.337 info: syncing channel updates for 1.98.1-aarch64-unknown-linux-gnu
+#18 4.828 info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+#18 4.835 info: downloading 2 components
+#18 8.284    Compiling roundhouse v2026.9.18 (/src/roundhouse)
+#18 8.284    Compiling rustc-hash v2.1.2
+#18 9.636 warning: unused doc comment
+#18 9.636     --> src/emit/typescript/expr.rs:4343:1
+#18 9.636      |
+#18 9.636 4343 | / /// Ruby `Foo::Bar` gets joined with `.` for TS access.
+#18 9.636 4344 | | /// Framework-namespace paths (`ActionView::ViewHelpers`, …) collapse
+#18 9.636 4345 | | /// to the last segment — TS emits each runtime class flat at its
+#18 9.636 4346 | | /// file's module scope and imports the bare name. The import
+#18 9.636 ...    |
+#18 9.636 4352 | | /// StandardError)` and similar idioms emit a bare `StandardError`
+#18 9.636 4353 | | /// that's neither in scope nor importable.
+#18 9.636      | |_------------------------------------------^
+#18 9.636      |   |
+#18 9.636      |   rustdoc does not generate documentation for macro invocations
+#18 9.636      |
+#18 9.636      = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+#18 9.636      = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+#18 9.636 
+#18 19.69 error[E0004]: non-exhaustive patterns: `&ColumnType::TextArray` not covered
+#18 19.69    --> src/lower/model_to_library/schema.rs:140:11
+#18 19.69     |
+#18 19.69 140 |     match col {
+#18 19.69     |           ^^^ pattern `&ColumnType::TextArray` not covered
+#18 19.69     |
+#18 19.69 note: `ColumnType` defined here
+#18 19.69    --> src/schema.rs:123:10
+#18 19.69     |
+#18 19.69 123 | pub enum ColumnType {
+#18 19.69     |          ^^^^^^^^^^
+#18 19.69 ...
+#18 19.69 138 |     TextArray,
+#18 19.69     |     --------- not covered
+#18 19.69     = note: the matched value is of type `&ColumnType`
+#18 19.69 help: ensure that all possible cases are being handled by adding a match arm with a wildcard pattern or an explicit pattern as shown
+#18 19.69     |
+#18 19.69 154 ~         C::Interval => "interval",
+#18 19.69 155 ~         &ColumnType::TextArray => todo!(),
+#18 19.69     |
+#18 19.69 
+#18 21.54 For more information about this error, try `rustc --explain E0004`.
+#18 21.55 warning: `roundhouse` (lib) generated 1 warning
+#18 21.55 error: could not compile `roundhouse` (lib) due to 1 previous error; 1 warning emitted
+#18 ERROR: process "/bin/sh -c ROUNDHOUSE_COMMIT=$(echo 295abf08bd5004922669f73bf090def8e3852fe6 | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse" did not complete successfully: exit code: 101
+------
+ > [builder 10/11] RUN --mount=type=cache,id=conduit-v10-cargo-registry,target=/usr/local/cargo/registry     --mount=type=cache,id=conduit-v10-cargo-git,target=/usr/local/cargo/git     --mount=type=cache,id=conduit-v10-cargo-target,target=/src/roundhouse/target     ROUNDHOUSE_COMMIT=$(echo 295abf08bd5004922669f73bf090def8e3852fe6 | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse:
+19.69     = note: the matched value is of type `&ColumnType`
+19.69 help: ensure that all possible cases are being handled by adding a match arm with a wildcard pattern or an explicit pattern as shown
+19.69     |
+19.69 154 ~         C::Interval => "interval",
+19.69 155 ~         &ColumnType::TextArray => todo!(),
+19.69     |
+19.69 
+21.54 For more information about this error, try `rustc --explain E0004`.
+21.55 warning: `roundhouse` (lib) generated 1 warning
+21.55 error: could not compile `roundhouse` (lib) due to 1 previous error; 1 warning emitted
+------
+Dockerfile:20
+--------------------
+  19 |     WORKDIR /src/roundhouse
+  20 | >>> RUN --mount=type=cache,id=conduit-v10-cargo-registry,target=/usr/local/cargo/registry \
+  21 | >>>     --mount=type=cache,id=conduit-v10-cargo-git,target=/usr/local/cargo/git \
+  22 | >>>     --mount=type=cache,id=conduit-v10-cargo-target,target=/src/roundhouse/target \
+  23 | >>>     ROUNDHOUSE_COMMIT=$(echo 295abf08bd5004922669f73bf090def8e3852fe6 | cut -c1-8) cargo build --locked --release --bin roundhouse -j4 \
+  24 | >>>     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse
+  25 |     RUN roundhouse --version && spinel --version && spin --version
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c ROUNDHOUSE_COMMIT=$(echo 295abf08bd5004922669f73bf090def8e3852fe6 | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse" did not complete successfully: exit code: 101

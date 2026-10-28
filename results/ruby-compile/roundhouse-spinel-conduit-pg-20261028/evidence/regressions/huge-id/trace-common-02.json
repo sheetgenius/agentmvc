@@ -1,0 +1,24 @@
+{
+  "stack": "rails",
+  "image": "conduit-v11-app:huge-id-trace-02",
+  "image_sha256": "sha256:afdd05cbe678f2f99a3f78c6f0fdc6bb648b27e95671900770dddf9953a7f92c",
+  "started": "2026-10-28T09:22:13.780846+00:00",
+  "database": "conduit-v11-postgres:17",
+  "limits": [
+    "--cpus=2",
+    "--memory=1g"
+  ],
+  "app_environment_keys": [
+    "DATABASE_URL",
+    "SECRET_KEY_BASE",
+    "PORT"
+  ],
+  "exit": 2,
+  "probe": {
+    "base_url": "http://127.0.0.1:4481",
+    "condition": "reviewer-only common HTTP diagnostic; never a frozen gate",
+    "fatal_setup_or_transport_error": "RemoteDisconnected: Remote end closed connection without response"
+  },
+  "app_log_tail": "conduit (spinel) listening on http://0.0.0.0:8080, pid 1\n  one green thread per connection; OS workers: 4 (SPINEL_WORKERS); processes: 1\n",
+  "finished": "2026-10-28T09:22:15.910433+00:00"
+}

@@ -1,0 +1,97 @@
+[
+  {
+    "source": "c3-proc-call.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n1\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/c3-proc-call.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n"
+    },
+    "matches_cruby": false
+  },
+  {
+    "source": "r1-proc-call-boxed.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/r1-proc-call-boxed.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n"
+    },
+    "matches_cruby": false
+  },
+  {
+    "source": "r2-proc-call-typed.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/r2-proc-call-typed.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 0,
+      "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  },
+  {
+    "source": "r3-lambda-boxed.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/r3-lambda-boxed.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 1,
+      "stdout": "",
+      "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n"
+    },
+    "matches_cruby": false
+  },
+  {
+    "source": "r4-proc-call-boxed-short.rb",
+    "ruby": {
+      "exit": 0,
+      "stdout": "99\n1_000\nabc\n",
+      "stderr": ""
+    },
+    "compile": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/probes/r4-proc-call-boxed-short.rb -> /tmp/repro\n"
+    },
+    "native": {
+      "exit": 0,
+      "stdout": "99\n1_000\nabc\n",
+      "stderr": ""
+    },
+    "matches_cruby": true
+  }
+]

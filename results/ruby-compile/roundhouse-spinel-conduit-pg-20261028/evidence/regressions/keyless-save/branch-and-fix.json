@@ -1,0 +1,25 @@
+{
+  "first_bad_branch_commit": "e7d195bca40f7f74752bc6d60bf65885d4177172",
+  "branch_parent_good": "285a5c4ce65392d0b3f067835ba4af4c5f9eb8c7",
+  "upstream_link": "https://github.com/rubys/roundhouse/pull/1295",
+  "fixed_exit": 0,
+  "fixed_stdout": "true\n",
+  "steps": [
+    {
+      "commit": "285a5c4ce65392d0b3f067835ba4af4c5f9eb8c7",
+      "exit": 0,
+      "stdout": "true\n",
+      "stderr": "",
+      "source": "285a5c4ce653.rb",
+      "overlay_present": false
+    },
+    {
+      "commit": "e7d195bca40f7f74752bc6d60bf65885d4177172",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "NotImplementedError: id=: subclasses must override\n",
+      "source": "e7d195bca40f.rb",
+      "overlay_present": true
+    }
+  ]
+}

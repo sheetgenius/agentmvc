@@ -1,0 +1,120 @@
+Checking patch docs/guide/spinel.md...
+Hunk #1 succeeded at 260 (offset 16 lines).
+Checking patch runtime/ruby/active_record/base.rb...
+error: while searching for:
+      if was_new
+        before_create
+        fill_timestamps(true)
+        self.id = _adapter_insert
+        @persisted = true
+        __track_saved_changes(was_new)
+        after_create
+
+error: patch failed: runtime/ruby/active_record/base.rb:911
+Hunk #2 succeeded at 1273 (offset 17 lines).
+Hunk #3 succeeded at 1295 (offset 17 lines).
+Checking patch runtime/ruby/active_record/base.rbs...
+Hunk #1 succeeded at 273 (offset 7 lines).
+Checking patch runtime/spinel/db_libpq.rb...
+Checking patch src/emit/roda.rs...
+Checking patch src/emit/ruby.rs...
+Hunk #1 succeeded at 1273 (offset 11 lines).
+Checking patch src/emit/ruby/library.rs...
+Hunk #1 succeeded at 1823 (offset 38 lines).
+Checking patch src/emit/shared/schema_sql.rs...
+Hunk #1 succeeded at 491 (offset 11 lines).
+Hunk #2 succeeded at 526 (offset 11 lines).
+Checking patch src/ingest/model.rs...
+Hunk #1 succeeded at 4241 (offset 257 lines).
+Checking patch src/ingest/schema.rs...
+Hunk #1 succeeded at 1575 (offset 73 lines).
+Hunk #2 succeeded at 1774 (offset 83 lines).
+Checking patch src/ingest/structure_sql.rs...
+Hunk #1 succeeded at 517 (offset 2 lines).
+Hunk #2 succeeded at 1619 (offset 2 lines).
+Checking patch src/lib.rs...
+Hunk #1 succeeded at 111 (offset 5 lines).
+Checking patch src/lower/arel/ir.rs...
+Checking patch src/lower/arel/ruby_values.rs...
+Checking patch src/lower/arel/visitor.rs...
+Checking patch src/lower/group_count.rs...
+Checking patch src/lower/model_to_library/adapter_emit/mod.rs...
+error: while searching for:
+    methods.push(synth_adapter_exists_by_id(owner, table, schema, param_binds));
+    methods.push(synth_adapter_truncate(owner, table, schema));
+    methods.push(synth_delete_all(owner, table));
+    methods.push(synth_adapter_reload(model, table, param_binds));
+    methods.push(synth_columns_sql(owner, table));
+    methods.push(synth_hydrate_all(owner));
+}
+
+error: patch failed: src/lower/model_to_library/adapter_emit/mod.rs:72
+Hunk #2 succeeded at 319 (offset 3 lines).
+Hunk #5 succeeded at 841 (offset -6 lines).
+Hunk #6 succeeded at 875 (offset -6 lines).
+Hunk #7 succeeded at 956 (offset -6 lines).
+Hunk #8 succeeded at 1027 (offset 2 lines).
+error: while searching for:
+/// nothing. Temporal columns store ISO-8601 text, so they escape as
+/// strings like any other text column.
+fn value_type_for_column(col: &crate::schema::Column) -> ValueType {
+    let nullable = col.nullable && !col.primary_key;
+    match ty_of_column(&col.col_type) {
+        Ty::Int => {
+
+error: patch failed: src/lower/model_to_library/adapter_emit/mod.rs:1305
+Checking patch src/lower/model_to_library/mod.rs...
+Hunk #1 succeeded at 3226 (offset 217 lines).
+Checking patch src/lower/model_to_library/schema.rs...
+error: while searching for:
+/// match nothing. The primary key is never nullable in practice and is
+/// excluded by `ty_of_column_slot`.
+pub(crate) fn column_read_method_for(col: &Column) -> &'static str {
+    let base = ty_of_column(&col.col_type);
+    if !matches!(super::ty_of_column_slot(col), Ty::Union { .. }) {
+        return column_read_method(&base);
+
+error: patch failed: src/lower/model_to_library/schema.rs:1973
+Checking patch src/naming.rs...
+Checking patch src/project.rs...
+Hunk #1 succeeded at 2386 (offset 585 lines).
+Hunk #2 succeeded at 2809 (offset 685 lines).
+Hunk #3 succeeded at 7546 (offset 854 lines).
+Hunk #4 succeeded at 13284 (offset 1269 lines).
+Checking patch src/schema.rs...
+Hunk #1 succeeded at 135 (offset 23 lines).
+Applied patch docs/guide/spinel.md cleanly.
+Applying patch runtime/ruby/active_record/base.rb with 1 reject...
+Rejected hunk #1.
+Hunk #2 applied cleanly.
+Hunk #3 applied cleanly.
+Applied patch runtime/ruby/active_record/base.rbs cleanly.
+Applied patch runtime/spinel/db_libpq.rb cleanly.
+Applied patch src/emit/roda.rs cleanly.
+Applied patch src/emit/ruby.rs cleanly.
+Applied patch src/emit/ruby/library.rs cleanly.
+Applied patch src/emit/shared/schema_sql.rs cleanly.
+Applied patch src/ingest/model.rs cleanly.
+Applied patch src/ingest/schema.rs cleanly.
+Applied patch src/ingest/structure_sql.rs cleanly.
+Applied patch src/lib.rs cleanly.
+Applied patch src/lower/arel/ir.rs cleanly.
+Applied patch src/lower/arel/ruby_values.rs cleanly.
+Applied patch src/lower/arel/visitor.rs cleanly.
+Applied patch src/lower/group_count.rs cleanly.
+Applying patch src/lower/model_to_library/adapter_emit/mod.rs with 2 rejects...
+Rejected hunk #1.
+Hunk #2 applied cleanly.
+Hunk #3 applied cleanly.
+Hunk #4 applied cleanly.
+Hunk #5 applied cleanly.
+Hunk #6 applied cleanly.
+Hunk #7 applied cleanly.
+Hunk #8 applied cleanly.
+Rejected hunk #9.
+Applied patch src/lower/model_to_library/mod.rs cleanly.
+Applying patch src/lower/model_to_library/schema.rs with 1 reject...
+Rejected hunk #1.
+Applied patch src/naming.rs cleanly.
+Applied patch src/project.rs cleanly.
+Applied patch src/schema.rs cleanly.

@@ -1,0 +1,22 @@
+{
+  "label": "huge-id-head-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v11-huge-id-head-01",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261028/evidence/regressions/huge-id:/probes",
+    "conduit-v11-toolchain:0a15b9024094",
+    "python3",
+    "/probes/run.py",
+    "head"
+  ],
+  "started": "2026-10-28T09:08:41.766190+00:00",
+  "finished": "2026-10-28T09:09:40.187560+00:00",
+  "elapsed_seconds": 58.421,
+  "exit": 0,
+  "log": "evidence/execution/huge-id-head-01.log",
+  "heavy_lock": true
+}

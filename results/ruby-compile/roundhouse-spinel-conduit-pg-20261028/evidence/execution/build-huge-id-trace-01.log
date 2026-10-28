@@ -1,0 +1,85 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 302B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/conduit-v11-toolchain:0a15b9024094
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/5] FROM docker.io/library/conduit-v11-toolchain:0a15b9024094
+#4 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 2.87MB 0.0s done
+#5 DONE 0.1s
+
+#6 [2/5] COPY app /work/app
+#6 DONE 0.1s
+
+#7 [3/5] COPY clang-trace /trace/clang-trace
+#7 DONE 0.1s
+
+#8 [4/5] WORKDIR /work/app
+#8 DONE 0.1s
+
+#9 [5/5] RUN spin build -- --cc=/trace/clang-trace --jobs=8
+#9 2.599 Note: switching to 'cc29f69ee8bd52f1b2d39639b25458909e7cd476'.
+#9 2.599 
+#9 2.599 You are in 'detached HEAD' state. You can look around, make experimental
+#9 2.599 changes and commit them, and you can discard any commits you make in this
+#9 2.599 state without impacting any branches by switching back to a branch.
+#9 2.599 
+#9 2.599 If you want to create a new branch to retain commits you create, you may
+#9 2.599 do so (now or later) by using -c with the switch command. Example:
+#9 2.599 
+#9 2.599   git switch -c <new-branch-name>
+#9 2.599 
+#9 2.599 Or undo this operation with:
+#9 2.599 
+#9 2.599   git switch -
+#9 2.599 
+#9 2.599 Turn off this advice by setting config variable advice.detachedHead to false
+#9 2.599 
+#9 2.610 build blog
+#9 2.772 cc bcrypt/crypt_blowfish.c
+#9 2.872 cc bcrypt/crypt_blowfish.c (threaded)
+#9 2.885 cc bcrypt/sp_bcrypt.c
+#9 2.898 cc bcrypt/sp_bcrypt.c (threaded)
+#9 45.08 warning: --rbs: ActiveSupport.query_value: Roundhouse_ParamValue names no class of the program; the seed is ignored
+#9 45.08 warning: --rbs: Params.nested_lookup: Roundhouse_ParamValue names no class of the program; the seed is ignored
+#9 45.08 warning: --rbs: Params.nested_lookup: Roundhouse_ParamValue names no class of the program; the seed is ignored
+#9 45.08 warning: --rbs: Params.require_key: Roundhouse_ParamValue names no class of the program; the seed is ignored
+#9 45.08 warning: --rbs: Params.scalars_only: Roundhouse_ParamValue names no class of the program; the seed is ignored
+#9 45.08 warning: --rbs: Params.nested: Roundhouse_ParamValue names no class of the program; the seed is ignored
+#9 45.08 spinel: warning: --rbs ivar pin @id dropped on Article: ancestor ApplicationRecord holds it as poly (layouts must stay cast-compatible)
+#9 45.08 spinel: warning: --rbs ivar pin @id dropped on ArticleExport: ancestor ApplicationRecord holds it as poly (layouts must stay cast-compatible)
+#9 45.08 spinel: warning: --rbs ivar pin @id dropped on ArticleShare: ancestor ApplicationRecord holds it as poly (layouts must stay cast-compatible)
+#9 45.08 spinel: warning: --rbs ivar pin @id dropped on Comment: ancestor ApplicationRecord holds it as poly (layouts must stay cast-compatible)
+#9 45.08 spinel: warning: --rbs ivar pin @id dropped on User: ancestor ApplicationRecord holds it as poly (layouts must stay cast-compatible)
+#9 45.08 warning: --rbs: Attached @variations: Array[Variation] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 warning: --rbs: AttachedMany @rows: Array[ManyAttachment] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 warning: --rbs: Fragment @changes: Array[Change] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 warning: --rbs: ActiveRecord__Base @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 warning: --rbs: Preloader @records: Array[ActiveRecord__Base] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 warning: --rbs: ApplicationRecord @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 warning: --rbs: Article @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 warning: --rbs: ArticleExport @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 warning: --rbs: ArticleShare @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 warning: --rbs: Comment @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 warning: --rbs: Favorite @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 warning: --rbs: Follow @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 warning: --rbs: User @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#9 45.08 /work/app/bin/blog.rb -> /work/app/build/bin/blog
+#9 DONE 45.1s
+
+#10 exporting to image
+#10 exporting layers 0.1s done
+#10 writing image sha256:85760c2e632325e7d26e873b911c028e71aa926bdb85100b148673fecbcc655d done
+#10 naming to docker.io/library/conduit-v11-app:huge-id-trace done
+#10 DONE 0.1s

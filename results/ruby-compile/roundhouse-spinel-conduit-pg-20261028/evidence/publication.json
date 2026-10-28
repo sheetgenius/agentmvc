@@ -1,0 +1,236 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v11-20261028",
+  "scope": "Publication copy of the completed build record; original observations retained under their recorded conditions",
+  "retained": [
+    "README and run record",
+    "checksummed Roundhouse and Spinel patch series and their integrated diffs",
+    "reproduction scripts and Dockerfiles",
+    "unchanged compile variant",
+    "final, control, candidate and diagnostic gates, captured app evidence and binary identities",
+    "one-patch omission conditions: series, manifests, Dockerfiles, build and gate scripts, apply, probe and recovery results",
+    "edge responses and comparison summaries",
+    "regression sources, bisect records, reductions, traces and outcomes",
+    "retirement checks, pin summaries, upstream links and the candidate-01 and final replays"
+  ],
+  "source": {
+    "files": 585318,
+    "logical_bytes": 1857386970,
+    "allocated_kib": 3752592
+  },
+  "v10_reference": {
+    "files": 448,
+    "logical_bytes": 2497899,
+    "allocated_kib": 3800
+  },
+  "omitted": {
+    "superseded pre-repair replay log; candidate-01 and final replays retained": {
+      "files": 1,
+      "bytes": 347
+    },
+    "coordination note between build sessions; superseded by the omission results": {
+      "files": 1,
+      "bytes": 314
+    },
+    "omission-condition copy byte-identical to the final record file of the same path": {
+      "files": 980,
+      "bytes": 3420216
+    },
+    "generated build contexts, copied dependencies, gate workspaces and container logs": {
+      "files": 582780,
+      "bytes": 1847916701
+    },
+    "superseded candidate-01 omission inputs (stale shared Cargo cache); their results, build logs and exclusion record are retained": {
+      "files": 1042,
+      "bytes": 3607623
+    },
+    "draft upstream issue text (a message, not evidence); the filed issue is linked from the README": {
+      "files": 2,
+      "bytes": 4361
+    },
+    "copy of a retired patch published in the v10 record; the v10 record remains the source": {
+      "files": 3,
+      "bytes": 1969
+    }
+  },
+  "promoted_evidence": [
+    {
+      "source": "reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-81339-app.log",
+      "destination": "evidence/execution/compiled-gate-02-app.log",
+      "bytes": 628,
+      "sha256": "b8550e5934143df303980457fa34d08d08a0ccafca383b1e71267fcc034161cc"
+    },
+    {
+      "source": "reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-81339-app-binary.json",
+      "destination": "evidence/execution/compiled-gate-02-app-binary.json",
+      "bytes": 248,
+      "sha256": "c993e39083ea42df9fae25ea5cc629ec58d3140376c9f01d6083a8d1c7c95510"
+    },
+    {
+      "source": "reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-86725-app.log",
+      "destination": "evidence/execution/compiled-gate-03-app.log",
+      "bytes": 137,
+      "sha256": "5346f9450d9ce9c6f4138da1f4e0d0537d708ad96f8c1adee14b41b993c74d6f"
+    },
+    {
+      "source": "reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-86725-app-binary.json",
+      "destination": "evidence/execution/compiled-gate-03-app-binary.json",
+      "bytes": 248,
+      "sha256": "fb2fb2511467a2e7b096a999beeb4b8ab3f2106e1eb7d3b70e136915ed33b649"
+    },
+    {
+      "source": "reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-41172-app.log",
+      "destination": "evidence/execution/compiled-gate-04-app.log",
+      "bytes": 137,
+      "sha256": "5346f9450d9ce9c6f4138da1f4e0d0537d708ad96f8c1adee14b41b993c74d6f"
+    },
+    {
+      "source": "reproduce/build/logs/recovery-final-93-app.log",
+      "destination": "evidence/recovery/final-app.log",
+      "bytes": 137,
+      "sha256": "a33645129a8867f85200d01d45e7a90de7ec3134c06328db9c4c51b55e86b5dd"
+    },
+    {
+      "source": "reproduce/build/logs/recovery-final-app.log",
+      "destination": "evidence/recovery/candidate-01-app.log",
+      "bytes": 137,
+      "sha256": "a33645129a8867f85200d01d45e7a90de7ec3134c06328db9c4c51b55e86b5dd"
+    },
+    {
+      "source": "evidence/omissions/without-30/reproduce/build/logs/recovery-without-30-final.json",
+      "destination": "evidence/omissions/without-30/recovery.json",
+      "bytes": 543,
+      "sha256": "986b98927dda92cec8d423e6ded4a2fa16908bf3c20ea456cfa967976a0bbfac"
+    },
+    {
+      "source": "evidence/omissions/without-30/reproduce/build/logs/recovery-without-30-final-app.log",
+      "destination": "evidence/omissions/without-30/recovery-app.log",
+      "bytes": 137,
+      "sha256": "a33645129a8867f85200d01d45e7a90de7ec3134c06328db9c4c51b55e86b5dd"
+    },
+    {
+      "source": "evidence/omissions/without-10/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-70730-app.log",
+      "destination": "evidence/execution/without-10-gate-02-app.log",
+      "bytes": 1247,
+      "sha256": "2abc7b1f4cbc5836816d932f0205a8a039325d42fdb75b1fd231e056bf567b1f"
+    },
+    {
+      "source": "evidence/omissions/without-10/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-70730-app-binary.json",
+      "destination": "evidence/execution/without-10-gate-02-app-binary.json",
+      "bytes": 248,
+      "sha256": "d9831642b46d9f898c4a7709e8ee946b0f55d41493c4d6bbdd76a41a363aea95"
+    },
+    {
+      "source": "evidence/omissions/without-30/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-84842-app.log",
+      "destination": "evidence/execution/without-30-gate-02-app.log",
+      "bytes": 137,
+      "sha256": "5346f9450d9ce9c6f4138da1f4e0d0537d708ad96f8c1adee14b41b993c74d6f"
+    },
+    {
+      "source": "evidence/omissions/without-30/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-84842-app-binary.json",
+      "destination": "evidence/execution/without-30-gate-02-app-binary.json",
+      "bytes": 248,
+      "sha256": "262bb5a047093b1bb4b611bf9dda19212fb5c4a05e0defa498870e9dd90a91d7"
+    },
+    {
+      "source": "evidence/omissions/without-74/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-90124-app.log",
+      "destination": "evidence/execution/without-74-gate-02-app.log",
+      "bytes": 420,
+      "sha256": "4b4c10ed589934d8340c2e879e5b6a0f4133ab10593d0d59589ae6622c70526b"
+    },
+    {
+      "source": "evidence/omissions/without-74/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-90124-app-binary.json",
+      "destination": "evidence/execution/without-74-gate-02-app-binary.json",
+      "bytes": 248,
+      "sha256": "b11ff11fe666c9f0cabcfcc909f509563d93e106b44ba6a481f4f9ab34cd7800"
+    },
+    {
+      "source": "evidence/omissions/without-80/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-91522-app.log",
+      "destination": "evidence/execution/without-80-gate-02-app.log",
+      "bytes": 560,
+      "sha256": "a37e6363feb1c1938a412aa5eef3ec006294cdfb8701d70edc4fef9444a7f0c4"
+    },
+    {
+      "source": "evidence/omissions/without-80/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-91522-app-binary.json",
+      "destination": "evidence/execution/without-80-gate-02-app-binary.json",
+      "bytes": 248,
+      "sha256": "3f196492e2174a8bccc75774323cd58729a22dbbbf93dc2eedf8709d755e7bce"
+    },
+    {
+      "source": "evidence/omissions/without-82/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-92661-app.log",
+      "destination": "evidence/execution/without-82-gate-02-app.log",
+      "bytes": 393,
+      "sha256": "8477e1cd6d69c77ef50068eff7bf05b5a1e83f7d4e2dd98faa67a4240e89ec61"
+    },
+    {
+      "source": "evidence/omissions/without-82/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-92661-app-binary.json",
+      "destination": "evidence/execution/without-82-gate-02-app-binary.json",
+      "bytes": 248,
+      "sha256": "6124e2cd4614385a731ad8f42be2c336f947ab022ac4c05d9f24d053a7173a11"
+    },
+    {
+      "source": "evidence/omissions/without-83/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-93580-app.log",
+      "destination": "evidence/execution/without-83-gate-02-app.log",
+      "bytes": 1217,
+      "sha256": "3d861d36ef175c1c41d957d14a1916c97f9afb2b6aaa33362d51264498742560"
+    },
+    {
+      "source": "evidence/omissions/without-83/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-93580-app-binary.json",
+      "destination": "evidence/execution/without-83-gate-02-app-binary.json",
+      "bytes": 248,
+      "sha256": "3a0b0016a33cd3afab63d526bf9c04a60132ddce79bd61857ca60aea7668bcb2"
+    },
+    {
+      "source": "evidence/omissions/without-84/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-94686-app.log",
+      "destination": "evidence/execution/without-84-gate-02-app.log",
+      "bytes": 560,
+      "sha256": "cf05650cb8a663a5b65a3b6bcea0c8a7cc20c03c96ccd915a594cf06a00e7b79"
+    },
+    {
+      "source": "evidence/omissions/without-84/reproduce/build/container-logs/conduit-v11-gate-conduit-v11-ws-compiled-94686-app-binary.json",
+      "destination": "evidence/execution/without-84-gate-02-app-binary.json",
+      "bytes": 248,
+      "sha256": "a7b9be5d24738a8248d2b4b8e09cd31e8c147e0ba21fa62b060943e56bdaf1ef"
+    }
+  ],
+  "derived_evidence": {
+    "evidence/roundhouse-final-combined.diff": {
+      "base": "295abf08bd5004922669f73bf090def8e3852fe6",
+      "vendor_tree_sha256": "c5403a332958c9d066fe565041b5b341ca5d564818fe4bea2796ca0db4e66e5c",
+      "integrated_diff": {
+        "added": 2394,
+        "removed": 175,
+        "files": 56
+      },
+      "diff_sha256": "40cba2f4daf0000eff01a1e9a3c3c5ecba92b71c1859c9bf0e884070547a309c"
+    },
+    "evidence/spinel-final-combined.diff": {
+      "base": "3b397d7bc96c2324190c0f2f857e1973e24dca84",
+      "vendor_tree_sha256": "96b4871f3606274df042f6e9386afa65e89adcc9ba068e17cafc387ad4f6b31c",
+      "integrated_diff": {
+        "added": 5,
+        "removed": 0,
+        "files": 1
+      },
+      "diff_sha256": "f2bb35b6964ce896b0d616720e930ad16e0af87b995ccb08aa8b61960e47c507"
+    },
+    "method": "Each checksummed series replayed with git apply on a clean checkout of its pinned head; the patched tree matches the vendor-tree digest in final-pins.json, and the diff is git diff of that tree. Its numstat equals the run.json delta."
+  },
+  "normalization": [
+    "Host checkout paths are repository-relative; the build record's own location is shown as this record's path, and the v10 build record as the published v10 record.",
+    "$SCRATCH stands for the build's local working directory outside the record (emitted programs, native Spinel trees, traces, toolchain contexts and helper scripts); it is not published. $SCRATCH/fresh-build.sh is byte-identical to reproduce/fresh-build.sh.",
+    "Upstream author email addresses in the quoted first-bad commit are redacted with the tools/scrub.py email rule; synthetic fixture addresses remain.",
+    "Omission folders keep only the files that differ from the final record (series, SHA256SUMS, Dockerfiles, build and gate scripts) plus their apply, probe and recovery results; byte-identical copies are omitted. The candidate-01 omission folders are omitted whole; their execution records and build logs stay in evidence/execution, and invalid-omission-cache.json explains the exclusion. Those records (labels ending -01) name evidence/omissions/without-NN/ paths, where their inputs lived when they ran; the build record later moved them to evidence/omissions-candidate-01/, so the files now at evidence/omissions/ belong to the final omissions (-02).",
+    "Captured app logs and binary identities of the compiled gates and the omission gates, and the recovery records, are promoted from generated gate workspaces (promoted_evidence).",
+    "The draft upstream issue text and a coordination note between build sessions are omitted: they are messages, not evidence. The issue that was filed is linked from the README.",
+    "Retired patches 85, 91 and 92 were byte-identical copies of the v10 record's published patches; the README links the v10 copies.",
+    "upstream-links.json keeps each PR's link, title, state, merge time and merge commit; PR bodies are omitted.",
+    "run.json describes the input series without internal work-item labels, adds the integrated-diff sources, keeps only the Docker lock, prefix and port constraints, links this inventory and adds an upstream_after_pins note to each new regression. Retirement checks, the patch scoreboard and the excluded-omission record drop internal work-item labels and session wording, and the Spinel classification drops the reference to the unpublished draft issue. Recorded results are unchanged.",
+    "The README states peak RSS in KiB from each final compiled gate log (v10 compiled-gate-02, v11 compiled-gate-04). The MiB row in timing-vs-v10.json and run.json mixes sources: its v10 figures are compiled-gate-02 KiB divided by 1,000, its v11 figures build-final-01 KiB divided by 1,024.",
+    "The README attributes the without-60 refusal to emission: in that build log roundhouse check exits 0 before roundhouse --target spinel refuses two controllers. The recorded finding text is unchanged.",
+    "Upstream status after the pins (matz/spinel#10462 and its fix 3ca03ede9; the keyless-save state of Roundhouse main d8412f3a5 and of #1295's parent 7f20914d5) was checked at publication with native and CRuby probes outside this condition; it is reported as such and changes no recorded result.",
+    "The source variant, toolchain Dockerfiles, reproduction scripts and checksummed patches are byte-identical to the supplied record. The variant is byte-identical to the v10 record's, and its ledger, COMPILE-VARIANT.md, is the same file as in the v8, v9 and v10 records."
+  ],
+  "verification": "evidence/publication-validation.json",
+  "excluded_results": "Intermediate, superseded and cached-build attempts (compiled-gate-02, the candidate-01 omissions) remain diagnostics, not final passing conditions.",
+  "performance_benchmark": false
+}

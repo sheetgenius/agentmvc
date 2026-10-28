@@ -1,0 +1,14 @@
+{
+  "label": "roundhouse-binary-final-01",
+  "command": [
+    "sh",
+    "-c",
+    "for t in conduit-v11-toolchain:0a15b9024094 conduit-v11-toolchain:candidate-01; do printf \"%s \" $t; docker run --rm --name conduit-v11-rhbin-final-01 $t sha256sum /usr/local/bin/roundhouse; done"
+  ],
+  "started": "2026-10-28T10:12:10.828909+00:00",
+  "finished": "2026-10-28T10:14:39.723680+00:00",
+  "elapsed_seconds": 148.894,
+  "exit": 0,
+  "log": "evidence/execution/roundhouse-binary-final-01.log",
+  "heavy_lock": true
+}

@@ -1,0 +1,29 @@
+{
+  "label": "diagnostic-export-02",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v11-export-02",
+    "-v",
+    "$SCRATCH/production-input:/src/app:ro",
+    "-v",
+    "$SCRATCH/emitted-current:/out",
+    "-e",
+    "RH_DATABASE_ADAPTER=postgresql",
+    "conduit-v11-toolchain:0a15b9024094",
+    "roundhouse",
+    "--target",
+    "spinel",
+    "-o",
+    "/out",
+    "/src/app"
+  ],
+  "started": "2026-10-28T09:07:03.037269+00:00",
+  "finished": "2026-10-28T09:07:12.522522+00:00",
+  "elapsed_seconds": 9.485,
+  "exit": 0,
+  "log": "evidence/execution/diagnostic-export-02.log",
+  "heavy_lock": true
+}

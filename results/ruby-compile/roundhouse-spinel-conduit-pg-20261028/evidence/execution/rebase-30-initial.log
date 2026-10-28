@@ -1,0 +1,31 @@
+Checking patch docs/guide/spinel-jobs.md...
+Checking patch runtime/ruby/rails.rb...
+Hunk #1 succeeded at 456 (offset 9 lines).
+Checking patch runtime/ruby/rails.rbs...
+Hunk #1 succeeded at 74 (offset 1 line).
+Checking patch runtime/spinel/scaffold/main.rb...
+Hunk #1 succeeded at 927 (offset 40 lines).
+Checking patch src/ingest/app.rs...
+Hunk #1 succeeded at 1493 (offset 76 lines).
+Hunk #2 succeeded at 10219 (offset 796 lines).
+Checking patch src/ingest/boot_hooks.rs...
+Checking patch src/ingest/mod.rs...
+error: while searching for:
+mod public_file_server_config;
+pub mod allow_browser;
+pub mod app;
+mod concern_accessors;
+pub mod controller;
+mod data_factory;
+
+error: patch failed: src/ingest/mod.rs:39
+Checking patch tests/boot_hooks.rs...
+Applied patch docs/guide/spinel-jobs.md cleanly.
+Applied patch runtime/ruby/rails.rb cleanly.
+Applied patch runtime/ruby/rails.rbs cleanly.
+Applied patch runtime/spinel/scaffold/main.rb cleanly.
+Applied patch src/ingest/app.rs cleanly.
+Applied patch src/ingest/boot_hooks.rs cleanly.
+Applying patch src/ingest/mod.rs with 1 reject...
+Rejected hunk #1.
+Applied patch tests/boot_hooks.rs cleanly.

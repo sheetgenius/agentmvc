@@ -1,0 +1,308 @@
+{
+  "condition": "compiled-conduit-v11-20261028",
+  "gated_files": 75,
+  "all_match_v10": true,
+  "manifest_sha256": "a3d3a53291c4df6cee2fb6d877832ab9aaa12ee2998a6734a5ac6b42b7aa962f",
+  "files": [
+    {
+      "path": ".dockerignore",
+      "match": true
+    },
+    {
+      "path": ".github/dependabot.yml",
+      "match": true
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "match": true
+    },
+    {
+      "path": ".rubocop.yml",
+      "match": true
+    },
+    {
+      "path": ".ruby-version",
+      "match": true
+    },
+    {
+      "path": "AGENTS.md",
+      "match": true
+    },
+    {
+      "path": "Dockerfile",
+      "match": true
+    },
+    {
+      "path": "Gemfile",
+      "match": true
+    },
+    {
+      "path": "Gemfile.lock",
+      "match": true
+    },
+    {
+      "path": "Rakefile",
+      "match": true
+    },
+    {
+      "path": "app/controllers/application_controller.rb",
+      "match": true
+    },
+    {
+      "path": "app/controllers/articles_controller.rb",
+      "match": true
+    },
+    {
+      "path": "app/controllers/comments_controller.rb",
+      "match": true
+    },
+    {
+      "path": "app/controllers/exports_controller.rb",
+      "match": true
+    },
+    {
+      "path": "app/controllers/favorites_controller.rb",
+      "match": true
+    },
+    {
+      "path": "app/controllers/health_controller.rb",
+      "match": true
+    },
+    {
+      "path": "app/controllers/profiles_controller.rb",
+      "match": true
+    },
+    {
+      "path": "app/controllers/shares_controller.rb",
+      "match": true
+    },
+    {
+      "path": "app/controllers/tags_controller.rb",
+      "match": true
+    },
+    {
+      "path": "app/controllers/users_controller.rb",
+      "match": true
+    },
+    {
+      "path": "app/jobs/application_job.rb",
+      "match": true
+    },
+    {
+      "path": "app/jobs/export_articles_job.rb",
+      "match": true
+    },
+    {
+      "path": "app/models/application_record.rb",
+      "match": true
+    },
+    {
+      "path": "app/models/article.rb",
+      "match": true
+    },
+    {
+      "path": "app/models/article_export.rb",
+      "match": true
+    },
+    {
+      "path": "app/models/article_share.rb",
+      "match": true
+    },
+    {
+      "path": "app/models/comment.rb",
+      "match": true
+    },
+    {
+      "path": "app/models/favorite.rb",
+      "match": true
+    },
+    {
+      "path": "app/models/follow.rb",
+      "match": true
+    },
+    {
+      "path": "app/models/user.rb",
+      "match": true
+    },
+    {
+      "path": "app/services/article_commit.rb",
+      "match": true
+    },
+    {
+      "path": "app/services/json_cast.rb",
+      "match": true
+    },
+    {
+      "path": "app/services/live_rooms.rb",
+      "match": true
+    },
+    {
+      "path": "app/services/live_socket.rb",
+      "match": true
+    },
+    {
+      "path": "app/services/login_throttle.rb",
+      "match": true
+    },
+    {
+      "path": "app/services/token_codec.rb",
+      "match": true
+    },
+    {
+      "path": "bin/brakeman",
+      "match": true
+    },
+    {
+      "path": "bin/bundler-audit",
+      "match": true
+    },
+    {
+      "path": "bin/ci",
+      "match": true
+    },
+    {
+      "path": "bin/dev",
+      "match": true
+    },
+    {
+      "path": "bin/docker-entrypoint",
+      "match": true
+    },
+    {
+      "path": "bin/rails",
+      "match": true
+    },
+    {
+      "path": "bin/rake",
+      "match": true
+    },
+    {
+      "path": "bin/rubocop",
+      "match": true
+    },
+    {
+      "path": "bin/setup",
+      "match": true
+    },
+    {
+      "path": "bin/thrust",
+      "match": true
+    },
+    {
+      "path": "config/application.rb",
+      "match": true
+    },
+    {
+      "path": "config/boot.rb",
+      "match": true
+    },
+    {
+      "path": "config/bundler-audit.yml",
+      "match": true
+    },
+    {
+      "path": "config/ci.rb",
+      "match": true
+    },
+    {
+      "path": "config/database.yml",
+      "match": true
+    },
+    {
+      "path": "config/environment.rb",
+      "match": true
+    },
+    {
+      "path": "config/environments/development.rb",
+      "match": true
+    },
+    {
+      "path": "config/environments/production.rb",
+      "match": true
+    },
+    {
+      "path": "config/environments/test.rb",
+      "match": true
+    },
+    {
+      "path": "config/initializers/cors.rb",
+      "match": true
+    },
+    {
+      "path": "config/initializers/filter_parameter_logging.rb",
+      "match": true
+    },
+    {
+      "path": "config/initializers/inflections.rb",
+      "match": true
+    },
+    {
+      "path": "config/initializers/live_rooms.rb",
+      "match": true
+    },
+    {
+      "path": "config/initializers/recover_exports.rb",
+      "match": true
+    },
+    {
+      "path": "config/locales/en.yml",
+      "match": true
+    },
+    {
+      "path": "config/puma.rb",
+      "match": true
+    },
+    {
+      "path": "config/routes.rb",
+      "match": true
+    },
+    {
+      "path": "config.ru",
+      "match": true
+    },
+    {
+      "path": "db/migrate/20260929000000_create_good_jobs.rb",
+      "match": true
+    },
+    {
+      "path": "db/migrate/20260929000001_create_conduit.rb",
+      "match": true
+    },
+    {
+      "path": "db/schema.rb",
+      "match": true
+    },
+    {
+      "path": "db/seeds.rb",
+      "match": true
+    },
+    {
+      "path": "db/structure.sql",
+      "match": true
+    },
+    {
+      "path": "test/controllers/article_contract_test.rb",
+      "match": true
+    },
+    {
+      "path": "test/controllers/compile_variant_contract_test.rb",
+      "match": true
+    },
+    {
+      "path": "test/controllers/health_test.rb",
+      "match": true
+    },
+    {
+      "path": "test/models/product_rules_test.rb",
+      "match": true
+    },
+    {
+      "path": "test/services/token_codec_test.rb",
+      "match": true
+    },
+    {
+      "path": "test/test_helper.rb",
+      "match": true
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "label": "tag-candidate-01",
+  "command": [
+    "sh",
+    "-c",
+    "docker tag conduit-v11-toolchain:0a15b9024094 conduit-v11-toolchain:candidate-01 && docker tag conduit-v11-app:compiled conduit-v11-app:candidate-01 && docker image inspect --format \"{{.Id}}\" conduit-v11-toolchain:candidate-01 conduit-v11-app:candidate-01"
+  ],
+  "started": "2026-10-28T09:54:43.429003+00:00",
+  "finished": "2026-10-28T09:54:43.666185+00:00",
+  "elapsed_seconds": 0.237,
+  "exit": 0,
+  "log": "evidence/execution/tag-candidate-01.log",
+  "heavy_lock": true
+}

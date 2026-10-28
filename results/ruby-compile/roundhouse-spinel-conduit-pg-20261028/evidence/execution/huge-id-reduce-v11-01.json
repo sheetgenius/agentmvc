@@ -1,0 +1,22 @@
+{
+  "label": "huge-id-reduce-v11-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v11-reduce-v11-01",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261028/evidence/regressions/huge-id/reduce:/probes",
+    "conduit-v11-toolchain:0a15b9024094",
+    "python3",
+    "/probes/run.py",
+    "v11-01"
+  ],
+  "started": "2026-10-28T09:49:56.523465+00:00",
+  "finished": "2026-10-28T09:49:59.683328+00:00",
+  "elapsed_seconds": 3.16,
+  "exit": 0,
+  "log": "evidence/execution/huge-id-reduce-v11-01.log",
+  "heavy_lock": true
+}

@@ -1,0 +1,9 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+roundhouse: treeshake (spinel): dropped 116 runtime defs + 164 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: /src/app/test/controllers/article_contract_test.rb:14:13: error[unsupported]: JWT not supported (spinel): `JWT.encode` is the jwt gem, which only the ruby and jruby trees ship. The reference is refused instead of being written against a missing token codec
+roundhouse: warning[unsupported]: array_column not supported (spinel): table articles: `tag_list` is a PostgreSQL array column; this target stores and reads one element where Rails reads an Array
+roundhouse: warning[unsupported]: array_column not supported (spinel): table good_job_executions: `error_backtrace` is a PostgreSQL array column; this target stores and reads one element where Rails reads an Array
+roundhouse: warning[unsupported]: array_column not supported (spinel): table good_jobs: `labels` is a PostgreSQL array column; this target stores and reads one element where Rails reads an Array
+roundhouse: 3 unconsumed initializer statement(s) (warnings) — rerun with --survey to list them
+roundhouse: 127 analyze warning(s) not shown — rerun with --allow-unsupported to list them
+roundhouse: 1 unsupported/syntax error(s), 0 type error(s) — rerun with --allow-unsupported to write the output anyway

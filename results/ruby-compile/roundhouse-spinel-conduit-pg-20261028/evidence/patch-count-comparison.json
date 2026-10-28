@@ -1,0 +1,403 @@
+{
+  "condition": "v10 final (Roundhouse 0f6fb0c7 + 11, Spinel ca9717054 + 2) vs v11 final (Roundhouse 295abf08 + 10, Spinel 3b397d7bc + 1)",
+  "roundhouse": {
+    "final_v10": {
+      "count": 11,
+      "added": 2455,
+      "removed": 213,
+      "files": 63
+    },
+    "final_v11": {
+      "count": 10,
+      "added": 2394,
+      "removed": 175,
+      "files": 56
+    }
+  },
+  "spinel": {
+    "final_v10": {
+      "count": 2,
+      "added": 11,
+      "removed": 3,
+      "files": 2
+    },
+    "final_v11": {
+      "count": 1,
+      "added": 5,
+      "removed": 0,
+      "files": 1
+    }
+  },
+  "patches": [
+    {
+      "patch": "10-api-mode-json",
+      "repo": "roundhouse",
+      "decision": "retained; response and rescue hunks retired (rubys/roundhouse#1198, #1201) and the computed errors.add message hunk retired (07a85824d for #1348, merged in #1352); JSON API mode remains",
+      "v10": {
+        "added": 152,
+        "removed": 39,
+        "files": [
+          "runtime/ruby/action_controller/base.rb",
+          "runtime/ruby/action_controller/base.rbs",
+          "runtime/ruby/action_controller/parameter_missing.rb",
+          "runtime/ruby/action_controller/parameter_missing.rbs",
+          "runtime/spinel/scaffold/main.rb",
+          "runtime/spinel/tep/net.rb",
+          "runtime/spinel/tep/request.rbs",
+          "runtime/spinel/tep/server.rb",
+          "runtime/spinel/tep/server_scheduled.rb",
+          "runtime/spinel/tep/server_threaded.rb",
+          "src/lower/controller_to_library/mod.rs",
+          "src/lower/errors_add.rs",
+          "tests/api_mode.rs"
+        ]
+      },
+      "v11": {
+        "added": 84,
+        "removed": 1,
+        "files": [
+          "runtime/spinel/scaffold/main.rb",
+          "runtime/spinel/tep/net.rb",
+          "runtime/spinel/tep/request.rbs",
+          "runtime/spinel/tep/server.rb",
+          "runtime/spinel/tep/server_scheduled.rb",
+          "runtime/spinel/tep/server_threaded.rb",
+          "src/lower/controller_to_library/mod.rs",
+          "tests/api_mode.rs"
+        ]
+      }
+    },
+    {
+      "patch": "20-raw-websocket",
+      "repo": "roundhouse",
+      "decision": "retained; applies cleanly",
+      "v10": {
+        "added": 347,
+        "removed": 16,
+        "files": [
+          "runtime/spinel/faye_websocket.rb",
+          "runtime/spinel/scaffold/boot.rb",
+          "runtime/spinel/scaffold/main.rb",
+          "runtime/spinel/tep/net.rb",
+          "runtime/spinel/tep/server_threaded.rb",
+          "runtime/spinel/tep/websocket/connection.rb",
+          "runtime/spinel/tep/websocket/driver.rb",
+          "tests/spinel_raw_websocket.rb",
+          "tests/spinel_raw_websocket.rs"
+        ]
+      },
+      "v11": {
+        "added": 347,
+        "removed": 16,
+        "files": [
+          "runtime/spinel/faye_websocket.rb",
+          "runtime/spinel/scaffold/boot.rb",
+          "runtime/spinel/scaffold/main.rb",
+          "runtime/spinel/tep/net.rb",
+          "runtime/spinel/tep/server_threaded.rb",
+          "runtime/spinel/tep/websocket/connection.rb",
+          "runtime/spinel/tep/websocket/driver.rb",
+          "tests/spinel_raw_websocket.rb",
+          "tests/spinel_raw_websocket.rs"
+        ]
+      }
+    },
+    {
+      "patch": "30-jobs-boot",
+      "repo": "roundhouse",
+      "decision": "retained; context rebase (module list); #1303 open",
+      "v10": {
+        "added": 419,
+        "removed": 1,
+        "files": [
+          "docs/guide/spinel-jobs.md",
+          "runtime/ruby/rails.rb",
+          "runtime/ruby/rails.rbs",
+          "runtime/spinel/scaffold/main.rb",
+          "src/ingest/app.rs",
+          "src/ingest/boot_hooks.rs",
+          "src/ingest/mod.rs",
+          "tests/boot_hooks.rs"
+        ]
+      },
+      "v11": {
+        "added": 419,
+        "removed": 1,
+        "files": [
+          "docs/guide/spinel-jobs.md",
+          "runtime/ruby/rails.rb",
+          "runtime/ruby/rails.rbs",
+          "runtime/spinel/scaffold/main.rb",
+          "src/ingest/app.rs",
+          "src/ingest/boot_hooks.rs",
+          "src/ingest/mod.rs",
+          "tests/boot_hooks.rs"
+        ]
+      }
+    },
+    {
+      "patch": "50-postgresql-lane",
+      "repo": "roundhouse",
+      "decision": "retained; context rebase plus three adaptations: TextArray type name, Db._unscoped_tables storage (#1218), keyless guard on #1295 save override",
+      "v10": {
+        "added": 999,
+        "removed": 22,
+        "files": [
+          "docs/guide/spinel.md",
+          "runtime/ruby/active_record/base.rb",
+          "runtime/ruby/active_record/base.rbs",
+          "runtime/spinel/db_libpq.rb",
+          "src/emit/roda.rs",
+          "src/emit/ruby.rs",
+          "src/emit/ruby/library.rs",
+          "src/emit/shared/schema_sql.rs",
+          "src/ingest/model.rs",
+          "src/ingest/schema.rs",
+          "src/ingest/structure_sql.rs",
+          "src/lib.rs",
+          "src/lower/arel/ir.rs",
+          "src/lower/arel/ruby_values.rs",
+          "src/lower/arel/visitor.rs",
+          "src/lower/group_count.rs",
+          "src/lower/model_to_library/adapter_emit/mod.rs",
+          "src/lower/model_to_library/mod.rs",
+          "src/lower/model_to_library/schema.rs",
+          "src/naming.rs",
+          "src/project.rs",
+          "src/schema.rs"
+        ]
+      },
+      "v11": {
+        "added": 1015,
+        "removed": 24,
+        "files": [
+          "docs/guide/spinel.md",
+          "runtime/ruby/active_record/base.rb",
+          "runtime/ruby/active_record/base.rbs",
+          "runtime/ruby/active_record/connection.rb",
+          "runtime/spinel/db_libpq.rb",
+          "src/emit/roda.rs",
+          "src/emit/ruby.rs",
+          "src/emit/ruby/library.rs",
+          "src/emit/shared/schema_sql.rs",
+          "src/ingest/model.rs",
+          "src/ingest/schema.rs",
+          "src/ingest/structure_sql.rs",
+          "src/lib.rs",
+          "src/lower/arel/ir.rs",
+          "src/lower/arel/ruby_values.rs",
+          "src/lower/arel/visitor.rs",
+          "src/lower/group_count.rs",
+          "src/lower/model_to_library/adapter_emit/mod.rs",
+          "src/lower/model_to_library/mod.rs",
+          "src/lower/model_to_library/schema.rs",
+          "src/naming.rs",
+          "src/project.rs",
+          "src/schema.rs"
+        ]
+      }
+    },
+    {
+      "patch": "60-rails-surface",
+      "repo": "roundhouse",
+      "decision": "retained; context rebase (schema reader); #1261 open",
+      "v10": {
+        "added": 190,
+        "removed": 32,
+        "files": [
+          "runtime/ruby/active_record/base.rb",
+          "runtime/ruby/active_record/base.rbs",
+          "src/lower/assoc_attr_key.rs",
+          "src/lower/first_or_create.rs",
+          "src/lower/model_to_library/schema.rs",
+          "src/lower/scope_chain.rs",
+          "src/project.rs",
+          "tests/rails_surface.rs"
+        ]
+      },
+      "v11": {
+        "added": 190,
+        "removed": 32,
+        "files": [
+          "runtime/ruby/active_record/base.rb",
+          "runtime/ruby/active_record/base.rbs",
+          "src/lower/assoc_attr_key.rs",
+          "src/lower/first_or_create.rs",
+          "src/lower/model_to_library/schema.rs",
+          "src/lower/scope_chain.rs",
+          "src/project.rs",
+          "tests/rails_surface.rs"
+        ]
+      }
+    },
+    {
+      "patch": "74-integer-query-range",
+      "repo": "roundhouse",
+      "decision": "retained; Hash exists? hunks retired (#1218); new runtime-relation argument context",
+      "v10": {
+        "added": 238,
+        "removed": 27,
+        "files": [
+          "runtime/ruby/active_record/base.rb",
+          "runtime/ruby/active_record/base.rbs",
+          "runtime/ruby/active_record/connection.rb",
+          "runtime/ruby/active_record/connection.rbs",
+          "runtime/ruby/active_record/relation.rb",
+          "runtime/ruby/active_record/relation.rbs",
+          "src/lower/arel/visitor.rs",
+          "src/lower/model_to_library/mod.rs",
+          "src/lower/model_to_library/schema.rs",
+          "tests/integer_query_predicates.rb",
+          "tests/integer_query_predicates.rs"
+        ]
+      },
+      "v11": {
+        "added": 236,
+        "removed": 26,
+        "files": [
+          "runtime/ruby/active_record/base.rb",
+          "runtime/ruby/active_record/base.rbs",
+          "runtime/ruby/active_record/relation.rb",
+          "runtime/ruby/active_record/relation.rbs",
+          "src/lower/arel/visitor.rs",
+          "src/lower/model_to_library/mod.rs",
+          "src/lower/model_to_library/schema.rs",
+          "tests/integer_query_predicates.rb",
+          "tests/integer_query_predicates.rs"
+        ]
+      }
+    },
+    {
+      "patch": "80-gradual-return-stabilization",
+      "repo": "roundhouse",
+      "decision": "retained; context rebase (deterministic map API)",
+      "v10": {
+        "added": 87,
+        "removed": 40,
+        "files": [
+          "src/analyze/harvest_return.rs",
+          "tests/harvest_return_oscillation.rs",
+          "tests/library_class_inferred_signatures.rs"
+        ]
+      },
+      "v11": {
+        "added": 87,
+        "removed": 40,
+        "files": [
+          "src/analyze/harvest_return.rs",
+          "tests/harvest_return_oscillation.rs",
+          "tests/library_class_inferred_signatures.rs"
+        ]
+      }
+    },
+    {
+      "patch": "82-upstream-regression-quoted-bulk-update",
+      "repo": "roundhouse",
+      "decision": "retained; applies cleanly",
+      "v10": {
+        "added": 2,
+        "removed": 4,
+        "files": [
+          "runtime/ruby/active_record/relation.rb"
+        ]
+      },
+      "v11": {
+        "added": 2,
+        "removed": 4,
+        "files": [
+          "runtime/ruby/active_record/relation.rb"
+        ]
+      }
+    },
+    {
+      "patch": "83-upstream-regression-temporal-initialize",
+      "repo": "roundhouse",
+      "decision": "retained; applies cleanly",
+      "v10": {
+        "added": 6,
+        "removed": 31,
+        "files": [
+          "src/lower/model_to_library/schema.rs"
+        ]
+      },
+      "v11": {
+        "added": 6,
+        "removed": 31,
+        "files": [
+          "src/lower/model_to_library/schema.rs"
+        ]
+      }
+    },
+    {
+      "patch": "84-upstream-regression-mixed-parameter-arm",
+      "repo": "roundhouse",
+      "decision": "retained; applies cleanly",
+      "v10": {
+        "added": 8,
+        "removed": 0,
+        "files": [
+          "src/analyze/mod.rs"
+        ]
+      },
+      "v11": {
+        "added": 8,
+        "removed": 0,
+        "files": [
+          "src/analyze/mod.rs"
+        ]
+      }
+    },
+    {
+      "patch": "85-upstream-regression-thruster-cache-enumeration",
+      "repo": "roundhouse",
+      "decision": "retired; Spinel e38e53c22 makes the handle the only String representation",
+      "v10": {
+        "added": 7,
+        "removed": 1,
+        "files": [
+          "runtime/spinel/tep/thruster_cache.rb"
+        ]
+      },
+      "v11": null
+    },
+    {
+      "patch": "91-upstream-regression-late-hash-return",
+      "repo": "spinel",
+      "decision": "retired; matz/spinel#10012 (1f21920b5)",
+      "v10": {
+        "added": 11,
+        "removed": 0,
+        "files": [
+          "src/analyze.c"
+        ]
+      },
+      "v11": null
+    },
+    {
+      "patch": "92-upstream-regression-digest-instance-new",
+      "repo": "spinel",
+      "decision": "retired whole; def new = clone.reset stays upstream and compiles after matz/spinel#10041 (d822290a6)",
+      "v10": {
+        "added": 0,
+        "removed": 3,
+        "files": [
+          "packages/openssl/openssl/digest.rb"
+        ]
+      },
+      "v11": null
+    },
+    {
+      "patch": "93-upstream-regression-speculative-slot-to-i",
+      "repo": "spinel",
+      "decision": "new; Spinel 0e7b469de (#9941) makes a speculative block-argument slot raise for a digit String past the word",
+      "v10": null,
+      "v11": {
+        "added": 5,
+        "removed": 0,
+        "files": [
+          "lib/spinel_rt.h"
+        ]
+      }
+    }
+  ]
+}

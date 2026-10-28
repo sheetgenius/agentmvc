@@ -1,0 +1,9 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+{"source": "c1-hash-each-param.rb", "matches_cruby": true, "native": {"exit": 0, "stdout": "id=9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\nuser_id=1\n", "stderr": ""}}
+{"source": "c2-hash-each-untyped.rb", "matches_cruby": true, "native": {"exit": 0, "stdout": "id=9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999 AND n=1\nid=1.5 AND n=\n", "stderr": ""}}
+{"source": "c3-proc-call.rb", "matches_cruby": false, "native": {"exit": 1, "stdout": "", "stderr": "integer overflow parsing \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\" (RangeError)\n"}}
+{"source": "c4-yield-poly.rb", "matches_cruby": true, "native": {"exit": 0, "stdout": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n1\na\n", "stderr": ""}}
+{"source": "c5-poly-receiver-each.rb", "matches_cruby": true, "native": {"exit": 0, "stdout": "id: 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\na: 1\n", "stderr": ""}}
+{"source": "c6-each-with-index.rb", "matches_cruby": true, "native": {"exit": 0, "stdout": "0 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n1 1\n", "stderr": ""}}
+{"source": "c7-all.rb", "matches_cruby": true, "native": {"exit": 0, "stdout": "true\n", "stderr": ""}}
+{"source": "c8-where-like.rb", "matches_cruby": true, "native": {"exit": 0, "stdout": "id = 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\ncomments.id = 1\n", "stderr": ""}}

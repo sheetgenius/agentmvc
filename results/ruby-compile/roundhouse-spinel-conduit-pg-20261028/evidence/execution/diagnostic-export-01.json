@@ -1,0 +1,29 @@
+{
+  "label": "diagnostic-export-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v11-export-01",
+    "-v",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261028/variant/source:/src/app:ro",
+    "-v",
+    "$SCRATCH/emitted-current:/out",
+    "-e",
+    "RH_DATABASE_ADAPTER=postgresql",
+    "conduit-v11-toolchain:0a15b9024094",
+    "roundhouse",
+    "--target",
+    "spinel",
+    "-o",
+    "/out",
+    "/src/app"
+  ],
+  "started": "2026-10-28T09:04:05.334560+00:00",
+  "finished": "2026-10-28T09:05:44.198516+00:00",
+  "elapsed_seconds": 98.864,
+  "exit": 1,
+  "log": "evidence/execution/diagnostic-export-01.log",
+  "heavy_lock": true
+}

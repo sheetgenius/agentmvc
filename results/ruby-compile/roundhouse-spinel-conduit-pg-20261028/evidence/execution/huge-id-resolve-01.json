@@ -1,0 +1,22 @@
+{
+  "label": "huge-id-resolve-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v11-resolve-01",
+    "--entrypoint",
+    "python3",
+    "conduit-v11-app:huge-id-header-trace",
+    "-c",
+    "import subprocess,sys,json\nrows=[]\nfor line in subprocess.check_output(['nm','-n','/work/app/build/bin/blog'],text=True).splitlines():\n x=line.split()\n if len(x)==3:\n  try: rows.append((int(x[0],16),x[2]))\n  except ValueError: pass\nstart=next(a for a,n in rows if n=='_start');target=start+int(sys.argv[1]);before=[(a,n) for a,n in rows if a<=target];a,n=before[-1]\nprint(json.dumps({'caller_elf_offset':hex(target),'nearest_symbol':n,'symbol_offset':hex(a),'within_function':hex(target-a)},indent=2))\n",
+    "452244"
+  ],
+  "started": "2026-10-28T09:37:48.703161+00:00",
+  "finished": "2026-10-28T09:37:49.045369+00:00",
+  "elapsed_seconds": 0.342,
+  "exit": 0,
+  "log": "evidence/execution/huge-id-resolve-01.log",
+  "heavy_lock": true
+}

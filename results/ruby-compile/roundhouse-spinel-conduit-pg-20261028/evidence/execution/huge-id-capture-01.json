@@ -1,0 +1,23 @@
+{
+  "label": "huge-id-capture-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v11-capture-01",
+    "-v",
+    "$SCRATCH/emitted-current:/work/app",
+    "-v",
+    "$SCRATCH/c-capture:/capture",
+    "conduit-v11-toolchain:0a15b9024094",
+    "python3",
+    "/capture/capture.py"
+  ],
+  "started": "2026-10-28T09:12:32.189280+00:00",
+  "finished": "2026-10-28T09:13:32.528045+00:00",
+  "elapsed_seconds": 60.335,
+  "exit": 0,
+  "log": "evidence/execution/huge-id-capture-01.log",
+  "heavy_lock": true
+}

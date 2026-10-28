@@ -1,0 +1,7388 @@
+{
+ "tree": "$SCRATCH/native-spinel",
+ "head": "3b397d7bc96c2324190c0f2f857e1973e24dca84",
+ "local_diff": "lib/spinel_rt.h | 5 +++++\n 1 file changed, 5 insertions(+)",
+ "tests": 1844,
+ "counts": {
+  "pass": 1835,
+  "fail": 9
+ },
+ "rows": {
+  "alias_deconstruct_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "and_kept_left_time_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "anon_block_capture_cells.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "anon_block_capture_cells_variants.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "anon_block_forward.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "anon_block_forward_capture.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "anon_block_forward_from_proc_form.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "anon_block_forward_nested_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "anon_block_forward_shared_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "anon_block_forward_yield_helper.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_aset_boxed_index_widens.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_bsearch_forwarded_and_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_bsearch_without_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_combination_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_concat_boxed_into_nilable_number.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_delete_block_float_past_int.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_fetch_block_next.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_fetch_block_value_setup.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_fetch_nil_default_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_fetch_values_block_literals.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_fill_block_form.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_fill_block_poly_value_setup.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_fill_boxed_numeric_offsets.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_fill_boxed_offsets.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_fill_boxed_range_poly_recv.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_fill_forward_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_flat_map_scalar_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_index_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_index_blockless_enum.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_lazy_each_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_minmax_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_new_block_argument.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_new_block_discarded_if.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_new_block_fresh_binding.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_new_block_nested_int_table.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_new_block_next.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_new_block_next_ptr.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_new_block_strbuf_local.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_new_forward_no_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_nil_elem_through_splatted_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_op_assign_reads_slot_first.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_ops_boxed_to_ary.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_predicate_no_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_predicate_no_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_product_boxed_operand.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_slice_unused_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_subclass_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_subclass_boxed_convert.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_subclass_boxed_methods.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_subclass_boxed_own.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_subclass_super_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_subclass_super_fetch_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_sum_block_seed_other_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_sum_user_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_to_h_boxed_element_errors.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_to_h_sort_bang_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "array_to_h_user_class_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "arysub_read_in_own_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "at_exit_returns_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "attr_op_assign_boxed_operand_arm.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "attr_or_write_slot_kinds.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "attr_or_write_unset_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "attr_reader_level_through_boxed_element.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "attr_write_boxed_dispatch.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "attr_write_boxed_recv_to_s.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bang_boxed_local_answer_kept.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bigint_boxed_introspection.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bigint_boxed_ord.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bigint_eq_boxed_result.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bigint_local_in_int_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bigint_slot_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bignum_boxed_division.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bignum_query_to_i.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bignum_step_blockless_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bignum_to_i_slot_width.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bigrational_to_i_out_of_range.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "binary_strip_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "blk_param_stored_proc_per_iteration.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block2.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_alias_rebind_then_write.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_conditional_proc_string_reach.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_constant_callable.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_eval_order.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_one_of_two_lambdas.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_one_of_two_lambdas_begin.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_one_of_two_lambdas_case.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_one_of_two_lambdas_case_in.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_one_of_two_lambdas_logic.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_one_of_two_lambdas_rescue_modifier.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_paren_sequence_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_poly_symbol.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_poly_symbol_begin.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_poly_symbol_case.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_poly_symbol_case_in.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_poly_symbol_rescue_modifier.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_poly_symbol_unless.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_poly_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_arg_poly_value_type_error.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_autosplat.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_autosplat_collectors.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_autosplat_keywords_posts.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_autosplat_minmax_group.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_autosplat_scalar_element.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_body_rescue.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_call_arity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_call_multi_arg_first.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_call_multi_arg_pack.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_escaped_param_types.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_absent_optional.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_anonymous_poly_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_anonymous_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_beside_keeper.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_block_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_hash_iterators.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_intermediate_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_map.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_mixed_call_forms.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_named_into_anon.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_named_into_anon_arms.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_nilcheck.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_poly.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_poly_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_proc_param_type.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_recursive_cmethod.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_recv_typed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_self_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_to_overridden_yielder.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_two_level.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_value_callable.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forward_value_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forwarded_into_poly_capture.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_forwarded_into_recursive_yielder.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_given_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_given_blockless_tail_yield_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_given_else_arm_overflow_modes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_given_guard_nested_blockless.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_given_in_proc_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_given_inline_call_site.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_given_tail_typed_per_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_given_with_stored_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_index_shared_string_nil_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_kept_through_or.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_keyword_binding_gaps.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_keyword_param_shadow.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_kwrest_double_splat_forward.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_kwrest_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_lifted_untyped_recv.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_local_cell_in_nested_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_local_cell_own_frame.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_local_fresh_cell.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_local_fresh_in_yield_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_local_fresh_per_iteration.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_local_shadow.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_local_shadows_later_outer_local.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_local_widens_map_result.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_next_nil_typed_map.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_next_value_join.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_nil_fill.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_on_user_call_receiver_once.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_optional_before_required.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_optional_unused.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_or_fallback_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_call_block_given.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_call_unresolved_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_call_value_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_call_without_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_captured_by_lifted_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_cell_published_at_body_top.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_destructure.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_distribution.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_forwarded_yield_union.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_from_boxed_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_from_every_block_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_guard_folds.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_into_thread.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_nullable_float.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_nullable_int.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_nullable_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_read_only_allowed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_reassigned_other_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_rebound_string_mutation.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_safe_call_without_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_shadow.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_shadow_destructured.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_sibling_collision.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_table_rows.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_trailing_comma.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_types_binding_plan.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_walk_name_collision.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_widen_multi_struct.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_param_written_bp_suffix.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_presence_decided_at_runtime.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_proc_binding_plan.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_rest_only_builtin_iter.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_return_in_spliced_iterator_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_return_through_inlined_ensure.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_return_through_poly_forward.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_shadows_non_required_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_splat_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_splat_param_iterators.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_splat_param_predicates.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_tail_boolean_assignment.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_tail_empty_literal.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_tail_prelude_inside.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_tail_rescue_modifier.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_value_cond_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_yield_keyword_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "block_yield_optional_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "blockless_cycle_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "blockless_enum_to_a_ignores_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "blockless_enumerable_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "blockless_take_drop_while_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bool_spaceship_boxed_operand.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bound_method_oint_boxed_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "bound_method_proc_loop_param_captured.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_arg_int_parameter.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_array_block_mutator_live.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_array_fetch_index.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_array_index_symbol.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_array_methods.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_array_named_set_ops.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_array_source_logic_arms.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_bignum_integer_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_bignum_upto.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_block_call_beside_class_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_block_sub_user_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_builtin_int_arg_strict.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_callable_call_with_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_callable_call_with_block_beside_user_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_chr_bignum_range.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_chr_pack_unpack1_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_class_is_a_module.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_class_name_beside_instance_name.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_class_name_survives_gc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_class_names.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_class_own_singleton_accessor_first.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_class_singleton_accessor.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_class_try_convert.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_comparable_builtin_default.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_comparable_fallback.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_comparable_order.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_complex_arg_rect.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_complex_finite.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_container_read_at.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_conv_nomethod_wording.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_count_sum_no_enum_raise.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_count_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_cycle_count.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_dig_receiver_checked.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_dig_splat_keys.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_dir_inspect.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_dir_io_names.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_dispatch_opaque_named_method_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_dispatch_shared_private_helper_sibling_widen.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_each_line_args.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_each_line_beside_program_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_each_line_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_each_with_index_items.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_encoding_symbol_name.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_endless_float_step.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_endless_range_step.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_enumerable_entries.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_enumerator_each_answer.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_enumerator_predicates.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_enumerator_sum.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_eq_user_answer.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_file_controls.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_file_gets_args.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_file_printf.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_file_write_args.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_flatten_depth.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_float_array_empty_sum.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_float_integer_argument_nonfinite.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_float_next_prev.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_float_numerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_handle_face_args.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_hash_each_rest_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_hash_face.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_hash_foreign_key_default.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_hash_local_walk_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_hash_methods.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_hash_replace_default.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_index_argument_handle.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_index_elements_passed_strict.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_index_nil_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_index_or_write_no_aref.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_index_write_rooted.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_io_to_i.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_io_write_poly_nul.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_kernel_string_to_str.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_kill_user_and_thread.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_lines_args.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_lines_separator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_local_container_unaffected.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_map_bang_dispatch_write_barrier.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_map_bang_write_barrier.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_match_receiver_checked.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_match_user_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_matchdata_readers.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_matchdata_string.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_merge_forwarded_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_merge_forwarded_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_merge_receiver_checked.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_module_class_name.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_native_setter_beside_user_writer.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_native_setter_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_new_non_class_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_nil_int_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_nil_into_typed_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_nil_string_identity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_nonfinite_indices.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_numeric_polar.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_object_inspect_returns_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_openstruct_to_s.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_operand_answers.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_pair_enum_sym_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_pair_sym_proc_in_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_param_value_into_typed_hash_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_pattern_bad_arg_wording.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_pow_assign_caller_range_str_splice.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_pow_integer_only.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_pow_receiver_checked.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_pread_pwrite_operand_order.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_predicate_mutation.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_proc_curry_count.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_proc_curry_count_rooted.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_proc_parameters_lambda.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_push_statement.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_quantifier_pattern.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_random_methods.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_range_eq_float_range.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_range_eql.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_range_iterators.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_range_percent.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_range_step.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_range_user_iterator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_rational_abs2.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_rational_coerce.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_rational_value_surface.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_reader_alias_after_dup.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_reader_named_like_time_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_reader_nil_arm_alias.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_reader_visibility.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_receiver_aliases.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_receiver_enumerable_surface.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_receiver_nil_argument_converted_after.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_recv_block_param_shapes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_recv_class_set_binding.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_regexp_named_capture_index.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_regexp_pattern_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_reopen_self_call_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_reopened_spaceship.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_replace_receiver_and_source_checked.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_replace_user_class_owns.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_respond_to_override_answers.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_respond_to_size_values_at.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_respond_to_with_override.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_rev_chain.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_round_float_digits_beside_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_safe_nav_dispatch_mutator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_scan_capture_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_self_rooted.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_set_join.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_setter_nilable_number.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_setter_scalar_kinds.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_slice_receiver_checked.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_splat_builtin_entry.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_split_map_block_shares_element.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_split_regexp_limit.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_start_with_regexp.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_stat_fields.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_stat_predicates.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_stat_time_readers.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_store_shared_string_unrelated_struct.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_strbuf_comparable.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_strbuf_string_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_stream_nullary_arity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_strict_runtime.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_string_dump.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_string_index_op_assign.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_string_index_symbol.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_string_key_handle.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_string_methods.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_string_regexp_index.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_string_to_i_cruby.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_string_upto.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_struct_aref.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_struct_aref_other_classes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_struct_aset_hash_box.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_struct_aset_member.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_struct_deconstruct_keys.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_struct_deconstruct_keys_shared_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_struct_hash_agrees.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_struct_kw_new.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_struct_names.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_struct_size.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_struct_to_h_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_sym_proc_user_map.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_symbol_casecmp.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_symbol_encoding.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_symbol_id2name.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_symbol_id2name_user.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_symbol_match_op.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_symbol_name_beside_user_name.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_symbol_string_predicates.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_systemexit_status.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_time_asctime_to_a.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_time_deconstruct_keys.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_time_round_ctime.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_tms_times.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_to_a_reverse_each.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_to_h_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_to_i_nomethod.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_to_s_base_from_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_transform_poly_answer.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_user_exception_accessors.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_value_into_int_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_values_at_hoisted_index.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_walk_own_method_arity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_walk_step_binds.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_writer_arm_nilable_int_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_writer_dispatch_forwarding_setter.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_writer_regexp_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_writer_subclass_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_writer_void_call_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "boxed_writes_into_typed_param_containers.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "break_from_block_in_poly_dispatch.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "break_from_block_passed_as_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "break_scope_return_from_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "builtin_block_beside_user_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "builtin_forwarded_yield_proc_form.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "builtin_iter_array_yield_spread.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "builtin_iter_block_keyword_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "builtin_iter_block_param_shapes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "builtin_iter_block_stragglers.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "builtin_iter_scalar_yield_shapes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "builtin_ivar_boxed_reflection.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "builtin_method_block_pass.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "builtin_method_block_strict.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "builtin_reopen_alias_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "builtin_reopen_poly_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "by_key_block_shapes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "byref_gather_lead_block_super.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "byref_param_beside_block_forward.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "byref_param_captured_by_lifted_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "call_plan_native_block_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "call_plan_reader_block_override.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "captured_block_call_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "captured_block_forward_inlined_in_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "case_equality_boxed_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "case_in_binding_inlined_block_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "case_local_in_lambda.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "case_when_boxed_module_eq.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "case_when_boxed_pattern.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "case_when_lambda_predicate.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "case_when_proc_param_type.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "case_when_splat_boxed_subject.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "casecmp_boxed_recv_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "chained_write_literal_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "chr_boxed_nil_recv.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "chunk_source_block_binding.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_body_new_const_path_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_eval_block_class_ivar.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_eval_own_method_block_ivar.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_new_block_local.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_new_block_named.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_new_rest_block_gc_root.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_new_without_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_of_object_new_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_receiver_block_after_struct_widen.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_receiver_kept_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_reflection_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_cmethod_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_new_block_param_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_new_block_param_literal.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_new_block_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_new_block_params_optional.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_new_in_proc_body.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_new_kw_block_param_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_new_proc_into_yielding_init.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_new_yield_keyword_fit.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_new_yield_type_kw_arm.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_new_yielding_init.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_new_yielding_init_variants.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_or_write_slots.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_rest_block_cmethod.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_yielding_cmethod_no_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "class_value_yielding_cmethod_splat.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cls_fact_instance_exec_block_ivar.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cmethod_bare_new_beside_yielding_instance_new.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cmethod_block_self_proc_form.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cmethod_inline_yield_sibling_self_cls.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cmethod_lambda_self_subclass.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cmethod_self_call_nullable_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cmethod_yield_beside_instance_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cmethod_yield_method_object_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "combination_blockless_boxed_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "combination_boxed_count.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "combination_chain_in_destructured_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "combinations_yield_ivar.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "comparable_eq_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "comparable_no_block_cmp.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "comparator_block_arity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "complex_boxed_component.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "complex_boxed_float_operand.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "complex_coerce_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "complex_conversions_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "complex_div_boxed_divisor.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "complex_rational_arg_typed_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "concat_boxed_source.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cond_and_or_unboxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "connect_nonblock_sockaddr_1arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "const_init_block_param_scan.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "const_recv_yield_inline.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "container_read_blockless_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "conv_bridge_boxed_answer.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "count_block_poly_pred.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ctor_forward_block_arms.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ctor_forward_block_bare_new.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ctor_forward_block_self_new.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ctor_yield_kwrest.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "curry_arity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "curry_block_and_zero_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "curry_compose.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "curry_constant_lambda.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "curry_in_poly_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "curry_past_16_args.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "curry_settle_string_object_args.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "curry_through_parameter.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "curry_yield_case_eq.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "custom_enumerable_bare_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cvar_write_boxed_value_typed_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cycle_block_value_position.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cycle_boxed_receiver_endless.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "cycle_boxed_receiver_reader_owner.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "default_arg_find_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "default_reading_param_block_locals.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "define_method_alias_block_next.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "define_method_alias_string_block_next.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "define_method_each_block_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "define_method_proc_body.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "define_method_rest_block_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "define_method_unrolled_name_block_next.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "define_method_user_defined_block_next.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "defined_yield_no_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dir_block_forms_answer_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dir_chdir_forwarded_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dir_mkdir_mode_to_int_allocates.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dispatch_block_param_arms.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dispatch_result_boxed_after_backstop.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dispatched_block_call_element.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dispatched_block_call_override.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dispatched_forward_block_element.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dispatched_override_calls_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dispatched_yield_element.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dispatched_yield_override.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dup_in_proc_declares_pool.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dup_in_proc_subclass.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "dynamic_send_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "each_codepoint_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "each_codepoint_with_index_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "each_cons_block_destructure.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "each_index_forwarded_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "each_pair_boxed_receiver_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "each_row_boxed_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "each_window_boxed_receiver_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "each_with_index_map_untyped_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "each_with_index_sum_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "each_with_index_to_a_ignores_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "empty_array_dup_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "empty_array_tap_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "empty_array_value_write_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "empty_block_body_iterators.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "empty_block_param_shadow.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "empty_constructor_rebinds_scalar_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "empty_container_rebinds_scalar_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "empty_hash_block_result_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "empty_hash_blockless_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "empty_hash_yield_wrapper_seed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "empty_literal_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "empty_literal_unused_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ensure_in_proc_body_keeps_loop_ensure.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ensure_retval_nil_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ensure_retval_object_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enum_chain_forwarded_splat_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enum_chain_pair_block_rest.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enum_each_block_reads_outer.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enum_each_block_reads_outer_bsearch.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enum_each_with_object_memo_beside_open_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enum_for_boxed_builtin_only.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enum_for_boxed_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enum_for_guard_block_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enum_map_yielded_values.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enum_mixed_arity_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enum_reader_blocks.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enum_to_enum_args_block_view.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerable_multi_value_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerable_never_yields.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerable_reduce_proc_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_bare_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_block_break.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_block_driving.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_block_returns_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_blockless_regroup.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_boxed_endless_walk.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_each_block_result.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_each_blockless_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_endless_boxed_reads.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_new_multi_value_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_new_yielder_shadowed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_product_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_reyield_packed_item.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_symbol_proc_step_arity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_yield_no_values.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_yielder_forms.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "enumerator_yielder_yield_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "env_delete_block_values.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "env_fetch_block_result.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "env_store_boxed_result.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "env_update_block_hash_kinds.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "eq_concrete_recv_boxed_arg_user_eq.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "equal_p_boxed_argument.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "escaping_block_captures_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "escaping_proc_captures_value_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "eval_block_wide_body.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "eval_with_method_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ewi_map_next_boxed_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "exc_message_identity_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "exception_exception_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "exception_subclass_result_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "expr_retry_equal_curry_methodobj.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "extend_inherited_module_and_yield_chain.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "extend_module_block_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fallback_block_argument.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fallback_block_gets_the_missing_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fetch_block_ends_in_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ffi_func_boxed_numeric_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ffi_str_arg_boxed_strbuf.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ffi_struct_boxed_scalar_members.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_block_next_expression_in_call_operand.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_block_next_in_call_operand.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_blocking.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_blocks_in_thread.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_boxed_methods.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_ensure_in_proc_return_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_nested_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_nested_block_capture.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_new_block_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_new_block_param_forward.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_thread_enumerator_block_next.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_thread_reopening_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fiber_thread_writes_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "file_open_block_next.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "file_open_param_captured_by_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "find_block_poly_array.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "float_bignum_or_write_nil_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "float_nan_payload_slots.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "float_past_word_shared_block_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "float_range_boxed_methods.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "float_range_endpoint_boxed_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "float_range_index_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "float_step_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "float_to_i_inline.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "float_to_int_boundary.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "float_to_int_out_of_range.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "flock_nonblock_held.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fold_memo_to_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "for_over_boxed_collection.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "format_raise_dollarbang_symproc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forward_all_block_reaches_callee.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forward_args_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forward_block_boxed_builtin_blockless.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forward_block_to_yielding.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forward_dots_into_instance_exec.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwardable_delegates_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_block_blockless_iter.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_block_builtin_blockless_site.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_block_ivar.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_block_ivar_write.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_block_ivar_write_variants.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_block_same_name_callee.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_block_stored.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_block_stored_new_super.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_block_tail_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_block_to_iterator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_block_unused_builtin_read.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_block_value_differs_by_site.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_nil_guarded_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarded_proc_to_poly_iterator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarding_beside_yielding_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarding_defaults_and_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "forwarding_leading_args_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "frozen_boxed_hash_delete_clear_store.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "fwd_args_into_proc_call_same_name.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "gc_minor_byref_lent_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "gc_minor_thread_local_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "gc_root_elided_array_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "gc_root_frame_slots.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "gc_root_volatile_string_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "gc_root_volatile_string_slot_plain.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "global_from_boxed_ivar.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "global_nil_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "global_written_in_block_or_begin.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "grapheme_on_boxed_string.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "grep_proc_pattern.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "gsub_bang_blockless_enum.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "gsub_block_regexp_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "gsub_block_subject_root.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "gsub_forwarded_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "gsub_hash_default_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "gsub_sub_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "handle_shape_k12_masgn_poly_into_index.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_block_methods_variants.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_block_valued_next.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_blockless_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_boxed_with_nullable_user_hash.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_default_block_string_mutated.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_default_block_valued_next.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_default_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_default_proc_assign.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_default_proc_assign_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_default_proc_gc_scan.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_default_proc_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_default_proc_lambda_body.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_default_proc_lambda_next.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_delete_block_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_each_pair_boxed_kinds.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_empty_block_methods.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_enum_boxed_cmethod_namesake.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_eq_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_fetch_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_fetch_block_int_min.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_fetch_block_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_fetch_block_key_type.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_fetch_block_nil_int_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_fetch_forwarded_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_fetch_values_delete_block_subset.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_iter_forwarded_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_iterator_boxed_callable.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_key_no_string_block_param_store.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_map_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_bang_boxed_argument.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_block_as_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_block_rest.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_block_rest_general.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_block_rooted.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_block_rooted_stress.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_block_value_widens_user_merge.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_boxed_argument.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_default_proc_own_hash.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_runtime_proc_beside_user_merge.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_several_block_break.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_with_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_merge_with_block_defaults.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_new_block_argument.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_new_block_container.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_new_block_frame.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_new_block_key_type.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_new_block_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_new_default_block_assign.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_new_default_or_write_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_new_default_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_nil_block_body.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_param_boxed_arg_by_reference.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_param_boxed_arg_op_write.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_param_widen_from_callee_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_reopen_block_fold_names.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_replace_empty_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_select_reject_integer_block_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_solo_block_pair.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_store_boxed_chain.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_store_boxed_globals.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_store_boxed_origins.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_store_boxed_returns.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_store_boxed_unbounded.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_subclass_class_new_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_subclass_merge_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_sum_no_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_tail_inline_result_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_to_h_block_one_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_to_proc_foreign_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_transform_values_boxed_next.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_update_block_value_widens.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_update_forwarded_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_update_forwarded_proc_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_update_widens_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_value_block_poly_setter_class_fact.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hash_values_at_appending_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "hoisted_handle_arg_into_boxed_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ie_forwarded_block_bare_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "implicit_self_block_override_captures.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "include_enumerable_block_each.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "index_block_find_index.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "index_enum_min_max_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "index_enum_sort_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "index_op_assign_reads_slot_first.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "index_opassign_in_thread_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inherited_method_kwarg_block_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inherited_self_boxed_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "initialize_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "initialize_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inject_block_fewer_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inject_forwarded_own_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inject_symbol_to_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_block_operands_not_held.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_forward_proc_value_under_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_nested_yield_ivar_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_struct_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_yield_arity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_yield_deep_nested_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_yield_kwsplat_same_name.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_yield_method_with_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_yield_nested_self_ivar.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_yield_rest_keyword_hash.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_yield_return_side_effect.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_yield_splat_args.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_yield_splat_operand_inline.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_yield_splat_shapes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_yield_string_param_alias.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inline_yield_value_type_result.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inlined_yield_block_param_type.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inlined_yield_self_locals.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inlined_yielder_return_in_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "inspect_subclass_in_parent_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_eval_bare_call_block_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_eval_block_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_eval_class_body_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_eval_forwarded_block_self_calls.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_eval_forwarded_dsl_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_eval_nested_block_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_eval_proc_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_eval_yielding_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_and_to_proc_keywords.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_block_params_builtin_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_forwarded_block_diverging_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_forwarded_block_ivars.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_forwarded_block_tail_wrapped.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_new_block_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_non_proc_block_arg_once.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_non_proc_block_arg_type_error.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_proc_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_proc_param_builtin_recv.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_stored_block_cmethod_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_stored_block_private_cmethod.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_to_proc_object_builtin_recv.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "instance_exec_untraced_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "int_hash_nil_or_boxed_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "int_loop_to_int64_ends.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "int_min_nullable_slot_holds.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "int_named_division_boxed_divisor.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "int_nil_boxing_min_max_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "int_slot_rational_complex_empty.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "int_step_blockless_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_buffer_set_value_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_copy_stream_boxed_path.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_each_block_param_typed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_line_read_boxed_splat.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_negative_length_nonblock_sysread.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_outbuf_eof_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_poly_read_nonblock.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_popen_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_puts_nul_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_read_nonblock_buffer.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_reopen_to_io.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_select_to_io.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_select_user_to_io.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "io_wait_eagain_ewouldblock_same.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "is_a_builtin_module_of_boxed_object.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "is_a_cond_nil_object_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "is_a_nil_object_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "issue_3290_method_curry.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "issue_3296_aliased_reader_symbol_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "issue_3309_lambda_param_reassign.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "issue_3310_lambda_loop_tail.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "issue_3315_int_enum_with_index_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "issue_3329_yield_local_poly_box.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "issue_3330_unresolved_at_typed_slots.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "issue_3337_yield_local_tail_multistmt.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "iter_block_autosplat.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "iter_block_string_share.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "iter_boxed_param_nil_elem.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "iter_splat_args_blockless.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ivar_array_pushed_through_boxed_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ivar_array_slot_inherited.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ivar_empty_array_filled_by_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ivar_nil_guard_reads_slot_not_hold.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ivar_orwrite_raiseall_typed_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ivar_recv_before_boxed_index_hash_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ivar_recv_before_boxed_index_user_brackets.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ivar_set_shared_string_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ivar_table_boxed_row_store.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "join_separator_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "json_to_json_boxed_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "kept_block_index_write_non_string.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "kept_block_param_not_hash.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "keyword_hash_leading_optional_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "kw_splat_boxed_to_hash.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "kwsplat_yield_empty_positional.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "kwsplat_yield_inline_bind.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_arrow_string_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_bare_break_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_break_pops_exception_frames.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_call_arg_into_ivar_array.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_capturing_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_constructs_value_object.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_escapes_through_constant.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_explicit_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_float_captures_with_float_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_inference_chain.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_keyword_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_kwarg_default_io.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_local_beside_later_outer_local.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_named_param_type.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_nested_emit.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_nested_numbered_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_param_written_int.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_returned_from_lambda.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lambda_strict_arity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lazy_blockless_take_drop.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lazy_boxed_source.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lazy_method_block_local.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lazy_stage_block_param_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lifted_block_class_method_self_cls.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lifted_block_nested_capture.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lifted_block_nonlocal_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lifted_block_typed_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "literal_int_rows_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "local_op_assign_reads_slot_first.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "loop_yield_root.rb": {
+   "verdict": "fail",
+   "detail": ""
+  },
+  "lowered_block_given.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lowered_yield_block_value_types.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lowered_yield_lends_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lowered_yield_never_given_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "lv_widen_from_callee_arg_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "map_block_string_new_join.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "map_untyped_block_result.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "marshal_boxed_shared_string.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "masgn_boxed_attr_nil_receiver_calls.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "masgn_boxed_attr_receivers_once.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "masgn_boxed_attr_struct_order.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "masgn_boxed_ivar_into_rbs_array.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "masgn_boxed_ivar_slot_mismatch.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "masgn_boxed_ivar_targets.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "masgn_boxed_ivar_typed_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "masgn_nested_slot_targets.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "masgn_rest_into_poly_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "masgn_setter_boxed_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "massign_captured_proc_cell.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "massign_in_inlined_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "massign_leading_splat_boxed_scalar.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "massign_proc_cell_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "match_block_builds_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "match_globals_in_blocks.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "match_on_boxed_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "math_boxed_bignum_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "members_alias_reader_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "members_class_method_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "members_reader_boxed_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "merge_block_value_setup_per_pair.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "merge_boxed_source_through_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "method_boxed_yield_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "method_call_aliases_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "method_call_block_captures_outer.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "method_case_eq_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "method_obj_of_toplevel_yielding_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "method_obj_of_yielding_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "method_to_proc_curry_stored.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "method_to_proc_keywords.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "method_to_proc_spread_past_16.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "module_body_ivar_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "module_eval_block_on_own_module.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "module_nested_reopen_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "module_new_without_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "module_scoped_class_method_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "multi_arg_lambda.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "multi_arg_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "multi_yield_map_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "mutex_boxed_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "mutex_boxed_synchronize_yield_values.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "mutex_synchronize_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "namespaced_exception_boxed_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "native_boxed_scalar_args.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nested_block_captures_outer_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nested_proc_arg_channel.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nested_table_boxed_by_reference.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nested_yield_with_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "new_block_arg_yielding_initialize.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "new_block_forwarding.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "new_forwarded_block_stored.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "next_in_proc_and_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "next_in_run_once_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "next_in_then_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "next_value_types_a_yield_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nil_block_argument.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nil_hash_param_boxed_as_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nil_integer_slot_operators.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nil_scalar_slot_widen.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nil_string_slot_reads.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nil_valued_block_call_return_string.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nil_write_boxes_bool_symbol_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nil_write_boxes_range_time_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nilable_int_slot_boxed_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "no_value_call_typed_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nomethod_scalar_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nonblock_boxed_receiver_rooted.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nonblock_exception_keyword.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nonblock_io_no_args_on_mixed_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nonblock_switch_operand_order.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nonlocal_return_in_block_of_non_yielding_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "nullable_block_param_nil_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "numbered_param_per_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "numeric_i_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "numeric_iter_boxed_recv_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "obj_array_nested_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "obj_class_cmethod_descendant_yields.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "obj_class_poly_yielding_cmethod.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "object_id_boxed_immediate.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "object_local_boxed_write.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "object_lowered_yield_block_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "object_reopen_yield_no_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "operand_order_builder_chain_blocks.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "or_write_method_reader_boxed_attr.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "ostruct_nil_slot_inspect.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "override_rest_slot_keeps_array.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "param_ptr_from_callee_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "paren_nil_string_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "partition_boxed_predicate.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "pattern_bind_in_lifted_block_cell.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_aref_class_method_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_aref_proc_and_class_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_array_boxed_index.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_array_fill_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_array_plus_assign_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_array_product_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_array_rindex_combination_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_array_sum_block_break.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_block_call_user_candidate_const.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_block_call_user_class_own.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_block_dispatch_builtin_default.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_block_dispatch_many_classes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_block_mutator_beside_user.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_block_params_beside_user_iter.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_block_stmt_builtin_beside_user.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_blockless_each.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_blockless_enum_no_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_blockless_map_enum.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_builtin_arm_block_user_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_call_block_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_count_block_arg_hoist.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_dispatch_args_forwarded_block_proc_form.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_dispatch_block_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_dispatch_block_capture.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_dispatch_blockless_blk_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_dispatch_boxed_reader_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_dispatch_comparator_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_dispatch_default_blockless_group_by.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_dispatch_proc_form_reopened.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_dispatch_proc_form_untyped_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_dispatch_yield_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_dispatch_yielding_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_each_block_ivar_string_store.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_each_block_pass_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_each_cons_forwarded_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_each_dispatch_unreached_yielder.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_each_line_boxed_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_each_mutating_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_each_with_index_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_enumerable_includer_block_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_fetch_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_fetch_block_key_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_fetch_block_param_after_read.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_fetch_keyword_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_fill_boxed_recv_in_place.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_fill_boxed_recv_value_gc_root.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_filter_bang_stmt_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_find_index_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_forwarded_block_builtin_read.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_gsub_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_gsub_boxed_replacement.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_index_boxed_range.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_index_not_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_inherited_yield_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_ivar_fetch_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_map_bang_array_arm_block_body.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_map_empty_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_merge_block_beside_user_merge.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_mutator_block_break.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_mutator_stmt_beside_blockless_user.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_pack_forwarded_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_pred_block_pass.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_proc_aref.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_proc_face.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_proc_form_super.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_proc_form_super_mid_override.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_reader_alias_named_like_proc_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_reader_handle_into_boxed_hash.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_reader_named_like_proc_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_reader_type_differs_from_proc_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_recv_block_dispatch_blk_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_recv_block_dispatch_no_candidate.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_recv_bytes_boxed_local.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_recv_to_i_user.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_relop_boxed_in_builtin_arm.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_rhs_into_poly_array_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_select_bang_forwarded_block_enum.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_self_setter_value_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_setter_optional_block_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_slot_op_assign.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_slot_typed_array_read.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_splice_typed_recv_boxed_src.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_step_blockless.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_str_hash_keys_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_string_at_path_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_string_scan_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_sub_boxed_to_s_replacement.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_times_block_param_typed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_to_enum_each_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_to_i_base.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_to_i_base_beside_class_to_i.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_to_i_base_user_to_i.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_to_i_via_str_poly_hash.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_to_s_into_string_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_yield_method_no_block_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "poly_zero_arg_yield_pf.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "polypoly_hash_assoc_to_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "predicate_block_next_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "predicate_block_p_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "predicate_block_short_circuit.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "predicates_on_boxed_array.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "private_method_boxed_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "private_yielding_method_statement.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_anon_dot_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_anonymous_rest.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_arg_channel_released.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_arg_container_widen.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_arg_into_spliced_yielder_cell.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_arg_object.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_args_published_at_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_arity_keywords.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_arity_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_arity_opt_rest.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_as_block_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_block_param_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_body_block_fresh_binding.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_body_inline_keeps_caller_renames.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_body_local_across_rescue.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_boxed_param_hash_int_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_boxed_struct_arg_root.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_call_array_autosplat.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_call_blk_gc_root.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_call_block_scoped_to_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_call_empty_literal_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_call_kw_and_lead_splat.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_call_local_widens.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_call_splat.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_call_value_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_call_wide_args.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_called_from_two_scopes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_capture_enclosing_lambda.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_capture_inline_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_capture_nested_frame.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_case_eq.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_case_eq_bare_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_case_eq_param_type.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_case_eq_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_cell_capture_marked.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_cell_opassign_returns_new_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_closure.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_compose_arity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_compose_container.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_compose_curry_forward.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_compose_gc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_compose_intermediate_rooted.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_compose_intermediate_type.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_compose_method_operand.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_concurrent_call_poly_ret.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_curry.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_curry_arity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_curry_arity_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_curry_reflection.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_default_collection_literal.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_default_reads_capture.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_destructured_parameters.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_empty_kwsplat_positional_hash.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_escaped_arg_types.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_float_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_float_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_form_block_given_in_lifted_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_form_fiber_body_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_form_kwrest_forward.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_form_rest_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_form_uncalled_source.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_form_yield_block_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_form_yield_boxed_kept.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_form_yield_boxed_pointer.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_form_yield_boxed_regex.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_forward_arity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_from_container_literal.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_in_boxed_self_reopen.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_introspection.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_iterator_ends_value_begin.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_keyword_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_keyword_with_kwrest.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_lambda_array_of_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_literal_join_arm_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_literal_through_poly_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_literal_two_writes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_method_wave10.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_name_copy_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_next_in_value_begin.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_next_runs_ensure.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_next_value_nil_tail.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_nokw_param_rejects_keywords.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_nonlocal_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_numbered_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_optional_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_param_container_input.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_param_default_and_kwarg_escape.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_param_push_out_of_sight.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_param_returns_of_every_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_param_value_struct_types.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_parameters_lambda_kw.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_parameters_reassigned_name.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_parameters_source_names.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_pattern_from_container.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_poly_call_boxed_result.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_poly_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_poly_slot_object_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_poly_slot_object_arg_user_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_poly_value_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_positional_hash_not_keywords.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_positional_hash_user_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_post_param_typed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_range_time_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_reads_attr_reader.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_reads_outer_two_frames_up.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_rebound_local_arg_order.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_recursive.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_regexp_arg_unrooted.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_rest_post_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_ret_rederived_after_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_return_catch_no_leak.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_return_ensure_raise.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_return_escape_localjump.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_return_fiber_isolation.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_return_in_yield_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_return_lowered_yield_poly_each.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_return_nested_ensure.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_return_nested_lifted_blocks.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_return_rescue_modifier_escape.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_return_scopes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_return_value_struct.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_returns_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_safe_nav_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_source_location.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_source_location_var.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_tms_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_to_proc_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_universal_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_unknown_tail_raise.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_writes_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "proc_yield_untyped_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_clock_constants.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_clock_gettime_unit.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_clock_unit_validation.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_cputime_clocks.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_daemon.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_detach.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_detach_pid.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_last_status.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_pid.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_spawn.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_spawn_command_line.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_spawn_env_hash.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_spawn_exec_failure_reaped.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_spawn_failure_names_path.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_spawn_file_redirect.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_spawn_group_redirect.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_spawn_splat_and_pair.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_status_equality.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_status_last_child.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "process_waitpid2_sets_status.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "product_block_splat.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "promote_array_slot_rederive.rb": {
+   "verdict": "fail",
+   "detail": "integer overflow in * (RangeError)\n"
+  },
+  "promote_bigrational_to_i.rb": {
+   "verdict": "fail",
+   "detail": "bignum too big to convert into 'long' (RangeError)\n"
+  },
+  "promote_block_loop_bigint.rb": {
+   "verdict": "fail",
+   "detail": "integer overflow in * (RangeError)\n"
+  },
+  "promote_block_param_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "promote_boxed_index_header_cache.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "promote_float_to_int.rb": {
+   "verdict": "fail",
+   "detail": "float out of Integer range (Bignum promotion pending) (RangeError)\n"
+  },
+  "promote_poly_slot_method_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "promote_str_to_i_bigint.rb": {
+   "verdict": "fail",
+   "detail": "integer overflow parsing \"9223372036854775808\" (RangeError)\n"
+  },
+  "promote_yield_operator_diverging_block_types.rb": {
+   "verdict": "fail",
+   "detail": "integer overflow in + (RangeError)\n"
+  },
+  "promote_yield_receiver_builtin_pred_div.rb": {
+   "verdict": "fail",
+   "detail": "integer overflow in - (RangeError)\n"
+  },
+  "promote_yield_receiver_builtin_sum_succ.rb": {
+   "verdict": "fail",
+   "detail": "integer overflow in + (RangeError)\n"
+  },
+  "protected_call_in_module_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "push_onto_boxed_builtin_array.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "push_through_boxed_param_into_literal.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "push_widens_through_boxed_and_sequence.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "putc_boxed_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "queue_boxed_close.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "queue_boxed_close_user_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "queue_boxed_nonblock.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "queue_boxed_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "queue_pop_false_blocks.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "raise_block_initialize.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "raise_boxed_cause.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "raising_call_value_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "random_reopen_block_parameter.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "random_reopen_yield_binding.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_blockless_enumerators.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_blockless_predicates.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_blockless_sort_by_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_boxed_endpoints.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_boxed_minmax.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_boxed_open_inspect.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_boxed_step_bsearch.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_cover_boxed_other_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_cover_boxed_range_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_cover_range_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_cycle_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_each_no_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_each_no_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_enumerable_blocks.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_overlap_empty_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_step_block_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "range_step_endless_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rational_boxed_bignum_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rational_boxed_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rational_named_division_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rational_pow_boxed_exponent.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rational_predicates_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rational_predicates_boxed_user_dispatch.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rational_to_i_from_sum.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rationalize_epsilon_nil_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rbs_inline_boxed_local_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "read_nonblock_eof_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "recursive_block_forward_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "recursive_block_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "recursive_implicit_yield_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "redo_block_keeps_writes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "redo_in_yielded_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "reflective_ivar_get_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "regex_capture_scan_toproc_count.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "regex_match_boxed_forms.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "regexp_boxed_match_char_position.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "regexp_capture_slots_long_subject.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "regexp_compile_boxed_source.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "regexp_literal_slots_compile.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "regexp_match_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "regexp_new_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "regexp_new_match_boxed_subject.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "regexp_union_boxed_operand.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "reopen_block_begin_body.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "reopen_builtin_name_yielding.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "reopen_in_lambda_body.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "reopen_yield_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "reopen_yielding_forwarded_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "reopen_yielding_method_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "reopened_builtin_optional_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "reopened_iter_with_block_and_args.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "replace_typed_array_from_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "require_in_block_runs_later.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rescue_bind_in_lambda_proc_body.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rescue_mod_yield_nil_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rescue_modifier_next_block_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rescue_modifier_next_into_typed_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "respond_to_boxed_regexp.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "respond_to_boxed_struct.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "respond_to_implicit_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "respond_to_in_base_sees_subclass.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "respond_to_nil_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "respond_to_reopened_builtin_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rest_leading_optional_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "return_from_block_in_spliced_yielder.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "returned_lambda_param_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rewind_boxed_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "rewind_boxed_wrong_count.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "safe_nav_block_calls.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "safe_nav_block_family.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "safe_nav_block_param_shapes.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "safe_nav_blockless_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "safe_nav_boxed_recv_own_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "safe_nav_hash_face_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "safe_nav_int_into_nullable_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sample_random_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scalar_op_assign_reads_slot_first.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_block_live_subject.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_block_param_renamed_by_inline.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_block_regexp_last_match.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_block_tail_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_boxed_string_pattern.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_call_subject_mutated_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_constant_subject_mutated_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_global_subject_mutated_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_ivar_subject_method_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_ivar_subject_mutated_in_block.rb": {
+   "verdict": "pass",
+   "detail": "string modified (RuntimeError)\n"
+  },
+  "scan_param_subject_helper_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_alias_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_alias_made_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_alias_method_call_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_alias_method_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_array_alias_mutated_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_called_lambda_closure.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_case_proc_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_case_when_param_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_coerce_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_helper_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_interp_to_s_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_join_to_s_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_lambda_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_pack_buffer_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_read_buffer_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "scan_subject_yield_in_block.rb": {
+   "verdict": "pass",
+   "detail": "string modified (RuntimeError)\n"
+  },
+  "search_block_next_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "self_class_yield_rescue_local.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "self_class_yielding_cmethod.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "self_recursive_block_given_forward.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "send_boxed_merge_arm_type.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "send_each_line_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "send_forwarded_block_yield_or_string.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "send_forwards_block_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "send_yielding_block_forward.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "set_backtrace_boxed_array.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "set_block_autosplat.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "set_comparator_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "setter_temp_beside_block_alias.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "setter_yields_assigned_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "share_builder_local_block_default.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "share_builder_local_kept_block_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "share_builder_local_lambda_default.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "share_builder_local_lambda_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "share_strings_boxed_class_include_reader.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "share_strings_boxed_cond_order.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "share_strings_boxed_fresh_array_element_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "share_strings_boxed_hash_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "share_strings_boxed_puts.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "share_strings_fetch_block_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "singleton_attr_class_slot_dispatch.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "singleton_class_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "singleton_class_value_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "singleton_def_on_new_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "size_boxed_in_lifted_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "slice_bang_boxed_index_range.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "slice_bang_boxed_recv_boxed_range.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "slice_before_after_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "socket_addr_boxed_handle.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "socket_bind_connect_boxed_handle.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "socket_boxed_connect_nonblock_sockopt.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "socket_nonblock.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "socket_open_without_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "socket_recv_boxed_handle.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "socket_send_boxed_handle.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "socket_send_boxed_initialize.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "socket_server_boxed_accept.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "socket_shutdown_boxed_handle.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sort_block_nil_answer.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sort_block_nil_compare.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sort_block_poly_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sort_min_max_block_comparator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "splat_boxed_scalar_into_builtin.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "splat_delete_and_block_tail_iter.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "splat_forwarded_block_aref.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "splat_map_lambda_into_rest.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "splat_param_with_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "splat_spreads_boxed_range_and_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "srange_endpoint_next_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "step_boxed_nil_limit_endless.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "step_boxed_operands.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "step_nil_limit_boxed_recv.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "step_noarg_boxed_recv.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "stored_block_call_returns_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "stored_block_param_fresh_yields.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "stored_enumerator_pair_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "str_array_delete_boxed_needle.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "str_between_boxed_bound.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "str_mutator_paren_boxed_recv.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "str_range_boxed_inspect.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "str_to_i_overflow.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "strbuf_object_return_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "strbuf_unbox_string_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_alias_yield_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_append_as_bytes_boxed_int.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_append_boxed_integer.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_append_boxed_integer_stmt.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_append_through_kept_block_index.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_append_through_proc_keyword.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_bang_boxed_nil_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_block_param_store_unaffected.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_block_tail_nested_parens.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_block_tail_runtime_elem_bang.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_boxed_local_container_element.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_boxed_local_iterator_element.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_boxed_reader_copied_too_late.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_boxed_reader_copy_reopened_dup.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_boxed_reader_mutation.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_boxed_reader_query_reopened.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_boxed_to_s_nil_arm.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_chained_index_block_append.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_codepoints_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_cvar_boxed_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_each_char_block_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_each_char_in_yielding_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_enum_block_returns_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_gsub_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_gsub_block_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_handle_bind_dm_curry.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_handle_initialize_kept_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_handle_poly_slot_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_handle_proc_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_handle_static_slot_reads.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_handle_yield_boxed_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_handle_yield_exec.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_handle_yield_nil.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_handle_yield_nil_local.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_handle_yield_paths.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_handle_yield_splat.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_handle_yielder_name_group.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_hash_alias_block_param_store.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_hash_fresh_store_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_hash_key_block_param_store.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_hash_store_pair_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_hash_store_value_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_hash_value_block_append.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_index_write_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_inline_yield_sequence_tail.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_iter_boxed_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_iter_yield_inlined.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_kwsplat_last_yieldblock.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_kwsplat_last_yieldproc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_kwsplat_literal_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_lent_global_rebound_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_lent_global_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_lent_global_slot_written.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_lines_block_separator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_match_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_prepend_boxed_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_proc_param_store.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_range_min_max_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_range_step_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_reopen_block_handle_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_reopen_block_returns.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_reopen_proc_self_mutation.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_reopen_yield_self_mutation.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_replace_boxed_argument.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_rest_splat_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_scan_block_kept_mutation.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_scrub_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_slot_root_form.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_sort_block_param_handle.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_split_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_thread_block_param_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_to_i_base.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_to_i_base_zero.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_to_i_overflow_raises.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_to_i_signed_minimum.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_to_s_store_boxed_local.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_unpack_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_yield_block_param_captured.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_yield_captured_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_yield_line_read_after.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_yield_line_user_each_line.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_yield_line_user_foreach.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_yield_poly_param_alias.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_yield_poly_param_global.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_yield_runtime_elem_bang.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "string_yield_splat_captured.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "stringio_boxed_shl.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "stringio_boxed_shl_reopen.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "stringio_required_boxed_string_iterators.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "strsub_boxed_own_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_ancestors.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_anonymous_name.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_attr_not_member.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_bare_self_calls.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_constant_init.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_declarations.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_define_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_define_method_cond.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_define_method_cond_unused.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_included_hook.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_late_prepend.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_local_extend.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_mixin.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_overrides_bracket.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_self_is_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_block_singleton_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_each_with_index_blockless.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_inline_block_declarations.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_int_member_unboxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_member_block_param_store.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_member_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_to_h_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_to_h_block_composite.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_to_h_block_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "struct_yield_initialize.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sub_block_value_operands.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "subclass_inherited_string_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "subclass_through_base_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sum_block_compensated.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sum_block_nil_coercion.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sum_block_poly_elems_typed_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sum_block_string_handle_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sum_empty_block_body.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_anon_block_bare.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_anon_block_bare_variants.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_anon_block_splice.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_anon_block_splice_variants.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_block_arg_explicit.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_block_prepend_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_block_yields_on.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_extend_inherited_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_forward_block_given.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_in_class_new_forwards_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_in_class_new_forwards_block_to_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_in_proc_forwards_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_inlined_parent_yield_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_into_boxed_reopen.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_into_included_module.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_into_returning_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_into_yielding_parent.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_literal_block_explicit_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_literal_block_yielding_parent.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_missing_hash_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_unrelated_proc_result.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "super_yield_nil_result.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sym_proc_block_lowered_on_tree.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sym_to_proc_computed_name.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sym_to_proc_computed_name_args.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sym_to_proc_expr_recv.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "sym_var_block_arg_snapshot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "symbol_block_arg_spellings.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "symbol_block_two_values.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "symbol_cmp_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "symbol_proc_absent_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "symbol_proc_pair_block_locals.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "symbol_to_proc_after_positional.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "symbol_to_proc_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "symbol_to_proc_unary_op.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "synchronize_block_argument.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "system_as_block_tail.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "take_while_boxed_predicate.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "take_while_param_widened_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "tap_block_param_cell.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "tap_param_unread_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "then_block_always_breaks.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "then_literal_and_user_blocks.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "then_without_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "thread_block_param_array_index.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "thread_body_block_param_condition.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "thread_boxed_alive_status.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "thread_boxed_local_storage.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "thread_boxed_termination.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "thread_ensure_inside_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "thread_exit_does_not_wait_for_blocked.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "thread_local_boxed_key.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "thread_raise_boxed_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "thread_yield_handle_and_ensure.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "throw_boxed_symbol_tag.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "throw_method_block_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "time_inplace_param_lambda.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "time_min_poly_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "time_reopen_boxed_cmp.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "time_reopen_boxed_operator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "time_strftime_boxed_receiver_and_format.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "time_utc_boxed_usec.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "times_chain_boxed_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "times_upto_boxed_nil_recv.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "to_enum_guard_block_form_answer.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "to_enum_guard_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "to_enum_guard_block_return_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "to_enum_guard_lambda_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "to_enum_multi_value_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "to_enum_with_size_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "to_h_on_boxed_hash.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "to_h_with_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "to_path_boxed_shared_string.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "toplevel_extend_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "toplevel_include_in_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "toplevel_include_yield_value_tail.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "toplevel_include_yielding_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "toplevel_kwrest_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "toplevel_proc_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "toplevel_proc_return_at_exit.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "toplevel_proc_return_ensure.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "transform_keys_symproc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "transform_values_block_argument.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "try_convert_boxed_argument.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "typed_array_boxed_source_held.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "typed_array_boxed_source_own_index.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "typed_array_boxed_source_widen.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "typed_array_held_into_boxed_param_store.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "typed_array_kept_by_ivar_into_boxed_param_store.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "typed_hash_value_boxed_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "typed_slot_conversion.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "undefined_constant_into_typed_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "uniq_bang_block_result.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "uniq_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "uniq_block_boxed_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "uniq_block_pair_splat.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "unresolved_into_typed_hash_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "unresolved_value_typed_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "update_typed_and_boxed_param_sources.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "upto_downto_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "upto_downto_blockless_lazy_kwarg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "user_class_new_block_forwarder.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "user_enumerable_first_boxed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "user_eq_on_nil_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "user_inject_forwarded_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "user_join_on_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "user_operator_on_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "user_pack_join_block_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "user_tap_then_literal_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "user_then_blockless.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "user_to_proc_block_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "value_obj_boxed_to_s.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "value_object_yielded_through_a_proc_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "value_type_object_in_static_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "valued_break_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "valued_break_yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "while_hoist_skips_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_argument_diverging_block_types.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_autosplat_kernel_string.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_bang_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_beside_block_param_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_block_loop_break_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_block_params_follow_self_lookup.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_block_tail_diverges.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_call_assigned_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_chain_depth.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_cond_handle.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_condition_block_calls_missing_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_condition_no_block_anywhere.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_cycle_first_mixed_sites.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_cycle_first_reopened_enumerator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_empty_hash_block_fills.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_fresh_line_into_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_from_block_lifted_by_class_dispatch.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_hash_enum_mixed_sites.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_hash_find_index_mixed_sites.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_in_block_kept_by_later_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_in_block_lifted_by_late_poly.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_inherited_self_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_inline_arg_caller_context.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_inline_ctor_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_inline_default_reads_param.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_inline_divergent_accumulator.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_inline_divergent_block_map.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_inline_receiver_self.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_inline_self_call_narrowed.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_inplace_face_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_inside_escaping_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_inside_thread_body.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_into_local_divergent.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_kwsplat_block_keywords.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_lent_param_block_rebind.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_membership_single_site_poly_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_method_block_tail_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_method_call_in_method_body.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_method_only_in_subclass.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_method_printer_beside_appender.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_mixed_block_types.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_nested_block_alias.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_no_block_raises.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_operator_diverging_block_types.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_override_direct_call.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_param_block_rebind.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_param_ivar_block_rebind.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_paren_value_diverges.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_proc_arg_in_blocked_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_alias_captured.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_clamp.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_clamp_bignum_bound.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_clamp_range.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_dig.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_fetch.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_fetch_default.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_first_last_n.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_follows_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_reopened.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_reverse_bang.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_rotate.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_sample_n.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_sample_random_kw.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_sample_zero_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_shuffle.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_sort_bang.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_sort_by_blockless_declines.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_sort_still_hand_written.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_succ.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_succ_symbol.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_sum.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_sum_succ_dig_reopened.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_builtin_take_drop.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_numeric_site_kinds.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_sort_reverse_site_kinds.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_receiver_spaceship_site_kinds.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_reopen_array_hash_mixed_sites.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_reopen_builtin_any_site.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_reopen_builtin_poly_arg.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_rescue_poly_site.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_result_through_forwarding_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_self_enum_then.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_self_method_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_splat.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_splat_elem_append.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_splice_loop_param_captured.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_splice_redo_and_break.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_string_mutator_tail.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_string_param_block_append.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_tail_early_return_binding.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_tail_index_op_write_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_tail_tap_value.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_tail_unshared_identity.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_through_forwarded_block_no_append.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_through_forwarded_proc_context.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_through_uncalled_forwarder.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_typed_hash_block_local.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_untyped_call_tail_typed_slot.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_value_block_ends_in_loop.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_value_break_only_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_value_diverges_into_ivar.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_value_mixed_block_types.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_value_nil_site_diverges.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_value_per_site.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_value_return.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_value_returns_from_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_value_slot_types.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yield_value_through_poly_receiver.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yielder_to_proc.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yielding_call_in_rescue_expr.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yielding_initialize_args_evaluated_once.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yielding_initialize_new_own_class.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "yielding_method_shadows_toplevel_def.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "zip_block_many_operands.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "zip_block_nil_elem.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "zip_block_tuples.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "zip_block_unrelated_method.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "zip_boxed_receiver_argument_order.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "zsuper_fills_parent_rest_block.rb": {
+   "verdict": "pass",
+   "detail": ""
+  },
+  "zsuper_in_proc_captures_params.rb": {
+   "verdict": "pass",
+   "detail": ""
+  }
+ }
+}

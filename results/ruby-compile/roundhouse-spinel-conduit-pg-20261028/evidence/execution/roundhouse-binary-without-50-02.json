@@ -1,0 +1,19 @@
+{
+  "label": "roundhouse-binary-without-50-02",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v11-rhbin-without-50",
+    "conduit-v11-toolchain:without-50",
+    "sha256sum",
+    "/usr/local/bin/roundhouse"
+  ],
+  "started": "2026-10-28T10:19:58.855811+00:00",
+  "finished": "2026-10-28T10:20:02.683746+00:00",
+  "elapsed_seconds": 3.828,
+  "exit": 1,
+  "log": "evidence/execution/roundhouse-binary-without-50-02.log",
+  "heavy_lock": true
+}

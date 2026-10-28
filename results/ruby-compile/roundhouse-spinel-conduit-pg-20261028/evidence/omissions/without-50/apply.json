@@ -1,0 +1,52 @@
+{
+  "omitted": "50",
+  "roundhouse": "295abf08bd5004922669f73bf090def8e3852fe6",
+  "spinel": "3b397d7bc96c2324190c0f2f857e1973e24dca84",
+  "applications": [
+    {
+      "patch": "10-api-mode-json.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "20-raw-websocket.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "30-jobs-boot.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "60-rails-surface.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "74-integer-query-range.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "80-gradual-return-stabilization.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "82-upstream-regression-quoted-bulk-update.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "83-upstream-regression-temporal-initialize.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+      "exit": 0,
+      "stderr": ""
+    }
+  ]
+}

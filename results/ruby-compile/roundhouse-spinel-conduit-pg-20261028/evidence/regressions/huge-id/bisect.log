@@ -1,0 +1,27 @@
+{"sha": "ca971705427a40e5ef5472bf76f033abbc21da3a", "clean": false, "verdict": "good"}
+{"sha": "3b397d7bc96c2324190c0f2f857e1973e24dca84", "clean": false, "verdict": "bad"}
+{"sha": "aa06013aa1f1a028da738b6249b8cedac86579cd", "clean": false, "verdict": "bad"}
+Bisecting: 413 revisions left to test after this (roughly 9 steps)
+{"sha": "e27afa2d246ab0f84de20523d78d2890bdcde447", "clean": false, "verdict": "bad"}
+Bisecting: 206 revisions left to test after this (roughly 8 steps)
+{"sha": "3bdedee6fa4550f120aeba1bd110e381f0d2b13f", "clean": false, "verdict": "bad"}
+Bisecting: 103 revisions left to test after this (roughly 7 steps)
+{"sha": "08560f31e6a4367a97c9edcfcfd651538f412318", "clean": false, "verdict": "bad"}
+Bisecting: 51 revisions left to test after this (roughly 6 steps)
+{"sha": "03b204e8cc6619773154f5e00f78005b82476756", "clean": false, "verdict": "bad"}
+Bisecting: 25 revisions left to test after this (roughly 5 steps)
+{"sha": "df6c98168d0b0c74e8a64f4195d5d0afda356d5b", "clean": false, "verdict": "good"}
+Bisecting: 12 revisions left to test after this (roughly 4 steps)
+{"sha": "223355ecbe5f0a3094392a1af6a64fb72bc1e245", "clean": false, "verdict": "bad"}
+Bisecting: 6 revisions left to test after this (roughly 3 steps)
+{"sha": "74bea107f378fafdf0038fe0be261467387012b1", "clean": false, "verdict": "bad"}
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+{"sha": "0e7b469de6948268aed3986628dc4830df01bbcc", "clean": false, "verdict": "bad"}
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+{"sha": "b9baf92b3f14d9ba1c43f40073b971038d8854c2", "clean": false, "verdict": "good"}
+0e7b469de6948268aed3986628dc4830df01bbcc is the first bad commit
+Previous HEAD position was b9baf92b3 Merge PR #9940: A proved loop nested in another leaves its safepoint poll to that loop's back-edge
+HEAD is now at 3b397d7bc Merge PR #10455: A dynamic send's name local reads its writes from the (scope, name) index
+{"sha": "b9baf92b3f14d9ba1c43f40073b971038d8854c2", "clean": true, "verdict": "good"}
+{"sha": "0e7b469de6948268aed3986628dc4830df01bbcc", "clean": true, "verdict": "bad"}
+{"first_bad": "0e7b469de6948268aed3986628dc4830df01bbcc", "parents": ["b9baf92b3f14d9ba1c43f40073b971038d8854c2"], "boundary": [{"sha": "b9baf92b3f14d9ba1c43f40073b971038d8854c2", "verdict": "good"}, {"sha": "0e7b469de6948268aed3986628dc4830df01bbcc", "verdict": "bad"}], "landing": "14f70d7a574a8a7f3890bdc1e8d7f5f5fb461fe1"}

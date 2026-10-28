@@ -1,0 +1,426 @@
+diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+index fdc2875be..2cc957203 100644
+--- a/runtime/ruby/active_record/base.rb
++++ b/runtime/ruby/active_record/base.rb
+@@ -336,6 +336,21 @@ module ActiveRecord
+     # AND compiler-hostile for typed targets (Rust struct types
+     # `@errors` as `Vec<String>`, not `Option<Vec<String>>`; `.nil?`
+     # on a Vec doesn't exist).
++    def _note_projection(row)
++      @projection_attributes = row
++      nil
++    end
++
++    def _projection_attribute(name)
++      row = @projection_attributes
++      return nil if row.nil?
++      row[name]
++    end
++
++    def read_attribute(name)
++      self[name.to_sym]
++    end
++
+     def errors
+       @errors
+     end
+@@ -416,6 +431,7 @@ module ActiveRecord
+       # The sentinel is written by the MODEL's own `initialize`
+       # (`self.id = (attrs[:id] || 0)` — `|| ""` for a string key), not
+       # here: see the class comment on why the base holds no `@id`.
++      @projection_attributes = nil
+       @errors = []
+       @error_details = []
+       @id_previously_changed = false
+diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+index 4eb5619c8..8dcd154cd 100644
+--- a/runtime/ruby/active_record/base.rbs
++++ b/runtime/ruby/active_record/base.rbs
+@@ -100,6 +100,10 @@ module ActiveRecord
+   end
+ 
+   class Base
++    @projection_attributes: Hash[String, untyped]?
++    def _note_projection: (Hash[String, untyped] row) -> nil
++    def _projection_attribute: (String name) -> untyped
++    def read_attribute: (String name) -> untyped
+     def self.sanitize_sql_like: (String value, ?String escape_character) -> String
+     def self.like_escapes_doubled: (String value, String escape_character) -> String
+     def self.like_wildcards_marked: (String source, String escape_character) -> String
+@@ -218,7 +222,7 @@ module ActiveRecord
+     # callers typed against `ActiveRecord::Base` (FormBuilder.text_
+     # field's `@model[field]`) compile under static targets like
+     # Crystal — the static type needs the method to exist.
+-    def []: (Symbol name) -> untyped
++    def []: ((Symbol | String) name) -> untyped
+     def []=: ((Symbol | String) name, untyped value) -> untyped
+     def has_attribute?: (Symbol name) -> bool
+     def _note_unloaded: (Hash[String, untyped] _row) -> void
+diff --git a/src/lower/assoc_attr_key.rs b/src/lower/assoc_attr_key.rs
+index 7abb1a38d..9e0848dc7 100644
+--- a/src/lower/assoc_attr_key.rs
++++ b/src/lower/assoc_attr_key.rs
+@@ -169,12 +169,19 @@ fn rewrite_conditions(expr: &mut Expr, per_model: &ModelBelongsTo) {
+     ));
+     let Some(belongs) = per_model.get(&class) else { return };
+     let ExprNode::Hash { entries, .. } = &mut *args[0].node else { return };
+-    for (k, _) in entries.iter_mut() {
++    for (k, v) in entries.iter_mut() {
+         let ExprNode::Lit { value: Literal::Sym { value: key } } = &*k.node else { continue };
+         let Some(fk) = belongs.get(key) else { continue };
+         let mut new_key = Expr::new(k.span, ExprNode::Lit { value: Literal::Sym { value: fk.clone() } });
+         new_key.ty = Some(Ty::Sym);
+         *k = new_key;
++        if matches!(v.ty.as_ref().map(|t| t.peel_nilable()), Some(Ty::Class { .. })) {
++            let mut id_read = Expr::new(v.span, ExprNode::Send {
++                recv: Some(v.clone()), method: Symbol::from("id"), args: vec![], block: None, parenthesized: false,
++            });
++            id_read.ty = Some(Ty::Int);
++            *v = id_read;
++        }
+     }
+ }
+ 
+diff --git a/src/lower/first_or_create.rs b/src/lower/first_or_create.rs
+index 67231fe8c..9c6657287 100644
+--- a/src/lower/first_or_create.rs
++++ b/src/lower/first_or_create.rs
+@@ -75,6 +75,26 @@ fn is_claimable_stmt(e: &Expr) -> bool {
+ }
+ 
+ fn rewrite(expr: &mut Expr, models: &ModelColumns) {
++    match &mut *expr.node {
++        ExprNode::BeginRescue { body, rescues, else_branch, ensure, .. } => {
++            for body in std::iter::once(body).chain(rescues.iter_mut().map(|r| &mut r.body))
++                .chain(else_branch.iter_mut()).chain(ensure.iter_mut()) {
++                if is_claimable_stmt(body) || scoped_statement_model(body, models).is_some() {
++                    let stmt = body.clone();
++                    *body = Expr::new(stmt.span, ExprNode::Seq { exprs: vec![stmt] });
++                }
++            }
++        }
++        ExprNode::If { then_branch, else_branch, .. } => {
++            for body in [then_branch, else_branch] {
++                if is_claimable_stmt(body) || scoped_statement_model(body, models).is_some() {
++                    let stmt = body.clone();
++                    *body = Expr::new(stmt.span, ExprNode::Seq { exprs: vec![stmt] });
++                }
++            }
++        }
++        _ => {}
++    }
+     expr.node.for_each_child_mut(&mut |child| rewrite(child, models));
+     let ExprNode::Seq { exprs } = &mut *expr.node else { return };
+     for e in exprs {
+@@ -138,6 +158,7 @@ fn as_where_first(e: &Expr) -> Expr {
+     let first_or = match method.as_str() {
+         "find_or_initialize_by" => "first_or_initialize",
+         "find_or_create_by" => "first_or_create",
++        "find_or_create_by!" => "first_or_create!",
+         _ => return e.clone(),
+     };
+     if args.len() != 1 || !matches!(&*model.node, ExprNode::Const { .. }) {
+@@ -192,13 +213,14 @@ fn seedable(v: &Expr) -> bool {
+ /// Does this Send match the claimable shape? Returns `Some(save)` —
+ /// whether the built record saves (`first_or_create`) or stays
+ /// unsaved (`first_or_initialize`).
+-fn claims(e: &Expr) -> Option<bool> {
++fn claims(e: &Expr) -> Option<&'static str> {
+     let ExprNode::Send { recv: Some(r), method, args, block: None, .. } = &*e.node else {
+         return None;
+     };
+     let save = match method.as_str() {
+-        "first_or_create" => true,
+-        "first_or_initialize" => false,
++        "first_or_create" => "save",
++        "first_or_create!" => "save!",
++        "first_or_initialize" => "",
+         _ => return None,
+     };
+     if !args.is_empty() {
+@@ -221,7 +243,7 @@ fn claims(e: &Expr) -> Option<bool> {
+     ok.then_some(save)
+ }
+ 
+-fn inline(e: &Expr, save: bool) -> Vec<Expr> {
++fn inline(e: &Expr, save: &str) -> Vec<Expr> {
+     let span = e.span;
+     let ExprNode::Send { recv: Some(r), .. } = &*e.node else { unreachable!() };
+     let ExprNode::Send { recv: Some(model), args: wargs, .. } = &*r.node else { unreachable!() };
+@@ -293,8 +315,8 @@ fn inline(e: &Expr, save: bool) -> Vec<Expr> {
+             },
+         ));
+     }
+-    if save {
+-        build.push(send(rec(()), "save"));
++    if !save.is_empty() {
++        build.push(send(rec(()), save));
+     }
+ 
+     let guard = Expr::new(
+diff --git a/src/lower/model_to_library/schema.rs b/src/lower/model_to_library/schema.rs
+index e81bf38e8..03858f24e 100644
+--- a/src/lower/model_to_library/schema.rs
++++ b/src/lower/model_to_library/schema.rs
+@@ -1607,6 +1607,10 @@ fn synth_instantiate(owner: &ClassId, fire_after_initialize: bool) -> MethodDef
+             },
+         ),
+     ];
++    stmts.push(Expr::new(Span::synthetic(), ExprNode::Send {
++        recv: Some(var_ref(instance.clone())), method: Symbol::from("_note_projection"),
++        args: vec![var_ref(row.clone())], block: None, parenthesized: true,
++    }));
+     // The hook fires HERE for a row-hydrated record, not in `from_row`:
+     // this is the one caller that holds the raw row, so it can first
+     // note the columns the query did not select. Rails answers
+@@ -3463,7 +3467,7 @@ fn synth_index_read(owner: &ClassId, table: &Table, model: &Model) -> MethodDef
+     // JSON columns are another exception: a
+     // `has_json` declaration builds its typed Hash from the flat readers; a
+     // schema-less column decodes through `RoundhouseJsonColumn.load`.
+-    let arms: Vec<crate::expr::Arm> = table
++    let mut arms: Vec<crate::expr::Arm> = table
+         .columns
+         .iter()
+         .map(|c| crate::expr::Arm {
+@@ -3497,23 +3501,26 @@ fn synth_index_read(owner: &ClassId, table: &Table, model: &Model) -> MethodDef
+         })
+         .collect();
+ 
+-    // An armless `case` (no columns at all) is a Ruby syntax error.
+-    // `table.columns` is empty for a degenerate `create_table ..., id:
+-    // false do |t| end` — the column-list twin of the controller-side
+-    // `synth_index_read`'s bug when its permit list has no scalar keys
+-    // (`tests/params_all_non_scalar_keys.rs`). Same `Ty::Untyped`
+-    // signature either way.
+-    let body = if arms.is_empty() {
+-        nil_lit()
+-    } else {
+-        Expr::new(
+-            Span::synthetic(),
+-            ExprNode::Case {
+-                scrutinee: var_ref(name.clone()),
+-                arms,
+-            },
+-        )
+-    };
++    arms.push(crate::expr::Arm {
++        pattern: crate::expr::Pattern::Wildcard, guard: None,
++        body: Expr::new(Span::synthetic(), ExprNode::Send {
++            recv: None, method: Symbol::from("_projection_attribute"),
++            args: vec![Expr::new(Span::synthetic(), ExprNode::Send {
++                recv: Some(var_ref(name.clone())), method: Symbol::from("to_s"),
++                args: vec![], block: None, parenthesized: false,
++            })], block: None, parenthesized: false,
++        }),
++    });
++    let body = Expr::new(
++        Span::synthetic(),
++        ExprNode::Case {
++            scrutinee: Expr::new(Span::synthetic(), ExprNode::Send {
++                recv: Some(var_ref(name.clone())), method: Symbol::from("to_sym"),
++                args: vec![], block: None, parenthesized: false,
++            }),
++            arms,
++        },
++    );
+ 
+     MethodDef {
+         visibility: crate::dialect::MethodVisibility::Public,
+@@ -3525,7 +3532,7 @@ fn synth_index_read(owner: &ClassId, table: &Table, model: &Model) -> MethodDef
+         params: vec![Param::positional(name.clone())],
+         body,
+         // Heterogeneous return (per-column type union); approximate as Untyped.
+-        signature: Some(fn_sig(vec![(name, Ty::Sym)], Ty::Untyped)),
++        signature: Some(fn_sig(vec![(name, Ty::Union { variants: vec![Ty::Sym, Ty::Str].into() })], Ty::Untyped)),
+         effects: EffectSet::default(),
+         enclosing_class: Some(owner.0.clone()),
+         kind: AccessorKind::Method,
+diff --git a/src/lower/scope_chain.rs b/src/lower/scope_chain.rs
+index be0658c92..091d5925a 100644
+--- a/src/lower/scope_chain.rs
++++ b/src/lower/scope_chain.rs
+@@ -2949,6 +2949,18 @@ fn syn(span: crate::span::Span, node: ExprNode) -> Expr {
+ /// their own defaults (Ruby's behavior for the omitted call) before pushing
+ /// the relation, so `hottest` → `Story.hottest(nil, nil, __rel)` not
+ /// `Story.hottest(__rel)`. `leading` is the scope's user params (no `__rel`).
++// Zero-argument scopes have a typed, fixed-arity relation entry. Use it
++// for threaded calls too, rather than the optional/untyped primary slot.
++fn thread_scope_call(method: Symbol, args: Vec<Expr>, rel: Expr,
++    leading: Option<&Vec<Param>>, span: crate::span::Span) -> (Symbol, Vec<Expr>) {
++    if delegable_name(&method) && args.is_empty() && leading.is_some_and(|p| p.is_empty()) {
++        (scope_variant_name(&method, 0, &[]), vec![rel])
++    } else {
++        let args = thread_rel(args, rel, leading, span);
++        (method, args)
++    }
++}
++
+ fn thread_rel(mut args: Vec<Expr>, rel: Expr, leading: Option<&Vec<Param>>, span: crate::span::Span) -> Vec<Expr> {
+     // A callee with a REST param (`*tags`) cannot take `__rel` as a
+     // trailing optional positional — an optional positional can't
+@@ -3055,6 +3067,7 @@ fn thread_rel(mut args: Vec<Expr>, rel: Expr, leading: Option<&Vec<Param>>, span
+ /// pass leaves them to `Relation`'s SQL extrema.
+ const CLASS_ROOT_TERMINALS: &[&str] = &[
+     "pluck", "pick", "ids", "destroy_by", "delete_by", "maximum", "minimum",
++    "find_each", "update_all", "find_or_create_by!",
+ ];
+ 
+ /// Relation TERMINALS our runtime implements — a seeded association
+@@ -3105,6 +3118,7 @@ fn is_relation_terminal(name: &str, args: &[Expr], block: Option<&Expr>) -> bool
+                 // `merge_scope_attributes`', because the query half needs
+                 // the same conditions anyway.
+                 | "find_or_create_by"
++                | "find_or_create_by!"
+                 // The same lookup, building rather than saving on a miss:
+                 // `Relation#find_or_initialize_by` gives the new record the
+                 // scope's attributes, as Rails' does through an
+@@ -3783,7 +3797,7 @@ fn lower_relation_args(
+         // are `find_by`'s — a list that names some of them renames
+         // `user:` to `user_id:` on one spelling and emits the
+         // nonexistent `memberships.user` column on the next.
+-        "where" | "not" | "find_by" | "find_by!" | "find_sole_by" | "destroy_by" | "delete_by"
++        "where" | "not" | "find_by" | "find_by!" | "find_sole_by" | "find_or_create_by" | "find_or_create_by!" | "destroy_by" | "delete_by"
+         | "exists?" => {
+             // `where(connected_at: TTL.ago..)` — a RANGE value. Rails
+             // renders `>=` / `<=` / `<` / BETWEEN. Only the
+@@ -3899,6 +3913,14 @@ fn lower_relation_args(
+                     }
+                     let Some(fk) = ctx.assocs.belongs_to_fk(model, key) else { continue };
+                     *k.node = ExprNode::Lit { value: Literal::Sym { value: fk.clone() } };
++                    if matches!(v.ty.as_ref().map(|t| t.peel_nilable()), Some(crate::ty::Ty::Class { id, .. }) if ctx.models.contains(id)) {
++                        let mut id = syn(span, ExprNode::Send {
++                            recv: Some(v.clone()), method: Symbol::from("id"), args: vec![], block: None, parenthesized: false,
++                        });
++                        id.ty = Some(crate::ty::Ty::Int);
++                        *v = id;
++                        continue;
++                    }
+                     // The VALUE rides through unchanged. It used to be
+                     // narrowed to `v && v.id` for plain reads, but an
+                     // untyped scope param can carry a record OR a
+@@ -4947,7 +4969,7 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+                             if is_scope {
+                                 let leading = ctx.scope_params(&target, &method);
+                                 let keeps = ctx.scope_keeps_relation(&target, &method);
+-                                let new_args = thread_rel(args, seed, leading, span);
++                                let (method, new_args) = thread_scope_call(method, args, seed, leading, span);
+                                 *expr = put(
+                                     span,
+                                     Some(const_expr(span, &target)),
+@@ -5122,7 +5144,7 @@ fn rewrite_send(expr: &mut Expr, ctx: &Ctx, locals: &mut Locals) -> Option<Class
+                 if ctx.scope_of(&mr, &method) {
+                     let leading = ctx.scope_params(&mr, &method);
+                     let keeps = ctx.scope_keeps_relation(&mr, &method);
+-                    let new_args = thread_rel(args, r, leading, span);
++                    let (method, new_args) = thread_scope_call(method, args, r, leading, span);
+                     *expr = put(span, Some(const_expr(span, &mr)), method, new_args, block, true);
+                     return keeps.then_some(mr);
+                 }
+@@ -6339,7 +6361,7 @@ mod tests {
+         let ExprNode::Send { recv: Some(r), method, args, .. } = &*expr.node else {
+             panic!("expected Send, got {:?}", expr.node);
+         };
+-        assert_eq!(method.as_str(), "not_deleted");
++        assert_eq!(method.as_str(), "__scope_not_deleted__0");
+         assert!(
+             matches!(&*r.node, ExprNode::Const { path } if path.last().unwrap().as_str() == "Story"),
+             "receiver should be Story const, got {:?}",
+diff --git a/src/project.rs b/src/project.rs
+index 0c692de1a..6d32ee03e 100644
+--- a/src/project.rs
++++ b/src/project.rs
+@@ -10133,7 +10133,7 @@ fn bundled_require_gaps(files: &[(String, String)]) -> Vec<(usize, String)> {
+         }
+         for (i, (path, content)) in files.iter().enumerate() {
+             if path.ends_with(".rb")
+-                && names_constant(content, konst)
++                && (names_constant(content, konst) || (konst == "Set" && content.contains(".to_set")))
+                 && !requires_feature(content, &require_line)
+                 && !gaps.contains(&(i, require_line.clone()))
+             {
+diff --git a/tests/rails_surface.rs b/tests/rails_surface.rs
+new file mode 100644
+index 000000000..430a5d01f
+--- /dev/null
++++ b/tests/rails_surface.rs
+@@ -0,0 +1,80 @@
++//! Rails surface regressions; the worker fixture additionally compiles and
++//! compares the same source against native Spinel and Rails.
++use std::collections::HashMap;
++use std::path::PathBuf;
++use roundhouse::{App, ingest::ingest_app_from_tree, emit::{ruby, EmittedFile}};
++
++fn app(model: &str, controller: &str) -> App {
++    let tree: HashMap<PathBuf, Vec<u8>> = [
++        ("db/schema.rb", r#"ActiveRecord::Schema.define do
++          create_table "users" do |t|; t.string "email"; t.string "username"; end
++          create_table "articles" do |t|; t.integer "author_id"; t.string "slug"; t.string "status"; end
++          create_table "comments" do |t|; t.integer "article_id"; end
++          create_table "follows", id: false do |t|
++            t.integer "follower_id"; t.integer "followed_id"
++            t.index ["follower_id", "followed_id"], unique: true
++          end
++        end"#),
++        ("app/models/user.rb", "class User < ApplicationRecord; end"),
++        ("app/models/comment.rb", "class Comment < ApplicationRecord; belongs_to :article; scope :active, -> { where(article_id: 1) }; end"),
++        ("app/models/article.rb", model),
++        ("app/models/follow.rb", "class Follow < ApplicationRecord; belongs_to :follower, class_name: 'User'; belongs_to :followed, class_name: 'User'; end"),
++        ("app/controllers/probes_controller.rb", controller),
++    ].into_iter().map(|(p,c)| (PathBuf::from(p), c.as_bytes().to_vec())).collect();
++    let mut app = ingest_app_from_tree(tree).unwrap();
++    roundhouse::session::analyze_and_lower(&mut app);
++    app
++}
++fn file(files: Vec<EmittedFile>, suffix: &str) -> String {
++    files.into_iter().find(|f| f.path.to_string_lossy().ends_with(suffix)).unwrap().content
++}
++#[test]
++fn singleton_ivar_initializers_are_eager_and_keep_source_order() {
++    let mut app = App::new();
++    app.library_classes = roundhouse::ingest::ingest_library_classes(
++        b"class Throttle; @lock = Mutex.new; @failures = Hash.new { |h,k| h[k] = [] }; @events = []; EVENTS = @events; @ready = @events.push(1); def self.fail!(key); @lock.synchronize { @failures[key].push(1) }; end; end", "throttle.rb").unwrap();
++    let src = file(ruby::emit_library(&app), "throttle.rb");
++    let positions: Vec<_> = ["@lock = Mutex.new", "@failures = Hash.new", "@events = []", "EVENTS = @events", "@ready = @events.push(1)"].iter().map(|s| src.find(s).unwrap()).collect();
++    assert!(positions.windows(2).all(|w| w[0] < w[1]), "{src}");
++}
++#[test]
++fn bang_find_create_saves_with_bang_even_inside_rescue() {
++    let app = app("class Article < ApplicationRecord; end", "class ProbesController < ApplicationController; def index; begin; follow = Follow.find_or_create_by!(follower: @user, followed: @other); rescue ActiveRecord::RecordInvalid; nil; end; end; end");
++    let src = file(ruby::emit_lowered_controllers(&app), "probes_controller.rb");
++    assert!(!src.contains(".find_or_create_by!"), "{src}");
++    assert!(src.contains("_rec.save!"), "{src}");
++    assert!(src.contains("_rec.follower = @user"), "{src}");
++    assert!(app.schema.tables[&roundhouse::Symbol::from("follows")].columns.iter().all(|c| !c.primary_key));
++}
++#[test]
++fn find_each_on_class_roots_on_relation() {
++    let app = app("class Article < ApplicationRecord; end", "class ProbesController < ApplicationController; def index; Article.find_each { |a| a.id }; end; end");
++    let src = file(ruby::emit_lowered_controllers(&app), "probes_controller.rb");
++    assert!(src.contains("ActiveRecord::Relation.new(Article).find_each"), "{src}");
++}
++#[test]
++fn association_scope_keeps_owner_predicate_for_pluck_and_update() {
++    let app = app("class Article < ApplicationRecord; has_many :comments; end", "class ProbesController < ApplicationController; def index; @article.comments.active.pluck(:id); @article.comments.active.update_all(article_id: 2); end; end");
++    let src = file(ruby::emit_lowered_controllers(&app), "probes_controller.rb");
++    assert!(src.contains("Comment.__scope_active__0(ActiveRecord::Relation.new(Comment).where(article_id: @article.id)"), "{src}");
++    assert!(src.contains(".pluck(:id)") && src.contains(".update_all("), "{src}");
++}
++#[test]
++fn left_joins_resolves_associations_and_projection_rows_are_retained() {
++    let app = app("class Article < ApplicationRecord; has_many :comments; end", "class ProbesController < ApplicationController; def index; Article.left_joins(:comments).select('articles.*, COUNT(comments.id) AS total').group('articles.id'); end; end");
++    let src=file(ruby::emit_lowered_controllers(&app), "probes_controller.rb");
++    assert!(src.contains("LEFT OUTER JOIN comments ON comments.article_id = articles.id"), "{src}");
++    let model=file(ruby::emit_lowered_models(&app), "article.rb");
++    assert!(model.contains("instance._note_projection(row)"), "{model}");
++    assert!(model.contains("_projection_attribute name.to_s"), "{model}");
++}
++
++#[test]
++fn array_to_set_demands_its_bundled_library_without_a_set_constant() {
++    let files = vec![("probe.rb".into(), "[1, 2, 2].to_set".into())];
++    let gaps = roundhouse::project::missing_bundled_requires(&files);
++    assert_eq!(gaps.len(), 1, "{gaps:?}");
++    assert!(gaps[0].contains("set"));
++    let files = vec![("probe.rb".into(), "require \"set\"\n[1,2].to_set".into())];
++    assert!(roundhouse::project::missing_bundled_requires(&files).is_empty());
++}

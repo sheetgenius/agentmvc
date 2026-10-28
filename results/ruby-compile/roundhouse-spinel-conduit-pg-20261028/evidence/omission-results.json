@@ -1,0 +1,302 @@
+[
+  {
+    "omitted_patch": "10",
+    "condition": "compiled-conduit-v11-final-without-10",
+    "series": [
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [
+      "93-upstream-regression-speculative-slot-to-i.patch"
+    ],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-10-build-02.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "6958a2c28fa92132d6be041b4ed9584ca5797917a0a158d965368830e9bb9a12"
+    },
+    "gate": {
+      "exit": 4,
+      "execution": "evidence/execution/without-10-gate-02.json"
+    },
+    "still_needed": true,
+    "failure": "gate: 8/17 API files; 401/403/404/422 responses become 500 (ArgumentError: wrong number of arguments (given 0, expected 1))"
+  },
+  {
+    "omitted_patch": "20",
+    "condition": "compiled-conduit-v11-final-without-20",
+    "series": [
+      "10-api-mode-json.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [
+      "93-upstream-regression-speculative-slot-to-i.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-20-build-02.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "b6646593e9c7014aa05dcb6a0a3fed57654f0e08cb8445038941ac26d6ae14b0"
+    },
+    "still_needed": true,
+    "failure": "roundhouse check refuses 6 constants: EventMachine and Faye::WebSocket (live_rooms.rb, live_socket.rb)"
+  },
+  {
+    "omitted_patch": "30",
+    "condition": "compiled-conduit-v11-final-without-30",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [
+      "93-upstream-regression-speculative-slot-to-i.patch"
+    ],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-30-build-02.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "2ffcc6f765b2ad0b92b9dfa485ddc6d6666e0bfe781c765fc6ed4c5d7423f082"
+    },
+    "gate": {
+      "exit": 0,
+      "execution": "evidence/execution/without-30-gate-02.json"
+    },
+    "common": {
+      "exit": 0,
+      "execution": "evidence/execution/without-30-common-02.json"
+    },
+    "edge": {
+      "exit": 0,
+      "execution": "evidence/execution/without-30-edge-02.json"
+    },
+    "recovery": {
+      "exit": 1,
+      "execution": "evidence/execution/without-30-recovery-02.json"
+    },
+    "still_needed": true,
+    "failure": "gate 17/17 API, live, 4/4, 13/13 and common HTTP 21/21 pass, edge 0/166 vs final; boot recovery leaves the seeded export pending (v10: same)"
+  },
+  {
+    "omitted_patch": "50",
+    "condition": "compiled-conduit-v11-final-without-50",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [
+      "93-upstream-regression-speculative-slot-to-i.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-50-build-02.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": null
+    },
+    "still_needed": true,
+    "failure": "Roundhouse does not compile: E0425 postgresql_enabled, which 74 calls; 50 is also the libpq backend the gate needs"
+  },
+  {
+    "omitted_patch": "60",
+    "condition": "compiled-conduit-v11-final-without-60",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [
+      "93-upstream-regression-speculative-slot-to-i.patch"
+    ],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-60-build-02.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "738aed4c7c4d872592426638107b442bfe89d12ea533c3d6f1d9d792ee8912d9"
+    },
+    "still_needed": true,
+    "failure": "roundhouse check refuses favorites_controller.rb:5 and profiles_controller.rb:8: the runtime has no find_or_create_by!"
+  },
+  {
+    "omitted_patch": "74",
+    "condition": "compiled-conduit-v11-final-without-74",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [
+      "93-upstream-regression-speculative-slot-to-i.patch"
+    ],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-74-build-02.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "66db3f0aa1790d1a309fbfe203cb8628e405eed96bb1e349de4a4f070413e83e"
+    },
+    "gate": {
+      "exit": 4,
+      "execution": "evidence/execution/without-74-gate-02.json"
+    },
+    "still_needed": true,
+    "failure": "gate: 16/17 API; GET /api/user/exports/not-an-export answers 500 (PostgreSQL 22P02 invalid input syntax for type bigint)"
+  },
+  {
+    "omitted_patch": "80",
+    "condition": "compiled-conduit-v11-final-without-80",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [
+      "93-upstream-regression-speculative-slot-to-i.patch"
+    ],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-80-build-02.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "9e051d570b08b4345c5674a1eeb8602021587d7ee9d9801d609fafc84bf8856a"
+    },
+    "gate": {
+      "exit": 1,
+      "execution": "evidence/execution/without-80-gate-02.json"
+    },
+    "still_needed": true,
+    "failure": "API 17/17, live protocol fails: GET /api/shares/<id>/live answers 500 (TypeError: no implicit conversion of LiveRooms::Room into Integer)"
+  },
+  {
+    "omitted_patch": "82",
+    "condition": "compiled-conduit-v11-final-without-82",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "83-upstream-regression-temporal-initialize.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [
+      "93-upstream-regression-speculative-slot-to-i.patch"
+    ],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-82-build-02.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "14ee792aa17fe67c02ec801e0ce8ccb48a6968709024e13b9e6477a074b2c251"
+    },
+    "gate": {
+      "exit": 4,
+      "execution": "evidence/execution/without-82-gate-02.json"
+    },
+    "still_needed": true,
+    "failure": "gate: 16/17 API; POST /api/articles/<slug>/share answers 500 (UPDATE \"\"article_shares\"\": zero-length delimited identifier)"
+  },
+  {
+    "omitted_patch": "83",
+    "condition": "compiled-conduit-v11-final-without-83",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [
+      "93-upstream-regression-speculative-slot-to-i.patch"
+    ],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-83-build-02.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "2c1cef900154b811c5bfdd0ecd38517a9a46b397a7912f8032dab89db3788bdb"
+    },
+    "gate": {
+      "exit": 4,
+      "execution": "evidence/execution/without-83-gate-02.json"
+    },
+    "still_needed": true,
+    "failure": "gate: 5/17 API; POST /api/articles answers 500 (TypeError: no implicit conversion of Time into String)"
+  },
+  {
+    "omitted_patch": "84",
+    "condition": "compiled-conduit-v11-final-without-84",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "82-upstream-regression-quoted-bulk-update.patch",
+      "83-upstream-regression-temporal-initialize.patch"
+    ],
+    "spinel_series": [
+      "93-upstream-regression-speculative-slot-to-i.patch"
+    ],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-84-build-02.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "022b1ace38ea4c9854b327ee5b9fa6c409ee8ca3e3a4106ab72383d8766f5edb"
+    },
+    "gate": {
+      "exit": 1,
+      "execution": "evidence/execution/without-84-gate-02.json"
+    },
+    "still_needed": true,
+    "failure": "API 17/17, live protocol fails as without 80 (TypeError: LiveRooms::Room into Integer)"
+  }
+]

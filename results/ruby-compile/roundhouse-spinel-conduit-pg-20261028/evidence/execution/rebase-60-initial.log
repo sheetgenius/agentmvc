@@ -1,0 +1,45 @@
+Checking patch runtime/ruby/active_record/base.rb...
+Hunk #2 succeeded at 431 (offset 5 lines).
+Checking patch runtime/ruby/active_record/base.rbs...
+Hunk #1 succeeded at 100 (offset 5 lines).
+Hunk #2 succeeded at 222 (offset 7 lines).
+Checking patch src/lower/assoc_attr_key.rs...
+Checking patch src/lower/first_or_create.rs...
+Checking patch src/lower/model_to_library/schema.rs...
+Hunk #1 succeeded at 1607 (offset 200 lines).
+error: while searching for:
+    // JSON columns are another exception: a
+    // `has_json` declaration builds its typed Hash from the flat readers; a
+    // schema-less column decodes through `JsonColumn.load`.
+    let arms: Vec<crate::expr::Arm> = table
+        .columns
+        .iter()
+        .map(|c| crate::expr::Arm {
+
+error: patch failed: src/lower/model_to_library/schema.rs:3142
+Hunk #3 succeeded at 3501 (offset 321 lines).
+Hunk #4 succeeded at 3532 (offset 321 lines).
+Checking patch src/lower/scope_chain.rs...
+Hunk #1 succeeded at 2949 (offset 183 lines).
+Hunk #2 succeeded at 3067 (offset 183 lines).
+Hunk #3 succeeded at 3118 (offset 183 lines).
+Hunk #4 succeeded at 3797 (offset 310 lines).
+Hunk #5 succeeded at 3913 (offset 310 lines).
+Hunk #6 succeeded at 4969 (offset 285 lines).
+Hunk #7 succeeded at 5144 (offset 286 lines).
+Hunk #8 succeeded at 6361 (offset 286 lines).
+Checking patch src/project.rs...
+Hunk #1 succeeded at 10133 (offset 891 lines).
+Checking patch tests/rails_surface.rs...
+Applied patch runtime/ruby/active_record/base.rb cleanly.
+Applied patch runtime/ruby/active_record/base.rbs cleanly.
+Applied patch src/lower/assoc_attr_key.rs cleanly.
+Applied patch src/lower/first_or_create.rs cleanly.
+Applying patch src/lower/model_to_library/schema.rs with 1 reject...
+Hunk #1 applied cleanly.
+Rejected hunk #2.
+Hunk #3 applied cleanly.
+Hunk #4 applied cleanly.
+Applied patch src/lower/scope_chain.rs cleanly.
+Applied patch src/project.rs cleanly.
+Applied patch tests/rails_surface.rs cleanly.
