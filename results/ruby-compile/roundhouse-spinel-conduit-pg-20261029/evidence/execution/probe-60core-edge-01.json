@@ -1,0 +1,21 @@
+{
+  "label": "probe-60core-edge-01",
+  "command": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261029/evidence/edge/edge_diff.py",
+    "run",
+    "conduit-v12-app:probe-60core",
+    "4491",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261029/evidence/probes/60core/edge-01.json"
+  ],
+  "build_dir": ".work/upstream/frontier/agents/conduit-v12/build/probe-60core",
+  "started": "2026-10-29T12:15:55.395082+00:00",
+  "finished": "2026-10-29T12:16:19.000135+00:00",
+  "elapsed_seconds": 23.605,
+  "exit": 0,
+  "log": "evidence/execution/probe-60core-edge-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/upstream/frontier/workshop/heavy.lock (shared slot)"
+  ]
+}

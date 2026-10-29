@@ -1,0 +1,19 @@
+{
+  "label": "build-without-20-01",
+  "command": [
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261029/reproduce/fresh-build.sh",
+    ".work/upstream/frontier/agents/conduit-v12/build/without-20/package/reproduce/build-images.sh",
+    "toolchain",
+    "compiled"
+  ],
+  "build_dir": ".work/upstream/frontier/agents/conduit-v12/build/without-20",
+  "started": "2026-10-29T11:55:52.608434+00:00",
+  "finished": "2026-10-29T11:58:22.862251+00:00",
+  "elapsed_seconds": 150.252,
+  "exit": 1,
+  "log": "evidence/execution/build-without-20-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/upstream/frontier/workshop/heavy.lock (shared slot)"
+  ]
+}

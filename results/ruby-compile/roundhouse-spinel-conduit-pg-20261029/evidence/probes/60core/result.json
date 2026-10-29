@@ -1,0 +1,50 @@
+{
+  "name": "60core",
+  "branch": "probe-60core",
+  "series": [
+    "10-api-mode-json.patch",
+    "20-raw-websocket.patch",
+    "30-jobs-boot.patch",
+    "50-postgresql-lane.patch",
+    "60-rails-surface.patch",
+    "74-integer-query-range.patch",
+    "80-gradual-return-stabilization.patch",
+    "84-upstream-regression-mixed-parameter-arm.patch"
+  ],
+  "manifest_sha256": "afcd336dede01dda95a51ead69811bb337a72d2b9af917546823525186ea02f9",
+  "roundhouse": "4036ea9c5db615e831971c0b4f8629e6405ffca0",
+  "spinel": "d4e804c62772189004ee7d147dd6436b2aff5730",
+  "build": {
+    "exit": 0,
+    "execution": "evidence/execution/build-probe-60core-01.json",
+    "roundhouse_compiled": true
+  },
+  "gate": {
+    "exit": 0,
+    "execution": "evidence/execution/probe-60core-gate-01.json"
+  },
+  "common": {
+    "exit": 0,
+    "execution": "evidence/execution/probe-60core-common-01.json"
+  },
+  "edge": {
+    "exit": 0,
+    "execution": "evidence/execution/probe-60core-edge-01.json"
+  },
+  "recovery": {
+    "exit": 0,
+    "execution": "evidence/execution/probe-60core-recovery-02.json",
+    "result": "recovery-probe-60core.json",
+    "note": "probe-60core-recovery-01 failed before any Docker work (unset shell variable gave a read-only build dir)"
+  },
+  "common_summary": {
+    "contract_passed": 21,
+    "contract_total": 21,
+    "quality_passed": 3,
+    "quality_total": 3
+  },
+  "edge_vs_final": "0 of 166 differ",
+  "gate_summary": "17/17 API, live protocol, 4/4 browser, 13/13 security",
+  "kept_hunks": "60: runtime/ruby/active_record/base.rb, base.rbs, src/lower/model_to_library/schema.rs (+47/-20)",
+  "dropped_hunks": "60: assoc_attr_key.rs and scope_chain.rs record .id predicates, zero-argument scope entries, find_each/update_all class roots, project.rs to_set require, tests/rails_surface.rs"
+}

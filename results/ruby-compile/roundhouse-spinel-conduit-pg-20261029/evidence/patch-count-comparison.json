@@ -1,0 +1,184 @@
+{
+  "condition": "v11 final series vs v12 final series (per-patch numstat; net combined diffs are in run.json)",
+  "patches": [
+    {
+      "repository": "roundhouse",
+      "patch": "10-api-mode-json.patch",
+      "v11": {
+        "added": 84,
+        "removed": 1,
+        "files": 8
+      },
+      "v12": {
+        "added": 84,
+        "removed": 1,
+        "files": 8
+      },
+      "decision": "retained; identical +/- lines"
+    },
+    {
+      "repository": "roundhouse",
+      "patch": "20-raw-websocket.patch",
+      "v11": {
+        "added": 347,
+        "removed": 16,
+        "files": 9
+      },
+      "v12": {
+        "added": 347,
+        "removed": 16,
+        "files": 9
+      },
+      "decision": "retained; identical +/- lines"
+    },
+    {
+      "repository": "roundhouse",
+      "patch": "30-jobs-boot.patch",
+      "v11": {
+        "added": 419,
+        "removed": 1,
+        "files": 8
+      },
+      "v12": {
+        "added": 419,
+        "removed": 1,
+        "files": 8
+      },
+      "decision": "retained; identical +/- lines"
+    },
+    {
+      "repository": "roundhouse",
+      "patch": "50-postgresql-lane.patch",
+      "v11": {
+        "added": 1015,
+        "removed": 24,
+        "files": 23
+      },
+      "v12": {
+        "added": 1008,
+        "removed": 22,
+        "files": 22
+      },
+      "decision": "retained; rebased or shrunk"
+    },
+    {
+      "repository": "roundhouse",
+      "patch": "60-rails-surface.patch",
+      "v11": {
+        "added": 190,
+        "removed": 32,
+        "files": 8
+      },
+      "v12": {
+        "added": 151,
+        "removed": 25,
+        "files": 7
+      },
+      "decision": "retained; rebased or shrunk"
+    },
+    {
+      "repository": "roundhouse",
+      "patch": "74-integer-query-range.patch",
+      "v11": {
+        "added": 236,
+        "removed": 26,
+        "files": 9
+      },
+      "v12": {
+        "added": 236,
+        "removed": 26,
+        "files": 9
+      },
+      "decision": "retained; identical +/- lines"
+    },
+    {
+      "repository": "roundhouse",
+      "patch": "80-gradual-return-stabilization.patch",
+      "v11": {
+        "added": 87,
+        "removed": 40,
+        "files": 3
+      },
+      "v12": {
+        "added": 87,
+        "removed": 40,
+        "files": 3
+      },
+      "decision": "retained; identical +/- lines"
+    },
+    {
+      "repository": "roundhouse",
+      "patch": "82-upstream-regression-quoted-bulk-update.patch",
+      "v11": {
+        "added": 2,
+        "removed": 4,
+        "files": 1
+      },
+      "v12": null,
+      "decision": "retired"
+    },
+    {
+      "repository": "roundhouse",
+      "patch": "83-upstream-regression-temporal-initialize.patch",
+      "v11": {
+        "added": 6,
+        "removed": 31,
+        "files": 1
+      },
+      "v12": null,
+      "decision": "retired"
+    },
+    {
+      "repository": "roundhouse",
+      "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+      "v11": {
+        "added": 8,
+        "removed": 0,
+        "files": 1
+      },
+      "v12": {
+        "added": 8,
+        "removed": 0,
+        "files": 1
+      },
+      "decision": "retained; identical +/- lines"
+    },
+    {
+      "repository": "spinel",
+      "patch": "93-upstream-regression-speculative-slot-to-i.patch",
+      "v11": {
+        "added": 5,
+        "removed": 0,
+        "files": 1
+      },
+      "v12": null,
+      "decision": "retired"
+    }
+  ],
+  "totals": {
+    "v11": {
+      "roundhouse": {
+        "added": 2394,
+        "removed": 175,
+        "patches": 10
+      },
+      "spinel": {
+        "added": 5,
+        "removed": 0,
+        "patches": 1
+      }
+    },
+    "v12": {
+      "roundhouse": {
+        "added": 2340,
+        "removed": 131,
+        "patches": 8
+      },
+      "spinel": {
+        "added": 0,
+        "removed": 0,
+        "patches": 0
+      }
+    }
+  }
+}

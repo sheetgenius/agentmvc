@@ -1,0 +1,198 @@
+[
+  {
+    "omitted_patch": "84",
+    "condition": "compiled-conduit-v12-final-without-84",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-84-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "7640be0aa74c3d72c43c274e58773040b5b1e0a6b86b307d08ecef3b6d8bf6ec"
+    },
+    "gate": {
+      "exit": 1,
+      "execution": "evidence/execution/without-84-gate-01.json"
+    }
+  },
+  {
+    "omitted_patch": "10",
+    "condition": "compiled-conduit-v12-final-without-10",
+    "series": [
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-10-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "8a56baeea3b58996c2d3dada5f115a014aecdd4a16da63e0a17900686d709fe1"
+    },
+    "gate": {
+      "exit": 4,
+      "execution": "evidence/execution/without-10-gate-01.json"
+    }
+  },
+  {
+    "omitted_patch": "80",
+    "condition": "compiled-conduit-v12-final-without-80",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-80-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "d852de83246fb42e05766930f2df766045acda580691e0e1f3a57b94299e11f3"
+    },
+    "gate": {
+      "exit": 1,
+      "execution": "evidence/execution/without-80-gate-01.json"
+    }
+  },
+  {
+    "omitted_patch": "60",
+    "condition": "compiled-conduit-v12-final-without-60",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-60-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "9899b238bcb2cb54ff1b4e4622df2ddeb6caea908dcb9bdffd94fc06ba2e80f0"
+    },
+    "gate": {
+      "exit": 4,
+      "execution": "evidence/execution/without-60-gate-01.json"
+    }
+  },
+  {
+    "omitted_patch": "74",
+    "condition": "compiled-conduit-v12-final-without-74",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "80-gradual-return-stabilization.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-74-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "cd3daeae6ee0adf50acb99bb02d55d933abafeaf9047bb27a7e85414ec7dd08b"
+    },
+    "gate": {
+      "exit": 4,
+      "execution": "evidence/execution/without-74-gate-01.json"
+    }
+  },
+  {
+    "omitted_patch": "20",
+    "condition": "compiled-conduit-v12-final-without-20",
+    "series": [
+      "10-api-mode-json.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-20-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "5da9b2faed64c3ef552725a28c8557eb5a522f5e907a8cd647db9f1dfbc02928"
+    }
+  },
+  {
+    "omitted_patch": "30",
+    "condition": "compiled-conduit-v12-final-without-30",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-30-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "a6fad7ef0fc0a8aaf581f689b54905459d756eca2d1642a8b4f5d6bd5c91ba13"
+    },
+    "gate": {
+      "exit": 0,
+      "execution": "evidence/execution/without-30-gate-01.json"
+    },
+    "common": {
+      "exit": 0,
+      "execution": "evidence/execution/without-30-common-01.json"
+    },
+    "edge": {
+      "exit": 0,
+      "execution": "evidence/execution/without-30-edge-01.json"
+    },
+    "recovery": {
+      "exit": 1,
+      "execution": "evidence/execution/without-30-recovery-01.json"
+    }
+  },
+  {
+    "omitted_patch": "50",
+    "condition": "compiled-conduit-v12-final-without-50",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-50-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": null
+    }
+  }
+]

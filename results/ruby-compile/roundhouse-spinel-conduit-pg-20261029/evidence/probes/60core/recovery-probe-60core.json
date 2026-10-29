@@ -1,0 +1,14 @@
+{
+  "condition": "supplemental-pending-export-boot-20261022",
+  "label": "probe-60core",
+  "image": "conduit-v12-app:probe-60core",
+  "expected": "done",
+  "procedure": "Seed a durable pending export before starting the compiled server; send no enqueue request.",
+  "image_id": "sha256:56eb04b32007c41737eb7edfe932203b1c70aabd857183f034c2acd313dd3712",
+  "before": "pending",
+  "after": "done",
+  "articles": "[]",
+  "completed": "t",
+  "server_sha256": "493aaf8026f4a21c0557c519c704dc77d3c92d3525783f33847a3c4ce4fa7215",
+  "pass": true
+}

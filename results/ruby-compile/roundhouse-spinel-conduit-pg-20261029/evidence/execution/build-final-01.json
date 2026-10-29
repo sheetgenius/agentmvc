@@ -1,0 +1,19 @@
+{
+  "label": "build-final-01",
+  "command": [
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261029/reproduce/fresh-build.sh",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261029/reproduce/build-images.sh",
+    "toolchain",
+    "compiled"
+  ],
+  "build_dir": ".work/upstream/frontier/agents/conduit-v12/build/final",
+  "started": "2026-10-29T11:23:54.347875+00:00",
+  "finished": "2026-10-29T11:27:58.799073+00:00",
+  "elapsed_seconds": 244.449,
+  "exit": 0,
+  "log": "evidence/execution/build-final-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/upstream/frontier/workshop/heavy.lock (shared slot)"
+  ]
+}

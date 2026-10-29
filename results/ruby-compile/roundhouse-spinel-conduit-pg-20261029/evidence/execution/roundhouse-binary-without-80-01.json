@@ -1,0 +1,23 @@
+{
+  "label": "roundhouse-binary-without-80-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v12-rhbin-without-80",
+    "conduit-v12-toolchain:without-80",
+    "sha256sum",
+    "/usr/local/bin/roundhouse"
+  ],
+  "build_dir": ".work/upstream/frontier/agents/conduit-v12/build/without-80",
+  "started": "2026-10-29T11:44:22.358774+00:00",
+  "finished": "2026-10-29T11:44:22.838947+00:00",
+  "elapsed_seconds": 0.48,
+  "exit": 0,
+  "log": "evidence/execution/roundhouse-binary-without-80-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/upstream/frontier/workshop/heavy.lock (shared slot)"
+  ]
+}

@@ -1,0 +1,617 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v12-20261029",
+  "date": "2026-10-29",
+  "previous": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261028 (v11; unchanged)",
+  "input_series": "the v11 final series minus Roundhouse 82 and 83 and Spinel 93; patch 50 without its keyless-save guard and two dead substitutions; patch 60 without its find_or_create_by! hunks",
+  "status": "complete",
+  "ruby": {
+    "variant": "4.0.7",
+    "toolchain": "4.0.7",
+    "frozen_rails_reference": "3.3.2",
+    "gemfile_changes": [],
+    "lockfile_changes": []
+  },
+  "source": {
+    "reference": "results/one-shot-v2-rails-expert/pilot-1/reference-1/source",
+    "variant": "variant/source (byte-identical to v11, hence to v10)",
+    "gated_files": 75,
+    "all_byte_identical_v11": true,
+    "source_tree_sha256": "294038b23f5579c56b61809cb0db38a1cfa0b39b8b0d4de4d3a65720a76b50f2",
+    "verification": "evidence/source-verification.json"
+  },
+  "toolchain": {
+    "roundhouse_base": "4036ea9c5db615e831971c0b4f8629e6405ffca0",
+    "roundhouse_patch_count": 8,
+    "roundhouse_patches": "patches/roundhouse/series",
+    "roundhouse_delta": {
+      "added": 2340,
+      "removed": 131,
+      "files": 54,
+      "source": "evidence/roundhouse-final-combined.diff"
+    },
+    "spinel_base": "d4e804c62772189004ee7d147dd6436b2aff5730",
+    "spinel_version": "2026.10.25+1053",
+    "spinel_patch_count": 0,
+    "spinel_patches": "patches/spinel/series (empty)",
+    "spinel_delta": {
+      "added": 0,
+      "removed": 0,
+      "files": 0
+    },
+    "heads_observed_at": "2026-10-29T11:11:15Z",
+    "roundhouse_manifest_sha256": "131c3ed0b5524e62592447cd45ec71807098527384915684eaa65efcb53673f7",
+    "spinel_manifest_sha256": "8bf27a9ca94bcd2bc3286ae2e8fc39a5c67da286ca927f36a2ec89653a459201",
+    "vendor_tree_sha256": {
+      "roundhouse": "eb4e90a4c75a2e1dc285559aebebf7a84bd2cf8a65da3965357a46ab2b8e07d4",
+      "spinel": "ab070f4a37dc3be037679b3dae00b6fc34a7241399e9704379f4550d5e71795e"
+    },
+    "toolchain_roundhouse_sha256": "81186a4d4772650aad66954d4b85b3512112ee7d331d9141eae5c11d15c523f9",
+    "flags": "Ruby 4.0.7; Rust 1.98.1; RH_DATABASE_ADAPTER=postgresql; strict emit; spin build -- --cc=clang --jobs=8; SPINEL_WORKERS=4",
+    "cargo_cache_ids": "conduit-v12-cargo-{registry,git,target} (v11 shared v10's)",
+    "scoreboard": "evidence/patch-count-comparison.json",
+    "fresh_replay": "evidence/fresh-replay-01.log"
+  },
+  "images": {
+    "toolchain": {
+      "tag": "conduit-v12-toolchain:131c3ed0b552",
+      "id": "sha256:ade20cd8ebae53ad6f907dd8290ace7a194e476caca43ce850e1ee0450d090ce",
+      "bytes": 2072749824
+    },
+    "compiled": {
+      "tag": "conduit-v12-app:compiled",
+      "id": "sha256:630a3d2c5809586bf18e497ee98e723df641aaad7002d9459c8b721eed568a34",
+      "bytes": 121394711,
+      "server_sha256": "749687221c40c9b85ff1afdb0b80b70ab04a763667e0320ce8204f5675ef28c2"
+    },
+    "postgres": {
+      "tag": "conduit-v12-postgres:17",
+      "id": "sha256:b05fab95d0492cb222fbb8cd0e07707c2f3f778518e85b5a2600de8bc2d1450e",
+      "bytes": 290942266
+    },
+    "browser": {
+      "tag": "conduit-v12-browser:1.63.0",
+      "id": "sha256:135987d9d00624b4f768ad62b1041971b57f7a5b19f99f41337069a4c4892122",
+      "bytes": 2517082214
+    },
+    "rails_reference_for_edge": "not rebuilt; evidence/edge compares with v11's recorded fresh Rails run"
+  },
+  "gates": {
+    "compiled_production": {
+      "label": "compiled-gate-01",
+      "command": [
+        "results/ruby-compile/roundhouse-spinel-conduit-pg-20261029/reproduce/run-gate.sh",
+        "compiled",
+        "4491"
+      ],
+      "started": "2026-10-29T11:28:08.224372+00:00",
+      "finished": "2026-10-29T11:31:58.021628+00:00",
+      "elapsed_seconds": 229.795,
+      "exit": 0,
+      "log": "evidence/execution/compiled-gate-01.log"
+    },
+    "variant_rails_production": {
+      "label": "rails-gate-01",
+      "command": [
+        "results/ruby-compile/roundhouse-spinel-conduit-pg-20261029/reproduce/run-gate.sh",
+        "rails",
+        "4491"
+      ],
+      "started": "2026-10-29T11:32:38.699019+00:00",
+      "finished": "2026-10-29T11:33:05.199786+00:00",
+      "elapsed_seconds": 26.5,
+      "exit": 0,
+      "log": "evidence/execution/rails-gate-01.log"
+    },
+    "coverage_compiled": {
+      "api_files": "17/17",
+      "security_files": "13/13",
+      "live_protocol": "pass",
+      "browser_passed": 4,
+      "browser_failed": 0,
+      "security": "13/13",
+      "security_slow_ms": {
+        "s09_oversized_body": 156015
+      },
+      "exit": 0
+    },
+    "coverage_rails": {
+      "api_files": "17/17",
+      "security_files": "13/13",
+      "live_protocol": "pass",
+      "browser_passed": 4,
+      "browser_failed": 0,
+      "security": "13/13",
+      "exit": 0
+    },
+    "common_http": {
+      "contract": "21/21",
+      "quality": "3/3",
+      "file": "evidence/compiled-v12-common-http-probe.json",
+      "huge_ids": "huge_export_id and huge_comment_id answer 404 without Spinel 93"
+    },
+    "boot_recovery": {
+      "condition": "supplemental-pending-export-boot-20261022",
+      "label": "final",
+      "image": "conduit-v12-app:compiled",
+      "expected": "done",
+      "procedure": "Seed a durable pending export before starting the compiled server; send no enqueue request.",
+      "image_id": "sha256:630a3d2c5809586bf18e497ee98e723df641aaad7002d9459c8b721eed568a34",
+      "before": "pending",
+      "after": "done",
+      "articles": "[]",
+      "completed": "t",
+      "server_sha256": "749687221c40c9b85ff1afdb0b80b70ab04a763667e0320ce8204f5675ef28c2",
+      "pass": true
+    },
+    "compiled_binary": {
+      "container": "conduit-v12-gate-conduit-v12-ws-compiled-95082-app",
+      "image_id": "sha256:630a3d2c5809586bf18e497ee98e723df641aaad7002d9459c8b721eed568a34",
+      "server_sha256": "749687221c40c9b85ff1afdb0b80b70ab04a763667e0320ce8204f5675ef28c2"
+    }
+  },
+  "edge_comparison": {
+    "condition": "v12 final (Roundhouse 8, no Spinel patches) vs Rails reference-1 (fresh run recorded in v11) and vs recorded v11 final",
+    "v12_vs_rails_reference_differences": 5,
+    "v12_vs_v11_differences": 0,
+    "responses": 166,
+    "same_differences_as_v11": [
+      "login_password_number_123456789",
+      "login_password_number_password123",
+      "update_malformed",
+      "update_password_null",
+      "update_password_number"
+    ],
+    "new_vs_v11_list": [],
+    "gone_vs_v11_list": [],
+    "file": "evidence/edge/summary.json"
+  },
+  "retirements": {
+    "retired": [
+      "roundhouse 82 (whole patch)",
+      "roundhouse 83 (whole patch)",
+      "roundhouse 60: find_or_create_by! hunks (first_or_create.rs, three scope_chain.rs admissions, bang test)",
+      "roundhouse 50: keyless-save guard (base.rb, connection.rb)",
+      "roundhouse 50: qcol substitution in postgresql_files (dead text)",
+      "roundhouse 50: active_support_ext.rb substitution in postgresql_files (dead text, already at v11)",
+      "spinel 93 (whole patch)"
+    ],
+    "checks": "evidence/retirement-checks.json",
+    "omission_gates": [
+      {
+        "omitted_patch": "84",
+        "condition": "compiled-conduit-v12-final-without-84",
+        "series": [
+          "10-api-mode-json.patch",
+          "20-raw-websocket.patch",
+          "30-jobs-boot.patch",
+          "50-postgresql-lane.patch",
+          "60-rails-surface.patch",
+          "74-integer-query-range.patch",
+          "80-gradual-return-stabilization.patch"
+        ],
+        "spinel_series": [],
+        "build": {
+          "exit": 0,
+          "execution": "evidence/execution/build-without-84-01.json",
+          "roundhouse_compiled": true,
+          "toolchain_roundhouse_sha256": "7640be0aa74c3d72c43c274e58773040b5b1e0a6b86b307d08ecef3b6d8bf6ec"
+        },
+        "gate": {
+          "exit": 1,
+          "execution": "evidence/execution/without-84-gate-01.json"
+        }
+      },
+      {
+        "omitted_patch": "10",
+        "condition": "compiled-conduit-v12-final-without-10",
+        "series": [
+          "20-raw-websocket.patch",
+          "30-jobs-boot.patch",
+          "50-postgresql-lane.patch",
+          "60-rails-surface.patch",
+          "74-integer-query-range.patch",
+          "80-gradual-return-stabilization.patch",
+          "84-upstream-regression-mixed-parameter-arm.patch"
+        ],
+        "spinel_series": [],
+        "build": {
+          "exit": 0,
+          "execution": "evidence/execution/build-without-10-01.json",
+          "roundhouse_compiled": true,
+          "toolchain_roundhouse_sha256": "8a56baeea3b58996c2d3dada5f115a014aecdd4a16da63e0a17900686d709fe1"
+        },
+        "gate": {
+          "exit": 4,
+          "execution": "evidence/execution/without-10-gate-01.json"
+        }
+      },
+      {
+        "omitted_patch": "80",
+        "condition": "compiled-conduit-v12-final-without-80",
+        "series": [
+          "10-api-mode-json.patch",
+          "20-raw-websocket.patch",
+          "30-jobs-boot.patch",
+          "50-postgresql-lane.patch",
+          "60-rails-surface.patch",
+          "74-integer-query-range.patch",
+          "84-upstream-regression-mixed-parameter-arm.patch"
+        ],
+        "spinel_series": [],
+        "build": {
+          "exit": 0,
+          "execution": "evidence/execution/build-without-80-01.json",
+          "roundhouse_compiled": true,
+          "toolchain_roundhouse_sha256": "d852de83246fb42e05766930f2df766045acda580691e0e1f3a57b94299e11f3"
+        },
+        "gate": {
+          "exit": 1,
+          "execution": "evidence/execution/without-80-gate-01.json"
+        }
+      },
+      {
+        "omitted_patch": "60",
+        "condition": "compiled-conduit-v12-final-without-60",
+        "series": [
+          "10-api-mode-json.patch",
+          "20-raw-websocket.patch",
+          "30-jobs-boot.patch",
+          "50-postgresql-lane.patch",
+          "74-integer-query-range.patch",
+          "80-gradual-return-stabilization.patch",
+          "84-upstream-regression-mixed-parameter-arm.patch"
+        ],
+        "spinel_series": [],
+        "build": {
+          "exit": 0,
+          "execution": "evidence/execution/build-without-60-01.json",
+          "roundhouse_compiled": true,
+          "toolchain_roundhouse_sha256": "9899b238bcb2cb54ff1b4e4622df2ddeb6caea908dcb9bdffd94fc06ba2e80f0"
+        },
+        "gate": {
+          "exit": 4,
+          "execution": "evidence/execution/without-60-gate-01.json"
+        }
+      },
+      {
+        "omitted_patch": "74",
+        "condition": "compiled-conduit-v12-final-without-74",
+        "series": [
+          "10-api-mode-json.patch",
+          "20-raw-websocket.patch",
+          "30-jobs-boot.patch",
+          "50-postgresql-lane.patch",
+          "60-rails-surface.patch",
+          "80-gradual-return-stabilization.patch",
+          "84-upstream-regression-mixed-parameter-arm.patch"
+        ],
+        "spinel_series": [],
+        "build": {
+          "exit": 0,
+          "execution": "evidence/execution/build-without-74-01.json",
+          "roundhouse_compiled": true,
+          "toolchain_roundhouse_sha256": "cd3daeae6ee0adf50acb99bb02d55d933abafeaf9047bb27a7e85414ec7dd08b"
+        },
+        "gate": {
+          "exit": 4,
+          "execution": "evidence/execution/without-74-gate-01.json"
+        }
+      },
+      {
+        "omitted_patch": "20",
+        "condition": "compiled-conduit-v12-final-without-20",
+        "series": [
+          "10-api-mode-json.patch",
+          "30-jobs-boot.patch",
+          "50-postgresql-lane.patch",
+          "60-rails-surface.patch",
+          "74-integer-query-range.patch",
+          "80-gradual-return-stabilization.patch",
+          "84-upstream-regression-mixed-parameter-arm.patch"
+        ],
+        "spinel_series": [],
+        "build": {
+          "exit": 1,
+          "execution": "evidence/execution/build-without-20-01.json",
+          "roundhouse_compiled": true,
+          "toolchain_roundhouse_sha256": "5da9b2faed64c3ef552725a28c8557eb5a522f5e907a8cd647db9f1dfbc02928"
+        }
+      },
+      {
+        "omitted_patch": "30",
+        "condition": "compiled-conduit-v12-final-without-30",
+        "series": [
+          "10-api-mode-json.patch",
+          "20-raw-websocket.patch",
+          "50-postgresql-lane.patch",
+          "60-rails-surface.patch",
+          "74-integer-query-range.patch",
+          "80-gradual-return-stabilization.patch",
+          "84-upstream-regression-mixed-parameter-arm.patch"
+        ],
+        "spinel_series": [],
+        "build": {
+          "exit": 0,
+          "execution": "evidence/execution/build-without-30-01.json",
+          "roundhouse_compiled": true,
+          "toolchain_roundhouse_sha256": "a6fad7ef0fc0a8aaf581f689b54905459d756eca2d1642a8b4f5d6bd5c91ba13"
+        },
+        "gate": {
+          "exit": 0,
+          "execution": "evidence/execution/without-30-gate-01.json"
+        },
+        "common": {
+          "exit": 0,
+          "execution": "evidence/execution/without-30-common-01.json"
+        },
+        "edge": {
+          "exit": 0,
+          "execution": "evidence/execution/without-30-edge-01.json"
+        },
+        "recovery": {
+          "exit": 1,
+          "execution": "evidence/execution/without-30-recovery-01.json"
+        }
+      },
+      {
+        "omitted_patch": "50",
+        "condition": "compiled-conduit-v12-final-without-50",
+        "series": [
+          "10-api-mode-json.patch",
+          "20-raw-websocket.patch",
+          "30-jobs-boot.patch",
+          "60-rails-surface.patch",
+          "74-integer-query-range.patch",
+          "80-gradual-return-stabilization.patch",
+          "84-upstream-regression-mixed-parameter-arm.patch"
+        ],
+        "spinel_series": [],
+        "build": {
+          "exit": 1,
+          "execution": "evidence/execution/build-without-50-01.json",
+          "roundhouse_compiled": true,
+          "toolchain_roundhouse_sha256": null
+        }
+      }
+    ]
+  },
+  "rebase_adaptations": [
+    "50: keyless-save guard dropped (#1263); visitor keeps upstream Dialect code (6bb468425) beside the RH_DATABASE_ADAPTER branches; target_files_inner runs postgresql_files and apply_spinel_int_overflow (5fa181268); dead active_support_ext.rb and qcol substitutions trimmed (emission byte-identical)",
+    "60: find_or_create_by! hunks dropped (#1513); first_or_create.rs branch wrapping now upstream",
+    "74: context only; column_predicate keeps upstream quoting (bd51b6974) before the integer-limit check",
+    "10, 20, 30, 80, 84: identical +/- lines; hunk metadata refreshed"
+  ],
+  "new_regressions": [],
+  "probes": {
+    "60core": {
+      "name": "60core",
+      "branch": "probe-60core",
+      "series": [
+        "10-api-mode-json.patch",
+        "20-raw-websocket.patch",
+        "30-jobs-boot.patch",
+        "50-postgresql-lane.patch",
+        "60-rails-surface.patch",
+        "74-integer-query-range.patch",
+        "80-gradual-return-stabilization.patch",
+        "84-upstream-regression-mixed-parameter-arm.patch"
+      ],
+      "manifest_sha256": "afcd336dede01dda95a51ead69811bb337a72d2b9af917546823525186ea02f9",
+      "roundhouse": "4036ea9c5db615e831971c0b4f8629e6405ffca0",
+      "spinel": "d4e804c62772189004ee7d147dd6436b2aff5730",
+      "build": {
+        "exit": 0,
+        "execution": "evidence/execution/build-probe-60core-01.json",
+        "roundhouse_compiled": true
+      },
+      "gate": {
+        "exit": 0,
+        "execution": "evidence/execution/probe-60core-gate-01.json"
+      },
+      "common": {
+        "exit": 0,
+        "execution": "evidence/execution/probe-60core-common-01.json"
+      },
+      "edge": {
+        "exit": 0,
+        "execution": "evidence/execution/probe-60core-edge-01.json"
+      },
+      "recovery": {
+        "exit": 0,
+        "execution": "evidence/execution/probe-60core-recovery-02.json",
+        "result": "recovery-probe-60core.json",
+        "note": "probe-60core-recovery-01 failed before any Docker work (unset shell variable gave a read-only build dir)"
+      },
+      "common_summary": {
+        "contract_passed": 21,
+        "contract_total": 21,
+        "quality_passed": 3,
+        "quality_total": 3
+      },
+      "edge_vs_final": "0 of 166 differ",
+      "gate_summary": "17/17 API, live protocol, 4/4 browser, 13/13 security",
+      "kept_hunks": "60: runtime/ruby/active_record/base.rb, base.rbs, src/lower/model_to_library/schema.rs (+47/-20)",
+      "dropped_hunks": "60: assoc_attr_key.rs and scope_chain.rs record .id predicates, zero-argument scope entries, find_each/update_all class roots, project.rs to_set require, tests/rails_surface.rs",
+      "summary": "patch 60 cut to its projection and String [] hunks (+47/-20) passes the gate, common HTTP, edge and boot recovery; not adopted, because the one-patch omissions ran against the series as rebased"
+    }
+  },
+  "not_retired_by_1263": "50 keeps its two test-emission hunks (CZ50-24/25): #1263 as merged covers only the keyless guard; the gate cannot exercise them (test/ is excluded from the image build)",
+  "timing": {
+    "kind": "wall-clock records from step logs on a shared host (other lanes may run concurrently); not benchmarks",
+    "rows": [
+      {
+        "measure": "toolchain + compiled image build",
+        "v11": {
+          "seconds": 234.1,
+          "label": "build-final-01",
+          "note": "Spinel rebuilt for patch 93"
+        },
+        "v12": {
+          "seconds": 244.4,
+          "label": "build-final-01",
+          "note": "new conduit-v12-cargo-* caches: dependencies compiled cold (about 33 s)"
+        }
+      },
+      {
+        "measure": "Spinel make deps/make/install",
+        "v11": {
+          "seconds": 59.3,
+          "label": "build-final-01 #15"
+        },
+        "v12": {
+          "seconds": 46.2,
+          "label": "build-final-01 #15"
+        }
+      },
+      {
+        "measure": "Roundhouse cargo build --release",
+        "v11": {
+          "seconds": 103.7,
+          "label": "build-final-01 #18"
+        },
+        "v12": {
+          "seconds": 128.0,
+          "label": "build-final-01 #18",
+          "note": "includes the cold dependency build"
+        }
+      },
+      {
+        "measure": "app spin build in image build",
+        "v11": {
+          "seconds": 55.5,
+          "label": "build-final-01 #16 (build stage)"
+        },
+        "v12": {
+          "seconds": 40.1,
+          "label": "build-final-01 #16 (build stage)"
+        }
+      },
+      {
+        "measure": "compiled production gate",
+        "v11": {
+          "seconds": 264.7,
+          "label": "compiled-gate-04",
+          "note": "s09 oversized body alone took 181.9 s"
+        },
+        "v12": {
+          "seconds": 229.8,
+          "label": "compiled-gate-01",
+          "note": "s09 oversized body alone took 156.0 s"
+        }
+      },
+      {
+        "measure": "app spin build inside the gate",
+        "v11": {
+          "seconds": 61.0,
+          "label": "compiled-gate-04 #16"
+        },
+        "v12": {
+          "seconds": 41.3,
+          "label": "compiled-gate-01 #16"
+        }
+      },
+      {
+        "measure": "Rails production gate",
+        "v11": {
+          "seconds": 21.8,
+          "label": "rails-gate-01"
+        },
+        "v12": {
+          "seconds": 26.5,
+          "label": "rails-gate-01"
+        }
+      },
+      {
+        "measure": "analysis / emission peak RSS (KiB), final gate build",
+        "v11": {
+          "analysis": 45492,
+          "emission": 55656,
+          "label": "compiled-gate-04"
+        },
+        "v12": {
+          "analysis": 45896,
+          "emission": 56656,
+          "label": "compiled-gate-01"
+        }
+      },
+      {
+        "measure": "analysis / emission peak RSS (KiB), final image build",
+        "v11": {
+          "analysis": 44324,
+          "emission": 57136,
+          "label": "build-final-01"
+        },
+        "v12": {
+          "analysis": 45944,
+          "emission": 56336,
+          "label": "build-final-01"
+        }
+      },
+      {
+        "measure": "compiled image bytes",
+        "v11": {
+          "bytes": 121328927
+        },
+        "v12": {
+          "bytes": 121394711
+        }
+      },
+      {
+        "measure": "hardening s09 oversized body",
+        "v11": {
+          "seconds": 181.9,
+          "label": "compiled-gate-04"
+        },
+        "v12": {
+          "seconds": 156.0,
+          "label": "compiled-gate-01",
+          "note": "passes; Rails 0.2 s in v11. Not investigated"
+        }
+      }
+    ]
+  },
+  "limits": [
+    "Retirements are judged by the gate and the supplemental probes (common HTTP, edge, boot recovery); no full upstream test suite was run",
+    "Omissions drop whole patches; hunks inside retained patches were not tested one by one",
+    "Timings come from a shared host: wall-clock records, not benchmarks"
+  ],
+  "constraints": {
+    "docker_lock": ".work/lane-docker.lock",
+    "heavy_lock": "workshop/heavy.lock (shared)",
+    "resource_prefix": "conduit-v12-",
+    "port": 4491
+  },
+  "cleanup": {
+    "observed_utc": "2026-10-29T12:18:07.293369+00:00",
+    "removed_containers": [],
+    "removed_networks": [],
+    "remaining_task_containers": [],
+    "remaining_task_networks": [],
+    "retained_images": [
+      "conduit-v12-app:compiled",
+      "conduit-v12-app:probe-60core",
+      "conduit-v12-app:without-10",
+      "conduit-v12-app:without-30",
+      "conduit-v12-app:without-60",
+      "conduit-v12-app:without-74",
+      "conduit-v12-app:without-80",
+      "conduit-v12-app:without-84",
+      "conduit-v12-browser:1.63.0",
+      "conduit-v12-hurl:gate",
+      "conduit-v12-postgres:17",
+      "conduit-v12-toolchain:131c3ed0b552",
+      "conduit-v12-toolchain:probe-60core",
+      "conduit-v12-toolchain:without-10",
+      "conduit-v12-toolchain:without-20",
+      "conduit-v12-toolchain:without-30",
+      "conduit-v12-toolchain:without-60",
+      "conduit-v12-toolchain:without-74",
+      "conduit-v12-toolchain:without-80",
+      "conduit-v12-toolchain:without-84"
+    ],
+    "retained_build_cache": "BuildKit cache mounts conduit-v12-cargo-{registry,git,target} (no prune is allowed)",
+    "volume_or_prune_operations": "none",
+    "other_sessions": "not touched or inspected (other projects' containers and the shared builder)"
+  },
+  "written_utc": "2026-10-29T12:18:17.383763+00:00"
+}

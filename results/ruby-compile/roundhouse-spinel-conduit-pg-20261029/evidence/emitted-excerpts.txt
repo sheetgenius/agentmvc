@@ -1,0 +1,44 @@
+# Excerpts of the strict Spinel emission of variant/source with the final v12 Roundhouse
+# (local build of the v12-series tree, RH_DATABASE_ADAPTER=postgresql; 451 files, byte-identical with and
+# without patch 50's two dead substitutions). #1513 inlines both find_or_create_by! calls; #1263 marks the
+# id: false tables keyless, and save skips id= for them.
+
+## app/controllers/favorites_controller.rb (source line 5: Favorite.find_or_create_by!(article: article, user: @current_user))
+  def create
+    require_user!
+#<SPINEL_SOURCE>app/app/controllers/favorites_controller.rb:4
+    article = public_article!
+#<SPINEL_SOURCE>app/app/controllers/favorites_controller.rb:5
+    _find_or_create_record_115 = ActiveRecord::Relation.new(Favorite).find_by(article_id: article, user_id: @current_user)
+    if _find_or_create_record_115.nil?
+      _find_or_create_record_115 = Favorite.new({ article: article, user: @current_user })
+      _find_or_create_record_115.save!
+    end
+    _find_or_create_record_115
+
+## app/controllers/profiles_controller.rb (source line 8: Follow.find_or_create_by!(follower: @current_user, followed: user) unless user == @current_user)
+    if user == @current_user
+      nil
+    else
+      _find_or_create_record_174 = ActiveRecord::Relation.new(Follow).find_by(follower_id: @current_user, followed_id: user)
+      if _find_or_create_record_174.nil?
+        _find_or_create_record_174 = Follow.new({ follower: @current_user, followed: user })
+        _find_or_create_record_174.save!
+      end
+      _find_or_create_record_174
+    end
+
+## app/models/favorite.rb and app/models/follow.rb
+  def self.primary_key
+    nil
+  end
+  def self.primary_key
+    nil
+  end
+
+## runtime/active_record/connection.rb (upstream #1263 guard, no patch 50 hunk)
+        fill_timestamps(true) if stamps_timestamps?
+        @__id_before_insert = @id
+        inserted_key = _adapter_insert
+        self.id = inserted_key unless self.class.primary_key.nil?
+        @persisted = true

@@ -1,0 +1,159 @@
+{
+  "condition": "v12 final (Roundhouse 8, no Spinel patches) vs Rails reference-1 (fresh run recorded in v11) and vs recorded v11 final",
+  "v12_image_id": "sha256:630a3d2c5809586bf18e497ee98e723df641aaad7002d9459c8b721eed568a34",
+  "v11_image_id": "sha256:ff0ae976b183d43a1fcb78c47e5df01956f9a37213b8448edffae5f1f4c80fe7",
+  "rails_image_id": "sha256:ba9bcbac9a44c943649c2b3f1ac7fc32dac9086553b5eed994b6b95718bc757e",
+  "v12_vs_rails_reference_1": {
+    "responses": 166,
+    "differences": 5,
+    "names": [
+      "update_password_null",
+      "update_password_number",
+      "login_password_number_password123",
+      "login_password_number_123456789",
+      "update_malformed"
+    ],
+    "rows": [
+      {
+        "name": "update_password_null",
+        "v12": {
+          "name": "update_password_null",
+          "status": 422,
+          "body": {
+            "errors": {
+              "password": [
+                "can't be blank"
+              ]
+            }
+          }
+        },
+        "rails": {
+          "name": "update_password_null",
+          "status": 422,
+          "body": {
+            "errors": {
+              "password": [
+                "can't be blank",
+                "can't be blank"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "update_password_number",
+        "v12": {
+          "name": "update_password_number",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u20@example.com",
+              "token": "<token>",
+              "username": "u20",
+              "bio": null,
+              "image": null
+            }
+          }
+        },
+        "rails": {
+          "name": "update_password_number",
+          "status": 500,
+          "body": {
+            "status": 500,
+            "error": "Internal Server Error"
+          }
+        }
+      },
+      {
+        "name": "login_password_number_password123",
+        "v12": {
+          "name": "login_password_number_password123",
+          "status": 401,
+          "body": {
+            "errors": {
+              "credentials": [
+                "invalid"
+              ]
+            }
+          }
+        },
+        "rails": {
+          "name": "login_password_number_password123",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u20@example.com",
+              "token": "<token>",
+              "username": "u20",
+              "bio": null,
+              "image": null
+            }
+          }
+        }
+      },
+      {
+        "name": "login_password_number_123456789",
+        "v12": {
+          "name": "login_password_number_123456789",
+          "status": 200,
+          "body": {
+            "user": {
+              "email": "u20@example.com",
+              "token": "<token>",
+              "username": "u20",
+              "bio": null,
+              "image": null
+            }
+          }
+        },
+        "rails": {
+          "name": "login_password_number_123456789",
+          "status": 401,
+          "body": {
+            "errors": {
+              "credentials": [
+                "invalid"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "update_malformed",
+        "v12": {
+          "name": "update_malformed",
+          "status": 400,
+          "body": {
+            "_raw": "<h1>400 Bad Request</h1>"
+          }
+        },
+        "rails": {
+          "name": "update_malformed",
+          "status": 400,
+          "body": {
+            "errors": {
+              "body": [
+                "is invalid"
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "v12_vs_v11": {
+    "responses": 166,
+    "differences": 0,
+    "names": [],
+    "rows": []
+  },
+  "same_differences_as_v11": [
+    "login_password_number_123456789",
+    "login_password_number_password123",
+    "update_malformed",
+    "update_password_null",
+    "update_password_number"
+  ],
+  "new_vs_v11_list": [],
+  "gone_vs_v11_list": []
+}

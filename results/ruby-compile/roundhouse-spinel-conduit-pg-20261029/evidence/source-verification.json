@@ -1,0 +1,9 @@
+{
+  "gated_files": 75,
+  "manifest": "reproduce/gated-source.sha256 (copied unchanged from v11)",
+  "all_match_manifest": true,
+  "variant_identical_to_v11": true,
+  "source_tree_sha256": "294038b23f5579c56b61809cb0db38a1cfa0b39b8b0d4de4d3a65720a76b50f2",
+  "v11_source_tree_sha256": "294038b23f5579c56b61809cb0db38a1cfa0b39b8b0d4de4d3a65720a76b50f2",
+  "check": "(cd variant/source && shasum -a 256 -c ../../reproduce/gated-source.sha256)"
+}

@@ -1,0 +1,114 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+refreshed mtimes under .work/upstream/frontier/agents/conduit-v12/build/without-50/toolchain-context/vendor/roundhouse at 2026-10-29T12:06:47Z
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.90kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 7.1s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546
+#4 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/ruby:4.0.7-slim-trixie
+#5 DONE 4.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [ruby407 1/1] FROM docker.io/library/ruby:4.0.7-slim-trixie@sha256:6c6b7b8c7d750604178aa60c2fa436890cd17c5695bdbd3213db2e4efbf98eb9
+#7 DONE 0.0s
+
+#8 [builder  1/11] FROM docker.io/library/rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 89.89MB 1.6s done
+#9 DONE 1.6s
+
+#10 [builder  2/11] RUN apt-get update && apt-get install -y --no-install-recommends     clang make git pkg-config libsqlite3-dev sqlite3 libjemalloc-dev     libpq-dev postgresql-client curl ca-certificates libssl-dev libcrypt-dev     libyaml-0-2 libgmp10 file time && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [builder  3/11] COPY --from=ruby407 /usr/local/ /usr/local/
+#11 CACHED
+
+#12 [builder  4/11] RUN ruby --version
+#12 CACHED
+
+#13 [builder  5/11] COPY vendor/spinel /src/spinel
+#13 CACHED
+
+#14 [builder  6/11] WORKDIR /src/spinel
+#14 CACHED
+
+#15 [builder  7/11] RUN make deps -j8 && make -j8 CC=clang && make install -j8 CC=clang
+#15 CACHED
+
+#16 [builder  8/11] COPY vendor/roundhouse /src/roundhouse
+#16 DONE 0.7s
+
+#17 [builder  9/11] WORKDIR /src/roundhouse
+#17 DONE 0.0s
+
+#18 [builder 10/11] RUN --mount=type=cache,id=conduit-v12-cargo-registry,target=/usr/local/cargo/registry     --mount=type=cache,id=conduit-v12-cargo-git,target=/usr/local/cargo/git     --mount=type=cache,id=conduit-v12-cargo-target,target=/src/roundhouse/target     ROUNDHOUSE_COMMIT=$(echo 4036ea9c5db615e831971c0b4f8629e6405ffca0 | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse
+#18 0.159 info: syncing channel updates for 1.98.1-aarch64-unknown-linux-gnu
+#18 4.285 info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+#18 4.290 info: downloading 2 components
+#18 7.517    Compiling roundhouse v2026.9.18 (/src/roundhouse)
+#18 8.657 error[E0425]: cannot find function `postgresql_enabled` in the crate root
+#18 8.657     --> src/lower/arel/visitor.rs:1129:58
+#18 8.657      |
+#18 8.657 1129 |             if let Some(limit) = limit.filter(|_| crate::postgresql_enabled()) {
+#18 8.657      |                                                          ^^^^^^^^^^^^^^^^^^ not found in the crate root
+#18 8.657 
+#18 8.716 warning: unused doc comment
+#18 8.716     --> src/emit/typescript/expr.rs:4343:1
+#18 8.716      |
+#18 8.716 4343 | / /// Ruby `Foo::Bar` gets joined with `.` for TS access.
+#18 8.716 4344 | | /// Framework-namespace paths (`ActionView::ViewHelpers`, …) collapse
+#18 8.716 4345 | | /// to the last segment — TS emits each runtime class flat at its
+#18 8.716 4346 | | /// file's module scope and imports the bare name. The import
+#18 8.716 ...    |
+#18 8.716 4352 | | /// StandardError)` and similar idioms emit a bare `StandardError`
+#18 8.716 4353 | | /// that's neither in scope nor importable.
+#18 8.716      | |_------------------------------------------^
+#18 8.716      |   |
+#18 8.716      |   rustdoc does not generate documentation for macro invocations
+#18 8.716      |
+#18 8.716      = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+#18 8.716      = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+#18 8.716 
+#18 24.62 For more information about this error, try `rustc --explain E0425`.
+#18 24.63 warning: `roundhouse` (lib) generated 1 warning
+#18 24.63 error: could not compile `roundhouse` (lib) due to 1 previous error; 1 warning emitted
+#18 ERROR: process "/bin/sh -c ROUNDHOUSE_COMMIT=$(echo 4036ea9c5db615e831971c0b4f8629e6405ffca0 | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse" did not complete successfully: exit code: 101
+------
+ > [builder 10/11] RUN --mount=type=cache,id=conduit-v12-cargo-registry,target=/usr/local/cargo/registry     --mount=type=cache,id=conduit-v12-cargo-git,target=/usr/local/cargo/git     --mount=type=cache,id=conduit-v12-cargo-target,target=/src/roundhouse/target     ROUNDHOUSE_COMMIT=$(echo 4036ea9c5db615e831971c0b4f8629e6405ffca0 | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse:
+8.716      | |_------------------------------------------^
+8.716      |   |
+8.716      |   rustdoc does not generate documentation for macro invocations
+8.716      |
+8.716      = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+8.716      = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+8.716 
+24.62 For more information about this error, try `rustc --explain E0425`.
+24.63 warning: `roundhouse` (lib) generated 1 warning
+24.63 error: could not compile `roundhouse` (lib) due to 1 previous error; 1 warning emitted
+------
+Dockerfile:20
+--------------------
+  19 |     WORKDIR /src/roundhouse
+  20 | >>> RUN --mount=type=cache,id=conduit-v12-cargo-registry,target=/usr/local/cargo/registry \
+  21 | >>>     --mount=type=cache,id=conduit-v12-cargo-git,target=/usr/local/cargo/git \
+  22 | >>>     --mount=type=cache,id=conduit-v12-cargo-target,target=/src/roundhouse/target \
+  23 | >>>     ROUNDHOUSE_COMMIT=$(echo 4036ea9c5db615e831971c0b4f8629e6405ffca0 | cut -c1-8) cargo build --locked --release --bin roundhouse -j4 \
+  24 | >>>     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse
+  25 |     RUN roundhouse --version && spinel --version && spin --version
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c ROUNDHOUSE_COMMIT=$(echo 4036ea9c5db615e831971c0b4f8629e6405ffca0 | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse" did not complete successfully: exit code: 101

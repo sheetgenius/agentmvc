@@ -1,0 +1,20 @@
+{
+  "label": "probe-60core-recovery-01",
+  "command": [
+    "python3",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261029/evidence/recovery/probe.py",
+    "probe-60core",
+    "conduit-v12-app:probe-60core",
+    "done"
+  ],
+  "build_dir": "/build/probe-60core",
+  "started": "2026-10-29T12:17:16.321841+00:00",
+  "finished": "2026-10-29T12:17:16.477766+00:00",
+  "elapsed_seconds": 0.156,
+  "exit": 1,
+  "log": "evidence/execution/probe-60core-recovery-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/upstream/frontier/workshop/heavy.lock (shared slot)"
+  ]
+}

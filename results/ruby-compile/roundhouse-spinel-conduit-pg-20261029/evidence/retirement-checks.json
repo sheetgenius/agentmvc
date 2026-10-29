@@ -1,0 +1,97 @@
+{
+  "v11_pins": {
+    "roundhouse": "295abf08bd5004922669f73bf090def8e3852fe6",
+    "spinel": "3b397d7bc96c2324190c0f2f857e1973e24dca84"
+  },
+  "v12_pins": {
+    "roundhouse": "4036ea9c5db615e831971c0b4f8629e6405ffca0",
+    "spinel": "d4e804c62772189004ee7d147dd6436b2aff5730"
+  },
+  "retirements": [
+    {
+      "item": "roundhouse 82 (whole patch)",
+      "repository": "roundhouse",
+      "commit": "669a42ee27a42114906abee2670e7a9535094d42",
+      "date": "2026-10-29T11:13:08+08:00",
+      "author": "bunnykong",
+      "subject": "Merge pull request #1496 from bunnykong/fix/bulk-update-quoting-20261028",
+      "link": "https://github.com/rubys/roundhouse/pull/1496",
+      "what": "update_all quotes @model.table_name once through the adapter",
+      "ancestor_of_v12_pin": true,
+      "ancestor_of_v11_pin": false
+    },
+    {
+      "item": "roundhouse 83 (whole patch)",
+      "repository": "roundhouse",
+      "commit": "3578a8ca2df3d017652adedad83f7865ebe59985",
+      "date": "2026-10-29T17:46:39+08:00",
+      "author": "bunnykong",
+      "subject": "Merge pull request #1512 from bunnykong/cz-next/temporal-initialize-storage",
+      "link": "https://github.com/rubys/roundhouse/pull/1512",
+      "what": "synth_initialize normalizes temporal inputs before the raw String writer",
+      "ancestor_of_v12_pin": true,
+      "ancestor_of_v11_pin": false
+    },
+    {
+      "item": "roundhouse 60: find_or_create_by! hunks (first_or_create.rs, three scope_chain.rs admissions, bang test)",
+      "repository": "roundhouse",
+      "commit": "4036ea9c5db615e831971c0b4f8629e6405ffca0",
+      "date": "2026-10-29T17:46:49+08:00",
+      "author": "bunnykong",
+      "subject": "Merge pull request #1513 from bunnykong/cz-next/find-or-create-bang-records",
+      "link": "https://github.com/rubys/roundhouse/pull/1513",
+      "what": "blockless find_or_create_by! with variable record conditions is inlined, including one-statement if/rescue branches",
+      "ancestor_of_v12_pin": true,
+      "ancestor_of_v11_pin": false
+    },
+    {
+      "item": "roundhouse 50: keyless-save guard (base.rb, connection.rb)",
+      "repository": "roundhouse",
+      "commit": "11dc38fcb89e26a671ea8212d4495379c84d1268",
+      "date": "2026-10-29T09:49:09+08:00",
+      "author": "bunnykong",
+      "subject": "Merge pull request #1263 from bunnykong/emitted-test-queries",
+      "link": "https://github.com/rubys/roundhouse/pull/1263",
+      "what": "save skips id= when primary_key is nil (schema.rb id: false tables)",
+      "ancestor_of_v12_pin": true,
+      "ancestor_of_v11_pin": false
+    },
+    {
+      "item": "roundhouse 50: qcol substitution in postgresql_files (dead text)",
+      "repository": "roundhouse",
+      "commit": "bd51b69742559d3820a85d65ceae95e8aa5314d6",
+      "date": "2026-10-28T12:23:25+01:00",
+      "author": "Eduard G. Castell\u00f3",
+      "subject": "Quote the columns hash-form order and where write",
+      "link": "https://github.com/rubys/roundhouse/pull/1484",
+      "what": "column_predicate quotes its column itself, so the substituted line no longer exists",
+      "ancestor_of_v12_pin": true,
+      "ancestor_of_v11_pin": false
+    },
+    {
+      "item": "roundhouse 50: active_support_ext.rb substitution in postgresql_files (dead text, already at v11)",
+      "repository": "roundhouse",
+      "commit": "2d7a585dc150abdb38a0089efb1d99b8be5937b8",
+      "date": "2026-10-18T12:45:52Z",
+      "author": "iberianpig",
+      "subject": "Preserve UTC identity when presenting zoned times",
+      "link": null,
+      "what": "zoned time presentation rewritten upstream before the v11 pin; the substituted line no longer exists",
+      "ancestor_of_v12_pin": true,
+      "ancestor_of_v11_pin": true
+    },
+    {
+      "item": "spinel 93 (whole patch)",
+      "repository": "spinel",
+      "commit": "3ca03ede9188da07cffd4c012607d106e4efd9e7",
+      "date": "2026-10-28T20:39:37+09:00",
+      "author": "Yukihiro \"Matz\" Matsumoto",
+      "subject": "A speculative int slot reads a boxed String without raising",
+      "link": "https://github.com/matz/spinel/issues/10462",
+      "what": "sp_poly_slot_i reads a boxed String with strtoll (same code as 93); fix for issue #10462, committed to master directly",
+      "ancestor_of_v12_pin": true,
+      "ancestor_of_v11_pin": false
+    }
+  ],
+  "note": "Every retirement is also checked by building and gating the final series without the retired code."
+}

@@ -1,0 +1,20 @@
+{
+  "label": "probe-60core-common-01",
+  "command": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261029/reproduce/run-common-probe.py",
+    "rails",
+    "conduit-v12-app:probe-60core",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261029/evidence/probes/60core/common-01.json"
+  ],
+  "build_dir": ".work/upstream/frontier/agents/conduit-v12/build/probe-60core",
+  "started": "2026-10-29T12:15:44.222592+00:00",
+  "finished": "2026-10-29T12:15:55.361019+00:00",
+  "elapsed_seconds": 11.138,
+  "exit": 0,
+  "log": "evidence/execution/probe-60core-common-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/upstream/frontier/workshop/heavy.lock (shared slot)"
+  ]
+}
