@@ -1,0 +1,28 @@
+{
+  "observed_utc": "2026-10-30T16:31:42.428191+00:00",
+  "source_files_verified": 75,
+  "source_identical_to_v12": true,
+  "patch_manifests_verified": [
+    "patches/roundhouse/SHA256SUMS",
+    "patches/spinel/SHA256SUMS",
+    "evidence/omissions/without-10/SHA256SUMS",
+    "evidence/omissions/without-20/SHA256SUMS",
+    "evidence/omissions/without-30/SHA256SUMS",
+    "evidence/omissions/without-50/SHA256SUMS",
+    "evidence/omissions/without-60/SHA256SUMS",
+    "evidence/omissions/without-74/SHA256SUMS",
+    "evidence/omissions/without-80/SHA256SUMS",
+    "evidence/omissions/without-84/SHA256SUMS",
+    "evidence/probes/50-helper-only/patches/SHA256SUMS",
+    "evidence/probes/60core/patches/SHA256SUMS"
+  ],
+  "omission_conditions_verified": 8,
+  "all_eight_gate_attempts_recorded": true,
+  "every_omission_failed_required_validation": true,
+  "core60_patch": {
+    "added": 47,
+    "removed": 20,
+    "files": 3
+  },
+  "hang_markers": []
+}

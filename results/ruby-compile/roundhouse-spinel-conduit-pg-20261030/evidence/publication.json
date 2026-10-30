@@ -1,0 +1,50 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v13-20261030",
+  "scope": "Publication copy of the supplied compiled-conduit-v13-20261030 measurement; no measurement was rerun during packaging.",
+  "evidence_redaction": "tools/scrub.py Scrubber on decoded JSON strings and plain evidence logs/excerpts; local home prefixes removed; private-resource names generalized; credential values redacted.",
+  "preserved_synthetic_addresses": {
+    "files": [
+      "evidence/edge/v13.json",
+      "evidence/omissions/without-30/edge-01.json",
+      "evidence/probes/60core/edge-01.json"
+    ],
+    "allowlist": [
+      "bob@example.com",
+      "u0@example.com",
+      "u10@example.com",
+      "u11@example.com",
+      "u12@example.com",
+      "u13@example.com",
+      "u14@example.com",
+      "u15@example.com",
+      "u16@example.com",
+      "u17@example.com",
+      "u18@example.com",
+      "u19@example.com",
+      "u1@example.com",
+      "u20@example.com",
+      "u21@example.com",
+      "u22@example.com",
+      "u23@example.com",
+      "u2@example.com",
+      "u3@example.com",
+      "u4@example.com",
+      "u5@example.com",
+      "u6@example.com",
+      "u7@example.com",
+      "u8@example.com",
+      "u9@example.com"
+    ],
+    "reason": "Public edge_diff.py fixture values, also present in the v12 edge baseline; preserve direct response comparisons."
+  },
+  "non_credentials": "<token> is a normalized placeholder; password error keys contain validation-message arrays.",
+  "unmodified_measured_bytes": [
+    "patches/",
+    "reproduce/gated-source.sha256",
+    "variant/",
+    "evidence/probes/*/patches/",
+    "evidence/omissions/*/SHA256SUMS",
+    "evidence/omissions/*/series",
+    "evidence/roundhouse-full-combined.diff"
+  ]
+}

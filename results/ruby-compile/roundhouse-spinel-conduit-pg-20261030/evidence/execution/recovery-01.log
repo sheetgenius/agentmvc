@@ -1,0 +1,15 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+{
+  "condition": "supplemental-pending-export-boot-20261022",
+  "label": "final",
+  "image": "conduit-v13-app:compiled",
+  "expected": "done",
+  "procedure": "Seed a durable pending export before starting the compiled server; send no enqueue request.",
+  "image_id": "sha256:c81577a740e74206bfe6c40ddd599f317cdb576c98eb92176ba5b4bc3414dcbe",
+  "before": "pending",
+  "after": "done",
+  "articles": "[]",
+  "completed": "t",
+  "server_sha256": "ac9dce1624a53e093bd0cde2415cb72aca42e25e11e58947d9f379a640c3cb4e",
+  "pass": true
+}

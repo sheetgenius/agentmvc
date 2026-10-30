@@ -1,0 +1,552 @@
+
+main.rb
+8: #
+9: # Library usage (from tests):
+10: #   require_relative "main"
+11: #   Main.run(env_hash, body_io, response_io)
+12: #
+13: # Script usage:
+26: # `test/test_helper.rb` can load the app without loading this one,
+27: # which starts a server.
+28: require_relative "boot"
+29: require_relative "runtime/cgi_io"
+30: 
+31: module Main
+32:   # Spinel's class reflection needs a lexical class receiver.
+186:   # EMPTY database and campfire's sign-in came back `no such table:
+187:   # bans` from a file whose `bans` table is right there on disk.
+188:   def self.default_db_path
+189:     db_path = ENV["BLOG_DB"]
+190:     (!db_path.nil? && !db_path.empty?) ? db_path : "storage/development.sqlite3"
+191:   end
+192: 
+193:   def self.configure_default_adapter!
+194:     return unless ActiveRecord.adapter.nil?
+195:     path = Main.default_db_path
+196:     # SqliteAdapter.configure delegates to Db.configure (single shared
+197:     # connection); both the legacy AR-adapter dispatch path and the
+198:     # Level-3 lowerer-emitted `_adapter_*` path read through one handle.
+824: 
+825: # Auto-run only when invoked as a script (`ruby main.rb`). When loaded
+826: # via `require_relative "main"` from tests, the dispatch isn't
+827: # triggered — tests call Main.run themselves with constructed I/O.
+828: #
+829: # Spinel-AOT entry: configure DB, register the Action Cable transport,
+867: if ARGV.length > 0 && ARGV[0] == "sidekiq"
+868:   SidekiqWorker.prepare_pool(ARGV)
+869:   Main.configure_default_adapter!
+870:   Db.checkpoint_in_background!
+871:   ActiveJob.register_drain
+872:   # A job's broadcasts go to the web processes through Redis when
+873:   # config/cable.yml says `adapter: redis` (runtime/redis_cable.rb).
+874:   Broadcasts.set_transport(Cable::Transport.new) if RedisCable.enabled?
+895:     puts "  TEP_SERVER=fiber runs the fiber-per-connection server instead"
+896:     puts "    (HTTP only, one thread; the measurement lane, matz/spinel#4306)"
+897:     puts "  SQLite file: BLOG_DB env (default storage/development.sqlite3)"
+898:     exit(0)
+899:   elsif (arg == "--port" || arg == "-p") && i + 1 < ARGV.length
+900:     port = ARGV[i + 1].to_i
+942: unix_listener.open
+943: begin
+944: Main.configure_default_adapter!
+945: # Serving, so WAL checkpoints move off the request path: a background
+946: # thread runs them instead of some request's COMMIT
+947: # (Db.checkpoint_in_background!).
+951: Broadcasts.set_transport(Cable::Transport.new)
+952: # Background jobs go on the scheduler instead of running at the call
+953: # site. `register_drain` is what flips `perform_later` from dispatching
+954: # to enqueueing (see `lower::job_class_side`): a job is only handed to a
+955: # queue once something has said it will drain it, so a tree that never
+956: # reaches this line keeps the inline behaviour rather than dropping work
+957: # into an Array nobody reads.
+958: ActiveJob.register_drain
+959: # Fail boot visibly if a callback fails, after queue registration and before workers.
+960: Db.with_connection { Rails.application.run_after_initialize }
+961: # Under queue_adapter :sidekiq jobs go to Redis instead; say where.
+962: SidekiqPush.announce if JobRegistry.sidekiq?
+963: Thread.new do
+
+boot.rb
+4: 
+5: # frozen_string_literal: true
+6: # Boot chain — every `require_relative` the app needs, in the order it
+7: # needs them, and NOTHING that starts anything.
+8: #
+9: # Split out of main.rb so `test/test_helper.rb` can share it. The two
+20: # (`uninitialized constant ActionText`) rather than as a missing require.
+21: #
+22: require_relative "runtime/sqlite_adapter"
+23: # Db primitive surface — backs the lowerer-emitted `_adapter_*`
+24: # methods (Level-3 emit + Phase 1 Arel inline-SELECT expansions).
+25: # Required before active_record so Base.rb's default `_adapter_*`
+26: # helpers and per-model overrides find `Db` at constant-resolution
+27: # time. See project_arel_compile_time_first.md.
+28: require_relative "runtime/db"
+29: # Base64 + JSON + Importmap shims. All required before any framework
+30: # Ruby file that references them so spinel-AOT's static resolver
+31: # sees the constants. The per-app config/importmap.rb (when emitted)
+34: # the stdlib equivalents with semantically-identical implementations
+35: # for the surface framework Ruby actually uses.
+36: require_relative "runtime/base64"
+37: # Module-only Shellwords — packages/shellwords reopens String/Array and
+38: # poisons String#split (PolyArray → C compile fail). See
+39: # runtime/spinel/shellwords_spinel.rb; defining the module drops
+41: # runtime/ would answer a bare require and hide stdlib
+42: # String#shellescape on every target that shares the tree.
+43: require_relative "runtime/shellwords_spinel"
+44: require_relative "runtime/json_impl"
+45: # JsonBuilder — the JSON encoding primitives the Jbuilder lowerer
+46: # emits calls to (`Views::Articles.article_json` etc.). Separate from
+47: # `runtime/json.rb`'s `JSON.generate` shim: this module exposes
+48: # `JsonBuilder.encode_value` / `encode_string` for per-value encoding.
+49: require_relative "runtime/json_builder"
+50: require_relative "runtime/action_controller_json_render"
+51: # Params — narrowing accessors over the recursive request-params tree
+52: # (`Roundhouse::ParamValue`). The synthesized `<Resource>Params.from_raw`
+53: # calls these instead of open-coding `is_a?` narrowing per field, so the
+56: # Mime - `Params.wrap` asks the registry whether a request body is JSON
+57: # (Rails' own synonyms and parameters included).
+58: require_relative "runtime/mime"
+59: require_relative "runtime/params"
+60: # ActionText::Content — the coder behind a `has_rich_text` attribute.
+61: # The RichText RECORD is an ordinary lowered model (it has a table);
+62: # this is only the value its `body` column reads back as, so it loads
+63: # with the other value classes rather than with the models.
+64: require_relative "runtime/action_text"
+65: # Content's JSON form is the fragment, not the rendered wrapper — see
+66: # the file; it reopens the class the line above defined.
+67: require_relative "runtime/action_text_json"
+68: require_relative "runtime/importmap"
+69: # ActiveSupport::Duration value class — the emit grounds `70.days` etc.
+70: # to `ActiveSupport::Duration.days(70)`, so the class must be loadable
+71: # on every tree (the CRuby overlay swaps in its Time-reopen-augmented
+72: # sibling at the same path).
+73: require_relative "runtime/active_support_duration"
+74: # Blank-predicate helper for receivers `src/lower/blank.rs` had no static
+75: # type to ground on. Before anything that can hold a `present?` site.
+76: require_relative "runtime/active_support_ext"
+77: require_relative "runtime/active_model_validator"
+78: require_relative "runtime/rails"
+79: # Rails::VERSION from the app's Gemfile.lock (see project.rs::apply_rails_version).
+80: module Rails
+81:   module VERSION
+89: # `ActiveSupport::Cache::MemoryStore` (a `Rails::Cache`) and
+90: # `ActiveSupport::Cache.expand_cache_key`.
+91: require_relative "runtime/active_support_cache"
+92: # Ruby's `Logger` + `ActiveSupport::Logger`/`TaggedLogging` — the stack
+93: # `config.logger =` builds, and the `Logger::Formatter` an app's own
+94: # formatter subclasses (a LOAD-time reference, so this must precede
+95: # app/models.rb below).
+96: require_relative "runtime/logger"
+97: # `GlobalID::Locator` — the READ side of the gid `runtime/rails.rb` mints
+98: # one line up. A channel authorizing a subscribe turns the stream name
+99: # back into a record through it; the two halves live apart because only
+100: # the mint prices every target (see the file's own header).
+101: require_relative "runtime/global_id_locator"
+102: # Park RAILS_ENV where the typed runtime can read it (`Rails.env`
+103: # defaults to development when unset).
+104: Rails.env_name = ENV["RAILS_ENV"]
+108: # Unset, it is generated once and kept in storage/ (runtime/local_secret.rb):
+109: # never the empty string, which anyone could sign with.
+110: require_relative "runtime/local_secret"
+111: Rails.secret_key_base = [redacted]"SECRET_KEY_BASE"])
+112: # Per-app Rails::Application reopen — the app's real config methods
+113: # (`Rails.application.name` in layouts). Emitted unconditionally (a
+114: # stub reopen when the source app has none); loads right after the
+115: # runtime shim it reopens.
+116: require_relative "config/application"
+117: # The app's config.time_zone becomes the runtime's default zone before
+118: # anything renders. Rails presents every AR temporal value in that zone
+119: # REGARDLESS of the host's — `parse_db_time` hydrates the stored UTC
+127: # Twin of the overlay boot's.
+128: ActiveSupport.set_default_zone(Rails.application.config_time_zone)
+129: require_relative "runtime/active_record"
+130: # Default as_json → _as_json_only. Date-column rewrite is injected only
+131: # when app_uses_date (see project::spinel_files); Campfire omits Date.
+132: require_relative "runtime/active_record_serialization"
+133: # Record equality (same class + same persisted id) — a reopen of
+134: # ActiveRecord::Base; the CRuby overlay's twin is active_record_bang.rb.
+135: require_relative "runtime/active_record_equality_spinel"
+136: # `ActiveRecord::Base.connection_db_config`, `connection_pool` and
+137: # `transaction_open?` over the Db shim loaded above.
+138: require_relative "runtime/active_record_db_config"
+139: require_relative "config/schema"
+140: require_relative "runtime/action_dispatch"
+141: # Typed Request value object (remote_ip / referer / xhr? / env bag) —
+142: # spinel-tree only; the CRuby overlay keeps its CGI-env-backed Request
+143: # at runtime/action_dispatch_request.rb and the two shapes must not
+144: # blend.
+145: require_relative "runtime/action_dispatch/request"
+146: require_relative "runtime/action_controller"
+147: # Active Storage: the shared rows/variants contract, then the ruby
+148: # family's bytes half (disk service, attachable coercion, the engine's
+149: # three routes) reopening it. After action_controller — the disk file
+151: # chain defines. `multipart` first: `Blob.from_attachable` narrows to
+152: # the `UploadedFile` it defines.
+153: require_relative "runtime/multipart"
+154: # MIME registry — `ActiveStorage.content_type_for_filename` looks up
+155: # extensions through `Mime::Type` when `attach` omits `content_type:`.
+156: require_relative "runtime/mime"
+157: require_relative "runtime/active_storage"
+158: require_relative "runtime/active_storage_disk"
+159: # The image processor behind variants: a comment-only stub unless the
+160: # app declares `attachable.variant …`, in which case project.rs swaps
+161: # in the ruby-vips reopen. After config/application — it applies the
+162: # app's lifted loader policy at load.
+163: require_relative "runtime/active_storage_processor"
+164: # The video previewer over ffmpeg — see the file.
+165: require_relative "runtime/active_storage_previewer"
+166: # typed_store virtual-attribute seam (flat-YAML subset on this tree;
+167: # the CRuby overlay swaps in its real-YAML sibling at the same path).
+168: # Before app/models — the synthesized settings accessors route
+169: # through it.
+170: require_relative "runtime/typed_store"
+171: # has_json (ActiveModel::SchematizedJson) virtual-attribute seam — the
+172: # JSON sibling of the line above. After runtime/json_builder, whose
+173: # string escaper it uses.
+174: require_relative "runtime/schematized_json"
+175: require_relative "runtime/json_column"
+176: require_relative "runtime/array_column"
+177: require_relative "runtime/broadcasts"
+178: # The job queue and its drain flag. `thread_state` below REOPENS
+179: # ActiveJob and reads `PENDING`, and main.rb calls `ActiveJob.
+180: # register_drain` unconditionally, so the module has to exist first.
+181: # It reaches the boot chain by an ActiveJob::Base subclass otherwise,
+182: # which a job-less app (no `app/jobs`) does not have -- there the call
+183: # went unresolved and `PENDING` undefined. The file is always shipped.
+184: require_relative "runtime/active_job"
+185: # ActiveJob payload codecs: after the module and its DeserializationError,
+186: # and after global_id_locator, whose URI parser the record reader uses.
+187: require_relative "runtime/active_job_serialization"
+188: # Sidekiq pushes for an app on queue_adapter :sidekiq: the Redis
+189: # connection (a raising façade unless the tree is on :sidekiq), then the
+190: # envelope and the after-commit hold. Before job_registry, whose COMMIT
+191: # and ROLLBACK edges flush and drop the held pushes.
+192: require_relative "runtime/sidekiq_redis"
+193: require_relative "runtime/sidekiq_push"
+194: # The app's payload jobs (generated), and the drain's payload arm.
+195: require_relative "runtime/job_registry"
+196: # The `sidekiq` role: envelope reads and dead records, then the worker
+197: # (a façade unless the tree is on :sidekiq).
+198: require_relative "runtime/sidekiq_envelope"
+199: require_relative "runtime/sidekiq_worker"
+200: # Broadcasts between processes through Redis, for config/cable.yml's
+201: # `adapter: redis` (a façade unless the tree is on :sidekiq).
+202: require_relative "runtime/redis_cable"
+203: # Per-request state per THREAD -- reopens Current, the view slots, the
+204: # broadcast log, the job queue and the store memo (see the file).
+205: require_relative "runtime/thread_state"
+206: # Returning view wrappers call ViewBufferCap.alloc/store (see
+207: # lower::view_buffer_passing). Spinel's file is a no-op stub; the CRuby
+208: # overlay replaces it with a thread-variable memo + String.new(capacity:).
+209: require_relative "runtime/view_buffer_cap"
+210: require_relative "runtime/tep/tep"
+211: # Gem packages (runtime/gems/<gem>/) load right after this line, which
+212: # `project::apply_gem_packages` finds: they register their hooks here.
+213: require_relative "runtime/request_hooks"
+214: require_relative "runtime/faye_websocket"
+215: # Spinel-only CGI reopen: `require "cgi"` reaches spinel's bundled package
+216: # and this adds `parse`, which upstream moved to `cgi/core`. CRuby/JRuby use
+217: # the stdlib. No longer needs to follow tep — the escapes were routed to
+218: # `Url.escape`, which truncated a multi-byte character to its first byte.
+219: require_relative "runtime/cgi_spinel"
+220: # Spinel-only resolver: reopens runtime/resolv's `Resolv.resolve` over
+221: # `Socket.getaddrinfo`. CRuby/JRuby have the stdlib's own Resolv.
+222: require_relative "runtime/resolv_spinel"
+223: # Spinel-only Nokogiri read path: reopens the façade's Document/Element
+224: # over the ActionText::Fragment scanner. CRuby/JRuby load the gem.
+225: require_relative "runtime/nokogiri_spinel"
+226: # Spinel-only `Rails::HTML5::SafeListSanitizer` lists (the gem's class on
+227: # CRuby/JRuby). Before app/models: campfire's `MessagesHelper` builds
+228: # constants from them at load.
+229: require_relative "runtime/rails_html_sanitizer_spinel"
+230: # Spinel-only ERB::Util shim (html_escape) — CRuby/JRuby get it from the
+231: # stdlib Rails loads. After action_controller, whose require chain defines
+232: # the ActionView::ViewHelpers.html_escape this delegates to.
+233: require_relative "runtime/erb_spinel"
+234: # `Hash#to_query`'s nested bracket grammar — a reopen of the shared
+235: # ViewHelpers' scalar `to_query_value`, for the two lanes whose router
+236: # parses it back. The CRuby overlay's boot requires the same file.
+237: require_relative "runtime/hash_to_query"
+238: # Rails' request-params builder — nests the query string and the body
+239: # the way ActionDispatch does, for `Main.request_params`. Spinel only:
+240: # the CRuby overlay's dispatcher gets its params from Rack.
+241: require_relative "runtime/param_builder"
+242: # `redirect_back_or_to` — a reopen of ActionController::Base reading the
+243: # parked request; ruby-family only (see the file).
+244: require_relative "runtime/redirect_back"
+245: # The real forgery check behind the shared `verify_authenticity_token`
+246: # — a reopen of ActionController::Base, ruby-family only (see the file).
+247: require_relative "runtime/request_forgery_protection"
+248: # Rails' HTTP Token and Basic auth helpers — another reopen of
+249: # ActionController::Base, ruby-family only (see the file).
+250: require_relative "runtime/http_authentication"
+251: # The signatures on the session and flash cookies — the helpers the two
+252: # dispatchers restore and persist those cookies through (see the file).
+253: require_relative "runtime/signed_cookies"
+254: # The mocha slot `lower::mocha` prepends to an app method a test stubs
+255: # (`User#reset_remote_connections`): the guard is in the APP's code, so it
+256: # runs in production too, where it asks the registry, finds nothing and
+260: # connections) 500'd on both lanes. Found by once-campfire-rust's model
+261: # scenario (scripts/campfire-db-differential).
+262: require_relative "runtime/mocha_stub"
+263: # An Array attribute value — Rails' space-joined form and the `class:`
+264: # conditional list — a reopen of the shared scalar `attr_value_text`,
+265: # for the same reason and at the same point as the line above.
+266: require_relative "runtime/attr_value_text"
+267: # `Rails.application.executor.wrap` — a DB lease for work on a thread the
+268: # framework did not start (campfire's web-push invalidation handler).
+269: # After rails and db, which it reopens and calls. The other boot requires
+270: # the same file.
+271: require_relative "runtime/rails_executor"
+272: # `ActionView::RecordIdentifier.dom_id` by name — the CRuby overlay's
+273: # action_view_record_identifier.rb twin, a delegation to the shared
+274: # `ViewHelpers.dom_id`.
+275: require_relative "runtime/record_identifier_spinel"
+276: # Action Cable WebSocket glue — the /cable endpoint + the Broadcasts
+277: # transport that fans Turbo Stream fragments out to subscribers. Loaded
+278: # after tep (uses Tep::WebSocket / Scheduler / Broadcast) and broadcasts
+279: # (registers as its transport at boot).
+280: require_relative "runtime/cable"
+281: # `Turbo::StreamsChannel` — the channel a `<turbo-cable-stream-source>`
+282: # names, AND the `broadcast_*_to` class methods a model's after_commit
+283: # reaches (and an app's own tests mock). One constant, both halves, the
+284: # way turbo-rails ships it. After action_cable, whose `Channel::Base` it
+285: # subclasses, and after broadcasts, whose `record` it calls.
+286: require_relative "runtime/action_cable"
+287: require_relative "runtime/turbo_streams"
+288: # Per-app Importmap override (generated by Roundhouse from the source
+289: # app's config/importmap.rb). Reopens the fallback module to supply
+290: # the source's actual pins. spinel/master fixed module-reopen with
+291: # same-name cmeth dispatch (matz/spinel#517), so this is now a plain
+292: # require_relative under both CRuby and spinel.
+293: #
+294: # BEFORE config/routes: routes requires the controllers, which reach
+295: # the views, and the layout hoists `javascript_importmap_tags(Importmap
+299: # (rubys/roundhouse#1477). The reopen answers literals and needs
+300: # nothing loaded first.
+301: require_relative "config/importmap"
+302: require_relative "config/routes"
+303: # Rails' fragment caching through the controller: reopens
+304: # `ActionView::ViewHelpers.fragment_read/_write`, so after every file that
+305: # defines them.
+306: require_relative "runtime/action_controller_fragment_caching"
+307: # Rails 8.1.4's full ActionController::Head options hash is a Ruby-family
+308: # feature; strict non-Ruby targets keep the bounded shared implementation.
+309: require_relative "runtime/action_controller_head"
+310: # Rails' FlashHash keeps any key; the shared Flash keeps notice/alert, which every target can type.
+311: require_relative "runtime/flash_any_key"
+312: # Rails 8.1.4 `send_data(filename:)`: the Content-Disposition escaping
+313: # works over UTF-8 bytes, so it is a Ruby-family reopen as well.
+314: require_relative "runtime/action_controller_send_data"
+315: # The app/models.rb aggregator (generated — see apply_models_aggregator)
+316: # loads every model/support class. Model files only require their own
+317: # LOAD-time deps (superclass, class-body consts); method-body references
+318: # between them count on this line — and spinel-AOT's static require
+319: # graph reaches every model file through it.
+320: require_relative "app/models"
+321: require_relative "app/views"
+322: # Session-backed CSRF token — reopens ViewHelpers, so it must load
+323: # AFTER everything that defines the shared empty-string default (the
+324: # same ordering contract as the CRuby overlay's
+325: # action_controller_session require).
+326: require_relative "runtime/csrf_token"
+327: # Synchronized fragment store — reopens Rails::Cache, so it must load
+328: # AFTER runtime/rails defines the unsynchronized shared one. Same
+329: # ordering contract as the csrf reopen above.
+330: require_relative "runtime/fragment_cache"
+331: 
+332: # Per-environment flags, from config/environments/*.rb (see project.rs::apply_environment_flags).
+333: module AppEnvironment
+
+runtime/db.rb
+2: # Primitive Db surface — the layer that per-model adapter code sits on
+3: # top of. The contract is database-agnostic; this file is the
+4: # SQLite-via-libsqlite3-FFI implementation, the runtime spinel-compiled
+5: # binaries use. The sqlite3-gem-backed sibling (`db_cruby.rb`) is the
+6: # stock-CRuby implementation; both define `module Db` with the same
+7: # external API. main.rb requires this file (the FFI variant);
+50: # the same `ffi_func` declarations, the same out-buffer plumbing.
+51: 
+52: # Bare-metal SQLite3 FFI bindings. Only the surface area Roundhouse's
+53: # lowerer-emitted `_adapter_*` methods need.
+54: module SQL
+55:   ffi_lib "sqlite3"
+70:   # `sqlite3_open` uses, so a non-URI path opens identically either way.
+71:   ffi_const :OPEN_URI_RWC, 70
+72:   # READONLY | URI, for `SQLite3::Database.new(path, readonly: true)`.
+73:   ffi_const :OPEN_URI_READONLY, 65
+74: 
+75:   ffi_func :sqlite3_open,              [:str, :ptr],                          :int
+148:   # request read snapshot and the write permit ask before acting.
+149:   ffi_func :sqlite3_get_autocommit,    [:ptr],                                :int
+150:   # `SQLite3::Database` (runtime/spinel/sqlite3_database.rb): a busy
+151:   # timeout per connection, and 64-bit integer columns.
+152:   ffi_func :sqlite3_busy_timeout,      [:ptr, :int],                          :int
+153:   ffi_func :sqlite3_column_int64,      [:ptr, :int],                          :long
+163:   # after the pool exists — its own buffer for the same reason as seed_out.
+164:   ffi_buffer :ckpt_out, 8
+165:   # `SQLite3::Database`'s own out-params, so an app's connection never
+166:   # writes into a buffer the pool reads.
+167:   ffi_buffer :sq_db_out, 8
+168:   ffi_buffer :sq_stmt_out, 8
+170: end
+171: 
+172: # One pooled SQLite connection plus its prepared-statement cache
+173: # (roundhouse#12). Prepared stmts are bound to the connection they were
+174: # prepared on and carry their own cursor, so the cache MUST be
+175: # per-connection: a global SQL->stmt map would let two cooperative fibers
+903:   end
+904: 
+905:   # Reset failed cursors to release locks and consume SQLite's last step
+906:   # error, but keep their checkout owned until finalize or lease cleanup.
+907:   # Releasing here would let an old ensure-finalizer reset a new reader
+908:   # using the same raw pointer. Only error paths pay for this extra reset.
+1083: end
+1084: 
+1085: # Dedicated SQLite connection pool (roundhouse#12). A single-use object so
+1086: # its instance ivars type concretely: @conns is a DbConn PtrArray (objects
+1087: # keep their tag, unlike the generic ConnectionPool's int slot), @free is
+1088: # an IntArray stack of available indices into @conns.
+1094:   # WHY THESE, MEASURED. This runtime was the only one setting no pragmas at
+1095:   # all — kotlin, csharp, go and typescript each set theirs — and a file-backed
+1096:   # server pays for that on every request. SQLite's default page cache is 2 MB;
+1097:   # the lobsters fixture is 42 MB, so a long-lived process re-reads the same
+1098:   # pages from the OS on every visit instead of keeping the working set. On the
+1099:   # bench that showed up as ~400 `pread64` syscalls per /top visit, with 75% of
+1136:     # connection answers `synchronous = 1`, and so does the CRuby emit's,
+1137:     # which sets NO pragmas at all: both link the sqlite3 gem's bundled
+1138:     # SQLite, whose WAL default is NORMAL. The binary links its own, and
+1139:     # that one defaults to FULL. So three lanes on one benchmark were
+1140:     # running two different durability settings, decided by a
+1141:     # compile-time default nobody had written down.
+1152:     # so it is the one to match.
+1153:     "PRAGMA synchronous=NORMAL",
+1154:     # Not SQLite's default (off): Rails' DEFAULT_PRAGMAS turn it on, so a row naming a missing parent raises InvalidForeignKey.
+1155:     "PRAGMA foreign_keys=ON",
+1156:   ].freeze
+1157: 
+1286: # calls were unresolved and spinel's old silent gate nil'd them
+1287: # (spinel#1661 — the strict gate in spinel 1356cb14 surfaced it).
+1288: require_relative "active_support_time_parsing"
+1289: 
+1290: module Db
+1291:   # Own connection pool (roundhouse#12). Was
+1557:   end
+1558: 
+1559:   # Rails' SQLite `disable_referential_integrity`: fixtures load and tables empty in any order. Not foreign_keys=OFF alone: that pragma is a no-op inside a transaction, where defer_foreign_keys moves the check to COMMIT instead.
+1560:   def self.without_foreign_keys
+1561:     Db.with_connection do
+1562:       Db.exec("PRAGMA defer_foreign_keys = ON")
+1617:       cleanup_error = nil
+1618:       # `Db.close` inside the lease drops `@pools` and closes `conn`.
+1619:       # Snapshot and rollback cleanup talk to SQLite, so skip them when
+1620:       # this pool is no longer the live one. The lease index still goes
+1621:       # back to the pool that issued it.
+1622:       pool_live = false
+1767:   # ── The write permit ──
+1768:   #
+1769:   # Writers in this process queue here instead of racing for SQLite's
+1770:   # lock through the busy handler, which on this lane sleeps in C and
+1771:   # holds an OS worker the whole time. Held for one autocommit statement,
+1772:   # or from BEGIN to COMMIT/ROLLBACK, by the CONNECTION (see DbConn). The
+1773:   # wait is bounded: after @write_permit_timeout a writer goes straight
+1774:   # to SQLite, which is the behaviour before the permit existed — a
+1775:   # transaction that starts a thread which writes and joins it gets
+1776:   # SQLITE_BUSY rather than a hang. No raise inside `synchronize`
+1777:   # (it has no ensure on this lane), so neither of these raises.
+1901:       Thread.current[:db_txn_pin] = true
+1902:     else
+1903:       # A COMMIT or ROLLBACK that itself raises (SQLite already aborted
+1904:       # the transaction some other way) must not skip pin_transaction:
+1905:       # without it the reservation this thread took at BEGIN leaks, and
+1906:       # on pool_size 1 no other thread can ever lease again. A plain
+1910:       # `self.transaction`'s `rescue`-plus-`ensure` does. pin_transaction
+1911:       # reads `conn.in_txn?` itself to decide whether to release — a
+1912:       # raise that left the transaction genuinely open (not SQLite's
+1913:       # doing) keeps the reservation, same as a successful write that
+1914:       # hasn't reached COMMIT/ROLLBACK yet.
+1915:       begin
+1929:   # lease taken inside the transaction (`Rails::Executor#wrap`, a cable
+1930:   # broadcast, a job) checked out ANOTHER connection: its writes waited
+1931:   # out the write permit and failed on SQLite's lock, or, when the shard
+1932:   # handed back the transaction's own connection, `release_abandoned_write`
+1933:   # rolled the transaction back at the lease's end and the rest of the
+1934:   # block autocommitted. Pinned, `in_lease?` is true, so the executor and
+1972:     v = SQL.sqlite3_libversion_number
+1973:     if !returning_supported?(v)
+1974:       raise "Db.exec_returning: RETURNING needs SQLite 3.35 or newer; this process links " + v.to_s
+1975:     end
+1976:     record_query(sql)
+1977:     conn = current_conn
+1989:   end
+1990: 
+1991:   # RETURNING arrived in SQLite 3.35.0 (3035000). An older library gets
+1992:   # a clear error rather than a syntax error, as #91 agreed.
+1993:   def self.returning_supported?(version_number)
+1994:     version_number >= 3035000
+2015:     elsif conn.in_txn?
+2016:       # A transaction begun WITHOUT the permit (its wait timed out):
+2017:       # SQLite's lock is already held, nothing to queue for.
+2018:       out = run_write(conn, sql, returning)
+2019:     elsif sql == "BEGIN"
+2020:       # IMMEDIATE, as Rails 8's SQLite adapter begins: the write lock is
+2021:       # taken at BEGIN, never by upgrading a stale read part way through.
+2022:       got = acquire_permit
+2023:       conn.holds_permit = got
+2091:   end
+2092: 
+2093:   # Not the driver's own exception: Rails translates every statement error into ActiveRecord's hierarchy (sqlite3_adapter `translate_exception`), keyed on SQLite's own message as `unique_violation?` is.
+2094:   def self.raise_statement_error(message, busy)
+2095:     raise ActiveRecord::RecordNotUnique, message if unique_violation?(message)
+2096:     raise ActiveRecord::NotNullViolation, message if message.include?("NOT NULL constraint failed")
+2277:   #
+2278:   # Dispatches on the STORAGE CLASS of the value in THIS row, not on the
+2279:   # column's declared type. SQLite is dynamically typed and both gem
+2280:   # shims report what is actually stored, so storage class is what keeps
+2281:   # the AOT tree's hydration in step with the CRuby lane. Caching
+2282:   # `sqlite3_column_decltype` once per statement would save the probe
+2483:   end
+2484: 
+2485:   # SQLite has no native bool — bind 0/1, matching escape_bool's inline
+2486:   # form and the INTEGER affinity `t.boolean` columns get.
+2487:   def self.bind_bool(stmt, idx, value)
+2488:     raise "Db.bind failed (21): cannot bind a replay cursor" if stmt.is_a?(Integer)
+2560:   end
+2561: 
+2562:   # SQLite stores booleans as 0/1 integers (no native bool type) —
+2563:   # mirrors the cruby sibling shim.
+2564:   def self.escape_bool(b)
+2565:     b ? "1" : "0"
+2566:   end
+2567: 
+2568:   # Read a boolean column. SQLite returns 0/1 (integer), widen to bool.
+2569:   def self.column_bool(stmt, idx)
+2570:     column_int(stmt, idx) != 0
+2571:   end
+
+config/application.rb
+68:     end
+69: 
+70:     def __boot_hook_0
+71:       ArticleExport.recover_pending!
+72:       nil
+73:     end
+74: 
+75:     def run_after_initialize
+76:       __boot_hook_0
+77:       nil
+78:     end
+79:   end
+
+app/models/article_export.rb
+1: require_relative "application_record"
+2: 
+3: class ArticleExport < ApplicationRecord
+4: #<SPINEL_SOURCE>fixture/app/models/article_export.rb:1
+531: 
+532: #<SPINEL_SOURCE>fixture/app/models/article_export.rb:4
+533:   def self.recover_pending!
+534: #<SPINEL_SOURCE>fixture/app/models/article_export.rb:6
+535:     stmt = Db.prepare("SELECT id, articles, completed_at, created_at, status, updated_at, user_id FROM article_exports WHERE status = 'pending'")
+536:     begin

@@ -1,0 +1,18 @@
+{
+  "label": "rails-gate-01",
+  "command": [
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261030/reproduce/run-gate.sh",
+    "rails",
+    "4501"
+  ],
+  "build_dir": ".work/upstream/frontier/agents/conduit-v13/build/final",
+  "started": "2026-10-30T13:48:04.217145+00:00",
+  "finished": "2026-10-30T13:50:41.713324+00:00",
+  "elapsed_seconds": 157.494,
+  "exit": 0,
+  "log": "evidence/execution/rails-gate-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/upstream/frontier/workshop/heavy.lock (shared slot)"
+  ]
+}

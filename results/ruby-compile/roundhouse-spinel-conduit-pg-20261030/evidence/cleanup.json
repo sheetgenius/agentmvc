@@ -1,0 +1,40 @@
+{
+  "observed_utc": "2026-10-30T16:35:56.976350+00:00",
+  "removed_containers": [],
+  "removed_networks": [],
+  "remaining_task_containers": [],
+  "remaining_task_networks": [],
+  "retained_images": [
+    "conduit-v13-app:compiled c81577a740e7",
+    "conduit-v13-app:probe-60core 551214a0575e",
+    "conduit-v13-app:without-10 a8ade2cba339",
+    "conduit-v13-app:without-30 9e040386e11c",
+    "conduit-v13-app:without-60 d6d4271f4e9e",
+    "conduit-v13-app:without-74 4ec07bc5e3b6",
+    "conduit-v13-app:without-80 a439b41a5d63",
+    "conduit-v13-app:without-84 43a9d6d072eb",
+    "conduit-v13-browser:1.63.0 926c29b97787",
+    "conduit-v13-hurl:gate aa1df1e40ed0",
+    "conduit-v13-postgres:17 b05fab95d049",
+    "conduit-v13-toolchain:28ccd85507d2 ef0dd5f1f844",
+    "conduit-v13-toolchain:probe-50-helper-only bd329e1ab10c",
+    "conduit-v13-toolchain:probe-60core c8929b3e7b85",
+    "conduit-v13-toolchain:without-10 2a886102d8b8",
+    "conduit-v13-toolchain:without-20 b6ea6c1c01cc",
+    "conduit-v13-toolchain:without-30 60f4dbc85cf7",
+    "conduit-v13-toolchain:without-60 e2e02f2e8180",
+    "conduit-v13-toolchain:without-74 155a78ac4869",
+    "conduit-v13-toolchain:without-80 a6f52837c8b6",
+    "conduit-v13-toolchain:without-84 00c6d9206094"
+  ],
+  "retained_build_cache": "BuildKit cache mounts conduit-v13-cargo-{registry,git,target}; no prune",
+  "volumes_created_or_removed": false,
+  "prune_operations": false,
+  "images_removed": false,
+  "protected_resources": "No unrelated application containers or images inspected, modified or removed",
+  "removed_build_folders": [
+    ".work/upstream/frontier/agents/conduit-v13/build",
+    ".work/upstream/frontier/agents/conduit-v13/src",
+    ".work/upstream/frontier/agents/conduit-v13/upstream"
+  ]
+}

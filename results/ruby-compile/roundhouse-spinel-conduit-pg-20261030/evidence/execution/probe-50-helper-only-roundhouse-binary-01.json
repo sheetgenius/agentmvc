@@ -1,0 +1,23 @@
+{
+  "label": "probe-50-helper-only-roundhouse-binary-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v13-rhbin-probe-50-helper-only",
+    "conduit-v13-toolchain:probe-50-helper-only",
+    "sha256sum",
+    "/usr/local/bin/roundhouse"
+  ],
+  "build_dir": ".work/upstream/frontier/agents/conduit-v13/build/probe-50-helper-only",
+  "started": "2026-10-30T14:08:47.347798+00:00",
+  "finished": "2026-10-30T14:08:48.316768+00:00",
+  "elapsed_seconds": 0.969,
+  "exit": 0,
+  "log": "evidence/execution/probe-50-helper-only-roundhouse-binary-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/upstream/frontier/workshop/heavy.lock (shared slot)"
+  ]
+}

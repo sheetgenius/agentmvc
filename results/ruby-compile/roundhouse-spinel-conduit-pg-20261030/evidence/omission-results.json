@@ -1,0 +1,216 @@
+[
+  {
+    "omitted_patch": "30",
+    "condition": "compiled-conduit-v13-final-without-30",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-30-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "62f61ffeb1df84628f381bb7db375476bf5030ff87aade48f3c59ba4e712e828",
+      "roundhouse_compilation_logged": true
+    },
+    "gate": {
+      "exit": 0,
+      "execution": "evidence/execution/without-30-gate-01.json"
+    },
+    "common": {
+      "exit": 0,
+      "execution": "evidence/execution/without-30-common-01.json"
+    },
+    "edge": {
+      "exit": 0,
+      "execution": "evidence/execution/without-30-edge-01.json"
+    },
+    "recovery": {
+      "exit": 1,
+      "execution": "evidence/execution/without-30-recovery-01.json"
+    }
+  },
+  {
+    "omitted_patch": "50",
+    "condition": "compiled-conduit-v13-final-without-50",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-50-01.json",
+      "roundhouse_compiled": false,
+      "toolchain_roundhouse_sha256": null,
+      "roundhouse_compilation_logged": true
+    },
+    "gate": {
+      "exit": 1,
+      "execution": "evidence/execution/without-50-gate-01.json",
+      "note": "Attempted despite failed image build; no API/runtime result is inferred from this failure"
+    }
+  },
+  {
+    "omitted_patch": "84",
+    "condition": "compiled-conduit-v13-final-without-84",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-84-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "4343152c62794df430f4e7a042882c2a7843dd1f506a1f1cb4ed3036958ba95a",
+      "roundhouse_compilation_logged": true
+    },
+    "gate": {
+      "exit": 1,
+      "execution": "evidence/execution/without-84-gate-01.json"
+    }
+  },
+  {
+    "omitted_patch": "10",
+    "condition": "compiled-conduit-v13-final-without-10",
+    "series": [
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-10-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "582b80114d33e759512b77fc6d84b52930e6cd7f0ed4acca0c75f34d8618c4d8",
+      "roundhouse_compilation_logged": true
+    },
+    "gate": {
+      "exit": 4,
+      "execution": "evidence/execution/without-10-gate-01.json"
+    }
+  },
+  {
+    "omitted_patch": "80",
+    "condition": "compiled-conduit-v13-final-without-80",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-80-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "99d939e1c6ddcb80513b290f0b0f667867aa9b1df1dabe7e97bb7d66a34c4993",
+      "roundhouse_compilation_logged": true
+    },
+    "gate": {
+      "exit": 1,
+      "execution": "evidence/execution/without-80-gate-01.json"
+    }
+  },
+  {
+    "omitted_patch": "60",
+    "condition": "compiled-conduit-v13-final-without-60",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-60-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "3a80ce0212cb519b052dacbd87b5308329b8d9242d059a2a16abe676c69c53e0",
+      "roundhouse_compilation_logged": true
+    },
+    "gate": {
+      "exit": 4,
+      "execution": "evidence/execution/without-60-gate-01.json"
+    }
+  },
+  {
+    "omitted_patch": "74",
+    "condition": "compiled-conduit-v13-final-without-74",
+    "series": [
+      "10-api-mode-json.patch",
+      "20-raw-websocket.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "80-gradual-return-stabilization.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 0,
+      "execution": "evidence/execution/build-without-74-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "015b66337eedc3f0c7357a92bbbc677e3b21bba04d27236de5abaa5cc5fc1823",
+      "roundhouse_compilation_logged": true
+    },
+    "gate": {
+      "exit": 4,
+      "execution": "evidence/execution/without-74-gate-01.json"
+    }
+  },
+  {
+    "omitted_patch": "20",
+    "condition": "compiled-conduit-v13-final-without-20",
+    "series": [
+      "10-api-mode-json.patch",
+      "30-jobs-boot.patch",
+      "50-postgresql-lane.patch",
+      "60-rails-surface.patch",
+      "74-integer-query-range.patch",
+      "80-gradual-return-stabilization.patch",
+      "84-upstream-regression-mixed-parameter-arm.patch"
+    ],
+    "spinel_series": [],
+    "build": {
+      "exit": 1,
+      "execution": "evidence/execution/build-without-20-01.json",
+      "roundhouse_compiled": true,
+      "toolchain_roundhouse_sha256": "17cd0b08b6f4b17e7b3c8d4d672d2ce842a0ce61798f19038b36f1ba988f863f",
+      "roundhouse_compilation_logged": true
+    },
+    "gate": {
+      "exit": 1,
+      "execution": "evidence/execution/without-20-gate-01.json",
+      "note": "Attempted despite failed image build; no API/runtime result is inferred from this failure"
+    }
+  }
+]

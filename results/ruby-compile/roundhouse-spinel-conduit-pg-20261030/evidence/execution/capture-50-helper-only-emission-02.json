@@ -1,0 +1,19 @@
+{
+  "label": "capture-50-helper-only-emission-02",
+  "command": [
+    "python3",
+    "agents/conduit-v13/capture-emission.py",
+    "50-helper-only",
+    "conduit-v13-toolchain:probe-50-helper-only"
+  ],
+  "build_dir": ".work/upstream/frontier/agents/conduit-v13/build/probe-50-helper-only",
+  "started": "2026-10-30T14:50:36.505974+00:00",
+  "finished": "2026-10-30T14:50:37.736215+00:00",
+  "elapsed_seconds": 1.23,
+  "exit": 0,
+  "log": "evidence/execution/capture-50-helper-only-emission-02.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)"
+  ],
+  "resource_note": "Small auxiliary read/capture only; no compiler build, gate, benchmark or heavy workload"
+}

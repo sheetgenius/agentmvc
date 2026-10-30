@@ -1,0 +1,13 @@
+diff --git a/src/lib.rs b/src/lib.rs
+index bf0e52046..ce02835c5 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -112,3 +112,8 @@ pub use span::{FileId, Span};
+ pub use ty::{Param, ParamKind, Row, Ty};
+ 
+ pub mod shared;
++
++/// Explicit opt-in for the experimental Spinel PostgreSQL lane.
++pub fn postgresql_enabled() -> bool {
++    std::env::var("RH_DATABASE_ADAPTER").is_ok_and(|v| v == "postgresql")
++}

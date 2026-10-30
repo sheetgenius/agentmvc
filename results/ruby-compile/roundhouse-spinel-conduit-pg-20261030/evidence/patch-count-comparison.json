@@ -1,0 +1,117 @@
+{
+  "condition": "v12 full series vs v13 context-rebased full series",
+  "patches": [
+    {
+      "patch": "10-api-mode-json.patch",
+      "v12": {
+        "added": 84,
+        "removed": 1,
+        "files": 8
+      },
+      "v13": {
+        "added": 84,
+        "removed": 1,
+        "files": 8
+      },
+      "same_numstat": true
+    },
+    {
+      "patch": "20-raw-websocket.patch",
+      "v12": {
+        "added": 347,
+        "removed": 16,
+        "files": 9
+      },
+      "v13": {
+        "added": 347,
+        "removed": 16,
+        "files": 9
+      },
+      "same_numstat": true
+    },
+    {
+      "patch": "30-jobs-boot.patch",
+      "v12": {
+        "added": 419,
+        "removed": 1,
+        "files": 8
+      },
+      "v13": {
+        "added": 419,
+        "removed": 1,
+        "files": 8
+      },
+      "same_numstat": true
+    },
+    {
+      "patch": "50-postgresql-lane.patch",
+      "v12": {
+        "added": 1008,
+        "removed": 22,
+        "files": 22
+      },
+      "v13": {
+        "added": 1008,
+        "removed": 22,
+        "files": 22
+      },
+      "same_numstat": true
+    },
+    {
+      "patch": "60-rails-surface.patch",
+      "v12": {
+        "added": 151,
+        "removed": 25,
+        "files": 7
+      },
+      "v13": {
+        "added": 151,
+        "removed": 25,
+        "files": 7
+      },
+      "same_numstat": true
+    },
+    {
+      "patch": "74-integer-query-range.patch",
+      "v12": {
+        "added": 236,
+        "removed": 26,
+        "files": 9
+      },
+      "v13": {
+        "added": 236,
+        "removed": 26,
+        "files": 9
+      },
+      "same_numstat": true
+    },
+    {
+      "patch": "80-gradual-return-stabilization.patch",
+      "v12": {
+        "added": 87,
+        "removed": 40,
+        "files": 3
+      },
+      "v13": {
+        "added": 87,
+        "removed": 40,
+        "files": 3
+      },
+      "same_numstat": true
+    },
+    {
+      "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+      "v12": {
+        "added": 8,
+        "removed": 0,
+        "files": 1
+      },
+      "v13": {
+        "added": 8,
+        "removed": 0,
+        "files": 1
+      },
+      "same_numstat": true
+    }
+  ]
+}

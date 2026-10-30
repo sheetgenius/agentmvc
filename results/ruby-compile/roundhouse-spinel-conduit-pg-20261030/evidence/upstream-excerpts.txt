@@ -1,0 +1,370 @@
+
+runtime/spinel/db_pg.rb at 75672b31ef4ef5756f88ec98a90ae0bea057ff26
+1: # frozen_string_literal: true
+2: # Primitive Db surface over PostgreSQL, for spinel-compiled binaries and
+3: # for CRuby.
+4: #
+5: # The same `module Db` contract as runtime/spinel/db.rb (SQLite over
+6: # libsqlite3 FFI) and its gem-backed siblings, typed in
+7: # runtime/ruby/db.rbs. Under Spinel it runs on the spinel-pg driver
+8: # (https://github.com/rubys/spinel-pg): a pure spinel-Ruby PostgreSQL
+9: # client over Spinel's own sp_net sockets, so the program links no
+10: # libpq. A raw compile finds it with `spinel -I <spinel-pg checkout>`;
+11: # a spin package lists `pg` in `[dependencies]`. Under CRuby it runs on
+12: # the pg gem, whose API spinel-pg mirrors; pg_driver.rb holds the few
+13: # places the two differ (pg_driver_cruby.rb is the gem's).
+14: #
+15: # The Ruby target ships it as runtime/db.rb, with pg_driver_cruby.rb, for
+16: # an app whose `config/database.yml` names postgresql for the test
+17: # environment's primary (src/project.rs::apply_postgresql_tree), and
+18: # lowers that app's SQL for PostgreSQL. Spinel's wiring (`pg` as a spin
+19: # dependency) follows. The Db contract runs it directly on both runtimes
+20: # (tests/spinel_pg_db.rs, tests/db_contract.rs).
+21: #
+22: # What maps onto what:
+23: #
+24: #   Db.configure(url)    — `[redacted]host:port/db`, with the
+25: #                          libpq PG* environment variables as fallbacks.
+26: #                          No TLS, unix sockets or query parameters; a
+27: #                          URL that asks for them is refused.
+28: #   Db.prepare(sql)      — a statement handle (an Integer) on the current
+29: #                          connection. SQL spells its placeholders $1, $2…
+30: #   Db.bind_*(h, i, v)   — one-based, as with SQLite; values travel as
+
+runtime/spinel/db_pg.rb at 75672b31ef4ef5756f88ec98a90ae0bea057ff26
+74: # than served without them.
+75: #
+76: # Spinel idioms, as in db.rb: instance-ivar arrays of one element type,
+77: # Integer handles, assign-then-return, and `rescue PG::Error => e`
+78: # (typed) before reading anything from a driver error.
+79: require "pg"
+80: require_relative "pg_errors"
+81: require_relative "pg_driver"
+82: 
+83: # Connection settings from a URL, then the libpq PG* environment
+84: # variables, then libpq's defaults (localhost:5432, database named after
+85: # the user).
+86: class PgConfig
+87:   def initialize(url)
+
+src/project.rs at 75672b31ef4ef5756f88ec98a90ae0bea057ff26
+2897:                 }
+2898:             }
+2899:         }
+2900:     }
+2901:     let files = crate::timings::phase(format_args!("emit {}: assemble", target.as_str()), || crate::runtime_loader::with_app_locales(app, || match target {
+2902:         BuildTarget::Blog => blog_files(fixture),
+2903:         BuildTarget::Futamura => futamura_files(fixture),
+2904:         BuildTarget::Spinel => spinel_files_with_source_markers(app, fixture, param_binds).and_then(|(mut files, _)| {
+2905:             spinel_relation_model_handle(&mut files)?;
+2906:             widen_spinel_hash_config_arrays(&mut files);
+2907:             let mut files = spin_shape(files)?;
+2908:             apply_spinel_int_overflow(&mut files, app);
+2909:             Ok(files)
+2910:         }),
+2911:         // The ruby family gets the bundled-library requires too: the
+2912:         // table used to live inside `spin_shape` and so reached only
+2913:         // the spinel tree, which cost campfire two test files on a
+2914:         // Ruby 3.4 runner (`Pathname()`).
+2915:         // In the dialect of the app's own database (`Dialect::for_app`):
+2916:         // the Ruby target runs PostgreSQL on the pg gem
+2917:         // (`apply_postgresql_tree`), every other target SQLite.
+2918:         BuildTarget::Ruby => {
+2919:             let dialect = crate::emit::shared::schema_sql::Dialect::for_app(app);
+2920:             dialect.scope(|| ruby_runtime_files(app, fixture, param_binds && dialect == crate::emit::shared::schema_sql::Dialect::Sqlite))
+2921:                 .map(with_bundled_requires)
+2922:         }
+2923:         BuildTarget::Jruby => jruby_runtime_files(app, fixture, param_binds).map(with_bundled_requires),
+2924:         BuildTarget::Roda => Ok(sort_files(emit::roda::emit(app))),
+2925:         BuildTarget::Crystal => Ok(sort_files(emit::crystal::emit(app))),
+2926:         BuildTarget::Elixir => Ok(sort_files(emit::elixir::emit(app))),
+
+src/project.rs at 75672b31ef4ef5756f88ec98a90ae0bea057ff26
+5182: 
+5183: /// The Ruby tree of an app whose primary database is PostgreSQL
+5184: /// (`Dialect::for_app`); the SQL in it was lowered for PostgreSQL by the
+5185: /// same emit. Its Db is runtime/spinel/db_pg.rb over the pg gem, its
+5186: /// driver differences pg_driver_cruby.rb, and its database the server
+5187: /// `DATABASE_URL` names (with libpq's `PG*` variables as fallbacks), at
+5188: /// boot and in the emitted tests. Each test file runs in a schema of its
+5189: /// own, created when it starts and dropped when it exits.
+5190: fn apply_postgresql_tree(files: &mut Vec<(String, String)>, app: &App) -> Result<(), String> {
+5191:     if !app.sql_functions.is_empty() {
+5192:         // An error diagnostic as well as the refusal, as
+5193:         // `extension_gem_refusals` reports one, so `check` names it.
+5194:         let names = app.sql_functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>().join(", ");
+5195:         let message = format!(
+5196:             "the primary database is postgresql, and the app registers SQLite functions ({names}), which PostgreSQL \
+5197:              has no equivalent of; not substituted"
+5198:         );
+5199:         let diagnostic = crate::diagnostic::Diagnostic::unsupported(
+5200:             crate::span::Span::synthetic(),
+5201:             Some(crate::ident::Symbol::from("ruby")),
+5202:             "sqlite_functions",
+5203:             message,
+5204:         );
+5205:         let refusal = diagnostic.message.clone();
+5206:         emit::diagnostics::push(diagnostic);
+5207:         return Err(refusal);
+5208:     }
+5209:     let take = |files: &mut Vec<(String, String)>, path: &str| -> Result<String, String> {
+5210:         let at = files.iter().position(|(p, _)| p == path).ok_or_else(|| format!("PostgreSQL tree: {path} not found"))?;
+5211:         Ok(files.remove(at).1)
+5212:     };
+5213:     let db_pg = take(files, "runtime/db_pg.rb")?;
+5214:     let driver = take(files, "runtime/pg_driver_cruby.rb")?;
+5215:     files.retain(|(p, _)| !matches!(p.as_str(), "runtime/db.rb" | "runtime/pg_driver.rb" | "Gemfile.lock"));
+5216:     files.push(("runtime/db.rb".to_string(), db_pg));
+5217:     files.push(("runtime/pg_driver.rb".to_string(), driver));
+5218: 
+5219:     // The gem, and a fresh lock: the committed one is SQLite's.
+5220:     let gemfile = files.iter_mut().find(|(p, _)| p == "Gemfile").ok_or("PostgreSQL tree: Gemfile not found")?;
+5221:     if !gemfile.1.contains("gem \"sqlite3\"") {
+5222:         return Err("PostgreSQL tree: expected `gem \"sqlite3\"` in the scaffold Gemfile".to_string());
+5223:     }
+5224:     gemfile.1 = gemfile.1.replace("gem \"sqlite3\"", "gem \"pg\"");
+5225: 
+5226:     const SERVER_SQLITE: &str = "    db_path = ENV[\"BLOG_DB\"]\n    path = (!db_path.nil? && !db_path.empty?) ? db_path : \"storage/development.sqlite3\"\n";
+5227:     const SERVER_POSTGRESQL: &str = "    # PostgreSQL: the server DATABASE_URL names, else libpq's PG*\n    # variables (apply_postgresql_tree).\n    path = ENV.fetch(\"DATABASE_URL\", \"\")\n";
+5228:     let main = files.iter_mut().find(|(p, _)| p == "main.rb").ok_or("PostgreSQL tree: main.rb not found")?;
+5229:     if !main.1.contains(SERVER_SQLITE) {
+5230:         return Err("PostgreSQL tree: main.rb's database path no longer matches".to_string());
+5231:     }
+5232:     main.1 = main.1.replace(SERVER_SQLITE, SERVER_POSTGRESQL);
+5233: 
+5234:     const TEST_SQLITE: &str = "Db.configure(_test_db_path)\n";
+5235:     const TEST_POSTGRESQL: &str = "# PostgreSQL (apply_postgresql_tree): the server DATABASE_URL names,\n\
+5236: # else libpq's PG* variables, in a schema of this test process's own,\n\
+5237: # created here and dropped when its tests are done: after Minitest's\n\
+5238: # run for a file that autoruns it (whose at_exit would otherwise come\n\
+5239: # after this one), else at exit. search_path rides PGOPTIONS, so\n\
+5240: # every connection of the pool resolves the tables to it. The pid comes\n\
+5241: # first, so cutting a long file name to PostgreSQL's 63 bytes keeps it.\n\
+5242: _test_schema = (\"rh_test_\" + Process.pid.to_s + \"_\" + File.basename($0, \".rb\").gsub(/[^a-z0-9_]/, \"_\"))[0, 63]\n\
+5243: ENV[\"PGOPTIONS\"] = \"-c search_path=\" + _test_schema\n\
+5244: Db.configure(ENV.fetch(\"DATABASE_URL\", \"\"))\n\
+5245: Db.exec(\"DROP SCHEMA IF EXISTS \" + _test_schema + \" CASCADE\")\n\
+5246: Db.exec(\"CREATE SCHEMA \" + _test_schema)\n\
+
+src/emit/shared/schema_sql.rs at 75672b31ef4ef5756f88ec98a90ae0bea057ff26
+39: impl Dialect {
+40:     /// The dialect the emit in progress writes SQL in: SQLite unless a
+41:     /// target that runs the app's own database chose another for the
+42:     /// duration of its emit ([`Dialect::scope`]).
+43:     pub fn current() -> Dialect {
+44:         CURRENT.with(|current| current.get())
+45:     }
+46: 
+47:     /// Run `f` with SQL lowered and rendered in this dialect, restoring
+48:     /// the previous one after, also when `f` unwinds.
+49:     pub fn scope<R>(self, f: impl FnOnce() -> R) -> R {
+50:         struct Restore(Dialect);
+51:         impl Drop for Restore {
+52:             fn drop(&mut self) {
+53:                 CURRENT.with(|current| current.set(self.0));
+54:             }
+55:         }
+56:         let _restore = Restore(CURRENT.with(|current| current.replace(self)));
+57:         f()
+58:     }
+59: 
+60:     /// The dialect the Ruby target's emit runs an app's database in: the
+61:     /// adapter of the primary `config/database.yml` configures for the
+62:     /// environment the emitted tests run in (`test`, else the first
+63:     /// environment with a primary). PostgreSQL when that is postgresql,
+64:     /// SQLite otherwise, as before the file was read.
+65:     pub fn for_app(app: &crate::App) -> Dialect {
+66:         let primary = app.databases.iter().filter(|d| d.primary);
+67:         let chosen = primary.clone().find(|d| d.env == "test").or_else(|| primary.clone().next());
+68:         match chosen.map(|d| &d.adapter) {
+69:             Some(crate::database::DatabaseAdapter::Postgresql) => Dialect::Postgres,
+70:             _ => Dialect::Sqlite,
+71:         }
+72:     }
+73: 
+74:     /// A literal boolean: SQLite stores 1/0; PostgreSQL's boolean takes
+75:     /// no integer.
+76:     pub fn boolean(self, value: bool) -> &'static str {
+
+runtime/ruby/active_record/base.rb at 75672b31ef4ef5756f88ec98a90ae0bea057ff26
+1269:     def reload(options = nil)
+1270:       # Delegates to the lowerer-emitted (or Base default) per-model
+1271:       # `_adapter_reload` instance primitive, which re-reads the row
+1272:       # by `@id` and writes column values back into self (preserving
+1273:       # identity). Implicit-self dispatch (no `self.class` chain) so
+1274:       # async profiles emit `await _adapter_reload(this)` cleanly
+1275:       # rather than awaiting the receiver Send. Returns self on
+1276:       # success, self unchanged when the row has been deleted.
+1277:       _adapter_reload
+1278:       self
+1279:     end
+1280: 
+1281:     # `#lock!` (`ActiveRecord::Locking::Pessimistic#lock!`) — reloads
+1282:     # the record with a row lock and answers self. SQLite is a single
+1283:     # writer with no `SELECT … FOR UPDATE` support, so inside a
+1284:     # transaction a plain `reload` already gives the guarantee Rails
+1285:     # extracts from the row lock: the enclosing `BEGIN` serializes
+1286:     # writers, so nothing can land between this read and a following
+1287:     # write in the same transaction. A Postgres adapter would spell
+1288:     # the `lock` argument as `FOR UPDATE` / `FOR SHARE` here; this
+1289:     # runtime keeps the Rails signature — `lock` may be `true` or a
+1290:     # String locking clause (`lock!("FOR UPDATE NOWAIT")`) — but
+1291:     # doesn't need either under SQLite; both are accepted and ignored.
+1292:     def lock!(lock = nil)
+1293:       # Rails passes `reload(lock: lock)`; this runtime ignores the
+1294:       # clause under SQLite, so a bare reload keeps the same guarantee.
+1295:       reload
+1296:     end
+1297: 
+1298:     # ---- Lifecycle hooks (no-ops; subclasses override) --------------
+1299: 
+1300:     # Fired by the synthesized `initialize` tail and the hydration
+
+src/lower/arel/visitor.rs at 75672b31ef4ef5756f88ec98a90ae0bea057ff26
+893: 
+894: fn visit_insert(ins: &Insert, schema: &Schema) -> Expr {
+895:     let db = ClassId(Symbol::from(DB_MOD));
+896:     let sql = insert_sql(ins, schema);
+897:     let exec_call = db_call(&db, "exec", vec![sql]);
+898:     if !ins.returns_rowid {
+899:         return exec_call;
+900:     }
+901:     let last_id = db_call(&db, "last_insert_rowid", vec![]);
+902:     seq(vec![exec_call, last_id])
+903: }
+904: 
+905: /// Compose the INSERT statement before the visitor chooses `exec` or
+906: /// `exec_returning`. Keeping value escaping here ensures both paths retain
+907: /// the same inline, schema-ordered write semantics.
+
+src/lower/arel/visitor.rs at 75672b31ef4ef5756f88ec98a90ae0bea057ff26
+980:     // postgres / other backends would skip this branch in their own
+981:     // visitor.
+982:     let has_primary_key = table.columns.iter().any(|c| c.primary_key);
+983:     // PostgreSQL resets a table's identity sequences in the TRUNCATE
+984:     // itself; CASCADE, because a referencing table's rows would refuse
+985:     // it, and a full truncate empties every model's table anyway.
+986:     if del.conditions.is_none() && Dialect::current() == Dialect::Postgres {
+987:         let table = Dialect::Postgres.ident(del.table.0.as_str());
+988:         return db_call(&db, "exec", vec![lit_str(format!("TRUNCATE TABLE {table} RESTART IDENTITY CASCADE"))]);
+989:     }
+990:     if del.conditions.is_none() && has_primary_key {
+991:         let reset = db_call(
+992:             &db,
+993:             "exec",
+994:             // Here the physical name is a VALUE, not an identifier.
+995:             vec![concat_chain(vec![
+996:                 lit_str("DELETE FROM sqlite_sequence WHERE name = ".to_string()),
+997:                 escape_value(&db, &Value::LiteralStr(del.table.0.as_str().to_string())),
+998:             ])],
+999:         );
+1000:         return seq(vec![delete_call, reset]);
+1001:     }
+
+src/lower/arel/visitor.rs at 75672b31ef4ef5756f88ec98a90ae0bea057ff26
+1141: /// Runtime value becomes `Db.escape_<ty>(<expr>)` inline when `param`
+1142: /// is off, or a `?` placeholder + a recorded `Bind` when on — so the
+1143: /// composed SQL keys the prepared-statement cache by shape, not value.
+1144: fn push_value_segment(segments: &mut Vec<Expr>, val: &Value, param: bool, binds: &mut Vec<Bind>) {
+1145:     let db = ClassId(Symbol::from(DB_MOD));
+1146:     match val {
+1147:         Value::LiteralInt(n) => segments.push(lit_str(n.to_string())),
+1148:         Value::LiteralStr(s) => segments.push(lit_str(format!("'{}'", s.replace('\'', "''")))),
+1149:         Value::LiteralBool(b) => segments.push(lit_str(Dialect::current().boolean(*b).to_string())),
+1150:         Value::LiteralNull => segments.push(lit_str("NULL".into())),
+1151:         // One optional bind still occupies exactly one placeholder.
+1152:         Value::Runtime { expr, ty } if param && *ty != ValueType::FloatOpt => {
+1153:             segments.push(lit_str("?".to_string()));
+1154:             binds.push(Bind { expr: expr.clone(), ty: *ty, nullable_column: None, parameterized: true });
+1155:         }
+1156:         Value::Runtime { .. } => segments.push(escape_value(&db, val)),
+1157:     }
+1158: }
+1159: 
+1160: /// `Db.escape_<ty>(<expr>)` for a Runtime value; literals stringify
+1161: /// inline. Callers that already split literal vs runtime can call
+1162: /// `push_value_segment` instead.
+
+src/lower/arel/visitor.rs at 75672b31ef4ef5756f88ec98a90ae0bea057ff26
+1172:                 // declares nullable round-trips as nil.
+1173:                 ValueType::IntOpt => "escape_int_opt",
+1174:                 ValueType::StrOpt => "escape_string_opt",
+1175:                 ValueType::FloatOpt => "escape_float_opt",
+1176:                 ValueType::BoolOpt => "escape_bool_opt",
+1177:             };
+1178:             db_call(db, method, vec![expr.clone()])
+1179:         }
+1180:         Value::LiteralInt(n) => lit_str(n.to_string()),
+1181:         Value::LiteralStr(s) => lit_str(format!("'{}'", s.replace('\'', "''"))),
+1182:         Value::LiteralBool(b) => lit_str(Dialect::current().boolean(*b).to_string()),
+1183:         Value::LiteralNull => lit_str("NULL".into()),
+1184:     }
+1185: }
+1186: 
+
+New PR #1502 first-parent delta by top-level folder: docs 1 file; tests 256 files; src/runtime 0 files.
+
+runtime/spinel/db_pg.rb at 75672b31ef4ef5756f88ec98a90ae0bea057ff26
+1128:   end
+1129: 
+1130:   # A write with a RETURNING clause (roundhouse#91): runs once, inline,
+1131:   # like `exec`, and answers a handle over the returned rows
+1132:   # (step?/column_*/finalize, as for a read). `changes` is its row count.
+1133:   # Being a write, it empties the request query cache (PgConn#simple).
+1134:   def self.exec_returning(sql)
+1135:     record_query(sql)
+1136:     conn = current_conn
+1137:     h = conn.returning(sql)
+1138:     Db.pin_transaction(conn)
+1139:     h
+1140:   end
+1141: 
+1142:   # A read through the connection's cached named statement for `sql`.
+1143:   def self.prepare(sql)
+1144:     sql = sql.to_s
+1145:     return prepare_marked(sql) if sql.include?("\x01")
+1146:     prepare_plain(sql)
+1147:   end
+1148: 
+1149:   # Prepare without re-entering prepare_marked. Post-inline SQL may
+1150:   # still contain \x01 inside string literals (unmarked values).
+1151:   def self.prepare_plain(sql)
+1152:     conn = current_conn
+1153:     # A replay is not a round trip, and `capture_sql` does not count it
+1154:     # (Rails' SQLCounter skips CACHE events), as in db.rb.
+1155:     hit = conn.qc_lookup(sql)
+1156:     return hit if hit > 0
+1157:     record_query(sql)
+1158:     h = conn.open_stmt(sql, true)
+1159:     h
+1160:   end
+1161: 
+1162:   # A Relation read with its values marked for binding (db_cruby.rb's
+1163:   # `prepare_marked`). PostgreSQL spells placeholders $1, $2…, not the
+1164:   # `?` the lift writes, so it runs with its values written in, as it
+1165:   # did before binding.
+
+runtime/spinel/db_pg.rb at 75672b31ef4ef5756f88ec98a90ae0bea057ff26
+1278:   def self.column_value(stmt, i)
+1279:     st = current_conn.stmt(stmt)
+1280:     v = st.value(i)
+1281:     return nil if v.nil?
+1282:     oid = st.result.ftype(i)
+1283:     if oid == 20 || oid == 21 || oid == 23 || oid == 26
+1284:       v.to_i
+1285:     elsif oid == 700 || oid == 701 || oid == 1700
+1286:       v.to_f
+1287:     elsif oid == 16
+1288:       v == "t" ? 1 : 0
+1289:     else
+1290:       v
+1291:     end
+1292:   end
+1293: 
+1294:   # A bool column read through column_int answers 1/0 as SQLite's does.
+1295:   def self.int_value(v)
+1296:     return 1 if v == "t"
+1297:     return 0 if v == "f"
+1298:     v.to_i
+
+Static absence check at this pin: no def self.prepare_schema, prepare_locked, or insert_returning_int in db_pg.rb.

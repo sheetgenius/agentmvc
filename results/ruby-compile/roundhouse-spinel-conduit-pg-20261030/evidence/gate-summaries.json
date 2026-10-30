@@ -1,0 +1,133 @@
+[
+  {
+    "log": "evidence/execution/compiled-gate-01.log",
+    "api_files": "17/17",
+    "security_files": "13/13",
+    "live_protocol": "pass",
+    "browser_passed": 4,
+    "browser_failed": 0,
+    "security": "13/13",
+    "security_slow_ms": {
+      "s09_oversized_body": 152880
+    },
+    "exit": 0,
+    "command_exit": 0
+  },
+  {
+    "log": "evidence/execution/probe-60core-gate-01.log",
+    "api_files": "17/17",
+    "security_files": "13/13",
+    "live_protocol": "pass",
+    "browser_passed": 4,
+    "browser_failed": 0,
+    "security": "13/13",
+    "security_slow_ms": {
+      "s09_oversized_body": 166737
+    },
+    "exit": 0,
+    "command_exit": 0
+  },
+  {
+    "log": "evidence/execution/rails-gate-01.log",
+    "api_files": "17/17",
+    "security_files": "13/13",
+    "live_protocol": "pass",
+    "browser_passed": 4,
+    "browser_failed": 0,
+    "security": "13/13",
+    "exit": 0,
+    "command_exit": 0
+  },
+  {
+    "log": "evidence/execution/without-10-gate-01.log",
+    "api_files": "8/17",
+    "live_protocol": null,
+    "browser_passed": null,
+    "browser_failed": 0,
+    "failures": [
+      "api/hurl/articles.hurl",
+      "api/hurl/errors_articles.hurl",
+      "api/hurl/errors_auth.hurl",
+      "api/hurl/errors_authorization.hurl",
+      "api/hurl/errors_comments.hurl",
+      "api/hurl/errors_profiles.hurl",
+      "features/drafts/hurl/errors_drafts.hurl",
+      "features/exports/hurl/exports.hurl",
+      "features/live-editing/hurl/live-editing.hurl"
+    ],
+    "exit": 4,
+    "command_exit": 4
+  },
+  {
+    "log": "evidence/execution/without-20-gate-01.log",
+    "live_protocol": null,
+    "browser_passed": null,
+    "browser_failed": 0,
+    "exit": 1,
+    "command_exit": 1
+  },
+  {
+    "log": "evidence/execution/without-30-gate-01.log",
+    "api_files": "17/17",
+    "security_files": "13/13",
+    "live_protocol": "pass",
+    "browser_passed": 4,
+    "browser_failed": 0,
+    "security": "13/13",
+    "security_slow_ms": {
+      "s09_oversized_body": 153692
+    },
+    "exit": 0,
+    "command_exit": 0
+  },
+  {
+    "log": "evidence/execution/without-50-gate-01.log",
+    "live_protocol": null,
+    "browser_passed": null,
+    "browser_failed": 0,
+    "exit": null,
+    "command_exit": 1
+  },
+  {
+    "log": "evidence/execution/without-60-gate-01.log",
+    "api_files": "16/17",
+    "live_protocol": null,
+    "browser_passed": null,
+    "browser_failed": 0,
+    "failures": [
+      "features/exports/hurl/exports.hurl"
+    ],
+    "exit": 4,
+    "command_exit": 4
+  },
+  {
+    "log": "evidence/execution/without-74-gate-01.log",
+    "api_files": "16/17",
+    "live_protocol": null,
+    "browser_passed": null,
+    "browser_failed": 0,
+    "failures": [
+      "features/exports/hurl/exports.hurl"
+    ],
+    "exit": 4,
+    "command_exit": 4
+  },
+  {
+    "log": "evidence/execution/without-80-gate-01.log",
+    "api_files": "17/17",
+    "live_protocol": null,
+    "browser_passed": null,
+    "browser_failed": 0,
+    "exit": 1,
+    "command_exit": 1
+  },
+  {
+    "log": "evidence/execution/without-84-gate-01.log",
+    "api_files": "17/17",
+    "live_protocol": null,
+    "browser_passed": null,
+    "browser_failed": 0,
+    "exit": 1,
+    "command_exit": 1
+  }
+]

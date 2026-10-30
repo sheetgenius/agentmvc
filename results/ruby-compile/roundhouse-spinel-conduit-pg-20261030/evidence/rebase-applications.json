@@ -1,0 +1,91 @@
+[
+  {
+    "patch": "10-api-mode-json.patch",
+    "before_tree": "4dab1c8ce1fe9afe46339f8c70938d72148bf0ae",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "6b6f62e6367a117a9316364ed7502dd096fa98d4",
+    "rebased_patch_replay_verified": true,
+    "final_status": "direct application; fresh replay verified"
+  },
+  {
+    "patch": "20-raw-websocket.patch",
+    "before_tree": "6b6f62e6367a117a9316364ed7502dd096fa98d4",
+    "direct_check_exit": 1,
+    "direct_check_stderr": "error: patch failed: runtime/spinel/scaffold/boot.rb:193\nerror: runtime/spinel/scaffold/boot.rb: patch does not apply\n",
+    "apply_exit": 1,
+    "apply_stderr": "Falling back to direct application...\nApplied patch to 'runtime/spinel/scaffold/boot.rb' with conflicts.\nerror: repository lacks the necessary blob to perform 3-way merge.\nFalling back to direct application...\nApplied patch to 'runtime/spinel/tep/net.rb' cleanly.\nApplied patch to 'runtime/spinel/tep/server_threaded.rb' cleanly.\nApplied patch to 'runtime/spinel/tep/websocket/connection.rb' cleanly.\nApplied patch to 'runtime/spinel/tep/websocket/driver.rb' cleanly.\nFalling back to direct application...\nFalling back to direct application...\nU runtime/spinel/scaffold/boot.rb\n",
+    "resolution": "manual context rebase; see evidence/rebase-notes.txt",
+    "after_tree": "5457cabcc905d5d12fb68e6d1c8b3d6c40597560",
+    "rebased_patch_replay_verified": true,
+    "final_status": "context resolved; fresh replay verified"
+  },
+  {
+    "patch": "30-jobs-boot.patch",
+    "before_tree": "5457cabcc905d5d12fb68e6d1c8b3d6c40597560",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "84fd9dc9441964a7420239de643887d339c7939f",
+    "rebased_patch_replay_verified": true,
+    "final_status": "direct application; fresh replay verified"
+  },
+  {
+    "patch": "50-postgresql-lane.patch",
+    "before_tree": "84fd9dc9441964a7420239de643887d339c7939f",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "c828c27ee0adcf58fc41d70d894b29c199e91295",
+    "rebased_patch_replay_verified": true,
+    "final_status": "direct application; fresh replay verified"
+  },
+  {
+    "patch": "60-rails-surface.patch",
+    "before_tree": "c828c27ee0adcf58fc41d70d894b29c199e91295",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "2d8248d0b5320d59d02186e31252247cace94dbb",
+    "rebased_patch_replay_verified": true,
+    "final_status": "direct application; fresh replay verified"
+  },
+  {
+    "patch": "74-integer-query-range.patch",
+    "before_tree": "2d8248d0b5320d59d02186e31252247cace94dbb",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "84d9db953fd7a3bbbaf897318dfc9ea323007c12",
+    "rebased_patch_replay_verified": true,
+    "final_status": "direct application; fresh replay verified"
+  },
+  {
+    "patch": "80-gradual-return-stabilization.patch",
+    "before_tree": "84d9db953fd7a3bbbaf897318dfc9ea323007c12",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "95793ed41bfcf00f62d5b0a23b490c1b505e6738",
+    "rebased_patch_replay_verified": true,
+    "final_status": "direct application; fresh replay verified"
+  },
+  {
+    "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+    "before_tree": "95793ed41bfcf00f62d5b0a23b490c1b505e6738",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "c3cd5afb5c10f36dd83404a0ec57abf57750c993",
+    "rebased_patch_replay_verified": true,
+    "final_status": "direct application; fresh replay verified"
+  }
+]

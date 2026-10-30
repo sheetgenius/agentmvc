@@ -1,0 +1,98 @@
+{
+  "name": "60core",
+  "series": [
+    "10-api-mode-json.patch",
+    "20-raw-websocket.patch",
+    "30-jobs-boot.patch",
+    "50-postgresql-lane.patch",
+    "60-rails-surface.patch",
+    "74-integer-query-range.patch",
+    "80-gradual-return-stabilization.patch",
+    "84-upstream-regression-mixed-parameter-arm.patch"
+  ],
+  "manifest_sha256": "dd9377bc1a1de39887d33c7a4e71ab955a4ed0573bd96ebabab8133664f79420",
+  "roundhouse": "75672b31ef4ef5756f88ec98a90ae0bea057ff26",
+  "spinel": "97cea860aa2b3c8f4b1431ca67d3e9a99feb738f",
+  "applications": [
+    {
+      "patch": "10-api-mode-json.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "20-raw-websocket.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "30-jobs-boot.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "50-postgresql-lane.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "60-rails-surface.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "74-integer-query-range.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "80-gradual-return-stabilization.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+      "exit": 0,
+      "stderr": ""
+    }
+  ],
+  "purpose": "Repeat v12's projection and String-key-only 60 probe on v13 heads",
+  "build": {
+    "exit": 0,
+    "execution": "evidence/execution/build-probe-60core-01.json",
+    "roundhouse_compiled": true
+  },
+  "binary": {
+    "exit": 0,
+    "execution": "evidence/execution/probe-60core-roundhouse-binary-01.json"
+  },
+  "gate": {
+    "exit": 0,
+    "execution": "evidence/execution/probe-60core-gate-01.json"
+  },
+  "common": {
+    "exit": 0,
+    "execution": "evidence/execution/probe-60core-common-01.json"
+  },
+  "edge": {
+    "exit": 0,
+    "execution": "evidence/execution/probe-60core-edge-01.json"
+  },
+  "recovery": {
+    "exit": 0,
+    "execution": "evidence/execution/probe-60core-recovery-01.json"
+  },
+  "common_summary": {
+    "contract_passed": 21,
+    "contract_total": 21,
+    "quality_passed": 3,
+    "quality_total": 3
+  },
+  "edge_vs_full": {
+    "differing": 0,
+    "total": 166
+  },
+  "recovery_result": "recovery-probe-60core.json",
+  "kept_hunks": "60: base.rb, base.rbs and model_to_library/schema.rs (+47/-20)",
+  "dropped_hunks": "60: record .id predicates, zero-argument scope entries, find_each/update_all class roots, to_set require and tests",
+  "compiled_tag_matches_gate_server": true
+}

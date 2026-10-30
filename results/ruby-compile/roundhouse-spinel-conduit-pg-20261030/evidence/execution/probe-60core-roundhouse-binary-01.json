@@ -1,0 +1,23 @@
+{
+  "label": "probe-60core-roundhouse-binary-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v13-rhbin-probe-60core",
+    "conduit-v13-toolchain:probe-60core",
+    "sha256sum",
+    "/usr/local/bin/roundhouse"
+  ],
+  "build_dir": ".work/upstream/frontier/agents/conduit-v13/build/probe-60core",
+  "started": "2026-10-30T16:27:46.689016+00:00",
+  "finished": "2026-10-30T16:27:55.689135+00:00",
+  "elapsed_seconds": 9.0,
+  "exit": 0,
+  "log": "evidence/execution/probe-60core-roundhouse-binary-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/upstream/frontier/workshop/heavy.lock (shared slot)"
+  ]
+}

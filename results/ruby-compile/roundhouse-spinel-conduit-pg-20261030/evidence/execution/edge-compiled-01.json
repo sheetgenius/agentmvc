@@ -1,0 +1,21 @@
+{
+  "label": "edge-compiled-01",
+  "command": [
+    "/opt/homebrew/opt/python@3.12/bin/python3.12",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261030/evidence/edge/edge_diff.py",
+    "run",
+    "conduit-v13-app:compiled",
+    "4501",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261030/evidence/edge/v13.json"
+  ],
+  "build_dir": ".work/upstream/frontier/agents/conduit-v13/build/final",
+  "started": "2026-10-30T13:50:51.982317+00:00",
+  "finished": "2026-10-30T13:51:13.834944+00:00",
+  "elapsed_seconds": 21.852,
+  "exit": 0,
+  "log": "evidence/execution/edge-compiled-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/upstream/frontier/workshop/heavy.lock (shared slot)"
+  ]
+}

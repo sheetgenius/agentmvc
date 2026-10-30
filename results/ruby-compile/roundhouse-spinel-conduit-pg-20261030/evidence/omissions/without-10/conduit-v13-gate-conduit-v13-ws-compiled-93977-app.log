@@ -1,0 +1,11 @@
+conduit (spinel) listening on http://0.0.0.0:4501, pid 1
+  one green thread per connection; OS workers: 4 (SPINEL_WORKERS); processes: 1
+[conduit] 500 PUT /api/articles/test-article-179337589394522-6f5beeab1f -- ArgumentError: wrong number of arguments (given 0, expected 1)
+[conduit] 500 POST /api/articles -- ArgumentError: wrong number of arguments (given 0, expected 1)
+[conduit] 500 POST /api/users/login -- ArgumentError: wrong number of arguments (given 0, expected 1)
+[conduit] 500 DELETE /api/articles/authz-article-179337589394522-80196df1b1 -- ArgumentError: wrong number of arguments (given 0, expected 1)
+[conduit] 500 POST /api/articles/some-slug/comments -- ArgumentError: wrong number of arguments (given 0, expected 1)
+[conduit] 500 GET /api/profiles/unknown-user-179337589394522 -- ArgumentError: wrong number of arguments (given 0, expected 1)
+[conduit] 500 GET /api/articles/hidden-draft-179337589394522-52f949c5be -- ArgumentError: wrong number of arguments (given 0, expected 1)
+[conduit] 500 POST /api/user/exports -- ArgumentError: wrong number of arguments (given 0, expected 1)
+[conduit] 500 POST /api/articles/live-draft-179337589394522-cfa0ffda5c/share -- ArgumentError: wrong number of arguments (given 0, expected 1)

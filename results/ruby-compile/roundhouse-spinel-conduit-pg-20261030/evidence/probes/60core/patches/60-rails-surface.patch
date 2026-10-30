@@ -1,0 +1,135 @@
+diff --git a/runtime/ruby/active_record/base.rb b/runtime/ruby/active_record/base.rb
+index 45a159130..9f4875f45 100644
+--- a/runtime/ruby/active_record/base.rb
++++ b/runtime/ruby/active_record/base.rb
+@@ -336,6 +336,21 @@ module ActiveRecord
+     # AND compiler-hostile for typed targets (Rust struct types
+     # `@errors` as `Vec<String>`, not `Option<Vec<String>>`; `.nil?`
+     # on a Vec doesn't exist).
++    def _note_projection(row)
++      @projection_attributes = row
++      nil
++    end
++
++    def _projection_attribute(name)
++      row = @projection_attributes
++      return nil if row.nil?
++      row[name]
++    end
++
++    def read_attribute(name)
++      self[name.to_sym]
++    end
++
+     def errors
+       @errors
+     end
+@@ -416,6 +431,7 @@ module ActiveRecord
+       # The sentinel is written by the MODEL's own `initialize`
+       # (`self.id = (attrs[:id] || 0)` — `|| ""` for a string key), not
+       # here: see the class comment on why the base holds no `@id`.
++      @projection_attributes = nil
+       @errors = []
+       @error_details = []
+       @id_previously_changed = false
+diff --git a/runtime/ruby/active_record/base.rbs b/runtime/ruby/active_record/base.rbs
+index 4eb5619c8..8dcd154cd 100644
+--- a/runtime/ruby/active_record/base.rbs
++++ b/runtime/ruby/active_record/base.rbs
+@@ -100,6 +100,10 @@ module ActiveRecord
+   end
+ 
+   class Base
++    @projection_attributes: Hash[String, untyped]?
++    def _note_projection: (Hash[String, untyped] row) -> nil
++    def _projection_attribute: (String name) -> untyped
++    def read_attribute: (String name) -> untyped
+     def self.sanitize_sql_like: (String value, ?String escape_character) -> String
+     def self.like_escapes_doubled: (String value, String escape_character) -> String
+     def self.like_wildcards_marked: (String source, String escape_character) -> String
+@@ -218,7 +222,7 @@ module ActiveRecord
+     # callers typed against `ActiveRecord::Base` (FormBuilder.text_
+     # field's `@model[field]`) compile under static targets like
+     # Crystal — the static type needs the method to exist.
+-    def []: (Symbol name) -> untyped
++    def []: ((Symbol | String) name) -> untyped
+     def []=: ((Symbol | String) name, untyped value) -> untyped
+     def has_attribute?: (Symbol name) -> bool
+     def _note_unloaded: (Hash[String, untyped] _row) -> void
+diff --git a/src/lower/model_to_library/schema.rs b/src/lower/model_to_library/schema.rs
+index 6df155a9f..d17d32ca7 100644
+--- a/src/lower/model_to_library/schema.rs
++++ b/src/lower/model_to_library/schema.rs
+@@ -1639,6 +1639,10 @@ fn synth_instantiate(owner: &ClassId, fire_after_initialize: bool) -> MethodDef
+             },
+         ),
+     ];
++    stmts.push(Expr::new(Span::synthetic(), ExprNode::Send {
++        recv: Some(var_ref(instance.clone())), method: Symbol::from("_note_projection"),
++        args: vec![var_ref(row.clone())], block: None, parenthesized: true,
++    }));
+     // The hook fires HERE for a row-hydrated record, not in `from_row`:
+     // this is the one caller that holds the raw row, so it can first
+     // note the columns the query did not select. Rails answers
+@@ -3526,7 +3530,7 @@ fn synth_index_read(owner: &ClassId, table: &Table, model: &Model) -> MethodDef
+     // JSON columns are another exception: a
+     // `has_json` declaration builds its typed Hash from the flat readers; a
+     // schema-less column decodes through `RoundhouseJsonColumn.load`.
+-    let arms: Vec<crate::expr::Arm> = table
++    let mut arms: Vec<crate::expr::Arm> = table
+         .columns
+         .iter()
+         .map(|c| crate::expr::Arm {
+@@ -3560,23 +3564,26 @@ fn synth_index_read(owner: &ClassId, table: &Table, model: &Model) -> MethodDef
+         })
+         .collect();
+ 
+-    // An armless `case` (no columns at all) is a Ruby syntax error.
+-    // `table.columns` is empty for a degenerate `create_table ..., id:
+-    // false do |t| end` — the column-list twin of the controller-side
+-    // `synth_index_read`'s bug when its permit list has no scalar keys
+-    // (`tests/params_all_non_scalar_keys.rs`). Same `Ty::Untyped`
+-    // signature either way.
+-    let body = if arms.is_empty() {
+-        nil_lit()
+-    } else {
+-        Expr::new(
+-            Span::synthetic(),
+-            ExprNode::Case {
+-                scrutinee: var_ref(name.clone()),
+-                arms,
+-            },
+-        )
+-    };
++    arms.push(crate::expr::Arm {
++        pattern: crate::expr::Pattern::Wildcard, guard: None,
++        body: Expr::new(Span::synthetic(), ExprNode::Send {
++            recv: None, method: Symbol::from("_projection_attribute"),
++            args: vec![Expr::new(Span::synthetic(), ExprNode::Send {
++                recv: Some(var_ref(name.clone())), method: Symbol::from("to_s"),
++                args: vec![], block: None, parenthesized: false,
++            })], block: None, parenthesized: false,
++        }),
++    });
++    let body = Expr::new(
++        Span::synthetic(),
++        ExprNode::Case {
++            scrutinee: Expr::new(Span::synthetic(), ExprNode::Send {
++                recv: Some(var_ref(name.clone())), method: Symbol::from("to_sym"),
++                args: vec![], block: None, parenthesized: false,
++            }),
++            arms,
++        },
++    );
+ 
+     MethodDef {
+         visibility: crate::dialect::MethodVisibility::Public,
+@@ -3588,7 +3595,7 @@ fn synth_index_read(owner: &ClassId, table: &Table, model: &Model) -> MethodDef
+         params: vec![Param::positional(name.clone())],
+         body,
+         // Heterogeneous return (per-column type union); approximate as Untyped.
+-        signature: Some(fn_sig(vec![(name, Ty::Sym)], Ty::Untyped)),
++        signature: Some(fn_sig(vec![(name, Ty::Union { variants: vec![Ty::Sym, Ty::Str].into() })], Ty::Untyped)),
+         effects: EffectSet::default(),
+         enclosing_class: Some(owner.0.clone()),
+         kind: AccessorKind::Method,

@@ -1,0 +1,23 @@
+{
+  "label": "roundhouse-binary-final-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v13-rhbin-final",
+    "conduit-v13-toolchain:28ccd85507d2",
+    "sha256sum",
+    "/usr/local/bin/roundhouse"
+  ],
+  "build_dir": ".work/upstream/frontier/agents/conduit-v13/build/final",
+  "started": "2026-10-30T13:43:00.313628+00:00",
+  "finished": "2026-10-30T13:44:06.464137+00:00",
+  "elapsed_seconds": 66.15,
+  "exit": 0,
+  "log": "evidence/execution/roundhouse-binary-final-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/upstream/frontier/workshop/heavy.lock (shared slot)"
+  ]
+}

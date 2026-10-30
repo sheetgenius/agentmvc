@@ -1,0 +1,170 @@
+diff --git a/runtime/spinel/scaffold/main.rb b/runtime/spinel/scaffold/main.rb
+index cac2e74da..394819fbb 100644
+--- a/runtime/spinel/scaffold/main.rb
++++ b/runtime/spinel/scaffold/main.rb
+@@ -708,7 +708,9 @@ module Main
+     elsif request_format == :rss
+       res.headers["Content-Type"] = "application/rss+xml; charset=utf-8"
+     elsif controller.content_type != "text/html; charset=utf-8"
+-      res.headers["Content-Type"] = controller.content_type
++      type = controller.content_type
++      type = "application/json; charset=utf-8" if type == "application/json"
++      res.headers["Content-Type"] = type
+     end
+     # Headers the action set beyond those two — a `Content-Disposition`
+     # on a download, the Cache-Control a blob route asks for. A nil
+diff --git a/runtime/spinel/tep/net.rb b/runtime/spinel/tep/net.rb
+index b7cef9b8f..29ff43908 100644
+--- a/runtime/spinel/tep/net.rb
++++ b/runtime/spinel/tep/net.rb
+@@ -21,6 +21,7 @@ module Sock
+   ffi_func :sp_net_accept,                [:int],             :int
+   ffi_func :sp_net_accept_nb,             [:int],             :int
+   ffi_func :sp_net_set_nonblock,          [:int],             :int
++  ffi_func :sp_net_sock_ip,               [:int, :int, :str, :int], :int
+   ffi_func :sp_net_close,                 [:int],             :int
+   ffi_func :sp_net_write_str,             [:int, :str],       :int
+   ffi_func :sp_net_write_bytes,           [:int, :str, :int], :int
+@@ -78,6 +79,14 @@ end
+   def self.sphttp_poll_ready(slot);         Sock.sp_net_poll_ready(slot);         end
+   def self.sphttp_shell_capture(cmd, n);    Sock.sp_net_shell_capture(cmd, n);    end
+ 
++  # The accepted socket's numeric peer address (IPv4 or IPv6).
++  def self.sphttp_remote_host(fd)
++    buffer = "\0" * 64
++    port = Sock.sp_net_sock_ip(fd, 1, buffer, 64)
++    return "" if port < 0
++    buffer.split("\0").first.to_s
++  end
++
+   # Monotonic clock in microseconds. Replaces the C `sphttp_now_us`:
+   # spinel exposes a native monotonic clock (Process.clock_gettime →
+   # sp_process_clock_gettime / CLOCK_MONOTONIC). Float seconds → µs Int.
+diff --git a/runtime/spinel/tep/request.rbs b/runtime/spinel/tep/request.rbs
+new file mode 100644
+index 000000000..41e4fc1d8
+--- /dev/null
++++ b/runtime/spinel/tep/request.rbs
+@@ -0,0 +1,7 @@
++module Tep
++  class Request
++    @req_headers: Hash[String, String]
++    def req_headers: () -> Hash[String, String]
++    def req_headers=: (Hash[String, String] headers) -> Hash[String, String]
++  end
++end
+diff --git a/runtime/spinel/tep/server.rb b/runtime/spinel/tep/server.rb
+index 0a66b5cc2..289e0434b 100644
+--- a/runtime/spinel/tep/server.rb
++++ b/runtime/spinel/tep/server.rb
+@@ -184,6 +184,7 @@ module Tep
+         send_simple(client, refusal, refusal == 413 ? "request body too large" : "bad request")
+         return false
+       end
++      req.remote_host = Sock.sphttp_remote_host(client)
+       return false unless req.consume_body(client)
+       res = Response.new
+       begin
+diff --git a/runtime/spinel/tep/server_scheduled.rb b/runtime/spinel/tep/server_scheduled.rb
+index e0173d9c8..e426f575c 100644
+--- a/runtime/spinel/tep/server_scheduled.rb
++++ b/runtime/spinel/tep/server_scheduled.rb
+@@ -228,6 +228,7 @@ module Tep
+           return false
+         end
+ 
++        req.remote_host = Sock.sphttp_remote_host(client)
+         return false unless req.consume_body_via_scheduler(client)
+ 
+         res = Response.new
+diff --git a/runtime/spinel/tep/server_threaded.rb b/runtime/spinel/tep/server_threaded.rb
+index 9dfc5d51e..af939655a 100644
+--- a/runtime/spinel/tep/server_threaded.rb
++++ b/runtime/spinel/tep/server_threaded.rb
+@@ -233,6 +233,7 @@ module Tep
+           return false
+         end
+ 
++        req.remote_host = Sock.sphttp_remote_host(client)
+         return false unless req.consume_body_via_io(io, client)
+ 
+         res = Response.new
+diff --git a/src/lower/controller_to_library/mod.rs b/src/lower/controller_to_library/mod.rs
+index ab89f39f4..70d62c726 100644
+--- a/src/lower/controller_to_library/mod.rs
++++ b/src/lower/controller_to_library/mod.rs
+@@ -1453,6 +1453,13 @@ fn build_methods(
+         // the next block filter that names a helper would otherwise stay bare.
+         dispatcher.body =
+             rewrite_controller_route_helpers(&dispatcher.body, &shadows, route_id_segments);
++        // Callback blocks and rescue bodies respond just like private helpers.
++        // Run the same pipeline without synthesizing an implicit render.
++        dispatcher.body = lower_action_body(
++            &dispatcher.body, controller, "process_action", &privs, &params_privs,
++            false, params_specs, assocs, &[], view_ivars, partials, format_breadth,
++            &shadows, route_id_segments, false, false, None, None, &[],
++        ).0;
+         methods.insert(dispatcher_at, dispatcher);
+     }
+     // The empty set for both non-public loops below: `is_public: false`
+diff --git a/tests/api_mode.rs b/tests/api_mode.rs
+new file mode 100644
+index 000000000..ea37678bf
+--- /dev/null
++++ b/tests/api_mode.rs
+@@ -0,0 +1,55 @@
++//! Viewless API controllers use the same lowering in actions, callbacks,
++//! and inherited rescue handlers. Native HTTP coverage lives in the w06 probe.
++use std::collections::HashMap;
++use std::path::PathBuf;
++use roundhouse::ingest::ingest_app_from_tree;
++
++fn files() -> Vec<roundhouse::emit::EmittedFile> {
++    let source: HashMap<PathBuf, Vec<u8>> = [
++        ("app/controllers/application_controller.rb", r#"class ApplicationController < ActionController::API
++  rescue_from StandardError do |failure|
++    render json: { errors: [failure.message] }, status: 422
++  end
++  after_action { response.set_header("X-Probe", "yes") }
++end"#),
++        ("app/controllers/posts_controller.rb", r#"class PostsController < ApplicationController
++  rescue_from StandardError do |failure|
++    render json: { errors: [failure.message] }, status: 409
++  end
++  def show
++    render json: { title: params[:post][:title], limit: params.fetch(:limit, 20), hasLimit: params.key?(:limit) }
++  end
++end"#),
++        ("config/routes.rb", r#"Rails.application.routes.draw do
++  scope :api do
++    get "posts/:slug", to: "posts#show"
++  end
++  match "*unmatched", to: "application#not_found", via: :all
++end"#),
++    ].into_iter().map(|(p,s)| (PathBuf::from(p), s.as_bytes().to_vec())).collect();
++    let mut app = ingest_app_from_tree(source).expect("ingest");
++    roundhouse::session::analyze_and_lower(&mut app);
++    roundhouse::emit::ruby::emit_spinel(&app)
++}
++
++#[test]
++fn json_handlers_and_nested_params_are_lowered() {
++    let emitted = files();
++    let controller = &emitted.iter().find(|f| f.path.ends_with("posts_controller.rb")).unwrap().content;
++    assert!(controller.contains("@params[\"post\"][\"title\"]"), "{controller}");
++    assert!(controller.contains("@params.fetch(\"limit\", 20)"), "{controller}");
++    assert!(controller.contains("@params.key?(\"limit\")"), "{controller}");
++    assert!(controller.contains("render(ActionController::JsonRender.encode({ errors:"), "{controller}");
++    assert!(controller.contains("response.set_header(\"X-Probe\", \"yes\")"), "{controller}");
++    let dispatch = controller.split("def process_action").nth(1).expect("dispatcher");
++    assert!(dispatch.find("status: :conflict").unwrap_or_else(|| panic!("{dispatch}")) < dispatch.find("status: :unprocessable_entity").unwrap_or_else(|| panic!("{dispatch}")), "subclass handler wins: {dispatch}");
++}
++
++#[test]
++fn dispatch_has_a_complete_table_without_a_root() {
++    let emitted = files();
++    let routes = &emitted.iter().find(|f| f.path.ends_with("routes.rb")).unwrap().content;
++    assert!(routes.contains("def self.table"), "{routes}");
++    assert!(!routes.contains("def self.root"), "{routes}");
++    assert!(routes.contains("\"ANY\", \"/*unmatched\""), "{routes}");
++}

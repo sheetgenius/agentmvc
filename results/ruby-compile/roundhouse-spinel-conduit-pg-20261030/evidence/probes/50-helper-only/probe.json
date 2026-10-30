@@ -1,0 +1,59 @@
+{
+  "name": "50-helper-only",
+  "series": [
+    "10-api-mode-json.patch",
+    "20-raw-websocket.patch",
+    "30-jobs-boot.patch",
+    "50-helper-only.patch",
+    "60-rails-surface.patch",
+    "74-integer-query-range.patch",
+    "80-gradual-return-stabilization.patch",
+    "84-upstream-regression-mixed-parameter-arm.patch"
+  ],
+  "manifest_sha256": "0f3e2fd0cc569cc660b875489959d23fda6f8e60a1d164e5b3dcc7f080745b9b",
+  "roundhouse": "75672b31ef4ef5756f88ec98a90ae0bea057ff26",
+  "spinel": "97cea860aa2b3c8f4b1431ca67d3e9a99feb738f",
+  "applications": [
+    {
+      "patch": "10-api-mode-json.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "20-raw-websocket.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "30-jobs-boot.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "50-helper-only.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "60-rails-surface.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "74-integer-query-range.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "80-gradual-return-stabilization.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+      "exit": 0,
+      "stderr": ""
+    }
+  ],
+  "purpose": "Retain only 50's environment helper to remove 74's compile dependency and expose the backend gap"
+}

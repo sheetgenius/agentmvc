@@ -1,0 +1,5 @@
+Input: v12 final eight-patch series. All added/removed lines are identical after the rebase.
+20: boot.rb gained upstream request_hooks after tep (d29719895). Keep its comment and require, then add faye_websocket.
+10, 30, 50, 60, 74, 80 and 84: direct git apply --check succeeds; only hunk positions change on export.
+No hunk is already identical upstream on this rebase; no functional change or new patch was made.
+The first recipe setup caught a port replacement inside a source-manifest hash; fixed by copying that manifest byte-for-byte before verification. No Docker work had begun.

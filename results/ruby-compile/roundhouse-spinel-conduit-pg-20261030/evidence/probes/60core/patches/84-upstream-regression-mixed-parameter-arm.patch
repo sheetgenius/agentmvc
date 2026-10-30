@@ -1,0 +1,20 @@
+diff --git a/src/analyze/mod.rs b/src/analyze/mod.rs
+index 9e9266d72..4064b3716 100644
+--- a/src/analyze/mod.rs
++++ b/src/analyze/mod.rs
+@@ -7790,7 +7790,15 @@ pub(crate) fn fold_param_observations(
+ /// arm, merging them must keep gradual (gradual wins), or the result
+ /// depends on the grouping again and the join stops being associative.
+ pub(crate) fn unify_param_ty(stored: Ty, observed: Ty) -> Ty {
++    // An explicit mixed return arm may carry an arbitrary Ruby value.
++    // Preserve that evidence when deriving its consumer's parameter.
++    let mixed_unknown = [&stored, &observed].iter().any(|ty| {
++        matches!(ty, Ty::Union { variants } if variants.iter().any(|arm| matches!(arm, Ty::Untyped)))
++    });
+     let joined = crate::analyze::body::drop_pending_arms(crate::analyze::body::union_of(stored, observed));
++    if mixed_unknown {
++        return joined;
++    }
+     let Ty::Union { variants } = joined else {
+         return joined;
+     };
