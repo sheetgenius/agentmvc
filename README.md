@@ -1,10 +1,16 @@
 # AgentMVC
 
-**When coding agents do most of the writing and reading, which language and framework should you build in?**
+**AgentMVC has two tracks: comparing agent-built backends and compiling real Rails apps.**
 
-AgentMVC asks coding agents to build the same small publishing API in different stacks, then measures its correctness, code size, the agents' effort and the app's speed. The API is RealWorld's [Conduit](https://github.com/realworld-apps/realworld), extended with drafts, durable background exports and live shared editing over WebSockets. All the code, checks and measurements are published.
+**The benchmark** asks: when coding agents do most of the writing and reading, which language and framework should a product use? Agents build the same small publishing API in different stacks. The benchmark measures correctness, code size, agent effort and app speed. The API is RealWorld's [Conduit](https://github.com/realworld-apps/realworld), extended with drafts, durable background exports and live shared editing over WebSockets. Its code, checks and measurements are public.
 
 It began at [BitterClip](https://bitterclip.com), a Rails product with about three million tokens of application code. Its founder kept hearing that everything should be rewritten in Rust because agents would do the work. When agents read the code, how much of a product fits in their context matters, so the question became measurable: how much code does the same product take in each stack, and what do you get for it?
+
+**The compile program** takes real Rails apps through [Roundhouse](https://github.com/rubys/roundhouse) and [Spinel](https://github.com/matz/spinel). Its goals are Conduit with zero local compiler patches and BitterClip (private) with zero `check` errors, followed by native execution with verified behavior. Fixes go upstream through focused contributions. These are goals, not completed results. Conduit's separately labelled compile records live in [`results/ruby-compile/`](results/ruby-compile/); BitterClip (private) is reported through counts only. See the [program page](docs/program.md).
+
+Records, results and reproduction tools are public. The compile program's operational layer—working prompts, ledgers and session transcripts—is private. Published benchmark prompts remain part of their frozen conditions; historical benchmark raw-data archives remain linked from [`results/README.md`](results/README.md).
+
+Each result belongs to its stated condition. A compile variant is separate from the measured agent build, and a successful rebuild does not inherit an earlier build's speed result. These boundaries follow `AGENTS.md` and `results/README.md`.
 
 ## What we've learned so far
 
