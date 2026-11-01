@@ -1,0 +1,146 @@
+[
+  {
+    "label": "case-a-roundhouse-binary-01",
+    "command": [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "conduit-v14-rhbin-case-a",
+      "conduit-v14-toolchain:9360eed5a57c",
+      "sha256sum",
+      "/usr/local/bin/roundhouse"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-a",
+    "started": "2026-11-01T07:44:02.635754+00:00",
+    "finished": "2026-11-01T07:44:12.204315+00:00",
+    "elapsed_seconds": 9.568,
+    "exit": 0,
+    "log": "evidence/execution/case-a-roundhouse-binary-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/heavy.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "case-a-server-binary-01",
+    "command": [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "conduit-v14-serverbin-case-a",
+      "--entrypoint",
+      "sha256sum",
+      "conduit-v14-app:compiled",
+      "/app/server"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-a",
+    "started": "2026-11-01T07:44:12.249616+00:00",
+    "finished": "2026-11-01T07:44:18.101391+00:00",
+    "elapsed_seconds": 5.852,
+    "exit": 0,
+    "log": "evidence/execution/case-a-server-binary-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/heavy.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "case-a-gate-01",
+    "command": [
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/reproduce/run-gate.sh",
+      "compiled",
+      "4501"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-a",
+    "started": "2026-11-01T07:44:18.145743+00:00",
+    "finished": "2026-11-01T07:49:43.354903+00:00",
+    "elapsed_seconds": 325.208,
+    "exit": 0,
+    "log": "evidence/execution/case-a-gate-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/heavy.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "case-a-common-01",
+    "command": [
+      "/opt/homebrew/opt/python@3.12/bin/python3.12",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/reproduce/run-common-probe.py",
+      "rails",
+      "conduit-v14-app:compiled",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/evidence/case-a-common-http.json"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-a",
+    "started": "2026-11-01T07:49:43.393033+00:00",
+    "finished": "2026-11-01T07:50:07.479594+00:00",
+    "elapsed_seconds": 24.086,
+    "exit": 0,
+    "log": "evidence/execution/case-a-common-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/heavy.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "case-a-edge-01",
+    "command": [
+      "/opt/homebrew/opt/python@3.12/bin/python3.12",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/evidence/edge/edge_diff.py",
+      "run",
+      "conduit-v14-app:compiled",
+      "4501",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/evidence/edge/case-a.json"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-a",
+    "started": "2026-11-01T07:50:07.516492+00:00",
+    "finished": "2026-11-01T07:50:29.642271+00:00",
+    "elapsed_seconds": 22.126,
+    "exit": 0,
+    "log": "evidence/execution/case-a-edge-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/heavy.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "case-a-recovery-01",
+    "command": [
+      "/opt/homebrew/opt/python@3.12/bin/python3.12",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/evidence/recovery/probe.py",
+      "case-a",
+      "conduit-v14-app:compiled",
+      "done"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-a",
+    "started": "2026-11-01T07:50:29.677578+00:00",
+    "finished": "2026-11-01T07:50:32.865062+00:00",
+    "elapsed_seconds": 3.187,
+    "exit": 0,
+    "log": "evidence/execution/case-a-recovery-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/heavy.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "case-a-transport-01",
+    "command": [
+      "/opt/homebrew/opt/python@3.12/bin/python3.12",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/reproduce/transport-probe.py",
+      "case-a"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-a",
+    "started": "2026-11-01T07:50:32.898226+00:00",
+    "finished": "2026-11-01T07:50:46.733462+00:00",
+    "elapsed_seconds": 13.835,
+    "exit": 1,
+    "log": "evidence/execution/case-a-transport-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/heavy.lock (shared slot)"
+    ]
+  }
+]

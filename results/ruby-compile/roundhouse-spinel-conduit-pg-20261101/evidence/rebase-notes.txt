@@ -1,0 +1,10 @@
+Case A: v13 patches 10 and 60 dropped in full. No manual source edits or behavioral repairs.
+20 direct. #1651 adds logger_spinel to boot.rb; preserve it and faye_websocket after request_hooks.
+30 automatic three-way context merge at the src/ingest/mod.rs:53 module-list anchor.
+#1651 adds boot_program ingest alongside the existing ingest;
+its own source explicitly leaves after_initialize and other boot hooks to initializer ledger warnings.
+The local hook extractor and post-DB/ActiveJob hook call remain. Recovery result is pending runtime check.
+50 automatic three-way context merge at src/lower/model_to_library/adapter_emit/mod.rs:336.
+All patch line counts unchanged.
+74, 80, 84 direct; all patch line counts unchanged.
+No other whole-patch omissions rerun; this is a stated limit, not a new necessity measurement for them.

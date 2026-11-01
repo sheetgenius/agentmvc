@@ -1,0 +1,60 @@
+{
+  "case": "case-a",
+  "executions": {
+    "case-a-build-01": 0,
+    "case-a-common-01": 0,
+    "case-a-edge-01": 0,
+    "case-a-gate-01": 0,
+    "case-a-recovery-01": 0,
+    "case-a-roundhouse-binary-01": 0,
+    "case-a-server-binary-01": 0,
+    "case-a-transport-01": 1
+  },
+  "gate": {
+    "log": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/evidence/execution/case-a-gate-01.log",
+    "api_files": "17/17",
+    "security_files": "13/13",
+    "live_protocol": "pass",
+    "browser_passed": 4,
+    "browser_failed": 0,
+    "security": "13/13",
+    "security_slow_ms": {
+      "s09_oversized_body": 187607
+    },
+    "exit": 0
+  },
+  "common_http": {
+    "exit": 0,
+    "summary": {
+      "contract_passed": 21,
+      "contract_total": 21,
+      "quality_passed": 3,
+      "quality_total": 3
+    },
+    "failing_names": []
+  },
+  "edge": {
+    "total": 166,
+    "differences": 0,
+    "failing_names": [],
+    "extra_names": []
+  },
+  "recovery": {
+    "before": "pending",
+    "after": "done",
+    "completed": "t",
+    "pass": true,
+    "server_sha256": "f4c375dcda181ef2ae16382e56d36858f98150a0aec2e802d3f02186f0803ba3"
+  },
+  "transport": {
+    "passed": 2,
+    "total": 4,
+    "failing_names": [
+      "json_utf8_content_type",
+      "new_socket_peer_has_own_budget"
+    ],
+    "pass_": false
+  },
+  "roundhouse_sha256": "7faf404ca93b5be8a38e14a119aa76bcad532f3514e4857483969a963ae05884",
+  "server_sha256": "f4c375dcda181ef2ae16382e56d36858f98150a0aec2e802d3f02186f0803ba3"
+}

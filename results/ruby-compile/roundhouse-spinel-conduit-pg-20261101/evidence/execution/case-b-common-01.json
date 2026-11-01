@@ -1,0 +1,20 @@
+{
+  "label": "case-b-common-01",
+  "command": [
+    "/opt/homebrew/opt/python@3.12/bin/python3.12",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/reproduce/run-common-probe.py",
+    "rails",
+    "conduit-v14-app:compiled",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/evidence/case-b-common-http.json"
+  ],
+  "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-b",
+  "started": "2026-11-01T08:04:35.633456+00:00",
+  "finished": "2026-11-01T08:04:52.702325+00:00",
+  "elapsed_seconds": 17.069,
+  "exit": 0,
+  "log": "evidence/execution/case-b-common-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/compile-program/heavy.lock (shared slot)"
+  ]
+}

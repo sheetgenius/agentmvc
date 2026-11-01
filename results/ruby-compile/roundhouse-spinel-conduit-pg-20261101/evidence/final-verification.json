@@ -1,0 +1,39 @@
+{
+  "verdict": "60 retires; 10 retains one charset hunk",
+  "cases": {
+    "case-a": {
+      "required_checks_pass": true,
+      "patches": 6,
+      "roundhouse_sha256": "7faf404ca93b5be8a38e14a119aa76bcad532f3514e4857483969a963ae05884",
+      "server_sha256": "f4c375dcda181ef2ae16382e56d36858f98150a0aec2e802d3f02186f0803ba3",
+      "gate_binary_matches_image": true,
+      "recovery_binary_matches_image": true,
+      "synthetic_json_content_type": "application/json"
+    },
+    "case-b": {
+      "required_checks_pass": true,
+      "patches": 7,
+      "roundhouse_sha256": "774e5d2322c61f7bd78d37a7e7833178280a51b76e5d5ad1e9b36be88c6b931a",
+      "server_sha256": "d7c1bf5d9c1218a687879b347d11bd8822254bf574bdf20458f287243ada3539",
+      "gate_binary_matches_image": true,
+      "recovery_binary_matches_image": true,
+      "synthetic_json_content_type": "application/json; charset=utf-8"
+    }
+  },
+  "fixed_pins": {
+    "roundhouse": "7766b5ceeadf0b23c55230c29ee5adc5f249f018",
+    "spinel": "0ed86eae9d877b28527c8e7eec1b60dc69533a70"
+  },
+  "transport_regressions_against_verified_v13": {
+    "case-a": [
+      "json_utf8_content_type"
+    ],
+    "case-b": []
+  },
+  "preexisting_control_failures": [
+    "new_socket_peer_has_own_budget"
+  ],
+  "cleanup_verified": true,
+  "other_six_omissions_rerun": false,
+  "independent_reviewer": "not assigned"
+}

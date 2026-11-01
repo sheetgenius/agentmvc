@@ -1,0 +1,1021 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+refreshed mtimes under results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-a/toolchain-context/vendor/roundhouse at 2026-11-01T07:30:04Z
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 2.89kB done
+#1 DONE 0.7s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 5.9s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546
+#4 DONE 3.0s
+
+#5 [internal] load metadata for docker.io/library/ruby:4.0.7-slim-trixie
+#5 DONE 8.3s
+
+#6 [internal] load .dockerignore
+#6 transferring context:
+#6 transferring context: 2B done
+#6 DONE 0.5s
+
+#7 [ruby407 1/1] FROM docker.io/library/ruby:4.0.7-slim-trixie@sha256:6c6b7b8c7d750604178aa60c2fa436890cd17c5695bdbd3213db2e4efbf98eb9
+#7 DONE 0.0s
+
+#8 [builder  1/11] FROM docker.io/library/rust:1.98.1-trixie@sha256:a8a5f0a1e5fe7dfe1d352591e4a1c7dd2c08fd70475cae872cf3458ba0df0546
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 5.02MB 0.1s
+#9 transferring context: 95.70MB 2.7s done
+#9 DONE 3.3s
+
+#10 [builder  2/11] RUN apt-get update && apt-get install -y --no-install-recommends     clang make git pkg-config libsqlite3-dev sqlite3 libjemalloc-dev     libpq-dev postgresql-client curl ca-certificates libssl-dev libcrypt-dev     libyaml-0-2 libgmp10 file time && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [builder  3/11] COPY --from=ruby407 /usr/local/ /usr/local/
+#11 CACHED
+
+#12 [builder  4/11] RUN ruby --version
+#12 CACHED
+
+#13 [builder  5/11] COPY vendor/spinel /src/spinel
+#13 DONE 13.8s
+
+#14 [builder  6/11] WORKDIR /src/spinel
+#14 DONE 3.4s
+
+#15 [builder  7/11] RUN make deps -j8 && make -j8 CC=clang && make install -j8 CC=clang
+#15 8.203 Fetching rbs v4.0.1 from rubygems.org...
+#15 8.210 Fetching prism v1.9.0 from rubygems.org...
+#15 11.53 prism v1.9.0 ready at vendor/prism
+#15 11.61 rbs v4.0.1 ready at vendor/rbs
+#15 12.72 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_compile.c -o build/regexp/re_compile.o
+#15 12.72 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_exec.c -o build/regexp/re_exec.o
+#15 12.73 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_utf8.c -o build/regexp/re_utf8.o
+#15 12.73 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/unicase.c -o build/regexp/unicase.o
+#15 12.73 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_spinel.c -o build/regexp/re_spinel.o
+#15 12.85 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_compile.c -o build/mt/regexp/re_compile.o
+#15 12.85 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_exec.c -o build/mt/regexp/re_exec.o
+#15 12.85 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_utf8.c -o build/mt/regexp/re_utf8.o
+#15 13.50 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/unicase.c -o build/mt/regexp/unicase.o
+#15 13.50 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib/regexp -Ilib/regexp/shim lib/regexp/re_spinel.c -o build/mt/regexp/re_spinel.o
+#15 13.50 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_bigint.c -o build/mt/sp_bigint.o
+#15 13.50 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_crypto.c -o build/mt/sp_crypto.o
+#15 13.51 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_pack.c -o build/mt/sp_pack.o
+#15 13.51 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_time.c -o build/mt/sp_time.o
+#15 14.40 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_core.c -o build/mt/sp_core.o
+#15 14.41 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_net.c -o build/mt/sp_net.o
+#15 14.46 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_system.c -o build/mt/sp_system.o
+#15 14.46 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_gc.c -o build/mt/sp_gc.o
+#15 14.47 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_slab.c -o build/mt/sp_slab.o
+#15 14.48 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_alloc.c -o build/mt/sp_alloc.o
+#15 14.50 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_dtoa.c -o build/mt/sp_dtoa.o
+#15 16.51 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_marshal.c -o build/mt/sp_marshal.o
+#15 16.53 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_format.c -o build/mt/sp_format.o
+#15 16.53 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_string.c -o build/mt/sp_string.o
+#15 16.53 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_inspect.c -o build/mt/sp_inspect.o
+#15 16.53 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_poly_cold.c -o build/mt/sp_poly_cold.o
+#15 16.55 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_array.c -o build/mt/sp_array.o
+#15 16.55 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str.c -o build/mt/sp_str.o
+#15 16.55 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str_cold.c -o build/mt/sp_str_cold.o
+#15 16.83 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str_crypt.c -o build/mt/sp_str_crypt.o
+#15 16.88 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_hash.c -o build/mt/sp_hash.o
+#15 17.52 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_proc.c -o build/mt/sp_proc.o
+#15 17.53 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_exc.c -o build/mt/sp_exc.o
+#15 17.54 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_re.c -o build/mt/sp_re.o
+#15 17.54 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_random.c -o build/mt/sp_random.o
+#15 18.18 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_fiber.c -o build/mt/sp_fiber.o
+#15 18.86 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_sched.c -o build/mt/sp_sched.o
+#15 19.54 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_io.c -o build/mt/sp_io.o
+#15 19.55 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_iobuffer.c -o build/mt/sp_iobuffer.o
+#15 19.55 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cold.c -o build/mt/sp_cold.o
+#15 19.55 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_enum_str.c -o build/mt/sp_enum_str.o
+#15 19.55 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_process.c -o build/mt/sp_process.o
+#15 19.56 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_process_status.c -o build/mt/sp_process_status.o
+#15 19.58 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/diagnostic.c -o build/prism/diagnostic.o
+#15 19.69 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/encoding.c -o build/prism/encoding.o
+#15 20.00 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/node.c -o build/prism/node.o
+#15 20.00 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/options.c -o build/prism/options.o
+#15 20.00 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/pack.c -o build/prism/pack.o
+#15 20.00 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/prettyprint.c -o build/prism/prettyprint.o
+#15 20.03 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/prism.c -o build/prism/prism.o
+#15 20.34 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/regexp.c -o build/prism/regexp.o
+#15 20.34 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/serialize.c -o build/prism/serialize.o
+#15 20.34 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/static_literals.c -o build/prism/static_literals.o
+#15 21.26 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/token_type.c -o build/prism/token_type.o
+#15 21.27 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_buffer.c -o build/prism/util/pm_buffer.o
+#15 21.27 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_char.c -o build/prism/util/pm_char.o
+#15 21.27 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_constant_pool.c -o build/prism/util/pm_constant_pool.o
+#15 21.28 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_integer.c -o build/prism/util/pm_integer.o
+#15 21.28 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_list.c -o build/prism/util/pm_list.o
+#15 22.25 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_memchr.c -o build/prism/util/pm_memchr.o
+#15 22.59 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_newline_list.c -o build/prism/util/pm_newline_list.o
+#15 22.60 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_string.c -o build/prism/util/pm_string.o
+#15 22.60 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_strncasecmp.c -o build/prism/util/pm_strncasecmp.o
+#15 22.60 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Ilib/regexp -Ilib/regexp/shim -c src/re_lit_check.c -o build/csrc/re_lit_check.o
+#15 22.60 clang -c -O2 -DSP_ONE_STRING -Ivendor/prism/include -Ivendor/prism/src vendor/prism/src/util/pm_strpbrk.c -o build/prism/util/pm_strpbrk.o
+#15 22.60 clang -c -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Ivendor/rbs/include src/rbs_map.c -o build/csrc/rbs_map.o
+#15 22.89 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/ast.c -o build/rbs/ast.o
+#15 22.89 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/lexer.c -o build/rbs/lexer.o
+#15 22.89 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/lexstate.c -o build/rbs/lexstate.o
+#15 23.15 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/location.c -o build/rbs/location.o
+#15 23.16 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/parser.c -o build/rbs/parser.o
+#15 23.16 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/string.c -o build/rbs/string.o
+#15 23.16 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_allocator.c -o build/rbs/util/rbs_allocator.o
+#15 23.16 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_assert.c -o build/rbs/util/rbs_assert.o
+#15 23.17 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_buffer.c -o build/rbs/util/rbs_buffer.o
+#15 24.02 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_constant_pool.c -o build/rbs/util/rbs_constant_pool.o
+#15 24.03 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib -Ipackages/json packages/json/sp_json.c -o packages/json/sp_json.o
+#15 24.03 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib -Ipackages/stringio packages/stringio/sp_stringio.c -o packages/stringio/sp_stringio.o
+#15 24.05 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/strscan/sp_strscan.c -o packages/strscan/sp_strscan.o
+#15 24.05 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/base64/sp_base64.c -o packages/base64/sp_base64.o
+#15 24.34 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_encoding.c -o build/rbs/util/rbs_encoding.o
+#15 24.34 clang -c -O2 -DSP_ONE_STRING -Wno-all -Ivendor/rbs/include -Ivendor/rbs/src vendor/rbs/src/util/rbs_unescape.c -o build/rbs/util/rbs_unescape.o
+#15 24.34 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/tmpdir/sp_tmpdir.c -o packages/tmpdir/sp_tmpdir.o
+#15 24.34 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/zlib/sp_zlib.c -o packages/zlib/sp_zlib.o
+#15 24.89 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib packages/pty/sp_pty.c -o packages/pty/sp_pty.o
+#15 24.89 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib -Ipackages/openssl packages/openssl/sp_openssl.c -o packages/openssl/sp_openssl.o
+#15 25.18 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off   -Ilib -Ipackages/ffi packages/ffi/sp_ffi.c -o packages/ffi/sp_ffi.o
+#15 25.19 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ipackages/json packages/json/sp_json.c -o packages/json/sp_json_mt.o
+#15 25.19 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib -Ipackages/stringio packages/stringio/sp_stringio.c -o packages/stringio/sp_stringio_mt.o
+#15 25.51 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/strscan/sp_strscan.c -o packages/strscan/sp_strscan_mt.o
+#15 25.52 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/base64/sp_base64.c -o packages/base64/sp_base64_mt.o
+#15 25.83 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/tmpdir/sp_tmpdir.c -o packages/tmpdir/sp_tmpdir_mt.o
+#15 25.83 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/zlib/sp_zlib.c -o packages/zlib/sp_zlib_mt.o
+#15 25.83 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -Ilib packages/pty/sp_pty.c -o packages/pty/sp_pty_mt.o
+#15 25.84 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec  -Ilib -Ipackages/openssl packages/openssl/sp_openssl.c -o packages/openssl/sp_openssl_mt.o
+#15 25.84 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec  -Ilib -Ipackages/ffi packages/ffi/sp_ffi.c -o packages/ffi/sp_ffi_mt.o
+#15 27.10 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_poly_cold.c -o build/cext/sp_poly_cold.o
+#15 27.10 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Ilib lib/sp_gc.c -o build/cext/sp_gc.o
+#15 27.11 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_exc.c -o build/cext/sp_exc.o
+#15 27.12 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_cext.c -o build/cext/sp_cext.o
+#15 27.12 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_cext_exc.c -o build/cext/sp_cext_exc.o
+#15 27.12 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_cext_bridge.c -o build/cext/sp_cext_bridge.o
+#15 27.12 clang -c -O2 -DSP_ONE_STRING -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_CEXT -Iinclude -Ilib lib/sp_cext_thread.c -o build/cext/sp_cext_thread.o
+#15 27.12 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_bigint.c -o build/cext-mt/sp_bigint.o
+#15 27.19 In file included from lib/sp_poly_cold.c:23:
+#15 27.19 lib/spinel_rt.h:18:92: warning: '/*' within block comment [-Wcomment]
+#15 27.19    18 | #include "sp_re.h"      /* regexp wrappers + MatchData (lib/sp_re.c); engine = build/regexp/*.o */
+#15 27.19       |                                                                                            ^
+#15 27.19 In file included from lib/sp_poly_cold.c:23:
+#15 27.20 In file included from lib/spinel_rt.h:18:
+#15 27.20 lib/sp_re.h:6:16: warning: '/*' within block comment [-Wcomment]
+#15 27.20     6 |  * build/regexp/*.o library; this layer is spinel's Ruby-facing surface
+#15 27.20       |                ^
+#15 27.20 lib/sp_re.h:27:55: warning: '/*' within block comment [-Wcomment]
+#15 27.20    27 | /* ---- regexp engine ABI (implemented in build/regexp/*.o) ---- */
+#15 27.20       |                                                       ^
+#15 27.34 In file included from lib/sp_poly_cold.c:23:
+#15 27.34 lib/spinel_rt.h:14732:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 27.34  14732 | }
+#15 27.34        | ^
+#15 27.34 lib/spinel_rt.h:14826:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 27.34  14826 | }
+#15 27.34        | ^
+#15 27.34 lib/spinel_rt.h:14855:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 27.34  14855 | }
+#15 27.34        | ^
+#15 27.34 lib/spinel_rt.h:14949:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 27.34  14949 | }
+#15 27.34        | ^
+#15 27.34 lib/spinel_rt.h:14965:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 27.34  14965 | }
+#15 27.34        | ^
+#15 27.39 lib/sp_poly_cold.c:1180:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+#15 27.39  1180 | }
+#15 27.39       | ^
+#15 27.42 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_crypto.c -o build/cext-mt/sp_crypto.o
+#15 27.42 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_pack.c -o build/cext-mt/sp_pack.o
+#15 27.42 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_time.c -o build/cext-mt/sp_time.o
+#15 27.44 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_core.c -o build/cext-mt/sp_core.o
+#15 28.07 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_net.c -o build/cext-mt/sp_net.o
+#15 28.08 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_system.c -o build/cext-mt/sp_system.o
+#15 28.09 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_gc.c -o build/cext-mt/sp_gc.o
+#15 28.09 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_slab.c -o build/cext-mt/sp_slab.o
+#15 28.09 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_alloc.c -o build/cext-mt/sp_alloc.o
+#15 28.10 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_dtoa.c -o build/cext-mt/sp_dtoa.o
+#15 28.13 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_marshal.c -o build/cext-mt/sp_marshal.o
+#15 29.13 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_format.c -o build/cext-mt/sp_format.o
+#15 29.43 9 warnings generated.
+#15 29.44 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_string.c -o build/cext-mt/sp_string.o
+#15 29.45 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_inspect.c -o build/cext-mt/sp_inspect.o
+#15 29.45 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_poly_cold.c -o build/cext-mt/sp_poly_cold.o
+#15 29.46 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_array.c -o build/cext-mt/sp_array.o
+#15 29.46 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str.c -o build/cext-mt/sp_str.o
+#15 29.46 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str_cold.c -o build/cext-mt/sp_str_cold.o
+#15 29.46 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_str_crypt.c -o build/cext-mt/sp_str_crypt.o
+#15 30.13 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_hash.c -o build/cext-mt/sp_hash.o
+#15 30.71 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_proc.c -o build/cext-mt/sp_proc.o
+#15 30.73 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_exc.c -o build/cext-mt/sp_exc.o
+#15 30.74 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_re.c -o build/cext-mt/sp_re.o
+#15 30.74 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_random.c -o build/cext-mt/sp_random.o
+#15 30.75 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_fiber.c -o build/cext-mt/sp_fiber.o
+#15 31.73 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_sched.c -o build/cext-mt/sp_sched.o
+#15 32.03 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_io.c -o build/cext-mt/sp_io.o
+#15 32.04 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_iobuffer.c -o build/cext-mt/sp_iobuffer.o
+#15 32.05 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cold.c -o build/cext-mt/sp_cold.o
+#15 32.05 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_enum_str.c -o build/cext-mt/sp_enum_str.o
+#15 32.05 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_process_status.c -o build/cext-mt/sp_process_status.o
+#15 32.05 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cext.c -o build/cext-mt/sp_cext.o
+#15 32.05 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_process.c -o build/cext-mt/sp_process.o
+#15 32.36 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cext_exc.c -o build/cext-mt/sp_cext_exc.o
+#15 33.22 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cext_bridge.c -o build/cext-mt/sp_cext_bridge.o
+#15 33.23 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -DSP_THREADS -ftls-model=initial-exec -DSP_CEXT -Iinclude -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cext_thread.c -o build/cext-mt/sp_cext_thread.o
+#15 33.23 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_bigint.c -o build/sp_bigint.o
+#15 33.23 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_crypto.c -o build/sp_crypto.o
+#15 33.25 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_pack.c -o build/sp_pack.o
+#15 33.60 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_time.c -o build/sp_time.o
+#15 33.96 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_core.c -o build/sp_core.o
+#15 34.11 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_net.c -o build/sp_net.o
+#15 34.33 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_system.c -o build/sp_system.o
+#15 34.99 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_gc.c -o build/sp_gc.o
+#15 34.99 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_slab.c -o build/sp_slab.o
+#15 34.99 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_alloc.c -o build/sp_alloc.o
+#15 34.99 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_dtoa.c -o build/sp_dtoa.o
+#15 35.21 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_marshal.c -o build/sp_marshal.o
+#15 35.46 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_format.c -o build/sp_format.o
+#15 35.46 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_string.c -o build/sp_string.o
+#15 35.78 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_inspect.c -o build/sp_inspect.o
+#15 36.13 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_poly_cold.c -o build/sp_poly_cold.o
+#15 36.14 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_array.c -o build/sp_array.o
+#15 36.14 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_str.c -o build/sp_str.o
+#15 36.42 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_str_crypt.c -o build/sp_str_crypt.o
+#15 36.42 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_str_cold.c -o build/sp_str_cold.o
+#15 36.74 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_hash.c -o build/sp_hash.o
+#15 37.09 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_proc.c -o build/sp_proc.o
+#15 37.10 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_exc.c -o build/sp_exc.o
+#15 37.10 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_re.c -o build/sp_re.o
+#15 37.10 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_random.c -o build/sp_random.o
+#15 37.49 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_fiber.c -o build/sp_fiber.o
+#15 37.52 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_sched.c -o build/sp_sched.o
+#15 37.83 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_io.c -o build/sp_io.o
+#15 37.84 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_iobuffer.c -o build/sp_iobuffer.o
+#15 37.84 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib -Ilib/regexp -Ilib/regexp/shim lib/sp_cold.c -o build/sp_cold.o
+#15 37.84 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_enum_str.c -o build/sp_enum_str.o
+#15 38.20 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_process.c -o build/sp_process.o
+#15 38.20 ZERO_AR_DATE=1 ar rcs lib/libspinel_rt_mt.a build/mt/regexp/re_compile.o build/mt/regexp/re_exec.o build/mt/regexp/re_utf8.o build/mt/regexp/unicase.o build/mt/regexp/re_spinel.o build/mt/sp_bigint.o build/mt/sp_crypto.o build/mt/sp_pack.o build/mt/sp_time.o build/mt/sp_core.o build/mt/sp_net.o build/mt/sp_system.o build/mt/sp_gc.o build/mt/sp_slab.o build/mt/sp_alloc.o build/mt/sp_dtoa.o build/mt/sp_marshal.o build/mt/sp_format.o build/mt/sp_string.o build/mt/sp_inspect.o build/mt/sp_poly_cold.o build/mt/sp_array.o build/mt/sp_str.o build/mt/sp_str_cold.o build/mt/sp_str_crypt.o build/mt/sp_hash.o build/mt/sp_proc.o build/mt/sp_exc.o build/mt/sp_re.o build/mt/sp_random.o build/mt/sp_fiber.o build/mt/sp_sched.o build/mt/sp_io.o build/mt/sp_iobuffer.o build/mt/sp_cold.o build/mt/sp_enum_str.o build/mt/sp_process.o build/mt/sp_process_status.o
+#15 38.20 clang -c -O2 -DSP_ONE_STRING -Wno-all -ffunction-sections -fdata-sections -ffp-contract=off  -Ilib lib/sp_process_status.c -o build/sp_process_status.o
+#15 38.23 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/node_table.c -o build/csrc/node_table.o
+#15 38.54 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/types.c -o build/csrc/types.o
+#15 38.54 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/compiler.c -o build/csrc/compiler.o
+#15 38.55 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/ffi_spec.c -o build/csrc/ffi_spec.o
+#15 38.86 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/ct_value.c -o build/csrc/ct_value.o
+#15 38.86 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/ct_eval.c -o build/csrc/ct_eval.o
+#15 38.86 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_ct.c -o build/csrc/analyze_ct.o
+#15 38.86 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze.c -o build/csrc/analyze.o
+#15 38.87 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_util.c -o build/csrc/analyze_util.o
+#15 39.20 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_infer.c -o build/csrc/analyze_infer.o
+#15 39.20 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_infer_recv.c -o build/csrc/analyze_infer_recv.o
+#15 39.54 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_cext.c -o build/csrc/analyze_cext.o
+#15 39.71 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_scope.c -o build/csrc/analyze_scope.o
+#15 40.18 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_pass.c -o build/csrc/analyze_pass.o
+#15 40.50 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_desugar.c -o build/csrc/analyze_desugar.o
+#15 40.85 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_nil.c -o build/csrc/analyze_nil.o
+#15 41.16 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_cls.c -o build/csrc/analyze_cls.o
+#15 41.85 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_arm.c -o build/csrc/analyze_arm.o
+#15 42.17 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_const.c -o build/csrc/analyze_const.o
+#15 42.80 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_program.c -o build/csrc/analyze_program.o
+#15 42.81 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_elab.c -o build/csrc/analyze_elab.o
+#15 43.52 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_lower.c -o build/csrc/analyze_lower.o
+#15 43.82 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/analyze_share.c -o build/csrc/analyze_share.o
+#15 45.31 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/repr.c -o build/csrc/repr.o
+#15 45.66 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/holder.c -o build/csrc/holder.o
+#15 46.02 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen.c -o build/csrc/codegen.o
+#15 46.81 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/ty_traits_check.c -o build/csrc/ty_traits_check.o
+#15 46.83 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_fold.c -o build/csrc/codegen_fold.o
+#15 47.26 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call.c -o build/csrc/codegen_call.o
+#15 47.26 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_poly.c -o build/csrc/codegen_call_poly.o
+#15 47.27 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_method.c -o build/csrc/codegen_call_method.o
+#15 47.83 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_io.c -o build/csrc/codegen_call_io.o
+#15 48.40 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_kernel.c -o build/csrc/codegen_call_kernel.o
+#15 48.73 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_exception.c -o build/csrc/codegen_call_exception.o
+#15 49.35 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_module.c -o build/csrc/codegen_call_module.o
+#15 49.70 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_string.c -o build/csrc/codegen_call_string.o
+#15 50.80 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_class.c -o build/csrc/codegen_call_class.o
+#15 51.15 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_operator.c -o build/csrc/codegen_call_operator.o
+#15 52.19 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_object.c -o build/csrc/codegen_call_object.o
+#15 52.48 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_ops.c -o build/csrc/codegen_ops.o
+#15 52.79 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_concurrency.c -o build/csrc/codegen_call_concurrency.o
+#15 52.80 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_numeric.c -o build/csrc/codegen_call_numeric.o
+#15 53.25 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_hash.c -o build/csrc/codegen_call_hash.o
+#15 53.25 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_array.c -o build/csrc/codegen_call_array.o
+#15 53.49 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_view.c -o build/csrc/codegen_view.o
+#15 53.81 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/builtin_ops.c -o build/csrc/builtin_ops.o
+#15 53.81 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/builtin_names.c -o build/csrc/builtin_names.o
+#15 54.58 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_call_recv.c -o build/csrc/codegen_call_recv.o
+#15 54.60 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_iter.c -o build/csrc/codegen_iter.o
+#15 55.39 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/call_plan.c -o build/csrc/call_plan.o
+#15 55.39 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/value_pos.c -o build/csrc/value_pos.o
+#15 56.12 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/implied_calls.c -o build/csrc/implied_calls.o
+#15 56.58 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/implicit_calls.c -o build/csrc/implicit_calls.o
+#15 56.97 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_poly_plan.c -o build/csrc/codegen_poly_plan.o
+#15 57.04 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/share_plan.c -o build/csrc/share_plan.o
+#15 57.72 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_str.c -o build/csrc/codegen_str.o
+#15 58.11 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_expr.c -o build/csrc/codegen_expr.o
+#15 58.45 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_stmt.c -o build/csrc/codegen_stmt.o
+#15 58.75 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/csplit.c -o build/csrc/csplit.o
+#15 60.40 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/decide.c -o build/csrc/decide.o
+#15 60.40 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/sha256.c -o build/csrc/sha256.o
+#15 61.51 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/unit_cache.c -o build/csrc/unit_cache.o
+#15 61.76 ZERO_AR_DATE=1 ar rcs build/libprism.a build/prism/diagnostic.o build/prism/encoding.o build/prism/node.o build/prism/options.o build/prism/pack.o build/prism/prettyprint.o build/prism/prism.o build/prism/regexp.o build/prism/serialize.o build/prism/static_literals.o build/prism/token_type.o build/prism/util/pm_buffer.o build/prism/util/pm_char.o build/prism/util/pm_constant_pool.o build/prism/util/pm_integer.o build/prism/util/pm_list.o build/prism/util/pm_memchr.o build/prism/util/pm_newline_list.o build/prism/util/pm_string.o build/prism/util/pm_strncasecmp.o build/prism/util/pm_strpbrk.o
+#15 61.76 ZERO_AR_DATE=1 ar rcs build/librbs.a build/rbs/ast.o build/rbs/lexer.o build/rbs/lexstate.o build/rbs/location.o build/rbs/parser.o build/rbs/string.o build/rbs/util/rbs_allocator.o build/rbs/util/rbs_assert.o build/rbs/util/rbs_buffer.o build/rbs/util/rbs_constant_pool.o build/rbs/util/rbs_encoding.o build/rbs/util/rbs_unescape.o
+#15 61.79 ZERO_AR_DATE=1 ar rcs lib/libspinel_cext_rt.a build/regexp/re_compile.o build/regexp/re_exec.o build/regexp/re_utf8.o build/regexp/unicase.o build/regexp/re_spinel.o build/sp_bigint.o build/sp_crypto.o build/sp_pack.o build/sp_time.o build/sp_core.o build/sp_net.o build/sp_system.o build/sp_slab.o build/sp_alloc.o build/sp_dtoa.o build/sp_marshal.o build/sp_format.o build/sp_string.o build/sp_inspect.o build/sp_array.o build/sp_str.o build/sp_str_cold.o build/sp_str_crypt.o build/sp_hash.o build/sp_proc.o build/sp_re.o build/sp_random.o build/sp_fiber.o build/sp_sched.o build/sp_io.o build/sp_iobuffer.o build/sp_cold.o build/sp_enum_str.o build/sp_process.o build/sp_process_status.o build/cext/sp_poly_cold.o build/cext/sp_gc.o build/cext/sp_exc.o build/cext/sp_cext.o build/cext/sp_cext_exc.o build/cext/sp_cext_bridge.o build/cext/sp_cext_thread.o
+#15 61.79 ZERO_AR_DATE=1 ar rcs lib/libspinel_cext_rt_mt.a build/mt/regexp/re_compile.o build/mt/regexp/re_exec.o build/mt/regexp/re_utf8.o build/mt/regexp/unicase.o build/mt/regexp/re_spinel.o build/cext-mt/sp_bigint.o build/cext-mt/sp_crypto.o build/cext-mt/sp_pack.o build/cext-mt/sp_time.o build/cext-mt/sp_core.o build/cext-mt/sp_net.o build/cext-mt/sp_system.o build/cext-mt/sp_gc.o build/cext-mt/sp_slab.o build/cext-mt/sp_alloc.o build/cext-mt/sp_dtoa.o build/cext-mt/sp_marshal.o build/cext-mt/sp_format.o build/cext-mt/sp_string.o build/cext-mt/sp_inspect.o build/cext-mt/sp_poly_cold.o build/cext-mt/sp_array.o build/cext-mt/sp_str.o build/cext-mt/sp_str_cold.o build/cext-mt/sp_str_crypt.o build/cext-mt/sp_hash.o build/cext-mt/sp_proc.o build/cext-mt/sp_exc.o build/cext-mt/sp_re.o build/cext-mt/sp_random.o build/cext-mt/sp_fiber.o build/cext-mt/sp_sched.o build/cext-mt/sp_io.o build/cext-mt/sp_iobuffer.o build/cext-mt/sp_cold.o build/cext-mt/sp_enum_str.o build/cext-mt/sp_process.o build/cext-mt/sp_process_status.o build/cext-mt/sp_cext.o build/cext-mt/sp_cext_exc.o build/cext-mt/sp_cext_bridge.o build/cext-mt/sp_cext_thread.o
+#15 61.85 ZERO_AR_DATE=1 ar rcs lib/libspinel_rt.a build/regexp/re_compile.o build/regexp/re_exec.o build/regexp/re_utf8.o build/regexp/unicase.o build/regexp/re_spinel.o build/sp_bigint.o build/sp_crypto.o build/sp_pack.o build/sp_time.o build/sp_core.o build/sp_net.o build/sp_system.o build/sp_gc.o build/sp_slab.o build/sp_alloc.o build/sp_dtoa.o build/sp_marshal.o build/sp_format.o build/sp_string.o build/sp_inspect.o build/sp_poly_cold.o build/sp_array.o build/sp_str.o build/sp_str_cold.o build/sp_str_crypt.o build/sp_hash.o build/sp_proc.o build/sp_exc.o build/sp_re.o build/sp_random.o build/sp_fiber.o build/sp_sched.o build/sp_io.o build/sp_iobuffer.o build/sp_cold.o build/sp_enum_str.o build/sp_process.o build/sp_process_status.o
+#15 61.91 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/codegen_util.c -o build/csrc/codegen_util.o
+#15 62.07 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Werror=return-type -Isrc -Ibuild/csrc -c src/main.c -o build/csrc/main.o
+#15 62.08 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Ivendor/prism/include -DSPINEL_INLINE_RBS -Ivendor/rbs/include -c src/spinel_parse.c -o build/csrc/sp_parse_lib.o
+#15 62.10 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  -Ivendor/rbs/include -Isrc tools/spinel_rbs_extract.c build/csrc/rbs_map.o build/librbs.a   -o build/spinel_rbs_extract
+#15 90.60 clang -O2 -DSP_ONE_STRING -Wno-all -Wno-unknown-warning-option -Wno-alloc-size-larger-than -Wno-format-truncation -ffp-contract=off  build/csrc/node_table.o build/csrc/types.o build/csrc/compiler.o build/csrc/ffi_spec.o build/csrc/ct_value.o build/csrc/ct_eval.o build/csrc/analyze_ct.o build/csrc/analyze.o build/csrc/analyze_util.o build/csrc/analyze_infer.o build/csrc/analyze_infer_recv.o build/csrc/analyze_cext.o build/csrc/analyze_scope.o build/csrc/analyze_pass.o build/csrc/analyze_desugar.o build/csrc/analyze_nil.o build/csrc/analyze_cls.o build/csrc/analyze_arm.o build/csrc/analyze_const.o build/csrc/analyze_program.o build/csrc/analyze_elab.o build/csrc/analyze_lower.o build/csrc/analyze_share.o build/csrc/repr.o build/csrc/holder.o build/csrc/codegen.o build/csrc/codegen_util.o build/csrc/ty_traits_check.o build/csrc/codegen_fold.o build/csrc/codegen_call.o build/csrc/codegen_call_poly.o build/csrc/codegen_call_method.o build/csrc/codegen_call_io.o build/csrc/codegen_call_kernel.o build/csrc/codegen_call_exception.o build/csrc/codegen_call_module.o build/csrc/codegen_call_string.o build/csrc/codegen_call_class.o build/csrc/codegen_call_operator.o build/csrc/codegen_call_object.o build/csrc/codegen_ops.o build/csrc/codegen_call_concurrency.o build/csrc/codegen_call_numeric.o build/csrc/codegen_call_hash.o build/csrc/codegen_call_array.o build/csrc/codegen_view.o build/csrc/builtin_ops.o build/csrc/builtin_names.o build/csrc/codegen_call_recv.o build/csrc/codegen_iter.o build/csrc/call_plan.o build/csrc/value_pos.o build/csrc/implied_calls.o build/csrc/implicit_calls.o build/csrc/codegen_poly_plan.o build/csrc/share_plan.o build/csrc/codegen_str.o build/csrc/codegen_expr.o build/csrc/codegen_stmt.o build/csrc/csplit.o build/csrc/main.o build/csrc/decide.o build/csrc/sha256.o build/csrc/unit_cache.o build/csrc/sp_parse_lib.o build/csrc/re_lit_check.o build/regexp/re_compile.o build/regexp/re_exec.o build/regexp/re_utf8.o build/regexp/unicase.o build/regexp/re_spinel.o build/libprism.a build/csrc/rbs_map.o build/librbs.a  -lm -lcrypt  -o bin/spinel
+#15 90.78 bin/spinel tools/doctor.rb -o bin/spinel-doctor
+#15 90.78 bin/spinel tools/reduce.rb -o bin/spinel-reduce
+#15 90.78 bin/spinel tools/flatten.rb -o bin/spinel-flatten
+#15 90.79 bin/spinel tools/diff.rb -o bin/spinel-diff
+#15 90.79 bin/spinel tools/bisect.rb -o bin/spinel-bisect
+#15 90.80 bin/spinel tools/cext-build.rb -o bin/spinel-cext-build
+#15 92.16 tools/flatten.rb -> bin/spinel-flatten
+#15 93.49 tools/reduce.rb -> bin/spinel-reduce
+#15 94.05 tools/doctor.rb -> bin/spinel-doctor
+#15 95.97 tools/diff.rb -> bin/spinel-diff
+#15 100.6 tools/bisect.rb -> bin/spinel-bisect
+#15 109.7 tools/cext-build.rb -> bin/spinel-cext-build
+#15 109.7 bin/spinel -I build tools/spin.rb -o bin/spin
+#15 109.7 bin/spinel-cext-build --bundle packages/racc packages/racc/build/cext "clang"
+#15 109.7 bin/spinel-cext-build --bundle packages/sqlite3 packages/sqlite3/build/cext "clang"
+#15 137.7 tools/spin.rb -> bin/spin
+#15 137.7 build/spinel_rbs_extract -> bin/spinel_rbs_extract
+#15 139.4 install -d /usr/local/lib/spinel/lib
+#15 140.1 install -m 755 bin/spinel            /usr/local/lib/spinel/spinel
+#15 140.1 install -m 755 bin/spin             /usr/local/lib/spinel/spin
+#15 140.1 install -m 644 lib/libspinel_rt.a    /usr/local/lib/spinel/lib/
+#15 140.1 install -m 644 lib/libspinel_rt_mt.a /usr/local/lib/spinel/lib/
+#15 140.1 install -m 644 lib/libspinel_cext_rt.a lib/libspinel_cext_rt_mt.a /usr/local/lib/spinel/lib/
+#15 140.1 install -d /usr/local/lib/spinel/include/ruby /usr/local/lib/spinel/tools/cext /usr/local/lib/spinel/tools/spin
+#15 140.1 install -m 644 include/ruby.h /usr/local/lib/spinel/include/
+#15 140.1 for h in include/ruby/*.h; do install -m 644 $h /usr/local/lib/spinel/include/ruby/; done
+#15 140.1 install -m 644 tools/cext/recorder.c tools/cext/recorder.h /usr/local/lib/spinel/tools/cext/
+#15 140.1 install -m 644 tools/cext-record.rb tools/cext-build.rb tools/cext-extconf.rb /usr/local/lib/spinel/tools/
+#15 140.1 install -m 644 tools/spin/toml.rb /usr/local/lib/spinel/tools/spin/
+#15 140.1 for h in lib/*.h; do install -m 644 $h /usr/local/lib/spinel/lib/; done
+#15 140.1 install -d /usr/local/lib/spinel/lib/spinel
+#15 140.1 install -m 644 lib/spinel/runtime.h  /usr/local/lib/spinel/lib/spinel/
+#15 140.1 install -d /usr/local/lib/spinel/lib/wasi/sys
+#15 140.1 for h in lib/wasi/*.h; do install -m 644 $h /usr/local/lib/spinel/lib/wasi/; done
+#15 140.1 for h in lib/wasi/sys/*.h; do install -m 644 $h /usr/local/lib/spinel/lib/wasi/sys/; done
+#15 140.1 rm -rf /usr/local/lib/spinel/packages
+#15 140.1 cp -r packages /usr/local/lib/spinel/packages
+#15 140.3 rm -rf /usr/local/lib/spinel/builtins
+#15 140.3 cp -r builtins /usr/local/lib/spinel/builtins
+#15 140.3 rm -rf /usr/local/lib/spinel/packages/*/build
+#15 140.3 for p in racc sqlite3; do \
+#15 140.3   if [ -d packages/$p/build/cext ]; then \
+#15 140.3     install -d /usr/local/lib/spinel/packages/$p/build/cext; \
+#15 140.3     for a in packages/$p/build/cext/*.a; do install -m 644 $a /usr/local/lib/spinel/packages/$p/build/cext/; done; \
+#15 140.3   fi; \
+#15 140.3 done
+#15 140.3 chmod -R a+rX /usr/local/lib/spinel/packages /usr/local/lib/spinel/builtins
+#15 140.3 install -d /usr/local/bin
+#15 140.3 ln -sf /usr/local/lib/spinel/spinel /usr/local/bin/spinel
+#15 140.3 ln -sf /usr/local/lib/spinel/spin   /usr/local/bin/spin
+#15 140.3 for t in doctor reduce flatten diff bisect; do \
+#15 140.3   install -m 755 bin/spinel-$t /usr/local/bin/spinel-$t; \
+#15 140.3 done
+#15 140.3 install -m 755 bin/spinel-cext-build /usr/local/lib/spinel/spinel-cext-build
+#15 140.3 ln -sf /usr/local/lib/spinel/spinel-cext-build /usr/local/bin/spinel-cext-build
+#15 DONE 143.7s
+
+#16 [builder  8/11] COPY vendor/roundhouse /src/roundhouse
+#16 DONE 3.9s
+
+#17 [builder  9/11] WORKDIR /src/roundhouse
+#17 DONE 1.5s
+
+#18 [builder 10/11] RUN --mount=type=cache,id=conduit-v14-cargo-registry,target=/usr/local/cargo/registry     --mount=type=cache,id=conduit-v14-cargo-git,target=/usr/local/cargo/git     --mount=type=cache,id=conduit-v14-cargo-target,target=/src/roundhouse/target     ROUNDHOUSE_COMMIT=$(echo 7766b5ceeadf0b23c55230c29ee5adc5f249f018 | cut -c1-8) cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse
+#18 8.830 info: syncing channel updates for 1.98.1-aarch64-unknown-linux-gnu
+#18 12.50 info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+#18 12.51 info: downloading 2 components
+#18 17.03     Updating crates.io index
+#18 17.03     Updating git repository `https://github.com/Shopify/rubydex`
+#18 32.22  Downloading crates ...
+#18 33.35   Downloaded bitflags v2.11.1
+#18 33.41   Downloaded cfg-if v1.0.4
+#18 33.64   Downloaded thiserror-impl v2.0.18
+#18 33.66   Downloaded crossbeam-utils v0.8.21
+#18 33.71   Downloaded version_check v0.9.5
+#18 33.72   Downloaded cc v1.2.60
+#18 33.74   Downloaded idna_adapter v1.2.2
+#18 33.79   Downloaded rustc-hash v2.1.2
+#18 33.83   Downloaded anstyle-query v1.1.5
+#18 33.85   Downloaded block-buffer v0.10.4
+#18 33.88   Downloaded hashlink v0.12.2
+#18 33.96   Downloaded litemap v0.8.3
+#18 34.00   Downloaded anstream v1.0.0
+#18 34.00   Downloaded displaydoc v0.2.5
+#18 34.02   Downloaded toml_parser v1.1.3+spec-1.1.0
+#18 34.03   Downloaded unicase v2.9.0
+#18 34.04   Downloaded zerofrom v0.1.8
+#18 34.11   Downloaded either v1.15.0
+#18 34.12   Downloaded tinystr v0.8.4
+#18 34.13   Downloaded cpufeatures v0.2.17
+#18 34.15   Downloaded equivalent v1.0.2
+#18 34.15   Downloaded bitflags v1.3.2
+#18 34.15   Downloaded zerofrom-derive v0.1.8
+#18 34.15   Downloaded icu_collections v2.3.0
+#18 34.16   Downloaded simd-adler32 v0.3.9
+#18 34.16   Downloaded aho-corasick v1.1.4
+#18 34.21   Downloaded foldhash v0.2.0
+#18 34.28   Downloaded icu_locale_core v2.3.0
+#18 34.29   Downloaded bumpalo v3.20.2
+#18 34.31   Downloaded adler2 v2.0.1
+#18 34.33   Downloaded ruby-prism-sys v2.0.0
+#18 34.37   Downloaded clap_builder v4.6.7
+#18 34.37   Downloaded anstyle-parse v1.0.0
+#18 34.40   Downloaded clap_lex v1.1.1
+#18 34.40   Downloaded crypto-common v0.1.7
+#18 34.40   Downloaded generic-array v0.14.7
+#18 34.40   Downloaded anstyle v1.0.14
+#18 34.40   Downloaded heck v0.5.0
+#18 34.40   Downloaded errno v0.3.14
+#18 34.41   Downloaded yoke-derive v0.8.3
+#18 34.41   Downloaded crc32fast v1.5.0
+#18 34.42   Downloaded toml_datetime v1.1.1+spec-1.1.0
+#18 34.44   Downloaded hashbrown v0.17.0
+#18 34.44   Downloaded stable_deref_trait v1.2.1
+#18 34.44   Downloaded crossbeam-epoch v0.9.21
+#18 34.50   Downloaded cypher-parser v0.8.1
+#18 34.50   Downloaded glob v0.3.3
+#18 34.85   Downloaded xattr v1.6.1
+#18 34.86   Downloaded filetime v0.2.27
+#18 34.86   Downloaded find-msvc-tools v0.1.9
+#18 34.89   Downloaded utf8_iter v1.0.4
+#18 34.90   Downloaded zerovec-derive v0.11.6
+#18 34.90   Downloaded cexpr v0.6.0
+#18 34.90   Downloaded colorchoice v1.0.5
+#18 34.90   Downloaded digest v0.10.7
+#18 34.90   Downloaded flate2 v1.1.9
+#18 34.90   Downloaded icu_normalizer v2.3.0
+#18 34.92   Downloaded nohash-hasher v0.2.0
+#18 34.92   Downloaded pulldown-cmark v0.13.4
+#18 34.92   Downloaded pulldown-cmark-escape v0.11.0
+#18 34.92   Downloaded regex v1.12.3
+#18 34.92   Downloaded strsim v0.11.1
+#18 34.92   Downloaded synstructure v0.14.0
+#18 34.92   Downloaded text-size v1.1.1
+#18 34.93   Downloaded arraydeque v0.5.1
+#18 34.93   Downloaded clang-sys v1.8.1
+#18 34.93   Downloaded form_urlencoded v1.2.2
+#18 34.93   Downloaded icu_normalizer_data v2.3.0
+#18 34.93   Downloaded indexmap v2.14.0
+#18 34.94   Downloaded is_terminal_polyfill v1.70.2
+#18 34.94   Downloaded line-index v0.1.2
+#18 34.94   Downloaded percent-encoding v2.3.2
+#18 34.94   Downloaded potential_utf v0.1.6
+#18 34.94   Downloaded quote v1.0.45
+#18 34.94   Downloaded log v0.4.29
+#18 34.94   Downloaded lsp-server v0.7.9
+#18 34.96   Downloaded itoa v1.0.18
+#18 34.97   Downloaded clap v4.6.7
+#18 34.97   Downloaded icu_provider v2.3.1
+#18 34.97   Downloaded thiserror v2.0.18
+#18 35.01   Downloaded fluent-uri v0.1.4
+#18 35.03   Downloaded crossbeam-channel v0.5.15
+#18 35.05   Downloaded prettyplease v0.2.37
+#18 35.05   Downloaded crossbeam-deque v0.8.8
+#18 35.07   Downloaded clap_derive v4.6.7
+#18 35.24   Downloaded utf8parse v0.2.2
+#18 35.24   Downloaded libloading v0.8.9
+#18 35.25   Downloaded bytecount v0.6.9
+#18 35.25   Downloaded proc-macro2 v1.0.106
+#18 35.26   Downloaded toml_writer v1.1.2+spec-1.1.0
+#18 35.29   Downloaded zmij v1.0.21
+#18 35.31   Downloaded ruby-rbs v0.3.0
+#18 35.31   Downloaded ruby-rbs-sys v0.3.0
+#18 35.32   Downloaded icu_properties v2.3.0
+#18 35.34   Downloaded miniz_oxide v0.8.9
+#18 35.34   Downloaded ruby-prism v2.0.0
+#18 35.34   Downloaded memchr v2.8.0
+#18 35.35   Downloaded lsp-types v0.97.0
+#18 35.41   Downloaded itertools v0.13.0
+#18 35.41   Downloaded minimal-lexical v0.2.1
+#18 35.46   Downloaded nom v7.1.3
+#18 35.47   Downloaded idna v1.1.0
+#18 35.47   Downloaded unicode-ident v1.0.24
+#18 35.47   Downloaded unsafe-libyaml v0.2.11
+#18 35.47   Downloaded icu_properties_data v2.3.0
+#18 35.66   Downloaded bindgen v0.72.1
+#18 35.72   Downloaded xxhash-rust v0.8.19
+#18 35.72   Downloaded tar v0.4.45
+#18 35.73   Downloaded writeable v0.6.4
+#18 35.73   Downloaded rustix v1.1.4
+#18 35.77   Downloaded regex-syntax v0.8.10
+#18 35.77   Downloaded toml v1.1.6+spec-1.1.0
+#18 35.77   Downloaded yoke v0.8.3
+#18 35.77   Downloaded smallvec v1.16.2
+#18 35.79   Downloaded regex-automata v0.4.14
+#18 35.82   Downloaded zerotrie v0.2.5
+#18 36.33   Downloaded yaml-rust2 v0.13.0
+#18 36.33   Downloaded libc v0.2.185
+#18 36.35   Downloaded url v2.5.8
+#18 36.54   Downloaded typenum v1.20.1
+#18 36.54   Downloaded zip v2.4.2
+#18 36.59   Downloaded zerovec v0.11.8
+#18 36.60   Downloaded linux-raw-sys v0.12.1
+#18 36.67   Downloaded serde_yaml v0.9.34+deprecated
+#18 36.67   Downloaded sha1 v0.10.7
+#18 36.67   Downloaded shlex v2.0.1
+#18 36.69   Downloaded syn v3.0.6
+#18 36.69   Downloaded ryu v1.0.23
+#18 36.70   Downloaded serde_core v1.0.228
+#18 36.70   Downloaded serde_repr v0.1.20
+#18 36.70   Downloaded serde_spanned v1.1.1
+#18 36.70   Downloaded winnow v1.0.4
+#18 36.70   Downloaded shlex v1.3.0
+#18 36.71   Downloaded serde v1.0.228
+#18 36.71   Downloaded serde_derive v1.0.228
+#18 36.71   Downloaded serde_yaml_ng v0.10.0
+#18 36.71   Downloaded syn v2.0.117
+#18 36.72   Downloaded zopfli v0.8.3
+#18 36.72   Downloaded serde_json v1.0.149
+#18 36.94    Compiling proc-macro2 v1.0.106
+#18 36.95    Compiling unicode-ident v1.0.24
+#18 36.95    Compiling quote v1.0.45
+#18 36.95    Compiling stable_deref_trait v1.2.1
+#18 37.83    Compiling serde_core v1.0.228
+#18 37.83    Compiling memchr v2.8.0
+#18 38.10    Compiling shlex v1.3.0
+#18 38.32    Compiling zmij v1.0.21
+#18 38.96    Compiling find-msvc-tools v0.1.9
+#18 39.83    Compiling cc v1.2.60
+#18 41.37    Compiling syn v2.0.117
+#18 41.82    Compiling syn v3.0.6
+#18 42.31    Compiling serde_json v1.0.149
+#18 42.38    Compiling serde v1.0.228
+#18 42.51    Compiling glob v0.3.3
+#18 42.59    Compiling libc v0.2.185
+#18 42.99    Compiling clang-sys v1.8.1
+#18 43.01    Compiling itoa v1.0.18
+#18 43.27    Compiling prettyplease v0.2.37
+#18 43.53    Compiling cfg-if v1.0.4
+#18 44.43    Compiling litemap v0.8.3
+#18 46.08    Compiling synstructure v0.14.0
+#18 46.08    Compiling regex-syntax v0.8.10
+#18 46.82    Compiling minimal-lexical v0.2.1
+#18 47.65    Compiling writeable v0.6.4
+#18 48.21    Compiling regex-automata v0.4.14
+#18 48.23    Compiling serde_derive v1.0.228
+#18 48.60    Compiling zerofrom-derive v0.1.8
+#18 48.98    Compiling yoke-derive v0.8.3
+#18 49.90    Compiling zerofrom v0.1.8
+#18 49.96    Compiling zerovec-derive v0.11.6
+#18 50.34    Compiling yoke v0.8.3
+#18 50.36    Compiling displaydoc v0.2.5
+#18 50.78    Compiling nom v7.1.3
+#18 51.21    Compiling zerotrie v0.2.5
+#18 51.34    Compiling zerovec v0.11.8
+#18 51.78    Compiling libloading v0.8.9
+#18 52.56    Compiling tinystr v0.8.4
+#18 52.93    Compiling potential_utf v0.1.6
+#18 53.39    Compiling either v1.15.0
+#18 53.67    Compiling icu_locale_core v2.3.0
+#18 54.37    Compiling bindgen v0.72.1
+#18 54.54    Compiling icu_properties_data v2.3.0
+#18 54.57    Compiling version_check v0.9.5
+#18 54.76    Compiling icu_normalizer_data v2.3.0
+#18 54.87    Compiling crossbeam-utils v0.8.21
+#18 55.17    Compiling utf8_iter v1.0.4
+#18 55.26    Compiling icu_provider v2.3.1
+#18 55.49    Compiling generic-array v0.14.7
+#18 55.60    Compiling icu_collections v2.3.0
+#18 56.39    Compiling itertools v0.13.0
+#18 56.69    Compiling cexpr v0.6.0
+#18 57.39    Compiling regex v1.12.3
+#18 58.08    Compiling log v0.4.29
+#18 58.47    Compiling equivalent v1.0.2
+#18 58.65    Compiling shlex v2.0.1
+#18 58.85    Compiling rustc-hash v2.1.2
+#18 59.50    Compiling bitflags v2.11.1
+#18 60.08    Compiling hashbrown v0.17.0
+#18 60.75    Compiling foldhash v0.2.0
+#18 63.90    Compiling indexmap v2.14.0
+#18 64.42    Compiling ruby-prism-sys v2.0.0
+#18 70.02    Compiling utf8parse v0.2.2
+#18 70.02    Compiling ryu v1.0.23
+#18 71.17    Compiling crc32fast v1.5.0
+#18 71.18    Compiling unsafe-libyaml v0.2.11
+#18 71.53    Compiling smallvec v1.16.2
+#18 71.89    Compiling typenum v1.20.1
+#18 74.65    Compiling icu_normalizer v2.3.0
+#18 75.69    Compiling ruby-rbs-sys v0.3.0
+#18 76.26    Compiling serde_yaml v0.9.34+deprecated
+#18 76.86    Compiling anstyle-parse v1.0.0
+#18 77.72    Compiling icu_properties v2.3.0
+#18 79.83    Compiling simd-adler32 v0.3.9
+#18 80.88    Compiling rustix v1.1.4
+#18 81.20    Compiling anstyle v1.0.14
+#18 81.66    Compiling colorchoice v1.0.5
+#18 82.34    Compiling anstyle-query v1.1.5
+#18 85.17    Compiling is_terminal_polyfill v1.70.2
+#18 85.53    Compiling crossbeam-epoch v0.9.21
+#18 86.61    Compiling anstream v1.0.0
+#18 87.01    Compiling ruby-rbs v0.3.0
+#18 87.93    Compiling idna_adapter v1.2.2
+#18 89.41    Compiling ruby-prism v2.0.0
+#18 90.47    Compiling clap_lex v1.1.1
+#18 91.53    Compiling thiserror v2.0.18
+#18 91.79    Compiling adler2 v2.0.1
+#18 91.94    Compiling strsim v0.11.1
+#18 92.43    Compiling heck v0.5.0
+#18 93.40    Compiling crossbeam-deque v0.8.8
+#18 93.58    Compiling percent-encoding v2.3.2
+#18 93.85    Compiling linux-raw-sys v0.12.1
+#18 95.56    Compiling winnow v1.0.4
+#18 96.41    Compiling toml_parser v1.1.3+spec-1.1.0
+#18 97.25    Compiling form_urlencoded v1.2.2
+#18 97.71    Compiling clap_derive v4.6.7
+#18 98.07    Compiling clap_builder v4.6.7
+#18 99.79    Compiling miniz_oxide v0.8.9
+#18 101.7    Compiling idna v1.1.0
+#18 102.7    Compiling crypto-common v0.1.7
+#18 103.0    Compiling block-buffer v0.10.4
+#18 103.4    Compiling crossbeam-channel v0.5.15
+#18 103.7    Compiling thiserror-impl v2.0.18
+#18 104.2    Compiling aho-corasick v1.1.4
+#18 104.6    Compiling toml_datetime v1.1.1+spec-1.1.0
+#18 104.6    Compiling serde_spanned v1.1.1
+#18 105.0    Compiling zip v2.4.2
+#18 105.1    Compiling nohash-hasher v0.2.0
+#18 105.7    Compiling toml_writer v1.1.2+spec-1.1.0
+#18 106.2    Compiling pulldown-cmark v0.13.4
+#18 106.4    Compiling text-size v1.1.1
+#18 107.0    Compiling bumpalo v3.20.2
+#18 107.5    Compiling bitflags v1.3.2
+#18 108.5    Compiling fluent-uri v0.1.4
+#18 109.3    Compiling zopfli v0.8.3
+#18 109.9    Compiling line-index v0.1.2
+#18 110.5    Compiling toml v1.1.6+spec-1.1.0
+#18 111.8    Compiling digest v0.10.7
+#18 112.3    Compiling url v2.5.8
+#18 114.5    Compiling flate2 v1.1.9
+#18 115.6    Compiling clap v4.6.7
+#18 115.6    Compiling xattr v1.6.1
+#18 115.9    Compiling cpufeatures v0.2.17
+#18 116.3    Compiling filetime v0.2.27
+#18 116.6    Compiling hashlink v0.12.2
+#18 117.0    Compiling serde_repr v0.1.20
+#18 117.7    Compiling roundhouse v2026.9.18 (/src/roundhouse)
+#18 118.0    Compiling xxhash-rust v0.8.19
+#18 118.0    Compiling cypher-parser v0.8.1
+#18 118.8    Compiling arraydeque v0.5.1
+#18 119.2    Compiling pulldown-cmark-escape v0.11.0
+#18 119.6    Compiling unicase v2.9.0
+#18 120.3    Compiling bytecount v0.6.9
+#18 120.9    Compiling serde_yaml_ng v0.10.0
+#18 121.0    Compiling rubydex v0.4.2 (https://github.com/Shopify/rubydex?tag=v0.4.2#c69a742c)
+#18 122.6    Compiling yaml-rust2 v0.13.0
+#18 123.9    Compiling lsp-types v0.97.0
+#18 125.1    Compiling tar v0.4.45
+#18 125.9    Compiling sha1 v0.10.7
+#18 128.6    Compiling lsp-server v0.7.9
+#18 133.9 warning: unused doc comment
+#18 133.9     --> src/emit/typescript/expr.rs:4343:1
+#18 133.9      |
+#18 133.9 4343 | / /// Ruby `Foo::Bar` gets joined with `.` for TS access.
+#18 133.9 4344 | | /// Framework-namespace paths (`ActionView::ViewHelpers`, …) collapse
+#18 133.9 4345 | | /// to the last segment — TS emits each runtime class flat at its
+#18 133.9 4346 | | /// file's module scope and imports the bare name. The import
+#18 133.9 ...    |
+#18 133.9 4352 | | /// StandardError)` and similar idioms emit a bare `StandardError`
+#18 133.9 4353 | | /// that's neither in scope nor importable.
+#18 133.9      | |_------------------------------------------^
+#18 133.9      |   |
+#18 133.9      |   rustdoc does not generate documentation for macro invocations
+#18 133.9      |
+#18 133.9      = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+#18 133.9      = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+#18 133.9 
+#18 175.6 warning: associated function `current` is never used
+#18 175.6     --> src/emit/ruby/library.rs:9354:8
+#18 175.6      |
+#18 175.6 9323 | impl ConstantReaderIndex {
+#18 175.6      | ------------------------ associated function in this implementation
+#18 175.6 ...
+#18 175.6 9354 |     fn current(app: &App) -> Option<ReaderIndex> {
+#18 175.6      |        ^^^^^^^
+#18 175.6      |
+#18 175.6      = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+#18 175.6 
+#18 175.6 warning: field `layout_scope` is never read
+#18 175.6    --> src/ingest/view_paths.rs:494:5
+#18 175.6     |
+#18 175.6 476 | struct Member {
+#18 175.6     |        ------ field in this struct
+#18 175.6 ...
+#18 175.6 494 |     layout_scope: Option<LayoutDecl>,
+#18 175.6     |     ^^^^^^^^^^^^
+#18 175.6 
+#18 175.6 warning: field `in_site` is never read
+#18 175.6    --> src/ingest/module_factory.rs:287:5
+#18 175.6     |
+#18 175.6 281 | struct SiteFinder<'a> {
+#18 175.6     |        ---------- field in this struct
+#18 175.6 ...
+#18 175.6 287 |     in_site: usize,
+#18 175.6     |     ^^^^^^^
+#18 175.6 
+#18 175.6 warning: function `rewrite_path_arg` is never used
+#18 175.6     --> src/lower/view_to_library/helpers.rs:1067:15
+#18 175.6      |
+#18 175.6 1067 | pub(super) fn rewrite_path_arg(arg: &Expr, ctx: &ViewCtx) -> Expr {
+#18 175.6      |               ^^^^^^^^^^^^^^^^
+#18 175.6 
+#18 366.7 warning: `roundhouse` (lib) generated 5 warnings
+#18 369.9     Finished `release` profile [optimized] target(s) in 5m 52s
+#18 DONE 373.1s
+
+#19 [builder 11/11] RUN roundhouse --version && spinel --version && spin --version
+#19 8.195 roundhouse 2026.9.18 (7766b5ce)
+#19 8.277 spinel 2026.10.25+1622 (0ed86eae9) [gcc 14.2.0 (cc)]
+#19 8.560 spin 2026.10.25+1622 (0ed86eae9) [gcc 14.2.0 (cc)]
+#19 DONE 10.6s
+
+#20 [stage-2  5/10] COPY --from=builder /usr/local/lib/spinel /usr/local/lib/spinel
+#20 DONE 4.5s
+
+#21 [stage-2  6/10] COPY --from=builder /usr/local/bin/roundhouse /usr/local/bin/roundhouse
+#21 DONE 2.2s
+
+#22 [stage-2  7/10] COPY patches /usr/local/share/roundhouse-patches
+#22 DONE 2.5s
+
+#23 [stage-2  8/10] COPY spinel-patches /usr/local/share/spinel-patches
+#23 DONE 3.0s
+
+#24 [stage-2  9/10] RUN ln -s /usr/local/lib/spinel/spinel /usr/local/bin/spinel     && ln -s /usr/local/lib/spinel/spin /usr/local/bin/spin
+#24 DONE 9.3s
+
+#25 [stage-2 10/10] WORKDIR /work
+#25 DONE 2.9s
+
+#26 exporting to image
+#26 exporting layers
+#26 exporting layers 2.1s done
+#26 writing image sha256:4819ccf6620630d50f9bb8d3851d6434ef18022ed2c762361b188742488d0fe5
+#26 writing image sha256:4819ccf6620630d50f9bb8d3851d6434ef18022ed2c762361b188742488d0fe5 0.3s done
+#26 naming to docker.io/library/conduit-v14-toolchain:9360eed5a57c
+#26 naming to docker.io/library/conduit-v14-toolchain:9360eed5a57c 0.4s done
+#26 DONE 3.7s
+ruby 4.0.7 (2026-09-15 revision 229531a6cf) +PRISM [aarch64-linux]
+roundhouse 2026.9.18 (7766b5ce)
+spinel 2026.10.25+1622 (0ed86eae9) [gcc 14.2.0 (cc)]
+spin 2026.10.25+1622 (0ed86eae9) [gcc 14.2.0 (cc)]
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.production
+#1 transferring dockerfile:
+#1 transferring dockerfile: 2.51kB done
+#1 DONE 0.3s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 3.9s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/conduit-v14-toolchain:9360eed5a57c
+#4 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/debian:trixie-slim@sha256:020c0d20b9880058cbe785a9db107156c3c75c2ac944a6aa7ab59f2add76a7bd
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context:
+#6 transferring context: 210B done
+#6 DONE 0.3s
+
+#7 [runtime 1/4] FROM docker.io/library/debian:trixie-slim@sha256:020c0d20b9880058cbe785a9db107156c3c75c2ac944a6aa7ab59f2add76a7bd
+#7 DONE 0.0s
+
+#8 [toolchain 1/3] FROM docker.io/library/conduit-v14-toolchain:9360eed5a57c
+#8 ...
+
+#9 [internal] load build context
+#9 transferring context: 137.20kB 0.1s done
+#9 DONE 0.6s
+
+#8 [toolchain 1/3] FROM docker.io/library/conduit-v14-toolchain:9360eed5a57c
+#8 DONE 0.7s
+
+#10 [toolchain 2/3] RUN echo '9360eed5a57c082f1c2f10bb2a169a80789f16631a287e5227f829b083591fed  /usr/local/share/roundhouse-patches/SHA256SUMS' | sha256sum -c -
+#10 8.942 /usr/local/share/roundhouse-patches/SHA256SUMS: OK
+#10 DONE 14.2s
+
+#11 [toolchain 3/3] RUN echo '8bf27a9ca94bcd2bc3286ae2e8fc39a5c67da286ca927f36a2ec89653a459201  /usr/local/share/spinel-patches/SHA256SUMS' | sha256sum -c -
+#11 14.00 /usr/local/share/spinel-patches/SHA256SUMS: OK
+#11 DONE 16.9s
+
+#12 [build 1/5] WORKDIR /src/app
+#12 DONE 3.2s
+
+#13 [build 2/5] COPY . .
+#13 DONE 2.2s
+
+#14 [build 3/5] RUN ulimit -v 12582912; /usr/bin/time -f "analysis peak_rss_kib=%M exit=%x" roundhouse check /src/app && /usr/bin/time -f "emission peak_rss_kib=%M exit=%x" roundhouse --target spinel -o /build /src/app
+#14 1.111 2 unconsumed initializer statement(s) (warnings) — rerun with --continue to list them
+#14 1.111 /src/app/app/controllers/application_controller.rb:23:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/application_controller.rb:30:14: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/application_controller.rb:33:65: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/application_controller.rb:58:15: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/application_controller.rb:59:13: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/application_controller.rb:60:65: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/application_controller.rb:70:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/application_controller.rb:79:8: warning[unresolved_type]: local read `wrap` has unresolved type
+#14 1.111 /src/app/app/controllers/application_controller.rb:105:37: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/application_controller.rb:125:7: warning[unresolved_type]: local read `following_ids` has unresolved type
+#14 1.111 /src/app/app/controllers/application_controller.rb:125:23: warning[unresolved_type]: local read `following_ids` has unresolved type
+#14 1.111 /src/app/app/controllers/application_controller.rb:135:35: warning[unresolved_type]: local read `favorite_ids` has unresolved type
+#14 1.111 /src/app/app/controllers/application_controller.rb:135:50: warning[unresolved_type]: local read `favorite_ids` has unresolved type
+#14 1.111 /src/app/app/controllers/application_controller.rb:136:13: warning[unresolved_type]: local read `favorite_counts` has unresolved type
+#14 1.111 /src/app/app/controllers/application_controller.rb:136:31: warning[unresolved_type]: local read `favorite_counts` has unresolved type
+#14 1.111 /src/app/app/controllers/application_controller.rb:139:83: warning[unresolved_type]: local read `following_ids` has unresolved type
+#14 1.111 /src/app/app/controllers/application_controller.rb:141:39: warning[unresolved_type]: local read `list` has unresolved type
+#14 1.111 /src/app/app/controllers/application_controller.rb:146:21: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/application_controller.rb:147:22: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:4:79: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:4:63: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:5:86: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:5:65: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:6:127: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:6:82: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:7:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:13:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:18:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:22:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:36:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:42:106: warning[unresolved_type]: local read `a` has unresolved type
+#14 1.111 /src/app/app/controllers/articles_controller.rb:43:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:50:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/articles_controller.rb:56:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/comments_controller.rb:5:85: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/comments_controller.rb:5:40: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/comments_controller.rb:6:91: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/comments_controller.rb:6:41: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/comments_controller.rb:9:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/comments_controller.rb:16:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/comments_controller.rb:22:44: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/comments_controller.rb:25:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/comments_controller.rb:31:64: warning[unresolved_type]: local read `followed` has unresolved type
+#14 1.111 /src/app/app/controllers/exports_controller.rb:6:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/exports_controller.rb:11:40: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/exports_controller.rb:13:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/favorites_controller.rb:6:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/favorites_controller.rb:12:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/health_controller.rb:3:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/profiles_controller.rb:3:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/profiles_controller.rb:9:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/profiles_controller.rb:15:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/profiles_controller.rb:19:28: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/shares_controller.rb:6:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/shares_controller.rb:10:11: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/shares_controller.rb:16:23: warning[gradual_untyped]: local read resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/shares_controller.rb:17:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/shares_controller.rb:21:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/shares_controller.rb:28:99: warning[unresolved_type]: local read `a` has unresolved type
+#14 1.111 /src/app/app/controllers/shares_controller.rb:28:135: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/shares_controller.rb:29:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/shares_controller.rb:32:21: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/shares_controller.rb:32:34: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/shares_controller.rb:36:45: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/shares_controller.rb:37:74: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/tags_controller.rb:5:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/users_controller.rb:5:5: warning[gradual_untyped]: expression resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/users_controller.rb:6:7: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/users_controller.rb:7:5: warning[gradual_untyped]: expression resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/users_controller.rb:8:7: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/users_controller.rb:10:7: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/users_controller.rb:23:5: warning[gradual_untyped]: expression resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/users_controller.rb:24:7: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/users_controller.rb:26:34: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/users_controller.rb:33:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/users_controller.rb:39:5: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/users_controller.rb:45:52: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/controllers/users_controller.rb:45:77: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/models/article.rb:10:80: warning[unresolved_type]: local read `user` has unresolved type
+#14 1.111 /src/app/app/models/user.rb:19:72: warning[unresolved_type]: method call `password` has unresolved type
+#14 1.111 /src/app/app/models/user.rb:19:93: warning[unresolved_type]: method call `password` has unresolved type
+#14 1.111 /src/app/app/models/user.rb:23:70: warning[unresolved_type]: method call `password` has unresolved type
+#14 1.111 /src/app/app/models/user.rb:28:5: warning[gradual_untyped]: expression resolves to RBS `untyped` (gradual escape)
+#14 1.111 /src/app/app/services/login_throttle.rb:3:38: warning[unresolved_type]: local read `hash` has unresolved type
+#14 1.111 /src/app/app/services/login_throttle.rb:3:43: warning[unresolved_type]: local read `key` has unresolved type
+#14 1.111 /src/app/config/initializers/recover_exports.rb:3:3: warning[gradual_untyped]: method call resolves to RBS `untyped` (gradual escape)
+#14 1.111 
+#14 1.111 roundhouse-check: 10 gems: 1 framework, 2 modeled, 4 infrastructure, 3 unknown (faye-websocket, good_job, rack-cors)
+#14 1.112 roundhouse-check: 53 send(s) on unknown receivers, 79 on gradual receivers, 0 unresolved on known receivers (unchecked, not errors)
+#14 1.112 roundhouse-check: /src/app — 0 parse error(s), 0 error(s), 86 warning(s), 0 gap-attributed note(s), 0 survey gap(s)
+#14 1.115 analysis peak_rss_kib=45900 exit=0
+#14 1.579 roundhouse: treeshake (spinel): dropped 118 runtime defs + 164 synthesized model defs (text-level, whole-tree name scan)
+#14 1.581 roundhouse: warning[unsupported]: array_column not supported (spinel): table articles: `tag_list` is a PostgreSQL array column; this target stores and reads one element where Rails reads an Array
+#14 1.581 roundhouse: warning[unsupported]: array_column not supported (spinel): table good_job_executions: `error_backtrace` is a PostgreSQL array column; this target stores and reads one element where Rails reads an Array
+#14 1.581 roundhouse: warning[unsupported]: array_column not supported (spinel): table good_jobs: `labels` is a PostgreSQL array column; this target stores and reads one element where Rails reads an Array
+#14 1.581 roundhouse: 2 unconsumed initializer statement(s) (warnings) — rerun with --survey to list them
+#14 1.581 roundhouse: 127 analyze warning(s) not shown — rerun with --allow-unsupported to list them
+#14 1.595 roundhouse: emitted 459 files to /build (spinel)
+#14 1.602 emission peak_rss_kib=60184 exit=0
+#14 DONE 2.0s
+
+#15 [build 4/5] WORKDIR /build
+#15 DONE 0.3s
+
+#16 [build 5/5] RUN spin build -- --cc=clang --jobs=8     && mkdir -p /runtime/static /runtime/public /runtime/db /runtime/config /runtime/storage     && set -- build/bin/* && test "$#" -eq 1 && test -x "$1"     && install -m755 "$1" /runtime/server && strip /runtime/server     && for dir in static public db config; do if [ -d "$dir" ]; then cp -a "$dir/." "/runtime/$dir/"; fi; done     && test -s /runtime/db/structure.sql && ldd /runtime/server
+#16 2.488 Note: switching to 'cc29f69ee8bd52f1b2d39639b25458909e7cd476'.
+#16 2.488 
+#16 2.488 You are in 'detached HEAD' state. You can look around, make experimental
+#16 2.488 changes and commit them, and you can discard any commits you make in this
+#16 2.488 state without impacting any branches by switching back to a branch.
+#16 2.488 
+#16 2.488 If you want to create a new branch to retain commits you create, you may
+#16 2.488 do so (now or later) by using -c with the switch command. Example:
+#16 2.488 
+#16 2.488   git switch -c <new-branch-name>
+#16 2.488 
+#16 2.488 Or undo this operation with:
+#16 2.488 
+#16 2.488   git switch -
+#16 2.488 
+#16 2.488 Turn off this advice by setting config variable advice.detachedHead to false
+#16 2.488 
+#16 2.498 build blog
+#16 2.763 cc bcrypt/crypt_blowfish.c
+#16 2.943 cc bcrypt/crypt_blowfish.c (threaded)
+#16 2.973 cc bcrypt/sp_bcrypt.c
+#16 2.996 cc bcrypt/sp_bcrypt.c (threaded)
+#16 132.6 warning: --rbs: ActiveSupport.query_value: Roundhouse_ParamValue names no class of the program; the seed is ignored
+#16 132.6 warning: --rbs: Params.nested_lookup: Roundhouse_ParamValue names no class of the program; the seed is ignored
+#16 132.6 warning: --rbs: Params.nested_lookup: Roundhouse_ParamValue names no class of the program; the seed is ignored
+#16 132.6 warning: --rbs: Params.require_key: Roundhouse_ParamValue names no class of the program; the seed is ignored
+#16 132.6 warning: --rbs: Params.scalars_only: Roundhouse_ParamValue names no class of the program; the seed is ignored
+#16 132.6 warning: --rbs: Params.nested: Roundhouse_ParamValue names no class of the program; the seed is ignored
+#16 132.6 spinel: warning: --rbs ivar pin @id dropped on Article: ancestor ApplicationRecord holds it as poly (layouts must stay cast-compatible)
+#16 132.6 spinel: warning: --rbs ivar pin @id dropped on ArticleExport: ancestor ApplicationRecord holds it as poly (layouts must stay cast-compatible)
+#16 132.6 spinel: warning: --rbs ivar pin @id dropped on ArticleShare: ancestor ApplicationRecord holds it as poly (layouts must stay cast-compatible)
+#16 132.6 spinel: warning: --rbs ivar pin @id dropped on Comment: ancestor ApplicationRecord holds it as poly (layouts must stay cast-compatible)
+#16 132.6 spinel: warning: --rbs ivar pin @id dropped on User: ancestor ApplicationRecord holds it as poly (layouts must stay cast-compatible)
+#16 132.6 warning: --rbs: Attached @variations: Array[Variation] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 warning: --rbs: AttachedMany @rows: Array[ManyAttachment] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 warning: --rbs: ActiveRecord__Base @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 warning: --rbs: Preloader @records: Array[ActiveRecord__Base] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 warning: --rbs: Form @file_parts: Array[FilePart] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 warning: --rbs: ApplicationRecord @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 warning: --rbs: Article @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 warning: --rbs: ArticleExport @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 warning: --rbs: ArticleShare @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 warning: --rbs: Comment @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 warning: --rbs: Favorite @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 warning: --rbs: Follow @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 warning: --rbs: User @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+#16 132.6 /build/bin/blog.rb -> /build/build/bin/blog
+#16 132.7 	linux-vdso.so.1 (0x0000ffff8482c000)
+#16 132.7 	libm.so.6 => /lib/aarch64-linux-gnu/libm.so.6 (0x0000ffff83e70000)
+#16 132.7 	libjemalloc.so.2 => /lib/aarch64-linux-gnu/libjemalloc.so.2 (0x0000ffff83d40000)
+#16 132.7 	libpq.so.5 => /lib/aarch64-linux-gnu/libpq.so.5 (0x0000ffff83cc0000)
+#16 132.7 	libssl.so.3 => /lib/aarch64-linux-gnu/libssl.so.3 (0x0000ffff83b90000)
+#16 132.7 	libcrypto.so.3 => /lib/aarch64-linux-gnu/libcrypto.so.3 (0x0000ffff83570000)
+#16 132.7 	libc.so.6 => /lib/aarch64-linux-gnu/libc.so.6 (0x0000ffff833b0000)
+#16 132.7 	/lib/ld-linux-aarch64.so.1 (0x0000ffff847f0000)
+#16 132.7 	libstdc++.so.6 => /lib/aarch64-linux-gnu/libstdc++.so.6 (0x0000ffff83140000)
+#16 132.7 	libgcc_s.so.1 => /lib/aarch64-linux-gnu/libgcc_s.so.1 (0x0000ffff83100000)
+#16 132.7 	libgssapi_krb5.so.2 => /lib/aarch64-linux-gnu/libgssapi_krb5.so.2 (0x0000ffff83090000)
+#16 132.7 	libldap.so.2 => /lib/aarch64-linux-gnu/libldap.so.2 (0x0000ffff83010000)
+#16 132.7 	libz.so.1 => /lib/aarch64-linux-gnu/libz.so.1 (0x0000ffff82fd0000)
+#16 132.7 	libzstd.so.1 => /lib/aarch64-linux-gnu/libzstd.so.1 (0x0000ffff82f00000)
+#16 132.7 	libkrb5.so.3 => /lib/aarch64-linux-gnu/libkrb5.so.3 (0x0000ffff82e10000)
+#16 132.7 	libk5crypto.so.3 => /lib/aarch64-linux-gnu/libk5crypto.so.3 (0x0000ffff82dc0000)
+#16 132.7 	libcom_err.so.2 => /lib/aarch64-linux-gnu/libcom_err.so.2 (0x0000ffff82d90000)
+#16 132.7 	libkrb5support.so.0 => /lib/aarch64-linux-gnu/libkrb5support.so.0 (0x0000ffff82d60000)
+#16 132.7 	liblber.so.2 => /lib/aarch64-linux-gnu/liblber.so.2 (0x0000ffff82d30000)
+#16 132.7 	libsasl2.so.2 => /lib/aarch64-linux-gnu/libsasl2.so.2 (0x0000ffff82cf0000)
+#16 132.7 	libkeyutils.so.1 => /lib/aarch64-linux-gnu/libkeyutils.so.1 (0x0000ffff82cc0000)
+#16 132.7 	libresolv.so.2 => /lib/aarch64-linux-gnu/libresolv.so.2 (0x0000ffff82c90000)
+#16 DONE 137.0s
+
+#17 [runtime 2/4] RUN apt-get update -qq     && apt-get install --no-install-recommends -y libpq5 libjemalloc2 ca-certificates     && rm -rf /var/lib/apt/lists/*     && groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home --home-dir /app app
+#17 CACHED
+
+#18 [runtime 3/4] WORKDIR /app
+#18 CACHED
+
+#19 [runtime 4/4] COPY --from=build --chown=10001:10001 /runtime/ ./
+#19 DONE 2.0s
+
+#20 exporting to image
+#20 exporting layers
+#20 exporting layers 0.3s done
+#20 writing image sha256:866efc39a40d73218da86907bd1dc41cca52565e929385986bf296fc07461d27 0.0s done
+#20 naming to docker.io/library/conduit-v14-app:compiled 0.0s done
+#20 DONE 0.8s
+sha256:866efc39a40d73218da86907bd1dc41cca52565e929385986bf296fc07461d27 122800617

@@ -1,0 +1,19 @@
+{
+  "label": "case-b-build-01",
+  "command": [
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/reproduce/fresh-build.sh",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/reproduce/build-images.sh",
+    "toolchain",
+    "compiled"
+  ],
+  "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-b",
+  "started": "2026-11-01T07:53:08.129963+00:00",
+  "finished": "2026-11-01T07:58:13.756931+00:00",
+  "elapsed_seconds": 305.619,
+  "exit": 0,
+  "log": "evidence/execution/case-b-build-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/compile-program/heavy.lock (shared slot)"
+  ]
+}

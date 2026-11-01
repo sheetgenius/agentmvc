@@ -1,0 +1,18 @@
+{
+  "label": "case-a-transport-01",
+  "command": [
+    "/opt/homebrew/opt/python@3.12/bin/python3.12",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/reproduce/transport-probe.py",
+    "case-a"
+  ],
+  "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-a",
+  "started": "2026-11-01T07:50:32.898226+00:00",
+  "finished": "2026-11-01T07:50:46.733462+00:00",
+  "elapsed_seconds": 13.835,
+  "exit": 1,
+  "log": "evidence/execution/case-a-transport-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/compile-program/heavy.lock (shared slot)"
+  ]
+}

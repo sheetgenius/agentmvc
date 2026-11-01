@@ -1,0 +1,23 @@
+{
+  "label": "case-a-roundhouse-binary-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v14-rhbin-case-a",
+    "conduit-v14-toolchain:9360eed5a57c",
+    "sha256sum",
+    "/usr/local/bin/roundhouse"
+  ],
+  "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-a",
+  "started": "2026-11-01T07:44:02.635754+00:00",
+  "finished": "2026-11-01T07:44:12.204315+00:00",
+  "elapsed_seconds": 9.568,
+  "exit": 0,
+  "log": "evidence/execution/case-a-roundhouse-binary-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/compile-program/heavy.lock (shared slot)"
+  ]
+}

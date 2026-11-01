@@ -1,0 +1,21 @@
+{
+  "label": "case-a-synthetic-json-header-02",
+  "command": [
+    "python3",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/reproduce/synthetic-json-header.py",
+    "case-a",
+    "application/json",
+    "--reuse-build",
+    "--retry"
+  ],
+  "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/synthetic-case-a",
+  "started": "2026-11-01T08:12:00.714944+00:00",
+  "finished": "2026-11-01T08:12:04.108234+00:00",
+  "elapsed_seconds": 3.393,
+  "exit": 0,
+  "log": "evidence/execution/case-a-synthetic-json-header-02.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/compile-program/heavy.lock (shared slot)"
+  ]
+}

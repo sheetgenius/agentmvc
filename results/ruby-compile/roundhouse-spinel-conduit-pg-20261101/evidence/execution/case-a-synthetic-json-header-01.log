@@ -1,0 +1,18 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+roundhouse: treeshake (spinel): dropped 126 runtime defs + 0 synthesized model defs (text-level, whole-tree name scan)
+roundhouse: 1 analyze warning(s) not shown — rerun with --allow-unsupported to list them
+roundhouse: emitted 386 files to /work/emitted (spinel)
+build blog
+warning: --rbs: ActiveSupport.query_value: Roundhouse_ParamValue names no class of the program; the seed is ignored
+warning: --rbs: Params.nested_lookup: Roundhouse_ParamValue names no class of the program; the seed is ignored
+warning: --rbs: Params.nested_lookup: Roundhouse_ParamValue names no class of the program; the seed is ignored
+warning: --rbs: Params.require_key: Roundhouse_ParamValue names no class of the program; the seed is ignored
+warning: --rbs: Params.scalars_only: Roundhouse_ParamValue names no class of the program; the seed is ignored
+warning: --rbs: Params.nested: Roundhouse_ParamValue names no class of the program; the seed is ignored
+warning: --rbs: Attached @variations: Array[Variation] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+warning: --rbs: AttachedMany @rows: Array[ManyAttachment] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+warning: --rbs: ActiveRecord__Base @error_details: Array[ErrorDetail] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+warning: --rbs: Preloader @records: Array[ActiveRecord__Base] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+warning: --rbs: Form @file_parts: Array[FilePart] stays a boxed array; every use of it must be one the unboxed array supports ([], []=, push, pop, shift, delete_at, clear, length, empty?, first, last, min, max, sort) from the class's own instance methods or its attr_reader
+/work/emitted/bin/blog.rb -> /work/emitted/build/bin/blog
+{"case": "case-a", "compile_exit": 0, "status": null, "content_type": null, "pass": false, "error_name": "RuntimeError"}

@@ -1,0 +1,53 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v14-20261101",
+  "scope": "Publication copy of the supplied v14 measurement; no Docker execution rerun during packaging.",
+  "evidence_redaction": "Repository Scrubber on decoded JSON and plain logs; local paths generalized and credential values removed.",
+  "preserved_synthetic_addresses": {
+    "files": [
+      "evidence/edge/case-a.json",
+      "evidence/edge/case-b.json",
+      "evidence/edge/v13-baseline.json"
+    ],
+    "allowlist": [
+      "bob@example.com",
+      "u0@example.com",
+      "u10@example.com",
+      "u11@example.com",
+      "u12@example.com",
+      "u13@example.com",
+      "u14@example.com",
+      "u15@example.com",
+      "u16@example.com",
+      "u17@example.com",
+      "u18@example.com",
+      "u19@example.com",
+      "u1@example.com",
+      "u20@example.com",
+      "u21@example.com",
+      "u22@example.com",
+      "u23@example.com",
+      "u2@example.com",
+      "u3@example.com",
+      "u4@example.com",
+      "u5@example.com",
+      "u6@example.com",
+      "u7@example.com",
+      "u8@example.com",
+      "u9@example.com"
+    ],
+    "reason": "Public edge fixture values; preserve direct normalized response comparisons."
+  },
+  "non_credentials": "<token> is a normalized placeholder; password error keys contain validation-message arrays.",
+  "unmodified_measured_bytes": [
+    "variant/",
+    "patches/",
+    "toolchain/",
+    "reproduce/gated-source.sha256",
+    "evidence/case-a/patches/",
+    "evidence/roundhouse-full-combined.diff",
+    "evidence/case-a/roundhouse-combined.diff",
+    "evidence/edge/{case-a,case-b,v13-baseline}.json"
+  ],
+  "editorial_recipe_changes": "Supplemental probe paths and outputs adapted to public layout and fresh PROBE_BUILD_DIR.",
+  "upstream_snapshot": "PR revision metadata at the measured pin; discussion bodies omitted."
+}

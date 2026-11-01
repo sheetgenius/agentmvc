@@ -1,0 +1,24 @@
+{
+  "label": "case-b-server-binary-01",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "conduit-v14-serverbin-case-b",
+    "--entrypoint",
+    "sha256sum",
+    "conduit-v14-app:compiled",
+    "/app/server"
+  ],
+  "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/case-b",
+  "started": "2026-11-01T07:58:16.658522+00:00",
+  "finished": "2026-11-01T07:58:17.339207+00:00",
+  "elapsed_seconds": 0.681,
+  "exit": 0,
+  "log": "evidence/execution/case-b-server-binary-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/compile-program/heavy.lock (shared slot)"
+  ]
+}

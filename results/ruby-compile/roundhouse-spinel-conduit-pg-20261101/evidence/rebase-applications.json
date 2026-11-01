@@ -1,0 +1,56 @@
+[
+  {
+    "patch": "20-raw-websocket.patch",
+    "before_tree": "51f97bcc192c34a3200015c31fa560b66aee5c0d",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "c5fdd199ed670c74c65045755089e7f2b4ff4e1c"
+  },
+  {
+    "patch": "30-jobs-boot.patch",
+    "before_tree": "c5fdd199ed670c74c65045755089e7f2b4ff4e1c",
+    "direct_check_exit": 1,
+    "direct_check_stderr": "error: patch failed: src/ingest/mod.rs:53\nerror: src/ingest/mod.rs: patch does not apply\n",
+    "apply_exit": 0,
+    "apply_stderr": "Falling back to direct application...\nApplied patch to 'runtime/ruby/rails.rb' cleanly.\nApplied patch to 'runtime/ruby/rails.rbs' cleanly.\nerror: repository lacks the necessary blob to perform 3-way merge.\nFalling back to direct application...\nApplied patch to 'src/ingest/app.rs' cleanly.\nFalling back to direct application...\nApplied patch to 'src/ingest/mod.rs' cleanly.\nFalling back to direct application...\n",
+    "after_tree": "6c248ecb22252aa3896058295d58f3c9ce54add5"
+  },
+  {
+    "patch": "50-postgresql-lane.patch",
+    "before_tree": "6c248ecb22252aa3896058295d58f3c9ce54add5",
+    "direct_check_exit": 1,
+    "direct_check_stderr": "error: patch failed: src/lower/model_to_library/adapter_emit/mod.rs:336\nerror: src/lower/model_to_library/adapter_emit/mod.rs: patch does not apply\n",
+    "apply_exit": 0,
+    "apply_stderr": "Applied patch to 'docs/guide/spinel.md' cleanly.\nApplied patch to 'runtime/ruby/active_record/base.rb' cleanly.\nApplied patch to 'runtime/ruby/active_record/base.rbs' cleanly.\nFalling back to direct application...\nApplied patch to 'src/emit/roda.rs' cleanly.\nApplied patch to 'src/emit/ruby.rs' cleanly.\nApplied patch to 'src/emit/ruby/library.rs' cleanly.\nApplied patch to 'src/emit/shared/schema_sql.rs' cleanly.\nApplied patch to 'src/ingest/model.rs' cleanly.\nApplied patch to 'src/ingest/schema.rs' cleanly.\nApplied patch to 'src/ingest/structure_sql.rs' cleanly.\nApplied patch to 'src/lib.rs' cleanly.\nApplied patch to 'src/lower/arel/ir.rs' cleanly.\nApplied patch to 'src/lower/arel/ruby_values.rs' cleanly.\nApplied patch to 'src/lower/arel/visitor.rs' cleanly.\nApplied patch to 'src/lower/group_count.rs' cleanly.\nApplied patch to 'src/lower/model_to_library/adapter_emit/mod.rs' cleanly.\nApplied patch to 'src/lower/model_to_library/mod.rs' cleanly.\nApplied patch to 'src/lower/model_to_library/schema.rs' cleanly.\nApplied patch to 'src/naming.rs' cleanly.\nApplied patch to 'src/project.rs' cleanly.\nApplied patch to 'src/schema.rs' cleanly.\n",
+    "after_tree": "f5d572f055db3d2c0f401e4ff01dd3cd697d428f"
+  },
+  {
+    "patch": "74-integer-query-range.patch",
+    "before_tree": "f5d572f055db3d2c0f401e4ff01dd3cd697d428f",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "279fdf703d41ec6c6e8ca38320e5ded129be50be"
+  },
+  {
+    "patch": "80-gradual-return-stabilization.patch",
+    "before_tree": "279fdf703d41ec6c6e8ca38320e5ded129be50be",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "a127811dfc5443a0771aeb8ab066f46736d573c1"
+  },
+  {
+    "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+    "before_tree": "a127811dfc5443a0771aeb8ab066f46736d573c1",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "47bc11deea8234ed52ed2598087e93394ee0a04c"
+  }
+]

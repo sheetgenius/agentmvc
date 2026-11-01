@@ -1,0 +1,39 @@
+{
+  "case": "case-b",
+  "condition": "supplemental-old-patch-10-transport",
+  "image": "conduit-v14-app:compiled",
+  "procedure": "Two clients remain alive on one Docker network so their socket peer addresses stay distinct.",
+  "image_id": "sha256:505e25cc7f0d396d448225d38af0502d67e22bae28248c787a25c1ac55362c3f",
+  "json_response": {
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "body": {
+      "tags": []
+    }
+  },
+  "registration_status": 201,
+  "peer_addresses": {
+    "a": "172.29.112.4",
+    "b": "172.29.112.5"
+  },
+  "client_a_first_twenty_status_counts": {
+    "401": 20
+  },
+  "client_b_first_status": 429,
+  "client_b_first_body": {
+    "errors": {
+      "credentials": [
+        "rate limited"
+      ]
+    }
+  },
+  "client_a_twenty_first_status": 429,
+  "checks": {
+    "json_utf8_content_type": true,
+    "first_twenty_not_limited": true,
+    "new_socket_peer_has_own_budget": false,
+    "original_socket_peer_is_limited": true
+  },
+  "server_sha256": "d7c1bf5d9c1218a687879b347d11bd8822254bf574bdf20458f287243ada3539",
+  "pass": false
+}

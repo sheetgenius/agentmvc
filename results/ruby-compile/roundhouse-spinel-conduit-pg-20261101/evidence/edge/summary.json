@@ -1,0 +1,13 @@
+{
+  "condition": "v14 case-a and case-b, each vs recorded v13 full series; normalized status/body only",
+  "responses_per_case": 166,
+  "case_a_differences": 0,
+  "case_b_differences": 0,
+  "baseline": "evidence/edge/v13-baseline.json",
+  "files": [
+    "evidence/edge/case-a.json",
+    "evidence/edge/case-b.json"
+  ],
+  "header_coverage": "This probe does not compare Content-Type; see supplemental transport results.",
+  "rails_reference": "Not rerun; v13 retains the earlier Rails edge comparison and its limits."
+}

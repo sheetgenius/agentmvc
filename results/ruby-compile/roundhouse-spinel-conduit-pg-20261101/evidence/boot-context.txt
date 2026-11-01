@@ -1,0 +1,114 @@
+src/ingest/boot_program.rs
+1: //! The app's own boot code in `config/initializers/*.rb`, run at boot on
+2: //! the ruby family and spinel (E2 of rubys/roundhouse#841, for the host's
+3: //! initializers).
+4: //!
+5: //! Rails `load`s every initializer once at boot, in path order, after the
+6: //! app's classes are autoloadable. A statement no recognizer reads and
+7: //! whose holder is the app itself (`initializer_ledger::Holder::App`) is
+8: //! the app's code: a constant it assigns, a loop over files, a log line,
+9: //! a call. Those become [`App::boot_program`], typed like `db/seeds.rb`
+10: //! and emitted as top-level code that the tree's `boot.rb` loads last.
+11: //!
+12: //! A top-level `def` defines a private method on Object, callable from
+13: //! every class. Here it becomes a class method of the synthesized
+14: //! [`MODULE`], and each receiverless call to it names that module
+15: //! (`apply_call_sites`), so every target reaches it as an ordinary typed
+16: //! method.
+17: //!
+18: //! Left to the ledger, as warnings: statements of any other holder (a
+19: //! Rails or gem setting needs that framework's behaviour, not a replay),
+20: //! statements nested in a `configure` block or a `to_prepare` body, and
+21: //! the boot hooks themselves (`after_initialize`, `on_load`, …), whose
+22: //! run order is the rest of #841's E2.
+23: 
+24: use std::path::Path;
+
+runtime/spinel/scaffold/boot.rb
+195: # lower::view_buffer_passing). Spinel's file is a no-op stub; the CRuby
+196: # overlay replaces it with a thread-variable memo + String.new(capacity:).
+197: require_relative "runtime/view_buffer_cap"
+198: require_relative "runtime/tep/tep"
+199: # Gem packages (runtime/gems/<gem>/) load right after this line, which
+200: # `project::apply_gem_packages` finds: they register their hooks here.
+201: require_relative "runtime/request_hooks"
+202: require_relative "runtime/faye_websocket"
+203: # Spinel-only CGI reopen: `require "cgi"` reaches spinel's bundled package
+204: # and this adds `parse`, which upstream moved to `cgi/core`. CRuby/JRuby use
+205: # the stdlib. No longer needs to follow tep — the escapes were routed to
+206: # `Url.escape`, which truncated a multi-byte character to its first byte.
+207: require_relative "runtime/cgi_spinel"
+208: # Spinel-only resolver: reopens runtime/resolv's `Resolv.resolve` over
+
+runtime/spinel/scaffold/main.rb
+940: Db.checkpoint_in_background!
+941: # Wire model after-commit Turbo Stream broadcasts to the live WebSocket
+942: # fan-out. Without this, broadcasts only land in the in-memory log.
+943: Broadcasts.set_transport(Cable::Transport.new)
+944: # Background jobs go on the scheduler instead of running at the call
+945: # site. `register_drain` is what flips `perform_later` from dispatching
+946: # to enqueueing (see `lower::job_class_side`): a job is only handed to a
+947: # queue once something has said it will drain it, so a tree that never
+948: # reaches this line keeps the inline behaviour rather than dropping work
+949: # into an Array nobody reads.
+950: ActiveJob.register_drain
+951: # Fail boot visibly if a callback fails, after queue registration and before workers.
+952: Db.with_connection { Rails.application.run_after_initialize }
+953: # Under queue_adapter :sidekiq jobs go to Redis instead; say where.
+954: SidekiqPush.announce if JobRegistry.sidekiq?
+955: Thread.new do
+956:   Main.job_loop
+957: end
+958: # The server announces itself by the app's own name (its GlobalID app
+959: # name, which ingest writes into config/application.rb), not by the
+960: # binary's file name.
+961: Tep::APP.name = Rails.application.global_id_app
+962: # Tep::Server::Threaded is the thread-per-connection server: a green
+963: # thread per connection, every wait a park (recv, write, sleep, and the
+
+src/ingest/app.rs
+1860:     }
+1861: 
+1862:     // Server boot callbacks are ordinary app methods, so analysis and
+1863:     // shared lowerings (model queries, perform_later, etc.) see their bodies.
+1864:     // Initializers are sorted by read_rb_files, after application.rb.
+1865:     {
+1866:         let mut sources = Vec::new();
+1867:         if let Ok(bytes) = vfs.read(&app_config_path) {
+1868:             sources.push((app_config_path.clone(), bytes));
+1869:         }
+1870:         let init_dir = dir.join("config/initializers");
+1871:         if vfs.is_dir(&init_dir) {
+1872:             for path in read_rb_files(vfs, &init_dir)? {
+1873:                 sources.push((path.clone(), vfs.read(&path)?));
+1874:             }
+1875:         }
+1876:         let mut hooks = Vec::new();
+1877:         for (path, bytes) in sources {
+1878:             hooks.extend(super::boot_hooks::extract(&bytes, &path.display().to_string())?);
+1879:         }
+1880:         if !hooks.is_empty() {
+1881:             let mut source = String::from("class Rails::Application\n");
+1882:             for (i, body) in hooks.iter().enumerate() {
+1883:                 source.push_str(&format!("def __boot_hook_{i}\n{body}\nnil\nend\n"));
+1884:             }
+1885:             source.push_str("def run_after_initialize\n");
+1886:             for i in 0..hooks.len() {
+1887:                 source.push_str(&format!("__boot_hook_{i}\n"));
+1888:             }
+1889:             source.push_str("nil\nend\nend\n");
+1890:             let mut classes = ingest_library_classes(source.as_bytes(), "<after_initialize>")?;
+1891:             let hooks = classes.remove(0);
+1892:             if let Some(application) = &mut app.rails_application {
+1893:                 application.methods.extend(hooks.methods);
+1894:             } else {
+1895:                 app.rails_application = Some(hooks);
+1896:             }
+1897:         }
+1898:     }
+1899: 
+1900:     // Top-level constants an initializer defines that are not mixins —
+1901:     // kept or dropped after every app file is read (see
+1902:     // `keep_initializer_defined`).
+1903:     let mut initializer_defined: Vec<LibraryClass> = Vec::new();
+1904:     let mut rate_limit_stores = Vec::new();

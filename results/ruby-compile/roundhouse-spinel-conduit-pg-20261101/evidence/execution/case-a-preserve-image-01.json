@@ -1,0 +1,19 @@
+{
+  "label": "case-a-preserve-image-01",
+  "command": [
+    "docker",
+    "tag",
+    "sha256:866efc39a40d73218da86907bd1dc41cca52565e929385986bf296fc07461d27",
+    "conduit-v14-app:case-a"
+  ],
+  "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/build/final",
+  "started": "2026-11-01T07:58:15.291376+00:00",
+  "finished": "2026-11-01T07:58:15.454282+00:00",
+  "elapsed_seconds": 0.163,
+  "exit": 0,
+  "log": "evidence/execution/case-a-preserve-image-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/compile-program/heavy.lock (shared slot)"
+  ]
+}

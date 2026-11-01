@@ -1,0 +1,59 @@
+{
+  "case": "case-b",
+  "executions": {
+    "case-b-build-01": 0,
+    "case-b-common-01": 0,
+    "case-b-edge-01": 0,
+    "case-b-gate-01": 0,
+    "case-b-recovery-01": 0,
+    "case-b-roundhouse-binary-01": 0,
+    "case-b-server-binary-01": 0,
+    "case-b-transport-01": 1
+  },
+  "gate": {
+    "log": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101/evidence/execution/case-b-gate-01.log",
+    "api_files": "17/17",
+    "security_files": "13/13",
+    "live_protocol": "pass",
+    "browser_passed": 4,
+    "browser_failed": 0,
+    "security": "13/13",
+    "security_slow_ms": {
+      "s09_oversized_body": 267674
+    },
+    "exit": 0
+  },
+  "common_http": {
+    "exit": 0,
+    "summary": {
+      "contract_passed": 21,
+      "contract_total": 21,
+      "quality_passed": 3,
+      "quality_total": 3
+    },
+    "failing_names": []
+  },
+  "edge": {
+    "total": 166,
+    "differences": 0,
+    "failing_names": [],
+    "extra_names": []
+  },
+  "recovery": {
+    "before": "pending",
+    "after": "done",
+    "completed": "t",
+    "pass": true,
+    "server_sha256": "d7c1bf5d9c1218a687879b347d11bd8822254bf574bdf20458f287243ada3539"
+  },
+  "transport": {
+    "passed": 3,
+    "total": 4,
+    "failing_names": [
+      "new_socket_peer_has_own_budget"
+    ],
+    "pass_": false
+  },
+  "roundhouse_sha256": "774e5d2322c61f7bd78d37a7e7833178280a51b76e5d5ad1e9b36be88c6b931a",
+  "server_sha256": "d7c1bf5d9c1218a687879b347d11bd8822254bf574bdf20458f287243ada3539"
+}

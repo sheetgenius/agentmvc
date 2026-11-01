@@ -1,0 +1,1 @@
+First synthetic compile succeeded. First server launch failed opening storage/development.sqlite3 because the repro packaging omitted the storage directory. This is the directory the production Dockerfile already creates. Retry creates that directory and reuses the compiled native A binary; B uses the corrected package. No production source, patch, pin or gate result changes.

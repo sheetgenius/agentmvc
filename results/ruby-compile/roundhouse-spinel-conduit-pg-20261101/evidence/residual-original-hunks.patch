@@ -1,0 +1,15 @@
+diff --git a/runtime/spinel/scaffold/main.rb b/runtime/spinel/scaffold/main.rb
+index cac2e74da..394819fbb 100644
+--- a/runtime/spinel/scaffold/main.rb
++++ b/runtime/spinel/scaffold/main.rb
+@@ -708,7 +708,9 @@ module Main
+     elsif request_format == :rss
+       res.headers["Content-Type"] = "application/rss+xml; charset=utf-8"
+     elsif controller.content_type != "text/html; charset=utf-8"
+-      res.headers["Content-Type"] = controller.content_type
++      type = controller.content_type
++      type = "application/json; charset=utf-8" if type == "application/json"
++      res.headers["Content-Type"] = type
+     end
+     # Headers the action set beyond those two — a `Content-Disposition`
+     # on a download, the Cache-Control a blob route asks for. A nil
