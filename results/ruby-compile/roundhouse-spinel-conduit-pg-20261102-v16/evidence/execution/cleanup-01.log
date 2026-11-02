@@ -1,0 +1,26 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+{
+  "observed_utc": "2026-11-02T21:57:10.164453+00:00",
+  "removed_containers": [],
+  "removed_networks": [],
+  "removed_image_tags": [
+    "conduit-v16-app:compiled",
+    "conduit-v16-browser:1.63.0",
+    "conduit-v16-build:audit",
+    "conduit-v16-hurl:gate",
+    "conduit-v16-postgres:17",
+    "conduit-v16-rails:oracle-8.1.4",
+    "conduit-v16-toolchain:d0535966a774"
+  ],
+  "removed_build_folders": [
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102-v16/build",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102-v16/src"
+  ],
+  "volumes_created_or_removed": false,
+  "prune_operations": false,
+  "protected_resources": "unrelated application resources untouched; mutations select only the owned prefix",
+  "retained_build_cache": "BuildKit cache mounts retained; no cache prune or volume operation",
+  "remaining_task_containers": [],
+  "remaining_task_networks": [],
+  "remaining_task_image_tags": []
+}

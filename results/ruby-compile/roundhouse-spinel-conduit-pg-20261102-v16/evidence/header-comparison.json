@@ -1,0 +1,102 @@
+{
+  "json_response_cases": 41,
+  "json_response_shapes": [
+    [
+      "article"
+    ],
+    [
+      "articles",
+      "articlesCount"
+    ],
+    [
+      "comment"
+    ],
+    [
+      "comments"
+    ],
+    [
+      "errors"
+    ],
+    [
+      "export"
+    ],
+    [
+      "profile"
+    ],
+    [
+      "share"
+    ],
+    [
+      "status"
+    ],
+    [
+      "tags"
+    ],
+    [
+      "user"
+    ]
+  ],
+  "differences": 0,
+  "failing_names": [],
+  "non_json_controls": [
+    {
+      "name": "malformed_json_control",
+      "compiled": {
+        "status": 400,
+        "content_type": "text/html; charset=utf-8",
+        "shape": "NoneType"
+      },
+      "rails": {
+        "status": 400,
+        "content_type": "application/json; charset=utf-8",
+        "shape": [
+          "errors"
+        ]
+      }
+    },
+    {
+      "name": "head_no_content",
+      "compiled": {
+        "status": 204,
+        "content_type": null,
+        "shape": "NoneType"
+      },
+      "rails": {
+        "status": 204,
+        "content_type": null,
+        "shape": "NoneType"
+      }
+    }
+  ],
+  "oracle": {
+    "ruby": "4.0.7",
+    "rails": "8.1.4",
+    "api_only": true,
+    "escape_json_responses": false
+  },
+  "synthetic_oracles": [
+    {
+      "ruby": "4.0.7",
+      "rails": "8.1.4",
+      "defaults": "8.0",
+      "api_only": true,
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "body": {
+        "ok": true
+      }
+    },
+    {
+      "ruby": "4.0.7",
+      "rails": "8.1.4",
+      "defaults": "8.1",
+      "api_only": true,
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "body": {
+        "ok": true
+      }
+    }
+  ],
+  "malformed_control_note": "HTML 400 body already present in v14 edge update_malformed; JSON header patch cannot change it."
+}

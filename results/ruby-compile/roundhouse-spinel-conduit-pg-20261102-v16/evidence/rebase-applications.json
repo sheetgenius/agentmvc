@@ -1,0 +1,48 @@
+[
+  {
+    "patch": "30-jobs-boot.patch",
+    "before_tree": "6c12af814316e970931df33acf593d07b32d8f23",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "069ef07fc4a9d7f5f09111ec4293e14c36caac05"
+  },
+  {
+    "patch": "50-postgresql-lane.patch",
+    "before_tree": "069ef07fc4a9d7f5f09111ec4293e14c36caac05",
+    "direct_check_exit": 1,
+    "direct_check_stderr": "error: patch failed: docs/guide/spinel.md:260\nerror: docs/guide/spinel.md: patch does not apply\n",
+    "apply_exit": 1,
+    "apply_stderr": "Applied patch to 'docs/guide/spinel.md' with conflicts.\nApplied patch to 'runtime/ruby/active_record/base.rb' cleanly.\nApplied patch to 'runtime/ruby/active_record/base.rbs' cleanly.\nFalling back to direct application...\nApplied patch to 'src/emit/roda.rs' cleanly.\nApplied patch to 'src/emit/ruby.rs' cleanly.\nApplied patch to 'src/emit/ruby/library.rs' cleanly.\nApplied patch to 'src/emit/shared/schema_sql.rs' cleanly.\nApplied patch to 'src/ingest/model.rs' cleanly.\nApplied patch to 'src/ingest/schema.rs' cleanly.\nApplied patch to 'src/ingest/structure_sql.rs' cleanly.\nApplied patch to 'src/lib.rs' cleanly.\nApplied patch to 'src/lower/arel/ir.rs' cleanly.\nApplied patch to 'src/lower/arel/ruby_values.rs' cleanly.\nApplied patch to 'src/lower/arel/visitor.rs' cleanly.\nApplied patch to 'src/lower/group_count.rs' cleanly.\nApplied patch to 'src/lower/model_to_library/adapter_emit/mod.rs' cleanly.\nApplied patch to 'src/lower/model_to_library/mod.rs' cleanly.\nApplied patch to 'src/lower/model_to_library/schema.rs' cleanly.\nApplied patch to 'src/naming.rs' cleanly.\nApplied patch to 'src/project.rs' cleanly.\nApplied patch to 'src/schema.rs' cleanly.\nU docs/guide/spinel.md\n",
+    "resolution": "manual context rebase; see evidence/rebase-notes.txt",
+    "after_tree": "248a56fb6912b47635bf8c83de19e210f356a0fc"
+  },
+  {
+    "patch": "74-integer-query-range.patch",
+    "before_tree": "248a56fb6912b47635bf8c83de19e210f356a0fc",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "79b4cb3392f348923070fc712809a7968f9e9ec7"
+  },
+  {
+    "patch": "80-gradual-return-stabilization.patch",
+    "before_tree": "79b4cb3392f348923070fc712809a7968f9e9ec7",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "13f421fd5aff2d0342bd5401c4e67b98c2a43b2c"
+  },
+  {
+    "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+    "before_tree": "13f421fd5aff2d0342bd5401c4e67b98c2a43b2c",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "b0672349bde4b92a80298e1ee8e61e0564775c49"
+  }
+]

@@ -1,0 +1,160 @@
+{
+  "roundhouse": {
+    "changed_paths": [
+      "docs/guide/spinel.md",
+      "runtime/spinel/faye_websocket.rb",
+      "runtime/spinel/scaffold/boot.rb",
+      "runtime/spinel/scaffold/main.rb",
+      "runtime/spinel/tep/websocket/connection.rb",
+      "runtime/spinel/tep/websocket/driver.rb",
+      "scripts/ci-plan.py",
+      "src/analyze/body/buffered_stdlib.rs",
+      "src/analyze/body/const_resolution/mod.rs",
+      "src/analyze/body/mod.rs",
+      "src/analyze/forwarding.rs",
+      "src/analyze/mod.rs",
+      "src/analyze/registry/stdlib.rs",
+      "src/catalog/gems.rs",
+      "src/gems.rs",
+      "src/lower/controller_to_library/params.rs",
+      "src/lower/model_to_library/mod.rs",
+      "src/lower/model_to_library/schema.rs",
+      "src/lower/route_url_options.rs",
+      "src/lower/ruby_family_gems.rs",
+      "src/project.rs",
+      "tests/argument_forwarding.rs",
+      "tests/controller_formals_runs.rs",
+      "tests/emit_and_run.rs",
+      "tests/emit_and_run/params_merged_key_type.rs",
+      "tests/route_url_splat_typed_hash.rs",
+      "tests/spinel_faye_websocket.rs",
+      "tests/spinel_faye_websocket/contract.rb",
+      "tests/spinel_faye_websocket/cruby.rb",
+      "tests/spinel_faye_websocket/fixture.rb",
+      "tests/spinel_faye_websocket/native.rb",
+      "tests/spinel_faye_websocket/review_regressions.rb",
+      "tests/spinel_toolchain.rs",
+      "tests/stdlib_constant_execution.rs",
+      "tests/support/full_forwarding.rs"
+    ]
+  },
+  "spinel": {
+    "changed_paths": [
+      "Makefile",
+      "docs/inline-rbs.md",
+      "docs/limitations.md",
+      "packages/net/net/http.rb",
+      "packages/net/test/net_http_read_body.rb",
+      "packages/net/test/net_http_read_body.rb.expected",
+      "packages/net/test/net_http_read_body_stream.rb",
+      "packages/net/test/net_http_read_body_stream.rb.expected",
+      "packages/openssl/openssl/cipher.rb",
+      "packages/openssl/test/openssl_cipher_gcm_threads.rb",
+      "packages/openssl/test/openssl_cipher_iv_restart.rb",
+      "packages/openssl/test/openssl_cipher_iv_restart.rb.expected",
+      "packages/openssl/test/openssl_cipher_keystream.rb",
+      "packages/openssl/test/openssl_cipher_keystream.rb.expected",
+      "packages/openssl/test/openssl_cipher_snapshots.rb",
+      "packages/openssl/test/openssl_cipher_snapshots.rb.expected",
+      "packages/openssl/test/openssl_cipher_update.rb",
+      "packages/openssl/test/openssl_cipher_update.rb.expected",
+      "packages/openssl/test/openssl_cipher_update_chunks.rb",
+      "packages/openssl/test/openssl_cipher_update_chunks.rb.expected",
+      "packages/openssl/test/openssl_cipher_update_retry.rb",
+      "packages/openssl/test/openssl_cipher_update_retry.rb.expected",
+      "packages/openssl/test/openssl_cipher_update_subclass.rb",
+      "packages/openssl/test/openssl_cipher_update_subclass.rb.expected",
+      "src/analyze.c",
+      "src/analyze_desugar.c",
+      "src/analyze_elab.c",
+      "src/analyze_infer.c",
+      "src/analyze_internal.h",
+      "src/analyze_scope.c",
+      "src/analyze_util.c",
+      "src/call_plan.c",
+      "src/call_plan.h",
+      "src/codegen.c",
+      "src/codegen_call.c",
+      "src/codegen_expr.c",
+      "src/codegen_internal.h",
+      "src/codegen_stmt.c",
+      "src/codegen_util.c",
+      "src/inline_rbs.c",
+      "test/dynamic_call_reopened_builtin_cmethod.rb",
+      "test/dynamic_call_reopened_builtin_cmethod.rb.expected",
+      "test/elem_reader_table_escape.rb",
+      "test/elem_reader_table_escape.rb.expected",
+      "test/elem_reader_use_classified.rb",
+      "test/elem_reader_use_classified.rb.expected",
+      "test/empty_array_arm_takes_sibling_kind.rb",
+      "test/empty_array_arm_takes_sibling_kind.rb.expected",
+      "test/empty_array_arm_user_constructor.rb",
+      "test/empty_array_arm_user_constructor.rb.expected",
+      "test/enum_alias_scalar_receiver.rb",
+      "test/enum_alias_scalar_receiver.rb.expected",
+      "test/fiber_thread_capture_object_table.rb",
+      "test/fiber_thread_capture_object_table.rb.expected",
+      "test/inline-rbs/placements.rb",
+      "test/inline-rbs/sclass_receiver_def.rb",
+      "test/inline-rbs/sig/singleton_class_defs/singleton_class_defs.rbs",
+      "test/inline-rbs/singleton_class_defs.expected",
+      "test/inline-rbs/singleton_class_defs.rb",
+      "test/ivar_table_dynamic_call_held_classes.rb",
+      "test/ivar_table_dynamic_call_held_classes.rb.expected",
+      "test/ivar_table_element_pick_receiver.rb",
+      "test/ivar_table_element_pick_receiver.rb.expected",
+      "test/nested_class_named_like_builtin_module.rb",
+      "test/nested_class_named_like_builtin_module.rb.expected",
+      "test/nil_receiver_program_method.rb",
+      "test/nil_receiver_program_method.rb.expected",
+      "test/obj_array_and_or_left.rb",
+      "test/obj_array_and_or_left.rb.expected",
+      "test/object_array_constant_path_array_new.rb",
+      "test/object_array_constant_path_array_new.rb.expected",
+      "test/object_array_new_deep_next.rb",
+      "test/object_array_new_deep_next.rb.expected",
+      "test/object_array_push_element_read.rb",
+      "test/object_array_push_element_read.rb.expected",
+      "test/singleton_class_attr_at_point.rb",
+      "test/singleton_class_attr_at_point.rb.expected",
+      "test/struct_member_index_op_write_box.rb",
+      "test/struct_member_index_op_write_box.rb.expected",
+      "test/undef_then_def_at_point.rb",
+      "test/undef_then_def_at_point.rb.expected"
+    ]
+  },
+  "retained_patch_overlaps": [
+    {
+      "patch": "30-jobs-boot.patch",
+      "upstream_changed_paths": [
+        "runtime/spinel/scaffold/main.rb"
+      ]
+    },
+    {
+      "patch": "50-postgresql-lane.patch",
+      "upstream_changed_paths": [
+        "docs/guide/spinel.md",
+        "src/lower/model_to_library/mod.rs",
+        "src/lower/model_to_library/schema.rs",
+        "src/project.rs"
+      ]
+    },
+    {
+      "patch": "74-integer-query-range.patch",
+      "upstream_changed_paths": [
+        "src/lower/model_to_library/mod.rs",
+        "src/lower/model_to_library/schema.rs"
+      ]
+    },
+    {
+      "patch": "80-gradual-return-stabilization.patch",
+      "upstream_changed_paths": []
+    },
+    {
+      "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+      "upstream_changed_paths": [
+        "src/analyze/mod.rs"
+      ]
+    }
+  ]
+}

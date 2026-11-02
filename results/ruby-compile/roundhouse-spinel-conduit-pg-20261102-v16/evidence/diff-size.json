@@ -1,0 +1,61 @@
+{
+  "v15": {
+    "patch_count": 6,
+    "added": 2046,
+    "removed": 89,
+    "files": 42
+  },
+  "v16": {
+    "patch_count": 5,
+    "added": 1758,
+    "removed": 89,
+    "files": 38
+  },
+  "per_patch": [
+    {
+      "patch": "30-jobs-boot.patch",
+      "before_tree": "6c12af814316e970931df33acf593d07b32d8f23",
+      "after_tree": "069ef07fc4a9d7f5f09111ec4293e14c36caac05",
+      "direct_replay": true,
+      "added": 419,
+      "removed": 1,
+      "files": 8
+    },
+    {
+      "patch": "50-postgresql-lane.patch",
+      "before_tree": "069ef07fc4a9d7f5f09111ec4293e14c36caac05",
+      "after_tree": "248a56fb6912b47635bf8c83de19e210f356a0fc",
+      "direct_replay": true,
+      "added": 1008,
+      "removed": 22,
+      "files": 22
+    },
+    {
+      "patch": "74-integer-query-range.patch",
+      "before_tree": "248a56fb6912b47635bf8c83de19e210f356a0fc",
+      "after_tree": "79b4cb3392f348923070fc712809a7968f9e9ec7",
+      "direct_replay": true,
+      "added": 236,
+      "removed": 26,
+      "files": 9
+    },
+    {
+      "patch": "80-gradual-return-stabilization.patch",
+      "before_tree": "79b4cb3392f348923070fc712809a7968f9e9ec7",
+      "after_tree": "13f421fd5aff2d0342bd5401c4e67b98c2a43b2c",
+      "direct_replay": true,
+      "added": 87,
+      "removed": 40,
+      "files": 3
+    },
+    {
+      "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+      "before_tree": "13f421fd5aff2d0342bd5401c4e67b98c2a43b2c",
+      "after_tree": "b0672349bde4b92a80298e1ee8e61e0564775c49",
+      "direct_replay": true,
+      "added": 8,
+      "removed": 0,
+      "files": 1
+    }
+  ]
+}

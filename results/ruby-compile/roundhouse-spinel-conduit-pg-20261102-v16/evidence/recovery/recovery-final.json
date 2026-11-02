@@ -1,0 +1,14 @@
+{
+  "condition": "supplemental-pending-export-boot-20261022",
+  "label": "final",
+  "image": "conduit-v16-app:compiled",
+  "expected": "done",
+  "procedure": "Seed a durable pending export before starting the compiled server; send no enqueue request.",
+  "image_id": "sha256:818f38c1d9ea91245d4d79d6ceb3213a6a69c1b827f3d0f26f305094797d7af0",
+  "before": "pending",
+  "after": "done",
+  "articles": "[]",
+  "completed": "t",
+  "server_sha256": "d69e7129cb2888dea4593f6b6f98f8b47939d1fce4176060088bdb28ba7e55c1",
+  "pass": true
+}

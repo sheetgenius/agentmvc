@@ -1,0 +1,8 @@
+default: &default
+  adapter: sqlite3
+  database: /tmp/conduit-v16-synthetic.sqlite3
+  pool: 5
+development:
+  <<: *default
+production:
+  <<: *default

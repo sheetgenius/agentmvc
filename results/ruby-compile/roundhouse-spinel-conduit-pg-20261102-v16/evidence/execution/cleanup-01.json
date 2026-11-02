@@ -1,0 +1,17 @@
+{
+  "label": "cleanup-01",
+  "command": [
+    "python3",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102-v16/cleanup.py"
+  ],
+  "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102-v16/build/final",
+  "started": "2026-11-02T21:57:10.103090+00:00",
+  "finished": "2026-11-02T21:57:15.550419+00:00",
+  "elapsed_seconds": 5.447,
+  "exit": 0,
+  "log": "evidence/execution/cleanup-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)"
+  ],
+  "resource_note": "Small auxiliary read/capture only; no compiler build, gate, benchmark or heavy workload"
+}

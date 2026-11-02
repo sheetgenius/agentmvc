@@ -1,0 +1,26 @@
+{
+  "pass_": true,
+  "roundhouse": "b744c13458afb2105ee2c8e371c2c688a4e0c620",
+  "spinel": "ccc1e0f9e80e8ab59cb49692655ef138ba1c8c2c",
+  "patches": [
+    "30-jobs-boot.patch",
+    "50-postgresql-lane.patch",
+    "74-integer-query-range.patch",
+    "80-gradual-return-stabilization.patch",
+    "84-upstream-regression-mixed-parameter-arm.patch"
+  ],
+  "local_patch_20_absent": true,
+  "local_patch_10_absent": true,
+  "clean_replay_tree": "b0672349bde4b92a80298e1ee8e61e0564775c49",
+  "retained_added_removed_code_identical": true,
+  "upstream_faye_and_tep_files_unchanged": [
+    "runtime/spinel/faye_websocket.rb",
+    "runtime/spinel/scaffold/boot.rb",
+    "runtime/spinel/tep/net.rb",
+    "runtime/spinel/tep/server_threaded.rb",
+    "runtime/spinel/tep/websocket/connection.rb",
+    "runtime/spinel/tep/websocket/driver.rb"
+  ],
+  "rebase": "Patch 50 documentation append-point only; retain both sections.",
+  "no_semantic_rebase": true
+}

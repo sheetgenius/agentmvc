@@ -1,0 +1,211 @@
+=> Booting Puma
+=> Rails 8.1.4 application starting in production 
+=> Run `bin/rails server --help` for more startup options
+[GoodJob] [1] GoodJob 4.19.3 started scheduler with queues=* max_threads=2.
+[GoodJob] Notifier subscribed with LISTEN
+Puma starting in single mode...
+* Puma version: 8.0.2 ("Into the Arena")
+* Ruby version: ruby 4.0.7 (2026-09-15 revision 229531a6cf) +YJIT +PRISM [aarch64-linux]
+*  Min threads: 3
+*  Max threads: 3
+*  Environment: production
+*          PID: 1
+* Listening on http://0.0.0.0:8080
+Use Ctrl-C to stop
+[bc76f104-4f6f-4f28-93a5-7ab076814669] Started GET "/api/tags" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[bc76f104-4f6f-4f28-93a5-7ab076814669] Processing by TagsController#index as HTML
+[bc76f104-4f6f-4f28-93a5-7ab076814669] Completed 200 OK in 6ms (Views: 0.2ms | ActiveRecord: 4.1ms (1 query, 0 cached) | GC: 0.0ms)
+[61444f7a-2f36-447b-98e1-880e3aff419f] Started GET "/api/tags" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[61444f7a-2f36-447b-98e1-880e3aff419f] Processing by TagsController#index as JSON
+[61444f7a-2f36-447b-98e1-880e3aff419f] Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 0.0ms)
+[71839b34-7520-492c-88a3-72271a8446a8] Started GET "/health" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[71839b34-7520-492c-88a3-72271a8446a8] Processing by HealthController#show as JSON
+[71839b34-7520-492c-88a3-72271a8446a8] Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+[b4546f6a-cb7d-4817-9cb7-d57230762ce3] Started GET "/api/user" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[b4546f6a-cb7d-4817-9cb7-d57230762ce3] Processing by UsersController#show as JSON
+[b4546f6a-cb7d-4817-9cb7-d57230762ce3] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/application_controller.rb:41:in 'ApplicationController#require_user!'
+[b4546f6a-cb7d-4817-9cb7-d57230762ce3] Completed 401 Unauthorized in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+[b4a22a23-125d-4361-8dbd-3b9cdea0062a] Started GET "/api/tags" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[b4a22a23-125d-4361-8dbd-3b9cdea0062a] Processing by TagsController#index as JSON
+[b4a22a23-125d-4361-8dbd-3b9cdea0062a] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/application_controller.rb:37:in 'ApplicationController#read_user'
+[b4a22a23-125d-4361-8dbd-3b9cdea0062a] Completed 401 Unauthorized in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+[b5409802-c46d-4232-af2e-ac04697aef96] Started GET "/api/missing-header-probe" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[b5409802-c46d-4232-af2e-ac04697aef96] Processing by ApplicationController#not_found as JSON
+[b5409802-c46d-4232-af2e-ac04697aef96]   Parameters: {"unmatched" => "missing-header-probe"}
+[b5409802-c46d-4232-af2e-ac04697aef96] Completed 404 Not Found in 0ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+[562f264d-ed42-43c8-8d7d-dfb6c7138025] Started POST "/api/users" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[562f264d-ed42-43c8-8d7d-dfb6c7138025] Processing by UsersController#create as JSON
+[562f264d-ed42-43c8-8d7d-dfb6c7138025] rescue_from handled JSON::ParserError (unexpected end of input at line 1 column 9) - /usr/local/bundle/ruby/4.0.0/gems/json-2.21.2/lib/json/common.rb:364:in 'JSON::Ext::Parser.parse'
+[562f264d-ed42-43c8-8d7d-dfb6c7138025] Completed 400 Bad Request in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+[cf336d98-ffe8-4fcc-b192-8d43f06ba56b] Started POST "/api/users" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[cf336d98-ffe8-4fcc-b192-8d43f06ba56b] Processing by UsersController#create as JSON
+[cf336d98-ffe8-4fcc-b192-8d43f06ba56b]   Parameters: {"user" => {}}
+[cf336d98-ffe8-4fcc-b192-8d43f06ba56b] Completed 422 Unprocessable Content in 21ms (Views: 0.4ms | ActiveRecord: 1.2ms (2 queries, 0 cached) | GC: 0.4ms)
+[cce25b7d-e7dd-49e0-945a-40f438240c1a] Started POST "/api/users" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[cce25b7d-e7dd-49e0-945a-40f438240c1a] Processing by UsersController#create as JSON
+[cce25b7d-e7dd-49e0-945a-40f438240c1a]   Parameters: {"user" => {"username" => "header", "email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[cce25b7d-e7dd-49e0-945a-40f438240c1a] Completed 201 Created in 183ms (Views: 0.1ms | ActiveRecord: 1.7ms (3 queries, 0 cached) | GC: 0.2ms)
+[b4956b90-2d02-4467-b71e-6ce3570299a0] Started POST "/api/users" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[b4956b90-2d02-4467-b71e-6ce3570299a0] Processing by UsersController#create as JSON
+[b4956b90-2d02-4467-b71e-6ce3570299a0]   Parameters: {"user" => {"username" => "header", "email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[b4956b90-2d02-4467-b71e-6ce3570299a0] Completed 409 Conflict in 179ms (Views: 0.2ms | ActiveRecord: 0.8ms (2 queries, 0 cached) | GC: 0.0ms)
+[e4516745-f670-4cd8-a175-0e64c7a1e942] Started GET "/api/user" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[e4516745-f670-4cd8-a175-0e64c7a1e942] Processing by UsersController#show as JSON
+[e4516745-f670-4cd8-a175-0e64c7a1e942] Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.1ms)
+[d449b6ec-8c88-49d3-91a8-68ede461b129] Started GET "/api/profiles/header" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[d449b6ec-8c88-49d3-91a8-68ede461b129] Processing by ProfilesController#show as JSON
+[d449b6ec-8c88-49d3-91a8-68ede461b129]   Parameters: {"username" => "header"}
+[d449b6ec-8c88-49d3-91a8-68ede461b129] Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+[04feab9c-bf7f-46a2-9a1d-ca49b5b40647] Started POST "/api/articles" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[04feab9c-bf7f-46a2-9a1d-ca49b5b40647] Processing by ArticlesController#create as JSON
+[04feab9c-bf7f-46a2-9a1d-ca49b5b40647]   Parameters: {"article" => {"title" => "Header", "description" => "D", "body" => "B", "tagList" => ["utf8"]}}
+[04feab9c-bf7f-46a2-9a1d-ca49b5b40647] Completed 201 Created in 29ms (Views: 0.1ms | ActiveRecord: 2.8ms (6 queries, 0 cached) | GC: 0.2ms)
+[85433d43-a462-4a98-bf26-118f1fd80a87] Started GET "/api/articles" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[85433d43-a462-4a98-bf26-118f1fd80a87] Processing by ArticlesController#index as JSON
+[85433d43-a462-4a98-bf26-118f1fd80a87] Completed 200 OK in 4ms (Views: 0.2ms | ActiveRecord: 0.6ms (4 queries, 0 cached) | GC: 0.1ms)
+[d2db4ed2-130f-4035-ab18-d10f06b9885f] Started GET "/api/articles/header-80e691bc95" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[d2db4ed2-130f-4035-ab18-d10f06b9885f] Processing by ArticlesController#show as JSON
+[d2db4ed2-130f-4035-ab18-d10f06b9885f]   Parameters: {"slug" => "header-80e691bc95"}
+[d2db4ed2-130f-4035-ab18-d10f06b9885f] Completed 200 OK in 9ms (Views: 0.7ms | ActiveRecord: 0.3ms (3 queries, 0 cached) | GC: 0.0ms)
+[c856a5a2-2f80-4d4d-b786-a52b3d968097] Started POST "/api/articles/header-80e691bc95/comments" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[c856a5a2-2f80-4d4d-b786-a52b3d968097] Processing by CommentsController#create as JSON
+[c856a5a2-2f80-4d4d-b786-a52b3d968097]   Parameters: {"comment" => {"body" => "C"}, "slug" => "header-80e691bc95"}
+[c856a5a2-2f80-4d4d-b786-a52b3d968097] Completed 201 Created in 16ms (Views: 0.2ms | ActiveRecord: 1.3ms (4 queries, 0 cached) | GC: 0.1ms)
+[c2c4a1a8-04ac-447e-ad50-63efaf7b4bc7] Started GET "/api/articles/header-80e691bc95/comments" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[c2c4a1a8-04ac-447e-ad50-63efaf7b4bc7] Processing by CommentsController#index as JSON
+[c2c4a1a8-04ac-447e-ad50-63efaf7b4bc7]   Parameters: {"slug" => "header-80e691bc95"}
+[c2c4a1a8-04ac-447e-ad50-63efaf7b4bc7] Completed 200 OK in 10ms (Views: 0.2ms | ActiveRecord: 0.4ms (3 queries, 0 cached) | GC: 0.0ms)
+[5a1ff40d-087c-432f-a995-fb68c8bdbf48] Started POST "/api/articles/header-80e691bc95/share" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[5a1ff40d-087c-432f-a995-fb68c8bdbf48] Processing by SharesController#create as JSON
+[5a1ff40d-087c-432f-a995-fb68c8bdbf48]   Parameters: {"slug" => "header-80e691bc95", "share" => {}}
+[5a1ff40d-087c-432f-a995-fb68c8bdbf48] Completed 201 Created in 22ms (Views: 0.1ms | ActiveRecord: 1.9ms (6 queries, 0 cached) | GC: 0.1ms)
+[f5ed3d28-0c8e-4ed3-8c0b-11a3d6ca1eee] Started GET "/api/shares/4d844acb-e4ca-4618-b80a-00b82910c2e6/article" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[f5ed3d28-0c8e-4ed3-8c0b-11a3d6ca1eee] Processing by SharesController#show as JSON
+[f5ed3d28-0c8e-4ed3-8c0b-11a3d6ca1eee]   Parameters: {"id" => "4d844acb-e4ca-4618-b80a-00b82910c2e6"}
+[f5ed3d28-0c8e-4ed3-8c0b-11a3d6ca1eee] Completed 200 OK in 4ms (Views: 0.0ms | ActiveRecord: 0.3ms (2 queries, 0 cached) | GC: 0.0ms)
+[4f5f9c42-7abf-4d30-889a-05c22a014073] Started POST "/api/user/exports" for 172.29.116.1 at 2026-11-02 21:56:09 +0000
+[4f5f9c42-7abf-4d30-889a-05c22a014073] Processing by ExportsController#create as JSON
+[4f5f9c42-7abf-4d30-889a-05c22a014073]   Parameters: {"export" => {}}
+[4f5f9c42-7abf-4d30-889a-05c22a014073] [ActiveJob] Enqueued ExportArticlesJob (Job ID: 182693fa-7d51-43f9-8e52-32dcaafc5152) to GoodJob(default) with arguments: 1
+[4f5f9c42-7abf-4d30-889a-05c22a014073] Completed 202 Accepted in 27ms (Views: 0.2ms | ActiveRecord: 1.4ms (3 queries, 0 cached) | GC: 0.6ms)
+[96fb05a8-df10-4bd9-b95f-df4f0359f176] Started GET "/api/user/exports/1" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[96fb05a8-df10-4bd9-b95f-df4f0359f176] Processing by ExportsController#show as JSON
+[96fb05a8-df10-4bd9-b95f-df4f0359f176]   Parameters: {"id" => "1"}
+[96fb05a8-df10-4bd9-b95f-df4f0359f176] Completed 200 OK in 14ms (Views: 0.0ms | ActiveRecord: 9.0ms (2 queries, 0 cached) | GC: 0.1ms)
+[4bd24914-ef38-48a1-b317-d9f9f2ed24a2] Started PUT "/api/user" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[4bd24914-ef38-48a1-b317-d9f9f2ed24a2] Processing by UsersController#update as JSON
+[4bd24914-ef38-48a1-b317-d9f9f2ed24a2]   Parameters: {"user" => {"username" => ""}}
+[ActiveJob] [ExportArticlesJob] [182693fa-7d51-43f9-8e52-32dcaafc5152] Performing ExportArticlesJob (Job ID: 182693fa-7d51-43f9-8e52-32dcaafc5152) from GoodJob(default) enqueued at 2026-11-02T21:56:09.985272954Z with arguments: 1
+[ActiveJob] [ExportArticlesJob] [182693fa-7d51-43f9-8e52-32dcaafc5152] Performed ExportArticlesJob (Job ID: 182693fa-7d51-43f9-8e52-32dcaafc5152) from GoodJob(default) in 18.15ms
+[GoodJob] [1] [GoodJob::Scheduler(queues=* max_threads=2)-thread-1] Executed GoodJob 182693fa-7d51-43f9-8e52-32dcaafc5152
+[4bd24914-ef38-48a1-b317-d9f9f2ed24a2] rescue_from handled ActiveRecord::RecordInvalid (Validation failed: Username can't be blank) - /usr/local/bundle/ruby/4.0.0/gems/activerecord-8.1.4/lib/active_record/validations.rb:87:in 'ActiveRecord::Validations#raise_validation_error'
+[4bd24914-ef38-48a1-b317-d9f9f2ed24a2] Completed 422 Unprocessable Content in 24ms (Views: 0.1ms | ActiveRecord: 15.7ms (3 queries, 0 cached) | GC: 0.0ms)
+[78aaf030-ea6f-46c2-a9b1-22b0876e4c65] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[78aaf030-ea6f-46c2-a9b1-22b0876e4c65] Processing by UsersController#login as JSON
+[78aaf030-ea6f-46c2-a9b1-22b0876e4c65]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[78aaf030-ea6f-46c2-a9b1-22b0876e4c65] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[78aaf030-ea6f-46c2-a9b1-22b0876e4c65] Completed 401 Unauthorized in 3ms (Views: 0.1ms | ActiveRecord: 0.7ms (1 query, 0 cached) | GC: 0.0ms)
+[5cbb1456-add7-4a92-a4af-26f69e18273c] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[5cbb1456-add7-4a92-a4af-26f69e18273c] Processing by UsersController#login as JSON
+[5cbb1456-add7-4a92-a4af-26f69e18273c]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[5cbb1456-add7-4a92-a4af-26f69e18273c] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[5cbb1456-add7-4a92-a4af-26f69e18273c] Completed 401 Unauthorized in 2ms (Views: 0.0ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+[315a449e-4ecd-4ef3-983d-3b9c2e9cdd4d] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[315a449e-4ecd-4ef3-983d-3b9c2e9cdd4d] Processing by UsersController#login as JSON
+[315a449e-4ecd-4ef3-983d-3b9c2e9cdd4d]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[315a449e-4ecd-4ef3-983d-3b9c2e9cdd4d] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[315a449e-4ecd-4ef3-983d-3b9c2e9cdd4d] Completed 401 Unauthorized in 1ms (Views: 0.4ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+[7b0a07cb-88db-45a2-8050-91208308e766] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[7b0a07cb-88db-45a2-8050-91208308e766] Processing by UsersController#login as JSON
+[7b0a07cb-88db-45a2-8050-91208308e766]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[7b0a07cb-88db-45a2-8050-91208308e766] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[7b0a07cb-88db-45a2-8050-91208308e766] Completed 401 Unauthorized in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[fcf4e886-527d-47a5-a6d6-a6f2aa8c6e95] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[fcf4e886-527d-47a5-a6d6-a6f2aa8c6e95] Processing by UsersController#login as JSON
+[fcf4e886-527d-47a5-a6d6-a6f2aa8c6e95]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[fcf4e886-527d-47a5-a6d6-a6f2aa8c6e95] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[fcf4e886-527d-47a5-a6d6-a6f2aa8c6e95] Completed 401 Unauthorized in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[fa1c4522-b426-4986-b5f5-2dec4397bab9] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[fa1c4522-b426-4986-b5f5-2dec4397bab9] Processing by UsersController#login as JSON
+[fa1c4522-b426-4986-b5f5-2dec4397bab9]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[fa1c4522-b426-4986-b5f5-2dec4397bab9] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[fa1c4522-b426-4986-b5f5-2dec4397bab9] Completed 401 Unauthorized in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[0f53c619-69b2-4936-976e-22087f582cb4] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[0f53c619-69b2-4936-976e-22087f582cb4] Processing by UsersController#login as JSON
+[0f53c619-69b2-4936-976e-22087f582cb4]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[0f53c619-69b2-4936-976e-22087f582cb4] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[0f53c619-69b2-4936-976e-22087f582cb4] Completed 401 Unauthorized in 0ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[a277787b-4f61-451b-9542-b6a889895708] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[a277787b-4f61-451b-9542-b6a889895708] Processing by UsersController#login as JSON
+[a277787b-4f61-451b-9542-b6a889895708]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[a277787b-4f61-451b-9542-b6a889895708] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[a277787b-4f61-451b-9542-b6a889895708] Completed 401 Unauthorized in 6ms (Views: 4.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[6ac0646f-0fa2-4dd3-b4ea-3488628cff83] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[6ac0646f-0fa2-4dd3-b4ea-3488628cff83] Processing by UsersController#login as JSON
+[6ac0646f-0fa2-4dd3-b4ea-3488628cff83]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[6ac0646f-0fa2-4dd3-b4ea-3488628cff83] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[6ac0646f-0fa2-4dd3-b4ea-3488628cff83] Completed 401 Unauthorized in 3ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[a370b3c4-be54-4922-988f-85240417bb30] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[a370b3c4-be54-4922-988f-85240417bb30] Processing by UsersController#login as JSON
+[a370b3c4-be54-4922-988f-85240417bb30]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[a370b3c4-be54-4922-988f-85240417bb30] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[a370b3c4-be54-4922-988f-85240417bb30] Completed 401 Unauthorized in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[cc107742-8a0a-4b43-b7f3-92dddaa0fa5a] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[cc107742-8a0a-4b43-b7f3-92dddaa0fa5a] Processing by UsersController#login as JSON
+[cc107742-8a0a-4b43-b7f3-92dddaa0fa5a]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[cc107742-8a0a-4b43-b7f3-92dddaa0fa5a] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[cc107742-8a0a-4b43-b7f3-92dddaa0fa5a] Completed 401 Unauthorized in 2ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[89fcd69b-905f-4896-9fe5-2029bee09840] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[89fcd69b-905f-4896-9fe5-2029bee09840] Processing by UsersController#login as JSON
+[89fcd69b-905f-4896-9fe5-2029bee09840]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[89fcd69b-905f-4896-9fe5-2029bee09840] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[89fcd69b-905f-4896-9fe5-2029bee09840] Completed 401 Unauthorized in 0ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[58038e93-37e1-4e5a-99e2-96332358c89a] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[58038e93-37e1-4e5a-99e2-96332358c89a] Processing by UsersController#login as JSON
+[58038e93-37e1-4e5a-99e2-96332358c89a]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[58038e93-37e1-4e5a-99e2-96332358c89a] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[58038e93-37e1-4e5a-99e2-96332358c89a] Completed 401 Unauthorized in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[ffeb0cd5-291c-410b-86f3-3412d7209a2a] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[ffeb0cd5-291c-410b-86f3-3412d7209a2a] Processing by UsersController#login as JSON
+[ffeb0cd5-291c-410b-86f3-3412d7209a2a]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[ffeb0cd5-291c-410b-86f3-3412d7209a2a] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[ffeb0cd5-291c-410b-86f3-3412d7209a2a] Completed 401 Unauthorized in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[7f1255bd-0cf9-41de-9696-00aa8cb137c1] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[7f1255bd-0cf9-41de-9696-00aa8cb137c1] Processing by UsersController#login as JSON
+[7f1255bd-0cf9-41de-9696-00aa8cb137c1]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[7f1255bd-0cf9-41de-9696-00aa8cb137c1] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[7f1255bd-0cf9-41de-9696-00aa8cb137c1] Completed 401 Unauthorized in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[e4b18636-4f5f-41ae-8682-a8fcdc959da3] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[e4b18636-4f5f-41ae-8682-a8fcdc959da3] Processing by UsersController#login as JSON
+[e4b18636-4f5f-41ae-8682-a8fcdc959da3]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[e4b18636-4f5f-41ae-8682-a8fcdc959da3] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[e4b18636-4f5f-41ae-8682-a8fcdc959da3] Completed 401 Unauthorized in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[b1c4c817-c3ed-43ce-bda6-b9c054f81dc5] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[b1c4c817-c3ed-43ce-bda6-b9c054f81dc5] Processing by UsersController#login as JSON
+[b1c4c817-c3ed-43ce-bda6-b9c054f81dc5]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[b1c4c817-c3ed-43ce-bda6-b9c054f81dc5] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[b1c4c817-c3ed-43ce-bda6-b9c054f81dc5] Completed 401 Unauthorized in 0ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[26526fcc-58a8-48d6-b322-3bdaff57c0c1] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[26526fcc-58a8-48d6-b322-3bdaff57c0c1] Processing by UsersController#login as JSON
+[26526fcc-58a8-48d6-b322-3bdaff57c0c1]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[26526fcc-58a8-48d6-b322-3bdaff57c0c1] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[26526fcc-58a8-48d6-b322-3bdaff57c0c1] Completed 401 Unauthorized in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[812811fb-2d30-4f5e-9ae9-beaf47797f7c] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[812811fb-2d30-4f5e-9ae9-beaf47797f7c] Processing by UsersController#login as JSON
+[812811fb-2d30-4f5e-9ae9-beaf47797f7c]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[812811fb-2d30-4f5e-9ae9-beaf47797f7c] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[812811fb-2d30-4f5e-9ae9-beaf47797f7c] Completed 401 Unauthorized in 0ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[a8db1b8d-dee8-43e1-b12e-d232c2ae89f4] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[a8db1b8d-dee8-43e1-b12e-d232c2ae89f4] Processing by UsersController#login as JSON
+[a8db1b8d-dee8-43e1-b12e-d232c2ae89f4]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[a8db1b8d-dee8-43e1-b12e-d232c2ae89f4] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/controllers/users_controller.rb:27:in 'UsersController#login'
+[a8db1b8d-dee8-43e1-b12e-d232c2ae89f4] Completed 401 Unauthorized in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[0dd55cdb-2b70-4c03-a0f3-9f1892a5e923] Started POST "/api/users/login" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[0dd55cdb-2b70-4c03-a0f3-9f1892a5e923] Processing by UsersController#login as JSON
+[0dd55cdb-2b70-4c03-a0f3-9f1892a5e923]   Parameters: {"user" => {"email" => "[FILTERED]", "password" =[redacted] "[FILTERED]"}}
+[0dd55cdb-2b70-4c03-a0f3-9f1892a5e923] rescue_from handled ApplicationController::Failure (ApplicationController::Failure) - app/services/login_throttle.rb:11:in 'block in LoginThrottle.fail!'
+[0dd55cdb-2b70-4c03-a0f3-9f1892a5e923] Completed 429 Too Many Requests in 0ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+[4443d37f-e713-48e0-9a95-25778623fa2e] Started DELETE "/api/articles/header-80e691bc95/comments/1" for 172.29.116.1 at 2026-11-02 21:56:10 +0000
+[4443d37f-e713-48e0-9a95-25778623fa2e] Processing by CommentsController#destroy as JSON
+[4443d37f-e713-48e0-9a95-25778623fa2e]   Parameters: {"slug" => "header-80e691bc95", "id" => "1"}
+[4443d37f-e713-48e0-9a95-25778623fa2e] Completed 204 No Content in 9ms (ActiveRecord: 1.0ms (4 queries, 0 cached) | GC: 0.0ms)

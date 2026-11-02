@@ -1,0 +1,652 @@
+{
+  "kind": "compiled",
+  "image": "conduit-v16-app:compiled",
+  "rails_condition": "Rails 8.1.4, load_defaults 8.1, API-only, production; frozen v14 app",
+  "requests": [
+    {
+      "name": "empty_collection",
+      "method": "GET",
+      "path": "/api/tags",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "tags"
+      ],
+      "expected_status": 200,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "health_object",
+      "method": "GET",
+      "path": "/health",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "status"
+      ],
+      "expected_status": 200,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "action_failure_rescue",
+      "method": "GET",
+      "path": "/api/user",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "before_action_failure_rescue",
+      "method": "GET",
+      "path": "/api/tags",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "not_found_action",
+      "method": "GET",
+      "path": "/api/missing-header-probe",
+      "status": 404,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 404,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "malformed_json_control",
+      "method": "POST",
+      "path": "/api/users",
+      "status": 400,
+      "content_type": "text/html; charset=utf-8",
+      "shape": "NoneType",
+      "expected_status": 400,
+      "pass_status": true,
+      "expected_content_type": "text/html; charset=utf-8",
+      "retirement_json_case": false,
+      "pass_charset": true
+    },
+    {
+      "name": "validation_errors",
+      "method": "POST",
+      "path": "/api/users",
+      "status": 422,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 422,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "created_user",
+      "method": "POST",
+      "path": "/api/users",
+      "status": 201,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "user"
+      ],
+      "expected_status": 201,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "duplicate_user",
+      "method": "POST",
+      "path": "/api/users",
+      "status": 409,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 409,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "user_object",
+      "method": "GET",
+      "path": "/api/user",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "user"
+      ],
+      "expected_status": 200,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "profile_object",
+      "method": "GET",
+      "path": "/api/profiles/header",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "profile"
+      ],
+      "expected_status": 200,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "created_article",
+      "method": "POST",
+      "path": "/api/articles",
+      "status": 201,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "article"
+      ],
+      "expected_status": 201,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "article_collection",
+      "method": "GET",
+      "path": "/api/articles",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "articles",
+        "articlesCount"
+      ],
+      "expected_status": 200,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "article_object",
+      "method": "GET",
+      "path": "/api/articles/header-74913f7b93",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "article"
+      ],
+      "expected_status": 200,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "created_comment",
+      "method": "POST",
+      "path": "/api/articles/header-74913f7b93/comments",
+      "status": 201,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "comment"
+      ],
+      "expected_status": 201,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "comment_collection",
+      "method": "GET",
+      "path": "/api/articles/header-74913f7b93/comments",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "comments"
+      ],
+      "expected_status": 200,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "created_share",
+      "method": "POST",
+      "path": "/api/articles/header-74913f7b93/share",
+      "status": 201,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "share"
+      ],
+      "expected_status": 201,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "shared_article",
+      "method": "GET",
+      "path": "/api/shares/1bd12319-e118-4da9-94e2-aadbc7f72cb3/article",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "article"
+      ],
+      "expected_status": 200,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "accepted_export",
+      "method": "POST",
+      "path": "/api/user/exports",
+      "status": 202,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "export"
+      ],
+      "expected_status": 202,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "export_object",
+      "method": "GET",
+      "path": "/api/user/exports/1",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "export"
+      ],
+      "expected_status": 200,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "record_invalid_rescue",
+      "method": "PUT",
+      "path": "/api/user",
+      "status": 422,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 422,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_1",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_2",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_3",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_4",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_5",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_6",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_7",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_8",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_9",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_10",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_11",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_12",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_13",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_14",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_15",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_16",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_17",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_18",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_19",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_20",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 401,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 401,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "login_failure_21",
+      "method": "POST",
+      "path": "/api/users/login",
+      "status": 429,
+      "content_type": "application/json; charset=utf-8",
+      "shape": [
+        "errors"
+      ],
+      "expected_status": 429,
+      "pass_status": true,
+      "expected_content_type": "application/json; charset=utf-8",
+      "retirement_json_case": true,
+      "pass_charset": true
+    },
+    {
+      "name": "head_no_content",
+      "method": "DELETE",
+      "path": "/api/articles/header-74913f7b93/comments/1",
+      "status": 204,
+      "content_type": null,
+      "shape": "NoneType",
+      "expected_status": 204,
+      "pass_status": true,
+      "expected_content_type": null,
+      "retirement_json_case": false,
+      "pass_charset": true
+    }
+  ],
+  "image_id": "sha256:818f38c1d9ea91245d4d79d6ceb3213a6a69c1b827f3d0f26f305094797d7af0",
+  "server_sha256": "d69e7129cb2888dea4593f6b6f98f8b47939d1fce4176060088bdb28ba7e55c1",
+  "pass": true
+}

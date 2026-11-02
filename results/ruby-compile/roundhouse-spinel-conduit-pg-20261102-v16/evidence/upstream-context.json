@@ -1,0 +1,388 @@
+{
+  "roundhouse": {
+    "base": "71e32fe7096717c95347e966b332ab130f474f75",
+    "pin": "b744c13458afb2105ee2c8e371c2c688a4e0c620",
+    "commit_count": 21,
+    "commits": [
+      {
+        "sha": "e5a212305a111e96eecc4e58be41e29a56c2e10e",
+        "title": "[ci full] Run bounded Faye WebSockets over Tep"
+      },
+      {
+        "sha": "08b72e4d77acc7b83c83d1b29aaa183f21d41abb",
+        "title": "Enable verified native forwarding on Spinel"
+      },
+      {
+        "sha": "dc06e474b2dcf010ff682befe05be2a7551a7dc6",
+        "title": "Recognize Cipher, gzip and SHA digest APIs on Ruby and Spinel"
+      },
+      {
+        "sha": "1aaff334b4e40d488d63faa78a0180ca1fa037d1",
+        "title": "[ci full] Preserve Faye sends and refuse unsupported frame data"
+      },
+      {
+        "sha": "57d56b0485d6898022cc31b584ce4966e2a26a4a",
+        "title": "[ci full] Order close after Faye pre-open flush"
+      },
+      {
+        "sha": "431a77b669ff1a6f777434e24c543e4ae567c89e",
+        "title": "[ci full] Keep immediate Faye callback closes immediate"
+      },
+      {
+        "sha": "4eec798d3552c112dc5e1832ecf197f9048749db",
+        "title": "A params field that is not a String reaches the model as attributes= casts it"
+      },
+      {
+        "sha": "d47dcee70fac7c444c621b889c7e35a28935956d",
+        "title": "Isolate Sidekiq conformance fixtures from broadcast jobs"
+      },
+      {
+        "sha": "36e8a68255ed5b92cb0e1d6fb4ee78dcfe1f1de3",
+        "title": "Merge main for the sidekiq_adapter test fix (#1728)"
+      },
+      {
+        "sha": "cdcd3880b57df0e8f4c27b7cfc0d55f42ed26df7",
+        "title": "Merge main for the sidekiq_adapter test fix (#1728)"
+      },
+      {
+        "sha": "b8848b8b08c8b6efa7209d85cc18ed0ba76fd674",
+        "title": "Merge main"
+      },
+      {
+        "sha": "548ee23131f63234a6dd2191a2063812b8bf49b0",
+        "title": "Refuse buffered stdlib calls that differ on Spinel"
+      },
+      {
+        "sha": "76d1a5d57cd18b3336ea1d0b9a5c321dd950601e",
+        "title": "Preserve subclass types for zlib constructors"
+      },
+      {
+        "sha": "2089d93e981a4084bdd5255819b02df81b660383",
+        "title": "Refuse zlib overrides that delegate buffered results to super"
+      },
+      {
+        "sha": "fdb4ed7bdd45909123155e2e18d42b26e6dc100a",
+        "title": "Review: a typed_store attribute keeps its cast for a merged value"
+      },
+      {
+        "sha": "5f49b0de4a8049a2e2398bc70e3f4c6136f6d330",
+        "title": "A splatted hash's host/protocol default types its synthesized nil? send"
+      },
+      {
+        "sha": "2acbd3a404231c22792af5900a599f2cf98fbf11",
+        "title": "Merge pull request #1741 from eddygarcas/fix/url-splat-nil-typed"
+      },
+      {
+        "sha": "acb7bbda4a3a2886b2798c6e745abb7865ea7104",
+        "title": "Merge pull request #1737 from iberianpig/fix/merged-key-model-factories"
+      },
+      {
+        "sha": "72fcc769f38525dd2351b5fd2cf2451fca486153",
+        "title": "Merge pull request #1727 from bunnykong/feat/faye-websocket-adapter"
+      },
+      {
+        "sha": "e050bf6dbb80794846cb7d2bbed87a0f75e34aa6",
+        "title": "Merge pull request #1733 from bunnykong/spinel-native-forwarding"
+      },
+      {
+        "sha": "b744c13458afb2105ee2c8e371c2c688a4e0c620",
+        "title": "Merge pull request #1724 from bunnykong/fix/stdlib-cipher-gzip"
+      }
+    ],
+    "prs": [
+      {
+        "number": 1727,
+        "title": "Run bounded Faye WebSockets over Tep on Spinel",
+        "state": "closed",
+        "merged_at": "2026-11-02T21:40:16Z",
+        "merge_commit_sha": "72fcc769f38525dd2351b5fd2cf2451fca486153",
+        "url": "https://github.com/roundhouse-rb/roundhouse/pull/1727",
+        "head": "cdcd3880b57df0e8f4c27b7cfc0d55f42ed26df7"
+      },
+      {
+        "number": 1733,
+        "title": "Admit full argument forwarding on the Spinel target",
+        "state": "closed",
+        "merged_at": "2026-11-02T21:41:28Z",
+        "merge_commit_sha": "e050bf6dbb80794846cb7d2bbed87a0f75e34aa6",
+        "url": "https://github.com/roundhouse-rb/roundhouse/pull/1733",
+        "head": "b8848b8b08c8b6efa7209d85cc18ed0ba76fd674"
+      },
+      {
+        "number": 1724,
+        "title": "Recognize whole-message gzip and SHA digest APIs on Ruby and Spinel",
+        "state": "closed",
+        "merged_at": "2026-11-02T21:42:17Z",
+        "merge_commit_sha": "b744c13458afb2105ee2c8e371c2c688a4e0c620",
+        "url": "https://github.com/roundhouse-rb/roundhouse/pull/1724",
+        "head": "2089d93e981a4084bdd5255819b02df81b660383"
+      },
+      {
+        "number": 1729,
+        "title": "Keep ordinary inherited class-body calls in load order",
+        "state": "closed",
+        "merged_at": "2026-11-02T19:43:25Z",
+        "merge_commit_sha": "c1238cca48b2f7988e4dc7f58d3d98100583b54d",
+        "url": "https://github.com/roundhouse-rb/roundhouse/pull/1729",
+        "head": "fededcce6f07e10e7f68606050692fe36b0655d9"
+      },
+      {
+        "number": 1713,
+        "title": "Render keeps the response charset when it sets a content type",
+        "state": "closed",
+        "merged_at": "2026-11-02T20:28:14Z",
+        "merge_commit_sha": "71e32fe7096717c95347e966b332ab130f474f75",
+        "url": "https://github.com/roundhouse-rb/roundhouse/pull/1713",
+        "head": "1aa263659969b08d517cbbd39a09acd77ae7ee2b"
+      },
+      {
+        "number": 1011,
+        "title": "Keep gradual returns through stabilization (#964)",
+        "state": "open",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "https://github.com/roundhouse-rb/roundhouse/pull/1011",
+        "head": "20c8a405f195f17195839955e054bae086b29686"
+      }
+    ]
+  },
+  "spinel": {
+    "base": "b570999724ea9249fb91654bcef704fc9e20fdbc",
+    "pin": "ccc1e0f9e80e8ab59cb49692655ef138ba1c8c2c",
+    "commit_count": 53,
+    "commits": [
+      {
+        "sha": "a22b4e1097e7412f3d0a99efd2b5957f98d2474e",
+        "title": "Net::HTTPResponse#read_body streams inside the request block"
+      },
+      {
+        "sha": "737a910cb8bd6b7b66439709e0f5f52136e7a35e",
+        "title": "Read each available HTTP body fragment without waiting for a full buffer"
+      },
+      {
+        "sha": "bc9765f7c459b9e0f3108cbcf61631f83a370aad",
+        "title": "A call on a boxed value keeps boxed only the tables of the classes it holds"
+      },
+      {
+        "sha": "20e8fb5a53190e23f24e45da27b173d722996d0f",
+        "title": "An element read pushed into an object Array is evidence of its source's class"
+      },
+      {
+        "sha": "60cc74a5f87ab5d74e0b67ed5c41cd0361a21f9e",
+        "title": "A class method a boxed Class value may reach keeps its tables boxed"
+      },
+      {
+        "sha": "e7be9707e977c79d9d4b341077c87c9afeca10cf",
+        "title": "A Fiber or Thread block keeps a captured Array of objects alive"
+      },
+      {
+        "sha": "840be5b2ea6e3b7ba3a51947c9806978c50430e2",
+        "title": "An Array.new block's next values are elements of the Array it builds"
+      },
+      {
+        "sha": "a0d91140676f732ffc9acb259c1b66765e5147c8",
+        "title": "An inline signature on a def in `class << self` applies as a `def self.` one's"
+      },
+      {
+        "sha": "9f9f102554e362e96a40c070f90406aee858fa4a",
+        "title": "A reopened builtin's class method stays reachable through a boxed Class"
+      },
+      {
+        "sha": "a385f58a4c93b4abe833de562713ab15b4a87834",
+        "title": "A next value with no class of its own keeps an Array.new Array boxed"
+      },
+      {
+        "sha": "3b7e96eda253157f99f829c711281d0e5320a90e",
+        "title": "A reader read through an element of a narrowing table is vetted"
+      },
+      {
+        "sha": "4f32dec381fd506504fccf4e4127b1377ff64ff6",
+        "title": "A receiver that may be nil runs nil's own method where the program gives nil one"
+      },
+      {
+        "sha": "fef278fbc74b5ec2aea3e759c5d6584fdb666677",
+        "title": "A tail with no class of its own beside a next keeps the Array boxed"
+      },
+      {
+        "sha": "b5cc9b57a5d5a240d92544eb4fc00ee365ecd320",
+        "title": "Merge remote-tracking branch 'origin/master' into elem-reader-read-is-vetted"
+      },
+      {
+        "sha": "b16de503e24127d55c85524e85dcabf6e7870032",
+        "title": "The element reader's slot is found past a subclass's inherited copy"
+      },
+      {
+        "sha": "883c32a24d5a35b9ee3924b8bae93dc24899332c",
+        "title": "A call on t.first or t.last of a narrowing table waits for the table's class"
+      },
+      {
+        "sha": "34d912e6eba756c718df047a0343e3d56aea4e88",
+        "title": "An empty [] beside an Integer, Float or String Array is that Array"
+      },
+      {
+        "sha": "efa15fe970ff9c55d01d3cbf1f7ae6ca6cb862f7",
+        "title": "A Proc, a Thread or a Method takes back a detect's written name too"
+      },
+      {
+        "sha": "b0cc4f17a9ddb4ab710462e4fbd466e9d00de269",
+        "title": "An index op-write through a box types only the Structs the box may hold"
+      },
+      {
+        "sha": "3444da2da647a991019c04823b1d726eaca37335",
+        "title": "A constant written Mod::X = Array.new(n) { Obj.new } is built at its object-table kind"
+      },
+      {
+        "sha": "06c3cfa901332b675d8ca2cdf226c9127bafe36b",
+        "title": "Merge PR #10778: `Net::HTTPResponse#read_body` streams inside the request block"
+      },
+      {
+        "sha": "c5d23a4c300b62a884eb2ee887f545d11b6d31a8",
+        "title": "Merge PR #10779: An inline signature on a def in `class << self` applies as a `def self.` one's"
+      },
+      {
+        "sha": "bd4d4d722d4ec71fe43a06f1b537298092eff00c",
+        "title": "Merge PR #10780: A reader read through an element of a narrowing table is vetted"
+      },
+      {
+        "sha": "cba48474ad3b4964c349d928eb2e0e7839cde790",
+        "title": "Merge PR #10781: A receiver that may be nil runs nil's own method where the program gives nil one"
+      },
+      {
+        "sha": "ee51e8d91cbafd917bb246690f0ad5b896bc42b1",
+        "title": "class << self visits only its receiverless defs for inline signatures"
+      },
+      {
+        "sha": "c1f3cd14383ed0eac527047227ee35f6facd0b6c",
+        "title": "Merge PR #10782: A call on t.first or t.last of a narrowing table waits for the table's class"
+      },
+      {
+        "sha": "b46ac1c0ffba3bbf0a4d66cddfb872cd146fa786",
+        "title": "Merge PR #10783: A Fiber or Thread block keeps a captured Array of objects alive"
+      },
+      {
+        "sha": "33c7b3ddef673c1302231e1b0f163d4bd58ce4cc",
+        "title": "A program's own Array.new, or a sequence ending in [], keeps its type"
+      },
+      {
+        "sha": "a04007e399faede1fffbc1095369944e412feaa9",
+        "title": "A detect given back its name takes find again only on a typed receiver"
+      },
+      {
+        "sha": "3323febd812fbca0e3250518c91890cbe5cf51d1",
+        "title": "A folded arm of statements ending in [] is built at the result's kind"
+      },
+      {
+        "sha": "c76ad73774e30b7b832d654e667ac61c5d1c5a48",
+        "title": "A class nested under a builtin module's name is qualified, so the rooted builtin stays reachable"
+      },
+      {
+        "sha": "939b8a5246579528afa6215d5e5cad170b59cad3",
+        "title": "Return AES-GCM bytes from each Cipher update"
+      },
+      {
+        "sha": "c3ea8cee8e8145e53a7ce2372c8747dcb603b10b",
+        "title": "infer-test checks each empty-arm local's own Array kind"
+      },
+      {
+        "sha": "628d5302bcb44b5c81f1ae68071878194dca7657",
+        "title": "Cover a widening `||=` and a Struct-bearing `||=` through a box"
+      },
+      {
+        "sha": "925ce088647703ef8cc67342c0344d1ae00d45db",
+        "title": "An IO receiver keeps a detect's written name, as a File::Stat is one"
+      },
+      {
+        "sha": "c34a8f3e84e5377bf2b44d25ae86c0b4c65c2427",
+        "title": "Merge PR #10784: An empty [] beside an Integer, Float or String Array is that Array"
+      },
+      {
+        "sha": "f14fd540a02bde9513d9fd8928d4ea8b03b8a48a",
+        "title": "Merge PR #10786: A constant written Mod::X = Array.new(n) { Obj.new } is built at its object-table kind"
+      },
+      {
+        "sha": "4eb49e5bd3df7ce0aa3c81c00d92b3e4faa17855",
+        "title": "Merge PR #10776: A call on a boxed value keeps boxed only the tables of the classes it holds"
+      },
+      {
+        "sha": "593475939294777859c9693b9f8bd38c4443c2ee",
+        "title": "oa_recv_may_reach walks the slot's class and its descendants, not every class"
+      },
+      {
+        "sha": "a9f4335e39520a64022128f0d74f5c5296c6c378",
+        "title": "Merge remote-tracking branch 'origin/master' into push-element-read-evidence"
+      },
+      {
+        "sha": "acd7c66826e9f47c28c7df18f835defb739103d0",
+        "title": "Merge PR #10777: An element read pushed into an object Array is evidence of its source's class"
+      },
+      {
+        "sha": "4674163fbe2c512d1aaf978cc4352756d5285e50",
+        "title": "A reader step 5d decides on a table's element has its use classified"
+      },
+      {
+        "sha": "7e7c0fbeaaa1934faa248765a3b2c86c0c85d451",
+        "title": "Merge PR #10792: A Proc, a Thread or a Method takes back a detect's written name too"
+      },
+      {
+        "sha": "32e34924be695e395f628f25f3bf78e0cd75955e",
+        "title": "Merge PR #10794: A class nested under a builtin module's name keeps the rooted builtin reachable"
+      },
+      {
+        "sha": "3ad5069704f9564f84355616f8d108504b2b073d",
+        "title": "Merge PR #10795: An index op-write through a box types only the Structs the box may hold"
+      },
+      {
+        "sha": "aae0cbb12bfb73d31046c8eb86118b2c5981f18f",
+        "title": "Merge PR #10796: `OpenSSL::Cipher#update` returns its own bytes, as on CRuby"
+      },
+      {
+        "sha": "847e8242803910db815f18a4fc9a4a3eec508566",
+        "title": "A next deeper than the walk that collects them keeps the Array boxed"
+      },
+      {
+        "sha": "dda4159dbace8f81d34edabd2ffcb2598ca9a437",
+        "title": "Setting a Cipher's key or iv starts a new message"
+      },
+      {
+        "sha": "9c90d516311c4b06210a3390f80ecc07068a92bd",
+        "title": "singleton_class.attr_reader in a class body is recorded at its point"
+      },
+      {
+        "sha": "178ddaf47ca4330a036c1dc6f5773b9e5ea51747",
+        "title": "An undef takes a method away at its point, and a later def gives it back"
+      },
+      {
+        "sha": "abfadcbf4dd518372c7b7209f06a4da47fe7dbba",
+        "title": "openssl_cipher_gcm_threads is marked not-cruby"
+      },
+      {
+        "sha": "e641b104e1398dc5e03257ed997f1d20057f449a",
+        "title": "--plan-check stamps nil's method and the receiver's as the arms of a choice"
+      },
+      {
+        "sha": "ccc1e0f9e80e8ab59cb49692655ef138ba1c8c2c",
+        "title": "Merge PR #10777 (847e82428): A next deeper than the walk that collects them keeps the Array boxed"
+      }
+    ],
+    "prs": [
+      {
+        "number": 10778,
+        "title": "`Net::HTTPResponse#read_body` streams inside the request block",
+        "state": "closed",
+        "merged_at": "2026-11-02T21:32:43Z",
+        "merge_commit_sha": "06c3cfa901332b675d8ca2cdf226c9127bafe36b",
+        "url": "https://github.com/matz/spinel/pull/10778",
+        "head": "737a910cb8bd6b7b66439709e0f5f52136e7a35e"
+      },
+      {
+        "number": 10796,
+        "title": "`OpenSSL::Cipher#update` returns its own bytes, as on CRuby",
+        "state": "closed",
+        "merged_at": "2026-11-02T21:32:43Z",
+        "merge_commit_sha": "aae0cbb12bfb73d31046c8eb86118b2c5981f18f",
+        "url": "https://github.com/matz/spinel/pull/10796",
+        "head": "939b8a5246579528afa6215d5e5cad170b59cad3"
+      }
+    ]
+  }
+}
