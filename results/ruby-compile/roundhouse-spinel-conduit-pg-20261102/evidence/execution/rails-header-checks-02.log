@@ -1,0 +1,13 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+{"kind": "rails", "total": 43, "pass_": true, "error": null, "failing_names": []}
+{"kind": "compiled", "total": 43, "pass_": true, "error": null, "failing_names": []}
+Traceback (most recent call last):
+  File "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/rails-checks.py", line 20, in <module>
+    p=docker('run','--rm','--name','conduit-v15-rails-synthetic-'+defaults,
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/rails-checks.py", line 12, in docker
+    return subprocess.run(['docker',*args],capture_output=True,text=True,check=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['docker', 'run', '--rm', '--name', 'conduit-v15-rails-synthetic-8.0', '--mount', 'type=bind,source=results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/synthetic-rails-oracle.rb,target=/probe/oracle.rb,readonly', '-e', 'ORACLE_DEFAULTS=8.0', '--entrypoint', 'bundle', 'conduit-v15-rails:oracle-8.1.4', 'exec', 'ruby', '/probe/oracle.rb']' returned non-zero exit status 1.

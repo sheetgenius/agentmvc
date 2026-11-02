@@ -1,0 +1,59 @@
+[
+  {
+    "label": "omit-80-84-check-02",
+    "command": [
+      "/opt/homebrew/opt/python@3.12/bin/python3.12",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/check-omission.py"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/omit-80-84",
+    "started": "2026-11-02T20:56:33.334418+00:00",
+    "finished": "2026-11-02T20:56:34.604041+00:00",
+    "elapsed_seconds": 1.27,
+    "exit": 0,
+    "log": "evidence/execution/omit-80-84-check-02.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/suite.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "omit-80-84-app-build-01",
+    "command": [
+      "docker",
+      "build",
+      "--progress=plain",
+      "-f",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/omit-80-84/Dockerfile.production",
+      "-t",
+      "conduit-v15-app:omit-80-84",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/variant/source"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/omit-80-84",
+    "started": "2026-11-02T20:56:34.630267+00:00",
+    "finished": "2026-11-02T20:57:25.734924+00:00",
+    "elapsed_seconds": 51.104,
+    "exit": 0,
+    "log": "evidence/execution/omit-80-84-app-build-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/suite.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "omit-80-84-live-02",
+    "command": [
+      "python3",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/omit-live.py"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/final",
+    "started": "2026-11-02T20:59:20.273285+00:00",
+    "finished": "2026-11-02T20:59:23.082256+00:00",
+    "elapsed_seconds": 2.809,
+    "exit": 0,
+    "log": "evidence/execution/omit-80-84-live-02.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/suite.lock (shared slot)"
+    ]
+  }
+]

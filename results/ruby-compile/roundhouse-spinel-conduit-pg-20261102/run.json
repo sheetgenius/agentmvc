@@ -1,0 +1,300 @@
+{
+  "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v15-20261102",
+  "measurement_condition": "compiled-conduit-v15",
+  "date": "2026-11-02",
+  "track": "compile program",
+  "previous": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261101 (v14; unchanged)",
+  "input_series": "v14 minus all patch 10; patch 20 rebased over upstream lifecycle; corrected S09 patch 50",
+  "status": "complete",
+  "ruby": {
+    "variant": "4.0.7",
+    "toolchain": "4.0.7",
+    "frozen_rails_reference": "3.3.2",
+    "gemfile_changes": [],
+    "lockfile_changes": []
+  },
+  "source": {
+    "reference": "results/one-shot-v2-rails-expert/pilot-1/reference-1/source",
+    "variant": "variant/source (byte-identical to v14)",
+    "gated_files": 75,
+    "all_byte_identical_v14": true,
+    "source_tree_sha256": "294038b23f5579c56b61809cb0db38a1cfa0b39b8b0d4de4d3a65720a76b50f2",
+    "production_files": 70,
+    "production_source_sha256": "709b53d1a2592c9b71ae20d1de70948eb793f7c976a5539ee051876566470d1e",
+    "verification": "evidence/source-verification.json"
+  },
+  "toolchain": {
+    "roundhouse_base": "71e32fe7096717c95347e966b332ab130f474f75",
+    "roundhouse_branch": "main",
+    "roundhouse_patch_count": 6,
+    "roundhouse_patches": "patches/roundhouse/series",
+    "roundhouse_delta": {
+      "added": 2046,
+      "removed": 89,
+      "files": 42,
+      "source": "evidence/roundhouse-full-combined.diff"
+    },
+    "spinel_base": "b570999724ea9249fb91654bcef704fc9e20fdbc",
+    "spinel_branch": "master",
+    "spinel_version": "2026.10.25+1832",
+    "spinel_patch_count": 0,
+    "spinel_patches": "patches/spinel/series (empty)",
+    "spinel_delta": {
+      "added": 0,
+      "removed": 0,
+      "files": 0
+    },
+    "heads_observed_at": "2026-11-02T20:30:55.555455+00:00",
+    "roundhouse_manifest_sha256": "5de0c71dec8310313be2870fb3e0b09c9507899c283cb5d5dc86fbafd0568442",
+    "spinel_manifest_sha256": "8bf27a9ca94bcd2bc3286ae2e8fc39a5c67da286ca927f36a2ec89653a459201",
+    "vendor_tree_sha256": {
+      "roundhouse": "d27bdf639c1595ad6c8636b0e2b4619acaab0597c2096573d5d8c872aaf58b37",
+      "spinel": "28fef21f71fc8561b044d082d14fceda850a47e0248e1892ee6db600189f715d"
+    },
+    "toolchain_roundhouse_sha256": "c7782a41fa7bee674df6fc6fcfb64d75c463879eee9b9ceaa367be74d3c73396",
+    "toolchain_spinel_sha256": "a6b60cd8b1edba6a2ad5abade1f873827759baae1f163ad364356c1f5f14d1b0",
+    "flags": "Ruby 4.0.7; Rust 1.98.1; RH_DATABASE_ADAPTER=postgresql; strict emit; spin build -- --cc=clang --jobs=8; SPINEL_WORKERS=4",
+    "scoreboard": "evidence/diff-size.json",
+    "fresh_replay": "evidence/fresh-replay.json"
+  },
+  "images": {
+    "toolchain": {
+      "tag": "conduit-v15-toolchain:5de0c71dec83",
+      "id": "sha256:5bc52da2d9a0b50612e3e32631ed63fd8ace30f090b79cc310156dfaf3dafe65"
+    },
+    "compiled": {
+      "tag": "conduit-v15-app:compiled",
+      "id": "sha256:faee74125d9702f07bb05b230225634326939f170a49b3c072f40ebcf9f29309",
+      "bytes": 122867325,
+      "server_sha256": "d41fa6df14e7476b54d022b557490e41f5efd4a3bf84a58ba04de9a8937e1cdd"
+    },
+    "rails_oracle": {
+      "tag": "conduit-v15-rails:oracle-8.1.4",
+      "id": "sha256:eb1e9de2c56626cbfc5898ebf431a5888957cfb8648f1fa2f87b2e4015752b46"
+    },
+    "postgres": {
+      "tag": "conduit-v15-postgres:17",
+      "id": "sha256:b05fab95d0492cb222fbb8cd0e07707c2f3f778518e85b5a2600de8bc2d1450e",
+      "evidence": "evidence/helper-images.json"
+    },
+    "hurl": {
+      "tag": "conduit-v15-hurl:gate",
+      "id": "sha256:aa1df1e40ed0f666ae2b30a63b076f748e4340a54043fdc2c334d89d9e643790",
+      "evidence": "evidence/helper-images.json"
+    },
+    "browser": {
+      "tag": "conduit-v15-browser:1.63.0",
+      "id": "sha256:926c29b9778720695a783d75bdb04bdcd014c9f6ea15fb7bd9256787b06873e3",
+      "evidence": "evidence/helper-images.json"
+    }
+  },
+  "gates": {
+    "compiled_production": {
+      "label": "final-gate-01",
+      "command": [
+        "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/reproduce/run-gate.sh",
+        "compiled",
+        "4503"
+      ],
+      "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/final",
+      "started": "2026-11-02T20:39:05.599575+00:00",
+      "finished": "2026-11-02T20:41:28.710815+00:00",
+      "elapsed_seconds": 143.11,
+      "exit": 0,
+      "log": "evidence/execution/final-gate-01.log",
+      "locks": [
+        ".work/lane-docker.lock (exclusive)",
+        ".work/compile-program/suite.lock (shared slot)"
+      ]
+    },
+    "coverage_compiled": {
+      "log": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/evidence/execution/final-gate-01.log",
+      "api_files": "17/17",
+      "security_files": "13/13",
+      "live_protocol": "pass",
+      "browser_passed": 4,
+      "browser_failed": 0,
+      "security": "13/13",
+      "exit": 0
+    },
+    "common_http": {
+      "condition": "compiled-conduit-v15",
+      "contract_passed": 21,
+      "contract_total": 21,
+      "quality_passed": 3,
+      "quality_total": 3,
+      "file": "evidence/final-common-http.json"
+    },
+    "boot_recovery": {
+      "condition": "supplemental-pending-export-boot-20261022",
+      "label": "final",
+      "image": "conduit-v15-app:compiled",
+      "expected": "done",
+      "procedure": "Seed a durable pending export before starting the compiled server; send no enqueue request.",
+      "image_id": "sha256:faee74125d9702f07bb05b230225634326939f170a49b3c072f40ebcf9f29309",
+      "before": "pending",
+      "after": "done",
+      "articles": "[]",
+      "completed": "t",
+      "server_sha256": "d41fa6df14e7476b54d022b557490e41f5efd4a3bf84a58ba04de9a8937e1cdd",
+      "pass": true
+    },
+    "json_headers": {
+      "condition": "same v15 pins and app vs Rails 8.1.4, Ruby 4.0.7; API-only production, defaults 8.1",
+      "cases": 41,
+      "shapes": 11,
+      "differences": 0,
+      "rails": "8.1.4",
+      "ruby": "4.0.7",
+      "file": "evidence/header-comparison.json",
+      "compares": [
+        "status",
+        "top-level JSON shape",
+        "Content-Type"
+      ],
+      "complete_body_comparison": false
+    },
+    "variant_rails_production": {
+      "status": "inherited; full Rails gate not rerun in v15",
+      "condition": "roundhouse-spinel-conduit-postgresql-compile-variant-v13-20261030; unchanged application source on Ruby 4.0.7",
+      "evidence": "../roundhouse-spinel-conduit-pg-20261030/evidence/execution/rails-gate-01.json"
+    },
+    "two_peer_login_throttle": {
+      "status": "observed limit in v14; not rerun in v15; not a pass",
+      "condition": "verified v13 control and both v14 cases: distinct peer gets 429, expected 401",
+      "evidence": "../roundhouse-spinel-conduit-pg-20261101/evidence/case-b-transport.json"
+    }
+  },
+  "edge_comparison": {
+    "condition": "v15 retained series vs recorded v14 Case B; normalized status/body only",
+    "responses": 166,
+    "differences": 0,
+    "file": "evidence/edge/final.json",
+    "baseline": "evidence/edge/v14-baseline.json",
+    "header_coverage": "Content-Type compared separately"
+  },
+  "retirements": {
+    "retired": [
+      "10"
+    ],
+    "previously_retired": [
+      "60"
+    ],
+    "partially_retired": {},
+    "upstream_credit": [
+      {
+        "patch": "10",
+        "url": "https://github.com/roundhouse-rb/roundhouse/pull/1713",
+        "merge": "71e32fe7096717c95347e966b332ab130f474f75",
+        "scope": "render preserves response charset; no local patch 10 hunk remains"
+      },
+      {
+        "patch": "20 lifecycle portion",
+        "url": "https://github.com/roundhouse-rb/roundhouse/pull/1688",
+        "scope": "upstream Tep lifecycle supersedes local lifecycle edits; Faye adapter remains"
+      }
+    ],
+    "omissions": {
+      "combined_rerun": [
+        "80",
+        "84"
+      ],
+      "condition": "same upstream pins; retain 20/30/50/74; exact production source",
+      "result": "check, emission and native compilation pass; authenticated WebSocket subscription raises Room/Integer TypeError",
+      "individual_necessity_reproven": false,
+      "full_gate_rerun": false,
+      "file": "evidence/omit-80-84-live.json",
+      "not_rerun": [
+        "20",
+        "30",
+        "50",
+        "74"
+      ],
+      "basis": "v14 carries these omissions from v13; no renewed necessity claim in v15"
+    }
+  },
+  "rebase_adaptations": [
+    "20: retain upstream Tep lifecycle production files; keep Faye adapter and boot/dispatch wiring; adapt test handshake/deadline.",
+    "30, corrected S09 50, 74, 80 and 84 apply directly and preserve supplied added/removed code.",
+    "#1723 rewrote route ingestion/helpers; no patch application conflict; retained gate and edge comparison pass."
+  ],
+  "upstream_overlap": {
+    "evidence": "evidence/upstream-overlap.json",
+    "routes": {
+      "url": "https://github.com/roundhouse-rb/roundhouse/pull/1723",
+      "merge": "ce9177157cb2ff57917bce07833915c6f3a9b8ee"
+    }
+  },
+  "artifact_identities": "evidence/artifact-identities.json",
+  "signatures": {
+    "rbs_sidecars_kept": 167,
+    "application_rbs_sidecars_kept": 35,
+    "evidence": "evidence/artifact-identities.json"
+  },
+  "build": {
+    "label": "final-build-01",
+    "command": [
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/reproduce/fresh-build.sh",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/reproduce/build-images.sh",
+      "toolchain",
+      "compiled"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/final",
+    "started": "2026-11-02T20:34:05.411062+00:00",
+    "finished": "2026-11-02T20:39:02.290321+00:00",
+    "elapsed_seconds": 296.876,
+    "exit": 0,
+    "log": "evidence/execution/final-build-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/suite.lock (shared slot)"
+    ]
+  },
+  "timing": {
+    "kind": "Step wall times include shared-lock waits; no compiler-speed or throughput benchmark."
+  },
+  "limits": [
+    "Frozen production and normalized edge gates cannot see the charset; direct JSON probes supply that check.",
+    "Native malformed JSON returns HTML 400; Rails oracle returns JSON 400. Already observed in v14; excluded from the 41 JSON comparisons.",
+    "V14 two-peer login-throttle isolation fails on the verified v13 control and both v14 cases; not rerun in v15, not a pass.",
+    "Only combined 80/84 omission was rerun; other omissions carried from v14/v13, not re-proven.",
+    "Full Rails production gate inherited from v13; v15 Rails 8.1.4 header oracle changes only dependency pin/lock.",
+    "No full Roundhouse suite, general Rails/PostgreSQL/ActiveJob parity, global minimality, alternate server mode or performance tested.",
+    "Production excludes app tests; patch 50 emitted-test lowering remains outside this gate.",
+    "Preparation failures are preserved and excluded from accepted results."
+  ],
+  "constraints": {
+    "docker_lock": ".work/lane-docker.lock",
+    "heavy_lock": "canonical workshop/suite.lock; central suite.lock.slots capacity",
+    "resource_prefix": "conduit-v15-",
+    "port": 4503
+  },
+  "cleanup": {
+    "observed_utc": "2026-11-02T21:06:57.321844+00:00",
+    "removed_containers": [],
+    "removed_networks": [],
+    "removed_image_tags": [
+      "conduit-v15-app:compiled",
+      "conduit-v15-app:omit-80-84",
+      "conduit-v15-browser:1.63.0",
+      "conduit-v15-build:audit",
+      "conduit-v15-hurl:gate",
+      "conduit-v15-postgres:17",
+      "conduit-v15-rails:oracle-8.1.4",
+      "conduit-v15-toolchain:5de0c71dec83",
+      "conduit-v15-toolchain:omit-80-84"
+    ],
+    "removed_build_folders": [
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/src"
+    ],
+    "volumes_created_or_removed": false,
+    "prune_operations": false,
+    "protected_resources": "unrelated application resources untouched; mutations select only the owned prefix",
+    "retained_build_cache": "BuildKit cache mounts retained; no cache prune or volume operation",
+    "remaining_task_containers": [],
+    "remaining_task_networks": [],
+    "remaining_task_image_tags": []
+  },
+  "written_utc": "2026-11-02T21:06:57.321844+00:00"
+}

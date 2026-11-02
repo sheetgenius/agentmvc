@@ -1,0 +1,125 @@
+{
+  "sha": "b570999724ea9249fb91654bcef704fc9e20fdbc",
+  "node_id": "C_kwDORwMSgdoAKGI1NzA5OTk3MjRlYTkyNDlmYjkxNjU0YmNlZjcwNGZjOWUyMGZkYmM",
+  "commit": {
+    "author": {
+      "name": "Yukihiro \"Matz\" Matsumoto",
+      "email": "[redacted-email]",
+      "date": "2026-11-02T14:36:36Z"
+    },
+    "committer": {
+      "name": "Yukihiro \"Matz\" Matsumoto",
+      "email": "[redacted-email]",
+      "date": "2026-11-02T17:03:30Z"
+    },
+    "message": "A class a reopened Object's body makes is named as a top-level one\n\nclass_ruby_name builds a class's Ruby name from its enclosing classes, and\na reopened Object was one of them, so `class Object; B = Class.new;\nS = Struct.new(:a); M2 = Module.new; end` named them Object::B,\nObject::S and Object::M2, where CRuby names Object's constants as the\ntop level's: B, S, M2. The walk now stops at Object. Only the identity\nkey of an anonymous class made there changes in the corpus C.\n\nFound while checking CodeRabbit's notes on PR #10774; master named them\nso too.\n\nRefs #10774\n\nCo-Authored-By: Claude <[redacted-email]>",
+    "tree": {
+      "sha": "7da166fa4bba47be605884a97944e3d0fdda00b9",
+      "url": "https://api.github.com/repos/matz/spinel/git/trees/7da166fa4bba47be605884a97944e3d0fdda00b9"
+    },
+    "url": "https://api.github.com/repos/matz/spinel/git/commits/b570999724ea9249fb91654bcef704fc9e20fdbc",
+    "comment_count": 0,
+    "verification": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\niF0EABECAB0WIQQjejz276bPDxKN3p04/gJpOPlJlwUCaujCYgAKCRA4/gJpOPlJ\nlwT+AJ4sY/ntk9EMj1KY7ySmon/hNp5r5QCfS0j1aeVRxwY5yKjwbt0j58j6nfo=\n=yDEB\n-----END PGP SIGNATURE-----",
+      "payload": "tree 7da166fa4bba47be605884a97944e3d0fdda00b9\nparent 87f6c8ca11a2a41c98328dcc69211c9c36c2d506\nauthor Yukihiro \"Matz\" Matsumoto <[redacted-email]> 1793630196 +0900\ncommitter Yukihiro \"Matz\" Matsumoto <[redacted-email]> 1793639010 +0900\n\nA class a reopened Object's body makes is named as a top-level one\n\nclass_ruby_name builds a class's Ruby name from its enclosing classes, and\na reopened Object was one of them, so `class Object; B = Class.new;\nS = Struct.new(:a); M2 = Module.new; end` named them Object::B,\nObject::S and Object::M2, where CRuby names Object's constants as the\ntop level's: B, S, M2. The walk now stops at Object. Only the identity\nkey of an anonymous class made there changes in the corpus C.\n\nFound while checking CodeRabbit's notes on PR #10774; master named them\nso too.\n\nRefs #10774\n\nCo-Authored-By: Claude <[redacted-email]>\n",
+      "verified_at": "2026-11-02T18:30:49Z"
+    }
+  },
+  "url": "https://api.github.com/repos/matz/spinel/commits/b570999724ea9249fb91654bcef704fc9e20fdbc",
+  "html_url": "https://github.com/matz/spinel/commit/b570999724ea9249fb91654bcef704fc9e20fdbc",
+  "comments_url": "https://api.github.com/repos/matz/spinel/commits/b570999724ea9249fb91654bcef704fc9e20fdbc/comments",
+  "author": {
+    "login": "matz",
+    "id": 30733,
+    "node_id": "MDQ6VXNlcjMwNzMz",
+    "avatar_url": "https://avatars.githubusercontent.com/u/30733?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/matz",
+    "html_url": "https://github.com/matz",
+    "followers_url": "https://api.github.com/users/matz/followers",
+    "following_url": "https://api.github.com/users/matz/following{/other_user}",
+    "gists_url": "https://api.github.com/users/matz/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/matz/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/matz/subscriptions",
+    "organizations_url": "https://api.github.com/users/matz/orgs",
+    "repos_url": "https://api.github.com/users/matz/repos",
+    "events_url": "https://api.github.com/users/matz/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/matz/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "matz",
+    "id": 30733,
+    "node_id": "MDQ6VXNlcjMwNzMz",
+    "avatar_url": "https://avatars.githubusercontent.com/u/30733?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/matz",
+    "html_url": "https://github.com/matz",
+    "followers_url": "https://api.github.com/users/matz/followers",
+    "following_url": "https://api.github.com/users/matz/following{/other_user}",
+    "gists_url": "https://api.github.com/users/matz/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/matz/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/matz/subscriptions",
+    "organizations_url": "https://api.github.com/users/matz/orgs",
+    "repos_url": "https://api.github.com/users/matz/repos",
+    "events_url": "https://api.github.com/users/matz/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/matz/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "87f6c8ca11a2a41c98328dcc69211c9c36c2d506",
+      "url": "https://api.github.com/repos/matz/spinel/commits/87f6c8ca11a2a41c98328dcc69211c9c36c2d506",
+      "html_url": "https://github.com/matz/spinel/commit/87f6c8ca11a2a41c98328dcc69211c9c36c2d506"
+    }
+  ],
+  "stats": {
+    "total": 25,
+    "additions": 25,
+    "deletions": 0
+  },
+  "files": [
+    {
+      "sha": "cffb628739b1b1b36df5337196dcbeebfbd1eeea",
+      "filename": "src/codegen.c",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 0,
+      "changes": 3,
+      "blob_url": "https://github.com/matz/spinel/blob/b570999724ea9249fb91654bcef704fc9e20fdbc/src%2Fcodegen.c",
+      "raw_url": "https://github.com/matz/spinel/raw/b570999724ea9249fb91654bcef704fc9e20fdbc/src%2Fcodegen.c",
+      "contents_url": "https://api.github.com/repos/matz/spinel/contents/src%2Fcodegen.c?ref=b570999724ea9249fb91654bcef704fc9e20fdbc",
+      "patch": "@@ -11206,6 +11206,9 @@ const char *class_ruby_name(Compiler *c, int ci) {\n     chain[depth++] = k;\n     if (k != ci && c->classes[k].ruby_name_cache) break;\n     k = c->classes[k].enclosing_class;\n+    /* a reopened Object's constants are top-level ones: CRuby names\n+       `class Object; B = Class.new; end` B, not Object::B */\n+    if (k >= 0 && k == comp_core_class(c, CORE_OBJECT)) break;\n   }\n   if (depth == 1) return c->classes[ci].name; /* top-level: no qualification needed */\n   /* Built once and kept on the class. This used to answer out of a shared"
+    },
+    {
+      "sha": "944f5e71141c1d8be84561fce01352f130ac8980",
+      "filename": "test/object_body_builder_class_name.rb",
+      "status": "added",
+      "additions": 15,
+      "deletions": 0,
+      "changes": 15,
+      "blob_url": "https://github.com/matz/spinel/blob/b570999724ea9249fb91654bcef704fc9e20fdbc/test%2Fobject_body_builder_class_name.rb",
+      "raw_url": "https://github.com/matz/spinel/raw/b570999724ea9249fb91654bcef704fc9e20fdbc/test%2Fobject_body_builder_class_name.rb",
+      "contents_url": "https://api.github.com/repos/matz/spinel/contents/test%2Fobject_body_builder_class_name.rb?ref=b570999724ea9249fb91654bcef704fc9e20fdbc",
+      "patch": "@@ -0,0 +1,15 @@\n+# A class, Struct or module a reopened Object's body makes is a top-level\n+# constant's: CRuby names it without Object:: before it, as a module's own\n+# takes the module's name.\n+class Object\n+  B = Class.new\n+  S = Struct.new(:a)\n+  M2 = Module.new\n+  class Inner; end\n+end\n+module N\n+  B2 = Class.new\n+end\n+p B, S, M2, Inner, N::B2\n+p [B.name, S.name, M2.name, N::B2.name]\n+p S.new(1)"
+    },
+    {
+      "sha": "64f0a355e96792aa0b62a6bcb0d571b2a9299b2c",
+      "filename": "test/object_body_builder_class_name.rb.expected",
+      "status": "added",
+      "additions": 7,
+      "deletions": 0,
+      "changes": 7,
+      "blob_url": "https://github.com/matz/spinel/blob/b570999724ea9249fb91654bcef704fc9e20fdbc/test%2Fobject_body_builder_class_name.rb.expected",
+      "raw_url": "https://github.com/matz/spinel/raw/b570999724ea9249fb91654bcef704fc9e20fdbc/test%2Fobject_body_builder_class_name.rb.expected",
+      "contents_url": "https://api.github.com/repos/matz/spinel/contents/test%2Fobject_body_builder_class_name.rb.expected?ref=b570999724ea9249fb91654bcef704fc9e20fdbc",
+      "patch": "@@ -0,0 +1,7 @@\n+B\n+S\n+M2\n+Inner\n+N::B2\n+[\"B\", \"S\", \"M2\", \"N::B2\"]\n+#<struct S a=1>"
+    }
+  ]
+}

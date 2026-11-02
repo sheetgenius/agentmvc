@@ -1,0 +1,9 @@
+~/.rbenv/versions/4.0.7/lib/ruby/4.0.0/timeout.rb:40:in 'Timeout::Error.handle_timeout': execution expired (Timeout::Error)
+	from ~/.rbenv/versions/4.0.7/lib/ruby/4.0.0/timeout.rb:306:in 'Timeout.timeout'
+	from results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/src/roundhouse/tests/spinel_raw_websocket.rb:81:in '<main>'
+results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/src/roundhouse/tests/spinel_raw_websocket.rb:81:in 'Thread#join': execution expired (Timeout::ExitException)
+	from results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/src/roundhouse/tests/spinel_raw_websocket.rb:81:in 'block in <main>'
+	from ~/.rbenv/versions/4.0.7/lib/ruby/4.0.0/timeout.rb:296:in 'block in Timeout.timeout'
+	from ~/.rbenv/versions/4.0.7/lib/ruby/4.0.0/timeout.rb:38:in 'Timeout::Error.handle_timeout'
+	from ~/.rbenv/versions/4.0.7/lib/ruby/4.0.0/timeout.rb:306:in 'Timeout.timeout'
+	from results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/src/roundhouse/tests/spinel_raw_websocket.rb:81:in '<main>'

@@ -1,0 +1,119 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 661B done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 2.5s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/conduit-v15-toolchain:5de0c71dec83
+#4 DONE 0.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [stage-0 1/6] FROM docker.io/library/conduit-v15-toolchain:5de0c71dec83
+#7 DONE 0.0s
+
+#7 [stage-0 1/6] FROM docker.io/library/conduit-v15-toolchain:5de0c71dec83
+#7 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 45.57MB 0.4s done
+#6 DONE 0.5s
+
+#8 [stage-0 2/6] COPY vendor/roundhouse /src/roundhouse
+#8 DONE 1.3s
+
+#9 [stage-0 3/6] WORKDIR /src/roundhouse
+#9 DONE 0.1s
+
+#10 [stage-0 4/6] RUN --mount=type=cache,id=conduit-v15-cargo-registry,target=/usr/local/cargo/registry     --mount=type=cache,id=conduit-v15-cargo-git,target=/usr/local/cargo/git     --mount=type=cache,id=conduit-v15-cargo-target,target=/src/roundhouse/target     ROUNDHOUSE_COMMIT=71e32fe7 cargo build --locked --release --bin roundhouse -j4     && install -m755 target/release/roundhouse /usr/local/bin/roundhouse
+#10 0.260    Compiling roundhouse v2026.9.18 (/src/roundhouse)
+#10 1.734 warning: unused doc comment
+#10 1.734     --> src/emit/typescript/expr.rs:4343:1
+#10 1.734      |
+#10 1.734 4343 | / /// Ruby `Foo::Bar` gets joined with `.` for TS access.
+#10 1.734 4344 | | /// Framework-namespace paths (`ActionView::ViewHelpers`, …) collapse
+#10 1.734 4345 | | /// to the last segment — TS emits each runtime class flat at its
+#10 1.734 4346 | | /// file's module scope and imports the bare name. The import
+#10 1.734 ...    |
+#10 1.734 4352 | | /// StandardError)` and similar idioms emit a bare `StandardError`
+#10 1.734 4353 | | /// that's neither in scope nor importable.
+#10 1.734      | |_------------------------------------------^
+#10 1.734      |   |
+#10 1.734      |   rustdoc does not generate documentation for macro invocations
+#10 1.734      |
+#10 1.734      = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+#10 1.734      = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+#10 1.734 
+#10 14.89 warning: variable does not need to be mutable
+#10 14.89    --> src/ingest/app.rs:332:9
+#10 14.89     |
+#10 14.89 332 |     let mut candidates: HashSet<String> = app.library_classes.iter().filter_map(|class| {
+#10 14.89     |         ----^^^^^^^^^^
+#10 14.89     |         |
+#10 14.89     |         help: remove this `mut`
+#10 14.89     |
+#10 14.89     = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+#10 14.89 
+#10 20.01 warning: associated function `current` is never used
+#10 20.01     --> src/emit/ruby/library.rs:9592:8
+#10 20.01      |
+#10 20.01 9561 | impl ConstantReaderIndex {
+#10 20.01      | ------------------------ associated function in this implementation
+#10 20.01 ...
+#10 20.01 9592 |     fn current(app: &App) -> Option<ReaderIndex> {
+#10 20.01      |        ^^^^^^^
+#10 20.01      |
+#10 20.01      = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+#10 20.01 
+#10 20.01 warning: field `layout_scope` is never read
+#10 20.01    --> src/ingest/view_paths.rs:494:5
+#10 20.01     |
+#10 20.01 476 | struct Member {
+#10 20.01     |        ------ field in this struct
+#10 20.01 ...
+#10 20.01 494 |     layout_scope: Option<LayoutDecl>,
+#10 20.01     |     ^^^^^^^^^^^^
+#10 20.01 
+#10 20.01 warning: field `in_site` is never read
+#10 20.01    --> src/ingest/module_factory.rs:287:5
+#10 20.01     |
+#10 20.01 281 | struct SiteFinder<'a> {
+#10 20.01     |        ---------- field in this struct
+#10 20.01 ...
+#10 20.01 287 |     in_site: usize,
+#10 20.01     |     ^^^^^^^
+#10 20.01 
+#10 20.01 warning: function `rewrite_path_arg` is never used
+#10 20.01     --> src/lower/view_to_library/helpers.rs:1067:15
+#10 20.01      |
+#10 20.01 1067 | pub(super) fn rewrite_path_arg(arg: &Expr, ctx: &ViewCtx) -> Expr {
+#10 20.01      |               ^^^^^^^^^^^^^^^^
+#10 20.01 
+#10 111.6 warning: `roundhouse` (lib) generated 6 warnings (run `cargo fix --lib -p roundhouse` to apply 1 suggestion)
+#10 113.1     Finished `release` profile [optimized] target(s) in 1m 52s
+#10 DONE 113.4s
+
+#11 [stage-0 5/6] COPY patches /usr/local/share/roundhouse-patches
+#11 DONE 0.1s
+
+#12 [stage-0 6/6] WORKDIR /work
+#12 DONE 0.1s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 0.3s done
+#13 writing image sha256:c1ef777c9b325fa7c7ca73988475a53df973049c64f0dea6880004ad77eaff63 done
+#13 naming to docker.io/library/conduit-v15-toolchain:omit-80-84 0.0s done
+#13 DONE 0.3s

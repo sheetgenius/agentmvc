@@ -1,0 +1,75 @@
+{
+  "pass_": true,
+  "pins": {
+    "roundhouse": "71e32fe7096717c95347e966b332ab130f474f75",
+    "spinel": "b570999724ea9249fb91654bcef704fc9e20fdbc"
+  },
+  "patch_count": {
+    "roundhouse": 6,
+    "spinel": 0
+  },
+  "diff_size": {
+    "patch_count": 6,
+    "added": 2046,
+    "removed": 89,
+    "files": 42
+  },
+  "gate": {
+    "log": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/evidence/execution/final-gate-01.log",
+    "api_files": "17/17",
+    "security_files": "13/13",
+    "live_protocol": "pass",
+    "browser_passed": 4,
+    "browser_failed": 0,
+    "security": "13/13",
+    "exit": 0
+  },
+  "common_http": {
+    "contract_passed": 21,
+    "contract_total": 21,
+    "quality_passed": 3,
+    "quality_total": 3
+  },
+  "edge": {
+    "total": 166,
+    "differences": 0
+  },
+  "recovery": {
+    "before": "pending",
+    "after": "done",
+    "completed": true
+  },
+  "json_headers": {
+    "cases": 41,
+    "shapes": 11,
+    "differences": 0,
+    "rails": "8.1.4",
+    "ruby": "4.0.7"
+  },
+  "omission_80_84": {
+    "check_exit": 0,
+    "emit_exit": 0,
+    "native_build_exit": 0,
+    "room_integer_errors": 1,
+    "no_full_gate": true
+  },
+  "server_sha256": "d41fa6df14e7476b54d022b557490e41f5efd4a3bf84a58ba04de9a8937e1cdd",
+  "rbs_sidecars": 167,
+  "accepted_executions": [
+    "final-build-01",
+    "final-gate-01",
+    "final-common-01",
+    "final-edge-01",
+    "final-recovery-01",
+    "final-synthetic-01",
+    "rails-header-checks-04",
+    "artifacts-02",
+    "omit-80-84-build-02",
+    "omit-80-84-check-02",
+    "omit-80-84-app-build-01",
+    "omit-80-84-live-02"
+  ],
+  "known_limit": "Malformed JSON remains HTML 400 natively versus JSON 400 on Rails; v14 already records the HTML body.",
+  "cleanup": true,
+  "host_build_folders_absent": true
+}

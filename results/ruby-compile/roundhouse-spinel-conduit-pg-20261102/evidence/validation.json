@@ -1,0 +1,119 @@
+[
+  {
+    "label": "final-gate-01",
+    "command": [
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/reproduce/run-gate.sh",
+      "compiled",
+      "4503"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/final",
+    "started": "2026-11-02T20:39:05.599575+00:00",
+    "finished": "2026-11-02T20:41:28.710815+00:00",
+    "elapsed_seconds": 143.11,
+    "exit": 0,
+    "log": "evidence/execution/final-gate-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/suite.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "final-common-01",
+    "command": [
+      "/opt/homebrew/opt/python@3.12/bin/python3.12",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/reproduce/run-common-probe.py",
+      "rails",
+      "conduit-v15-app:compiled",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/evidence/final-common-http.json"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/final",
+    "started": "2026-11-02T20:41:28.741150+00:00",
+    "finished": "2026-11-02T20:41:39.457689+00:00",
+    "elapsed_seconds": 10.716,
+    "exit": 0,
+    "log": "evidence/execution/final-common-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/suite.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "final-edge-01",
+    "command": [
+      "/opt/homebrew/opt/python@3.12/bin/python3.12",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/evidence/edge/edge_diff.py",
+      "run",
+      "conduit-v15-app:compiled",
+      "4503",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/evidence/edge/final.json"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/final",
+    "started": "2026-11-02T20:41:39.486283+00:00",
+    "finished": "2026-11-02T20:42:01.567836+00:00",
+    "elapsed_seconds": 22.081,
+    "exit": 0,
+    "log": "evidence/execution/final-edge-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/suite.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "final-recovery-01",
+    "command": [
+      "/opt/homebrew/opt/python@3.12/bin/python3.12",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/evidence/recovery/probe.py",
+      "final",
+      "conduit-v15-app:compiled",
+      "done"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/final",
+    "started": "2026-11-02T20:42:01.595887+00:00",
+    "finished": "2026-11-02T20:42:05.443775+00:00",
+    "elapsed_seconds": 3.848,
+    "exit": 0,
+    "log": "evidence/execution/final-recovery-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/suite.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "final-headers-01",
+    "command": [
+      "/opt/homebrew/opt/python@3.12/bin/python3.12",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/header-probe.py",
+      "compiled",
+      "conduit-v15-app:compiled"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/final",
+    "started": "2026-11-02T20:42:05.474906+00:00",
+    "finished": "2026-11-02T20:42:09.201031+00:00",
+    "elapsed_seconds": 3.726,
+    "exit": 1,
+    "log": "evidence/execution/final-headers-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/suite.lock (shared slot)"
+    ]
+  },
+  {
+    "label": "final-synthetic-01",
+    "command": [
+      "/opt/homebrew/opt/python@3.12/bin/python3.12",
+      "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/synthetic-json-header.py",
+      "final",
+      "application/json; charset=utf-8"
+    ],
+    "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/final",
+    "started": "2026-11-02T20:42:09.231570+00:00",
+    "finished": "2026-11-02T20:42:44.718966+00:00",
+    "elapsed_seconds": 35.486,
+    "exit": 0,
+    "log": "evidence/execution/final-synthetic-01.log",
+    "locks": [
+      ".work/lane-docker.lock (exclusive)",
+      ".work/compile-program/suite.lock (shared slot)"
+    ]
+  }
+]

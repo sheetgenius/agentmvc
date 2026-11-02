@@ -1,0 +1,14 @@
+{
+  "roundhouse": "71e32fe7096717c95347e966b332ab130f474f75",
+  "spinel": "b570999724ea9249fb91654bcef704fc9e20fdbc",
+  "source_tree": "4ae0e361d7c918233e87517edc19ccfb864c15bb",
+  "patches": [
+    "20-raw-websocket.patch",
+    "30-jobs-boot.patch",
+    "50-postgresql-lane.patch",
+    "74-integer-query-range.patch"
+  ],
+  "patch_count": 4,
+  "toolchain_tag": "conduit-v15-toolchain:omit-80-84",
+  "purpose": "Roundhouse check/emission only; no native app or full gate"
+}

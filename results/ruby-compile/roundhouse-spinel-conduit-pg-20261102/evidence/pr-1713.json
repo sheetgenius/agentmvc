@@ -1,0 +1,139 @@
+{
+  "files": [
+    {
+      "path": "runtime/spinel/action_controller_head.rbs",
+      "additions": 2,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "runtime/spinel/action_controller_render.rb",
+      "additions": 33,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "runtime/spinel/scaffold/boot.rb",
+      "additions": 1,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "runtime/spinel/scaffold/ruby_overlay/boot.rb",
+      "additions": 1,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/css_erb_views.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/css_format_agnostic_fallback.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/emit_and_run.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/primary_key_casting.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/render_json_encoder_spinel.rs",
+      "additions": 17,
+      "deletions": 11,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/render_json_primitives.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/response_content_type.rs",
+      "additions": 46,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "tests/route_path_decoding.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/spinel_toolchain.rs",
+      "additions": 4,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/spinel_toolchain/response_content_type.rs",
+      "additions": 109,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "tests/support/active_model_serializer.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/support/representable_decorator.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/support/response_content_type.rs",
+      "additions": 48,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "tests/support/response_content_type/controller.rb",
+      "additions": 113,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "tests/support/response_content_type/expected.json",
+      "additions": 167,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "tests/support/response_content_type/oracle.rb",
+      "additions": 16,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "tests/support/response_content_type/program.rb",
+      "additions": 70,
+      "deletions": 0,
+      "changeType": "ADDED"
+    }
+  ],
+  "headRefOid": "1aa263659969b08d517cbbd39a09acd77ae7ee2b",
+  "mergeCommit": {
+    "oid": "71e32fe7096717c95347e966b332ab130f474f75"
+  },
+  "mergedAt": "2026-11-02T20:28:14Z",
+  "number": 1713,
+  "state": "MERGED",
+  "title": "Render keeps the response charset when it sets a content type",
+  "url": "https://github.com/roundhouse-rb/roundhouse/pull/1713"
+}

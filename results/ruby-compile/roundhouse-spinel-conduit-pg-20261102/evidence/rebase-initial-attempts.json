@@ -1,0 +1,57 @@
+[
+  {
+    "patch": "20-raw-websocket.patch",
+    "before_tree": "5101c4e50e86a6c26b707dfaadfca1966545e8fb",
+    "direct_check_exit": 1,
+    "direct_check_stderr": "error: patch failed: runtime/spinel/tep/net.rb:187\nerror: runtime/spinel/tep/net.rb: patch does not apply\nerror: patch failed: runtime/spinel/tep/server_threaded.rb:307\nerror: runtime/spinel/tep/server_threaded.rb: patch does not apply\nerror: patch failed: runtime/spinel/tep/websocket/connection.rb:63\nerror: runtime/spinel/tep/websocket/connection.rb: patch does not apply\nerror: patch failed: runtime/spinel/tep/websocket/driver.rb:35\nerror: runtime/spinel/tep/websocket/driver.rb: patch does not apply\n",
+    "apply_exit": 1,
+    "apply_stderr": "Falling back to direct application...\nApplied patch to 'runtime/spinel/scaffold/boot.rb' cleanly.\nApplied patch to 'runtime/spinel/scaffold/main.rb' cleanly.\nApplied patch to 'runtime/spinel/tep/net.rb' with conflicts.\nApplied patch to 'runtime/spinel/tep/server_threaded.rb' with conflicts.\nApplied patch to 'runtime/spinel/tep/websocket/connection.rb' with conflicts.\nApplied patch to 'runtime/spinel/tep/websocket/driver.rb' with conflicts.\nFalling back to direct application...\nFalling back to direct application...\nU runtime/spinel/tep/net.rb\nU runtime/spinel/tep/server_threaded.rb\nU runtime/spinel/tep/websocket/connection.rb\nU runtime/spinel/tep/websocket/driver.rb\n",
+    "resolution": "manual context rebase; see evidence/rebase-notes.txt",
+    "after_tree": "d12ddb9e680a9b30277d3096e34ca6477681aa26"
+  },
+  {
+    "patch": "30-jobs-boot.patch",
+    "before_tree": "d12ddb9e680a9b30277d3096e34ca6477681aa26",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "11752f734a8a7ccd7e809e1162084a2d9f20f4ec"
+  },
+  {
+    "patch": "50-postgresql-lane.patch",
+    "before_tree": "11752f734a8a7ccd7e809e1162084a2d9f20f4ec",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "7cc5c1b749d5570de04577dd3449cb40fe8b4d4f"
+  },
+  {
+    "patch": "74-integer-query-range.patch",
+    "before_tree": "7cc5c1b749d5570de04577dd3449cb40fe8b4d4f",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "c09ffe9df00ca3cd7def3a6b120d55ed11a5e7c7"
+  },
+  {
+    "patch": "80-gradual-return-stabilization.patch",
+    "before_tree": "c09ffe9df00ca3cd7def3a6b120d55ed11a5e7c7",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "a35a268718cec62817c634108c90de6574f2c239"
+  },
+  {
+    "patch": "84-upstream-regression-mixed-parameter-arm.patch",
+    "before_tree": "a35a268718cec62817c634108c90de6574f2c239",
+    "direct_check_exit": 0,
+    "direct_check_stderr": "",
+    "apply_exit": 0,
+    "apply_stderr": "",
+    "after_tree": "195156210d9077a025b0c5686e7bdc6a1d44fdc9"
+  }
+]

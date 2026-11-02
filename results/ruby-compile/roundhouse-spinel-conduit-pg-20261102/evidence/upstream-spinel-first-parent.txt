@@ -1,0 +1,115 @@
+b570999724ea9249fb91654bcef704fc9e20fdbc	A class a reopened Object's body makes is named as a top-level one
+87f6c8ca11a2a41c98328dcc69211c9c36c2d506	The load record holds a reopened Object's constants as the top level's
+6cb3e7be31409a1cca5f5a712c31cf3bf22d445d	A constant path holding a class value constructs it as its bare name does
+38c63ad45e8fd5ae99dfcbf771c675a8bdd5e367	record_object_const_main's load record lists the blocks it places
+13e89402503403eb1a8e25b7904859c0ecc92d21	A super a hook makes to the core hook evaluates its arguments
+2f3c980281b2694439999a19ffcd5f1e13deebe7	Merge PR #10775: A walk ending a branch of a statement if, unless or case narrows its Array
+bb762fcfdca7de2842f4ce36be30b3cb16483eaa	Merge PR #10774: The load record gives a constant written through Object the owner `::Y = v` has
+2bdfedfd96f8cac5ff350b6b6475c87bb3d7b0b1	Merge PR #10773: A class value assigned to a constant target of a multiple assignment takes the constant's name
+bd2a0a621ce2ac4e7cbf17a0759461305d3de912	Merge PR #10772: method_undefined and singleton_method_undefined fire where CRuby fires them
+788b8ff6543afb855f775454bdea31cf2039ccc6	Merge PR #10771: method_added and singleton_method_added fire where CRuby fires them
+06688bdd576d3ec3c347a6943ffbdd6c06122232	Merge PR #10770: An inherited hook fires where CRuby fires it: as each class is made
+33fb90d914aa150de333721485433d386e3491f3	An RBS `self` in a top-level builtin maps to that builtin's kind
+94288ce9b86d66b4d6c6f3f3a186e6ad6d3ce625	inline-rbs-test: desugared_warnings warns of a type variable Enumerable does not declare
+1311ccd95ffa25df09f5e4b0ff8867f66c86d417	gc_wb_cells numbers its temps from 1 at each unit pragma too
+7cb4e94994a3e096fbee3c66d02a18ce9021635f	NoMethodError.new with receiver: keeps its private_call? argument
+1a8f9b2228226ededdb92cf9e3cd20ece12c1ffa	A class header over a builder's class opens a constant scope of its own
+617d299660ae42102dac6c39df954095ac89f95e	Merge PR #10767: A Struct or Data member's name no longer boxes another class's ivar table of that name
+5d57f1ddfc749319f0edb84488e5a28130b6d1c2	Merge PR #10766: A class body's self is a Class value the class-value walk bounds
+b06b43583599c5732a9efe3edaad119d4d79549b	Merge PR #10765: A later class header with a superclass no longer replaces a path builder's definition
+292307a47f8071b87fbe37b375d80db76a1b5a29	Merge PR #10764: Anonymous Struct classes are found by their node, not a rebuilt name
+c84a67d29c96a58bc2c4f83856c624be000893f0	Merge PR #10763: Every build numbers each segment's write-barrier temps from 1
+172cc08f27399a8816305c6d6a2f9f0c5ab165c2	Merge PR #10762: An arm that raises adds no nil to an Integer value
+5a7367fbcdf136cf374b8bc6ed208949d385f744	Merge PR #10761: A boxed value's Class answers const_defined? and its class variables
+ced74b5a43b722bf86ed6c215882eb3bf4d53fb3	Merge PR #10760: JSON.parse reads a short decimal Float with one exact division
+f242819ac0b325f059b4e4267c1dcf87625fcc60	Merge PR #10759: An inline signature's builtin type variable pins nothing and leaves the rest applied
+b381b4927176986b245fd14cd442c674bf4d12a0	class_is_prim_reopen keeps its answer per class
+8b9f4c091256afdd802aac939ac3dcd0e8712973	wb_field_is_ref_in asks only the holder's class when it is known
+43b96a99bff26267c87a27a2dade4684906cc349	dispatch_impl_count walks the class and its descendants, not every class
+ba60a8b03fb76fe368133c0f48301eec0c871ddb	poly_specials0 keeps its candidate counts per name
+d62efcfd85f2feb379ba152851033086e7a4662d	share_name_targets looks the name up through the reader set and the by-name scope index
+045d30a2d3b05e8f02400a8c8d51b746de4d65c5	comp_subclass_answers walks the class's descendants, not every class
+cd0740538517f2603d04a9a328062cc2912b7536	rbs-seed-scale-test: a 20 ms floor and the least of five samples
+efe2b40e09757c5d2ddf121414ddcb23812753da	A class variable reflection call with a name that is no class variable name raises NameError
+ef6defdff4865a491ee3d86acab9f08f80813b2f	An undeclared class variable read stored into a typed slot keeps its NameError
+042eab4caa837fc0e304c225766567cf716c8766	Merge PR #10758: NoMethodError from a method a run-time condition leaves undefined carries its receiver
+e78ac8bfff002fa8993d5e45f386e86e991984ef	Merge PR #10757: An inline signature on a def a desugar moves gets one warning, naming the method as written
+c5b87bb28c5b8ec5cf752abf857c0ae2bb66c3e0	Merge PR #10756: An RBS `self` in a class's instance method is that class, and `top` in a type argument is any value
+017a9031e1876c4140af5bb97aec8a5de3c0bca7	Merge PR #10755: Index extended module names once for desugar_extended_module_attrs
+421898b3baf3f3be83f5ddcf844173549b60e450	Merge PR #10754: An array literal's empty keyword splat adds no element
+ed2448611c9721a349b741eb8c1389b16e62e928	Merge PR #10753: A boxed value's Class lists the instance methods its class lists
+1b2e3cdecf719db44f9fa31c13361893bb7493e0	Merge PR #10752: A Class emitter can be told which class its receiver names
+e380e31789f14776d2a26f116cd3feb94a91ff08	Merge PR #10750: A class variable in a Struct.new, Data.define, Class.new or Module.new block belongs to the enclosing class
+f81895331edb398b9aedb62202b5a5015971dbfc	Merge PR #10749: Instance-method-list chains ask is_instance_method_list
+b1ef358e777054cb7edb999f3f8df108bbff1456	Merge PR #10748: Look up --rbs signatures through the scope and declaration indexes
+5765f71df01b70f9d76fb8af9967f14d051caea5	A block run by a reopened Array or Hash yielding method takes its parameters from its yields
+341065607f9dc12dd69722a68c89e84016892e75	The call plan binds a block call on an Array or Hash to the reopened method it runs
+0c4519e7bae8b5993ac5162ba0a3b996773ae6bc	recv.method(:m) with no such method raises NameError naming the class
+d3153aa6628b27cbe014e44adf0fdb3caefdcf9a	The builtin receiver's comparison raise goes ahead of the operand arms
+b0dd2ee73afcaf9c605517e20e5893aa2adb806a	Merge PR #10747: A comparison on a builtin receiver with no such operator raises NoMethodError
+ef2ab9c546fb2410365d66c08db4e680bb81ca2a	A NilClass yielding method's receiver runs before the arguments
+fd7d402ef15af92fee4def099922b9013d68a1cd	A reopened scalar's yielding method counts only a known container, and refuses it
+a97806238590d008ffa22b84e5c2f5c636b0a36d	Merge PR #10746: A scalar reopening's yielding method is called through its proc form, with a block or without one
+c6520a67f54e41df8af1d9e55fbf478cc395bf39	Merge PR #10744: A NilClass method that yields is called on nil with the call's block
+7281762fb4947e244f7f194a5a38fe7e6a6cba22	Merge PR #10743: Keep the ... forwarding workspace off the C stack
+cc7fbd28d7ee4619eb26e24b8d00d679e1d88cee	A class method === with a keyword is not the one case arms call
+ccb15ad9e0b001cb4b1965295b581e8c62b92009	A when or in arm binds the case subject as its class method ===' argument
+e80f7f73269931632c2d86324f21fe1baa483056	Merge PR #10741: A class's own class method === answers Klass === x, when, in and grep
+c4801fd382be53ff6abb3610694fe3e7a78cc86b	Merge PR #10742: A class's respond_to? asked before its class method's def answers false
+40004da99326f63b5bf548740807d9130301910c	A lazy chain whose method the program defines is not known to run later
+2ee1280b49939a540473de2777e58ec48516eb0c	record_handle_attr_main's load record names its blocks
+7117eb432cd158111f4e0c0390447e81bfa1319e	Merge PR #10740: The load record tells which blocks run later and which run at once for certain
+290be8e53a471bcb17e03b7abf9290ab8f739625	Merge PR #10739: Thread.attr_accessor defines its methods where the declaration stands
+a431c20b19f75a1848ac2927a5c5df4c1c182a08	A require path with '#' is written back in single quotes
+47c2ee6f79a1a47156998ea40dd310a2864ed63b	emit_step_boxed_limit passes its format as many temps as it names
+2883b07e66722d776a60f77ae3955222ed9c7942	Merge PR #10727: An Integer's step with a boxed Float limit or step walks Floats
+65a195bb3a26af8f96b6bb6c54f57ead33625577	The reference Ruby is 4.0.9: a line read's limit cuts wherever it falls
+6d17e273d5d74afdd65054387ddf37ce37eda2d0	Merge PR #10738: A define_singleton_method on a method's parameter no longer defines a method of main
+fd1f81eea688d2d96be63f1cacafb7754bc0b07f	Merge PR #10737: A path write's Class.new or Module.new block stays the class's frame at the write
+eb5216499ddaee159216ae9356abc1e8839c77ec	Merge PR #10736: The class definition accessors take a constant path write as a builder
+52808c9c2bf091babd5d53bbb36748ec0f003bf5	A super with a literal block answers it through a parent that hands the block on
+711c13241e307ed061e023dfb20ba9e8ae0262b7	Merge PR #10735: A constant written Array.new(n) { Obj.new } is built at its object-table kind
+6b056abcd82c14d7d1c844cc8cb707d3ff97fb96	Merge PR #10732: super(&s) sends every value the parent yields, after the arguments run
+3496fd984b036d1e6e1ae0d37e93b96618eedacc	A boxed Rational keeps the written name of its detect under promote
+14583c0e2ed588b292c2eaa2abbde17bc7437828	Merge PR #10733: A detect on an Integer or a String is looked up by its own name
+78e4bc64f6bcab61cda5ef26722fe86234e81575	concat raises TypeError for a nil in an object operand's slot
+1d56e822f28d4dfb34ec377b035c125407bc341b	Merge PR #10734: Array#concat: builtin dispatch before a reopening, boxed receivers and to_ary overrides
+5713e7c726d9119215077ab14b98429994ee5d77	A write prepended to a body no longer takes a def's node number
+63bd7e89dbfe724d59a3c03efdd8d28952775677	Merge PR #10731: A builder block's parameter reassigned in the body is a local of its own
+ef0b659de6a22582d776b346cd5d8a86cedd5103	List the by-name lookups the route audit found unlisted on master
+a7625192c0d2bf4a636dbab46d2960e27ccb8ce0	The frozen test of a Hash slot's ||= writes its right side once
+0ed9c8c1563564498abb7690f2b4865170f2a1de	Merge PR #10730: h[k] ||= v and h[k] &&= v on a frozen Hash raise FrozenError
+ee0bfce1a13a1ad31b261f92c06b0a1af235b91e	Merge PR #10729: A method copy carries the define_method loop substitution
+6d14882e51561f4c420e68f1c3845ed2bd0266fc	Merge PR #10728: A constant builder's block parameter is the class it defines
+b07c0bd4f6835e37b2bf51e166e2a26fa059ecf9	Integer#pow with the modulus -2**63 keeps its residues unsigned
+f2b6c51cfd6ae80d40ef52869f39143fa3219519	class_lacks_kernel sees an include Kernel inside an included module
+fc3e3d6de6d9f0547a01aa2de2070fb48d82aba7	A super's Object fallback stops under a chain rooted in another builtin
+5bd22ab933c53b6b600491c0e8f2d54bc2f1da4b	Merge PR #10723: super in inspect and to_s looks past the superclass chain
+246d44c27c0fe7f8ddad90616940c3f68445b160	Merge PR #10722: A Struct.new or Data.define call is recognized by one accessor in the analysis layer
+f218ecdf593e0baa448a4e607e919138949786da	Merge PR #10721: A keyword argument or double splat that acts runs ahead of the hoisted lookup
+602849ba8ff27057ac2b28ebe2ee68e32a872abe	Merge PR #10720: The loops that look for a module by its definition meet module definitions only
+56d94e0fbe80ebc7a49c33cb3caaab7080fb1588	A boxed Array returned through Array[untyped] keeps its elements
+6c330151b5df8a134d0d18df18f6cee29dec298d	A gsub or sub with a block keeps its subject once, not per match
+d4b5d62da34420af0b505168f4044c3cb9d5af55	Merge PR #10718: A hoisted lookup follows a receiver local that an argument rebinds
+e53c546232860cc4cd1ab66e658ba3703b2792b9	Merge PR #10717: A constant's Class.new or Module.new block stays the class's frame at the write
+3732f51dc1d45a7ab6970fe3bf6003673de62456	--gc=none links a runtime archive built without the collector's bookkeeping
+79dd40b60b43b1c398ea4aeffd2d25d35f9c7386	Merge PR #10716: A list of methods beside if/else defs is decided by its receiver's chain
+13e8d9247df76db33bbcebd281e51e9b12edde6c	Merge PR #10715: A `top` or `boolish` slot leaves the rest of an inline signature applied
+a76a8df5dac8948f1eb1e56ae6a2147ecda4f895	An element's attribute reader is a read of the element, not a kill by name
+eb08037d0fb4d3bab214f3f274eedc2019014f0a	Merge PR #10714: A Method lookup is re-read per element only when nothing the block runs can change its operands
+b2831cbbe1c34b71976d689050a8b4e88dafd768	Merge PR #10713: The class_eval graft and the class-body macro form decline a line argument with a block, a redefined Integer#+ and an earlier redefinition of a method they relied on
+2f08df7eb85d82a36ecebb047009362f40dc6634	Merge PR #10712: The passes iterate a class's definitions through class_def_kinds and name it through class_def_name
+11a22991805a214f8554fd99ece4d7deeac2fd91	Merge PR #10711: An inline signature types optional, rest and trailing positionals
+bb3e385ec2db4ab78bee6d54f960757d4e08d00e	A box narrowed into a seeded scalar or object slot is checked in every build
+9c647386fb13937c4ef2568fe66a3bfc2a7a6563	A boxed Proc renders as a Proc, and a curried one as its target's kind
+d203123d12077ec7bfc432d763c2b67b0cff35e3	Merge PR #10709: A class's definition node is read through class_def_* accessors that say whether it opens a frame or a cref
+c484f754922ff8c934d2dc491c6f30b572e3dd86	A list of methods is refused for a dispatcher of any number of arms
+286975bba2133a337e92d0b5061ae1b7b5137e5a	Merge PR #10708: A list of methods is refused on a receiver whose chain holds a method a run-time condition defines
+7d78602ff2862844c9e8d798d08e7224ef616e93	Merge PR #10707: A macro local that copies another's String reads that local
+922c88e70e71ef43e10b93f2eee745219b22b4a0	Merge PR #10706: Pathname#children and #each_child accept with_directory
+08d75adb3ac8251837bafb31726feeac7646fb58	Merge PR #10705: The scope walk opens a header's class through one load-record function
+9d82459966889367116a635947defce2d5a1ecfa	Merge PR #10704: A constant path is placed in the plan's frame before it is resolved
+e174102aba2937d7b80001f6aa8b966dc263842f	Merge PR #10703: A NilClass method called on nil gets the call's block in its block parameter
+e0279d16f8b2aed919b9326ff76a98e8051377d9	Merge PR #10702: An empty {} an index op-write stores through a box is the boxed-key hash
+b36f43d4729417d2ed9c3bf9a25382130e3324f7	Merge PR #10701: param_supplied_anywhere walks the calls of the names that can supply the parameter
+1b30ab8402179558a023e0cb7ad5e6c4c79c6a21	--gc=none registers no roots in the emitted program

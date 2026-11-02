@@ -1,0 +1,16 @@
+class LiveRooms
+  class Room
+    attr_reader lock: Mutex?
+    attr_writer lock: untyped
+    attr_reader members: Hash[untyped, untyped]?
+    attr_writer members: untyped
+    def initialize: (?untyped lock, ?untyped members) -> untyped
+  end
+  def self.room: (String id) -> untyped
+  def self.join: (ArticleShare share, Faye::WebSocket socket) -> Symbol?
+  def self.leave: (Symbol? room, Faye::WebSocket socket) -> untyped
+  def self.updated: (Article? article) -> Array[String]
+  def self.revoked: (Array[String]? ids) -> Array[String]
+  def self.broadcast: (Symbol room, Hash[Symbol, untyped] message) -> untyped
+  def self.send_json: (Faye::WebSocket socket, Hash[Symbol, untyped] message) -> untyped
+end

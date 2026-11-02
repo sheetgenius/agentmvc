@@ -1,0 +1,18 @@
+Migrating to CreateGoodJobs (20260929000000)
+== 20260929000000 CreateGoodJobs: migrating ===================================
+-- create_table(:good_jobs, {id: :uuid})
+bin/rails aborted!
+StandardError: An error has occurred, this and all later migrations canceled: (StandardError)
+
+PG::DuplicateTable: ERROR:  relation "good_jobs" already exists
+/rails/db/migrate/20260929000000_create_good_jobs.rb:8:in 'CreateGoodJobs#change'
+
+Caused by:
+ActiveRecord::StatementInvalid: PG::DuplicateTable: ERROR:  relation "good_jobs" already exists (ActiveRecord::StatementInvalid)
+/rails/db/migrate/20260929000000_create_good_jobs.rb:8:in 'CreateGoodJobs#change'
+
+Caused by:
+PG::DuplicateTable: ERROR:  relation "good_jobs" already exists (PG::DuplicateTable)
+/rails/db/migrate/20260929000000_create_good_jobs.rb:8:in 'CreateGoodJobs#change'
+Tasks: TOP => db:prepare
+(See full trace by running task with --trace)

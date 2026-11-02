@@ -1,0 +1,611 @@
+{
+  "files": [
+    {
+      "path": "scripts/ci-plan.py",
+      "additions": 9,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/block_refine.rs",
+      "additions": 17,
+      "deletions": 5,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/body/block_exit.rs",
+      "additions": 381,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "src/analyze/body/hash_defaults.rs",
+      "additions": 161,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "src/analyze/body/lambda_local.rs",
+      "additions": 32,
+      "deletions": 6,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/body/mod.rs",
+      "additions": 457,
+      "deletions": 83,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/body/narrowing.rs",
+      "additions": 13,
+      "deletions": 5,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/body/pagy.rs",
+      "additions": 6,
+      "deletions": 6,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/body/send.rs",
+      "additions": 430,
+      "deletions": 122,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/class_configuration.rs",
+      "additions": 3,
+      "deletions": 3,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/data.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/diagnostics.rs",
+      "additions": 86,
+      "deletions": 9,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/dirty_retype.rs",
+      "additions": 14,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/fixpoint_bound.rs",
+      "additions": 4,
+      "deletions": 4,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/fixpoint_check.rs",
+      "additions": 23,
+      "deletions": 4,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/graphql.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/harvest_return.rs",
+      "additions": 162,
+      "deletions": 31,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/indifferent.rs",
+      "additions": 9,
+      "deletions": 9,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/mod.rs",
+      "additions": 390,
+      "deletions": 128,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/registry/activemodel.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/registry/ar.rs",
+      "additions": 21,
+      "deletions": 21,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/registry/controllers.rs",
+      "additions": 25,
+      "deletions": 25,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/registry/gem_boundary.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/registry/library.rs",
+      "additions": 70,
+      "deletions": 3,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/registry/stdlib.rs",
+      "additions": 98,
+      "deletions": 98,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/registry/view.rs",
+      "additions": 4,
+      "deletions": 4,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/render.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/test_module.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/catalog/gems.rs",
+      "additions": 27,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/dialect.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/crystal/library.rs",
+      "additions": 4,
+      "deletions": 4,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/crystal/ty.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/csharp/expr.rs",
+      "additions": 3,
+      "deletions": 3,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/csharp/library.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/csharp/ty.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/elixir.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/elixir/expr.rs",
+      "additions": 35,
+      "deletions": 35,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/fractal/region.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/futamura/routes.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/go/expr.rs",
+      "additions": 5,
+      "deletions": 5,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/go/library.rs",
+      "additions": 5,
+      "deletions": 5,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/go/ty.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/kotlin/expr.rs",
+      "additions": 8,
+      "deletions": 8,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/kotlin/library.rs",
+      "additions": 4,
+      "deletions": 4,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/kotlin/ty.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/python/library.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/python/ty.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/ruby.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/ruby/expr.rs",
+      "additions": 80,
+      "deletions": 46,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/ruby/library.rs",
+      "additions": 11,
+      "deletions": 11,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/ruby/rbs.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/rust.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/rust/expr/control.rs",
+      "additions": 3,
+      "deletions": 3,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/rust/expr/literal.rs",
+      "additions": 3,
+      "deletions": 3,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/rust/expr/mod.rs",
+      "additions": 5,
+      "deletions": 5,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/rust/expr/send/coerce.rs",
+      "additions": 5,
+      "deletions": 5,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/rust/expr/send/dispatch.rs",
+      "additions": 3,
+      "deletions": 3,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/rust/expr/send/index.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/rust/expr/send/mod.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/rust/expr/util.rs",
+      "additions": 4,
+      "deletions": 4,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/rust/library.rs",
+      "additions": 10,
+      "deletions": 10,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/rust/method.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/rust/ty.rs",
+      "additions": 3,
+      "deletions": 3,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/shared/add.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/shared/operand.rs",
+      "additions": 4,
+      "deletions": 4,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/swift/expr.rs",
+      "additions": 3,
+      "deletions": 3,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/swift/library.rs",
+      "additions": 6,
+      "deletions": 6,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/swift/ty.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/typescript.rs",
+      "additions": 3,
+      "deletions": 3,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/typescript/expr.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/emit/typescript/ty.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/expr.rs",
+      "additions": 53,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ide.rs",
+      "additions": 8,
+      "deletions": 8,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ingest/app.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ingest/controller.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ingest/expr.rs",
+      "additions": 20,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ingest/graphql_ruby.rs",
+      "additions": 8,
+      "deletions": 8,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ingest/model.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ingest/rbi.rs",
+      "additions": 8,
+      "deletions": 8,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ingest/sorbet_sig.rs",
+      "additions": 9,
+      "deletions": 9,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ingest/type_ascription.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/as_json_poro.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/as_json_writer.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/assoc_loaded.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/attached.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/blank.rs",
+      "additions": 8,
+      "deletions": 8,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/column_slot.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/config_reader.rs",
+      "additions": 3,
+      "deletions": 3,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/controller_to_library/inertia.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/controller_to_library/mod.rs",
+      "additions": 12,
+      "deletions": 12,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/controller_to_library/params.rs",
+      "additions": 5,
+      "deletions": 5,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/controller_to_library/rewrites.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/controller_to_library/typed_update.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/default_scope.rs",
+      "additions": 5,
+      "deletions": 5,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/duration.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/enumerable_ext.rs",
+      "additions": 15,
+      "deletions": 15,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/fixture_to_library/mod.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/functionalize/mod.rs",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/functionalize/while_to_recursion.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/lower/generates_token_for.rs",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    }
+  ],
+  "headRefOid": "20c8a405f195f17195839955e054bae086b29686",
+  "mergeCommit": null,
+  "mergedAt": null,
+  "number": 1011,
+  "state": "OPEN",
+  "title": "Keep gradual returns through stabilization (#964)",
+  "url": "https://github.com/roundhouse-rb/roundhouse/pull/1011"
+}

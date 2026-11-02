@@ -1,0 +1,19 @@
+{
+  "image": "conduit-v15-app:omit-80-84",
+  "condition": "one authenticated WebSocket subscription; four-patch series; no full gate",
+  "seed_statuses": [
+    201,
+    201,
+    201
+  ],
+  "messages": [
+    "ready"
+  ],
+  "image_id": "sha256:e437919b5808e90194630a4cd717f9f58dfd42e65cf17294f22d4449b443c6cd",
+  "upgrade_status": 101,
+  "probe_error": "EOFError: WebSocket closed",
+  "room_integer_errors": 1,
+  "type_error_count": 1,
+  "expected_failure_reproduced": true,
+  "server_sha256": "72e5e82d145b0b1b785f09aa416e6fb11ce428746a6cf2416013cef1aa773b3a"
+}

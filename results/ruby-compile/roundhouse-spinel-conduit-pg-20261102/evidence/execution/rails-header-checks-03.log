@@ -1,0 +1,8 @@
+Waiting for shared Docker lock: .work/lane-docker.lock
+Traceback (most recent call last):
+  File "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/rails-checks.py", line 27, in <module>
+    p=docker('run','--rm','--name','conduit-v15-rails-synthetic-'+defaults,
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/rails-checks.py", line 15, in docker
+    raise RuntimeError('Rails oracle Docker exit '+str(p.returncode))
+RuntimeError: Rails oracle Docker exit 1

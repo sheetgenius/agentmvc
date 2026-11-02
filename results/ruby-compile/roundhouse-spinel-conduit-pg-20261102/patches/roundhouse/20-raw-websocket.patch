@@ -1,0 +1,335 @@
+diff --git a/runtime/spinel/faye_websocket.rb b/runtime/spinel/faye_websocket.rb
+new file mode 100644
+index 000000000..bb09e450c
+--- /dev/null
++++ b/runtime/spinel/faye_websocket.rb
+@@ -0,0 +1,117 @@
++# frozen_string_literal: true
++
++# The raw Faye subset over tep's RFC6455 transport. There is no reactor:
++# native Driver writes are serialized and schedule runs on the caller.
++module EventMachine
++  def self.schedule
++    yield
++  end
++end
++
++module Faye
++  class WebSocket
++    class Callback < Tep::WebSocket::Handler
++      def initialize(&callback)
++        @callback = callback
++      end
++
++      def handle_event(event)
++        # The upgrade request's lease ends before the frame loop starts.
++        Db.with_connection { @callback.call(event) }
++        0
++      end
++    end
++
++    # Lifecycle handlers remain installed even when an app registers its
++    # own open/close callbacks, so heartbeat threads always get stopped.
++    class Lifecycle < Tep::WebSocket::Handler
++      def initialize(socket, opening)
++        @socket = socket
++        @opening = opening
++      end
++
++      def handle_event(event)
++        if @opening
++          @socket.opened(event)
++        else
++          @socket.closed(event)
++        end
++        0
++      end
++    end
++
++    def self.request_from_env(env)
++      req = Tep::Request.new
++      req.verb = env["REQUEST_METHOD"].to_s
++      req.req_headers["upgrade"] = env["HTTP_UPGRADE"].to_s
++      req.req_headers["connection"] = env["HTTP_CONNECTION"].to_s
++      req.req_headers["sec-websocket-version"] = env["HTTP_SEC_WEBSOCKET_VERSION"].to_s
++      req.req_headers["sec-websocket-key"] = env["HTTP_SEC_WEBSOCKET_KEY"].to_s
++      req.req_headers["sec-websocket-protocol"] = env["HTTP_SEC_WEBSOCKET_PROTOCOL"].to_s
++      req
++    end
++
++    def self.websocket?(env)
++      Tep::WebSocket::Handshake.check(request_from_env(env)).valid
++    end
++
++    attr_reader :driver, :accept_key
++
++    def initialize(env, protocols = nil, ping: 30)
++      @env = env
++      @accept_key = Tep::WebSocket::Handshake.check(WebSocket.request_from_env(env)).accept_key
++      @driver = Tep::WebSocket::Driver.new(-1)
++      @ping_interval = ping
++      @ping_threads = []
++      @on_open = Tep::WebSocket::Handler.new
++      @on_close = Tep::WebSocket::Handler.new
++      @driver.set_on_open(Lifecycle.new(self, true))
++      @driver.set_on_close(Lifecycle.new(self, false))
++    end
++
++    def on(type, &callback)
++      handler = Callback.new(&callback)
++      case type
++      when :message then @driver.set_on_message(handler)
++      when :close then @on_close = handler
++      when :open then @on_open = handler
++      else raise ArgumentError, "unsupported WebSocket event"
++      end
++      self
++    end
++
++    def opened(event)
++      if @ping_interval > 0
++        timer = Thread.new(@driver, @ping_interval) do |driver, interval|
++          loop do
++            sleep interval
++            break if driver.ping("") < 0
++          end
++        end
++        @ping_threads.push(timer)
++      end
++      @on_open.handle_event(event)
++      0
++    end
++
++    def closed(event)
++      @ping_threads.each { |timer| timer.kill }
++      @ping_threads.clear
++      @on_close.handle_event(event)
++      0
++    end
++
++    def send(data)
++      @driver.text(data)
++    end
++
++    def close
++      @driver.close(1000, "")
++    end
++
++    def rack_response
++      @env["roundhouse.websocket"] = self
++      [ -1, {}, [] ]
++    end
++  end
++end
+diff --git a/runtime/spinel/scaffold/boot.rb b/runtime/spinel/scaffold/boot.rb
+index 2fe8706e5..fba878a45 100644
+--- a/runtime/spinel/scaffold/boot.rb
++++ b/runtime/spinel/scaffold/boot.rb
+@@ -199,6 +199,7 @@ require_relative "runtime/tep/tep"
+ # Gem packages (runtime/gems/<gem>/) load right after this line, which
+ # `project::apply_gem_packages` finds: they register their hooks here.
+ require_relative "runtime/request_hooks"
++require_relative "runtime/faye_websocket"
+ # Spinel-only CGI reopen: `require "cgi"` reaches spinel's bundled package
+ # and this adds `parse`, which upstream moved to `cgi/core`. CRuby/JRuby use
+ # the stdlib. No longer needs to follow tep — the escapes were routed to
+diff --git a/runtime/spinel/scaffold/main.rb b/runtime/spinel/scaffold/main.rb
+index 9398072a6..9eea2972f 100644
+--- a/runtime/spinel/scaffold/main.rb
++++ b/runtime/spinel/scaffold/main.rb
+@@ -537,6 +537,7 @@ module Main
+     # StrStrHash and the `request_obj.env = env` assignment warns on the
+     # StrStr->StrPoly mismatch. Writing Strings into the poly field in place
+     # is a valid poly-member write and never constructs the competing hash.
++    request_obj.env["REQUEST_METHOD"] = verb
+     user_agent = req.req_headers.fetch("user-agent", "")
+     # `request.headers` follows Rails' HTTP-to-CGI env mapping. Copy all
+     # parsed headers, not just those the dispatcher itself reads: cache
+@@ -670,6 +671,12 @@ module Main
+       return
+     end
+ 
++    socket = request_obj.env["roundhouse.websocket"]
++    if socket.is_a?(Faye::WebSocket)
++      res.start_websocket(socket.accept_key, socket.driver)
++      return
++    end
++
+     # Compose `Cache-Control` from whatever `response.cache_control`
+     # holds (`expires_in`, `replace`/`merge!`/`[]=`) onto the buffered
+     # header store - a no-op unless the action or one of its filters
+diff --git a/tests/spinel_raw_websocket.rb b/tests/spinel_raw_websocket.rb
+new file mode 100644
+index 000000000..9f622b6a5
+--- /dev/null
++++ b/tests/spinel_raw_websocket.rb
+@@ -0,0 +1,146 @@
++require "socket"
++require "io/wait"
++require "digest"
++require "base64"
++require "timeout"
++ROOT = File.expand_path(ARGV.fetch(0))
++
++# Test-only POSIX and DB bindings. All framing/lifecycle/facade code is real.
++module Sock
++  def self.sphttp_write_bytes(fd, bytes, n)
++    IO.for_fd(fd, autoclose: false).syswrite(bytes.byteslice(0, n))
++  end
++  def self.sp_net_recv_some(fd, n)
++    IO.for_fd(fd, autoclose: false).readpartial(n)
++  rescue EOFError
++    ""
++  end
++end
++module TepSocketControl
++  CALLS = []
++  def self.shutdown(fd, how)
++    CALLS << fd
++    socket = Socket.for_fd(fd)
++    socket.autoclose = false
++    socket.shutdown(how)
++    0
++  end
++end
++module Crypto
++  def self.sp_crypto_websocket_accept(key)
++    Base64.strict_encode64(Digest::SHA1.digest(key + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"))
++  end
++end
++module Db
++  LEASES = []
++  def self.with_connection
++    LEASES << Thread.current
++    yield
++  end
++end
++module Tep
++  def self.str_find(s, sub, offset); s.index(sub, offset) || -1; end
++  class Request
++    attr_accessor :verb, :req_headers
++    def initialize
++      @verb = ""
++      @req_headers = Hash.new("")
++    end
++  end
++  module Broadcast
++    CLOSED = []
++    def self.unsubscribe_fd(fd); CLOSED << fd; end
++  end
++  module Presence
++    CLOSED = []
++    def self.untrack_by_fd(fd); CLOSED << fd; end
++  end
++end
++require File.join(ROOT, "runtime/spinel/tep/websocket")
++require File.join(ROOT, "runtime/spinel/faye_websocket")
++
++def check(value, label)
++  raise label unless value
++end
++class Recorder < Tep::WebSocket::Handler
++  attr_reader :events
++  def initialize; @events = []; end
++  def handle_event(event); @events << event; end
++end
++
++# A close requested by another thread must wake a parked recv, send one
++# close, run one callback and refuse every subsequent write/shutdown.
++owner, peer = Socket.pair(:UNIX, :STREAM, 0)
++driver = Tep::WebSocket::Driver.new(owner.fileno)
++recorder = Recorder.new
++driver.set_on_close(recorder)
++connection = Tep::WebSocket::Connection.new(driver, owner)
++runner = Thread.new { connection.run }
++sleep 0.03
++driver.close(1000, "test")
++check(peer.readpartial(100).getbyte(0) == 0x88, "missing close frame")
++peer.write([0x88, 0x82, 0, 0, 0, 0, 3, 232].pack("C*"))
++Timeout.timeout(1) { runner.join }
++check(recorder.events.size == 1, "close callback repeated/missing")
++check(driver.text("too late") == -1, "write after close")
++shutdowns = TepSocketControl::CALLS.size
++driver.close(1000, "again")
++check(TepSocketControl::CALLS.size == shutdowns, "shutdown after retirement")
++owner.close; peer.close
++
++# An open-time close whose bounded deadline expired must not enter wait_readable.
++class ClosingOpen < Tep::WebSocket::Handler
++  def initialize(driver); @driver = driver; end
++  def handle_event(event); @driver.close(1000, ""); @driver.expire_close; end
++end
++class NoRead
++  def wait_readable(_); raise "recv after open-time close"; end
++end
++driver = Tep::WebSocket::Driver.new(-1)
++recorder = Recorder.new
++driver.set_on_open(ClosingOpen.new(driver))
++driver.set_on_close(recorder)
++Tep::WebSocket::Connection.new(driver, NoRead.new).run
++check(recorder.events.size == 1, "open-time close callback")
++
++# A received close ends the recv loop, rather than waiting for another frame.
++owner, peer = Socket.pair(:UNIX, :STREAM, 0)
++driver = Tep::WebSocket::Driver.new(owner.fileno)
++recorder = Recorder.new
++driver.set_on_close(recorder)
++runner = Thread.new { Tep::WebSocket::Connection.new(driver, owner).run }
++peer.write([0x88, 0x82, 0, 0, 0, 0, 3, 232].pack("C*"))
++Timeout.timeout(1) { runner.join }
++check(recorder.events.size == 1, "received close callback")
++owner.close; peer.close
++
++# Handler failures still retire and release the transport registries.
++class FailingOpen < Tep::WebSocket::Handler
++  def handle_event(_); raise "handler failed"; end
++end
++driver = Tep::WebSocket::Driver.new(-1)
++driver.set_on_open(FailingOpen.new)
++begin
++  Tep::WebSocket::Connection.new(driver, NoRead.new).run
++rescue RuntimeError => e
++  check(e.message == "handler failed", "wrong exception")
++end
++check(driver.text("late") == -1, "exception did not retire")
++check(Tep::Broadcast::CLOSED.last == -1 && Tep::Presence::CLOSED.last == -1, "exception did not clean up")
++
++# Faye-shaped callback closures, the request's upgrade marker and DB leases.
++env = {"REQUEST_METHOD" => "GET", "HTTP_UPGRADE" => "websocket",
++       "HTTP_CONNECTION" => "Upgrade", "HTTP_SEC_WEBSOCKET_VERSION" => "13",
++       "HTTP_SEC_WEBSOCKET_KEY" => "dGhlIHNhbXBsZSBub25jZQ=="}
++check(Faye::WebSocket.websocket?(env), "Faye handshake")
++check(!Faye::WebSocket.websocket?({}), "non-WebSocket accepted")
++socket = Faye::WebSocket.new(env, nil, ping: 0)
++messages = []
++socket.on(:message) { |event| messages << event.data }
++Tep::WebSocket::Connection.dispatch_message(socket.driver, "raw JSON", true)
++check(messages == ["raw JSON"] && !Db::LEASES.empty?, "callback/DB lease")
++check(socket.rack_response[0] == -1 && env["roundhouse.websocket"].equal?(socket), "upgrade marker")
++ran = false
++EventMachine.schedule { ran = true }
++check(ran, "schedule did not run")
++puts "ALL OK raw WebSocket lifecycle and Faye callbacks"
+diff --git a/tests/spinel_raw_websocket.rs b/tests/spinel_raw_websocket.rs
+new file mode 100644
+index 000000000..ef1fac7b6
+--- /dev/null
++++ b/tests/spinel_raw_websocket.rs
+@@ -0,0 +1,17 @@
++//! Source-level lifecycle regressions for the Spinel transport. The native
++//! integration fixture also drives real upgrades, callbacks and room broadcasts.
++use std::path::Path;
++use std::process::Command;
++
++#[test]
++fn raw_websocket_closes_wake_and_retire_the_connection() {
++    let root = Path::new(env!("CARGO_MANIFEST_DIR"));
++    let out = Command::new("ruby")
++        .arg(root.join("tests/spinel_raw_websocket.rb"))
++        .arg(root)
++        .output()
++        .expect("ruby is on PATH");
++    assert!(out.status.success(), "stdout:\n{}\nstderr:\n{}",
++        String::from_utf8_lossy(&out.stdout), String::from_utf8_lossy(&out.stderr));
++    assert!(String::from_utf8_lossy(&out.stdout).contains("ALL OK"));
++}

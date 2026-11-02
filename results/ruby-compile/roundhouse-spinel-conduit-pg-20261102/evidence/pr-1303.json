@@ -1,0 +1,101 @@
+{
+  "files": [
+    {
+      "path": "runtime/ruby/rails.rb",
+      "additions": 24,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "runtime/ruby/rails.rbs",
+      "additions": 1,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/diagnostics.rs",
+      "additions": 47,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/analyze/registry/stdlib.rs",
+      "additions": 6,
+      "deletions": 4,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/app.rs",
+      "additions": 10,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ingest/after_initialize.rs",
+      "additions": 605,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "src/ingest/app.rs",
+      "additions": 11,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ingest/initializer_ledger.rs",
+      "additions": 24,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ingest/mod.rs",
+      "additions": 1,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/ingest/source_gems.rs",
+      "additions": 2,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "src/project.rs",
+      "additions": 44,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/emit_and_run.rs",
+      "additions": 2,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/emit_and_run/after_initialize.rs",
+      "additions": 348,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "tests/initializer_ledger.rs",
+      "additions": 20,
+      "deletions": 7,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "tests/roundtrip.rs",
+      "additions": 1,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    }
+  ],
+  "headRefOid": "8e32f01b909a3e079f4f1acdec91d89e26719ebb",
+  "mergeCommit": null,
+  "mergedAt": null,
+  "number": 1303,
+  "state": "OPEN",
+  "title": "after_initialize callbacks run at boot, their bodies analyzed like app code",
+  "url": "https://github.com/roundhouse-rb/roundhouse/pull/1303"
+}

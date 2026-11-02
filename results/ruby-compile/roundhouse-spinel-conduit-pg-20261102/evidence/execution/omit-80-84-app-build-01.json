@@ -1,0 +1,23 @@
+{
+  "label": "omit-80-84-app-build-01",
+  "command": [
+    "docker",
+    "build",
+    "--progress=plain",
+    "-f",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/omit-80-84/Dockerfile.production",
+    "-t",
+    "conduit-v15-app:omit-80-84",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/variant/source"
+  ],
+  "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/omit-80-84",
+  "started": "2026-11-02T20:56:34.630267+00:00",
+  "finished": "2026-11-02T20:57:25.734924+00:00",
+  "elapsed_seconds": 51.104,
+  "exit": 0,
+  "log": "evidence/execution/omit-80-84-app-build-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/compile-program/suite.lock (shared slot)"
+  ]
+}

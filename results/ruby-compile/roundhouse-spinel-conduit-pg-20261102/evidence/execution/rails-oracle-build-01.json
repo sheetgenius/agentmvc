@@ -1,0 +1,23 @@
+{
+  "label": "rails-oracle-build-01",
+  "command": [
+    "docker",
+    "build",
+    "--progress=plain",
+    "-f",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/toolchain/Dockerfile.rails-oracle",
+    "-t",
+    "conduit-v15-rails:oracle-8.1.4",
+    "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/variant/source"
+  ],
+  "build_dir": "results/ruby-compile/roundhouse-spinel-conduit-pg-20261102/build/final",
+  "started": "2026-11-02T20:43:22.121007+00:00",
+  "finished": "2026-11-02T20:44:31.189835+00:00",
+  "elapsed_seconds": 69.068,
+  "exit": 0,
+  "log": "evidence/execution/rails-oracle-build-01.log",
+  "locks": [
+    ".work/lane-docker.lock (exclusive)",
+    ".work/compile-program/suite.lock (shared slot)"
+  ]
+}
